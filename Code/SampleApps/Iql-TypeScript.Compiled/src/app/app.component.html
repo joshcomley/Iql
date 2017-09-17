@@ -1,0 +1,17 @@
+<h1>
+  {{title}}
+</h1>
+<div *ngFor="let person of people">
+  {{person.Name}} - {{person.Age}}
+</div>
+
+<h3>Individual found:</h3>
+<div *ngIf="individual">
+  <p>{{individual.Name}} - {{individual.Age}}</p>
+</div>
+
+<h2>OData:</h2>
+<p>{{odata}}</p>
+
+<h2>JavaScript:</h2>
+<p>{{javascript}}</p>

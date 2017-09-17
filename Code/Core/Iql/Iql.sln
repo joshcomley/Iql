@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26906.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql", "Iql.csproj", "{3C7C80CA-F522-406F-A1FD-6A111D9118E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Parsing", "..\Iql.Parsing\Iql.Parsing.csproj", "{0E438EF2-9672-4C98-BBA0-D31FD458C217}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Queryable", "..\Iql.Queryable\Iql.Queryable.csproj", "{2C65FD9F-8882-42E7-8938-3CB441652212}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C7C80CA-F522-406F-A1FD-6A111D9118E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C7C80CA-F522-406F-A1FD-6A111D9118E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C7C80CA-F522-406F-A1FD-6A111D9118E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C7C80CA-F522-406F-A1FD-6A111D9118E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E438EF2-9672-4C98-BBA0-D31FD458C217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E438EF2-9672-4C98-BBA0-D31FD458C217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E438EF2-9672-4C98-BBA0-D31FD458C217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E438EF2-9672-4C98-BBA0-D31FD458C217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C65FD9F-8882-42E7-8938-3CB441652212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C65FD9F-8882-42E7-8938-3CB441652212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C65FD9F-8882-42E7-8938-3CB441652212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C65FD9F-8882-42E7-8938-3CB441652212}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79ECBFE4-118B-4E14-A487-A521A9328CBD}
+	EndGlobalSection
+EndGlobal

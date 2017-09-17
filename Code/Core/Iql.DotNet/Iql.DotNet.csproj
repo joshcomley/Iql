@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TypeSharp.Extensions" Version="0.0.1-preview1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Iql.Parsing\Iql.Parsing.csproj" />
+    <ProjectReference Include="..\Iql.Queryable\Iql.Queryable.csproj" />
+    <ProjectReference Include="..\Iql\Iql.csproj" />
+  </ItemGroup>
+
+</Project>
