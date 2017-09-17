@@ -8,10 +8,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Coalesce } from "../TsUtility/Coalesce";
-import { DataContext } from "../Iql.Queryable/Data/DataContext";
+import { Coalesce } from "../Iql/TsUtility/Coalesce";
+import { DataContext } from "../Iql/Iql.Queryable/Data/DataContext";
 import { Db } from "./Db";
-import { Types } from "../TsUtility/Types";
+import { Types } from "../Iql/TsUtility/Types";
 var AppDbContext = /** @class */ (function (_super) {
     __extends(AppDbContext, _super);
     function AppDbContext(dataStore, evaluateContext) {
@@ -31,4 +31,4 @@ var AppDbContext = /** @class */ (function (_super) {
     return AppDbContext;
 }(DataContext));
 export { AppDbContext };
-//# sourceMappingURL=C:/Users/joshc/AppData/Local/Temp/6d213cd9-a86b-465e-a6a2-d613e08a3feb/Input/Code/AppDbContext.js.map
+//# sourceMappingURL=C:/Users/josh-xps/AppData/Local/Temp/1c471f32-a828-4822-81a3-7466142648fe/Input/Code/AppDbContext.js.map

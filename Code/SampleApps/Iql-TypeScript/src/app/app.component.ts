@@ -1,20 +1,20 @@
-import { ODataQuery } from './Iql.OData/Queryable/ODataQuery';
-import { TypeOf } from './TsUtility/TypeOf';
-import { IODataQuery } from './Iql.OData/Queryable/IODataQuery';
-import { ODataQueryableAdapter } from './Iql.OData/Queryable/ODataQueryableAdapter';
-import { QueryableExtensions } from './Iql.Queryable/QueryableExtensions';
-import { Types } from './TsUtility/Types';
+import { ODataQuery } from './Iql/Iql.OData/Queryable/ODataQuery';
+import { TypeOf } from './Iql/TsUtility/TypeOf';
+import { IODataQuery } from './Iql/Iql.OData/Queryable/IODataQuery';
+import { ODataQueryableAdapter } from './Iql/Iql.OData/Queryable/ODataQueryableAdapter';
+import { QueryableExtensions } from './Iql/Iql.Queryable/QueryableExtensions';
+import { Types } from './Iql/TsUtility/Types';
 
 import { OnInit, Component } from "@angular/core";
-import { QueryExpression } from "../app/Iql.Queryable/Expressions/QueryExpressions/QueryExpression";
-import { IqlQueryableAdapter } from "./Iql.Queryable/IqlQueryableAdapter";
-import { JavaScriptExpressionToIqlConverter } from "./Iql.JavaScript/JavaScriptExpressionToIql/Expressions/JavaScript/JavaScriptExpressionToIqlConverter";
-import { WhereQueryExpression } from "./Iql.Queryable/Expressions/QueryExpressions/WhereQueryExpression";
-import { AndQueryExpression } from "./Iql.Queryable/Expressions/QueryExpressions/AndQueryExpression";
+import { QueryExpression } from "./Iql/Iql.Queryable/Expressions/QueryExpressions/QueryExpression";
+import { IqlQueryableAdapter } from "./Iql/Iql.Queryable/IqlQueryableAdapter";
+import { JavaScriptExpressionToIqlConverter } from "./Iql/Iql.JavaScript/JavaScriptExpressionToIql/Expressions/JavaScript/JavaScriptExpressionToIqlConverter";
+import { WhereQueryExpression } from "./Iql/Iql.Queryable/Expressions/QueryExpressions/WhereQueryExpression";
+import { AndQueryExpression } from "./Iql/Iql.Queryable/Expressions/QueryExpressions/AndQueryExpression";
 import { QueryFilterEval } from "./QueryEval";
-import { OrQueryExpression } from "./Iql.Queryable/Expressions/QueryExpressions/OrQueryExpression";
-import { JavaScriptQueryableAdapter } from "./Iql.JavaScript/QueryToJavaScript/JavaScriptQueryableAdapter";
-import { JavaScriptQuery } from "./Iql.JavaScript/QueryToJavaScript/JavaScriptQuery";
+import { OrQueryExpression } from "./Iql/Iql.Queryable/Expressions/QueryExpressions/OrQueryExpression";
+import { JavaScriptQueryableAdapter } from "./Iql/Iql.JavaScript/QueryToJavaScript/JavaScriptQueryableAdapter";
+import { JavaScriptQuery } from "./Iql/Iql.JavaScript/QueryToJavaScript/JavaScriptQuery";
 import { Person } from "./Code/Person";
 import { AppDbContext } from "./Code/AppDbContext";
 

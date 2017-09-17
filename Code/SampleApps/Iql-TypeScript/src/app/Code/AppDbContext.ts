@@ -1,13 +1,13 @@
-import { Coalesce } from "../TsUtility/Coalesce";
-import { EvaluateContext } from "../Iql.Parsing/EvaluateContext";
-import { DbSet } from "../Iql.Queryable/DbSet";
-import { DataContext } from "../Iql.Queryable/Data/DataContext";
-import { DataStore } from "../Iql.Queryable/Data/DataStores/DataStore";
-import { IDataStore } from "../Iql.Queryable/Data/DataStores/IDataStore";
-import { EntityConfigurationBuilder } from "../Iql.Queryable/Data/EntityConfiguration/EntityConfigurationBuilder";
+import { Coalesce } from "../Iql/TsUtility/Coalesce";
+import { EvaluateContext } from "../Iql/Iql.Parsing/EvaluateContext";
+import { DbSet } from "../Iql/Iql.Queryable/DbSet";
+import { DataContext } from "../Iql/Iql.Queryable/Data/DataContext";
+import { DataStore } from "../Iql/Iql.Queryable/Data/DataStores/DataStore";
+import { IDataStore } from "../Iql/Iql.Queryable/Data/DataStores/IDataStore";
+import { EntityConfigurationBuilder } from "../Iql/Iql.Queryable/Data/EntityConfiguration/EntityConfigurationBuilder";
 import { Db } from "./Db";
 import { Person } from "./Person";
-import { Types } from "../TsUtility/Types";
+import { Types } from "../Iql/TsUtility/Types";
 
 export class AppDbContext extends DataContext {
     constructor(dataStore: IDataStore = null, evaluateContext: EvaluateContext = null) {

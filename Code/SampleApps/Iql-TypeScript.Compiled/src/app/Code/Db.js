@@ -1,4 +1,4 @@
-import { Types } from "../TsUtility/Types";
+import { Types } from "../Iql/TsUtility/Types";
 var Db = /** @class */ (function () {
     function Db() {
         if (!Db.Initialized) {
@@ -34,4 +34,4 @@ var Db = /** @class */ (function () {
     return Db;
 }());
 export { Db };
-//# sourceMappingURL=C:/Users/joshc/AppData/Local/Temp/6d213cd9-a86b-465e-a6a2-d613e08a3feb/Input/Code/Db.js.map
+//# sourceMappingURL=C:/Users/josh-xps/AppData/Local/Temp/1c471f32-a828-4822-81a3-7466142648fe/Input/Code/Db.js.map

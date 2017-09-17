@@ -33,7 +33,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { Types } from "../TsUtility/Types";
+import { Types } from "../Iql/TsUtility/Types";
 var TestDb = /** @class */ (function () {
     function TestDb() {
     }
@@ -58,4 +58,4 @@ var TestDb = /** @class */ (function () {
     return TestDb;
 }());
 export { TestDb };
-//# sourceMappingURL=C:/Users/joshc/AppData/Local/Temp/6d213cd9-a86b-465e-a6a2-d613e08a3feb/Input/Code/TestDb.js.map
+//# sourceMappingURL=C:/Users/josh-xps/AppData/Local/Temp/1c471f32-a828-4822-81a3-7466142648fe/Input/Code/TestDb.js.map

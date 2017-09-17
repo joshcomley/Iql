@@ -1,5 +1,5 @@
 import { Person } from "./Person";
-import { Types } from "../TsUtility/Types";
+import { Types } from "../Iql/TsUtility/Types";
 
 export class Db {
     constructor() {

@@ -1,4 +1,4 @@
-import { Types } from "../TsUtility/Types";
+import { Types } from "../Iql/TsUtility/Types";
 
 export class TestDb {
     public static async Run() : Promise<any> {
