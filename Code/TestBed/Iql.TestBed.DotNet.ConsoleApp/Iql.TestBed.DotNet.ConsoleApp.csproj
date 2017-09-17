@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Iql.TestBed.DotNet2\Iql.TestBed.DotNet.csproj" />
+    <ProjectReference Include="..\Iql.TestBed.DotNet\Iql.TestBed.DotNet.csproj" />
   </ItemGroup>
 
 </Project>

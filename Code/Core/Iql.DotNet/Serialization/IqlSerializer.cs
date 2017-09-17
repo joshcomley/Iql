@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Iql.DotNet.Serialization
@@ -13,6 +14,11 @@ namespace Iql.DotNet.Serialization
             var allTypes = typeof(IqlExpression).GetTypeInfo().Assembly.GetTypes();
             IqlTypes = allTypes.Where(t => typeof(IqlExpression).GetTypeInfo().IsAssignableFrom(t))
                 .ToArray();
+        }
+
+        public static string SerializeToXml<T>(Expression<Func<T, bool>> expression)
+        {
+            return SerializeToXml(ExpressionToIqlExpressionParser<T>.Parse(expression));
         }
 
         public static string SerializeToXml(IqlExpression expression)

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Iql.DotNet.Serialization
 {
-    public static class ODataTypeScriptObjectExtensions
+    internal static class ODataTypeScriptObjectExtensions
     {
         public static string SerializeToXml<T>(this T toSerialize, params Type[] types)
         {

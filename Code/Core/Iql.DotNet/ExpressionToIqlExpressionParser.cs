@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Iql.DotNet.Parsers;
 using Iql.DotNet.Serialization;
 using Iql.Extensions;
@@ -39,12 +40,6 @@ namespace Iql.DotNet
         {
             return new ExpressionToIqlExpressionParser<T>()
                 .ToIqlExpression(exp);
-        }
-
-        public static string ParseToXml<TResult>(Expression<Func<T, TResult>> exp)
-        {
-            return IqlSerializer.SerializeToXml(new ExpressionToIqlExpressionParser<T>()
-                .ToIqlExpression(exp));
         }
 
         public IqlExpression ToIqlExpression(LambdaExpression exp)
