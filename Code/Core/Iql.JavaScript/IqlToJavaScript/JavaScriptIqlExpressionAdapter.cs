@@ -10,6 +10,7 @@ namespace Iql.JavaScript.IqlToJavaScript
             RootVariableName = rootVariableName;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlExpression), () => new JavaScriptStringSourceActionParser());
+            Registry.Register(typeof(IqlNotExpression), () => new JavaScriptNotActionParser());
             Registry.Register(typeof(IqlParenthesisExpression), () => new JavaScriptParenthesisParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new JavaScriptPropertyReferenceParser());
             Registry.Register(typeof(IqlRootReferenceExpression), () => new JavaScriptRootReferenceParser());

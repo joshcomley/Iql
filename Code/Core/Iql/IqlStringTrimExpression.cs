@@ -1,6 +1,6 @@
 namespace Iql
 {
-    public class IqlStringTrimExpression : IqlExpression
+    public class IqlStringTrimExpression : IqlReferenceExpression
     {
         public IqlStringTrimExpression(IqlReferenceExpression parent) : base(IqlExpressionType.StringTrim,
             IqlType.String, parent)

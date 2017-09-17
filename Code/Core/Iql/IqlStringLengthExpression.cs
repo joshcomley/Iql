@@ -1,8 +1,8 @@
 namespace Iql
 {
-    public class IqlStringLengthExpression : IqlExpression
+    public class IqlStringLengthExpression : IqlReferenceExpression
     {
-        public IqlStringLengthExpression(IqlExpression parent) : base(IqlExpressionType.StringLength, IqlType.Integer,
+        public IqlStringLengthExpression(IqlReferenceExpression parent) : base(IqlExpressionType.StringLength, IqlType.Integer,
             parent)
         {
         }

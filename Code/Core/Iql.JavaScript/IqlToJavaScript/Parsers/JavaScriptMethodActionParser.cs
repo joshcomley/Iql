@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Iql.JavaScript.Extensions;
 using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
@@ -22,8 +23,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             var arr = new List<IqlExpression>();
             if (caller != null)
             {
-                arr.Add(caller);
-                arr.Add(new IqlFinalExpression("."));
+                
             }
             arr.Add(new IqlFinalExpression(name));
             arr.Add(new IqlFinalExpression("("));
@@ -36,7 +36,11 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                 }
             }
             arr.Add(new IqlFinalExpression(")"));
-            return new IqlAggregateExpression(arr.ToArray());
+            var invocation = new IqlAggregateExpression(arr.ToArray());
+            return 
+                caller == null
+                ? invocation
+                : caller.Coalesce(caller.DotAccess(invocation));
         }
 
         public virtual IqlExpression ResolveMethodCaller(TAction action)

@@ -1,6 +1,6 @@
 namespace Iql
 {
-    public class IqlToStringExpression : IqlExpression
+    public class IqlToStringExpression : IqlReferenceExpression
     {
         public IqlToStringExpression(IqlReferenceExpression parent)
             : base(IqlExpressionType.ToString, IqlType.String, parent)

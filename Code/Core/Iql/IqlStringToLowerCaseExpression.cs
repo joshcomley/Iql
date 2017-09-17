@@ -1,6 +1,6 @@
 namespace Iql
 {
-    public class IqlStringToLowerCaseExpression : IqlExpression
+    public class IqlStringToLowerCaseExpression : IqlReferenceExpression
     {
         public IqlStringToLowerCaseExpression(IqlReferenceExpression parent)
             : base(IqlExpressionType.StringToLowerCase, IqlType.String, parent)

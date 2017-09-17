@@ -1,8 +1,8 @@
 namespace Iql
 {
-    public abstract class IqlParentValueExpression : IqlExpression
+    public abstract class IqlParentValueExpression : IqlReferenceExpression
     {
-        protected IqlParentValueExpression(IqlExpression parent,
+        protected IqlParentValueExpression(IqlReferenceExpression parent,
             IqlExpression value,
             IqlExpressionType type,
             IqlType returnType)

@@ -17,7 +17,7 @@ namespace Iql.DotNet.Parsers
             if (node.Expression.Type == typeof(string) && node.Member.Name == nameof(string.Length))
             {
                 return new IqlStringLengthExpression(
-                    context.ToIqlExpression(node.Expression));
+                    context.ToIqlExpression(node.Expression) as IqlReferenceExpression);
             }
             if (node.Expression.Type != typeof(T))
             {

@@ -1,5 +1,4 @@
-﻿using Iql.DotNet;
-using System;
+﻿using System;
 using Iql.DotNet.Serialization;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
 
@@ -11,8 +10,10 @@ namespace Iql.TestBed.DotNet
         {
             var xml = IqlSerializer.SerializeToXml<Person>(
                 p => p.Name == "Josh" || p.Age > 20);
-            Console.WriteLine("XML:");
-            Console.WriteLine(xml);
+            //xml = IqlSerializer.SerializeToXml<Person>(
+            //    p => p.Name == "Josh");
+            //Console.WriteLine("XML:");
+            //Console.WriteLine(xml);
 
             Console.WriteLine();
             Console.WriteLine();

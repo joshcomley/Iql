@@ -22,6 +22,7 @@ namespace Iql.DotNet
             Parsers.Add(() => new LambdaExpressionParser<T>());
             Parsers.Add(() => new MemberAccessExpressionParser<T>());
             Parsers.Add(() => new MethodCallExpressionParser<T>());
+            Parsers.Add(() => new UnaryExpressionParser<T>());
             Parsers.Add(() => new ParameterExpressionParser<T>());
         }
 
