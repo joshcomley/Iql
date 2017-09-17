@@ -29,25 +29,25 @@ namespace Iql.DotNet
         public List<Func<IExpressionParser>> Parsers { get; set; }
             = new List<Func<IExpressionParser>>();
 
-        public static IqlExpression Parse<TResult>(Expression<Func<T, TResult>> exp, EvaluateContext evaluateContext)
+        public static IqlExpression Parse<TResult>(Expression<Func<T, TResult>> exp)
         {
             return new ExpressionToIqlExpressionParser<T>()
-                .ToIqlExpression(exp, evaluateContext);
+                .ToIqlExpression(exp);
         }
 
         public static IqlExpression Parse(LambdaExpression exp, EvaluateContext evaluateContext)
         {
             return new ExpressionToIqlExpressionParser<T>()
-                .ToIqlExpression(exp, evaluateContext);
+                .ToIqlExpression(exp);
         }
 
-        public static string ParseToXml<TResult>(Expression<Func<T, TResult>> exp, EvaluateContext evaluateContext)
+        public static string ParseToXml<TResult>(Expression<Func<T, TResult>> exp)
         {
             return IqlSerializer.SerializeToXml(new ExpressionToIqlExpressionParser<T>()
-                .ToIqlExpression(exp, evaluateContext));
+                .ToIqlExpression(exp));
         }
 
-        public IqlExpression ToIqlExpression(LambdaExpression exp, EvaluateContext evaluateContext)
+        public IqlExpression ToIqlExpression(LambdaExpression exp)
         {
             var root = exp.Parameters[0];
             var parsers = Parsers.Select(p => p()).ToList();
@@ -56,8 +56,7 @@ namespace Iql.DotNet
                 root.Name,
                 (node, context) => GetIqlExpression(node, parsers, context)));
             var reducer = new IqlReducer(
-                evaluateContext,
-                new IqlReducerRegistry());
+                registry: new IqlReducerRegistry());
             return reducer.ReduceStaticContent(iql);
         }
 

@@ -6,7 +6,7 @@ namespace Iql.Parsing.Reduction
     {
         private readonly IqlReducerRegistryBase _registry;
 
-        public IqlReducer(EvaluateContext evaluateContext, IqlReducerRegistryBase registry = null)
+        public IqlReducer(EvaluateContext evaluateContext = null, IqlReducerRegistryBase registry = null)
         {
             EvaluateContext = evaluateContext;
             _registry = registry ?? new IqlReducerRegistry();
