@@ -55,10 +55,10 @@ export class AppComponent implements OnInit {
     let queryExpression3 = new OrQueryExpression(eval(QueryFilterEval),
       queryExpression,
       new AndQueryExpression(eval(QueryFilterEval),
-        new WhereQueryExpression<Person>(p => p.Name == "Josh4", eval(QueryFilterEval)),
+        new WhereQueryExpression<Person>(p => p.Name == "Josh", eval(QueryFilterEval)),
         new WhereQueryExpression<Person>(p => p.Age > 20, eval(QueryFilterEval)))
     );
-    let query = db.People.OrderBy(p => p.Age);//.WhereQuery(queryExpression3);
+    let query = db.People.WhereQuery(queryExpression3).OrderBy(p => p.Age);//.WhereQuery(queryExpression3);
 
     // let orExpression = new OrQueryExpression(eval(QueryFilterEval),
     //   new WhereQueryExpression<Person>(p => p.Name == "Cara", eval(QueryFilterEval)),
