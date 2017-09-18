@@ -44,8 +44,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public EntityConfiguration<T> DefineProperty<TProperty>(
-            Expression<Func<T, TProperty>> property,
-            bool isArray = false
+            Expression<Func<T, TProperty>> property
         )
         {
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
@@ -56,9 +55,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        public EntityConfiguration<T> DefineProperties<TProperty>(
-            Expression<Func<T, IEnumerable<TProperty>>> properties,
-            bool isArray = false)
+        public EntityConfiguration<T> DefineCollectionProperty<TProperty>(
+            Expression<Func<T, IEnumerable<TProperty>>> properties)
         {
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(properties) as IqlPropertyExpression;

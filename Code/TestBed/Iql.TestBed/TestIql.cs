@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.DotNet;
+using Iql.DotNet.Serialization;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
 using Iql.OData.Parsers;
 using Iql.Parsing;
@@ -47,7 +48,7 @@ namespace Iql.OData.TypeScript.Generator.ConsoleApp.Library
             Console.WriteLine("JavaScript:");
             Console.WriteLine(exp.Expression);
             Console.WriteLine();
-            var validation = ExpressionToIqlExpressionParser<Person>.ParseToXml(validationExpression, null);
+            var validation = IqlSerializer.SerializeToXml(validationExpression);
             Console.WriteLine("IQL:");
             Console.WriteLine(validation.ToCharArray());
         }
