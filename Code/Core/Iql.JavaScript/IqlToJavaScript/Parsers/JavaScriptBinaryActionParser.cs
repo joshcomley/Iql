@@ -22,7 +22,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
         {
             var spacer = new IqlFinalExpression(" ");
             var isStringComparison = false;
-            if (action.Type == IqlExpressionType.IsEqualTo)
+            if (action.Type == IqlExpressionType.IsEqualTo || action.Type == IqlExpressionType.IsNotEqualTo)
             {
                 isStringComparison =
                     IsString(action.Left) ||
