@@ -25,6 +25,7 @@ npm-debug.log.*
 x64/
 x86/
 build/
+!/Code/Build
 bld/
 bin/
 Bin/
