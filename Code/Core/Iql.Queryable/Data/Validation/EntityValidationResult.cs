@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.Queryable.Data.Validation
@@ -8,9 +9,9 @@ namespace Iql.Queryable.Data.Validation
         public List<PropertyValidationResult> PropertyValidationResults { get; set; }
             = new List<PropertyValidationResult>();
 
-        public string EntityType { get; set; }
+        public Type EntityType { get; set; }
 
-        public EntityValidationResult(string entityType)
+        public EntityValidationResult(Type entityType)
         {
             EntityType = entityType;
         }

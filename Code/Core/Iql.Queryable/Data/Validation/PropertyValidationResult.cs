@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Iql.Queryable.Data.Validation
 {
     public class PropertyValidationResult : ValidationResult
     {
-        public string EntityType { get; }
+        public Type EntityType { get; }
         public string PropertyName { get; set; }
 
         public PropertyValidationResult(
-            string entityType,
+            Type entityType,
             string propertyName)
         {
             EntityType = entityType;
