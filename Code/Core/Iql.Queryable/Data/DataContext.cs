@@ -24,7 +24,6 @@ namespace Iql.Queryable.Data
             EvaluateContext = evaluateContext;
             DataStore.DataContext = this;
             EntityConfigurationContext = new EntityConfigurationBuilder();
-            Configure(EntityConfigurationContext);
             var properties = GetType().GetProperties()
                 .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
                 .ToList();
@@ -60,8 +59,14 @@ namespace Iql.Queryable.Data
                 .Invoke(this, null);
         }
 
+        private bool _configured;
         public DbSet<T, TKey> AsDbSet<T, TKey>() where T : class
         {
+            if (!_configured)
+            {
+                _configured = true;
+                Configure(EntityConfigurationContext);
+            }
             return new DbSet<T, TKey>(
                 EntityConfigurationContext,
                 () => DataStore,
