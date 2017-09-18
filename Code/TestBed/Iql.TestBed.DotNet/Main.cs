@@ -9,7 +9,7 @@ namespace Iql.TestBed.DotNet
         public static void Run()
         {
             var xml = IqlSerializer.SerializeToXml<Person>(
-                p => p.Name == "Josh" || p.Age > 20);
+                s => s.Title != "Josh" || s.Description == "Josh");
             //xml = IqlSerializer.SerializeToXml<Person>(
             //    p => p.Name == "Josh");
             //Console.WriteLine("XML:");
