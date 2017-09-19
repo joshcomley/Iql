@@ -31,11 +31,15 @@ namespace Iql.OData.Data
             return GetConfiguration().HttpProvider;
         }
 
-        public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
+        public override async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
                 QueuedAddEntityOperation<TEntity> operation)
         {
-            throw new NotImplementedException();
-            return null;
+            var configuration = GetConfiguration();
+            var http = configuration.HttpProvider;
+            var entitySetUri = ResolveEntitySetUri<TEntity>();
+            var httpResult = await http.Post<TEntity>(entitySetUri, new HttpRequest<TEntity>(operation.Operation.Entity));
+            operation.Result.Success = httpResult.Success;
+            return operation.Result;
         }
 
         public override Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
@@ -55,20 +59,30 @@ namespace Iql.OData.Data
         public override async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
             var configuration = GetConfiguration();
-            var oDataQuery = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext) as IODataQuery;
             var http = configuration.HttpProvider;
+            var entitySetUri = ResolveEntitySetUri<TEntity>();
+
+            var oDataQuery = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext) as IODataQuery;
+            var queryString = oDataQuery.ToODataQuery();
+            var fullQueryUri = $"{entitySetUri}?{queryString}";
+
+            var httpResult = await http.Get<IEnumerable<TEntity>>(fullQueryUri);
+            operation.Result.Data = httpResult.ResponseData.ToList();
+            operation.Result.Success = true;
+            return operation.Result;
+        }
+
+        private string ResolveEntitySetUri<TEntity>()
+        {
+            var configuration = GetConfiguration();
+            var entitySetName = configuration.GetEntitySetName<TEntity>();
             var apiUriBase = configuration.ApiUriBase;
             if (!apiUriBase.EndsWith("/"))
             {
                 apiUriBase += "/";
             }
-            var entitySetName = configuration.GetEntitySetName<TEntity>();
-            var queryString = oDataQuery.ToODataQuery();
-            var uri = apiUriBase + entitySetName + "/?" + queryString;
-            var httpResult = await http.Get<IEnumerable<TEntity>>(uri);
-            operation.Result.Data = httpResult.ResponseData.ToList();
-            operation.Result.Success = true;
-            return operation.Result;
+            var entitySetUri = $"{apiUriBase}{entitySetName}/";
+            return entitySetUri;
         }
 
         public Task<ODataResult<TResult>> PostOnEntityInstance<TEntity, TResult>(TEntity entity,
