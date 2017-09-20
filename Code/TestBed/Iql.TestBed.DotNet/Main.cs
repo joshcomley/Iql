@@ -1,5 +1,6 @@
 ﻿using System;
 using Iql.DotNet.Serialization;
+using Iql.JavaScript;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
 
 namespace Iql.TestBed.DotNet
@@ -8,6 +9,10 @@ namespace Iql.TestBed.DotNet
     {
         public static void Run()
         {
+            var body = JavaScriptCodeExtractor.ExtractBody("function(p) { return p.Id; }");
+            body = JavaScriptCodeExtractor.ExtractBody("p => p.Id");
+            body = JavaScriptCodeExtractor.ExtractBody("s => s.Name.includes(\"o\")");
+
             var xml = IqlSerializer.SerializeToXml<Person>(
                 s => s.Title != "Josh" || s.Description == "Josh");
             //xml = IqlSerializer.SerializeToXml<Person>(

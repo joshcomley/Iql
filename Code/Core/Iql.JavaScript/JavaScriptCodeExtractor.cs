@@ -7,7 +7,7 @@ namespace Iql.JavaScript
     {
         public static string RemoveComments(string code)
         {
-            var quotes = new[] {'\'', '`', '"'};
+            var quotes = new[] { '\'', '`', '"' };
             var inQuote = false;
             var inComment = false;
             var startIndex = 0;
@@ -78,7 +78,7 @@ namespace Iql.JavaScript
             copy = commentsRemoved;
             // Remove whitespace
             copy = copy.Trim();
-            var validStarts = new[] {"function ", "function(", "function\t"};
+            var validStarts = new[] { "function ", "function(", "function\t" };
             var isWrapped = false;
             for (var k = 0; k < validStarts.Length; k++)
             {
@@ -149,7 +149,39 @@ namespace Iql.JavaScript
             }
             if (!isWrapped)
             {
-                return null;
+                var j = 0;
+                var variableBegun = false;
+                var isValidEs6 = false;
+                while (j < copy.Length - 1)
+                {
+                    if (variableBegun)
+                    {
+                        if (!alphaNumeric.Contains(copy[j]))
+                        {
+                            var whitespaceCount = 0;
+                            while (whitespace.Contains(copy[j]))
+                            {
+                                whitespaceCount++;
+                                j++;
+                            }
+                            if (whitespaceCount == 0 || !copy.StartsWithAt(j, "=>"))
+                            {
+                                return null;
+                            }
+                            isValidEs6 = true;
+                            break;
+                        }
+                    }
+                    else if (alpha.Contains(copy[j]))
+                    {
+                        variableBegun = true;
+                    }
+                    j++;
+                }
+                if (!isValidEs6)
+                {
+                    return null;
+                }
             }
             // Remove function name (in ES6 we shouldn't have the function name)
             if (copy.StartsWith("function"))
@@ -160,13 +192,16 @@ namespace Iql.JavaScript
             // Remove whitespace
             copy = copy.Trim();
             // Remove (
-            copy = copy.Substring(1);
-            copy = copy.Trim();
+            if (copy.StartsWith("("))
+            {
+                copy = copy.Substring(1);
+                copy = copy.Trim();
+            }
 
             var i = 0;
             valid = alpha;
             var parameterNames = new List<string>();
-            var validParameterSyntax = whitespace.Concat(new[] {','}).ToArray();
+            var validParameterSyntax = whitespace.Concat(new[] { ',' }).ToArray();
             var signature = "";
             while (true)
             {
@@ -204,7 +239,12 @@ namespace Iql.JavaScript
             }
             // Remove parameters
             copy = copy.Substring(i);
-            copy = copy.Substring(copy.IndexOf(")") + 1);
+            copy = copy.Trim();
+            // Remove close bracket
+            if (copy.StartsWith(")"))
+            {
+                copy = copy.Substring(1);
+            }
             copy = copy.Trim();
             // If ES6
             if (copy.StartsWith("=>"))
@@ -232,12 +272,17 @@ namespace Iql.JavaScript
             }
             // Remove whitespace
             copy = copy.Trim();
+            if (signature.StartsWith("(") && signature.EndsWith(")"))
+            {
+                signature = signature.Substring(1, signature.Length - 2);
+            }
+            signature = signature.Trim();
             return new JavaScriptFunctionBody(
                 parameterNames.ToArray(),
                 copy,
                 signature,
-                code,
-                commentsRemoved
+                code.Trim(),
+                "function (" + signature + ") { return " + copy + "; }"
             );
         }
     }
