@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
@@ -109,7 +110,7 @@ namespace Iql.Queryable.Data.DataStores
                     var updateOperation =
                         Activator.CreateInstance(
                             typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                    Queue.Add((IQueuedOperation) updateOperation);
+                    Queue.Add((IQueuedOperation)updateOperation);
                     //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
                     //Apply(update);
                 });
@@ -186,13 +187,23 @@ namespace Iql.Queryable.Data.DataStores
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
-                    result = await PerformAdd((QueuedAddEntityOperation<TEntity>) operation);
+                    var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
+                    result = await PerformAdd(addEntityOperation);
+                    var remoteEntity = addEntityOperation.Result.RemoteEntity;
+                    if (remoteEntity != null)
+                    {
+                        foreach (var property in remoteEntity.GetType().GetRuntimeProperties())
+                        {
+                            property.SetValue(addEntityOperation.Operation.Entity, 
+                                property.GetValue(remoteEntity));
+                        }
+                    }
                     break;
                 case OperationType.Update:
-                    result = await PerformUpdate((QueuedUpdateEntityOperation<TEntity>) operation);
+                    result = await PerformUpdate((QueuedUpdateEntityOperation<TEntity>)operation);
                     break;
                 case OperationType.Delete:
-                    result = await PerformDelete((QueuedDeleteEntityOperation<TEntity>) operation);
+                    result = await PerformDelete((QueuedDeleteEntityOperation<TEntity>)operation);
                     break;
             }
             saveChangesResult.Results.Add(result as IEntityCrudResult);

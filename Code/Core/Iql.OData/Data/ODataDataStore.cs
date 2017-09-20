@@ -38,6 +38,7 @@ namespace Iql.OData.Data
             var http = configuration.HttpProvider;
             var entitySetUri = ResolveEntitySetUri<TEntity>();
             var httpResult = await http.Post<TEntity>(entitySetUri, new HttpRequest<TEntity>(operation.Operation.Entity));
+            operation.Result.RemoteEntity = httpResult.ResponseData;
             operation.Result.Success = httpResult.Success;
             return operation.Result;
         }
@@ -46,14 +47,12 @@ namespace Iql.OData.Data
             QueuedUpdateEntityOperation<TEntity> operation)
         {
             throw new NotImplementedException();
-            return null;
         }
 
         public override Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation)
         {
             throw new NotImplementedException();
-            return null;
         }
 
         public override async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
@@ -89,14 +88,12 @@ namespace Iql.OData.Data
             object payload) where TEntity : class
         {
             throw new NotImplementedException();
-            return null;
         }
 
         public Task<ODataResult<TResult>> GetOnEntityInstance<TEntity, TResult>(TEntity entity,
             object payload) where TEntity : class
         {
             throw new NotImplementedException();
-            return null;
         }
     }
 }
