@@ -2,6 +2,7 @@
 using Iql.DotNet.Serialization;
 using Iql.JavaScript;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
+using Iql.OData.Parsers;
 
 namespace Iql.TestBed.DotNet
 {
@@ -32,6 +33,9 @@ namespace Iql.TestBed.DotNet
                 JavaScriptIqlParser.GetJavaScript(iql, null);
             Console.WriteLine("JavaScript:");
             Console.WriteLine(javaScript.Expression);
+
+            //var odata =
+            //    ODataIqlParser.GetOData(iql, null);
         }
     }
 }
