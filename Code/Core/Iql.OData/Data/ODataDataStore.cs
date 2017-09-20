@@ -52,6 +52,9 @@ namespace Iql.OData.Data
         public override Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation)
         {
+            var configuration = GetConfiguration();
+            var http = configuration.HttpProvider;
+            var entitySetUri = ResolveEntitySetUri<TEntity>();
             throw new NotImplementedException();
         }
 
