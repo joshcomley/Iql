@@ -31,6 +31,22 @@ namespace Iql.OData.Data
             return GetConfiguration().HttpProvider;
         }
 
+        public override async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        {
+            var configuration = GetConfiguration();
+            var http = configuration.HttpProvider;
+            var entitySetUri = ResolveEntitySetUri<TEntity>();
+
+            var oDataQuery = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext) as IODataQuery;
+            var queryString = oDataQuery.ToODataQuery();
+            var fullQueryUri = $"{entitySetUri}?{queryString}";
+
+            var httpResult = await http.Get<IEnumerable<TEntity>>(fullQueryUri);
+            operation.Result.Data = httpResult.ResponseData.ToList();
+            operation.Result.Success = true;
+            return operation.Result;
+        }
+
         public override async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
                 QueuedAddEntityOperation<TEntity> operation)
         {
@@ -56,22 +72,6 @@ namespace Iql.OData.Data
             var http = configuration.HttpProvider;
             var entitySetUri = ResolveEntitySetUri<TEntity>();
             throw new NotImplementedException();
-        }
-
-        public override async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
-        {
-            var configuration = GetConfiguration();
-            var http = configuration.HttpProvider;
-            var entitySetUri = ResolveEntitySetUri<TEntity>();
-
-            var oDataQuery = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext) as IODataQuery;
-            var queryString = oDataQuery.ToODataQuery();
-            var fullQueryUri = $"{entitySetUri}?{queryString}";
-
-            var httpResult = await http.Get<IEnumerable<TEntity>>(fullQueryUri);
-            operation.Result.Data = httpResult.ResponseData.ToList();
-            operation.Result.Success = true;
-            return operation.Result;
         }
 
         private string ResolveEntitySetUri<TEntity>()

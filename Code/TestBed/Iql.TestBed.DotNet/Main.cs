@@ -21,21 +21,21 @@ namespace Iql.TestBed.DotNet
             //Console.WriteLine("XML:");
             //Console.WriteLine(xml);
 
-            Console.WriteLine();
-            Console.WriteLine();
             var iql = IqlSerializer.DeserializeFromXml(xml);
-            Console.WriteLine("Expression resolved:");
-            Console.WriteLine(iql.GetType().Name);
+            var javaScript = JavaScriptIqlParser.GetJavaScript(iql, null);
+            var odata = ODataIqlParser.GetOData(iql, null);
 
+            Print("Expression resolved", iql.GetType().Name);
+            Print("JavaScript", javaScript.Expression);
+            Print("OData", odata);
+        }
+
+        static void Print(string title, string result)
+        {
             Console.WriteLine();
             Console.WriteLine();
-            var javaScript =
-                JavaScriptIqlParser.GetJavaScript(iql, null);
-            Console.WriteLine("JavaScript:");
-            Console.WriteLine(javaScript.Expression);
-
-            //var odata =
-            //    ODataIqlParser.GetOData(iql, null);
+            Console.WriteLine(title + ":");
+            Console.WriteLine(result);
         }
     }
 }

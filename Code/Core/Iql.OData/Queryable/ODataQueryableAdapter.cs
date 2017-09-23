@@ -15,6 +15,7 @@ namespace Iql.OData.Queryable
             RegisterApplicator(() => new ReverseOperationApplicatorOData());
             RegisterApplicator(() => new WhereOperationApplicatorOData());
             RegisterApplicator(() => new ExpandOperationApplicatorOData());
+            RegisterApplicator(() => new WithKeyOperationApplicatorOData());
             //new QueryParser().parseRoot(queryFilter, new QueryExpressionAdapterOData())({})
         }
 

@@ -14,6 +14,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             RegisterApplicator(() => new ReverseOperationApplicatorJavaScript());
             RegisterApplicator(() => new WhereOperationApplicatorJavaScript());
             RegisterApplicator(() => new ExpandOperationApplicatorJavaScript());
+            RegisterApplicator(() => new WithKeyOperationApplicatorJavaScript());
             //new QueryParser().parseRoot(queryFilter, new QueryExpressionAdapterJavaScript())({})
         }
 

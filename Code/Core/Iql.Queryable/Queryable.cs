@@ -50,8 +50,7 @@ namespace Iql.Queryable
                 expression.EvaluateContext ?? evaluateContext ?? EvaluateContext;
             return Then(new WhereOperation(expression));
         }
-
-
+        
         public TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression,
             EvaluateContext evaluateContext = null)
         {

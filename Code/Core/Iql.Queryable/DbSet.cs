@@ -175,32 +175,7 @@ namespace Iql.Queryable
 
         public async Task<GetSingleResult<T>> WithKey(TKey key)
         {
-            var configuration = Configuration.GetEntityByType(typeof(T));
-            var keyDefinition = configuration.Key;
-            var root = new IqlRootReferenceExpression("entity", null);
-            var checks = new List<IqlExpression>();
-            keyDefinition.Properties.ForEach(property =>
-            {
-                var propertyExpression = new IqlPropertyExpression(
-                    property.PropertyName,
-                    typeof(T).Name,
-                    key.GetType().ToIqlType());
-                propertyExpression.Parent = root;
-                var check = new IqlIsEqualToExpression(
-                    propertyExpression,
-                    new IqlLiteralExpression(key.ToString(), key.GetType().ToIqlType())
-                );
-                checks.Add(check);
-            });
-            var rootOperation = checks[0];
-            for (var i = 1; i < checks.Count; i++)
-            {
-                rootOperation = new IqlAndExpression(rootOperation, checks[i]);
-            }
-            var operation = new WhereOperation();
-            operation.QueryExpression = new WhereQueryExpression<T>(null, EvaluateContext);
-            operation.Expression = rootOperation;
-            return await Then(operation).SingleOrDefault();
+            return await Then(new WithKeyOperation(key)).SingleOrDefault();
         }
 
         public async Task<GetSingleResult<T>> Single(Expression<Func<T, bool>> expression = null,

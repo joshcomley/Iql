@@ -19,6 +19,10 @@ namespace Iql.OData.Queryable
         public string ToODataQuery()
         {
             var queryParts = new List<string>();
+            if (HasKey)
+            {
+                return "(" + Key + ")";
+            }
             if (Filters.Count > 0)
             {
                 queryParts.Add("$filter=" + string.Join(" and ", Filters));
@@ -45,6 +49,8 @@ namespace Iql.OData.Queryable
             return ToList();
         }
 
+        public bool HasKey { get; set; }
+        public object Key { get; set; }
         public List<string> Filters { get; set; } = new List<string>();
         public List<string> OrderBys { get; set; } = new List<string>();
         public List<IExpandOperation> Expands { get; set; } = new List<IExpandOperation>();

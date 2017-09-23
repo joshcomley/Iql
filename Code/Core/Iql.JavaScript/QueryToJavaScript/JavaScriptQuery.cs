@@ -23,6 +23,8 @@ namespace Iql.JavaScript.QueryToJavaScript
 
         private IQueryable<T> Queryable { get; }
         public IDataContext Context { get; }
+        public bool HasKey { get; set; }
+        public object Key { get; set; }
         public List<JavaScriptExpand> Expands { get; set; } = new List<JavaScriptExpand>();
         public List<JavaScriptExpression> Filters { get; set; } = new List<JavaScriptExpression>();
         public List<JavaScriptOrderByExpression> OrderBys { get; set; } = new List<JavaScriptOrderByExpression>();
