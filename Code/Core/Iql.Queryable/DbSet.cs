@@ -173,7 +173,12 @@ namespace Iql.Queryable
         //    return null;
         //}
 
-        public async Task<GetSingleResult<T>> WithKey(TKey key)
+        public async Task<T> WithKey(TKey key)
+        {
+            return (await WithKeyWithResponse(key)).Data;
+        }
+
+        public async Task<GetSingleResult<T>> WithKeyWithResponse(TKey key)
         {
             return await Then(new WithKeyOperation(key)).SingleOrDefault();
         }

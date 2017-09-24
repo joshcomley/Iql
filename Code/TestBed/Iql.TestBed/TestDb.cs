@@ -13,11 +13,15 @@ namespace Iql.TestBed
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
             var db = new AppDbContext();
-            var cara = await db.People.OrderBy(p => p.Name).ToListWithResponse();
-            foreach (var person in cara.Data)
+            var people = await db.People.OrderBy(p => p.Name).ToListWithResponse();
+            foreach (var person in people.Data)
             {
-                Console.WriteLine(person.Name + " - " + person.Age);
+                PrintPerson(person);
             }
+
+
+            var paulina = await db.People.WithKey(1);
+            PrintPerson(paulina);
 
             //cara.Data[0].Name = "Changed!";
             //await db.SaveChanges();
@@ -62,6 +66,11 @@ namespace Iql.TestBed
             //        Console.WriteLine($"{person.Name} - {person.Age}");
             //    }
             //}
+        }
+
+        private static void PrintPerson(Person person)
+        {
+            Console.WriteLine($"{person.Id}: {person.Name} - {person.Age}");
         }
     }
 }

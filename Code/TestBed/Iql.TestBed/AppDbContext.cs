@@ -1,3 +1,6 @@
+
+using Iql.OData.Data;
+using Iql.OData.Queryable;
 #if TypeScript
 using Iql.JavaScript.QueryToJavaScript;
 #else
@@ -17,12 +20,12 @@ namespace Iql.TestBed
         public AppDbContext(
             IDataStore dataStore = null,
             EvaluateContext evaluateContext = null)
-            : base(dataStore ?? new InMemoryDataStore(
-#if TypeScript
-                       new JavaScriptQueryableAdapter()
-#else
-                       new DotNetQueryableAdapter()
-#endif
+            : base(dataStore ?? new ODataDataStore(
+//#if TypeScript
+//                       new JavaScriptQueryableAdapter()
+//#else
+//                       new DotNetQueryableAdapter()
+//#endif
                    ), evaluateContext)
         {
         }

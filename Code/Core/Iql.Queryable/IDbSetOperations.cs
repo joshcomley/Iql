@@ -40,6 +40,7 @@ namespace Iql.Queryable
         Task<List<T>> ToList();
         Task<GetDataResult<T>> ToListWithResponse();
         UpdateEntityResult<T> Update(T entity);
-        Task<GetSingleResult<T>> WithKey(TKey key);
+        Task<T> WithKey(TKey key);
+        Task<GetSingleResult<T>> WithKeyWithResponse(TKey key);
     }
 }
