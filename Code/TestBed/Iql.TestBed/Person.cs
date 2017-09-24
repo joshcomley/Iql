@@ -1,4 +1,4 @@
-﻿namespace Iql.OData.TypeScript.Generator.ConsoleApp.Library
+﻿namespace Iql.TestBed
 {
     public class Person
     {

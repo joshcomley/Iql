@@ -7,9 +7,11 @@ namespace Iql.DotNet
     {
         public ExpressionResult<IqlExpression> Parse<TEntity>(QueryExpression filter) where TEntity : class
         {
+            var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
+            var lambdaExpression = whereQueryExpression.GetExpression();
             return new ExpressionResult<IqlExpression>(
                 ExpressionToIqlExpressionParser<TEntity>.Parse(
-                    filter.Flatten<TEntity>().GetExpression(),
+                    lambdaExpression,
                     filter.EvaluateContext)
             );
         }

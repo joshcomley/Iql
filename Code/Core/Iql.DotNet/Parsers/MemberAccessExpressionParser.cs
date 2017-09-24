@@ -31,7 +31,7 @@ namespace Iql.DotNet.Parsers
                 throw new Exception(string.Format("Attempting to access member of type other than source type: {0}",
                     node.Expression.Type.Name));
             }
-            var iqlPropertyExpression = new IqlPropertyExpression(
+                var iqlPropertyExpression = new IqlPropertyExpression(
                 node.Member.Name, "", node.Member.ReflectedType.ToIqlType());
             iqlPropertyExpression.Parent = context.ToIqlExpression(node.Expression);
             return iqlPropertyExpression;

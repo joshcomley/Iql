@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -37,8 +38,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, TProperty>> property
         )
         {
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             Key = new EntityKey<T, TProperty>();
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+            iql.ReturnType = typeof(TProperty).ToIqlType();
             Key.Properties.Add(iql);
             return this;
         }

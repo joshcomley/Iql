@@ -105,7 +105,7 @@ namespace Iql.Queryable
             contextArgs.Add(dataContext);
             contextArgs.Add(operation);
             contextArgs.Add(newQueryData);
-            contextArgs.Add(this);
+            contextArgs.Add(Queryable);
             if (Platform.Name == "JavaScript")
             {
                 contextArgs.Add(null);

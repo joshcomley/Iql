@@ -43,6 +43,11 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             return false;
         }
 
+        public QueryExpression TryFlatten<TEntity>()
+        {
+            return Flatten<TEntity>() ?? this;
+        }
+
         public WhereQueryExpression<TEntity> Flatten<TEntity>()
         {
             switch (Type)

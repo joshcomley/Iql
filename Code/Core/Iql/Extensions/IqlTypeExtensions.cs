@@ -15,15 +15,36 @@ namespace Iql.Extensions
             {
                 return IqlType.Boolean;
             }
-            if (new[] {typeof(short), typeof(int), typeof(long)}.Contains(type))
+            if (new[] { typeof(short), typeof(int), typeof(long) }.Contains(type))
             {
                 return IqlType.Integer;
             }
-            if (new[] {typeof(float), typeof(double)}.Contains(type))
+            if (new[] { typeof(float), typeof(double) }.Contains(type))
             {
                 return IqlType.Decimal;
             }
             return IqlType.Unknown;
+        }
+
+        public static Type ToType(this IqlType type)
+        {
+            if (type == IqlType.String)
+            {
+                return typeof(string);
+            }
+            if (type == IqlType.Boolean)
+            {
+                return typeof(bool);
+            }
+            if (type == IqlType.Integer)
+            {
+                return typeof(int);
+            }
+            if (type == IqlType.Decimal)
+            {
+                return typeof(float);
+            }
+            return typeof(object);
         }
     }
 }

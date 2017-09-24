@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
     <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
     <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
+    <ProjectReference Include="..\Iql.TestBed\Iql.TestBed.csproj" />
   </ItemGroup>
 
 </Project>

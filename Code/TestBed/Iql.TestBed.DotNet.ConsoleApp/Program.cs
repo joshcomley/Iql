@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Iql.TestBed.DotNet.ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            DotNet.Main.Run();
+            await DotNet.Main.Run();
         }
     }
 }

@@ -8,7 +8,7 @@ using Iql.OData.Parsers;
 using Iql.Parsing;
 using Iql.Queryable;
 
-namespace Iql.OData.TypeScript.Generator.ConsoleApp.Library
+namespace Iql.TestBed
 {
     public class TestIql
     {

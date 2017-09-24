@@ -6,13 +6,11 @@ using Iql.DotNet.Queryable;
 #endif
 using Iql.Parsing;
 using Iql.Queryable;
-using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.DataStores.InMemory;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.JavaScript.QueryToJavaScript;
 
-namespace Iql.OData.TypeScript.Generator.ConsoleApp.Library
+namespace Iql.TestBed
 {
     public class AppDbContext : DataContext
     {

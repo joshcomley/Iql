@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
@@ -24,12 +25,22 @@ namespace Iql.Queryable.Data
             EvaluateContext = evaluateContext;
             DataStore.DataContext = this;
             EntityConfigurationContext = new EntityConfigurationBuilder();
-            var properties = GetType().GetProperties()
-                .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
-                .ToList();
-            foreach (var property in properties)
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            if (!_initialized)
             {
-                property.SetValue(this, AsDbSetByType(property.PropertyType.GenericTypeArguments[0]));
+                _initialized = true;
+                Configure(EntityConfigurationContext);
+                var properties = GetType().GetProperties()
+                    .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
+                    .ToList();
+                foreach (var property in properties)
+                {
+                    property.SetValue(this, AsDbSetByType(property.PropertyType.GenericTypeArguments[0]));
+                }
             }
         }
 
@@ -54,19 +65,19 @@ namespace Iql.Queryable.Data
 
         public IDbSet AsDbSetByType(Type entityType)
         {
+            Initialize();
+            var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
             return (IDbSet) GetType().GetMethod(nameof(AsDbSet))
-                .MakeGenericMethod(entityType)
+                .MakeGenericMethod(
+                    entityType,
+                    entityKey.Properties.First().ReturnType.ToType())
                 .Invoke(this, null);
         }
 
-        private bool _configured;
+        private bool _initialized;
         public DbSet<T, TKey> AsDbSet<T, TKey>() where T : class
         {
-            if (!_configured)
-            {
-                _configured = true;
-                Configure(EntityConfigurationContext);
-            }
+            Initialize();
             return new DbSet<T, TKey>(
                 EntityConfigurationContext,
                 () => DataStore,
