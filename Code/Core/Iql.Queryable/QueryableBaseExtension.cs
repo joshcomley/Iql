@@ -58,7 +58,7 @@ namespace Iql.Queryable
                 {
                     throw new Exception("Operation not supported: " + operation.ToString());
                 }
-                ApplyOperation(operation as IExpressionQueryOperation,
+                ApplyOperation(operation,
                     dataContext,
                     data,
                     applicator);
@@ -98,7 +98,7 @@ namespace Iql.Queryable
             return newQueryData;
         }
 
-        private void ApplyOperation(IExpressionQueryOperation operation, IDataContext dataContext,
+        private void ApplyOperation(IQueryOperation operation, IDataContext dataContext,
             IQueryResultBase newQueryData, IQueryOperationApplicatorBase applicator)
         {
             var contextArgs = new List<object>();

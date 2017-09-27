@@ -26,12 +26,12 @@ namespace Iql.TestBed
             Expression<Func<Person, object>> propertyExpression =
                 person =>
                     //person.Name.Length > 5
-                        person.Name;
+                        person.Title;
             var propertyIql = ExpressionToIqlExpressionParser<Person>.Parse(propertyExpression, null);
             Expression<Func<Person, bool>> validationExpression =
                     person =>
                         //person.Name.Length > 5
-                            person.Name == x && person.Age > 7 // ||
+                            person.Title == x && person.Age > 7 // ||
                 //person.Age > (5 * y)
                 ;
             var iql = ExpressionToIqlExpressionParser<Person>.Parse(validationExpression, null);

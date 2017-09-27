@@ -1,4 +1,5 @@
 
+using Iql.DotNet.Http;
 using Iql.OData.Data;
 using Iql.OData.Queryable;
 #if TypeScript
@@ -28,6 +29,11 @@ namespace Iql.TestBed
 //#endif
                    ), evaluateContext)
         {
+            var oDataConfiguration = new ODataConfiguration();
+            oDataConfiguration.ApiUriBase = @"http://localhost:47000/odata/";
+            oDataConfiguration.HttpProvider = new DotNetHttpProvider();
+            oDataConfiguration.RegisterEntitySet<Person>(nameof(People));
+            RegisterConfiguration(oDataConfiguration);
         }
 
         public DbSet<Person, int> People { get; set; }
@@ -38,7 +44,7 @@ namespace Iql.TestBed
 
             builder.DefineEntity<Person>()
                 .HasKey(p => p.Id)
-                .DefineProperty(p => p.Name)
+                .DefineProperty(p => p.Title)
                 .DefineProperty(p => p.Age)
                 ;
 

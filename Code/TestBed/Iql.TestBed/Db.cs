@@ -10,9 +10,9 @@ namespace Iql.TestBed
             {
                 Initialized = true;
                 People = new List<Person>();
-                People.Add(new Person {Age = 32, Id = 2, Name = "Cara"});
-                People.Add(new Person {Age = 24, Id = 1, Name = "Paulina"});
-                People.Add(new Person {Age = 31, Id = 3, Name = "Kiera"});
+                People.Add(new Person {Age = 32, Id = 2, Title = "Cara"});
+                People.Add(new Person {Age = 24, Id = 1, Title = "Paulina"});
+                People.Add(new Person {Age = 31, Id = 3, Title = "Kiera"});
             }
         }
 

@@ -1,11 +1,11 @@
 namespace Iql.Queryable.Data.Http
 {
-    public class HttpResult<TResult>: IHttpResult<TResult>
+    public class HttpResult : IHttpResult
     {
-        public TResult ResponseData { get; set; }
+        public string ResponseData { get; set; }
         public bool Success { get; set; }
 
-        public HttpResult(TResult responseData, bool success)
+        public HttpResult(string responseData, bool success)
         {
             ResponseData = responseData;
             Success = success;

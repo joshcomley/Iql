@@ -30,24 +30,24 @@ namespace Iql.TestBed.DotNet
             var javaScript = JavaScriptIqlParser.GetJavaScript(iql, null);
             var odata = ODataIqlParser.GetOData(iql, null);
 
-            Print("Expression resolved", iql.GetType().Name);
-            Print("JavaScript", javaScript.Expression);
-            Print("OData", odata);
+            await Print("Expression resolved", iql.GetType().Name);
+            await Print("JavaScript", javaScript.Expression);
+            await Print("OData", odata);
 
-            Print("Data access", async () => await TestDb.Run());
+            await Print("Data access", async () => await TestDb.Run());
         }
 
-        static void Print(string title, string result)
+        static async Task Print(string title, string result)
         {
-            Print(title, () => Console.WriteLine(result));
+            await Print(title, async () => Console.WriteLine(result));
         }
 
-        static void Print(string title, Action result)
+        static async Task Print(string title, Func<Task> result)
         {
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine(title + ":");
-            result();
+            await result();
         }
     }
 }

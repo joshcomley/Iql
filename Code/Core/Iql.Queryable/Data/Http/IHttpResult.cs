@@ -1,8 +1,8 @@
 ﻿namespace Iql.Queryable.Data.Http
 {
-    public interface IHttpResult<TResult>
+    public interface IHttpResult
     {
-        TResult ResponseData { get; set; }
+        string ResponseData { get; set; }
         bool Success { get; set; }
     }
 }

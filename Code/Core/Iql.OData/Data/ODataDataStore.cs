@@ -9,11 +9,17 @@ using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.Http;
+using Iql.Queryable.Operations;
+using Newtonsoft.Json;
 
 namespace Iql.OData.Data
 {
     public class ODataDataStore : DataStore
     {
+        class ODataGetResult<T>
+        {
+            public T value { get; set; }
+        }
         public ODataDataStore(IQueryableAdapterBase queryableAdapter = null)
         {
             QueryableAdapter = queryableAdapter ?? new ODataQueryableAdapter();
@@ -39,11 +45,24 @@ namespace Iql.OData.Data
 
             var oDataQuery = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext) as IODataQuery;
             var queryString = oDataQuery.ToODataQuery();
-            var fullQueryUri = $"{entitySetUri}?{queryString}";
+            var fullQueryUri = $"{entitySetUri}{queryString}";
 
-            var httpResult = await http.Get<IEnumerable<TEntity>>(fullQueryUri);
-            operation.Result.Data = httpResult.ResponseData.ToList();
-            operation.Result.Success = true;
+            var httpResult = await http.Get(fullQueryUri);
+            var singleResult = operation.Operation.Queryable.Operations.Any(o => o is WithKeyOperation);
+            operation.Result.Success = httpResult.Success;
+            if (singleResult)
+            {
+                var oDataGetResult =
+                    JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+                operation.Result.Data =
+                    new List<TEntity>(new []{ oDataGetResult });
+            }
+            else
+            {
+                var oDataGetResult = JsonConvert.DeserializeObject<ODataGetResult<List<TEntity>>>(httpResult.ResponseData);
+                operation.Result.Data =
+                    oDataGetResult.value;
+            }
             return operation.Result;
         }
 
@@ -53,8 +72,8 @@ namespace Iql.OData.Data
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entitySetUri = ResolveEntitySetUri<TEntity>();
-            var httpResult = await http.Post<TEntity>(entitySetUri, new HttpRequest<TEntity>(operation.Operation.Entity));
-            operation.Result.RemoteEntity = httpResult.ResponseData;
+            var httpResult = await http.Post(entitySetUri, new HttpRequest<TEntity>(operation.Operation.Entity));
+            operation.Result.RemoteEntity = null;//httpResult.ResponseData;
             operation.Result.Success = httpResult.Success;
             return operation.Result;
         }
@@ -83,7 +102,7 @@ namespace Iql.OData.Data
             {
                 apiUriBase += "/";
             }
-            var entitySetUri = $"{apiUriBase}{entitySetName}/";
+            var entitySetUri = $"{apiUriBase}{entitySetName}";
             return entitySetUri;
         }
 

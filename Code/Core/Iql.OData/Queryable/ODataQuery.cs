@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Operations;
@@ -9,7 +10,7 @@ namespace Iql.OData.Queryable
 {
     public class ODataQuery<T> : QueryResult<T>, IODataQuery
     {
-        public ODataQuery(IQueryable<T> queryable, IDataContext context)
+        public ODataQuery(global::Iql.Queryable.IQueryable<T> queryable, IDataContext context)
         {
             Context = context;
         }
@@ -18,10 +19,11 @@ namespace Iql.OData.Queryable
 
         public string ToODataQuery()
         {
+            var query = "";
             var queryParts = new List<string>();
             if (HasKey)
             {
-                return "(" + Key + ")";
+                query += "(" + Key + ")";
             }
             if (Filters.Count > 0)
             {
@@ -41,7 +43,12 @@ namespace Iql.OData.Queryable
                 });
                 queryParts.Add("$expand=" + string.Join(",", expands));
             }
-            return string.Join("&", queryParts);
+            if (queryParts.Any())
+            {
+                query += "?";
+                query += string.Join("&", queryParts);
+            }
+            return query;
         }
 
         IList IQueryResultBase.ToList()

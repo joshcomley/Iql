@@ -94,12 +94,6 @@ namespace Iql.Queryable.Data
         {
         }
 
-        public void RegisterConfig<T>(Type configurationType, T config)
-            where T : IEntityConfiguration
-        {
-            _configurations[configurationType.Name] = config;
-        }
-
         public EntityConfiguration<T> GetConfig<T>(Type entityType) where T : class
         {
             return _configurations[entityType.Name] as EntityConfiguration<T>;
