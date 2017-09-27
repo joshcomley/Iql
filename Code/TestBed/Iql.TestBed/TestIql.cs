@@ -31,7 +31,7 @@ namespace Iql.TestBed
             Expression<Func<Person, bool>> validationExpression =
                     person =>
                         //person.Name.Length > 5
-                            person.Title == x && person.Age > 7 // ||
+                            person.Title == x && person.TypeId > 7 // ||
                 //person.Age > (5 * y)
                 ;
             var iql = ExpressionToIqlExpressionParser<Person>.Parse(validationExpression, null);

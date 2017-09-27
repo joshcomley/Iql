@@ -37,13 +37,33 @@ namespace Iql.Queryable
         public virtual IQueryOperationApplicatorBase ResolveApplicator<TOperation>(TOperation operation)
             where TOperation : IQueryOperation
         {
-            var name = operation.GetType().Name;
-            if (!_applicators.ContainsKey(name))
+            var type = operation.GetType();
+            var name = type.Name;
+            return ResolveApplicatorInternal(name);
+        }
+
+        private IQueryOperationApplicatorBase ResolveApplicatorInternal(string name)
+        {
+            while (true)
             {
-                return null;
+                var index = name.IndexOf("`", StringComparison.Ordinal);
+                if (index != -1)
+                {
+                    name = name.Substring(0, index);
+                }
+                if (!_applicators.ContainsKey(name))
+                {
+                    if (name.StartsWith("I"))
+                    {
+                        return null;
+                    }
+                    // This is a big hack until we support interfaces in TypeScript
+                    name = "I" + name;
+                    continue;
+                }
+                var pre = _applicators[name]();
+                return pre;
             }
-            var pre = _applicators[name]();
-            return pre;
         }
 
         //public void registerApplicator<TOperation>(Func<IQueryOperationApplicator<TOperation, TQueryResult>> resolve) where TOperation : IQueryOperationBase

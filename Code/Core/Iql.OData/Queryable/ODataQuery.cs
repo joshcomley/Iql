@@ -69,19 +69,23 @@ namespace Iql.OData.Queryable
                 return "";
             }
             var detail = expand.ExpandDetails[index];
-            var str = detail.Relationship.SourceProperty.PropertyName;
-            str += "(";
+            var expandProperty = detail.Relationship.SourceProperty.PropertyName;
+            var expandOperations = "";
             var nested = ToExpandQuery(expand, index + 1);
             if (!string.IsNullOrWhiteSpace(nested))
             {
-                str += "$expand=";
-                str += nested;
+                expandOperations += "$expand=";
+                expandOperations += nested;
             }
             //        if (index === expand.ExpandDetails.Count - 1 && expand.queryExpression.queryable) {
-            str += detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery();
+            expandOperations += detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery();
             //        }
-            str += ")";
-            return str;
+            expandOperations = expandOperations.Trim();
+            if (!string.IsNullOrWhiteSpace(expandOperations))
+            {
+                expandProperty += "(" + expandOperations + ")";
+            }
+            return expandProperty;
         }
 
         public override List<T> ToList()

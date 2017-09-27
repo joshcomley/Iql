@@ -33,19 +33,28 @@ namespace Iql.TestBed
             oDataConfiguration.ApiUriBase = @"http://localhost:47000/odata/";
             oDataConfiguration.HttpProvider = new DotNetHttpProvider();
             oDataConfiguration.RegisterEntitySet<Person>(nameof(People));
+            oDataConfiguration.RegisterEntitySet<PersonType>(nameof(PersonTypes));
             RegisterConfiguration(oDataConfiguration);
         }
 
         public DbSet<Person, int> People { get; set; }
+        public DbSet<PersonType, int> PersonTypes { get; set; }
 
         public override void Configure(EntityConfigurationBuilder builder)
         {
             new Db();
 
+            builder
+                .DefineEntity<PersonType>()
+                .HasKey(p => p.Id)
+                .DefineProperty(p => p.Title);
+
             builder.DefineEntity<Person>()
                 .HasKey(p => p.Id)
                 .DefineProperty(p => p.Title)
-                .DefineProperty(p => p.Age)
+                .DefineProperty(p => p.TypeId)
+                .HasOne(p => p.Type)
+                .WithMany(p => p.People)
                 ;
 
             var config = new JavaScriptQueryConfiguration();
