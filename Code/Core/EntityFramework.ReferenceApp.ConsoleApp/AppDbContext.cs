@@ -8,7 +8,7 @@ namespace EntityFramework.ReferenceApp.ConsoleApp
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase("MyDb");
+            optionsBuilder.UseSqlServer("Server=.;Database=People.App.Data;Integrated Security=True;");
             base.OnConfiguring(optionsBuilder);
         }
     }

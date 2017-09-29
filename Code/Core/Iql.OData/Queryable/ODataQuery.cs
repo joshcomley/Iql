@@ -69,7 +69,7 @@ namespace Iql.OData.Queryable
                 return "";
             }
             var detail = expand.ExpandDetails[index];
-            var expandProperty = detail.Relationship.SourceProperty.PropertyName;
+            var expandProperty = detail.GetExpandProperty().PropertyName;
             var expandOperations = "";
             var nested = ToExpandQuery(expand, index + 1);
             if (!string.IsNullOrWhiteSpace(nested))

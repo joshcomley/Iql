@@ -21,14 +21,19 @@ namespace Iql.Queryable
 
         public List<IQueryOperation> Operations { get; }
 
-        public TQueryable Expand<TTarget>(Expression<Func<T, TTarget>> property) where TTarget : class
+        public TQueryable Expand<TTarget>(
+            Expression<Func<T, TTarget>> property,
+            Expression<Func<IQueryableProvider<TTarget, IQueryable<TTarget>>, bool>> filter = null)
+            where TTarget : class
         {
             return ExpandQuery(new ExpandQueryExpression<T, TTarget>(
                 property));
         }
 
         public TQueryable ExpandQuery<TTarget>(ExpandQueryExpression<T, TTarget> expression,
-            EvaluateContext evaluateContext = null) where TTarget : class
+            Expression<Func<IQueryableProvider<TTarget, IQueryable<TTarget>>, bool>> filter = null,
+            EvaluateContext evaluateContext = null) 
+            where TTarget : class 
         {
             return Then(new ExpandOperation<T, TTarget>(expression));
         }

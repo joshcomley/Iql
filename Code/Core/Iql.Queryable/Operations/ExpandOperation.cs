@@ -16,7 +16,9 @@ namespace Iql.Queryable.Operations
 
         public IQueryableBase ApplyQuery(IQueryableBase queryable)
         {
-            return ApplyQuery((IQueryable<TTarget>) queryable);
+            return queryable;
+            //var abx = typeof(TTarget);
+            //return ApplyQuery((IQueryable<TTarget>) queryable);
         }
 
         //public ExpandQueryExpression<T, TTarget> QueryExpression { get; }
@@ -26,9 +28,9 @@ namespace Iql.Queryable.Operations
             return QueryExpression;
         }
 
-        public IQueryable<TTarget> ApplyQuery(IQueryable<TTarget> queryable)
-        {
-            return queryable;
-        }
+        //public IQueryable<TTarget> ApplyQuery(IQueryable<TTarget> queryable)
+        //{
+        //    return queryable;
+        //}
     }
 }

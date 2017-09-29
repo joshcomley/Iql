@@ -155,13 +155,15 @@ namespace Iql.Queryable
             for (var i = 0; i < entityConfiguration.Relationships.Count; i++)
             {
                 var relationship = entityConfiguration.Relationships[i];
-                if (relationship.SourceProperty.PropertyName == propertyToExpand.PropertyName ||
-                    relationship.TargetProperty.PropertyName == propertyToExpand.PropertyName)
+                var sourceExpand = relationship.SourceProperty.PropertyName == propertyToExpand.PropertyName;
+                var targetExpand = relationship.TargetProperty.PropertyName == propertyToExpand.PropertyName;
+                if (sourceExpand || targetExpand)
                 {
                     var detail = new ExpandDetail(
                         dataContext.AsDbSetByType(relationship.SourceType),
                         dataContext.AsDbSetByType(relationship.TargetType),
-                        relationship);
+                        relationship,
+                        targetExpand);
                     // We have our relationship
                     operation.ExpandDetails.Add(detail);
                     if (depth == 0)

@@ -30,9 +30,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestBed", "TestBed", "{3F30
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.TestBed", "TestBed\Iql.TestBed\Iql.TestBed.csproj", "{E425D94B-A515-44B0-A04C-2A4428AFAB93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.TestBed.DotNet.ConsoleApp", "TestBed\Iql.TestBed.DotNet.ConsoleApp\Iql.TestBed.DotNet.ConsoleApp.csproj", "{7196BAE3-E878-4D86-9123-256492FE8A56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.TestBed.DotNet.ConsoleApp", "TestBed\Iql.TestBed.DotNet.ConsoleApp\Iql.TestBed.DotNet.ConsoleApp.csproj", "{7196BAE3-E878-4D86-9123-256492FE8A56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.TestBed.DotNet", "TestBed\Iql.TestBed.DotNet\Iql.TestBed.DotNet.csproj", "{04974B90-0337-493D-A602-D28A7BD4DBD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.TestBed.DotNet", "TestBed\Iql.TestBed.DotNet\Iql.TestBed.DotNet.csproj", "{04974B90-0337-493D-A602-D28A7BD4DBD7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.ReferenceApp.ConsoleApp", "Core\EntityFramework.ReferenceApp.ConsoleApp\EntityFramework.ReferenceApp.ConsoleApp.csproj", "{88DAE930-80C8-4474-A631-896C750403D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{04974B90-0337-493D-A602-D28A7BD4DBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04974B90-0337-493D-A602-D28A7BD4DBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04974B90-0337-493D-A602-D28A7BD4DBD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88DAE930-80C8-4474-A631-896C750403D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88DAE930-80C8-4474-A631-896C750403D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88DAE930-80C8-4474-A631-896C750403D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88DAE930-80C8-4474-A631-896C750403D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

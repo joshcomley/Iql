@@ -29,10 +29,14 @@ namespace Iql.Queryable
         TQueryable OrderByDescendingQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression,
             EvaluateContext evaluateContext = null);
 
-        TQueryable Expand<TTarget>(Expression<Func<T, TTarget>> property) where TTarget : class;
+        TQueryable Expand<TTarget>(Expression<Func<T, TTarget>> property,
+            Expression<Func<IQueryableProvider<TTarget, IQueryable<TTarget>>, bool>> filter = null)
+            where TTarget : class;
 
         TQueryable ExpandQuery<TTarget>(ExpandQueryExpression<T, TTarget> expression,
-            EvaluateContext evaluateContext = null) where TTarget : class;
+            Expression<Func<IQueryableProvider<TTarget, IQueryable<TTarget>>, bool>> filter = null,
+            EvaluateContext evaluateContext = null)
+            where TTarget : class;
         //TQueryable ExpandOperation<TTarget>(ExpandOperation<T, TTarget> operatioin, EvaluateContext evaluateContext = null) where TTarget : class;
 
         TQueryable Reverse();
