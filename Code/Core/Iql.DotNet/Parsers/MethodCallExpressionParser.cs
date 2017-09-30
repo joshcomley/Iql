@@ -26,6 +26,11 @@ namespace Iql.DotNet.Parsers
                     parent = context.Parse(node.Object, context) as IqlReferenceExpression;
                     return new IqlStringTrimExpression(
                         parent);
+                case nameof(string.Contains):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    return new IqlStringIncludesExpression(
+                        parent,
+                        context.Parse(node.Arguments[0], context) as IqlReferenceExpression);
                 case nameof(string.IsNullOrEmpty):
                 case nameof(string.IsNullOrWhiteSpace):
                     parent = context.Parse(node.Arguments.Single(), context) as IqlReferenceExpression;

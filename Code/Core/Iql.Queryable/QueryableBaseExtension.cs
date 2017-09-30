@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Iql.Parsing.Reduction;
 using Iql.Queryable.Data;
+using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
 using TypeSharp.Extensions;
@@ -141,6 +142,7 @@ namespace Iql.Queryable
             int depth = 0
         )
         {
+            var expandExpression = operation.GetExpression() as IExpandQueryExpression;
             if (expression.Parent.Type != IqlExpressionType.RootReference)
             {
                 typeConstructor = ResolveExpand(
@@ -171,6 +173,14 @@ namespace Iql.Queryable
                     if (depth == 0)
                     {
                         detail.TargetQueryable = operation.ApplyQuery(detail.TargetQueryable);
+                    }
+                    if (targetExpand)
+                    {
+                        detail.SourceQueryable = expandExpression.GetQueryable()(detail.SourceQueryable);
+                    }
+                    else
+                    {
+                        detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
                     }
                     return relationship.TargetType;
                 }

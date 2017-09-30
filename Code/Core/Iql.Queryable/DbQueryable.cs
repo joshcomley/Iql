@@ -259,53 +259,62 @@ namespace Iql.Queryable
             Expression<Func<T, TTarget>> target)
             where TTarget : class
         {
-            return ExpandQuery(new ExpandQueryExpression<T, TTarget>(target));
+            return ExpandQuery(new ExpandQueryExpression<T, TTarget, TTarget>(target));
         }
 
         public DbQueryable<T> ExpandQuery<TTarget>(
-            ExpandQueryExpression<T, TTarget> expression)
+            ExpandQueryExpression<T, TTarget, TTarget> expression)
             where TTarget : class
         {
-            return Then(new ExpandOperation<T, TTarget>(expression));
+            return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
         }
 
         public DbQueryable<T> ExpandSingle<TTarget>(
             Expression<Func<T, TTarget>> target,
-            Expression<Func<DbQueryable<TTarget>, DbQueryable<TTarget>>> filter)
+            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
             where TTarget : class
         {
             return ExpandSingleQuery(
-                new ExpandQueryExpression<T, TTarget>(target), filter);
+                new ExpandQueryExpression<T, TTarget, TTarget>(
+                    target,
+                    q => filter((DbQueryable<TTarget>)q)
+                    ));
         }
 
         public DbQueryable<T> ExpandSingleQuery<TTarget>(
-            ExpandQueryExpression<T, TTarget> expression,
-            Expression<Func<DbQueryable<TTarget>, DbQueryable<TTarget>>> filter)
+            ExpandQueryExpression<T, TTarget, TTarget> expression)
             where TTarget : class
         {
-            return Then(new ExpandOperation<T, TTarget>(expression));
+            return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
         }
 
         public DbQueryable<T> ExpandCollection<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target,
-            Expression<Func<DbQueryable<TTarget>, DbQueryable<TTarget>>> filter)
+            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
             where TTarget : class
         {
             return ExpandCollectionQuery(
-                new ExpandQueryExpression<T, IEnumerable<TTarget>>(target), filter);
+                new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(
+                    target,
+                    q => filter((DbQueryable<TTarget>)q)
+                    ));
         }
 
         public DbQueryable<T> ExpandCollectionQuery<TTarget>(
-            ExpandQueryExpression<T, IEnumerable<TTarget>> expression,
-            Expression<Func<DbQueryable<TTarget>, DbQueryable<TTarget>>> filter)
+            ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
             where TTarget : class
         {
-            return Then(new ExpandOperation<T, IEnumerable<TTarget>>(expression));
+            return Then(new ExpandOperation<T, IEnumerable<TTarget>, TTarget>(expression));
         }
 
         protected override DbQueryable<T> New()
         {
-            var dbQueryable = new DbQueryable<T>(
+            return NewAs<T>();
+        }
+
+        protected DbQueryable<TEntity> NewAs<TEntity>() where TEntity : class
+        {
+            var dbQueryable = new DbQueryable<TEntity>(
                 Configuration,
                 DataStoreGetter,
                 EvaluateContext,

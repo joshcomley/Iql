@@ -4,11 +4,13 @@ using Iql.Parsing;
 
 namespace Iql.Queryable.Expressions.QueryExpressions
 {
-    public class ExpandQueryExpression<T, TTarget> : ExpressionQueryExpression<T, TTarget> where TTarget : class
+    public class ExpandQueryExpression<T, TTarget, TTargetElement> 
+        : ExpressionQueryExpression<T, TTarget>, IExpandQueryExpression
+        where TTarget : class
     {
         public ExpandQueryExpression(
             Expression<Func<T, TTarget>> expression,
-            Func<IQueryable<TTarget>> queryable = null
+            Func<IQueryable<TTargetElement>, IQueryable<TTargetElement>> queryable = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -22,6 +24,20 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             Queryable = queryable;
         }
 
-        public Func<IQueryable<TTarget>> Queryable { get; set; }
+        public Func<IQueryable<TTargetElement>, IQueryable<TTargetElement>> Queryable { get; set; }
+
+        public Func<IQueryableBase, IQueryableBase> GetQueryable()
+        {
+            if (Queryable == null)
+            {
+                return q => q;
+            }
+            return q => Queryable((IQueryable<TTargetElement>) q);
+        }
+    }
+
+    public interface IExpandQueryExpression
+    {
+        Func<IQueryableBase, IQueryableBase> GetQueryable();
     }
 }

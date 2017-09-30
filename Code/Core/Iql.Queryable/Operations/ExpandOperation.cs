@@ -3,11 +3,11 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations
 {
-    public class ExpandOperation<T, TTarget>
-        : ExpressionQueryOperation<IqlPropertyExpression, ExpandQueryExpression<T, TTarget>>, IExpandOperation
+    public class ExpandOperation<T, TTarget, TTargetElement>
+        : ExpressionQueryOperation<IqlPropertyExpression, ExpandQueryExpression<T, TTarget, TTargetElement>>, IExpandOperation
         where TTarget : class
     {
-        public ExpandOperation(ExpandQueryExpression<T, TTarget> queryExpression = null)
+        public ExpandOperation(ExpandQueryExpression<T, TTarget, TTargetElement> queryExpression = null)
         {
             QueryExpression = queryExpression;
         }

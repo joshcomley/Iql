@@ -16,7 +16,7 @@ namespace Iql.TestBed
             var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
                 .ExpandCollection(
                     p => p.People,
-                    p => p.Where(person => person.Title.Contains("a")).Expand(p2 => p2.Type)
+                    p => p.Where(person => person.Title.Contains("a"))
                     )
                 .ToListWithResponse();
             foreach (var item in dataResult.Data)

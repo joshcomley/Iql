@@ -78,11 +78,18 @@ namespace Iql.OData.Queryable
                 expandOperations += nested;
             }
             //        if (index === expand.ExpandDetails.Count - 1 && expand.queryExpression.queryable) {
-            expandOperations += detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery();
+            expandOperations +=
+                detail.IsTarget
+                    ? detail.SourceQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery()
+                    : detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery();
             //        }
             expandOperations = expandOperations.Trim();
             if (!string.IsNullOrWhiteSpace(expandOperations))
             {
+                if (expandOperations.StartsWith("?"))
+                {
+                    expandOperations = expandOperations.Substring(1);
+                }
                 expandProperty += "(" + expandOperations + ")";
             }
             return expandProperty;
