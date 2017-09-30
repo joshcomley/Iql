@@ -8,9 +8,15 @@ namespace Iql.Queryable.Expressions.QueryExpressions
     {
         public BinaryQueryExpression(
             QueryExpressionType type,
+#if TypeScript
             EvaluateContext evaluateContext,
+#endif
             QueryExpression left,
-            QueryExpression[] right) : base(type, evaluateContext)
+            QueryExpression[] right) : base(type
+#if TypeScript
+            evaluateContext
+#endif
+                )
         {
             Left = left;
             Right = right.ToList();

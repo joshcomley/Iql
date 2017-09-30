@@ -11,8 +11,11 @@ namespace Iql.DotNet
             var lambdaExpression = whereQueryExpression.GetExpression();
             return new ExpressionResult<IqlExpression>(
                 ExpressionToIqlExpressionParser<TEntity>.Parse(
-                    lambdaExpression,
-                    filter.EvaluateContext)
+                    lambdaExpression
+#if TypeScript
+                    , filter.EvaluateContext
+#endif
+                    )
             );
         }
     }

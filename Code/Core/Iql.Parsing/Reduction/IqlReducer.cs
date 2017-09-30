@@ -6,13 +6,21 @@ namespace Iql.Parsing.Reduction
     {
         private readonly IqlReducerRegistryBase _registry;
 
-        public IqlReducer(EvaluateContext evaluateContext = null, IqlReducerRegistryBase registry = null)
+        public IqlReducer(
+#if TypeScript
+            EvaluateContext evaluateContext = null, 
+#endif
+            IqlReducerRegistryBase registry = null)
         {
+#if TypeScript
             EvaluateContext = evaluateContext;
+#endif
             _registry = registry ?? new IqlReducerRegistry();
         }
 
+#if TypeScript
         public EvaluateContext EvaluateContext { get; }
+#endif
 
         public T EvaluateAs<T>(IqlExpression expression)
         {

@@ -12,6 +12,7 @@ namespace Iql.Parsing.Reduction.Reducers
             //}
             object value = expression.Value;
             var type = expression.ReturnType;
+#if TypeScript
             if (reducer.EvaluateContext != null)
             {
                 value = reducer.EvaluateContext.Evaluate(expression.VariableName);
@@ -20,6 +21,7 @@ namespace Iql.Parsing.Reduction.Reducers
                     type = value.GetType().ToIqlType();
                 }
             }
+#endif
             return new IqlLiteralExpression(value, type);
             //return expression.Value || reducer.evaluate(expression.VariableName);
         }

@@ -8,9 +8,16 @@ namespace Iql.Queryable.Expressions.QueryExpressions
     {
         public ExpandQueryExpression(
             Expression<Func<T, TTarget>> expression,
-            Func<IQueryable<TTarget>> queryable = null,
-            EvaluateContext evaluateContext = null)
-            : base(expression, QueryExpressionType.NonBinary, evaluateContext)
+            Func<IQueryable<TTarget>> queryable = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+            : base(expression, QueryExpressionType.NonBinary
+#if TypeScript
+                  evaluateContext
+#endif
+                  )
         {
             Queryable = queryable;
         }

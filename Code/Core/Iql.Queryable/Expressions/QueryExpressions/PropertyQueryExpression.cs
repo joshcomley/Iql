@@ -10,9 +10,15 @@ namespace Iql.Queryable.Expressions.QueryExpressions
         public static string PropertyQueryExpressionGuidKey = "301e2db4-0132-422d-82cb-e7ce9ac95717";
 
         public PropertyQueryExpression(
-            Expression<Func<T, TProperty>> expression,
-            EvaluateContext evaluateContext = null
-        ) : base(expression, QueryExpressionType.NonBinary, evaluateContext)
+            Expression<Func<T, TProperty>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        ) : base(expression, QueryExpressionType.NonBinary
+#if TypeScript
+            evaluateContext
+#endif
+            )
         {
         }
 

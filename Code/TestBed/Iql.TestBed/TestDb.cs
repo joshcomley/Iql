@@ -13,7 +13,12 @@ namespace Iql.TestBed
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
             var db = new AppDbContext();
-            var dataResult = await db.PersonTypes.OrderBy(p => p.Title).Expand(p => p.People).ToListWithResponse();
+            var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
+                .ExpandCollection(
+                    p => p.People,
+                    p => p.Where(person => person.Title.Contains("a")).Expand(p2 => p2.Type)
+                    )
+                .ToListWithResponse();
             foreach (var item in dataResult.Data)
             {
                 Console.WriteLine($"- {item.Title}");

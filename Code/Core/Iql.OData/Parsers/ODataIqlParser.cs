@@ -10,7 +10,11 @@ namespace Iql.OData.Parsers
             var adapter = new ODataIqlExpressionAdapter();
             var parser = new ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter>(adapter);
             parser.IsFilter = true;
-            var javascriptExpression = parser.Parse(iql, evaluateContext);
+            var javascriptExpression = parser.Parse(iql
+#if TypeScript
+                , evaluateContext
+#endif
+                );
             return javascriptExpression;
             //;
             //var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression);

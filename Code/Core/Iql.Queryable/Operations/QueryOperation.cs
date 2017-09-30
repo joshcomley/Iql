@@ -8,8 +8,9 @@ namespace Iql.Queryable.Operations
         private static readonly string GuidKey = "cae13e2b-9580-4050-b956-ee38eb5c2c42";
         private string Guid { get; } = GuidKey;
 
+#if TypeScript
         public EvaluateContext EvaluateContext { get; set; }
-
+#endif
         public static bool IsQueryOperation(object obj)
         {
             return obj.HasPropertyValue(nameof(Guid), GuidKey);

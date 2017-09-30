@@ -7,10 +7,11 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public abstract class Queryable<T, TQueryable> : IQueryableProvider<T, TQueryable> where T : class
+    public abstract class Queryable<T, TQueryable> : IQueryableProvider<T, TQueryable> 
+        where T : class
         where TQueryable : IQueryable<T>
     {
-        public Queryable(EvaluateContext evaluateContext = null)
+        protected Queryable(EvaluateContext evaluateContext = null)
         {
             EvaluateContext = evaluateContext;
             ItemType = typeof(T);
@@ -21,64 +22,81 @@ namespace Iql.Queryable
 
         public List<IQueryOperation> Operations { get; }
 
-        public TQueryable Expand<TTarget>(
-            Expression<Func<T, TTarget>> property,
-            Expression<Func<IQueryableProvider<TTarget, IQueryable<TTarget>>, bool>> filter = null)
-            where TTarget : class
-        {
-            return ExpandQuery(new ExpandQueryExpression<T, TTarget>(
-                property));
-        }
-
-        public TQueryable ExpandQuery<TTarget>(ExpandQueryExpression<T, TTarget> expression,
-            Expression<Func<IQueryableProvider<TTarget, IQueryable<TTarget>>, bool>> filter = null,
-            EvaluateContext evaluateContext = null) 
-            where TTarget : class 
-        {
-            return Then(new ExpandOperation<T, TTarget>(expression));
-        }
-
         public TQueryable Reverse()
         {
             return Then(new ReverseOperation());
         }
 
-        public TQueryable Where(Expression<Func<T, bool>> expression, EvaluateContext evaluateContext = null)
+        public TQueryable Where(Expression<Func<T, bool>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var queryExpression = new WhereQueryExpression<T>(expression);
-            return WhereQuery(queryExpression, evaluateContext);
+            return WhereQuery(queryExpression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+                );
         }
 
-        public TQueryable WhereQuery(QueryExpression expression, EvaluateContext evaluateContext = null)
+        public TQueryable WhereQuery(QueryExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
+#if TypeScript
             expression.EvaluateContext =
                 expression.EvaluateContext ?? evaluateContext ?? EvaluateContext;
+#endif
             return Then(new WhereOperation(expression));
         }
         
-        public TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression,
-            EvaluateContext evaluateContext = null)
+        public TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             return OrderByQuery(
                 new PropertyQueryExpression<T, TProperty>(
-                    expression, evaluateContext ?? EvaluateContext));
+                    expression
+#if TypeScript
+                    , evaluateContext ?? EvaluateContext
+#endif
+                    ));
         }
 
-        public TQueryable OrderByQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression,
-            EvaluateContext evaluateContext = null)
+        public TQueryable OrderByQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             return Then(new OrderByOperation(expression));
         }
 
-        public TQueryable OrderByDescending<TProperty>(Expression<Func<T, TProperty>> expression,
-            EvaluateContext evaluateContext = null)
+        public TQueryable OrderByDescending<TProperty>(Expression<Func<T, TProperty>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             return Then(new OrderByOperation(
-                new PropertyQueryExpression<T, TProperty>(expression, evaluateContext ?? EvaluateContext), true));
+                new PropertyQueryExpression<T, TProperty>(expression
+#if TypeScript
+                , evaluateContext ?? EvaluateContext
+#endif
+                ), true));
         }
 
-        public TQueryable OrderByDescendingQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression,
-            EvaluateContext evaluateContext = null)
+        public TQueryable OrderByDescendingQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             return Then(new OrderByOperation(expression, true));
         }

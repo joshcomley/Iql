@@ -27,7 +27,7 @@ namespace Iql.TestBed.DotNet
             //Console.WriteLine(xml);
 
             var iql = IqlSerializer.DeserializeFromXml(xml);
-            var javaScript = JavaScriptIqlParser.GetJavaScript(iql, null);
+            var javaScript = JavaScriptIqlParser.GetJavaScript(iql);
             var odata = ODataIqlParser.GetOData(iql, null);
 
             await Print("Expression resolved", iql.GetType().Name);

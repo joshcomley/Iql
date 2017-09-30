@@ -9,8 +9,15 @@ namespace Iql.Queryable.Expressions
     {
         public ExpressionQueryExpression(
             Expression<Func<T, TResult>> expression,
-            QueryExpressionType type,
-            EvaluateContext evaluateContext = null) : base(type, evaluateContext)
+            QueryExpressionType type
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            ) : base(type
+#if TypeScript
+                  evaluateContext
+#endif
+                )
         {
             Expression = expression;
         }

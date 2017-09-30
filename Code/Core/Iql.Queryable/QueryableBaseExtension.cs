@@ -75,10 +75,12 @@ namespace Iql.Queryable
             var newQueryData = NewQueryData(adapter);
             ApplyOperation(operation, dataContext, newQueryData, applicator);
             return new IqlReducer(
+#if TypeScript
                     operation.EvaluateContext ?? Queryable.EvaluateContext
-                    // TODO: Add reducer registry
+#endif
+                // TODO: Add reducer registry
 
-                    //queryOperation.getExpression().evaluateContext || this.evaluateContext
+                //queryOperation.getExpression().evaluateContext || this.evaluateContext
                 )
                 .ReduceStaticContent(operation.Expression);
         }

@@ -18,7 +18,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
 
         public JavaScriptExpressionNodeParseContext(
             JavaScriptExpressionToIqlConverter converter,
+#if TypeScript
             EvaluateContext evaluateContext,
+#endif
             TEntity rootEntity,
             string rootEntityVariableName
         )
@@ -26,19 +28,29 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
             Converter = converter;
             Adapter = new JavaScriptQueryExpressionAdapterIql<TEntity>();
             Data = Adapter.NewData();
+#if TypeScript
             EvaluateContext = evaluateContext;
+#endif
             RootEntity = rootEntity;
             RootEntityVariableName = rootEntityVariableName;
-            Reducer = new IqlReducer(evaluateContext);
+            Reducer = new IqlReducer(
+#if TypeScript
+                evaluateContext
+#endif
+                );
             var ctx = this;
             Evaluate = key =>
             {
+#if TypeScript
                 if (key == "_this" || key == "this")
                 {
                     return ctx.EvaluateContext.Context;
                 }
                 var result = evaluateContext.Evaluate(key);
                 return result;
+#else
+                return null;
+#endif
             };
         }
 

@@ -26,7 +26,11 @@ namespace Iql.OData.Queryable
         {
             return new ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter>(
                     new ODataIqlExpressionAdapter())
-                .Parse(operation.Expression, operation.EvaluateContext);
+                .Parse(operation.Expression
+#if TypeScript
+                , operation.EvaluateContext
+#endif
+                );
         }
 
         // public generateQuery(): ODataQuery<T> {

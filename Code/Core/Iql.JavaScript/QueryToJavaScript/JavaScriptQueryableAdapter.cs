@@ -42,13 +42,17 @@ namespace Iql.JavaScript.QueryToJavaScript
             var adapter = new JavaScriptIqlExpressionAdapter(
                 //"___" + 
                 rootVariableName ?? "q"
-                // + new Date().getTime()
+            // + new Date().getTime()
             );
             var parser = new ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter>(
                 adapter);
             parser.IsFilter = isFilter;
             var expression = new JavaScriptExpression(adapter.RootVariableName,
-                parser.Parse(operation.Expression, operation.EvaluateContext));
+                parser.Parse(operation.Expression
+#if TypeScript
+, operation.EvaluateContext
+#endif
+                ));
             return expression;
         }
     }

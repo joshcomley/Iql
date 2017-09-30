@@ -40,7 +40,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
 
             var instance =
                 new JavaScriptExpressionNodeParseContext<TEntity, JavaScriptExpressionNode>(
-                    this, expression.EvaluateContext ?? filter.EvaluateContext, null,
+                    this,
+#if TypeScript
+                    expression.EvaluateContext ?? filter.EvaluateContext, 
+#endif
+                    null,
                     body.ParameterNames.FirstOrDefault() ?? "");
             var expressionResult = new ExpressionResult<IqlExpression>();
             var jsp = new JavaScriptExpressionStringToExpressionTreeParser(body.CleanedCode);

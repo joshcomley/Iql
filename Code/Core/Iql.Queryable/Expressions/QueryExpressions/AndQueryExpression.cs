@@ -5,10 +5,16 @@ namespace Iql.Queryable.Expressions.QueryExpressions
     public class AndQueryExpression : BinaryQueryExpression
     {
         public AndQueryExpression(
+#if TypeScript
             EvaluateContext evaluateContext,
+#endif
             QueryExpression left,
             params QueryExpression[] right)
-            : base(QueryExpressionType.And, evaluateContext, left, right)
+            : base(QueryExpressionType.And,
+#if TypeScript
+                , evaluateContext
+#endif
+                  left, right)
         {
         }
     }

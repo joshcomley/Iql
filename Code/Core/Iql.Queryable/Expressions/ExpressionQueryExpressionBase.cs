@@ -6,10 +6,17 @@ namespace Iql.Queryable.Expressions
 {
     public abstract class ExpressionQueryExpressionBase : QueryExpression
     {
-        public ExpressionQueryExpressionBase(
-            QueryExpressionType type,
-            EvaluateContext evaluateContext = null)
-            : base(type, evaluateContext)
+        protected ExpressionQueryExpressionBase(
+            QueryExpressionType type
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+            : base(type
+#if TypeScript
+                  evaluateContext
+#endif
+                  )
         {
         }
 

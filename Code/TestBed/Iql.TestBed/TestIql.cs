@@ -27,24 +27,34 @@ namespace Iql.TestBed
                 person =>
                     //person.Name.Length > 5
                         person.Title;
-            var propertyIql = ExpressionToIqlExpressionParser<Person>.Parse(propertyExpression, null);
+            var propertyIql = ExpressionToIqlExpressionParser<Person>.Parse(
+                propertyExpression
+#if TypeScript
+                , null
+#endif
+                );
             Expression<Func<Person, bool>> validationExpression =
                     person =>
                         //person.Name.Length > 5
                             person.Title == x && person.TypeId > 7 // ||
                 //person.Age > (5 * y)
                 ;
-            var iql = ExpressionToIqlExpressionParser<Person>.Parse(validationExpression, null);
+            var iql = ExpressionToIqlExpressionParser<Person>.Parse(
+                validationExpression
+#if TypeScript
+                , null
+#endif
+                );
             var parser =
                 new ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter>(new ODataIqlExpressionAdapter());
-            var odata = parser.Parse(iql, null);
+            var odata = parser.Parse(iql);
             Console.WriteLine("OData:");
             Console.WriteLine(odata);
             Console.WriteLine();
             //var iql = ExpressionToIqlExpressionParser<Person>.Parse(validationExpression);
             //var iql = ExpressionToIqlExpressionParser<Person>.ParseToXml(validationExpression);
             //var iqlExp = Iql.Serialization.IqlSerializer.DeserializeFromXml(iql);
-            var exp = JavaScriptIqlParser.GetJavaScript(iql, null);
+            var exp = JavaScriptIqlParser.GetJavaScript(iql);
             Console.WriteLine("JavaScript:");
             Console.WriteLine(exp.Expression);
             Console.WriteLine();

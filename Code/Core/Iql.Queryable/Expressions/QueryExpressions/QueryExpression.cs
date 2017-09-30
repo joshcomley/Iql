@@ -14,17 +14,23 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 
         // In JavaScript any variable can be "truthy" so allow a return of any
         protected QueryExpression(
-            QueryExpressionType type,
-            EvaluateContext evaluateContext = null
+            QueryExpressionType type
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
         )
         {
+#if TypeScript
             EvaluateContext = evaluateContext;
+#endif
             Type = type;
         }
 
         public QueryExpressionType Type { get; set; }
 
+#if TypeScript
         public EvaluateContext EvaluateContext { get; set; }
+#endif
 
         public static bool IsQueryExpression(object obj)
         {
@@ -81,23 +87,29 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                         expressionResolved = new WhereQueryExpression<TEntity>(
                             entity =>
                                 lastExpression.Expression.Compile()(entity) &&
-                                nextExpression.Expression.Compile()(entity),
-                            new EvaluateContext
+                                nextExpression.Expression.Compile()(entity)
+#if TypeScript
+                            , new EvaluateContext
                             {
                                 Context = this,
                                 Evaluate = n => Evaluator.Eval(n)
-                            });
+                            }
+#endif
+                                );
                         break;
                     case QueryExpressionType.Or:
                         expressionResolved = new WhereQueryExpression<TEntity>(
                             entity =>
                                 lastExpression.Expression.Compile()(entity) ||
-                                nextExpression.Expression.Compile()(entity),
-                            new EvaluateContext
+                                nextExpression.Expression.Compile()(entity)
+#if TypeScript
+                            , new EvaluateContext
                             {
                                 Context = this,
                                 Evaluate = n => Evaluator.Eval(n)
-                            });
+                            }
+#endif
+                            );
                         break;
                 }
             }

@@ -18,7 +18,11 @@ namespace Iql.Parsing
 
         public TQueryAdapter Adapter { get; set; }
 
-        public string Parse(IqlExpression expression, EvaluateContext evaluateContext)
+        public string Parse(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+            )
         {
             while (true)
             {
@@ -36,7 +40,11 @@ namespace Iql.Parsing
                 {
                     var aggregate = aggregateExpression;
                     var str1 = "";
-                    aggregate.Expressions.ForEach(element => { str1 += Parse(element, evaluateContext); });
+                    aggregate.Expressions.ForEach(element => { str1 += Parse(element
+#if TypeScript
+                        , evaluateContext
+#endif
+                        ); });
                     return str1;
                 }
                 var oldExpression = Expression;
@@ -48,7 +56,11 @@ namespace Iql.Parsing
                 }
                 var result = parser.ToQueryString(expression, this);
                 // Reduce result
-                var reducer = new IqlReducer(evaluateContext);
+                var reducer = new IqlReducer(
+#if TypeScript
+                            evaluateContext
+#endif
+                    );
                 result = reducer.ReduceStaticContent(result);
 
                 if (result != null)
