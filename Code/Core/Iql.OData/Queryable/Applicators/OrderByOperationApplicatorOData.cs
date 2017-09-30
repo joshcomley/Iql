@@ -13,7 +13,7 @@ namespace Iql.OData.Queryable.Applicators
             {
                 orderBy = orderBy + " desc";
             }
-            context.Data.OrderBys.Add(orderBy);
+            context.Data.AddQueryPart(ODataQueryPart.OrderBy, orderBy);
         }
     }
 }

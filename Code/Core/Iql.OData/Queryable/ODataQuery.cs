@@ -10,12 +10,33 @@ namespace Iql.OData.Queryable
 {
     public class ODataQuery<T> : QueryResult<T>, IODataQuery
     {
+        private Dictionary<ODataQueryPart, List<string>> QueryParts { get; }
+            = new Dictionary<ODataQueryPart, List<string>>();
+
         public ODataQuery(global::Iql.Queryable.IQueryable<T> queryable, IDataContext context)
         {
             Context = context;
         }
 
         public IDataContext Context { get; }
+
+        public void AddQueryPart(ODataQueryPart queryPart, string part)
+        {
+            if (!QueryParts.ContainsKey(queryPart))
+            {
+                QueryParts.Add(queryPart, new List<string>());
+            }
+            QueryParts[queryPart].Add(part);
+        }
+
+        public List<string> GetQueryPart(ODataQueryPart queryPart)
+        {
+            if (QueryParts.ContainsKey(queryPart))
+            {
+                return QueryParts[queryPart];
+            }
+            return new List<string>();
+        }
 
         public string ToODataQuery()
         {
@@ -25,22 +46,19 @@ namespace Iql.OData.Queryable
             {
                 query += "(" + Key + ")";
             }
-            if (Filters.Count > 0)
+            var filters = GetQueryPart(ODataQueryPart.Filter);
+            if (filters.Count > 0)
             {
-                queryParts.Add("$filter=" + string.Join(" and ", Filters));
+                queryParts.Add("$filter=" + string.Join(" and ", filters));
             }
-            if (OrderBys.Count > 0)
+            var orderBys = GetQueryPart(ODataQueryPart.OrderBy);
+            if (orderBys.Count > 0)
             {
-                queryParts.Add("$orderby=" + string.Join(",", OrderBys));
+                queryParts.Add("$orderby=" + string.Join(",", orderBys));
             }
-            if (Expands.Count > 0)
+            var expands = GetQueryPart(ODataQueryPart.Expand);
+            if (expands.Count > 0)
             {
-                var expands = new List<string>();
-                Expands.ForEach(expand =>
-                {
-                    //expands.Add(ODataQueryableAdapter.GetExpression(element));
-                    expands.Add(ToExpandQuery(expand, 0));
-                });
                 queryParts.Add("$expand=" + string.Join(",", expands));
             }
             if (queryParts.Any())
@@ -58,42 +76,6 @@ namespace Iql.OData.Queryable
 
         public bool HasKey { get; set; }
         public object Key { get; set; }
-        public List<string> Filters { get; set; } = new List<string>();
-        public List<string> OrderBys { get; set; } = new List<string>();
-        public List<IExpandOperation> Expands { get; set; } = new List<IExpandOperation>();
-
-        private string ToExpandQuery(IExpandOperation expand, int index)
-        {
-            if (index >= expand.ExpandDetails.Count)
-            {
-                return "";
-            }
-            var detail = expand.ExpandDetails[index];
-            var expandProperty = detail.GetExpandProperty().PropertyName;
-            var expandOperations = "";
-            var nested = ToExpandQuery(expand, index + 1);
-            if (!string.IsNullOrWhiteSpace(nested))
-            {
-                expandOperations += "$expand=";
-                expandOperations += nested;
-            }
-            //        if (index === expand.ExpandDetails.Count - 1 && expand.queryExpression.queryable) {
-            expandOperations +=
-                detail.IsTarget
-                    ? detail.SourceQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery()
-                    : detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), Context).ToODataQuery();
-            //        }
-            expandOperations = expandOperations.Trim();
-            if (!string.IsNullOrWhiteSpace(expandOperations))
-            {
-                if (expandOperations.StartsWith("?"))
-                {
-                    expandOperations = expandOperations.Substring(1);
-                }
-                expandProperty += "(" + expandOperations + ")";
-            }
-            return expandProperty;
-        }
 
         public override List<T> ToList()
         {

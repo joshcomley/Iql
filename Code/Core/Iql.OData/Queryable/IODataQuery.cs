@@ -8,9 +8,14 @@ namespace Iql.OData.Queryable
     {
         bool HasKey { get; set; }
         object Key { get; set; }
-        List<string> Filters { get; set; }
-        List<string> OrderBys { get; set; }
-        List<IExpandOperation> Expands { get; set; }
+        void AddQueryPart(ODataQueryPart queryPart, string part);
         string ToODataQuery();
+    }
+
+    public enum ODataQueryPart
+    {
+        Filter,
+        Expand,
+        OrderBy
     }
 }

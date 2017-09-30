@@ -3,7 +3,7 @@ using Iql.Queryable;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    internal class ExpandEntityType
+    public class ExpandEntityType
     {
         public ExpandEntityType(Type queryableType, IQueryableBase queryable = null)
         {
