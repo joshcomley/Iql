@@ -103,12 +103,12 @@ namespace Iql.Queryable
 
         public TQueryable Skip(int skip)
         {
-            throw new NotImplementedException();
+            return Then(new SkipOperation(skip));
         }
 
         public TQueryable Take(int take)
         {
-            throw new NotImplementedException();
+            return Then(new TakeOperation(take));
         }
 
         public virtual TQueryable Then(IQueryOperation operation)

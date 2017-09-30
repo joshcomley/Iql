@@ -8,7 +8,7 @@ namespace Iql.OData.Queryable.Applicators
     {
         public override void Apply<TEntity>(IQueryOperationContext<TakeOperation, TEntity, IODataQuery> context)
         {
-            throw new NotImplementedException();
+            context.Data.AddQueryPart(ODataQueryPart.Take, context.Operation.Take.ToString());
         }
     }
 }

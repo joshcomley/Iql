@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Iql.Queryable;
-using Iql.Queryable.Operations;
+﻿using Iql.Queryable;
 
 namespace Iql.OData.Queryable
 {
@@ -9,13 +7,6 @@ namespace Iql.OData.Queryable
         bool HasKey { get; set; }
         object Key { get; set; }
         void AddQueryPart(ODataQueryPart queryPart, string part);
-        string ToODataQuery();
-    }
-
-    public enum ODataQueryPart
-    {
-        Filter,
-        Expand,
-        OrderBy
+        string ToODataQuery(bool isNested = false);
     }
 }

@@ -9,6 +9,7 @@ namespace Iql.OData.Queryable.Applicators
         {
             var expression = ODataQueryableAdapter.GetExpression(context.Operation,
                 context.DataContext.EntityConfigurationContext);
+            context.Data.AddQueryPart(ODataQueryPart.Filter, expression);
         }
     }
 }

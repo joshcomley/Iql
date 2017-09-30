@@ -38,7 +38,7 @@ namespace Iql.OData.Queryable
             return new List<string>();
         }
 
-        public string ToODataQuery()
+        public string ToODataQuery(bool isNested = false)
         {
             var query = "";
             var queryParts = new List<string>();
@@ -61,10 +61,23 @@ namespace Iql.OData.Queryable
             {
                 queryParts.Add("$expand=" + string.Join(",", expands));
             }
+            var skip = GetQueryPart(ODataQueryPart.Skip);
+            if (skip.Count > 0)
+            {
+                queryParts.Add("$skip=" + skip.Last());
+            }
+            var take = GetQueryPart(ODataQueryPart.Take);
+            if (take.Count > 0)
+            {
+                queryParts.Add("$top=" + take.Last());
+            }
             if (queryParts.Any())
             {
-                query += "?";
-                query += string.Join("&", queryParts);
+                if (!isNested)
+                {
+                    query += "?";
+                }
+                query += string.Join(isNested ? ";" : "&", queryParts);
             }
             return query;
         }
