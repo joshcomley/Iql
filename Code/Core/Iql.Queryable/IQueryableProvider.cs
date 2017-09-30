@@ -81,6 +81,10 @@ namespace Iql.Queryable
         //    where TTarget : class;
         //TQueryable ExpandOperation<TTarget>(ExpandOperation<T, TTarget> operatioin, EvaluateContext evaluateContext = null) where TTarget : class;
 
+        TQueryable Skip(int skip);
+
+        TQueryable Take(int take);
+
         TQueryable Reverse();
 
         TQueryable Then(IQueryOperation operation);

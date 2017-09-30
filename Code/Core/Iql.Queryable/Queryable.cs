@@ -101,6 +101,16 @@ namespace Iql.Queryable
             return Then(new OrderByOperation(expression, true));
         }
 
+        public TQueryable Skip(int skip)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TQueryable Take(int take)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual TQueryable Then(IQueryOperation operation)
         {
             var queryable = New();
