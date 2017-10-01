@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Reflection;
 
 namespace Iql.Queryable.Data.DataStores
@@ -10,8 +11,13 @@ namespace Iql.Queryable.Data.DataStores
             {
                 foreach (var property in remoteEntity.GetType().GetRuntimeProperties())
                 {
-                    property.SetValue(localEntity,
-                        property.GetValue(remoteEntity));
+                    var localValue = property.GetValue(localEntity);
+                    var isCollection = localValue is IEnumerable && !(localValue is string);
+                    if (Equals(localValue, null) || !isCollection)
+                    {
+                        property.SetValue(localEntity,
+                            property.GetValue(remoteEntity));
+                    }
                 }
             }
         }
