@@ -18,7 +18,6 @@ namespace Iql.DotNet.Http
                 {
                     httpClient.DefaultRequestHeaders.Add(header.Name, header.Value);
                 }
-                uri = AppedQueryStringValues(uri, payload.Payload);
             }
             var result = await httpClient.GetAsync(uri);
             var dataString = await result.Content.ReadAsStringAsync();
@@ -50,8 +49,7 @@ namespace Iql.DotNet.Http
             var http = new HttpClient();
             if (payload != null)
             {
-                var json = JsonConvert.SerializeObject(payload.Payload);
-                request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                request.Content = new StringContent(payload.Body);
                 if (payload.Headers != null)
                 {
                     foreach (var header in payload.Headers)

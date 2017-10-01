@@ -75,7 +75,8 @@ namespace Iql.OData.Data
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entitySetUri = ResolveEntitySetUri<TEntity>();
-            var httpResult = await http.Post(entitySetUri, new HttpRequest<TEntity>(operation.Operation.Entity));
+            var json = JsonConvert.SerializeObject(operation.Operation.Entity);
+            var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
             operation.Result.Success = httpResult.Success;
             return operation.Result;
@@ -87,7 +88,8 @@ namespace Iql.OData.Data
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
-            var result = await http.Put(entityUri, new HttpRequest<TEntity>(operation.Operation.Entity));
+            var json = JsonConvert.SerializeObject(operation.Operation.Entity);
+            var result = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = result.Success;
             return operation.Result;

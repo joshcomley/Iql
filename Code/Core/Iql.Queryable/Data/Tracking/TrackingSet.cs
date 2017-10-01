@@ -115,6 +115,7 @@ namespace Iql.Queryable.Data.Tracking
                 var clone = FindClone(entity);
                 if (clone != null)
                 {
+                    var changedProperties = new List<IKeyProperty>();
                     for (var i = 0; i < properties.Count; i++)
                     {
                         var property = properties[i];
@@ -149,8 +150,11 @@ namespace Iql.Queryable.Data.Tracking
                         {
                             continue;
                         }
-                        updates.Add(new UpdateEntityOperation<T>(entity, DataContext));
-                        break;
+                        changedProperties.Add(property);
+                    }
+                    if (changedProperties.Any())
+                    {
+                        updates.Add(new UpdateEntityOperation<T>(entity, DataContext, changedProperties.ToArray()));
                     }
                 }
             });
