@@ -9,9 +9,11 @@ using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Http;
 using Iql.Queryable.Operations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Iql.OData.Data
 {
@@ -82,13 +84,45 @@ namespace Iql.OData.Data
             return operation.Result;
         }
 
+        private class ShouldSerializeContractResolver<TEntity> : DefaultContractResolver where TEntity : class
+        {
+            private List<string> Properties { get; }
+
+            public ShouldSerializeContractResolver(IEnumerable<IKeyProperty> properties, EntityConfiguration<TEntity> entityConfiguration)
+            {
+                Properties = new List<string>();
+                foreach (var property in properties)
+                {
+                    Properties.Add(property.Name);
+                }
+                foreach (var key in entityConfiguration.Key.Properties)
+                {
+                    Properties.Add(key.PropertyName);
+                }
+            }
+
+            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+            {
+                var property = base.CreateProperty(member, memberSerialization);
+                if (Properties.All(propertyName => property.PropertyName != propertyName))
+                {
+                    property.Ignored = true;
+                }
+                return property;
+            }
+        }
+
         public override async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation)
         {
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
-            var json = JsonConvert.SerializeObject(operation.Operation.Entity);
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new ShouldSerializeContractResolver<TEntity>(operation.Operation.ChangedProperties, DataContext.EntityConfigurationContext.GetEntity<TEntity>())
+            };
+            var json = JsonConvert.SerializeObject(operation.Operation.Entity, settings);
             var result = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = result.Success;
