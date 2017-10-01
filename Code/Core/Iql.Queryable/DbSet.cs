@@ -12,7 +12,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbSet<T, TKey> : DbQueryable<T>, IDbSetOperations<T, TKey> where T : class
+    public class DbSet<T, TKey> : DbQueryable<T>, IDbSet, IDbSetOperations<T, TKey> where T : class
     {
         public DbSet(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(
@@ -85,6 +85,11 @@ namespace Iql.Queryable
                 EvaluateContext,
                 DataContext);
             return dbQueryable;
+        }
+
+        public async Task<object> WithKey(object key)
+        {
+            return await WithKey((TKey)key);
         }
     }
 }

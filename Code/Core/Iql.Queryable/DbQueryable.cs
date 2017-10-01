@@ -13,7 +13,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbSet where T : class
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
     {
         public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)

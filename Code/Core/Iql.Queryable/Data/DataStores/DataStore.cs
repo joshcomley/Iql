@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
@@ -8,6 +7,7 @@ using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.DataStores
 {
@@ -145,24 +145,6 @@ namespace Iql.Queryable.Data.DataStores
             return saveChangesResult;
         }
 
-        //protected ObservableData<T> Observable<T>(Action<ObservableData<T>> fn = null)
-        //{
-        //    Subscriber<T> resolver = null;
-        //    ObservableData<T> result = null;
-        //    var observable = new Observable<T>(resolve =>
-        //    {
-        //        resolver = resolve;
-        //        if (result != null && result.DataHasBeenSet())
-        //        {
-        //            resolve.Next(result.GetData());
-        //        }
-        //    });
-        //    observable.Subscribe();
-        //    result = new ObservableData<T>(observable, resolver);
-        //    fn?.Invoke(result);
-        //    return result;
-        //}
-
         protected int FindEntityIndex<TEntity>(
             Type entityType,
             TEntity clone,
@@ -187,20 +169,21 @@ namespace Iql.Queryable.Data.DataStores
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
                     result = await PerformAdd(addEntityOperation);
+                    var localEntity = addEntityOperation.Operation.Entity;
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
-                    if (remoteEntity != null)
-                    {
-                        foreach (var property in remoteEntity.GetType().GetRuntimeProperties())
-                        {
-                            property.SetValue(addEntityOperation.Operation.Entity, 
-                                property.GetValue(remoteEntity));
-                        }
-                    }
+                    ObjectMerger.Merge(localEntity, remoteEntity);
                     GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
                     result = await PerformUpdate(updateEntityOperation);
+                    var identityWhereOperation =
+                        DataContext.ResolveWithKeyOperationFromEntity(updateEntityOperation.Operation
+                            .Entity);
+                    var queryable = DataContext.AsDbSetByType(typeof(TEntity));
+                    // This will trigger a merge in the tracking store
+                    await queryable.WithKey(identityWhereOperation.Key);
+                    //Merge(updateEntityOperation.Operation.Entity, refreshResult);
                     GetTracking().GetSet<TEntity>().Track(updateEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Delete:

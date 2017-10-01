@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Extensions;
+using Iql.Queryable.Data;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
@@ -13,7 +15,25 @@ namespace Iql.Queryable.Extensions
         public static WhereOperation ResolveWithKkeyWhereOperation(this IQueryOperationContextBase context)
         {
             var key = (context.Operation as WithKeyOperation).Key;
-            var configuration = context.DataContext.EntityConfigurationContext.GetEntityByType(context.Queryable.ItemType);
+            var dataContext = context.DataContext;
+            var queryable = context.Queryable;
+            return ResolveIdentityWhereOperation(dataContext, queryable.ItemType, key);
+        }
+
+        public static WithKeyOperation ResolveWithKeyOperationFromEntity<TEntity>(this IDataContext dataContext,
+            TEntity entity) where TEntity : class
+        {
+            var configuration = dataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity));
+            var keyDefinition = configuration.Key;
+            var key = entity.GetPropertyValue(keyDefinition.Properties.First().PropertyName);
+            var withKeyOperation = new WithKeyOperation(key);
+            return withKeyOperation;
+        }
+
+        public static WhereOperation ResolveIdentityWhereOperation(this IDataContext dataContext, Type itemType,
+            object key)
+        {
+            var configuration = dataContext.EntityConfigurationContext.GetEntityByType(itemType);
             var keyDefinition = configuration.Key;
             var root = new IqlRootReferenceExpression("entity", null);
             var checks = new List<IqlExpression>();
@@ -21,7 +41,7 @@ namespace Iql.Queryable.Extensions
             {
                 var propertyExpression = new IqlPropertyExpression(
                     property.PropertyName,
-                    context.Queryable.ItemType.Name,
+                    itemType.Name,
                     key.GetType().ToIqlType());
                 propertyExpression.Parent = root;
                 var check = new IqlIsEqualToExpression(
@@ -36,11 +56,11 @@ namespace Iql.Queryable.Extensions
                 rootOperation = new IqlAndExpression(rootOperation, checks[i]);
             }
             var operation = new WhereOperation();
-            var queryExpressinType = typeof(WhereQueryExpression<>).MakeGenericType(context.Queryable.ItemType);
+            var queryExpressinType = typeof(WhereQueryExpression<>).MakeGenericType(itemType);
             var queryExpression = (ExpressionQueryExpressionBase)Activator.CreateInstance(queryExpressinType, new object[]
             {
                 null,
-                context.DataContext.EvaluateContext
+                dataContext.EvaluateContext
 #if TypeScript
                 , context.Queryable.ItemType
 #endif

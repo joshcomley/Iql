@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Tracking
@@ -68,9 +69,7 @@ namespace Iql.Queryable.Data.Tracking
         }
         public void Merge(List<T> data)
         {
-            var newIndex = 0;
             for (var i = 0; i < data.Count; i++)
-            //data.ForEach(element =>
             {
                 var element = data[i];
                 if (element == null)
@@ -85,22 +84,15 @@ namespace Iql.Queryable.Data.Tracking
                 if (index != -1)
                 {
                     var currentEntity = Set[index];
-                    var cloneIndex = Entity.FindIndexOfEntityInSetByKey(
-                        DataContext,
-                        element,
-                        Clone);
-                    var new1 = element;
-                    ResolveCollisions(currentEntity, Clone[cloneIndex], new1);
-                    data[newIndex] = currentEntity;
-                    Clone[cloneIndex] = currentEntity.Clone();
+                    Untrack(element);
+                    ObjectMerger.Merge(currentEntity, element);
+                    Track(currentEntity);
                 }
-                Track(element);
-                newIndex++;
+                else
+                {
+                    Track(element);
+                }
             }
-        }
-
-        private void ResolveCollisions<TEntity>(TEntity currentEntity, TEntity entityAtLastFetch, TEntity newEntity)
-        {
         }
 
         public List<UpdateEntityOperation<T>> GetChanges()
