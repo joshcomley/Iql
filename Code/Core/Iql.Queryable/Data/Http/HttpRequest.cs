@@ -2,7 +2,11 @@ namespace Iql.Queryable.Data.Http
 {
     public class HttpRequest<T> : HttpRequestBase
     {
-        public new T Payload { get; set; }
+        public T Payload
+        {
+            get => (T)((IHttpRequest)this).Payload;
+            set => ((IHttpRequest) this).Payload = value;
+        }
 
         public HttpRequest(T payload = default(T))
         {

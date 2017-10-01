@@ -33,6 +33,28 @@ namespace Iql.TestBed
             var paulina = await db.People.Expand(p => p.Type).WithKey(2);
             Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
+            Console.WriteLine("Inserting Marta with Type ID:");
+            var marta = new Person();
+            marta.TypeId = 1;
+            marta.Title = "Marta";
+            db.People.Add(marta);
+            await db.SaveChanges();
+            Console.WriteLine("Marta's ID: " + marta.Id);
+
+            Console.WriteLine("Fetching Marta:");
+            var martaDb = await new AppDbContext().People.WithKey(marta.Id);
+            Console.WriteLine("Fetched Marta ID: " + martaDb.Id);
+
+            Console.WriteLine("Updating Marta:");
+            marta.Description = "I've been updated";
+            await db.SaveChanges();
+            var martaDbAfterUpdate = await new AppDbContext().People.WithKey(marta.Id);
+
+            Console.WriteLine("Deleting Marta:");
+            db.People.Delete(marta);
+            await db.SaveChanges();
+            var martaDbAfterDelete = await new AppDbContext().People.WithKey(marta.Id);
+            Console.WriteLine("Fetched Marta after delete: " + (martaDbAfterDelete != null ? martaDbAfterDelete.Id.ToString() : "Not found"));
             //cara.Data[0].Name = "Changed!";
             //await db.SaveChanges();
             //db.People.Add(new Person

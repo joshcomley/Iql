@@ -52,6 +52,7 @@ namespace Iql.TestBed
             builder.DefineEntity<Person>()
                 .HasKey(p => p.Id)
                 .DefineProperty(p => p.Title)
+                .DefineProperty(p => p.Description)
                 .DefineProperty(p => p.TypeId)
                 .HasOne(p => p.Type)
                 .WithMany(p => p.People)
