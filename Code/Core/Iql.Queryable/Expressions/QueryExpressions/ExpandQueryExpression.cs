@@ -35,9 +35,4 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             return q => Queryable((IQueryable<TTargetElement>) q);
         }
     }
-
-    public interface IExpandQueryExpression
-    {
-        Func<IQueryableBase, IQueryableBase> GetQueryable();
-    }
 }

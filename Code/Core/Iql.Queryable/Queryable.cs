@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
@@ -21,6 +22,7 @@ namespace Iql.Queryable
         public EvaluateContext EvaluateContext { get; set; }
 
         public List<IQueryOperation> Operations { get; }
+        public abstract Task<object> WithKey(object key);
 
         public TQueryable Reverse()
         {

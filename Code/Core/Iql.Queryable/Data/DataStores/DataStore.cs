@@ -7,7 +7,9 @@ using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.DataStores
 {
@@ -83,6 +85,18 @@ namespace Iql.Queryable.Data.DataStores
         public virtual async Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class
         {
+            var getConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
+            if (getConfiguration != null)
+            {
+                var queryableGetter = getConfiguration.GetQueryable<TEntity>();
+                if (queryableGetter != null)
+                {
+                    var queryable = queryableGetter() as IQueryable<TEntity>;
+                    queryable.Operations.AddRange(operation.Queryable.Operations);
+                    operation.Queryable = queryable;
+                }
+            }
+
             var result = new GetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
@@ -171,7 +185,7 @@ namespace Iql.Queryable.Data.DataStores
                     result = await PerformAdd(addEntityOperation);
                     var localEntity = addEntityOperation.Operation.Entity;
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
-                    ObjectMerger.Merge(localEntity, remoteEntity);
+                    ObjectMerger.Merge(DataContext, localEntity, remoteEntity);
                     GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
@@ -180,9 +194,27 @@ namespace Iql.Queryable.Data.DataStores
                     var identityWhereOperation =
                         DataContext.ResolveWithKeyOperationFromEntity(updateEntityOperation.Operation
                             .Entity);
-                    var queryable = DataContext.AsDbSetByType(typeof(TEntity));
+
+                    //var expand = new ExpandOperation<object, object, object>();
+                    //expand.Expression = new IqlPropertyExpression("Type", typeof(TEntity).Name, IqlType.Unknown);
+                    //expand.Expression.Parent = new IqlRootReferenceExpression("entity", "");
+                    //var queryable = DataContext.AsDbSetByType(typeof(TEntity)) as DbQueryable<TEntity>;
+                    //queryable = queryable.Then(expand).Then(identityWhereOperation);
+                    //var test1 = await queryable.SingleOrDefault();
+                    IDbSet queryable;
+                    var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
+                    if (refreshConfiguration != null)
+                    {
+                        queryable = refreshConfiguration.GetQueryable<TEntity>()();
+                    }
+                    else
+                    {
+                        queryable =
+                            DataContext.AsDbSetByType(typeof(TEntity));
+                    }
                     // This will trigger a merge in the tracking store
                     await queryable.WithKey(identityWhereOperation.Key);
+                    //.WithKey(identityWhereOperation.Key);
                     //Merge(updateEntityOperation.Operation.Entity, refreshResult);
                     GetTracking().GetSet<TEntity>().Track(updateEntityOperation.Operation.Entity);
                     break;

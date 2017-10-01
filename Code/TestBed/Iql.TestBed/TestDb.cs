@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Iql.Queryable.Data;
 
 namespace Iql.TestBed
 {
@@ -14,6 +15,9 @@ namespace Iql.TestBed
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
             var db = new AppDbContext();
+            var refreshConfig = new EntityDefaultQueryConfiguration();
+            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type));
+            db.RegisterConfiguration(refreshConfig);
             var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
                 .ExpandCollection(
                     p => p.People,
@@ -31,7 +35,7 @@ namespace Iql.TestBed
             }
 
             Console.WriteLine("WithKey result:");
-            var paulina = await db.People.Expand(p => p.Type).WithKey(2);
+            var paulina = await db.People.WithKey(2);
             Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
             Console.WriteLine("Inserting Marta with Type ID:");

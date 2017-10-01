@@ -58,7 +58,8 @@ namespace Iql.Queryable.Data
         {
             if (!_configurations.ContainsKey(ConfigurationName<T>()))
             {
-                throw new Exception($"No configuration found for \"{ConfigurationName<T>()}\"");
+                //throw new Exception($"No configuration found for \"{ConfigurationName<T>()}\"");
+                return null;
             }
             return _configurations[ConfigurationName<T>()] as T;
         }

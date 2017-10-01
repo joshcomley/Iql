@@ -307,6 +307,11 @@ namespace Iql.Queryable
             return Then(new ExpandOperation<T, IEnumerable<TTarget>, TTarget>(expression));
         }
 
+        public override async Task<object> WithKey(object key)
+        {
+            return await Then(new WithKeyOperation(key)).SingleOrDefault();
+        }
+
         protected override DbQueryable<T> New()
         {
             var dbQueryable = new DbQueryable<T>(

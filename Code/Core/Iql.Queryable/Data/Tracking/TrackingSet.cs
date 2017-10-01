@@ -85,7 +85,7 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     var currentEntity = Set[index];
                     Untrack(element);
-                    ObjectMerger.Merge(currentEntity, element);
+                    ObjectMerger.Merge(DataContext, currentEntity, element);
                     Track(currentEntity);
                 }
                 else
