@@ -16,7 +16,8 @@ namespace Iql.TestBed
             var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
                 .ExpandCollection(
                     p => p.People,
-                    p => p.Where(person => person.Title.Contains("a")).Take(1).Expand(p2 => p2.Type)
+                    p => p.Where(person => person.Title.Contains("a")).Take(1)
+                    .Expand(p2 => p2.Type)
                     )
                 .ToListWithResponse();
             foreach (var item in dataResult.Data)
@@ -28,8 +29,9 @@ namespace Iql.TestBed
                 }
             }
 
-            //var paulina = await db.People.Expand(p => p.Type, p => p).WithKey(2);
-            //PrintPerson(paulina);
+            Console.WriteLine("WithKey result:");
+            var paulina = await db.People.Expand(p => p.Type).WithKey(2);
+            Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
             //cara.Data[0].Name = "Changed!";
             //await db.SaveChanges();

@@ -309,12 +309,7 @@ namespace Iql.Queryable
 
         protected override DbQueryable<T> New()
         {
-            return NewAs<T>();
-        }
-
-        protected DbQueryable<TEntity> NewAs<TEntity>() where TEntity : class
-        {
-            var dbQueryable = new DbQueryable<TEntity>(
+            var dbQueryable = new DbQueryable<T>(
                 Configuration,
                 DataStoreGetter,
                 EvaluateContext,
