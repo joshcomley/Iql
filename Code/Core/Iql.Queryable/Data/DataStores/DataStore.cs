@@ -22,7 +22,6 @@ namespace Iql.Queryable.Data.DataStores
             where TEntity : class
         {
             GetTracking().GetSet<TEntity>().Track(operation.Entity);
-            Track<TEntity>(operation.Entity);
             var result = new AddEntityResult<TEntity>(true, operation);
             Queue.Add(new QueuedAddEntityOperation<TEntity>(
                 operation,
@@ -181,7 +180,6 @@ namespace Iql.Queryable.Data.DataStores
             Action decrement,
             SaveChangesResult saveChangesResult) where TEntity : class
         {
-            Func<Type, TEntity, IEntityCrudResult> ctor = null;
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             ICrudResult result = null;
             switch (operation.Operation.Type)
@@ -198,36 +196,21 @@ namespace Iql.Queryable.Data.DataStores
                                 property.GetValue(remoteEntity));
                         }
                     }
+                    GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
-                    result = await PerformUpdate((QueuedUpdateEntityOperation<TEntity>)operation);
+                    var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
+                    result = await PerformUpdate(updateEntityOperation);
+                    GetTracking().GetSet<TEntity>().Track(updateEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Delete:
-                    result = await PerformDelete((QueuedDeleteEntityOperation<TEntity>)operation);
+                    var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
+                    result = await PerformDelete(deleteEntityOperation);
+                    GetTracking().GetSet<TEntity>().Untrack(deleteEntityOperation.Operation.Entity);
                     break;
             }
             saveChangesResult.Results.Add(result as IEntityCrudResult);
             decrement();
-            //obs.Subscribe(
-            //    action,
-            //    action1);
-        }
-
-        private void Track<TEntity>(object element)
-        {
-            // TODO: Implement tracking
-            //var guid = Guid.NewGuid().ToString();
-            //element["__trackingGuid"] = () => {
-            //    return guid;
-            //};
-            //element["__ctor"] = () => {
-            //    return typeof(TEntity).Name;
-            //};
-        }
-
-        private void Apply(IEntityCrudOperationBase entityCrudOperation)
-        {
-            throw new NotImplementedException();
         }
     }
 }

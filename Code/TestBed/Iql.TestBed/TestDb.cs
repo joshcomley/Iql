@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Iql.TestBed
@@ -45,10 +46,15 @@ namespace Iql.TestBed
             var martaDb = await new AppDbContext().People.WithKey(marta.Id);
             Console.WriteLine("Fetched Marta ID: " + martaDb.Id);
 
-            Console.WriteLine("Updating Marta:");
+            Console.WriteLine("Updating string on Marta:");
             marta.Description = "I've been updated";
             await db.SaveChanges();
             var martaDbAfterUpdate = await new AppDbContext().People.WithKey(marta.Id);
+
+            Console.WriteLine("Updating collection on Marta:");
+            marta.Jobs = marta.Jobs ?? new List<PersonJob>();
+            marta.Jobs.Add(new PersonJob { JobId = 1, PersonId = marta.Id });
+            await db.SaveChanges();
 
             Console.WriteLine("Deleting Marta:");
             db.People.Delete(marta);

@@ -88,6 +88,7 @@ namespace Iql.OData.Data
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var result = await http.Put(entityUri, new HttpRequest<TEntity>(operation.Operation.Entity));
+            //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = result.Success;
             return operation.Result;
         }

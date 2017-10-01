@@ -54,6 +54,7 @@ namespace Iql.TestBed
                 .DefineProperty(p => p.Title)
                 .DefineProperty(p => p.Description)
                 .DefineProperty(p => p.TypeId)
+                .DefineProperty(p => p.Jobs)
                 .HasOne(p => p.Type)
                 .WithMany(p => p.People)
                 ;
