@@ -38,7 +38,7 @@ namespace Iql.Queryable
             var queryExpression = new WhereQueryExpression<T>(expression);
             return WhereQuery(queryExpression
 #if TypeScript
-            , EvaluateContext evaluateContext = null
+            , evaluateContext
 #endif
                 );
         }

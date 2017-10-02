@@ -84,45 +84,22 @@ namespace Iql.OData.Data
             return operation.Result;
         }
 
-        private class ShouldSerializeContractResolver<TEntity> : DefaultContractResolver where TEntity : class
-        {
-            private List<string> Properties { get; }
-
-            public ShouldSerializeContractResolver(IEnumerable<IKeyProperty> properties, EntityConfiguration<TEntity> entityConfiguration)
-            {
-                Properties = new List<string>();
-                foreach (var property in properties)
-                {
-                    Properties.Add(property.Name);
-                }
-                foreach (var key in entityConfiguration.Key.Properties)
-                {
-                    Properties.Add(key.PropertyName);
-                }
-            }
-
-            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-            {
-                var property = base.CreateProperty(member, memberSerialization);
-                if (Properties.All(propertyName => property.PropertyName != propertyName))
-                {
-                    property.Ignored = true;
-                }
-                return property;
-            }
-        }
-
         public override async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation)
         {
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
-            var settings = new JsonSerializerSettings
+            var properties = new List<string>();
+            foreach (var property in operation.Operation.ChangedProperties)
             {
-                ContractResolver = new ShouldSerializeContractResolver<TEntity>(operation.Operation.ChangedProperties, DataContext.EntityConfigurationContext.GetEntity<TEntity>())
-            };
-            var json = JsonConvert.SerializeObject(operation.Operation.Entity, settings);
+                properties.Add(property.Name);
+            }
+            foreach (var key in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+            {
+                properties.Add(key.PropertyName);
+            }
+            var json = JsonSerializer.Serialize(operation.Operation.Entity, properties.ToArray());
             var result = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = result.Success;

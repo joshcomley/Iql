@@ -14,7 +14,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             QueryExpression left,
             QueryExpression[] right) : base(type
 #if TypeScript
-            evaluateContext
+            , evaluateContext
 #endif
                 )
         {

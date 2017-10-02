@@ -17,7 +17,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             )
             : base(expression, QueryExpressionType.NonBinary
 #if TypeScript
-                  evaluateContext
+                  , evaluateContext
 #endif
                   )
         {

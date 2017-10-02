@@ -12,7 +12,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             params QueryExpression[] right)
             : base(QueryExpressionType.And,
 #if TypeScript
-                , evaluateContext
+                evaluateContext, 
 #endif
                   left, right)
         {
