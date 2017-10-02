@@ -17,14 +17,15 @@ using Newtonsoft.Json.Serialization;
 
 namespace Iql.OData.Data
 {
+    // ReSharper disable once ClassNeverInstantiated.Local
+    class ODataGetResult<T>
+    {
+        // ReSharper disable once InconsistentNaming
+        public T value { get; set; }
+    }
+
     public class ODataDataStore : DataStore
     {
-        // ReSharper disable once ClassNeverInstantiated.Local
-        class ODataGetResult<T>
-        {
-            // ReSharper disable once InconsistentNaming
-            public T value { get; set; }
-        }
         public ODataDataStore(IQueryableAdapterBase queryableAdapter = null)
         {
             QueryableAdapter = queryableAdapter ?? new ODataQueryableAdapter();
