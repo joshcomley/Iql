@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TypeSharp.Extensions;
@@ -12,6 +10,7 @@ namespace Iql.OData.Data
     [DoNotConvert]
     public static class JsonSerializer
     {
+        [DoNotConvert]
         private class ShouldSerializeContractResolver : DefaultContractResolver
         {
             private IEnumerable<string> Properties { get; }
