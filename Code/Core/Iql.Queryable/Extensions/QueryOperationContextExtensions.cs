@@ -59,10 +59,9 @@ namespace Iql.Queryable.Extensions
             var queryExpressinType = typeof(WhereQueryExpression<>).MakeGenericType(itemType);
             var queryExpression = (ExpressionQueryExpressionBase)Activator.CreateInstance(queryExpressinType, new object[]
             {
-                null,
-                dataContext.EvaluateContext
+                null
 #if TypeScript
-                , context.Queryable.ItemType
+                , dataContext.EvaluateContext
 #endif
             });
             operation.QueryExpression = queryExpression;
