@@ -68,11 +68,19 @@ namespace Iql.Queryable.Data
         {
             Initialize();
             var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
+            var keyType = entityKey.Properties.First().ReturnType.ToType();
             return (IDbSet) GetType().GetMethod(nameof(AsDbSet))
                 .MakeGenericMethod(
                     entityType,
-                    entityKey.Properties.First().ReturnType.ToType())
-                .Invoke(this, null);
+                    keyType
+                    )
+                .Invoke(this, new object[]
+                {
+#if TypeScript
+                    entityType,
+                    keyType
+#endif
+                });
         }
 
         private bool _initialized;
