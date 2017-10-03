@@ -30,12 +30,14 @@ namespace Iql.Queryable.Data.Tracking
             Clone = Set.Clone();
         }
 
-        public void Track(object entity)
+        void ITrackingSet.Track(object entity)
         {
+            Track((T)entity);
         }
 
-        public void Merge(IList data)
+        void ITrackingSet.Merge(IList data)
         {
+            Merge((List<T>)data);
         }
 
         private readonly Dictionary<T, T> _trackedEntityClones = new Dictionary<T, T>();
