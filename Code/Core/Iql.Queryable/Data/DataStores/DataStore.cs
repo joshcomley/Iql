@@ -1,11 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
@@ -102,9 +105,85 @@ namespace Iql.Queryable.Data.DataStores
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
                 result));
+#if TypeScript
+            response.Data = (List<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
+#endif
             var trackingSet = GetTracking().GetSet<TEntity>();
             trackingSet.Merge(response.Data);
             return result;
+        }
+
+        private IList EnsureTypedList(Type type, IEnumerable responseData)
+        {
+            var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+            if (responseData != null)
+            {
+                foreach (var entity in responseData)
+                {
+                    var typedEntity = EnsureTypedEntity(type, entity);
+                    list.Add(typedEntity);
+                }
+            }
+            return list;
+        }
+
+        private object EnsureTypedEntity(Type type, object entity)
+        {
+            if (entity != null)
+            {
+                var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(type);
+                var typedEntity = Activator.CreateInstance(type);
+                foreach (var property in entityConfiguration.Properties)
+                {
+                    //var instanceValue = typedEntity.GetPropertyValue(property.Name);
+                    var remoteValue = entity.GetPropertyValue(property.Name);
+                    if (remoteValue != null)
+                    {
+                        typedEntity.SetPropertyValue(property.Name, remoteValue);
+                    }
+                }
+                foreach (var relationship in entityConfiguration.Relationships)
+                {
+                    var isSource = relationship.SourceConfiguration == entityConfiguration;
+                    var propertyName = isSource
+                        ? relationship.SourceProperty.PropertyName
+                        : relationship.TargetProperty.PropertyName;
+                    if (isSource)
+                    {
+                        switch (relationship.Type)
+                        {
+                            case RelationshipType.OneToMany:
+                            case RelationshipType.OneToOne:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedEntity(relationship.TargetType,
+                                        entity.GetPropertyValue(propertyName)));
+                                break;
+                            case RelationshipType.ManyToMany:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedList(relationship.TargetType, (IEnumerable)entity.GetPropertyValue(propertyName)));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (relationship.Type)
+                        {
+                            case RelationshipType.OneToOne:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedEntity(relationship.SourceType,
+                                        entity.GetPropertyValue(propertyName)));
+                                break;
+                            case RelationshipType.OneToMany:
+                            case RelationshipType.ManyToMany:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedList(relationship.SourceType, (IEnumerable)entity.GetPropertyValue(propertyName)));
+                                break;
+                        }
+                    }
+                }
+                entity = typedEntity;
+            }
+            return entity;
         }
 
         public virtual async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
@@ -120,6 +199,11 @@ namespace Iql.Queryable.Data.DataStores
             {
                 trackingSet.GetChanges().ForEach(update =>
                 {
+                    if (Queue.Any(q => q.GetType().Name == nameof(AddEntityOperation<object>)
+                        && (q as IEntityCrudOperationBase).Entity == update.Entity))
+                    {
+                        return;
+                    }
                     var updateOperation =
                         Activator.CreateInstance(
                             typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);

@@ -51,7 +51,7 @@ namespace Iql.Queryable.Data
         public void RegisterConfiguration<T>(T configuration)
             where T : class
         {
-            _configurations.Add(ConfigurationName<T>(), configuration);
+            _configurations.Add(ConfigurationNameByType(configuration.GetType()), configuration);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -96,7 +96,12 @@ namespace Iql.Queryable.Data
 
         private static string ConfigurationName<T>() where T : class
         {
-            return typeof(T).Name;
+            return ConfigurationNameByType(typeof(T));
+        }
+
+        private static string ConfigurationNameByType(Type type)
+        {
+            return type.Name;
         }
 
         public virtual void Configure(EntityConfigurationBuilder builder)

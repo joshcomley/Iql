@@ -4,6 +4,8 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
     public interface IRelationship
     {
+        //RelationshipMultiplicity SourceMultiplicity { get; }
+        //RelationshipMultiplicity TargetMultiplicity { get; }
         RelationshipType Type { get; }
         Type SourceType { get; }
         Type TargetType { get; }

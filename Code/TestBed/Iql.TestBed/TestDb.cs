@@ -42,6 +42,8 @@ namespace Iql.TestBed
             var marta = new Person();
             marta.TypeId = 1;
             marta.Title = "Marta";
+            marta.Jobs = marta.Jobs ?? new List<PersonJob>();
+            marta.Jobs.Add(new PersonJob { JobId = 2 });
             db.People.Add(marta);
             await db.SaveChanges();
             Console.WriteLine("Marta's ID: " + marta.Id);

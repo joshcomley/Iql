@@ -15,7 +15,6 @@ namespace Iql.OData.Parsers
             Registry.Register(typeof(IqlParentValueExpression), () => new ODataStringSourceValueActionParser());
             Registry.Register(typeof(IqlUnaryExpression), () => new ODataUnaryActionParser());
             Registry.Register(typeof(IqlBinaryExpression), () => new ODataBinaryActionParser());
-            Registry.Register(typeof(IqlExpression), () => new ODataStringSourceActionParser());
         }
 
         public override ODataIqlData NewData()
