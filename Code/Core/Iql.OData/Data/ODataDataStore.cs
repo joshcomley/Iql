@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.OData.Queryable;
+using Iql.OData.Queryable.Applicators;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations.Queued;
@@ -143,9 +144,12 @@ namespace Iql.OData.Data
             {
                 apiUriBase += "/";
             }
-            var key = this.DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
-            var keyValue = entity.GetPropertyValue(key.Properties.First().PropertyName);
-            var entityUri = $"{apiUriBase}{entitySetName}({keyValue})";
+            var key = DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
+            var compositeKeyProperties =
+                key.Properties.Select(p => new KeyValue(p.PropertyName, entity.GetPropertyValue(p.PropertyName)));
+            var compositeKey = new CompositeKey();
+            compositeKey.Keys.AddRange(compositeKeyProperties);
+            var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";
             return entityUri;
         }
 

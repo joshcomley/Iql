@@ -73,7 +73,8 @@ namespace Iql.TestBed
             personJob.Description = "third";
             marta.Jobs.Add(new PersonJob { JobId = 1, PersonId = marta.Id });
             await db.SaveChanges();
-            marta.Jobs.Remove(personJob);
+            db.PersonJobs.Delete(personJob);
+            //marta.Jobs.Remove(personJob);
             await db.SaveChanges();
 
             Console.WriteLine("Deleting Marta:");

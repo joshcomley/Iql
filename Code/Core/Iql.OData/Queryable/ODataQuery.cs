@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.OData.Queryable.Applicators;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Operations;
@@ -44,17 +45,7 @@ namespace Iql.OData.Queryable
             var queryParts = new List<string>();
             if (HasKey)
             {
-                string key;
-                if (Key.Keys.Count == 1)
-                {
-                    key = Key.Keys.Single().Value.ToString();
-                }
-                else
-                {
-                    var keys = Key.Keys.Select(k => k.Name + "=" + k.Value);
-                    key = string.Join(",", keys);
-                }
-                query += "(" + key + ")";
+                query += $"({WithKeyOperationApplicatorOData.FormatKey(Key)})";
             }
             var filters = GetQueryPart(ODataQueryPart.Filter);
             if (filters.Count > 0)
