@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Parsing;
@@ -309,7 +310,23 @@ namespace Iql.Queryable
 
         public override async Task<object> WithKey(object key)
         {
-            return await Then(new WithKeyOperation(key)).SingleOrDefault();
+            var compositeKey = GetCompositeKeyFromSingularKey(key);
+            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefault();
+        }
+
+        protected virtual CompositeKey GetCompositeKeyFromSingularKey(object key)
+        {
+            if (key is CompositeKey)
+            {
+                return key as CompositeKey;
+            }
+            var compositeKey = new CompositeKey();
+            var propertyName = DataContext.EntityConfigurationContext.GetEntity<T>().Key.Properties.First().PropertyName;
+            compositeKey.Keys.Add(new KeyValue(
+                propertyName,
+                key
+            ));
+            return compositeKey;
         }
 
         protected override DbQueryable<T> New()

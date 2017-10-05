@@ -71,7 +71,10 @@ namespace Iql.Queryable.Data.Tracking.Cloning
                     IInstanceProvider instance = null;
                     try
                     {
-                        instance = (IInstanceProvider) Activator.CreateInstance(t);
+                        if (!t.IsInterface)
+                        {
+                            instance = (IInstanceProvider)Activator.CreateInstance(t);
+                        }
                     }
                     catch
                     {

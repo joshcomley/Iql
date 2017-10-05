@@ -2,9 +2,9 @@ namespace Iql.Queryable.Operations
 {
     public class WithKeyOperation : QueryOperation
     {
-        public object Key { get; }
+        public CompositeKey Key { get; }
 
-        public WithKeyOperation(object key)
+        public WithKeyOperation(CompositeKey key)
         {
             Key = key;
         }

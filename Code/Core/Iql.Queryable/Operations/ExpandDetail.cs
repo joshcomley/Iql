@@ -25,7 +25,7 @@ namespace Iql.Queryable.Operations
 
         public IqlPropertyExpression GetExpandProperty()
         {
-            return IsTarget ? Relationship.TargetProperty : Relationship.SourceProperty;
+            return IsTarget ? Relationship.Target.Property : Relationship.Source.Property;
         }
     }
 }

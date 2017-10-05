@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 
 namespace Iql.Queryable.Data
@@ -18,5 +19,12 @@ namespace Iql.Queryable.Data
         {
             obj.GetType().GetRuntimeProperty(propertyName).SetValue(obj, value);
         }
+
+#if !TypeScript
+        public static void SetFieldValue<T>(this T obj, string propertyName, object value)
+        {
+            obj.GetType().GetRuntimeFields().Single(f => f.Name == propertyName).SetValue(obj, value);
+        }
+#endif
     }
 }

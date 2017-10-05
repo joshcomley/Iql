@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
@@ -6,14 +7,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
     {
         //RelationshipMultiplicity SourceMultiplicity { get; }
         //RelationshipMultiplicity TargetMultiplicity { get; }
+        List<IRelationshipConstraint> Constraints { get; }
         RelationshipType Type { get; }
-        Type SourceType { get; }
-        Type TargetType { get; }
-        IEntityConfiguration SourceConfiguration { get; }
-        IqlPropertyExpression SourceProperty { get; }
-        IqlPropertyExpression SourceKeyProperty { get; }
-        IEntityConfiguration TargetConfiguration { get; }
-        IqlPropertyExpression TargetProperty { get; }
-        IqlPropertyExpression TargetKeyProperty { get; }
+        IRelationshipDetail Source { get; }
+        IRelationshipDetail Target { get; }
     }
 }

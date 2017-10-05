@@ -8,11 +8,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public EntityKey()
         {
             Type = typeof(T);
+            KeyType = typeof(TKey);
             Properties = new List<IqlPropertyExpression>();
         }
 
         public Type Type { get; set; }
-
+        public Type KeyType { get; set; }
         public List<IqlPropertyExpression> Properties { get; set; }
     }
 }

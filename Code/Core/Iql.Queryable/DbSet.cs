@@ -30,7 +30,16 @@ namespace Iql.Queryable
 
         public async Task<GetSingleResult<T>> WithKeyWithResponse(TKey key)
         {
-            return await Then(new WithKeyOperation(key)).SingleOrDefault();
+            CompositeKey compositeKey;
+            if (key is CompositeKey)
+            {
+                compositeKey = key as CompositeKey;
+            }
+            else
+            {
+                compositeKey = GetCompositeKeyFromSingularKey(key);
+            }
+            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefault();
         }
 
         public new DbSet<T, TKey> Expand<TTarget>(
@@ -85,11 +94,6 @@ namespace Iql.Queryable
                 EvaluateContext,
                 DataContext);
             return dbQueryable;
-        }
-
-        public async Task<object> WithKey(object key)
-        {
-            return await WithKey((TKey)key);
         }
     }
 }

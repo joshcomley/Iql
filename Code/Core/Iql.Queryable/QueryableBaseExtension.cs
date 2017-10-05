@@ -89,7 +89,7 @@ namespace Iql.Queryable
         private IQueryResultBase NewQueryData(IQueryableAdapterBase adapter)
         {
             var newQueryData =
-                (IQueryResultBase) adapter.GetType().GetMethod(nameof(adapter.NewQueryData)).MakeGenericMethod(
+                (IQueryResultBase)adapter.GetType().GetMethod(nameof(adapter.NewQueryData)).MakeGenericMethod(
                         Queryable.ItemType)
                     .Invoke(adapter, new object[]
                     {
@@ -153,37 +153,55 @@ namespace Iql.Queryable
                     depth + 1);
             }
             var propertyToExpand = expression;
-            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByName(
-                typeConstructor.Name
+            var sourceEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
+                typeConstructor
             );
-            for (var i = 0; i < entityConfiguration.Relationships.Count; i++)
+            var relationshipEntityType = sourceEntityConfiguration.GetProperty(propertyToExpand.PropertyName).Type;
+            var relatedEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
+                relationshipEntityType
+            );
+
+            var relationships = sourceEntityConfiguration.Relationships.Concat(
+                relatedEntityConfiguration.Relationships).ToList();
+
+            for (var i = 0; i < relationships.Count; i++)
             {
-                var relationship = entityConfiguration.Relationships[i];
-                var sourceExpand = relationship.SourceProperty.PropertyName == propertyToExpand.PropertyName;
-                var targetExpand = relationship.TargetProperty.PropertyName == propertyToExpand.PropertyName;
-                if (sourceExpand || targetExpand)
+                var relationship = relationships[i];
+                var relationshipSource = relationship.Source;
+                var relationshipTarget = relationship.Target;
+                var targetExpand = false;
+                if (relationshipTarget.Configuration == sourceEntityConfiguration)
                 {
-                    var detail = new ExpandDetail(
-                        dataContext.AsDbSetByType(relationship.SourceType),
-                        dataContext.AsDbSetByType(relationship.TargetType),
-                        relationship,
-                        targetExpand);
-                    // We have our relationship
-                    operation.ExpandDetails.Add(detail);
-                    if (depth == 0)
-                    {
-                        detail.TargetQueryable = operation.ApplyQuery(detail.TargetQueryable);
-                    }
-                    if (targetExpand)
-                    {
-                        detail.SourceQueryable = expandExpression.GetQueryable()(detail.SourceQueryable);
-                    }
-                    else
-                    {
-                        detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
-                    }
-                    return relationship.TargetType;
+                    targetExpand = true;
+                    var temp = relationshipSource;
+                    relationshipSource = relationshipTarget;
+                    relationshipTarget = temp;
                 }
+                if (relationshipSource.Property.PropertyName != propertyToExpand.PropertyName)
+                {
+                    continue;
+                }
+                var detail = new ExpandDetail(
+                    dataContext.AsDbSetByType(relationshipSource.Type),
+                    dataContext.AsDbSetByType(relationshipTarget.Type),
+                    relationship,
+                    targetExpand);
+                // We have our relationship
+                operation.ExpandDetails.Add(detail);
+                if (depth == 0)
+                {
+                    detail.TargetQueryable = operation.ApplyQuery(detail.TargetQueryable);
+                }
+                //if (targetExpand)
+                //{
+                //    detail.SourceQueryable = expandExpression.GetQueryable()(detail.SourceQueryable);
+                //}
+                //else
+                //{
+                //    detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
+                //}
+                detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
+                return relationshipTarget.Type;
             }
             return null;
         }

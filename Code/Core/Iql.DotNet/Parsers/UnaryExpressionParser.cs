@@ -7,7 +7,7 @@ namespace Iql.DotNet.Parsers
     {
         public override bool CanHandleNode(Expression node)
         {
-            return node.NodeType == ExpressionType.Not;
+            return node.NodeType == ExpressionType.Not || node.NodeType == ExpressionType.Convert;
         }
 
         public override IqlExpression PerformParse(UnaryExpression node, ExpressionParserContext context)
@@ -18,6 +18,8 @@ namespace Iql.DotNet.Parsers
                     return new IqlNotExpression(
                         context.Parse(node.Operand, context)
                     );
+                    case ExpressionType.Convert:
+                        return context.Parse(node.Operand, context);
             }
             throw new NotImplementedException();
         }

@@ -94,13 +94,16 @@ namespace Iql.OData.Data
             var properties = new List<string>();
             foreach (var property in operation.Operation.ChangedProperties)
             {
-                properties.Add(property.Name);
+                properties.Add(property.Property.Name);
             }
             foreach (var key in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
             {
                 properties.Add(key.PropertyName);
             }
-            var json = JsonSerializer.Serialize(operation.Operation.Entity, properties.ToArray());
+            var json = JsonSerializer.Serialize(
+                operation.Operation.Entity, 
+                DataContext,
+                operation.Operation.ChangedProperties.ToArray());
             var result = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = result.Success;

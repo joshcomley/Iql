@@ -35,9 +35,10 @@ namespace Iql.OData.Queryable.Applicators
             }
             //        if (index === expand.ExpandDetails.Count - 1 && expand.queryExpression.queryable) {
             expandOperations +=
-                detail.IsTarget
-                    ? detail.SourceQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true)
-                    : detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true);
+                detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true);
+                //detail.IsTarget
+                //    ? detail.SourceQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true)
+                //    : ;
             //        }
             expandOperations = expandOperations.Trim();
             if (!string.IsNullOrWhiteSpace(expandOperations))

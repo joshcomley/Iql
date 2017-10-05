@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
@@ -6,8 +7,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
     public class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : IRelationship
         where TSource : class where TTarget : class
     {
-        private readonly EntityConfigurationBuilder _configuration;
-
         public Relationship(
             EntityConfigurationBuilder configuration,
             Expression<Func<TSource, TSourceProperty>> sourceProperty,
@@ -16,36 +15,26 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         {
             //_configuration = configuration;
             Type = type;
-            SourceConfiguration = configuration.GetEntity<TSource>();
-            TargetConfiguration = configuration.GetEntity<TTarget>();
-            SourceProperty =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(sourceProperty) as
-                    IqlPropertyExpression;
-            TargetProperty =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetProperty) as
-                    IqlPropertyExpression;
+            Constraints = new List<IRelationshipConstraint>();
+            Source = new RelationshipDetail<TSource, TSourceProperty>(configuration, sourceProperty);
+            Target = new RelationshipDetail<TTarget, TTargetProperty>(configuration, targetProperty);
         }
 
-        public IEntityConfiguration TargetConfiguration { get; set; }
-        public IEntityConfiguration SourceConfiguration { get; set; }
-        public IqlPropertyExpression SourceProperty { get; set; }
-        public IqlPropertyExpression TargetProperty { get; set; }
-        public IqlPropertyExpression SourceKeyProperty { get; set; }
-        public IqlPropertyExpression TargetKeyProperty { get; set; }
-        public Type SourceType => typeof(TSource);
-        public Type TargetType => typeof(TTarget);
+        public List<IRelationshipConstraint> Constraints { get; }
         public RelationshipType Type { get; set; }
+        public IRelationshipDetail Source { get; }
+        public IRelationshipDetail Target { get; }
 
-        public void WithKey(
+        public Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> WithConstraint(
             Expression<Func<TSource, object>> sourceKeyProperty,
             Expression<Func<TTarget, object>> targetKeyProperty)
         {
-            SourceKeyProperty =
+            Constraints.Add(new RelationshipConstraint(
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(sourceKeyProperty) as
-                    IqlPropertyExpression;
-            TargetKeyProperty =
+                    IqlPropertyExpression,
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetKeyProperty) as
-                    IqlPropertyExpression;
+                    IqlPropertyExpression));
+            return this;
         }
     }
 }

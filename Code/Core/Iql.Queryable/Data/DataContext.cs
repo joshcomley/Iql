@@ -39,7 +39,8 @@ namespace Iql.Queryable.Data
                     .ToList();
                 foreach (var property in properties)
                 {
-                    property.SetValue(this, AsDbSetByType(property.PropertyType.GenericTypeArguments[0]));
+                    var asDbSetByType = AsDbSetByType(property.PropertyType.GenericTypeArguments[0]);
+                    property.SetValue(this, asDbSetByType);
                 }
             }
         }
@@ -68,7 +69,7 @@ namespace Iql.Queryable.Data
         {
             Initialize();
             var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
-            var keyType = entityKey.Properties.First().ReturnType.ToType();
+            var keyType = entityKey.KeyType;
             return (IDbSet) GetType().GetMethod(nameof(AsDbSet))
                 .MakeGenericMethod(
                     entityType,

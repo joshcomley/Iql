@@ -25,13 +25,17 @@ namespace Iql.Queryable.Extensions
         {
             var configuration = dataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity));
             var keyDefinition = configuration.Key;
-            var key = entity.GetPropertyValue(keyDefinition.Properties.First().PropertyName);
-            var withKeyOperation = new WithKeyOperation(key);
+            var compositeKey = new CompositeKey();
+            compositeKey.Keys
+                .AddRange(
+                    keyDefinition.Properties.Select(kp => new KeyValue(kp.PropertyName, entity.GetPropertyValue(kp.PropertyName)))
+                );
+            var withKeyOperation = new WithKeyOperation(compositeKey);
             return withKeyOperation;
         }
 
         public static WhereOperation ResolveIdentityWhereOperation(this IDataContext dataContext, Type itemType,
-            object key)
+            CompositeKey key)
         {
             var configuration = dataContext.EntityConfigurationContext.GetEntityByType(itemType);
             var keyDefinition = configuration.Key;
@@ -39,14 +43,15 @@ namespace Iql.Queryable.Extensions
             var checks = new List<IqlExpression>();
             keyDefinition.Properties.ForEach(property =>
             {
+                var keyValue = key.Keys.Single(k => k.Name == property.PropertyName);
                 var propertyExpression = new IqlPropertyExpression(
                     property.PropertyName,
                     itemType.Name,
-                    key.GetType().ToIqlType());
+                    keyValue.Value.GetType().ToIqlType());
                 propertyExpression.Parent = root;
                 var check = new IqlIsEqualToExpression(
                     propertyExpression,
-                    new IqlLiteralExpression(key.ToString(), key.GetType().ToIqlType())
+                    new IqlLiteralExpression(keyValue.Value.ToString(), keyValue.Value.GetType().ToIqlType())
                 );
                 checks.Add(check);
             });

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Extensions;
@@ -34,14 +35,28 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return Key;
         }
 
-        public EntityConfiguration<T> HasKey<TProperty>(
-            Expression<Func<T, TProperty>> property
+        public EntityConfiguration<T> HasKey<TKey>(
+            Expression<Func<T, TKey>> property
         )
         {
-            Key = new EntityKey<T, TProperty>();
+            Key = new EntityKey<T, TKey>();
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
-            iql.ReturnType = typeof(TProperty).ToIqlType();
+            iql.ReturnType = typeof(TKey).ToIqlType();
             Key.Properties.Add(iql);
+            return this;
+        }
+
+        public EntityConfiguration<T> HasCompositeKey<TKey>(
+            params Expression<Func<T, object>>[] properties
+        )
+        {
+            Key = new EntityKey<T, TKey>();
+            foreach (var property in properties)
+            {
+                var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+                //iql.ReturnType = typeof(T).getpro.ToIqlType();
+                Key.Properties.Add(iql);
+            }
             return this;
         }
 
@@ -49,6 +64,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, TProperty>> property
         )
         {
+            if (typeof(IEnumerable).IsAssignableFrom(typeof(TProperty)) && !
+                    typeof(string).IsAssignableFrom(typeof(TProperty)))
+            {
+                throw new Exception($"Please use {nameof(DefineCollectionProperty)} to define collection properties.");
+            }
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
             var definition = new KeyProperty<TProperty>(name);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
@@ -18,10 +19,10 @@ namespace Iql.JavaScript.QueryToJavaScript
             for (var j = 0; j < expand.ExpandDetails.Count; j++)
             {
                 var detail = expand.ExpandDetails[j];
-                var sourceType = detail.Relationship.SourceType;
-                var targetType = detail.Relationship.TargetType;
-                types.Add(new ExpandEntityType(detail.Relationship.SourceType, detail.SourceQueryable));
-                types.Add(new ExpandEntityType(detail.Relationship.TargetType, detail.TargetQueryable));
+                var sourceType = detail.Relationship.Source.Type;
+                var targetType = detail.Relationship.Target.Type;
+                types.Add(new ExpandEntityType(detail.Relationship.Source.Type, detail.SourceQueryable));
+                types.Add(new ExpandEntityType(detail.Relationship.Target.Type, detail.TargetQueryable));
                 var expandMethodName = "";
                 switch (detail.Relationship.Type)
                 {
@@ -46,10 +47,12 @@ namespace Iql.JavaScript.QueryToJavaScript
                     query += "'" + manyToMany.PivotSourceKeyProperty.PropertyName + "',";
                     query += "'" + manyToMany.PivotTargetKeyProperty.PropertyName + "',";
                 }
-                query += "'" + detail.Relationship.SourceProperty.PropertyName + "',";
-                query += "'" + detail.Relationship.TargetProperty.PropertyName + "',";
-                query += "'" + detail.Relationship.SourceKeyProperty.PropertyName + "',";
-                query += "'" + detail.Relationship.TargetKeyProperty.PropertyName + "'";
+                query += "'" + detail.Relationship.Source.Property.PropertyName + "',";
+                query += "'" + detail.Relationship.Target.Property.PropertyName + "',";
+                // TODO: Support multiple constraints
+                var constraint = detail.Relationship.Constraints.First();
+                query += "'" + constraint.SourceKeyProperty.PropertyName + "',";
+                query += "'" + constraint.TargetKeyProperty.PropertyName + "'";
                 query += ");\n";
             }
             context.Data.Query.AppendLine(query);

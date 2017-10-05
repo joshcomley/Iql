@@ -1,12 +1,10 @@
-using Iql.Queryable.Data.EntityConfiguration;
-
 namespace Iql.Queryable.Data.Crud.Operations
 {
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>
     {
-        public IKeyProperty[] ChangedProperties { get; }
+        public PropertyChange[] ChangedProperties { get; }
 
-        public UpdateEntityOperation(T entity, IDataContext dataContext, params IKeyProperty[] changedProperties)
+        public UpdateEntityOperation(T entity, IDataContext dataContext, params PropertyChange[] changedProperties)
             : base(OperationType.Update, entity, dataContext)
         {
             ChangedProperties = changedProperties;

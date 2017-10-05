@@ -44,7 +44,17 @@ namespace Iql.OData.Queryable
             var queryParts = new List<string>();
             if (HasKey)
             {
-                query += "(" + Key + ")";
+                string key;
+                if (Key.Keys.Count == 1)
+                {
+                    key = Key.Keys.Single().Value.ToString();
+                }
+                else
+                {
+                    var keys = Key.Keys.Select(k => k.Name + "=" + k.Value);
+                    key = string.Join(",", keys);
+                }
+                query += "(" + key + ")";
             }
             var filters = GetQueryPart(ODataQueryPart.Filter);
             if (filters.Count > 0)
@@ -88,7 +98,7 @@ namespace Iql.OData.Queryable
         }
 
         public bool HasKey { get; set; }
-        public object Key { get; set; }
+        public CompositeKey Key { get; set; }
 
         public override List<T> ToList()
         {

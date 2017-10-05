@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Iql.Queryable.Data.Tracking
 {
     public class TrackingSet<T> : ITrackingSet where T : class
     {
-        public TrackingSet(IDataContext dataContext)
+        public TrackingSet(IDataContext dataContext, TrackingSetCollection trackingSetCollection)
         {
             DataContext = dataContext;
+            TrackingSetCollection = trackingSetCollection;
             Set = new List<T>();
             Clone = new List<T>();
         }
@@ -19,6 +21,7 @@ namespace Iql.Queryable.Data.Tracking
         public List<T> Set { get; set; }
         public List<T> Clone { get; set; }
         private IDataContext DataContext { get; }
+        public TrackingSetCollection TrackingSetCollection { get; }
 
         List<IEntityCrudOperationBase> ITrackingSet.GetChanges()
         {
@@ -29,6 +32,8 @@ namespace Iql.Queryable.Data.Tracking
         {
             Clone = Set.Clone();
         }
+
+        public Type EntityType => typeof(T);
 
         void ITrackingSet.Track(object entity)
         {
@@ -52,13 +57,50 @@ namespace Iql.Queryable.Data.Tracking
                 _trackedEntityClones.Remove(entity);
             }
         }
+
         public void Track(T entity)
+        {
+            var clone = entity.Clone();
+            TrackWithClone(entity, clone);
+        }
+
+        public void TrackWithClone(T entity, T clone)
         {
             Untrack(entity);
             Set.Add(entity);
-            var clone = entity.Clone();
             Clone.Add(clone);
             _trackedEntityClones.Add(entity, clone);
+
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var relationships = entityConfiguration.Relationships;
+            foreach (var relationship in relationships)
+            {
+                var end = relationship.Source.Configuration == entityConfiguration
+                    ? relationship.Source
+                    : relationship.Target;
+                var entityRelationshipValue = entity.GetPropertyValue(end.Property.PropertyName);
+                if (entityRelationshipValue == null)
+                {
+                    continue;
+                }
+                if (entityRelationshipValue is IEnumerable && !(entityRelationshipValue is string))
+                {
+                    var enumerable = (IEnumerable)entityRelationshipValue;
+                    var cloneEnumerable = ((IEnumerable)clone.GetPropertyValue(end.Property.PropertyName))
+                        .Cast<object>().ToArray();
+                    int i = 0;
+                    foreach (var item in enumerable)
+                    {
+                        TrackingSetCollection.TrackWithClone(item, cloneEnumerable[i]);
+                        i++;
+                    }
+                }
+                else
+                {
+                    TrackingSetCollection.TrackWithClone(entityRelationshipValue,
+                        clone.GetPropertyValue(end.Property.PropertyName));
+                }
+            }
         }
 
         public T FindClone(T entity)
@@ -69,6 +111,17 @@ namespace Iql.Queryable.Data.Tracking
             }
             return null;
         }
+
+        object ITrackingSet.FindClone(object entity)
+        {
+            return FindClone((T)entity);
+        }
+
+        void ITrackingSet.TrackWithClone(object entity, object clone)
+        {
+            TrackWithClone((T)entity, (T)clone);
+        }
+
         public void Merge(List<T> data)
         {
             for (var i = 0; i < data.Count; i++)
@@ -116,17 +169,22 @@ namespace Iql.Queryable.Data.Tracking
             return updates;
         }
 
-        private List<IKeyProperty> GetChangedProperties(object entity, object clone)
+        private List<PropertyChange> GetChangedProperties(object entity, object clone)
         {
-            var changedProperties = new List<IKeyProperty>();
+            var changedProperties = new List<PropertyChange>();
             var entityDefinition = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             var properties = entityDefinition.Properties;
             for (var i = 0; i < properties.Count; i++)
             {
                 var property = properties[i];
+                var propertyChange = new PropertyChange(property);
                 var entityValue = entity.GetPropertyValue(property.Name);
                 var cloneValue = clone.GetPropertyValue(property.Name);
                 var entityHasChanged = false;
+                if (entityValue == null && cloneValue == null)
+                {
+                    continue;
+                }
                 if (new[] { entityValue, cloneValue }.Count(e => e == null) == 1)
                 {
                     entityHasChanged = true;
@@ -138,7 +196,13 @@ namespace Iql.Queryable.Data.Tracking
                     for (var valueIndex = 0; valueIndex < entityValueEnumerable.Length; valueIndex++)
                     {
                         var entityValueAtIndex = entityValueEnumerable[valueIndex];
-                        var cloneValueAtIndex = cloneValueEnumerable[valueIndex];
+                        var cloneValueAtIndex = TrackingSetCollection.FindClone(entityValueAtIndex);
+                        if (cloneValueAtIndex == null)
+                        {
+                            propertyChange.EnumerableChangedProperties.Add(valueIndex, new List<PropertyChange>());
+                            entityHasChanged = true;
+                            continue;
+                        }
                         if (entityValueAtIndex is string || !entityValueAtIndex.GetType().IsClass)
                         {
                             if (Equals(entityValueAtIndex, cloneValueAtIndex))
@@ -148,31 +212,48 @@ namespace Iql.Queryable.Data.Tracking
                         }
                         else
                         {
-                            var nullCount = new[] {entityValueAtIndex, cloneValueAtIndex}
+                            var nullCount = new[] { entityValueAtIndex, cloneValueAtIndex }
                                 .Count(x => x == null);
                             if (nullCount == 1)
                             {
                                 entityHasChanged = true;
                                 break;
                             }
-                            if (!GetChangedProperties(entityValueAtIndex, cloneValueAtIndex).Any())
+                            var changedChildProperties = GetChangedProperties(entityValueAtIndex, cloneValueAtIndex);
+                            if (!changedChildProperties.Any())
                             {
                                 continue;
                             }
+                            propertyChange.EnumerableChangedProperties.Add(valueIndex, changedChildProperties);
                         }
                         entityHasChanged = true;
-                        break;
+                    }
+                    if (entityValueEnumerable.Length != cloneValueEnumerable.Length)
+                    {
+                        entityHasChanged = true;
                     }
                 }
-                else if (!Equals(entityValue, cloneValue))
+                else
                 {
-                    entityHasChanged = true;
+                    if (entityValue.GetType().IsClass && !(entityValue is string))
+                    {
+                        var propertyChanges = GetChangedProperties(entityValue, cloneValue);
+                        if (propertyChanges.Any())
+                        {
+                            propertyChange.ChildChangedProperties.AddRange(propertyChanges);
+                            entityHasChanged = true;
+                        }
+                    }
+                    else if (!Equals(entityValue, cloneValue))
+                    {
+                        entityHasChanged = true;
+                    }
                 }
                 if (!entityHasChanged)
                 {
                     continue;
                 }
-                changedProperties.Add(property);
+                changedProperties.Add(propertyChange);
             }
             return changedProperties;
         }

@@ -102,13 +102,13 @@ namespace Iql.Queryable.Data.DataStores
 
             var result = new GetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
+            var trackingSet = GetTracking().GetSet<TEntity>();
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
                 result));
 #if TypeScript
             response.Data = (List<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
 #endif
-            var trackingSet = GetTracking().GetSet<TEntity>();
             trackingSet.Merge(response.Data);
             return result;
         }
@@ -144,10 +144,10 @@ namespace Iql.Queryable.Data.DataStores
                 }
                 foreach (var relationship in entityConfiguration.Relationships)
                 {
-                    var isSource = relationship.SourceConfiguration == entityConfiguration;
+                    var isSource = relationship.Source.Configuration == entityConfiguration;
                     var propertyName = isSource
-                        ? relationship.SourceProperty.PropertyName
-                        : relationship.TargetProperty.PropertyName;
+                        ? relationship.Source.Property.PropertyName
+                        : relationship.Target.Property.PropertyName;
                     if (isSource)
                     {
                         switch (relationship.Type)
@@ -155,12 +155,12 @@ namespace Iql.Queryable.Data.DataStores
                             case RelationshipType.OneToMany:
                             case RelationshipType.OneToOne:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedEntity(relationship.TargetType,
+                                    EnsureTypedEntity(relationship.Target.Type,
                                         entity.GetPropertyValue(propertyName)));
                                 break;
                             case RelationshipType.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedList(relationship.TargetType, (IEnumerable)entity.GetPropertyValue(propertyName)));
+                                    EnsureTypedList(relationship.Target.Type, (IEnumerable)entity.GetPropertyValue(propertyName)));
                                 break;
                         }
                     }
@@ -170,13 +170,13 @@ namespace Iql.Queryable.Data.DataStores
                         {
                             case RelationshipType.OneToOne:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedEntity(relationship.SourceType,
+                                    EnsureTypedEntity(relationship.Source.Type,
                                         entity.GetPropertyValue(propertyName)));
                                 break;
                             case RelationshipType.OneToMany:
                             case RelationshipType.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedList(relationship.SourceType, (IEnumerable)entity.GetPropertyValue(propertyName)));
+                                    EnsureTypedList(relationship.Source.Type, (IEnumerable)entity.GetPropertyValue(propertyName)));
                                 break;
                         }
                     }
@@ -269,38 +269,23 @@ namespace Iql.Queryable.Data.DataStores
                     result = await PerformAdd(addEntityOperation);
                     var localEntity = addEntityOperation.Operation.Entity;
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
-                    ObjectMerger.Merge(DataContext, localEntity, remoteEntity);
+                    //ObjectMerger.Merge(DataContext, localEntity, remoteEntity);
+                    foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+                    {
+                        localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
+                    }
+                    await RefreshEntity(localEntity);
                     GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
                     result = await PerformUpdate(updateEntityOperation);
-                    var identityWhereOperation =
-                        DataContext.ResolveWithKeyOperationFromEntity(updateEntityOperation.Operation
-                            .Entity);
-
-                    //var expand = new ExpandOperation<object, object, object>();
-                    //expand.Expression = new IqlPropertyExpression("Type", typeof(TEntity).Name, IqlType.Unknown);
-                    //expand.Expression.Parent = new IqlRootReferenceExpression("entity", "");
-                    //var queryable = DataContext.AsDbSetByType(typeof(TEntity)) as DbQueryable<TEntity>;
-                    //queryable = queryable.Then(expand).Then(identityWhereOperation);
-                    //var test1 = await queryable.SingleOrDefault();
-                    IDbSet queryable;
-                    var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
-                    if (refreshConfiguration != null)
-                    {
-                        queryable = refreshConfiguration.GetQueryable<TEntity>()();
-                    }
-                    else
-                    {
-                        queryable =
-                            DataContext.AsDbSetByType(typeof(TEntity));
-                    }
-                    // This will trigger a merge in the tracking store
-                    await queryable.WithKey(identityWhereOperation.Key);
+                    var operationEntity = updateEntityOperation.Operation
+                        .Entity;
+                    await RefreshEntity(operationEntity);
                     //.WithKey(identityWhereOperation.Key);
                     //Merge(updateEntityOperation.Operation.Entity, refreshResult);
-                    GetTracking().GetSet<TEntity>().Track(updateEntityOperation.Operation.Entity);
+                    GetTracking().GetSet<TEntity>().Track(operationEntity);
                     break;
                 case OperationType.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
@@ -310,6 +295,26 @@ namespace Iql.Queryable.Data.DataStores
             }
             saveChangesResult.Results.Add(result as IEntityCrudResult);
             decrement();
+        }
+
+        private async Task RefreshEntity<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            var identityWhereOperation =
+                DataContext.ResolveWithKeyOperationFromEntity(entity);
+            var queryable = DataContext.AsDbSetByType(typeof(TEntity));
+            //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
+            //if (refreshConfiguration != null)
+            //{
+            //    queryable = refreshConfiguration.GetQueryable<TEntity>()();
+            //}
+            //else
+            //{
+            //    queryable =
+            //        DataContext.AsDbSetByType(typeof(TEntity));
+            //}
+            // This will trigger a merge in the tracking store
+            await queryable.WithKey(identityWhereOperation.Key);
         }
     }
 }

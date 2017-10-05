@@ -16,35 +16,46 @@ namespace Iql.TestBed
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
             var db = new AppDbContext();
             var refreshConfig = new EntityDefaultQueryConfiguration();
-            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type));
+            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).Expand(p => p.Jobs));
             db.RegisterConfiguration(refreshConfig);
-            var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
-                .ExpandCollection(
-                    p => p.People,
-                    p => p.Where(person => person.Title.Contains("a")).Take(1)
-                    .Expand(p2 => p2.Type)
-                    )
-                .ToListWithResponse();
-            foreach (var item in dataResult.Data)
-            {
-                Console.WriteLine($"- {item.Title}");
-                foreach (var person in item.People)
-                {
-                    PrintPerson(person);
-                }
-            }
+            //await db.People.ToList();
+            //var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
+            //    .ExpandCollection(
+            //        p => p.People,
+            //        p => p.Expand(pp => pp.Type)
+            //    )
+            //    .ToListWithResponse();
+            //var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
+            //    .ExpandCollection(
+            //        p => p.People,
+            //        p => p.Where(person => person.Title.Contains("a")).Take(1)
+            //        .Expand(p2 => p2.Type)
+            //        )
+            //    .ToListWithResponse();
+            //foreach (var item in dataResult.Data)
+            //{
+            //    Console.WriteLine($"- {item.Title}");
+            //    foreach (var person in item.People)
+            //    {
+            //        PrintPerson(person);
+            //    }
+            //}
 
-            Console.WriteLine("WithKey result:");
-            var paulina = await db.People.WithKey(2);
-            Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
+            //Console.WriteLine("WithKey result:");
+            //var paulina = await db.People.WithKey(2);
+            //Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
             Console.WriteLine("Inserting Marta with Type ID:");
             var marta = new Person();
             marta.TypeId = 1;
             marta.Title = "Marta";
             marta.Jobs = marta.Jobs ?? new List<PersonJob>();
-            marta.Jobs.Add(new PersonJob { JobId = 2 });
+            var personJob = new PersonJob { JobId = 2, Description = "first"};
+            marta.Jobs.Add(personJob);
+            personJob.SetFieldValue("_id", "test");
             db.People.Add(marta);
+            await db.SaveChanges();
+            personJob.Description = "second";
             await db.SaveChanges();
             Console.WriteLine("Marta's ID: " + marta.Id);
 
@@ -59,7 +70,10 @@ namespace Iql.TestBed
 
             Console.WriteLine("Updating collection on Marta:");
             marta.Jobs = marta.Jobs ?? new List<PersonJob>();
+            personJob.Description = "third";
             marta.Jobs.Add(new PersonJob { JobId = 1, PersonId = marta.Id });
+            await db.SaveChanges();
+            marta.Jobs.Remove(personJob);
             await db.SaveChanges();
 
             Console.WriteLine("Deleting Marta:");
