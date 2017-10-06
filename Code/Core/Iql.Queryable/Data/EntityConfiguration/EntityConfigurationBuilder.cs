@@ -25,6 +25,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return entityConfiguration;
         }
 
+        public IEnumerable<IEntityConfiguration> AllConfigurations()
+        {
+            return _entities.Values;
+        }
+
         public EntityConfiguration<T> GetEntity<T>() where T : class
         {
             return GetEntityByName(typeof(T).Name) as EntityConfiguration<T>;

@@ -118,5 +118,32 @@ namespace Iql.Queryable.Data
         {
             return await DataStore.SaveChanges(new SaveChangesOperation(this));
         }
+
+        public bool IsIdMatch(object left, object right)
+        {
+            if (new[] {left, right}.Count(i => i == null) == 1)
+            {
+                return false;
+            }
+            if (left.GetType() != right.GetType())
+            {
+                return false;
+            }
+            if (left == right)
+            {
+                return true;
+            }
+            var configuration = EntityConfigurationContext.GetEntityByType(left.GetType());
+            var isMatch = true;
+            foreach (var id in configuration.Key.Properties)
+            {
+                if (!Equals(left.GetPropertyValue(id.PropertyName), right.GetPropertyValue(id.PropertyName)))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
     }
 }

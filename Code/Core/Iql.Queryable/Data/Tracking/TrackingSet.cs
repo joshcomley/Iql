@@ -33,6 +33,11 @@ namespace Iql.Queryable.Data.Tracking
             Clone = Set.Clone();
         }
 
+        public IEnumerable<object> TrackedEntites()
+        {
+            return Set.ToList();
+        }
+
         public Type EntityType => typeof(T);
 
         void ITrackingSet.Track(object entity)

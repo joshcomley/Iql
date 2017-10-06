@@ -7,6 +7,7 @@ namespace Iql.Queryable.Data.Tracking
 {
     public interface ITrackingSet
     {
+        IEnumerable<object> TrackedEntites();
         Type EntityType { get; }
         void Track(object entity);
         void TrackWithClone(object entity, object clone);

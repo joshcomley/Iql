@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -26,5 +28,9 @@ namespace Iql.Queryable.Data
             obj.GetType().GetRuntimeFields().Single(f => f.Name == propertyName).SetValue(obj, value);
         }
 #endif
+        public static bool IsArray(this object obj)
+        {
+            return obj is IEnumerable && !(obj is string);
+        }
     }
 }

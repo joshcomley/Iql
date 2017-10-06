@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -149,6 +150,60 @@ namespace Iql.Queryable
 
         public DeleteEntityResult<T> Delete(T entity)
         {
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
+            foreach (var configuration in DataContext.EntityConfigurationContext.AllConfigurations())
+            {
+                foreach (var relationship in configuration.Relationships)
+                {
+                    var isSource = relationship.Source.Configuration == entityConfiguration;
+                    if (isSource ||
+                        relationship.Target.Configuration == entityConfiguration)
+                    {
+                        var target = isSource
+                            ? relationship.Target
+                            : relationship.Source;
+                        foreach (var relatedEntity in DataContext.DataStore.GetTracking().TrackingSet(target.Type)
+                            .TrackedEntites())
+                        {
+                            var relatedItem = relatedEntity.GetPropertyValue(target.Property.PropertyName);
+                            if (relatedItem.IsArray())
+                            {
+                                var enumerable = relatedItem as IList;
+                                if (enumerable != null)
+                                {
+                                    var toRemove = new List<object>();
+                                    foreach (var relatedArrayItem in enumerable)
+                                    {
+                                        if (DataContext.IsIdMatch(entity, relatedArrayItem))
+                                        {
+                                            toRemove.Add(relatedArrayItem);
+                                        }
+                                    }
+                                    foreach (var toRemoveItem in toRemove)
+                                    {
+                                        enumerable.Remove(toRemoveItem);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (DataContext.IsIdMatch(entity, relatedItem))
+                                {
+                                    relatedEntity.SetPropertyValue(target.Property.PropertyName, null);
+                                    foreach (var constraint in relationship.Constraints)
+                                    {
+                                        var property = isSource
+                                            ? constraint.SourceKeyProperty
+                                            : constraint.TargetKeyProperty;
+                                        relatedEntity.SetPropertyValue(property.PropertyName, null);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             return DataContext.DataStore.Delete(
                 new DeleteEntityOperation<T>(entity, DataContext));
         }

@@ -19,5 +19,6 @@ namespace Iql.Queryable.Data
 
         IDbSet AsDbSetByType(Type entityType);
         DbSet<T, TKey> AsDbSet<T, TKey>() where T : class;
+        bool IsIdMatch(object left, object right);
     }
 }
