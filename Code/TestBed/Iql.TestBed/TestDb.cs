@@ -14,74 +14,78 @@ namespace Iql.TestBed
             // TODO: Create new DotNetQuery class inheriting from above base class that constructs an expression tree
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
-            var db = new AppDbContext();
-            var refreshConfig = new EntityDefaultQueryConfiguration();
-            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).Expand(p => p.Jobs));
-            db.RegisterConfiguration(refreshConfig);
-            //await db.People.ToList();
-            //var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
-            //    .ExpandCollection(
-            //        p => p.People,
-            //        p => p.Expand(pp => pp.Type)
-            //    )
-            //    .ToListWithResponse();
-            //var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
-            //    .ExpandCollection(
-            //        p => p.People,
-            //        p => p.Where(person => person.Title.Contains("a")).Take(1)
-            //        .Expand(p2 => p2.Type)
-            //        )
-            //    .ToListWithResponse();
-            //foreach (var item in dataResult.Data)
-            //{
-            //    Console.WriteLine($"- {item.Title}");
-            //    foreach (var person in item.People)
-            //    {
-            //        PrintPerson(person);
-            //    }
-            //}
+            //var db = new AppDbContext();
+            //var refreshConfig = new EntityDefaultQueryConfiguration();
+            //refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).Expand(p => p.Jobs));
+            //db.RegisterConfiguration(refreshConfig);
+            ////await db.People.ToList();
+            ////var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
+            ////    .ExpandCollection(
+            ////        p => p.People,
+            ////        p => p.Expand(pp => pp.Type)
+            ////    )
+            ////    .ToListWithResponse();
+            ////var dataResult = await db.PersonTypes.OrderBy(p => p.Title)
+            ////    .ExpandCollection(
+            ////        p => p.People,
+            ////        p => p.Where(person => person.Title.Contains("a")).Take(1)
+            ////        .Expand(p2 => p2.Type)
+            ////        )
+            ////    .ToListWithResponse();
+            ////foreach (var item in dataResult.Data)
+            ////{
+            ////    Console.WriteLine($"- {item.Title}");
+            ////    foreach (var person in item.People)
+            ////    {
+            ////        PrintPerson(person);
+            ////    }
+            ////}
 
-            //Console.WriteLine("WithKey result:");
-            //var paulina = await db.People.WithKey(2);
-            //Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
+            ////Console.WriteLine("WithKey result:");
+            ////var paulina = await db.People.WithKey(2);
+            ////Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
-            Console.WriteLine("Inserting Marta with Type ID:");
-            var marta = new Person();
-            marta.TypeId = 1;
-            marta.Title = "Marta";
-            marta.Jobs = marta.Jobs ?? new List<PersonJob>();
-            var personJob = new PersonJob { JobId = 2, Description = "first"};
-            marta.Jobs.Add(personJob);
-            personJob.SetFieldValue("_id", "test");
-            db.People.Add(marta);
-            await db.SaveChanges();
-            personJob.Description = "second";
-            await db.SaveChanges();
-            Console.WriteLine("Marta's ID: " + marta.Id);
+            //Console.WriteLine("Inserting Marta with Type ID:");
+            //var marta = new Person();
+            //marta.TypeId = 1;
+            //marta.Title = "Marta";
+            //marta.Types.Add(new PersonTypeMap());
+            //var personJob = new PersonJob { JobId = 2, Description = "first"};
+            //marta.Jobs.Add(personJob);
+            //personJob.SetFieldValue("_id", "test");
+            //db.People.Add(marta);
+            //await db.SaveChanges();
+            //personJob.Description = "second";
+            //await db.SaveChanges();
+            //Console.WriteLine("Marta's ID: " + marta.Id);
 
-            Console.WriteLine("Fetching Marta:");
-            var martaDb = await new AppDbContext().People.WithKey(marta.Id);
-            Console.WriteLine("Fetched Marta ID: " + martaDb.Id);
+            //Console.WriteLine("Fetching Marta:");
+            //var martaDb = await new AppDbContext().People.WithKey(marta.Id);
+            //Console.WriteLine("Fetched Marta ID: " + martaDb.Id);
 
-            Console.WriteLine("Updating string on Marta:");
-            marta.Description = "I've been updated";
-            await db.SaveChanges();
-            var martaDbAfterUpdate = await new AppDbContext().People.WithKey(marta.Id);
+            //Console.WriteLine("Updating string on Marta:");
+            //marta.Description = "I've been updated";
+            //await db.SaveChanges();
+            //var martaDbAfterUpdate = await new AppDbContext().People.WithKey(marta.Id);
 
-            Console.WriteLine("Updating collection on Marta:");
-            marta.Jobs = marta.Jobs ?? new List<PersonJob>();
-            personJob.Description = "third";
-            marta.Jobs.Add(new PersonJob { JobId = 1, PersonId = marta.Id });
-            await db.SaveChanges();
-            db.PersonJobs.Delete(personJob);
-            //marta.Jobs.Remove(personJob);
-            await db.SaveChanges();
+            //Console.WriteLine("Updating collection on Marta:");
+            //marta.Jobs = marta.Jobs ?? new List<PersonJob>();
+            //personJob.Description = "third";
+            //marta.Jobs.Add(new PersonJob { JobId = 1, PersonId = marta.Id });
+            //await db.SaveChanges();
+            //db.PersonJobs.Delete(personJob);
+            ////marta.Jobs.Remove(personJob);
+            //await db.SaveChanges();
 
-            Console.WriteLine("Deleting Marta:");
-            db.People.Delete(marta);
-            await db.SaveChanges();
-            var martaDbAfterDelete = await new AppDbContext().People.WithKey(marta.Id);
-            Console.WriteLine("Fetched Marta after delete: " + (martaDbAfterDelete != null ? martaDbAfterDelete.Id.ToString() : "Not found"));
+            //Console.WriteLine("Deleting Marta:");
+            //db.People.Delete(marta);
+            //await db.SaveChanges();
+            //var martaDbAfterDelete = await new AppDbContext().People.WithKey(marta.Id);
+            //Console.WriteLine("Fetched Marta after delete: " + (martaDbAfterDelete != null ? martaDbAfterDelete.Id.ToString() : "Not found"));
+
+
+
+
             //cara.Data[0].Name = "Changed!";
             //await db.SaveChanges();
             //db.People.Add(new Person
