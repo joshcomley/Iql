@@ -4,7 +4,6 @@ using Iql.JavaScript.QueryToJavaScript;
 #endif
 using Iql.DotNet.Http;
 using Iql.OData.Data;
-using Iql.Queryable.Data.DataStores;
 
 namespace Iql.TestBed
 {

@@ -483,6 +483,8 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.PersonId)			
 			.DefineProperty(p => p.TypeId)			
 			.DefineProperty(p => p.Notes)			
+			.DefineProperty(p => p.Guid)			
+			.DefineProperty(p => p.CreatedDate)			
 			.DefineProperty(p => p.Person)			
 			.DefineProperty(p => p.Type);		
 		

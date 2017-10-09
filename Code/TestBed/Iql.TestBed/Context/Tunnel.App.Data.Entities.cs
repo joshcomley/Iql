@@ -133,6 +133,8 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 	public int PersonId { get; set; }
 	public int TypeId { get; set; }
 	public string Notes { get; set; }
+	public string Guid { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public Person Person { get; set; }
 	public PersonType Type { get; set; }
 	public override ODataDataStore GetODataDataStore() {

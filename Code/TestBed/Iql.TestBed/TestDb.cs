@@ -53,8 +53,13 @@ namespace Iql.TestBed
             marta.TypeId = 1;
             marta.Title = "Marta";
             marta.Types = marta.Types ?? new List<PersonTypeMap>();
-            marta.Types.Add(new PersonTypeMap(){TypeId = polish.Data.Id, Notes = "test 1212"});
+            var personTypeMap = new PersonTypeMap { TypeId = polish.Data.Id, Notes = "test 1212" };
+            marta.Types.Add(personTypeMap);
             db.People.Add(marta);
+            await db.SaveChanges();
+            db.PersonTypesMap.Delete(personTypeMap);
+            await db.SaveChanges();
+            marta.Title += " - 2";
             await db.SaveChanges();
             int a = 0;
             //var personJob = new PersonJob { JobId = 2, Description = "first"};

@@ -64,14 +64,14 @@ namespace Iql.Queryable.Data.DataStores
                                         foreach (var localItem in localListCopy)
                                         {
                                             var isMatch = true;
-                                            foreach (var keyProperty in targetRelationship.Configuration.Properties)
+                                            foreach (var keyProperty in targetRelationship.Configuration.Key.Properties)
                                             {
-                                                if (relationship.Constraints.Any(c => c.SourceKeyProperty.PropertyName == keyProperty.Name))
+                                                if (relationship.Constraints.Any(c => c.SourceKeyProperty.PropertyName == keyProperty.PropertyName))
                                                 {
                                                     continue;
                                                 }
-                                                if (!Equals(remoteItem.GetPropertyValue(keyProperty.Name),
-                                                    localItem.GetPropertyValue(keyProperty.Name)))
+                                                if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
+                                                    localItem.GetPropertyValue(keyProperty.PropertyName)))
                                                 {
                                                     isMatch = false;
                                                     break;

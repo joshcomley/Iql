@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -25,7 +26,18 @@ namespace Iql.OData.Data
         private static JObject Serialize(IDataContext dataContext, object entity, IEnumerable<PropertyChange> properties)
         {
             var obj = new JObject();
+            if (properties == null)
+            {
+                properties = new PropertyChange[] { };
+            }
             var propertyChanges = properties as PropertyChange[] ?? properties.ToArray();
+            if (!propertyChanges.Any())
+            {
+                if (dataContext.IsEntityNew(entity))
+                {
+                    propertyChanges = dataContext.EntityNonNullProperties(entity).ToArray();
+                }
+            }
             foreach (var property in propertyChanges)
             {
                 if (property.ChildChangedProperties.Any() || property.Property.Type.IsClass &&
@@ -45,7 +57,7 @@ namespace Iql.OData.Data
                             }
                             else
                             {
-                                array.Add(Serialize(dataContext, item, new PropertyChange[]{}));
+                                array.Add(Serialize(dataContext, item, null));
                             }
                             i++;
                         }

@@ -13,6 +13,7 @@ using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Http;
+using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -80,19 +81,7 @@ namespace Iql.OData.Data
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entitySetUri = ResolveEntitySetUri<TEntity>();
-            var entityConfiguration =
-                operation.Operation.DataContext.EntityConfigurationContext.GetEntityByType(operation.Operation
-                    .EntityType);
-            var properties = new List<PropertyChange>();
-            foreach (var property in entityConfiguration.Properties)
-            {
-                var propertyValue = operation.Operation.Entity.GetPropertyValue(property.Name);
-                if (propertyValue != null)
-                {
-                    properties.Add(new PropertyChange(property));
-                }
-            }
-            var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext, properties.ToArray());
+            var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
             operation.Result.Success = httpResult.Success;
