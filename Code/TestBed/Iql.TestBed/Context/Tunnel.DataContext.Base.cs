@@ -1,3 +1,4 @@
+using Iql.Queryable.Operations;
 using Iql.OData.Data;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.EntityConfiguration;
@@ -25,11 +26,11 @@ public class TunnelDataContextBase : DataContext {
 		this.PersonInspections = this.AsDbSet<PersonInspection, int>();		
 		this.PersonLoadings = this.AsDbSet<PersonLoading, int>();		
 		this.PersonTypes = this.AsDbSet<PersonType, int>();		
-		this.PersonTypesMap = this.AsDbSet<PersonTypeMap, int>();		
+		this.PersonTypesMap = this.AsDbSet<PersonTypeMap, CompositeKey>();		
 		this.PersonReports = this.AsDbSet<PersonReport, int>();		
 		this.Sites = this.AsDbSet<Site, int>();		
 		this.SiteInspections = this.AsDbSet<SiteInspection, int>();		
-		this.UserSites = this.AsDbSet<UserSite, int>();		
+		this.UserSites = this.AsDbSet<UserSite, CompositeKey>();		
 		this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
 		this.ODataConfiguration.RegisterEntitySet<ApplicationUser>("Users");
 		this.ODataConfiguration.RegisterEntitySet<Client>("Clients");
@@ -478,9 +479,10 @@ public class TunnelDataContextBase : DataContext {
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);		
 		
 		builder.DefineEntity<PersonTypeMap>()		
-			.HasKey(p => p.PersonId)			
+			.HasCompositeKey(p => p.PersonId, p => p.TypeId)			
 			.DefineProperty(p => p.PersonId)			
 			.DefineProperty(p => p.TypeId)			
+			.DefineProperty(p => p.Notes)			
 			.DefineProperty(p => p.Person)			
 			.DefineProperty(p => p.Type);		
 		
@@ -590,7 +592,7 @@ public class TunnelDataContextBase : DataContext {
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);		
 		
 		builder.DefineEntity<UserSite>()		
-			.HasKey(p => p.SiteId)			
+			.HasCompositeKey(p => p.SiteId, p => p.UserId)			
 			.DefineProperty(p => p.SiteId)			
 			.DefineProperty(p => p.UserId)			
 			.DefineProperty(p => p.User)			
@@ -607,29 +609,29 @@ public class TunnelDataContextBase : DataContext {
 			.WithConstraint(p => p.SiteId, p => p.Id);		
 	}
 	
-	public DbSet<ApplicationUser,string> Users { get; set; }
-	public DbSet<Client,int> Clients { get; set; }
-	public DbSet<ClientType,int> ClientTypes { get; set; }
-	public DbSet<DocumentCategory,int> DocumentCategories { get; set; }
-	public DbSet<SiteDocument,int> SiteDocuments { get; set; }
-	public DbSet<ReportActionsTaken,int> ReportActionsTaken { get; set; }
-	public DbSet<ReportCategory,int> ReportCategories { get; set; }
-	public DbSet<ReportDefaultRecommendation,int> ReportDefaultRecommendations { get; set; }
-	public DbSet<ReportRecommendation,int> ReportRecommendations { get; set; }
-	public DbSet<ReportType,int> ReportTypes { get; set; }
-	public DbSet<Project,int> Projects { get; set; }
-	public DbSet<ReportReceiverEmailAddress,int> ReportReceiverEmailAddresses { get; set; }
-	public DbSet<RiskAssessment,int> RiskAssessments { get; set; }
-	public DbSet<RiskAssessmentAnswer,int> RiskAssessmentAnswers { get; set; }
-	public DbSet<RiskAssessmentQuestion,int> RiskAssessmentQuestions { get; set; }
-	public DbSet<Person,int> People { get; set; }
-	public DbSet<PersonInspection,int> PersonInspections { get; set; }
-	public DbSet<PersonLoading,int> PersonLoadings { get; set; }
-	public DbSet<PersonType,int> PersonTypes { get; set; }
-	public DbSet<PersonTypeMap,int> PersonTypesMap { get; set; }
-	public DbSet<PersonReport,int> PersonReports { get; set; }
-	public DbSet<Site,int> Sites { get; set; }
-	public DbSet<SiteInspection,int> SiteInspections { get; set; }
-	public DbSet<UserSite,int> UserSites { get; set; }
+	public DbSet<ApplicationUser, string> Users { get; set; }
+	public DbSet<Client, int> Clients { get; set; }
+	public DbSet<ClientType, int> ClientTypes { get; set; }
+	public DbSet<DocumentCategory, int> DocumentCategories { get; set; }
+	public DbSet<SiteDocument, int> SiteDocuments { get; set; }
+	public DbSet<ReportActionsTaken, int> ReportActionsTaken { get; set; }
+	public DbSet<ReportCategory, int> ReportCategories { get; set; }
+	public DbSet<ReportDefaultRecommendation, int> ReportDefaultRecommendations { get; set; }
+	public DbSet<ReportRecommendation, int> ReportRecommendations { get; set; }
+	public DbSet<ReportType, int> ReportTypes { get; set; }
+	public DbSet<Project, int> Projects { get; set; }
+	public DbSet<ReportReceiverEmailAddress, int> ReportReceiverEmailAddresses { get; set; }
+	public DbSet<RiskAssessment, int> RiskAssessments { get; set; }
+	public DbSet<RiskAssessmentAnswer, int> RiskAssessmentAnswers { get; set; }
+	public DbSet<RiskAssessmentQuestion, int> RiskAssessmentQuestions { get; set; }
+	public DbSet<Person, int> People { get; set; }
+	public DbSet<PersonInspection, int> PersonInspections { get; set; }
+	public DbSet<PersonLoading, int> PersonLoadings { get; set; }
+	public DbSet<PersonType, int> PersonTypes { get; set; }
+	public DbSet<PersonTypeMap, CompositeKey> PersonTypesMap { get; set; }
+	public DbSet<PersonReport, int> PersonReports { get; set; }
+	public DbSet<Site, int> Sites { get; set; }
+	public DbSet<SiteInspection, int> SiteInspections { get; set; }
+	public DbSet<UserSite, CompositeKey> UserSites { get; set; }
 }
 

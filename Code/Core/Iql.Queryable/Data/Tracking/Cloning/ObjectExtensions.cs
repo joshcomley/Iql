@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using TypeSharp.Extensions;
@@ -71,7 +72,16 @@ namespace Iql.Queryable.Data.Tracking.Cloning
                     IInstanceProvider instance = null;
                     try
                     {
-                        if (!t.IsInterface)
+                        var canInstantiate = true;
+                        if (t.ContainsGenericParameters && !t.GenericTypeArguments.Any())
+                        {
+                            canInstantiate = false;
+                        }
+                        else if (t.IsInterface)
+                        {
+                            canInstantiate = false;
+                        }
+                        if (canInstantiate)
                         {
                             instance = (IInstanceProvider)Activator.CreateInstance(t);
                         }

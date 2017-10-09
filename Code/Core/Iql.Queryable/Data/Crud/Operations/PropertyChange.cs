@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Crud.Operations
 {
+    [DebuggerDisplay("{Property.Name}")]
     public class PropertyChange
     {
         public PropertyChange(IKeyProperty property)

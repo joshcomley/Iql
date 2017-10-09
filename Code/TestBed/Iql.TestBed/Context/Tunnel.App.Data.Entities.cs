@@ -55,10 +55,10 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 	public int RiskAssessmentId { get; set; }
 	public int SiteId { get; set; }
 	public string CreatedByUserId { get; set; }
-	public DateTime StartTime { get; set; }
-	public DateTime EndTime { get; set; }
+	public DateTimeOffset StartTime { get; set; }
+	public DateTimeOffset EndTime { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<PersonInspection> PersonInspections { get; set; }
 	public RiskAssessment RiskAssessment { get; set; }
@@ -76,16 +76,16 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 
 public class Site : SiteBase, IEntity {
 	public int Id { get; set; }
-	public int ParentId { get; set; }
+	public int? ParentId { get; set; }
 	public string CreatedByUserId { get; set; }
 	public string Address { get; set; }
 	public string PostCode { get; set; }
-	public int ClientId { get; set; }
+	public int? ClientId { get; set; }
 	public string Name { get; set; }
 	public int Left { get; set; }
 	public int Right { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<SiteDocument> Documents { get; set; }
 	public List<ReportReceiverEmailAddress> AdditionalSendReportsTo { get; set; }
@@ -110,9 +110,9 @@ public class PersonReport : PersonReportBase, IEntity {
 	public int PersonId { get; set; }
 	public int TypeId { get; set; }
 	public string CreatedByUserId { get; set; }
-	public int Status { get; set; }
+	public FaultReportStatus Status { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<ReportActionsTaken> ActionsTaken { get; set; }
 	public List<ReportRecommendation> Recommendations { get; set; }
@@ -132,6 +132,7 @@ public class PersonReport : PersonReportBase, IEntity {
 public class PersonTypeMap : PersonTypeMapBase, IEntity {
 	public int PersonId { get; set; }
 	public int TypeId { get; set; }
+	public string Notes { get; set; }
 	public Person Person { get; set; }
 	public PersonType Type { get; set; }
 	public override ODataDataStore GetODataDataStore() {
@@ -150,7 +151,7 @@ public class PersonType : PersonTypeBase, IEntity {
 	public string Title { get; set; }
 	public string Description { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<Person> People { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -170,7 +171,7 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 	public string CreatedByUserId { get; set; }
 	public string Name { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<Person> People { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -188,15 +189,15 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 	public int SiteInspectionId { get; set; }
 	public string CreatedByUserId { get; set; }
 	public int PersonId { get; set; }
-	public int InspectionStatus { get; set; }
-	public DateTime StartTime { get; set; }
-	public DateTime EndTime { get; set; }
-	public int ReasonForFailure { get; set; }
+	public PersonInspectionStatus InspectionStatus { get; set; }
+	public DateTimeOffset StartTime { get; set; }
+	public DateTimeOffset EndTime { get; set; }
+	public InspectionFailReason ReasonForFailure { get; set; }
 	public bool IsDesignRequired { get; set; }
 	public string DrawingNumber { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public SiteInspection SiteInspection { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -211,17 +212,17 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 }
 
 public class Person : PersonBase, IEntity {
-	public int TypeId { get; set; }
-	public int LoadingId { get; set; }
+	public int? TypeId { get; set; }
+	public int? LoadingId { get; set; }
 	public int Id { get; set; }
 	public string CreatedByUserId { get; set; }
 	public string Key { get; set; }
 	public string Title { get; set; }
 	public string Description { get; set; }
-	public int Category { get; set; }
-	public int ClientId { get; set; }
+	public PersonCategory Category { get; set; }
+	public int? ClientId { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public Client Client { get; set; }
 	public PersonType Type { get; set; }
@@ -269,7 +270,7 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 	public string CreatedByUserId { get; set; }
 	public string Name { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<RiskAssessmentAnswer> Answers { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -290,7 +291,7 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 	public string PrecautionsToControlHazard { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public RiskAssessmentQuestion Question { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -309,7 +310,7 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 	public int Id { get; set; }
 	public string CreatedByUserId { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
 	public SiteInspection SiteInspection { get; set; }
@@ -329,7 +330,7 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 	public string EmailAddress { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public Site Site { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -365,7 +366,7 @@ public class ReportType : ReportTypeBase, IEntity {
 	public string CreatedByUserId { get; set; }
 	public string Name { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public ReportCategory Category { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -387,7 +388,7 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 	public string Notes { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public PersonReport PersonReport { get; set; }
 	public ReportDefaultRecommendation Recommendation { get; set; }
@@ -408,7 +409,7 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 	public string Name { get; set; }
 	public string Text { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
 	public List<ReportRecommendation> Recommendations { get; set; }
@@ -427,7 +428,7 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 	public string CreatedByUserId { get; set; }
 	public string Name { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
 	public List<ReportType> FaultTypes { get; set; }
@@ -447,7 +448,7 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 	public string Notes { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public PersonReport PersonReport { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
@@ -468,7 +469,7 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 	public string Title { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public DocumentCategory Category { get; set; }
 	public Site Site { get; set; }
@@ -488,7 +489,7 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 	public string CreatedByUserId { get; set; }
 	public string Name { get; set; }
 	public string Guid { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public ApplicationUser CreatedByUser { get; set; }
 	public List<SiteDocument> Documents { get; set; }
@@ -523,7 +524,7 @@ public class Client : ClientBase, IEntity {
 	public string Description { get; set; }
 	public string Guid { get; set; }
 	public int Id { get; set; }
-	public DateTime CreatedDate { get; set; }
+	public DateTimeOffset CreatedDate { get; set; }
 	public int Version { get; set; }
 	public List<ApplicationUser> Users { get; set; }
 	public ClientType Type { get; set; }
@@ -541,11 +542,11 @@ public class Client : ClientBase, IEntity {
 
 public class ApplicationUser : ApplicationUserBase, IEntity {
 	public string Id { get; set; }
-	public int ClientId { get; set; }
+	public int? ClientId { get; set; }
 	public string Email { get; set; }
 	public string FullName { get; set; }
 	public bool EmailConfirmed { get; set; }
-	public int UserType { get; set; }
+	public UserType UserType { get; set; }
 	public bool IsLockedOut { get; set; }
 	public Client Client { get; set; }
 	public List<Client> ClientsCreated { get; set; }

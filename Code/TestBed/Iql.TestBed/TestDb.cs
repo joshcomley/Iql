@@ -14,10 +14,12 @@ namespace Iql.TestBed
             // TODO: Create new DotNetQuery class inheriting from above base class that constructs an expression tree
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
-            //var db = new AppDbContext();
-            //var refreshConfig = new EntityDefaultQueryConfiguration();
-            //refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).Expand(p => p.Jobs));
-            //db.RegisterConfiguration(refreshConfig);
+            var db = new AppDbContext();
+            var refreshConfig = new EntityDefaultQueryConfiguration();
+            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).Expand(p => p.Types));
+            db.RegisterConfiguration(refreshConfig);
+            //var personTypes = await db.PersonTypes.ToList();
+            //int a = 0;
             ////await db.People.ToList();
             ////var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
             ////    .ExpandCollection(
@@ -45,11 +47,16 @@ namespace Iql.TestBed
             ////var paulina = await db.People.WithKey(2);
             ////Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
-            //Console.WriteLine("Inserting Marta with Type ID:");
-            //var marta = new Person();
-            //marta.TypeId = 1;
-            //marta.Title = "Marta";
-            //marta.Types.Add(new PersonTypeMap());
+            var polish = await db.PersonTypes.Where(p => p.Title == "Polish").Single();
+            Console.WriteLine("Inserting Marta with Type ID:");
+            var marta = new Person();
+            marta.TypeId = 1;
+            marta.Title = "Marta";
+            marta.Types = marta.Types ?? new List<PersonTypeMap>();
+            marta.Types.Add(new PersonTypeMap(){TypeId = polish.Data.Id, Notes = "test 1212"});
+            db.People.Add(marta);
+            await db.SaveChanges();
+            int a = 0;
             //var personJob = new PersonJob { JobId = 2, Description = "first"};
             //marta.Jobs.Add(personJob);
             //personJob.SetFieldValue("_id", "test");

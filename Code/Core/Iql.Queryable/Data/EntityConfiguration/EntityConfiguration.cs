@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -46,11 +47,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        public EntityConfiguration<T> HasCompositeKey<TKey>(
+        public EntityConfiguration<T> HasCompositeKey(
             params Expression<Func<T, object>>[] properties
         )
         {
-            Key = new EntityKey<T, TKey>();
+            Key = new EntityKey<T, CompositeKey>();
             foreach (var property in properties)
             {
                 var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
