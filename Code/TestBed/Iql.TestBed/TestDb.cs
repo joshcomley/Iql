@@ -71,6 +71,8 @@ namespace Iql.TestBed
             await db.SaveChanges();
             marta.Title = null;
             await db.SaveChanges();
+            marta.TypeId = null;
+            await db.SaveChanges();
             int a = 0;
             //var personJob = new PersonJob { JobId = 2, Description = "first"};
             //marta.Jobs.Add(personJob);
