@@ -1,29 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Extensions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using TypeSharp.Extensions;
 
 namespace Iql.OData.Data
 {
-    [DoNotConvert]
+    //[DoNotConvert]
     public static class JsonSerializer
     {
         public static string Serialize(object entity, 
             IDataContext dataContext,
             params PropertyChange[] properties)
         {
-            var obj = Serialize(dataContext, entity, properties);
+            var obj = SerializeInternal(dataContext, entity, properties);
             return obj.ToString();
         }
 
-        private static JObject Serialize(IDataContext dataContext, object entity, IEnumerable<PropertyChange> properties)
+        private static JObject SerializeInternal(IDataContext dataContext, object entity, IEnumerable<PropertyChange> properties)
         {
             var obj = new JObject();
             if (properties == null)
@@ -53,11 +50,11 @@ namespace Iql.OData.Data
                         {
                             if (property.EnumerableChangedProperties.ContainsKey(i))
                             {
-                                array.Add(Serialize(dataContext, item, property.EnumerableChangedProperties[i]));
+                                array.Add(SerializeInternal(dataContext, item, property.EnumerableChangedProperties[i]));
                             }
                             else
                             {
-                                array.Add(Serialize(dataContext, item, null));
+                                array.Add(SerializeInternal(dataContext, item, null));
                             }
                             i++;
                         }
@@ -65,7 +62,7 @@ namespace Iql.OData.Data
                     }
                     else
                     {
-                        obj[property.Property.Name] = Serialize(dataContext, entity.GetPropertyValue(property.Property.Name), property.ChildChangedProperties);
+                        obj[property.Property.Name] = SerializeInternal(dataContext, entity.GetPropertyValue(property.Property.Name), property.ChildChangedProperties);
                     }
                 }
                 else

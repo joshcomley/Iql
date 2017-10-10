@@ -168,6 +168,7 @@ namespace Iql.Queryable
                             var relatedItem = relatedEntity.GetPropertyValue(target.Property.PropertyName);
                             if (relatedItem.IsArray())
                             {
+                                var enumerable2 = relatedItem as IEnumerable;
                                 var enumerable = relatedItem as IList;
                                 if (enumerable != null)
                                 {

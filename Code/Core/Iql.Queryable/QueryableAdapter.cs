@@ -10,8 +10,8 @@ namespace Iql.Queryable
         : IQueryableAdapter<TQueryResult>
         where TQueryResult : IQueryResultBase
     {
-        private readonly Dictionary<string, Func<IQueryOperationApplicatorBase>> _applicators =
-            new Dictionary<string, Func<IQueryOperationApplicatorBase>>();
+        private readonly Dictionary<Type, Func<IQueryOperationApplicatorBase>> _applicators =
+            new Dictionary<Type, Func<IQueryOperationApplicatorBase>>();
 
         //DataContext<TQueryResult, QueryableAdapter<TQueryData, TQueryResult>, any> context;
         //DataContext<TQueryResult, QueryableAdapter<TQueryData, TQueryResult>> context;
@@ -38,32 +38,19 @@ namespace Iql.Queryable
             where TOperation : IQueryOperation
         {
             var type = operation.GetType();
-            var name = type.Name;
-            return ResolveApplicatorInternal(name);
+            return ResolveApplicatorInternal(type);
         }
 
-        private IQueryOperationApplicatorBase ResolveApplicatorInternal(string name)
+        private IQueryOperationApplicatorBase ResolveApplicatorInternal(Type type)
         {
-            while (true)
+            foreach (var applicator in _applicators)
             {
-                var index = name.IndexOf("`", StringComparison.Ordinal);
-                if (index != -1)
+                if (applicator.Key.IsAssignableFrom(type))
                 {
-                    name = name.Substring(0, index);
+                    return applicator.Value();
                 }
-                if (!_applicators.ContainsKey(name))
-                {
-                    if (name.StartsWith("I"))
-                    {
-                        return null;
-                    }
-                    // This is a big hack until we support interfaces in TypeScript
-                    name = "I" + name;
-                    continue;
-                }
-                var pre = _applicators[name]();
-                return pre;
             }
+            return null;
         }
 
         //public void registerApplicator<TOperation>(Func<IQueryOperationApplicator<TOperation, TQueryResult>> resolve) where TOperation : IQueryOperationBase
@@ -71,8 +58,7 @@ namespace Iql.Queryable
             Func<IQueryOperationApplicator<TOperation, TQueryResult>> resolve)
             where TOperation : IQueryOperation
         {
-            var name = typeof(TOperation).Name;
-            _applicators[name] = resolve;
+            _applicators[typeof(TOperation)] = resolve;
         }
     }
 }

@@ -123,7 +123,7 @@ namespace Iql.Queryable
             var name = nameof(IQueryOperationApplicator<IExpressionQueryOperation, IQueryResultBase>.Apply);
             var method = applicator.GetType()
                 .GetRuntimeMethods()
-                .Single(m => m.Name == name)
+                .First(m => m.Name == name)
                 .MakeGenericMethod(Queryable.ItemType);
             var args = new List<object>();
             args.Add(context);

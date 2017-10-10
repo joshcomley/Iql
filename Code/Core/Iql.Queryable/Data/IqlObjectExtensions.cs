@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Iql.Queryable.Data
 {
-    public static class ObjectExtensions
+    public static class IqlObjectExtensions
     {
         public static object GetPropertyValue<T>(this T obj, string propertyName)
         {

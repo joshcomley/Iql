@@ -47,7 +47,7 @@ namespace Iql.Queryable.Data.Tracking
         public ITrackingSet TrackingSet(Type entityType)
         {
             var set = (ITrackingSet) typeof(TrackingSetCollection).GetRuntimeMethods()
-                .Single(m => m.Name == nameof(GetSet))
+                .First(m => m.Name == nameof(GetSet))
                 .MakeGenericMethod(entityType)
                 .Invoke(this, new object[]
                 {

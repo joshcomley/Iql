@@ -12,7 +12,7 @@ namespace Iql.Queryable.Data.Tracking.Cloning
     ///     on the <see cref="System.Object" /> type.
     /// </summary>
     [DoNotConvert]
-    public static class ObjectExtensions
+    public static class ObjectCloner
     {
         /// <summary>
         ///     A list of instance providers that are available.

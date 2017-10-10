@@ -65,11 +65,13 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, TProperty>> property
         )
         {
+#if !TypeScript
             if (typeof(IEnumerable).IsAssignableFrom(typeof(TProperty)) && !
                     typeof(string).IsAssignableFrom(typeof(TProperty)))
             {
                 throw new Exception($"Please use {nameof(DefineCollectionProperty)} to define collection properties.");
             }
+#endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
             var definition = new KeyProperty<TProperty>(name);
