@@ -1,16 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Tracking;
 
 namespace Iql.Queryable.Data.DataStores
 {
     public class ObjectMerger
     {
-        public static void Merge(IDataContext dataContext, object localEntity, object remoteEntity)
+        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object localEntity, object remoteEntity)
         {
+            var matchedEntity = trackingSetCollection.TrackingSet(localEntity.GetType()).FindTrackedEntity(localEntity);
             if (remoteEntity != null)
             {
                 var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(localEntity.GetType());
@@ -77,6 +77,10 @@ namespace Iql.Queryable.Data.DataStores
                                                     break;
                                                 }
                                             }
+                                            if (!isMatch)
+                                            {
+                                                
+                                            }
                                             if (isMatch)
                                             {
                                                 match = localItem;
@@ -90,7 +94,7 @@ namespace Iql.Queryable.Data.DataStores
                                         }
                                         else
                                         {
-                                            Merge(dataContext, match, remoteItem);
+                                            Merge(dataContext, trackingSetCollection, match, remoteItem);
                                             localList.Add(match);
                                         }
                                     }
@@ -99,6 +103,7 @@ namespace Iql.Queryable.Data.DataStores
                             else
                             {
                                 Merge(dataContext,
+                                    trackingSetCollection,
                                     localRelationshipValue, remoteRelationshipValue);
                             }
                         }
@@ -111,7 +116,7 @@ namespace Iql.Queryable.Data.DataStores
                     {
                         continue;
                     }
-                    MergeProperty(dataContext, localEntity, remoteEntity, property);
+                    MergeProperty(dataContext, trackingSetCollection, localEntity, remoteEntity, property);
                 }
                 foreach (var property in remoteEntity.GetType().GetRuntimeProperties())
                 {
@@ -119,12 +124,12 @@ namespace Iql.Queryable.Data.DataStores
                     {
                         continue;
                     }
-                    MergeProperty(dataContext, localEntity, remoteEntity, property);
+                    MergeProperty(dataContext, trackingSetCollection, localEntity, remoteEntity, property);
                 }
             }
         }
 
-        private static void MergeProperty(IDataContext dataContext, object localEntity, object remoteEntity,
+        private static void MergeProperty(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object localEntity, object remoteEntity,
             PropertyInfo property)
         {
             var localValue = property.GetValue(localEntity);
@@ -133,7 +138,7 @@ namespace Iql.Queryable.Data.DataStores
             {
                 if (localValue.GetType().IsClass && !(localValue is string))
                 {
-                    Merge(dataContext, localValue, remoteValue);
+                    Merge(dataContext, trackingSetCollection, localValue, remoteValue);
                 }
                 else if (localValue is IEnumerable && !(localValue is string))
                 {
@@ -161,7 +166,7 @@ namespace Iql.Queryable.Data.DataStores
                             if (match)
                             {
                                 remoteMatched.Add(remote);
-                                Merge(dataContext, local, remote);
+                                Merge(dataContext, trackingSetCollection, local, remote);
                                 break;
                             }
                         }

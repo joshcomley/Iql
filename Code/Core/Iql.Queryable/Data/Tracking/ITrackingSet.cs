@@ -15,5 +15,6 @@ namespace Iql.Queryable.Data.Tracking
         List<IEntityCrudOperationBase> GetChanges();
         void Reset();
         object FindClone(object entity);
+        object FindTrackedEntity(object entity);
     }
 }

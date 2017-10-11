@@ -58,8 +58,12 @@ namespace Iql.Queryable.Data.Tracking
             if (existingClone != null)
             {
                 Clone.Remove(existingClone);
-                Set.Remove(entity);
-                _trackedEntityClones.Remove(entity);
+                var trackedEntity = FindTrackedEntity(entity);
+                if (trackedEntity != null)
+                {
+                    Set.Remove(trackedEntity);
+                }
+                _trackedEntityClones.Remove(trackedEntity);
             }
         }
 
@@ -110,9 +114,102 @@ namespace Iql.Queryable.Data.Tracking
 
         public T FindClone(T entity)
         {
-            if (_trackedEntityClones.ContainsKey(entity))
+            var trackedEntity = FindTrackedEntity(entity);
+            if (trackedEntity != null && _trackedEntityClones.ContainsKey(trackedEntity))
             {
-                return _trackedEntityClones[entity];
+                return _trackedEntityClones[trackedEntity];
+            }
+            return null;
+        }
+
+        public virtual T FindTrackedEntity(T localEntity)
+        {
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
+            var key = entityConfiguration.Key;
+            foreach (var trackedEntity in Set)
+            {
+                if (localEntity == trackedEntity)
+                {
+                    return trackedEntity;
+                }
+                var keyMatches = true;
+                foreach (var keyProperty in key.Properties)
+                {
+                    if (!Equals(
+                        localEntity.GetPropertyValue(keyProperty.PropertyName),
+                        trackedEntity.GetPropertyValue(keyProperty.PropertyName)))
+                    {
+                        keyMatches = false;
+                        break;
+                    }
+                }
+                if (keyMatches)
+                {
+                    return trackedEntity;
+                }
+                foreach (var relationship in entityConfiguration.Relationships)
+                {
+                    var isSource = relationship.Source.Configuration == entityConfiguration;
+                    var sourceRelationship = isSource ? relationship.Source : relationship.Target;
+                    var targetRelationship = isSource ? relationship.Target : relationship.Source;
+                    var propertyName = sourceRelationship.Property.PropertyName;
+                    var localRelationshipValue = localEntity.GetPropertyValue(propertyName);
+                    var remoteRelationshipValue = trackedEntity.GetPropertyValue(propertyName);
+                    var nonNull = localRelationshipValue ?? remoteRelationshipValue;
+                    if (localRelationshipValue != null && remoteRelationshipValue == null)
+                    {
+                        continue;
+                    }
+                    if (remoteRelationshipValue != null)
+                    {
+                        // Single entity, no current value locally so just assign
+                        if (localRelationshipValue == null)
+                        {
+                            continue;
+                        }
+                        var isArray = remoteRelationshipValue is IEnumerable && !(remoteRelationshipValue is string);
+                        if (isArray)
+                        {
+                            var localList = (IList)localRelationshipValue;
+                            var remoteList = (IList)remoteRelationshipValue;
+                            if (localList.Count == 0)
+                            {
+                                continue;
+                            }
+                            localList.Clear();
+                            foreach (var remoteItem in remoteList)
+                            {
+                                object match = null;
+                                foreach (var localItem in localList)
+                                {
+                                    var isMatch = true;
+                                    foreach (var keyProperty in targetRelationship.Configuration.Key.Properties)
+                                    {
+                                        if (relationship.Constraints.Any(c => c.SourceKeyProperty.PropertyName == keyProperty.PropertyName))
+                                        {
+                                            continue;
+                                        }
+                                        if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
+                                            localItem.GetPropertyValue(keyProperty.PropertyName)))
+                                        {
+                                            isMatch = false;
+                                            break;
+                                        }
+                                    }
+                                    if (isMatch)
+                                    {
+                                        match = localItem;
+                                        break;
+                                    }
+                                }
+                                if (match != null)
+                                {
+                                    return (T) match;
+                                }
+                            }
+                        }
+                    }
+                }
             }
             return null;
         }
@@ -120,6 +217,11 @@ namespace Iql.Queryable.Data.Tracking
         object ITrackingSet.FindClone(object entity)
         {
             return FindClone((T)entity);
+        }
+
+        object ITrackingSet.FindTrackedEntity(object entity)
+        {
+            return FindTrackedEntity((T)entity);
         }
 
         void ITrackingSet.TrackWithClone(object entity, object clone)
@@ -145,7 +247,7 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     var currentEntity = Set[index];
                     Untrack(element);
-                    ObjectMerger.Merge(DataContext, currentEntity, element);
+                    ObjectMerger.Merge(DataContext, TrackingSetCollection, currentEntity, element);
                     Track(currentEntity);
                 }
                 else
