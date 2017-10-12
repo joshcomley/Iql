@@ -65,6 +65,8 @@ namespace Iql.TestBed
             paulina1.ReportTypes.Add(reportType2);
             db.ReportCategories.Add(paulina1);
             await db.SaveChanges();
+            reportType2.Name = "Report type 2b";
+            await db.SaveChanges();
             int a = 0;
             //await db.SaveChanges();
             //personTypeMap.Notes = "";

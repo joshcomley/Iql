@@ -208,10 +208,27 @@ namespace Iql.Queryable.Data.DataStores
                     {
                         return;
                     }
-                    var updateOperation =
-                        Activator.CreateInstance(
-                            typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                    Queue.Add((IQueuedOperation)updateOperation);
+                    var alreadyBeingUpdatedByAnotherOperation = false;
+                    foreach (var queuedOperation in Queue)
+                    {
+                        if (queuedOperation.Type == QueuedOperationType.Update)
+                        {
+                            var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
+                            var entitiesInObjectGraph = FlattenObjectGraph(entityOperation.Entity);
+                            if (entitiesInObjectGraph.Contains(update.Entity))
+                            {
+                                alreadyBeingUpdatedByAnotherOperation = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!alreadyBeingUpdatedByAnotherOperation)
+                    {
+                        var updateOperation =
+                            Activator.CreateInstance(
+                                typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                        Queue.Add((IQueuedOperation)updateOperation);
+                    }
                     //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
                     //Apply(update);
                 });
@@ -245,6 +262,45 @@ namespace Iql.Queryable.Data.DataStores
                 await task;
             }
             return saveChangesResult;
+        }
+
+        public List<object> FlattenObjectGraph(object objectGraphRoot, List<object> objects = null)
+        {
+            objects = objects ?? new List<object>();
+            if (objects.Contains(objectGraphRoot))
+            {
+                // Prevent infinite recursion
+                return objects;
+            }
+            objects.Add(objectGraphRoot);
+            var graphEntityConfiguration =
+                DataContext.EntityConfigurationContext.GetEntityByType(objectGraphRoot.GetType());
+            foreach (var relationship in graphEntityConfiguration.Relationships)
+            {
+                var isSource = relationship.Source.Configuration == graphEntityConfiguration;
+                var propertyName = isSource
+                    ? relationship.Source.Property.PropertyName
+                    : relationship.Target.Property.PropertyName;
+                var relationshipValue = objectGraphRoot.GetPropertyValue(propertyName);
+
+                if (relationshipValue != null)
+                {
+                    var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
+                    if (isArray)
+                    {
+                        var list = (IList)relationshipValue;
+                        foreach (var item in list)
+                        {
+                            FlattenObjectGraph(item, objects);
+                        }
+                    }
+                    else
+                    {
+                        FlattenObjectGraph(relationshipValue, objects);
+                    }
+                }
+            }
+            return objects;
         }
 
         protected int FindEntityIndex<TEntity>(

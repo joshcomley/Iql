@@ -108,7 +108,7 @@ namespace Iql.Queryable.Data.DataStores
                                     }
                                     else
                                     {
-                                        existingItem = newItem;
+                                        existingItem = trackingSetCollection.FindEntity(newItem)?.Entity ?? newItem;
                                     }
                                     // We've found no matching local item in the list, so add it
                                     localList.Add(MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, newItem, existingItem));

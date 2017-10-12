@@ -83,6 +83,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 Set.Add(entity);
                 Clone.Add(clone);
+                _trackedEntityClones.Add(entity, clone);
             }
             else
             {
