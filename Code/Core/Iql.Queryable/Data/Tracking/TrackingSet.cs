@@ -186,12 +186,24 @@ namespace Iql.Queryable.Data.Tracking
                                 foreach (var remoteItem in relationshipList)
                                 {
                                     matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, remoteItem, targetRelationship, owner, relationships, matchedEntity);
+                                    if (matchedEntity != null)
+                                    {
+                                        break;
+                                    }
                                 }
                             }
                             else
                             {
                                 matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, ownerRelationshipValue, targetRelationship, owner, relationships, matchedEntity);
+                                if (matchedEntity != null)
+                                {
+                                    break;
+                                }
                             }
+                        }
+                        if (matchedEntity != null)
+                        {
+                            break;
                         }
                     }
                 }
