@@ -370,17 +370,17 @@ namespace Iql.Queryable.Data.DataStores
             var type = localEntity.GetType();
             if (DataContext.IsEntityNew(localEntity))
             {
+                var persistenceKey = DataContext.EntityConfigurationContext.GetEntityByType(type).Properties
+                    .FirstOrDefault(p => p.Name == "PersistenceKey");
+                if (persistenceKey != null)
+                {
+                    localEntity.SetPropertyValue("PersistenceKey", Guid.NewGuid());
+                }
                 var tracking = GetTracking();
                 var trackedEntity = tracking.FindEntity(localEntity);
                 if (trackedEntity == null)
                 {
                     tracking.Track(localEntity);
-                }
-                var persistenceKey = type.GetRuntimeProperties()
-                    .FirstOrDefault(p => p.Name == "PersistenceKey");
-                if (persistenceKey != null)
-                {
-                    localEntity.SetPropertyValue("PersistenceKey", Guid.NewGuid());
                 }
             }
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(type);

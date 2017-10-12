@@ -139,12 +139,12 @@ namespace Iql.Queryable.Data.Tracking
             T matchedEntity = null;
             var relationships = new List<ITrackedRelationship>();
             var isNewEntity = DataContext.IsEntityNew(localEntity);
-            var persistenceKeyProperty = typeof(T).GetRuntimeProperties()
-                .FirstOrDefault(p => p.Name == "PersistenceKey")?.Name;
+            var persistenceKeyProperty = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T)).Properties
+                .FirstOrDefault(p => p.Name == "PersistenceKey");
             object persistenceKey = null;
             if (persistenceKeyProperty != null)
             {
-                persistenceKey = localEntity.GetPropertyValue(persistenceKeyProperty);
+                persistenceKey = localEntity.GetPropertyValue(persistenceKeyProperty.Name);
             }
             foreach (var trackedEntity in Set)
             {
@@ -155,7 +155,7 @@ namespace Iql.Queryable.Data.Tracking
                 // Check PersistenceKey
                 if (persistenceKey != null)
                 {
-                    var trackedEntityPersistenceKey = trackedEntity.GetPropertyValue(persistenceKeyProperty);
+                    var trackedEntityPersistenceKey = trackedEntity.GetPropertyValue(persistenceKeyProperty.Name);
                     if (trackedEntityPersistenceKey != null && trackedEntityPersistenceKey.ToString() == persistenceKey.ToString())
                     {
                         matchedEntity = trackedEntity;

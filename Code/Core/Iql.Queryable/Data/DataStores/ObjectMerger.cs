@@ -34,7 +34,7 @@ namespace Iql.Queryable.Data.DataStores
                 // Note: we don't need to set the constraints as they will be merged later
                 if (newRelationshipValue == null)
                 {
-                    trackedEntity.SetPropertyValue(propertyName, null);
+                    ObjectNullifier.ClearProperty(trackedEntity, propertyName);
                 }
                 // A relationship value exists on the new entity
                 else
@@ -125,21 +125,13 @@ namespace Iql.Queryable.Data.DataStores
                 }
             }
             //var entityDefinition = dataContext.EntityConfigurationContext.GetEntityByType(localEntity.GetType());
-            foreach (var property in trackedEntity.GetType().GetRuntimeProperties())
+            foreach (var property in entityConfiguration.Properties)
             {
                 if (propertiesMerged.Contains(property.Name))
                 {
                     continue;
                 }
-                MergeSimpleProperty(trackedEntity, newEntity, property);
-            }
-            foreach (var property in newEntity.GetType().GetRuntimeProperties())
-            {
-                if (propertiesMerged.Contains(property.Name))
-                {
-                    continue;
-                }
-                MergeSimpleProperty(trackedEntity, newEntity, property);
+                MergeSimpleProperty(trackedEntity, newEntity, property.Name);
             }
         }
 
@@ -167,15 +159,15 @@ namespace Iql.Queryable.Data.DataStores
         }
 
         private static void MergeSimpleProperty(object localEntity, object remoteEntity,
-            PropertyInfo property)
+            string propertyName)
         {
-            var localValue = property.GetValue(localEntity);
-            var remoteValue = property.GetValue(remoteEntity);
+            var localValue = localEntity.GetPropertyValue(propertyName);
+            var remoteValue = remoteEntity.GetPropertyValue(propertyName);
             var isCollection = remoteValue is IEnumerable && !(remoteValue is string);
             // Local value or remote value is a primitive value or null, so just reassign
             if (!isCollection || localValue == null || remoteValue == null)
             {
-                localEntity.SetPropertyValue(property.Name, remoteValue);
+                localEntity.SetPropertyValue(propertyName, remoteValue);
             }
             else
             {
