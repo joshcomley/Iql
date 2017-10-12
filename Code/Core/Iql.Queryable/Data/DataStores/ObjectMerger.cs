@@ -10,7 +10,7 @@ namespace Iql.Queryable.Data.DataStores
     {
         public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object newEntity)
         {
-            var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity).Entity;
+            var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity)?.Entity;
             if (trackedEntity == newEntity || trackedEntity == null)
             {
                 return;
@@ -147,10 +147,6 @@ namespace Iql.Queryable.Data.DataStores
             TrackingSetCollection trackingSetCollection, object newEntity, object trackedEntity = null)
         {
             var type = newEntity.GetType();
-            if (type.Name == "PersonType")
-            {
-                int a = 0;
-            }
             if (trackedEntity == null)
             {
                 trackedEntity = trackingSetCollection.FindEntity(newEntity)?.Entity;

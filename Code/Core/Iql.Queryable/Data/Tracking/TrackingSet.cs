@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
@@ -134,15 +135,30 @@ namespace Iql.Queryable.Data.Tracking
         {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
             var key = entityConfiguration.Key;
-            var type = typeof(T);
             T matchedEntity = null;
-            List<ITrackedRelationship> relationships = new List<ITrackedRelationship>();
+            var relationships = new List<ITrackedRelationship>();
             var isNewEntity = DataContext.IsEntityNew(localEntity);
+            var persistenceKeyProperty = typeof(T).GetRuntimeProperties()
+                .FirstOrDefault(p => p.Name == "PersistenceKey")?.Name;
+            object persistenceKey = null;
+            if (persistenceKeyProperty != null)
+            {
+                persistenceKey = localEntity.GetPropertyValue(persistenceKeyProperty);
+            }
             foreach (var trackedEntity in Set)
             {
                 if (localEntity == trackedEntity)
                 {
                     matchedEntity = trackedEntity;
+                }
+                // Check PersistenceKey
+                if (persistenceKey != null)
+                {
+                    var trackedEntityPersistenceKey = trackedEntity.GetPropertyValue(persistenceKeyProperty);
+                    if (trackedEntityPersistenceKey != null && trackedEntityPersistenceKey.ToString() == persistenceKey.ToString())
+                    {
+                        matchedEntity = trackedEntity;
+                    }
                 }
                 if (isNewEntity)
                 {

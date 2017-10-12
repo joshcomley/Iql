@@ -204,7 +204,7 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedDate)			
 			.DefineProperty(p => p.Version)			
 			.DefineProperty(p => p.CreatedByUser)			
-			.DefineCollectionProperty(p => p.FaultTypes);		
+			.DefineCollectionProperty(p => p.ReportTypes);		
 		
 		builder.DefineEntity<ReportCategory>()		
 			.HasOne(p => p.CreatedByUser)			
@@ -262,6 +262,7 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Id)			
 			.DefineProperty(p => p.CategoryId)			
 			.DefineProperty(p => p.CreatedByUserId)			
+			.DefineProperty(p => p.PersistenceKey)			
 			.DefineProperty(p => p.Name)			
 			.DefineProperty(p => p.Guid)			
 			.DefineProperty(p => p.CreatedDate)			
@@ -272,7 +273,7 @@ public class TunnelDataContextBase : DataContext {
 		
 		builder.DefineEntity<ReportType>()		
 			.HasOne(p => p.Category)			
-			.WithMany(p => p.FaultTypes)			
+			.WithMany(p => p.ReportTypes)			
 			.WithConstraint(p => p.CategoryId, p => p.Id);		
 		
 		builder.DefineEntity<ReportType>()		

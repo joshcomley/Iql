@@ -17,6 +17,7 @@ namespace Iql.TestBed
             var db = new AppDbContext();
             var refreshConfig = new EntityDefaultQueryConfiguration();
             refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).ExpandCollection(p => p.Types, q => q.Expand(t => t.Type)));
+            refreshConfig.ConfigureDefaultGetOperations(() => db.ReportCategories.Expand(p => p.ReportTypes));
             db.RegisterConfiguration(refreshConfig);
             //var personTypes = await db.PersonTypes.ToList();
             //int a = 0;
@@ -47,37 +48,24 @@ namespace Iql.TestBed
             ////var paulina = await db.People.WithKey(2);
             ////Console.WriteLine($"{paulina.Title} - Type: {paulina.Type.Title}");
 
-            var polish = await db.PersonTypes.Where(p => p.Title == "Polish").Single();
-            Console.WriteLine("Inserting Marta with Type ID:");
-            var marta = new Person();
-            marta.TypeId = 1;
-            marta.Title = "Marta 1";
-            marta.Description = "Test";
-            marta.Types = marta.Types ?? new List<PersonTypeMap>();
-            var personTypeMap = new PersonTypeMap
-            {
-                TypeId = polish.Data.Id,
-                Notes = "test 1212"
-            };
-            marta.Types.Add(personTypeMap);
-            var marta2 = new Person();
-            marta2.TypeId = 1;
-            marta2.Title = "Marta 2";
-            marta2.Description = "Test";
-            marta2.Types = marta2.Types ?? new List<PersonTypeMap>();
-            var personTypeMap2 = new PersonTypeMap
-            {
-                TypeId = polish.Data.Id,
-                Notes = "test 232323"
-            };
-            marta2.Types.Add(personTypeMap2);
-            db.People.Add(marta);
-            db.People.Add(marta2);
+            //await TestPeople(db);
+
+            //personTypeMap2.Notes = "Gotcha";
+            //personTypeMap2.Type.Title = "Polish test";
+            //marta.Category = PersonCategory.Conventional;
+            //marta.Title += " - 2";
+            var reportType1 = new ReportType();
+            reportType1.Name = "Report type 1";
+            var reportType2 = new ReportType();
+            reportType2.Name = "Report type 2";
+            var paulina1 = new ReportCategory();
+            paulina1.Name = "Some category";
+            paulina1.ReportTypes = paulina1.ReportTypes ?? new List<ReportType>();
+            paulina1.ReportTypes.Add(reportType1);
+            paulina1.ReportTypes.Add(reportType2);
+            db.ReportCategories.Add(paulina1);
             await db.SaveChanges();
-            personTypeMap2.Notes = "Gotcha";
-            personTypeMap2.Type.Title = "Polish test";
-            marta.Category = PersonCategory.Conventional;
-            marta.Title += " - 2";
+            int a = 0;
             //await db.SaveChanges();
             //personTypeMap.Notes = "";
             //await db.SaveChanges();
@@ -169,6 +157,37 @@ namespace Iql.TestBed
             //        Console.WriteLine($"{person.Name} - {person.Age}");
             //    }
             //}
+        }
+
+        private static async Task TestPeople(AppDbContext db)
+        {
+            var polish = await db.PersonTypes.Where(p => p.Title == "Polish").Single();
+            Console.WriteLine("Inserting Marta with Type ID:");
+            var marta = new Person();
+            marta.TypeId = 1;
+            marta.Title = "Marta 1";
+            marta.Description = "Test";
+            marta.Types = marta.Types ?? new List<PersonTypeMap>();
+            var personTypeMap = new PersonTypeMap
+            {
+                TypeId = polish.Data.Id,
+                Notes = "test 1212"
+            };
+            marta.Types.Add(personTypeMap);
+            var marta2 = new Person();
+            marta2.TypeId = 1;
+            marta2.Title = "Marta 2";
+            marta2.Description = "Test";
+            marta2.Types = marta2.Types ?? new List<PersonTypeMap>();
+            var personTypeMap2 = new PersonTypeMap
+            {
+                TypeId = polish.Data.Id,
+                Notes = "test 232323"
+            };
+            marta2.Types.Add(personTypeMap2);
+            db.People.Add(marta);
+            db.People.Add(marta2);
+            await db.SaveChanges();
         }
 
         private static void PrintPerson(Person person)

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
@@ -269,8 +270,9 @@ namespace Iql.Queryable.Data.DataStores
             {
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    result = await PerformAdd(addEntityOperation);
                     var localEntity = addEntityOperation.Operation.Entity;
+                    EnsurePersistenceKeyInNewEntities(localEntity);
+                    result = await PerformAdd(addEntityOperation);
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
                     //ObjectMerger.Merge(DataContext, localEntity, remoteEntity);
                     foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
@@ -282,6 +284,7 @@ namespace Iql.Queryable.Data.DataStores
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
+                    EnsurePersistenceKeyInNewEntities(updateEntityOperation.Operation.Entity);
                     result = await PerformUpdate(updateEntityOperation);
                     var operationEntity = updateEntityOperation.Operation
                         .Entity;
@@ -298,6 +301,58 @@ namespace Iql.Queryable.Data.DataStores
             }
             saveChangesResult.Results.Add(result as IEntityCrudResult);
             decrement();
+        }
+
+        private void EnsurePersistenceKeyInNewEntities(object localEntity, List<object> entitiesAlreadyChecked = null)
+        {
+            entitiesAlreadyChecked = entitiesAlreadyChecked ?? new List<object>();
+            // Avoid infinite recursion
+            if (entitiesAlreadyChecked.Contains(localEntity))
+            {
+                return;
+            }
+            var type = localEntity.GetType();
+            if (DataContext.IsEntityNew(localEntity))
+            {
+                var tracking = GetTracking();
+                var trackedEntity = tracking.FindEntity(localEntity);
+                if (trackedEntity == null)
+                {
+                    tracking.Track(localEntity);
+                }
+                var persistenceKey = type.GetRuntimeProperties()
+                    .FirstOrDefault(p => p.Name == "PersistenceKey");
+                if (persistenceKey != null)
+                {
+                    localEntity.SetPropertyValue("PersistenceKey", Guid.NewGuid());
+                }
+            }
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(type);
+            foreach (var relationship in entityConfiguration.Relationships)
+            {
+                var isSource = relationship.Source.Configuration == entityConfiguration;
+                var propertyName = isSource
+                    ? relationship.Source.Property.PropertyName
+                    : relationship.Target.Property.PropertyName;
+                var relationshipValue = localEntity.GetPropertyValue(propertyName);
+
+                if (relationshipValue != null)
+                {
+                    var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
+                    if (isArray)
+                    {
+                        var list = (IList) relationshipValue;
+                        foreach (var item in list)
+                        {
+                            EnsurePersistenceKeyInNewEntities(item);
+                        }
+                    }
+                    else
+                    {
+                        EnsurePersistenceKeyInNewEntities(relationshipValue);
+                    }
+                }
+            }
         }
 
         private async Task RefreshEntity<TEntity>(TEntity entity)
