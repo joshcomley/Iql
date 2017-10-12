@@ -8,200 +8,188 @@ namespace Iql.Queryable.Data.DataStores
 {
     public class ObjectMerger
     {
-        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object localEntity, object remoteEntity)
+        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object newEntity)
         {
-            var matchedEntity = trackingSetCollection.TrackingSet(localEntity.GetType()).FindTrackedEntity(localEntity);
-            if (remoteEntity != null)
+            var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity).Entity;
+            if (trackedEntity == newEntity || trackedEntity == null)
             {
-                var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(localEntity.GetType());
-                var propertiesMerged = new List<string>();
-                foreach (var relationship in entityConfiguration.Relationships)
+                return;
+            }
+            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(trackedEntity.GetType());
+            // Keep track of properties already merged because first we will merge the relationships
+            // of whose properties will also be in the property collection
+            var propertiesMerged = new List<string>();
+            foreach (var relationship in entityConfiguration.Relationships)
+            {
+                var isSource = relationship.Source.Configuration == entityConfiguration;
+                var sourceRelationship = isSource ? relationship.Source : relationship.Target;
+                var targetRelationship = isSource ? relationship.Target : relationship.Source;
+                var propertyName = sourceRelationship.Property.PropertyName;
+                propertiesMerged.Add(propertyName);
+                var trackedRelationshipValue = trackedEntity.GetPropertyValue(propertyName);
+                var newRelationshipValue = newEntity.GetPropertyValue(propertyName);
+                var nonNull = trackedRelationshipValue ?? newRelationshipValue;
+
+                // The new entity has a null value for this relationship, so set the relationship value accordingly
+                // Note: we don't need to set the constraints as they will be merged later
+                if (newRelationshipValue == null)
                 {
-                    var isSource = relationship.Source.Configuration == entityConfiguration;
-                    var sourceRelationship = isSource ? relationship.Source : relationship.Target;
-                    var targetRelationship = isSource ? relationship.Target : relationship.Source;
-                    var propertyName = sourceRelationship.Property.PropertyName;
-                    propertiesMerged.Add(propertyName);
-                    var localRelationshipValue = localEntity.GetPropertyValue(propertyName);
-                    var remoteRelationshipValue = remoteEntity.GetPropertyValue(propertyName);
-                    var nonNull = localRelationshipValue ?? remoteRelationshipValue;
-                    if (localRelationshipValue != null && remoteRelationshipValue == null)
+                    trackedEntity.SetPropertyValue(propertyName, null);
+                }
+                // A relationship value exists on the new entity
+                else
+                {
+                    // //Single entity, no current value locally so just assign
+                    // As we have nothing being tracked yet on this entity, we can just set it accordingly
+                    if (trackedRelationshipValue == null)
                     {
-                        localEntity.SetPropertyValue(propertyName, null);
+                        trackedEntity.SetPropertyValue(propertyName, MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, newRelationshipValue));
                     }
-                    else if (remoteRelationshipValue != null)
+                    // Both new and existing relationship values exist, so we need to merge
+                    else
                     {
-                        // Single entity, no current value locally so just assign
-                        if (localRelationshipValue == null)
+                        var isCollection = newRelationshipValue is IEnumerable && !(newRelationshipValue is string);
+                        // We have a collection
+                        if (isCollection)
                         {
-                            localEntity.SetPropertyValue(propertyName, remoteRelationshipValue);
-                        }
-                        else
-                        {
-                            var isArray = remoteRelationshipValue is IEnumerable && !(remoteRelationshipValue is string);
-                            if (isArray)
+                            var localList = (IList)trackedRelationshipValue;
+                            var remoteList = (IList)newRelationshipValue;
+                            // There is nothing in the existing collection, therefore nothing to merge
+                            // so we can safely copy all collection values across from the new entity
+                            if (localList.Count == 0)
                             {
-                                var localList = (IList)localRelationshipValue;
-                                var remoteList = (IList)remoteRelationshipValue;
-                                if (localList.Count == 0)
+                                // There is nothing in the local list to merge so we can safely
+                                // add all remote items
+                                foreach (var item in remoteList)
                                 {
-                                    foreach (var item in remoteList)
-                                    {
-                                        localList.Add(item);
-                                    }
-                                }
-                                else
-                                {
-                                    var localListCopy = new List<object>();
-                                    foreach (var item in localList)
-                                    {
-                                        localListCopy.Add(item);
-                                    }
-                                    localList.Clear();
-                                    foreach (var remoteItem in remoteList)
-                                    {
-                                        object match = null;
-                                        foreach (var localItem in localListCopy)
-                                        {
-                                            var isMatch = true;
-                                            foreach (var keyProperty in targetRelationship.Configuration.Key.Properties)
-                                            {
-                                                if (relationship.Constraints.Any(c => c.SourceKeyProperty.PropertyName == keyProperty.PropertyName))
-                                                {
-                                                    continue;
-                                                }
-                                                if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
-                                                    localItem.GetPropertyValue(keyProperty.PropertyName)))
-                                                {
-                                                    isMatch = false;
-                                                    break;
-                                                }
-                                            }
-                                            if (!isMatch)
-                                            {
-                                                
-                                            }
-                                            if (isMatch)
-                                            {
-                                                match = localItem;
-                                                break;
-                                            }
-                                        }
-                                        if (match == null)
-                                        {
-                                            // We've found no matching local item in the list, so add it
-                                            localList.Add(remoteItem);
-                                        }
-                                        else
-                                        {
-                                            Merge(dataContext, trackingSetCollection, match, remoteItem);
-                                            localList.Add(match);
-                                        }
-                                    }
+                                    localList.Add(MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, item));
                                 }
                             }
                             else
                             {
-                                Merge(dataContext,
-                                    trackingSetCollection,
-                                    localRelationshipValue, remoteRelationshipValue);
+                                // We care going to be modifying the collection, so make a copy to iterate safely through
+                                var localListCopy = new List<object>();
+                                foreach (var item in localList)
+                                {
+                                    localListCopy.Add(item);
+                                }
+                                localList.Clear();
+                                foreach (var newItem in remoteList)
+                                {
+                                    object existingItem = null;
+                                    foreach (var localItem in localListCopy)
+                                    {
+                                        var isMatch = true;
+                                        foreach (var keyProperty in targetRelationship.Configuration.Key.Properties)
+                                        {
+                                            // As we are in a relationship, even if the source ID is not set it is inferred by its placement
+                                            // in the source's collection
+                                            if (relationship.Constraints.Any(c => c.SourceKeyProperty.PropertyName == keyProperty.PropertyName))
+                                            {
+                                                continue;
+                                            }
+                                            if (!Equals(newItem.GetPropertyValue(keyProperty.PropertyName),
+                                                localItem.GetPropertyValue(keyProperty.PropertyName)))
+                                            {
+                                                isMatch = false;
+                                                break;
+                                            }
+                                        }
+                                        if (isMatch)
+                                        {
+                                            existingItem = localItem;
+                                            break;
+                                        }
+                                    }
+                                    if (existingItem != null)
+                                    {
+                                        // Although we have this entity already, ensure the entity is definitely tracked
+                                        trackingSetCollection.Track(existingItem);
+                                    }
+                                    else
+                                    {
+                                        existingItem = newItem;
+                                    }
+                                    // We've found no matching local item in the list, so add it
+                                    localList.Add(MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, newItem, existingItem));
+                                }
                             }
+                        }
+                        else
+                        {
+                            // Although we have this entity already, ensure the entity is definitely tracked
+                            trackingSetCollection.Track(trackedRelationshipValue);
+                            MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, newRelationshipValue, trackedRelationshipValue);
                         }
                     }
                 }
-                //var entityDefinition = dataContext.EntityConfigurationContext.GetEntityByType(localEntity.GetType());
-                foreach (var property in localEntity.GetType().GetRuntimeProperties())
+            }
+            //var entityDefinition = dataContext.EntityConfigurationContext.GetEntityByType(localEntity.GetType());
+            foreach (var property in trackedEntity.GetType().GetRuntimeProperties())
+            {
+                if (propertiesMerged.Contains(property.Name))
                 {
-                    if (propertiesMerged.Contains(property.Name))
-                    {
-                        continue;
-                    }
-                    MergeProperty(dataContext, trackingSetCollection, localEntity, remoteEntity, property);
+                    continue;
                 }
-                foreach (var property in remoteEntity.GetType().GetRuntimeProperties())
+                MergeSimpleProperty(trackedEntity, newEntity, property);
+            }
+            foreach (var property in newEntity.GetType().GetRuntimeProperties())
+            {
+                if (propertiesMerged.Contains(property.Name))
                 {
-                    if (propertiesMerged.Contains(property.Name))
-                    {
-                        continue;
-                    }
-                    MergeProperty(dataContext, trackingSetCollection, localEntity, remoteEntity, property);
+                    continue;
                 }
+                MergeSimpleProperty(trackedEntity, newEntity, property);
             }
         }
 
-        private static void MergeProperty(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object localEntity, object remoteEntity,
+        private static object MergeWithExistingTrackedEntity(IDataContext dataContext,
+            TrackingSetCollection trackingSetCollection, object newEntity, object trackedEntity = null)
+        {
+            var type = newEntity.GetType();
+            if (type.Name == "PersonType")
+            {
+                int a = 0;
+            }
+            if (trackedEntity == null)
+            {
+                trackedEntity = trackingSetCollection.FindEntity(newEntity)?.Entity;
+            }
+            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(type);
+            if (trackedEntity != null)
+            {
+                foreach (var keyProperty in entityConfiguration.Key.Properties)
+                {
+                    trackedEntity.SetPropertyValue(keyProperty.PropertyName,
+                        newEntity.GetPropertyValue(keyProperty.PropertyName));
+                }
+                Merge(dataContext, trackingSetCollection, newEntity);
+                return trackedEntity;
+            }
+            trackingSetCollection.Track(newEntity);
+            return newEntity;
+        }
+
+        private static void MergeSimpleProperty(object localEntity, object remoteEntity,
             PropertyInfo property)
         {
             var localValue = property.GetValue(localEntity);
             var remoteValue = property.GetValue(remoteEntity);
-            if (localValue != null && remoteValue != null)
+            var isCollection = remoteValue is IEnumerable && !(remoteValue is string);
+            // Local value or remote value is a primitive value or null, so just reassign
+            if (!isCollection || localValue == null || remoteValue == null)
             {
-                if (localValue.GetType().IsClass && !(localValue is string))
-                {
-                    Merge(dataContext, trackingSetCollection, localValue, remoteValue);
-                }
-                else if (localValue is IEnumerable && !(localValue is string))
-                {
-                    var localNotMatched = new List<object>();
-                    var remoteMatched = new List<object>();
-                    var localEnumerable = (IEnumerable)localValue;
-                    var remoteEnumerable = (IEnumerable)remoteValue;
-                    foreach (var local in localEnumerable)
-                    {
-                        var childEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(local.GetType());
-                        var key = childEntityConfiguration.Key;
-                        var match = true;
-                        foreach (var remote in remoteEnumerable)
-                        {
-                            foreach (var keyProperty in key.Properties)
-                            {
-                                var localKeyValue = local.GetPropertyValue(keyProperty.PropertyName);
-                                var remoteKeyValue = remote.GetPropertyValue(keyProperty.PropertyName);
-                                if (!Equals(localKeyValue, remoteKeyValue))
-                                {
-                                    match = false;
-                                    break;
-                                }
-                            }
-                            if (match)
-                            {
-                                remoteMatched.Add(remote);
-                                Merge(dataContext, trackingSetCollection, local, remote);
-                                break;
-                            }
-                        }
-                        if (!match)
-                        {
-                            localNotMatched.Add(local);
-                        }
-                    }
-                    var remoteNotMatched = new List<object>();
-                    foreach (var remote in (IEnumerable)remoteValue)
-                    {
-                        if (!remoteMatched.Contains(remote))
-                        {
-                            remoteNotMatched.Add(remote);
-                        }
-                    }
-                    foreach (var toAdd in remoteNotMatched)
-                    {
-                        ((IList)localValue).Add(toAdd);
-                    }
-                    foreach (var toRemove in localNotMatched)
-                    {
-                        ((IList)localValue).Remove(toRemove);
-                    }
-                }
-                else
-                {
-                    property.SetValue(localEntity,
-                        property.GetValue(remoteEntity));
-                }
+                localEntity.SetPropertyValue(property.Name, remoteValue);
             }
             else
             {
-                property.SetValue(localEntity,
-                    property.GetValue(remoteEntity));
+                var localCollection = (IList)localValue;
+                var remoteCollection = (IList)remoteValue;
+                localCollection.Clear();
+                foreach (var value in remoteCollection)
+                {
+                    localCollection.Add(value);
+                }
             }
         }
     }

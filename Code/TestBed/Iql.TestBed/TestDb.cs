@@ -16,7 +16,7 @@ namespace Iql.TestBed
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
             var db = new AppDbContext();
             var refreshConfig = new EntityDefaultQueryConfiguration();
-            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).Expand(p => p.Types));
+            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).ExpandCollection(p => p.Types, q => q.Expand(t => t.Type)));
             db.RegisterConfiguration(refreshConfig);
             //var personTypes = await db.PersonTypes.ToList();
             //int a = 0;
@@ -51,29 +51,45 @@ namespace Iql.TestBed
             Console.WriteLine("Inserting Marta with Type ID:");
             var marta = new Person();
             marta.TypeId = 1;
-            marta.Title = "Josh";
-            marta.Description = "Josh";
+            marta.Title = "Marta 1";
+            marta.Description = "Test";
             marta.Types = marta.Types ?? new List<PersonTypeMap>();
-            var personTypeMap = new PersonTypeMap { TypeId = polish.Data.Id,
+            var personTypeMap = new PersonTypeMap
+            {
+                TypeId = polish.Data.Id,
                 Notes = "test 1212"
             };
             marta.Types.Add(personTypeMap);
+            var marta2 = new Person();
+            marta2.TypeId = 1;
+            marta2.Title = "Marta 2";
+            marta2.Description = "Test";
+            marta2.Types = marta2.Types ?? new List<PersonTypeMap>();
+            var personTypeMap2 = new PersonTypeMap
+            {
+                TypeId = polish.Data.Id,
+                Notes = "test 232323"
+            };
+            marta2.Types.Add(personTypeMap2);
             db.People.Add(marta);
+            db.People.Add(marta2);
             await db.SaveChanges();
+            personTypeMap2.Notes = "Gotcha";
+            personTypeMap2.Type.Title = "Polish test";
             marta.Category = PersonCategory.Conventional;
             marta.Title += " - 2";
-            await db.SaveChanges();
-            personTypeMap.Notes = "";
-            await db.SaveChanges();
-            db.PersonTypesMap.Delete(personTypeMap);
-            await db.SaveChanges();
-            marta.TypeId = null;
-            await db.SaveChanges();
-            marta.Title = null;
-            await db.SaveChanges();
-            marta.TypeId = null;
-            await db.SaveChanges();
-            int a = 0;
+            //await db.SaveChanges();
+            //personTypeMap.Notes = "";
+            //await db.SaveChanges();
+            //db.PersonTypesMap.Delete(personTypeMap);
+            //await db.SaveChanges();
+            //marta.TypeId = null;
+            //await db.SaveChanges();
+            //marta.Title = null;
+            //await db.SaveChanges();
+            //marta.TypeId = null;
+            //await db.SaveChanges();
+            //int a = 0;
             //var personJob = new PersonJob { JobId = 2, Description = "first"};
             //marta.Jobs.Add(personJob);
             //personJob.SetFieldValue("_id", "test");

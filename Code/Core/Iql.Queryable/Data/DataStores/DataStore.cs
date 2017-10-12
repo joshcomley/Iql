@@ -195,7 +195,10 @@ namespace Iql.Queryable.Data.DataStores
         public virtual async Task<SaveChangesResult> SaveChanges(
             SaveChangesOperation operation)
         {
-            GetTracking().Sets.ForEach(trackingSet =>
+            // Sets could be added to whilst detecting changes
+            // so get a copy now
+            var trackingSets = GetTracking().Sets.ToList();
+            trackingSets.ForEach(trackingSet =>
             {
                 trackingSet.GetChanges().ForEach(update =>
                 {
@@ -283,9 +286,9 @@ namespace Iql.Queryable.Data.DataStores
                     var operationEntity = updateEntityOperation.Operation
                         .Entity;
                     await RefreshEntity(operationEntity);
+                    GetTracking().GetSet<TEntity>().Track(operationEntity);
                     //.WithKey(identityWhereOperation.Key);
                     //Merge(updateEntityOperation.Operation.Entity, refreshResult);
-                    GetTracking().GetSet<TEntity>().Track(operationEntity);
                     break;
                 case OperationType.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;

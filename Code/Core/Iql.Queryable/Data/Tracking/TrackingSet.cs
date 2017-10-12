@@ -5,6 +5,8 @@ using System.Linq;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -61,9 +63,9 @@ namespace Iql.Queryable.Data.Tracking
                 var trackedEntity = FindTrackedEntity(entity);
                 if (trackedEntity != null)
                 {
-                    Set.Remove(trackedEntity);
+                    Set.Remove(trackedEntity.Entity);
+                    _trackedEntityClones.Remove(trackedEntity.Entity);
                 }
-                _trackedEntityClones.Remove(trackedEntity);
             }
         }
 
@@ -75,143 +77,170 @@ namespace Iql.Queryable.Data.Tracking
 
         public void TrackWithClone(T entity, T clone)
         {
-            Untrack(entity);
-            Set.Add(entity);
-            Clone.Add(clone);
-            _trackedEntityClones.Add(entity, clone);
-
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            var relationships = entityConfiguration.Relationships;
-            foreach (var relationship in relationships)
+            var existingEntity = FindTrackedEntity(entity);
+            if (existingEntity == null)
             {
-                var end = relationship.Source.Configuration == entityConfiguration
-                    ? relationship.Source
-                    : relationship.Target;
-                var entityRelationshipValue = entity.GetPropertyValue(end.Property.PropertyName);
-                if (entityRelationshipValue == null)
-                {
-                    continue;
-                }
-                if (entityRelationshipValue is IEnumerable && !(entityRelationshipValue is string))
-                {
-                    var enumerable = (IEnumerable)entityRelationshipValue;
-                    var cloneEnumerable = ((IEnumerable)clone.GetPropertyValue(end.Property.PropertyName))
-                        .Cast<object>().ToArray();
-                    int i = 0;
-                    foreach (var item in enumerable)
-                    {
-                        TrackingSetCollection.TrackWithClone(item, cloneEnumerable[i]);
-                        i++;
-                    }
-                }
-                else
-                {
-                    TrackingSetCollection.TrackWithClone(entityRelationshipValue,
-                        clone.GetPropertyValue(end.Property.PropertyName));
-                }
+                Set.Add(entity);
+                Clone.Add(clone);
             }
+            else
+            {
+                ObjectMerger.Merge(DataContext, TrackingSetCollection, entity);
+                _trackedEntityClones[existingEntity.Entity] = clone;
+            }
+            //var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            //var relationships = entityConfiguration.Relationships;
+            //foreach (var relationship in relationships)
+            //{
+            //    var end = relationship.Source.Configuration == entityConfiguration
+            //        ? relationship.Source
+            //        : relationship.Target;
+            //    var entityRelationshipValue = entity.GetPropertyValue(end.Property.PropertyName);
+            //    if (entityRelationshipValue == null)
+            //    {
+            //        continue;
+            //    }
+            //    if (entityRelationshipValue is IEnumerable && !(entityRelationshipValue is string))
+            //    {
+            //        var enumerable = (IEnumerable)entityRelationshipValue;
+            //        var cloneEnumerable = ((IEnumerable)clone.GetPropertyValue(end.Property.PropertyName))
+            //            .Cast<object>().ToArray();
+            //        int i = 0;
+            //        foreach (var item in enumerable)
+            //        {
+            //            TrackingSetCollection.TrackWithClone(item, cloneEnumerable[i]);
+            //            i++;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        TrackingSetCollection.TrackWithClone(entityRelationshipValue,
+            //            clone.GetPropertyValue(end.Property.PropertyName));
+            //    }
+            //}
         }
 
         public T FindClone(T entity)
         {
             var trackedEntity = FindTrackedEntity(entity);
-            if (trackedEntity != null && _trackedEntityClones.ContainsKey(trackedEntity))
+            if (trackedEntity != null && _trackedEntityClones.ContainsKey(trackedEntity.Entity))
             {
-                return _trackedEntityClones[trackedEntity];
+                return _trackedEntityClones[trackedEntity.Entity];
             }
             return null;
         }
 
-        public virtual T FindTrackedEntity(T localEntity)
+        public virtual TrackedEntity<T> FindTrackedEntity(T localEntity)
         {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
             var key = entityConfiguration.Key;
+            var type = typeof(T);
+            T matchedEntity = null;
+            List<ITrackedRelationship> relationships = new List<ITrackedRelationship>();
+            var isNewEntity = DataContext.IsEntityNew(localEntity);
             foreach (var trackedEntity in Set)
             {
                 if (localEntity == trackedEntity)
                 {
-                    return trackedEntity;
+                    matchedEntity = trackedEntity;
                 }
-                var keyMatches = true;
-                foreach (var keyProperty in key.Properties)
+                if (isNewEntity)
                 {
-                    if (!Equals(
-                        localEntity.GetPropertyValue(keyProperty.PropertyName),
-                        trackedEntity.GetPropertyValue(keyProperty.PropertyName)))
+                    continue;
+                }
+                if (matchedEntity == null)
+                {
+                    var keyMatches = true;
+                    foreach (var keyProperty in key.Properties)
                     {
-                        keyMatches = false;
-                        break;
+                        if (!Equals(
+                            localEntity.GetPropertyValue(keyProperty.PropertyName),
+                            trackedEntity.GetPropertyValue(keyProperty.PropertyName)))
+                        {
+                            keyMatches = false;
+                            break;
+                        }
                     }
-                }
-                if (keyMatches)
-                {
-                    return trackedEntity;
+                    if (keyMatches)
+                    {
+                        matchedEntity = trackedEntity;
+                    }
                 }
                 foreach (var relationship in entityConfiguration.Relationships)
                 {
                     var isSource = relationship.Source.Configuration == entityConfiguration;
                     var sourceRelationship = isSource ? relationship.Source : relationship.Target;
                     var targetRelationship = isSource ? relationship.Target : relationship.Source;
-                    var propertyName = sourceRelationship.Property.PropertyName;
-                    var localRelationshipValue = localEntity.GetPropertyValue(propertyName);
-                    var remoteRelationshipValue = trackedEntity.GetPropertyValue(propertyName);
-                    var nonNull = localRelationshipValue ?? remoteRelationshipValue;
-                    if (localRelationshipValue != null && remoteRelationshipValue == null)
+                    var sourcePropertyName = sourceRelationship.Property.PropertyName;
+                    var targetPropertyName = targetRelationship.Property.PropertyName;
+                    foreach (var owner in TrackingSetCollection.TrackingSet(targetRelationship.Type).TrackedEntites())
                     {
-                        continue;
-                    }
-                    if (remoteRelationshipValue != null)
-                    {
-                        // Single entity, no current value locally so just assign
-                        if (localRelationshipValue == null)
+                        var ownerRelationshipValue = owner.GetPropertyValue(targetPropertyName);
+                        if (ownerRelationshipValue != null)
                         {
-                            continue;
-                        }
-                        var isArray = remoteRelationshipValue is IEnumerable && !(remoteRelationshipValue is string);
-                        if (isArray)
-                        {
-                            var localList = (IList)localRelationshipValue;
-                            var remoteList = (IList)remoteRelationshipValue;
-                            if (localList.Count == 0)
+                            // Single entity, no current value locally so just assign
+                            var isArray = ownerRelationshipValue is IEnumerable && !(ownerRelationshipValue is string);
+                            if (isArray)
                             {
-                                continue;
+                                var relationshipList = (IList) ownerRelationshipValue;
+                                foreach (var remoteItem in relationshipList)
+                                {
+                                    matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, remoteItem, targetRelationship, owner, relationships, matchedEntity);
+                                }
                             }
-                            localList.Clear();
-                            foreach (var remoteItem in remoteList)
+                            else
                             {
-                                object match = null;
-                                foreach (var localItem in localList)
-                                {
-                                    var isMatch = true;
-                                    foreach (var keyProperty in targetRelationship.Configuration.Key.Properties)
-                                    {
-                                        if (relationship.Constraints.Any(c => c.SourceKeyProperty.PropertyName == keyProperty.PropertyName))
-                                        {
-                                            continue;
-                                        }
-                                        if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
-                                            localItem.GetPropertyValue(keyProperty.PropertyName)))
-                                        {
-                                            isMatch = false;
-                                            break;
-                                        }
-                                    }
-                                    if (isMatch)
-                                    {
-                                        match = localItem;
-                                        break;
-                                    }
-                                }
-                                if (match != null)
-                                {
-                                    return (T) match;
-                                }
+                                matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, ownerRelationshipValue, targetRelationship, owner, relationships, matchedEntity);
                             }
                         }
                     }
                 }
             }
-            return null;
+            if (matchedEntity == null)
+            {
+                return null;
+            }
+            return new TrackedEntity<T>(matchedEntity, relationships);
+        }
+
+        private T MatchedEntity(T localEntity, IRelationshipDetail sourceRelationship, IRelationship relationship,
+            object remoteItem, IRelationshipDetail targetRelationship, object owner, List<ITrackedRelationship> relationships, T matchedEntity)
+        {
+            object match = null;
+            var isMatch = true;
+            if (remoteItem == localEntity)
+            {
+                return localEntity;
+            }
+            foreach (var keyProperty in sourceRelationship.Configuration.Key.Properties)
+            {
+                if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
+                    localEntity.GetPropertyValue(keyProperty.PropertyName)))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            if (isMatch)
+            {
+                match = remoteItem;
+            }
+            if (match != null)
+            {
+                var trakcedRelationship = (ITrackedRelationship) GetType()
+                    .GetMethod(nameof(NewTrackedRelationship))
+                    .MakeGenericMethod(targetRelationship.Type, sourceRelationship.Type)
+                    .Invoke(this, new object[] {owner, remoteItem, relationship});
+                relationships.Add(trakcedRelationship);
+                matchedEntity = (T) match;
+            }
+            return matchedEntity;
+        }
+
+        public ITrackedRelationship NewTrackedRelationship<TOwner, TEntity>(TOwner owner, TEntity entity,
+            IRelationship relationship)
+        {
+            return new TrackedRelationship<TOwner, TEntity>(owner, entity, relationship);
         }
 
         object ITrackingSet.FindClone(object entity)
@@ -219,7 +248,7 @@ namespace Iql.Queryable.Data.Tracking
             return FindClone((T)entity);
         }
 
-        object ITrackingSet.FindTrackedEntity(object entity)
+        ITrackedEntity ITrackingSet.FindTrackedEntity(object entity)
         {
             return FindTrackedEntity((T)entity);
         }
@@ -238,22 +267,7 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     continue;
                 }
-                // TODO: Update this to look up the entity by tracking GUID first
-                var index = Entity.FindIndexOfEntityInSetByKey(
-                    DataContext,
-                    element,
-                    Set);
-                if (index != -1)
-                {
-                    var currentEntity = Set[index];
-                    Untrack(element);
-                    ObjectMerger.Merge(DataContext, TrackingSetCollection, currentEntity, element);
-                    Track(currentEntity);
-                }
-                else
-                {
-                    Track(element);
-                }
+                Track(element);
             }
         }
 

@@ -74,5 +74,22 @@ namespace Iql.Queryable.Data.Tracking
             }
             return null;
         }
+
+        public ITrackedEntity FindEntity(object entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            var type = entity.GetType();
+            foreach (var set in Sets)
+            {
+                if (set.EntityType == type)
+                {
+                    return set.FindTrackedEntity(entity);
+                }
+            }
+            return null;
+        }
     }
 }
