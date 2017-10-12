@@ -67,6 +67,9 @@ namespace Iql.TestBed
             await db.SaveChanges();
             reportType2.Name = "Report type 2b";
             await db.SaveChanges();
+            reportType1.Name = "Report type 1a";
+            reportType2.Name = "Report type 2a";
+            await db.SaveChanges();
             int a = 0;
             //await db.SaveChanges();
             //personTypeMap.Notes = "";
