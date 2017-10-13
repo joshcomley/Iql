@@ -86,6 +86,11 @@ namespace Iql.Queryable
             return (DbSet<T, TKey>)base.ExpandCollectionQuery(expression);
         }
 
+        public new DbSet<T, TKey> IncludeCount()
+        {
+            return (DbSet<T, TKey>)base.IncludeCount();
+        }
+
         protected override DbQueryable<T> New()
         {
             var dbQueryable = new DbSet<T, TKey>(

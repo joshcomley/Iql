@@ -8,7 +8,8 @@ namespace Iql.OData.Queryable.Applicators
     {
         public override void Apply<TEntity>(IQueryOperationContext<SkipOperation, TEntity, IODataQuery> context)
         {
-            context.Data.AddQueryPart(ODataQueryPart.Skip, context.Operation.Skip.ToString());
+            context.Data.TotalSkip += context.Operation.Skip;
+            context.Data.SetQueryPart(ODataQueryPart.Skip, context.Data.TotalSkip.ToString());
         }
     }
 }

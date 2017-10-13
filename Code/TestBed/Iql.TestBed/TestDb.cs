@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Queryable.Data;
 
@@ -19,8 +20,33 @@ namespace Iql.TestBed
             refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).ExpandCollection(p => p.Types, q => q.Expand(t => t.Type)));
             refreshConfig.ConfigureDefaultGetOperations(() => db.ReportCategories.Expand(p => p.ReportTypes));
             db.RegisterConfiguration(refreshConfig);
-            //var personTypes = await db.PersonTypes.ToList();
-            //int a = 0;
+            var people = await db.People.ToList();
+            var person1 = people.First();
+            await people.LoadNextPage();
+            var person2 = people.First();
+            await people.LoadPreviousPage();
+            var person3 = people.First();
+            if (person1 == person3 && person1 != person2)
+            {
+                int ax = 0;
+            }
+            else
+            {
+                int ax = 0;
+            }
+            var nextPage = await people.NewNextPageQuery().ToList();
+            var nextPage2 = await nextPage.NewNextPageQuery().ToList();
+            var previousPage = await nextPage2.NewPreviousPageQuery().ToList();
+            var previousPage2 = await previousPage.NewPreviousPageQuery().ToList();
+            var personTypes = await db.PersonTypes.ToList();
+            if (person1 == person2)
+            {
+                int ax = 0;
+            }
+            else
+            {
+                int ax = 0;
+            }
             ////await db.People.ToList();
             ////var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
             ////    .ExpandCollection(

@@ -89,9 +89,14 @@ namespace Iql.Queryable.Data.DataStores
         public virtual async Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class
         {
-            var getConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
-            if (getConfiguration != null)
+            if (!operation.Queryable.HasDefaults)
             {
+                var getConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
+                if (getConfiguration == null)
+                {
+                    getConfiguration = new EntityDefaultQueryConfiguration();
+                    DataContext.RegisterConfiguration(getConfiguration);
+                }
                 var queryableGetter = getConfiguration.GetQueryable<TEntity>();
                 if (queryableGetter != null)
                 {
@@ -99,16 +104,64 @@ namespace Iql.Queryable.Data.DataStores
                     queryable.Operations.AddRange(operation.Queryable.Operations);
                     operation.Queryable = queryable;
                 }
+                if (getConfiguration.AlwaysIncludeCount)
+                {
+                    var countOperationCount = operation.Queryable.Operations.Count(o => o is IncludeCountOperation);
+                    if (countOperationCount == 0)
+                    {
+                        operation.Queryable.Operations.Add(new IncludeCountOperation());
+                    }
+                }
+                operation.Queryable.HasDefaults = true;
             }
-
             var result = new GetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
             var trackingSet = GetTracking().GetSet<TEntity>();
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
                 result));
+            // Clone the queryable so any changes made in the application code
+            // don't trickle down to our result
+            response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
+            response.Data.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            if (response.TotalCount.HasValue)
+            {
+                var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
+                var skippedSoFar = skipOperations.Sum(o => (o as SkipOperation).Skip);
+                var pageSize = 0;
+                var totalCount = response.TotalCount.Value;
+                var page = 0;
+                if (skippedSoFar == 0)
+                {
+                    pageSize = response.Data.Count;
+                }
+                else
+                {
+                    pageSize = (skipOperations.Last() as SkipOperation).Skip;
+                    //if (skippedSoFar + response.Data.Count == totalCount)
+                    //{
+                    //    // We're on the last page
+                    //}
+                    //else
+                    //{
+                    //    pageSize = skippedSoFar / response.Data.Count;
+                    //}
+                }
+                if (pageSize > 0)
+                {
+                    page = skippedSoFar / pageSize;
+                }
+                var pageCount = 0;
+                var i = totalCount;
+                while (i > 0)
+                {
+                    pageCount++;
+                    i -= pageSize;
+                }
+                response.Data.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
+            }
 #if TypeScript
-            response.Data = (List<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
+            response.Data = (DbList<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
 #endif
             trackingSet.Merge(response.Data);
             return result;
@@ -116,7 +169,7 @@ namespace Iql.Queryable.Data.DataStores
 
         private IList EnsureTypedList(Type type, IEnumerable responseData)
         {
-            var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+            var list = (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type));
             if (responseData != null)
             {
                 foreach (var entity in responseData)
@@ -397,7 +450,7 @@ namespace Iql.Queryable.Data.DataStores
                     var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
                     if (isArray)
                     {
-                        var list = (IList) relationshipValue;
+                        var list = (IList)relationshipValue;
                         foreach (var item in list)
                         {
                             EnsurePersistenceKeyInNewEntities(item);

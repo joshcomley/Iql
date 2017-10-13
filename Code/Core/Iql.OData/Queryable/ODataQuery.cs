@@ -21,13 +21,27 @@ namespace Iql.OData.Queryable
 
         public IDataContext Context { get; }
 
+        public int TotalSkip { get; set; }
+        public int TotalTake { get; set; }
+
         public void AddQueryPart(ODataQueryPart queryPart, string part)
+        {
+            EnsureQueryPart(queryPart);
+            QueryParts[queryPart].Add(part);
+        }
+
+        public void SetQueryPart(ODataQueryPart queryPart, string part)
+        {
+            EnsureQueryPart(queryPart);
+            QueryParts[queryPart] = new List<string>(new []{ part });
+        }
+
+        private void EnsureQueryPart(ODataQueryPart queryPart)
         {
             if (!QueryParts.ContainsKey(queryPart))
             {
                 QueryParts.Add(queryPart, new List<string>());
             }
-            QueryParts[queryPart].Add(part);
         }
 
         public List<string> GetQueryPart(ODataQueryPart queryPart)
@@ -72,6 +86,10 @@ namespace Iql.OData.Queryable
             {
                 queryParts.Add("$top=" + take.Last());
             }
+            if (IncludeCount)
+            {
+                queryParts.Add("$count=true");
+            }
             if (queryParts.Any())
             {
                 if (!isNested)
@@ -88,6 +106,7 @@ namespace Iql.OData.Queryable
             return ToList();
         }
 
+        public bool IncludeCount { get; set; }
         public bool HasKey { get; set; }
         public CompositeKey Key { get; set; }
 

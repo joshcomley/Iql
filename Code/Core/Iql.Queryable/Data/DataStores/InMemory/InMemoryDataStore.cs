@@ -68,7 +68,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             //    .GetSource<TEntity>();
             var q = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext);
             //var q = operation.Operation.Queryable.ToQueryWithAdapter(new JavaScriptQueryableAdapter());
-            operation.Result.Data = (List<TEntity>) q.ToList();
+            operation.Result.Data = (DbList<TEntity>) q.ToList();
             //var localQuery = new JavaScriptQuery<TEntity>(
             //    operation.Operation.Queryable,
             //    operation.Operation.DataContext);

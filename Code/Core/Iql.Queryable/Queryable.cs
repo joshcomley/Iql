@@ -115,8 +115,7 @@ namespace Iql.Queryable
 
         public virtual TQueryable Then(IQueryOperation operation)
         {
-            var queryable = New();
-            Operations.ForEach(element => { queryable.Operations.Add(element); });
+            var queryable = Copy();
             queryable.Operations.Add(operation);
             return queryable;
         }
@@ -124,5 +123,23 @@ namespace Iql.Queryable
         public Type ItemType { get; }
 
         protected abstract TQueryable New();
+        public bool HasDefaults { get; set; }
+
+        public virtual TQueryable Copy()
+        {
+            var queryable = New();
+            queryable.HasDefaults = HasDefaults;
+            Operations.ForEach(element => { queryable.Operations.Add(element); });
+            return queryable;
+        }
+
+        IQueryableBase IQueryableBase.New()
+        {
+            return New();
+        }
+        IQueryableBase IQueryableBase.Copy()
+        {
+            return Copy();
+        }
     }
 }

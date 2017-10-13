@@ -297,6 +297,7 @@ namespace Iql.Queryable.Data.Tracking
                     continue;
                 }
                 Track(element);
+                data[i] = FindTrackedEntity(data[i]).Entity;
             }
         }
 

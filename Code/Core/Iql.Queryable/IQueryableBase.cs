@@ -7,6 +7,9 @@ namespace Iql.Queryable
 {
     public interface IQueryableBase
     {
+        bool HasDefaults { get; set; }
+        IQueryableBase Copy();
+        IQueryableBase New();
         EvaluateContext EvaluateContext { get; }
         Type ItemType { get; }
         List<IQueryOperation> Operations { get; }

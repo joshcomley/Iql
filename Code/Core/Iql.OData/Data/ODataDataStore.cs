@@ -23,8 +23,9 @@ namespace Iql.OData.Data
     // ReSharper disable once ClassNeverInstantiated.Local
     class ODataGetResult<T>
     {
+        public int? Count { get; set; }
         // ReSharper disable once InconsistentNaming
-        public T value { get; set; }
+        public T Value { get; set; }
     }
 
     public class ODataDataStore : DataStore
@@ -64,13 +65,21 @@ namespace Iql.OData.Data
                 var oDataGetResult =
                     JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
                 operation.Result.Data =
-                    new List<TEntity>(new []{ oDataGetResult });
+                    new DbList<TEntity>(new []{ oDataGetResult });
             }
             else
             {
-                var oDataGetResult = JsonConvert.DeserializeObject<ODataGetResult<List<TEntity>>>(httpResult.ResponseData);
+                var propertyMappings = new Dictionary<string, string>
+                {
+                    {"Count", "@odata.count"},
+                    {"Value", "value"},
+                };
+                var oDataGetResult = JsonSerializer.Deserialize<ODataGetResult<DbList<TEntity>>>(
+                    httpResult.ResponseData,
+                    propertyMappings);
                 operation.Result.Data =
-                    oDataGetResult.value;
+                    oDataGetResult.Value;
+                operation.Result.TotalCount = oDataGetResult.Count;
             }
             return operation.Result;
         }

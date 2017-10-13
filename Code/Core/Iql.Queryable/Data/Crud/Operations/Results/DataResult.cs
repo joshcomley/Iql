@@ -7,6 +7,8 @@ namespace Iql.Queryable.Data.Crud.Operations.Results
             Data = data;
         }
 
+        public int? TotalCount { get; set; }
         public TResult Data { get; set; }
+        public IQueryable<T> Queryable { get; set; }
     }
 }

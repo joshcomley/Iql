@@ -125,7 +125,7 @@ namespace Iql.Queryable
             return ResolveFirstOrDefault(result);
         }
 
-        public async Task<List<T>> ToList()
+        public async Task<DbList<T>> ToList()
         {
             var result = await ToListWithResponse();
             return result?.Data;
@@ -383,6 +383,11 @@ namespace Iql.Queryable
                 key
             ));
             return compositeKey;
+        }
+
+        public virtual DbQueryable<T> IncludeCount()
+        {
+            return Then(new IncludeCountOperation());
         }
 
         protected override DbQueryable<T> New()

@@ -37,7 +37,7 @@ namespace Iql.Queryable
             EvaluateContext evaluateContext = null);
 
         Task<SaveChangesResult> SaveChanges(T entity);
-        Task<List<T>> ToList();
+        Task<DbList<T>> ToList();
         Task<GetDataResult<T>> ToListWithResponse();
         UpdateEntityResult<T> Update(T entity);
         Task<T> WithKey(TKey key);
