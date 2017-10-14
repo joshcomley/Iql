@@ -156,7 +156,8 @@ namespace Iql.Queryable.Data.Tracking
                 if (persistenceKey != null)
                 {
                     var trackedEntityPersistenceKey = trackedEntity.GetPropertyValue(persistenceKeyProperty.Name);
-                    if (trackedEntityPersistenceKey != null && trackedEntityPersistenceKey.ToString() == persistenceKey.ToString())
+                    var persistenceKeyString = persistenceKey.ToString();
+                    if (persistenceKeyString != Guid.Empty.ToString() && trackedEntityPersistenceKey != null && trackedEntityPersistenceKey.ToString() == persistenceKeyString)
                     {
                         matchedEntity = trackedEntity;
                     }
