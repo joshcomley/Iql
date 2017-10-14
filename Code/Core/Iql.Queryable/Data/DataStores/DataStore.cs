@@ -123,6 +123,9 @@ namespace Iql.Queryable.Data.DataStores
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
+#if TypeScript
+            response.Data = (DbList<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
+#endif
             response.Data.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue)
             {
@@ -160,9 +163,6 @@ namespace Iql.Queryable.Data.DataStores
                 }
                 response.Data.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
             }
-#if TypeScript
-            response.Data = (DbList<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
-#endif
             trackingSet.Merge(response.Data);
             return result;
         }
