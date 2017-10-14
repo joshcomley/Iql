@@ -390,7 +390,7 @@ namespace Iql.Queryable
             return Then(new IncludeCountOperation());
         }
 
-        protected override DbQueryable<T> New()
+        public override DbQueryable<T> New()
         {
             var dbQueryable = new DbQueryable<T>(
                 Configuration,

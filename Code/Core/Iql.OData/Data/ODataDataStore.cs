@@ -16,6 +16,7 @@ using Iql.Queryable.Data.Http;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Iql.OData.Data
@@ -64,19 +65,18 @@ namespace Iql.OData.Data
             {
                 var oDataGetResult =
                     JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+                var enumerable = new []{ oDataGetResult };
                 operation.Result.Data =
-                    new DbList<TEntity>(new []{ oDataGetResult });
+                    new DbList<TEntity>(enumerable);
             }
             else
             {
-                var propertyMappings = new Dictionary<string, string>
-                {
-                    {"Count", "@odata.count"},
-                    {"Value", "value"},
-                };
-                var oDataGetResult = JsonSerializer.Deserialize<ODataGetResult<DbList<TEntity>>>(
-                    httpResult.ResponseData,
-                    propertyMappings);
+                var odataResultRoot = JObject.Parse(httpResult.ResponseData);
+                var oDataGetResult = new ODataGetResult<DbList<TEntity>>();
+                var countToken = odataResultRoot["@odata.count"];
+                oDataGetResult.Count = countToken?.ToObject<int?>();
+                var values = odataResultRoot["value"].ToObject<TEntity[]>();
+                oDataGetResult.Value = new DbList<TEntity>(values);
                 operation.Result.Data =
                     oDataGetResult.Value;
                 operation.Result.TotalCount = oDataGetResult.Count;

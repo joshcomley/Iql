@@ -91,7 +91,7 @@ namespace Iql.Queryable
             return (DbSet<T, TKey>)base.IncludeCount();
         }
 
-        protected override DbQueryable<T> New()
+        public override DbQueryable<T> New()
         {
             var dbQueryable = new DbSet<T, TKey>(
                 Configuration,

@@ -28,9 +28,12 @@ namespace Iql.Queryable
         public DbQueryable<T> SourceQueryable { get; set; }
         public PagingInfo PagingInfo { get; set; }
 
-        public DbList(IEnumerable<T> source)
+        public DbList(IEnumerable<T> source = null)
         {
-            this.AddRange(source);
+            if (source != null)
+            {
+                AddRange(source);
+            }
         }
 
 

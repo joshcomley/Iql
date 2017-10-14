@@ -122,7 +122,7 @@ namespace Iql.Queryable
 
         public Type ItemType { get; }
 
-        protected abstract TQueryable New();
+        public abstract TQueryable New();
         public bool HasDefaults { get; set; }
 
         public virtual TQueryable Copy()

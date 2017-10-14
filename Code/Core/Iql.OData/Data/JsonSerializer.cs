@@ -11,37 +11,8 @@ using TypeSharp.Extensions;
 
 namespace Iql.OData.Data
 {
-    public class SerializeMap
-    {
-    }
-
-    [DoNotConvert]
-    public class CustomContractResolver : DefaultContractResolver
-    {
-        private Dictionary<string, string> PropertyMappings { get; }
-
-        public CustomContractResolver(Dictionary<string, string> propertyMappings)
-        {
-            PropertyMappings = propertyMappings;
-        }
-
-        protected override string ResolvePropertyName(string propertyName)
-        {
-            var resolved = PropertyMappings.TryGetValue(propertyName, out string resolvedName);
-            return resolved ? resolvedName : base.ResolvePropertyName(propertyName);
-        }
-    }
     public static class JsonSerializer
     {
-        public static T Deserialize<T>(string json, Dictionary<string, string> serializeMaps = null)
-        {
-            var settings = new JsonSerializerSettings
-            {
-                ContractResolver = new CustomContractResolver(serializeMaps)
-            };
-            return JsonConvert.DeserializeObject<T>(json, settings);
-        }
-
         public static string Serialize(object entity, 
             IDataContext dataContext,
             params PropertyChange[] properties)
