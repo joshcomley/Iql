@@ -57,7 +57,7 @@ namespace Iql.Queryable
             Merge(result);
         }
 
-        private async Task<DbList<T>> NextPage()
+        public async Task<DbList<T>> NextPage()
         {
             var result = await NewNextPageQuery().ToList();
             return result;
@@ -69,7 +69,7 @@ namespace Iql.Queryable
             Merge(result);
         }
 
-        private async Task<DbList<T>> PreviousPage()
+        public async Task<DbList<T>> PreviousPage()
         {
             var result = await NewPreviousPageQuery().ToList();
             return result;
