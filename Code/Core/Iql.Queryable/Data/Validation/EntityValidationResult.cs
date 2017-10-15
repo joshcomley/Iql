@@ -14,6 +14,7 @@ namespace Iql.Queryable.Data.Validation
             = new List<RelationshipCollectionValidationResult>();
 
         public Type EntityType { get; set; }
+        public object LocalEntity { get; set; }
 
         public EntityValidationResult(Type entityType)
         {

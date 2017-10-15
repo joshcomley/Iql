@@ -15,6 +15,7 @@ namespace Iql.Queryable.Data.Crud.Operations
         public TOperation Operation { get; set; }
         public QueuedOperationType Type { get; }
         public TResult Result { get; }
+        ICrudResult IQueuedOperation.Result => Result;
         IEntitySetCrudOperationBase IQueuedOperation.Operation => Operation;
     }
 }

@@ -213,6 +213,7 @@ namespace Iql.TestBed
             person.Loading = new PersonLoading();
             db.People.Add(person);
             var result = await db.SaveChanges();
+            var addResult = result.Results.FirstOrDefault(r => r.LocalEntity == person);
             int a = 0;
         }
 

@@ -11,6 +11,7 @@ using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
@@ -382,7 +383,7 @@ namespace Iql.Queryable.Data.DataStores
             SaveChangesResult saveChangesResult) where TEntity : class
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
-            ICrudResult result = null;
+            ICrudResult result = null;            
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
@@ -416,8 +417,45 @@ namespace Iql.Queryable.Data.DataStores
                     GetTracking().GetSet<TEntity>().Untrack(deleteEntityOperation.Operation.Entity);
                     break;
             }
-            saveChangesResult.Results.Add(result as IEntityCrudResult);
+            var entityCrudResult = operation.Result as IEntityCrudResult;
+            if (entityCrudResult != null)
+            {
+                saveChangesResult.Results.Add(entityCrudResult);
+                entityCrudResult.EntityValidationResults = entityCrudResult.EntityValidationResults ??
+                                                       new Dictionary<object, EntityValidationResult>();
+                ParseEntityResult(
+                    entityCrudResult.EntityValidationResults,
+                    entityCrudResult.LocalEntity,
+                    entityCrudResult.RootEntityValidationResult);
+            }
             decrement();
+        }
+
+        private static void ParseEntityResult(IDictionary<object, EntityValidationResult> resultsDictionary, object entity,
+            EntityValidationResult entityValidationResult)
+        {
+            if (resultsDictionary.ContainsKey(entity))
+            {
+                return;
+            }
+            resultsDictionary.Add(entity, entityValidationResult);
+            entityValidationResult.LocalEntity = entity;
+            foreach (var collectionValidationResultSet in entityValidationResult
+                .RelationshipCollectionValidationResults)
+            {
+                foreach(var validationResult in collectionValidationResultSet.RelationshipValidationResults)
+                {
+                    var index = validationResult.Key;
+                    var collectionEntity =
+                        ((IList) entity.GetPropertyValue(validationResult.Value.PropertyName))[index];
+                    ParseEntityResult(resultsDictionary, collectionEntity, validationResult.Value.EntityValidationResult);
+                }
+            }
+            foreach (var relationshipResult in entityValidationResult.RelationshipValidationResults)
+            {
+                var relationshipEntity = entity.GetPropertyValue(relationshipResult.PropertyName);
+                ParseEntityResult(resultsDictionary, relationshipEntity, relationshipResult.EntityValidationResult);
+            }
         }
 
         private void EnsurePersistenceKeyInNewEntities(object localEntity, List<object> entitiesAlreadyChecked = null)

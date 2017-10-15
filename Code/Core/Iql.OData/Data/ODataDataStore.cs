@@ -7,6 +7,7 @@ using Iql.OData.Queryable;
 using Iql.OData.Queryable.Applicators;
 using Iql.Queryable;
 using Iql.Queryable.Data;
+using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
@@ -110,125 +111,8 @@ namespace Iql.OData.Data
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
             operation.Result.Success = httpResult.Success;
-            if (!operation.Result.Success)
-            {
-                var errorResult = JsonConvert.DeserializeObject<ODataErrorResult>(httpResult.ResponseData);
-                var error = errorResult?.error;
-                if (error != null)
-                {
-                    var entityValidationResult = new EntityValidationResult(operation.Operation.Entity.GetType());
-                    foreach (var detail in error.details)
-                    {
-                        if (string.IsNullOrWhiteSpace(detail.target))
-                        {
-                            entityValidationResult.AddFailure(detail.message);
-                        }
-                        else
-                        {
-                            var path = detail.target.Split('.');
-                            var currentEntityType = operation.Operation.Entity.GetType();
-                            EntityValidationResult currentError = entityValidationResult;
-                            for (var i = 0; i < path.Length; i++)
-                            {
-                                var pathPart = path[i];
-                                if (pathPart.EndsWith("]"))
-                                {
-                                    var index = 0;
-                                    var openBracketIndex = pathPart.IndexOf("[");
-                                    pathPart = pathPart.Substring(0, pathPart.Length - 1);
-                                    var property = pathPart.Substring(0, openBracketIndex);
-                                    index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
-                                    if (IsRelationship(currentEntityType, property))
-                                    {
-                                        var relationshipEntityType = currentEntityType.GetProperty(property).PropertyType.GenericTypeArguments[0];
-
-                                        RelationshipCollectionValidationResult relationshipCollectionValidationResult = null;
-                                        foreach (var existingCollectionResult in currentError.RelationshipCollectionValidationResults)
-                                        {
-                                            if (existingCollectionResult.PropertyName == property)
-                                            {
-                                                relationshipCollectionValidationResult = existingCollectionResult;
-                                                break;
-                                            }
-                                        }
-                                        if (relationshipCollectionValidationResult == null)
-                                        {
-                                            relationshipCollectionValidationResult = new RelationshipCollectionValidationResult(
-                                                relationshipEntityType, currentEntityType, property);
-                                            currentError.RelationshipCollectionValidationResults.Add(relationshipCollectionValidationResult);
-                                        }
-                                        var relationshipCollectionEntityValidationResult = new EntityValidationResult(relationshipEntityType);
-                                        if (!relationshipCollectionValidationResult.RelationshipValidationResults.ContainsKey(index))
-                                        {
-                                            var relationshipValidationResult = new RelationshipValidationResult(
-                                                relationshipEntityType, currentEntityType, relationshipCollectionEntityValidationResult, property);
-                                            relationshipCollectionValidationResult.RelationshipValidationResults.Add(index, relationshipValidationResult);
-                                            currentError = relationshipValidationResult.EntityValidationResult;
-                                        }
-                                        else
-                                        {
-                                            currentError = relationshipCollectionValidationResult.RelationshipValidationResults[index].EntityValidationResult;
-                                        }
-                                        currentEntityType = relationshipEntityType;
-                                    }
-                                    else
-                                    {
-                                        PropertyValidationResult propertyError = currentError.PropertyValidationResults.FirstOrDefault(p => p.PropertyName == property);
-                                        if (propertyError == null)
-                                        {
-                                            propertyError = new PropertyValidationResult(currentEntityType, property);
-                                            currentError.AddPropertyValidationResult(propertyError);
-                                        }
-                                        propertyError.AddFailure(detail.message);
-                                    }
-                                }
-                                else
-                                {
-                                    var property = pathPart;
-                                    if (IsRelationship(currentEntityType, property))
-                                    {
-                                        var relationshipEntityType = currentEntityType.GetProperty(property).PropertyType;
-                                        var relationshipValidationResult = new RelationshipValidationResult(
-                                            relationshipEntityType, currentEntityType, currentError, property);
-                                        currentError.RelationshipValidationResults.Add(relationshipValidationResult);
-                                        relationshipValidationResult.EntityValidationResult = new EntityValidationResult(relationshipEntityType);
-                                        currentError = relationshipValidationResult.EntityValidationResult;
-                                        currentEntityType = relationshipEntityType;
-                                    }
-                                    else
-                                    {
-                                        PropertyValidationResult propertyError = currentError.PropertyValidationResults.FirstOrDefault(p => p.PropertyName == property);
-                                        if (propertyError == null)
-                                        {
-                                            propertyError = new PropertyValidationResult(currentEntityType, property);
-                                            currentError.AddPropertyValidationResult(propertyError);
-                                        }
-                                        propertyError.AddFailure(detail.message);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    operation.Result.EntityValidationResult = entityValidationResult;
-                }
-            }
+            ParseValidation(operation.Result, operation.Operation.Entity, httpResult.ResponseData);
             return operation.Result;
-        }
-
-        private bool IsRelationship(Type entityType, string property)
-        {
-            var entityConfiguration =  DataContext.EntityConfigurationContext.GetEntityByType(entityType);
-            foreach (var relationship in entityConfiguration.Relationships)
-            {
-                var end = relationship.Source.Configuration == entityConfiguration
-                    ? relationship.Source
-                    : relationship.Target;
-                if (end.Property.PropertyName == property)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public override async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
@@ -250,9 +134,10 @@ namespace Iql.OData.Data
                 operation.Operation.Entity,
                 DataContext,
                 operation.Operation.ChangedProperties.ToArray());
-            var result = await http.Put(entityUri, new HttpRequest(json));
+            var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
-            operation.Result.Success = result.Success;
+            operation.Result.Success = httpResult.Success;
+            ParseValidation(operation.Result, operation.Operation.Entity, httpResult.ResponseData);
             return operation.Result;
         }
 
@@ -262,8 +147,9 @@ namespace Iql.OData.Data
             var configuration = GetConfiguration();
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
-            var result = await http.Delete(entityUri);
-            operation.Result.Success = result.Success;
+            var httpResult = await http.Delete(entityUri);
+            operation.Result.Success = httpResult.Success;
+            ParseValidation(operation.Result, operation.Operation.Entity, httpResult.ResponseData);
             return operation.Result;
         }
 
@@ -309,5 +195,139 @@ namespace Iql.OData.Data
         {
             throw new NotImplementedException();
         }
+
+        #region Validation
+        private void ParseValidation(IEntityCrudResult result, object entity, string responseData)
+        {
+            if (!result.Success)
+            {
+                var errorResult = JsonConvert.DeserializeObject<ODataErrorResult>(responseData);
+                var error = errorResult?.error;
+                if (error != null)
+                {
+                    var entityType = entity.GetType();
+                    var entityValidationResult = new EntityValidationResult(entityType);
+                    foreach (var detail in error.details)
+                    {
+                        if (string.IsNullOrWhiteSpace(detail.target))
+                        {
+                            entityValidationResult.AddFailure(detail.message);
+                        }
+                        else
+                        {
+                            var path = detail.target.Split('.');
+                            var currentEntityType = entityType;
+                            EntityValidationResult currentError = entityValidationResult;
+                            for (var i = 0; i < path.Length; i++)
+                            {
+                                var pathPart = path[i];
+                                if (pathPart.EndsWith("]"))
+                                {
+                                    int index;
+                                    var openBracketIndex = pathPart.IndexOf("[");
+                                    pathPart = pathPart.Substring(0, pathPart.Length - 1);
+                                    var property = pathPart.Substring(0, openBracketIndex);
+                                    index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
+                                    if (IsRelationship(currentEntityType, property))
+                                    {
+                                        var relationshipEntityType =
+                                            currentEntityType.GetProperty(property).PropertyType.GenericTypeArguments[0];
+
+                                        RelationshipCollectionValidationResult relationshipCollectionValidationResult = null;
+                                        foreach (var existingCollectionResult in currentError
+                                            .RelationshipCollectionValidationResults)
+                                        {
+                                            if (existingCollectionResult.PropertyName == property)
+                                            {
+                                                relationshipCollectionValidationResult = existingCollectionResult;
+                                                break;
+                                            }
+                                        }
+                                        if (relationshipCollectionValidationResult == null)
+                                        {
+                                            relationshipCollectionValidationResult = new RelationshipCollectionValidationResult(
+                                                relationshipEntityType, currentEntityType, property);
+                                            currentError.RelationshipCollectionValidationResults.Add(
+                                                relationshipCollectionValidationResult);
+                                        }
+                                        var relationshipCollectionEntityValidationResult =
+                                            new EntityValidationResult(relationshipEntityType);
+                                        if (!relationshipCollectionValidationResult.RelationshipValidationResults
+                                            .ContainsKey(index))
+                                        {
+                                            var relationshipValidationResult = new RelationshipValidationResult(
+                                                relationshipEntityType, currentEntityType,
+                                                relationshipCollectionEntityValidationResult, property);
+                                            relationshipCollectionValidationResult.RelationshipValidationResults.Add(index,
+                                                relationshipValidationResult);
+                                            currentError = relationshipValidationResult.EntityValidationResult;
+                                        }
+                                        else
+                                        {
+                                            currentError = relationshipCollectionValidationResult
+                                                .RelationshipValidationResults[index].EntityValidationResult;
+                                        }
+                                        currentEntityType = relationshipEntityType;
+                                    }
+                                    else
+                                    {
+                                        AddPropertyError(currentError, property, currentEntityType, detail);
+                                    }
+                                }
+                                else
+                                {
+                                    var property = pathPart;
+                                    if (IsRelationship(currentEntityType, property))
+                                    {
+                                        var relationshipEntityType = currentEntityType.GetProperty(property).PropertyType;
+                                        var relationshipValidationResult = new RelationshipValidationResult(
+                                            relationshipEntityType, currentEntityType, currentError, property);
+                                        currentError.RelationshipValidationResults.Add(relationshipValidationResult);
+                                        relationshipValidationResult.EntityValidationResult =
+                                            new EntityValidationResult(relationshipEntityType);
+                                        currentError = relationshipValidationResult.EntityValidationResult;
+                                        currentEntityType = relationshipEntityType;
+                                    }
+                                    else
+                                    {
+                                        AddPropertyError(currentError, property, currentEntityType, detail);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    result.RootEntityValidationResult = entityValidationResult;
+                }
+            }
+        }
+
+        private static void AddPropertyError(EntityValidationResult currentError, string property,
+            Type currentEntityType, ODataError detail)
+        {
+            var propertyError = currentError.PropertyValidationResults.FirstOrDefault(p => p.PropertyName == property);
+            if (propertyError == null)
+            {
+                propertyError = new PropertyValidationResult(currentEntityType, property);
+                currentError.AddPropertyValidationResult(propertyError);
+            }
+            propertyError.AddFailure(detail.message);
+        }
+
+        private bool IsRelationship(Type entityType, string property)
+        {
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entityType);
+            foreach (var relationship in entityConfiguration.Relationships)
+            {
+                var end = relationship.Source.Configuration == entityConfiguration
+                    ? relationship.Source
+                    : relationship.Target;
+                if (end.Property.PropertyName == property)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        #endregion Validation
     }
 }
