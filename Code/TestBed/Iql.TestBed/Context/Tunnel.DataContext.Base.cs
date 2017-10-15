@@ -230,7 +230,7 @@ public class TunnelDataContextBase : DataContext {
 		
 		builder.DefineEntity<ReportRecommendation>()		
 			.HasKey(p => p.Id)			
-			.DefineProperty(p => p.FaultReportId)			
+			.DefineProperty(p => p.ReportId)			
 			.DefineProperty(p => p.RecommendationId)			
 			.DefineProperty(p => p.CreatedByUserId)			
 			.DefineProperty(p => p.Notes)			
@@ -245,7 +245,7 @@ public class TunnelDataContextBase : DataContext {
 		builder.DefineEntity<ReportRecommendation>()		
 			.HasOne(p => p.PersonReport)			
 			.WithMany(p => p.Recommendations)			
-			.WithConstraint(p => p.FaultReportId, p => p.Id);		
+			.WithConstraint(p => p.ReportId, p => p.Id);		
 		
 		builder.DefineEntity<ReportRecommendation>()		
 			.HasOne(p => p.Recommendation)			
@@ -484,6 +484,7 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.PersonId)			
 			.DefineProperty(p => p.TypeId)			
 			.DefineProperty(p => p.Notes)			
+			.DefineProperty(p => p.Description)			
 			.DefineProperty(p => p.Guid)			
 			.DefineProperty(p => p.CreatedDate)			
 			.DefineProperty(p => p.Person)			
@@ -501,10 +502,11 @@ public class TunnelDataContextBase : DataContext {
 		
 		builder.DefineEntity<PersonReport>()		
 			.HasKey(p => p.Id)			
-			.DefineProperty(p => p.Id)			
 			.DefineProperty(p => p.PersonId)			
 			.DefineProperty(p => p.TypeId)			
+			.DefineProperty(p => p.Id)			
 			.DefineProperty(p => p.CreatedByUserId)			
+			.DefineProperty(p => p.Title)			
 			.DefineProperty(p => p.Status)			
 			.DefineProperty(p => p.Guid)			
 			.DefineProperty(p => p.CreatedDate)			

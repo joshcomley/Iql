@@ -114,6 +114,14 @@ namespace Iql.Queryable.Data.DataStores
                 }
                 operation.Queryable.HasDefaults = true;
             }
+            var listenConfiguration = DataContext.GetConfiguration<DataContextEventsConfiguration>();
+            if (listenConfiguration != null && listenConfiguration.GetBeginListeners != null)
+            {
+                foreach (var listener in listenConfiguration.GetBeginListeners)
+                {
+                    listener(operation);
+                }
+            }
             var result = new GetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
             var trackingSet = GetTracking().GetSet<TEntity>();

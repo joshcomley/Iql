@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql.Queryable.Data.Validation
 {
-    public class ValidationResult
+    public class ValidationResult : IValidationResult
     {
         public List<ValidationError> ValidationFailures { get; set; }
 

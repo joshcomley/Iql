@@ -8,6 +8,10 @@ namespace Iql.Queryable.Data.Validation
     {
         public List<PropertyValidationResult> PropertyValidationResults { get; set; }
             = new List<PropertyValidationResult>();
+        public List<RelationshipValidationResult> RelationshipValidationResults { get; set; }
+            = new List<RelationshipValidationResult>();
+        public List<RelationshipCollectionValidationResult> RelationshipCollectionValidationResults { get; set; }
+            = new List<RelationshipCollectionValidationResult>();
 
         public Type EntityType { get; set; }
 

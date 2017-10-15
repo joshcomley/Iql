@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Queryable;
 using Iql.Queryable.Data;
 
 namespace Iql.TestBed
@@ -15,38 +16,9 @@ namespace Iql.TestBed
             // TODO: Create new DotNetQuery class inheriting from above base class that constructs an expression tree
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
-            var db = new AppDbContext();
-            var refreshConfig = new EntityDefaultQueryConfiguration();
-            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type).ExpandCollection(p => p.Types, q => q.Expand(t => t.Type)));
-            refreshConfig.ConfigureDefaultGetOperations(() => db.ReportCategories.Expand(p => p.ReportTypes));
-            db.RegisterConfiguration(refreshConfig);
-            var people = await db.People.ToList();
-            var person1 = people.First();
-            await people.LoadNextPage();
-            var person2 = people.First();
-            await people.LoadPreviousPage();
-            var person3 = people.First();
-            if (person1 == person3 && person1 != person2)
-            {
-                int ax = 0;
-            }
-            else
-            {
-                int ax = 0;
-            }
-            var nextPage = await people.NewNextPageQuery().ToList();
-            var nextPage2 = await nextPage.NewNextPageQuery().ToList();
-            var previousPage = await nextPage2.NewPreviousPageQuery().ToList();
-            var previousPage2 = await previousPage.NewPreviousPageQuery().ToList();
-            var personTypes = await db.PersonTypes.ToList();
-            if (person1 == person2)
-            {
-                int ax = 0;
-            }
-            else
-            {
-                int ax = 0;
-            }
+            await TestValidation();
+            //await TestPaging();
+            //await TestCreatingEntityWithCollection();
             ////await db.People.ToList();
             ////var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
             ////    .ExpandCollection(
@@ -80,23 +52,6 @@ namespace Iql.TestBed
             //personTypeMap2.Type.Title = "Polish test";
             //marta.Category = PersonCategory.Conventional;
             //marta.Title += " - 2";
-            var reportType1 = new ReportType();
-            reportType1.Name = "Report type 1";
-            var reportType2 = new ReportType();
-            reportType2.Name = "Report type 2";
-            var paulina1 = new ReportCategory();
-            paulina1.Name = "Some category";
-            paulina1.ReportTypes = paulina1.ReportTypes ?? new List<ReportType>();
-            paulina1.ReportTypes.Add(reportType1);
-            paulina1.ReportTypes.Add(reportType2);
-            db.ReportCategories.Add(paulina1);
-            await db.SaveChanges();
-            reportType2.Name = "Report type 2b";
-            await db.SaveChanges();
-            reportType1.Name = "Report type 1a";
-            reportType2.Name = "Report type 2a";
-            await db.SaveChanges();
-            int a = 0;
             //await db.SaveChanges();
             //personTypeMap.Notes = "";
             //await db.SaveChanges();
@@ -188,6 +143,77 @@ namespace Iql.TestBed
             //        Console.WriteLine($"{person.Name} - {person.Age}");
             //    }
             //}
+        }
+
+        private static async Task TestPaging()
+        {
+            var db = new AppDbContext();
+            var refreshConfig = new EntityDefaultQueryConfiguration();
+            refreshConfig.ConfigureDefaultGetOperations(() => db.People.Expand(p => p.Type)
+                .ExpandCollection(p => p.Types, q => q.Expand(t => t.Type)));
+            refreshConfig.ConfigureDefaultGetOperations(() => db.ReportCategories.Expand(p => p.ReportTypes));
+            db.RegisterConfiguration(refreshConfig);
+            var people = await db.People.ToList();
+            var person1 = people.First();
+            await people.LoadNextPage();
+            var person2 = people.First();
+            await people.LoadPreviousPage();
+            var person3 = people.First();
+            if (person1 == person3 && person1 != person2)
+            {
+                int ax = 0;
+            }
+            else
+            {
+                int ax = 0;
+            }
+            var nextPage = await people.NewNextPageQuery().ToList();
+            var nextPage2 = await nextPage.NewNextPageQuery().ToList();
+            var previousPage = await nextPage2.NewPreviousPageQuery().ToList();
+            var previousPage2 = await previousPage.NewPreviousPageQuery().ToList();
+            var personTypes = await db.PersonTypes.ToList();
+            if (person1 == person2)
+            {
+                int ax = 0;
+            }
+            else
+            {
+                int ax = 0;
+            }
+        }
+
+        private static async Task TestCreatingEntityWithCollection()
+        {
+            var db = new AppDbContext();
+            var reportType1 = new ReportType();
+            reportType1.Name = "Report type 1";
+            var reportType2 = new ReportType();
+            reportType2.Name = "Report type 2";
+            var paulina1 = new ReportCategory();
+            paulina1.Name = "Some category";
+            paulina1.ReportTypes = paulina1.ReportTypes ?? new List<ReportType>();
+            paulina1.ReportTypes.Add(reportType1);
+            paulina1.ReportTypes.Add(reportType2);
+            db.ReportCategories.Add(paulina1);
+            await db.SaveChanges();
+            reportType2.Name = "Report type 2b";
+            await db.SaveChanges();
+            reportType1.Name = "Report type 1a";
+            reportType2.Name = "Report type 2a";
+            await db.SaveChanges();
+            int a = 0;
+        }
+
+        private static async Task TestValidation()
+        {
+            var db = new AppDbContext();
+            var person = new Person();
+            person.Types = person.Types ?? new DbList<PersonTypeMap>();
+            person.Types.Add(new PersonTypeMap());
+            person.Loading = new PersonLoading();
+            db.People.Add(person);
+            var result = await db.SaveChanges();
+            int a = 0;
         }
 
         private static async Task TestPeople(AppDbContext db)

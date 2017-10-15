@@ -492,10 +492,11 @@ public class Site : SiteBase, IEntity {
 }
 
 public class PersonReport : PersonReportBase, IEntity {
-	public int Id { get; set; }
 	public int PersonId { get; set; }
 	public int TypeId { get; set; }
+	public int Id { get; set; }
 	public string CreatedByUserId { get; set; }
+	public string Title { get; set; }
 	public FaultReportStatus Status { get; set; }
 	public Guid Guid { get; set; }
 	public DateTimeOffset CreatedDate { get; set; }
@@ -519,6 +520,7 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 	public int PersonId { get; set; }
 	public int TypeId { get; set; }
 	public string Notes { get; set; }
+	public string Description { get; set; }
 	public Guid Guid { get; set; }
 	public DateTimeOffset CreatedDate { get; set; }
 	public Person Person { get; set; }
@@ -569,6 +571,15 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
+		validationResult.AddPropertyValidationResult(this.ValidateName());
+		return validationResult;
+	}
+	public PropertyValidationResult ValidateName() {
+		var validationResult = new PropertyValidationResult(this.GetType(), "Name");
+		var entity = this;
+		if(!(true)) {
+			validationResult.AddFailure("Please enter a loading name");
+		}
 		return validationResult;
 	}
 }
@@ -648,6 +659,15 @@ public class Person : PersonBase, IEntity {
 		}
 		if(!(true)) {
 			validationResult.AddFailure("Please enter less than fifty characters");
+		}
+		if(!(true)) {
+			validationResult.AddFailure("Please enter at least three characters for the person's title");
+		}
+		if(!(true)) {
+			validationResult.AddFailure("Please enter a valid report title");
+		}
+		if(!(true)) {
+			validationResult.AddFailure("Please enter less than five characters");
 		}
 		return validationResult;
 	}
@@ -771,7 +791,7 @@ public class ReportType : ReportTypeBase, IEntity {
 }
 
 public class ReportRecommendation : ReportRecommendationBase, IEntity {
-	public int FaultReportId { get; set; }
+	public int ReportId { get; set; }
 	public int RecommendationId { get; set; }
 	public string CreatedByUserId { get; set; }
 	public string Notes { get; set; }
@@ -847,6 +867,18 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
+		validationResult.AddPropertyValidationResult(this.ValidateNotes());
+		return validationResult;
+	}
+	public PropertyValidationResult ValidateNotes() {
+		var validationResult = new PropertyValidationResult(this.GetType(), "Notes");
+		var entity = this;
+		if(!(true)) {
+			validationResult.AddFailure("Please enter some actions taken notes");
+		}
+		if(!(true)) {
+			validationResult.AddFailure("Please enter at least five characters for notes");
+		}
 		return validationResult;
 	}
 }
