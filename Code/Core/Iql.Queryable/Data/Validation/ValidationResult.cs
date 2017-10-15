@@ -5,7 +5,7 @@ namespace Iql.Queryable.Data.Validation
 {
     public class ValidationResult : IValidationResult
     {
-        public List<ValidationError> ValidationFailures { get; set; }
+        public List<ValidationError> ValidationFailures { get; set; } = new List<ValidationError>();
 
         public void AddFailure(string message)
         {

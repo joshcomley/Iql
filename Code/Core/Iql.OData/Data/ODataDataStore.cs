@@ -11,6 +11,7 @@ using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Http;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Operations;
@@ -228,10 +229,10 @@ namespace Iql.OData.Data
                                     pathPart = pathPart.Substring(0, pathPart.Length - 1);
                                     var property = pathPart.Substring(0, openBracketIndex);
                                     index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
-                                    if (IsRelationship(currentEntityType, property))
+                                    var relationship = FindRelationship(currentEntityType, property);
+                                    if (relationship != null)
                                     {
-                                        var relationshipEntityType =
-                                            currentEntityType.GetProperty(property).PropertyType.GenericTypeArguments[0];
+                                        var relationshipEntityType = relationship.Type;
 
                                         RelationshipCollectionValidationResult relationshipCollectionValidationResult = null;
                                         foreach (var existingCollectionResult in currentError
@@ -277,9 +278,10 @@ namespace Iql.OData.Data
                                 else
                                 {
                                     var property = pathPart;
-                                    if (IsRelationship(currentEntityType, property))
+                                    var relationship = FindRelationship(currentEntityType, property);
+                                    if (relationship != null)
                                     {
-                                        var relationshipEntityType = currentEntityType.GetProperty(property).PropertyType;
+                                        var relationshipEntityType = relationship.Type;
                                         var relationshipValidationResult = new RelationshipValidationResult(
                                             relationshipEntityType, currentEntityType, currentError, property);
                                         currentError.RelationshipValidationResults.Add(relationshipValidationResult);
@@ -313,7 +315,7 @@ namespace Iql.OData.Data
             propertyError.AddFailure(detail.message);
         }
 
-        private bool IsRelationship(Type entityType, string property)
+        private IRelationshipDetail FindRelationship(Type entityType, string property)
         {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var relationship in entityConfiguration.Relationships)
@@ -323,10 +325,10 @@ namespace Iql.OData.Data
                     : relationship.Target;
                 if (end.Property.PropertyName == property)
                 {
-                    return true;
+                    return end;
                 }
             }
-            return false;
+            return null;
         }
         #endregion Validation
     }

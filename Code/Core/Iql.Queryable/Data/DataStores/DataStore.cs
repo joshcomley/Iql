@@ -395,29 +395,49 @@ namespace Iql.Queryable.Data.DataStores
                     EnsurePersistenceKeyInNewEntities(localEntity);
                     result = await PerformAdd(addEntityOperation);
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
-                    //ObjectMerger.Merge(DataContext, localEntity, remoteEntity);
-                    foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+                    if (remoteEntity != null)
                     {
-                        localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
+                        foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+                        {
+                            localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
+                        }
                     }
                     await RefreshEntity(localEntity);
                     GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
-                    EnsurePersistenceKeyInNewEntities(updateEntityOperation.Operation.Entity);
-                    result = await PerformUpdate(updateEntityOperation);
-                    var operationEntity = updateEntityOperation.Operation
-                        .Entity;
-                    await RefreshEntity(operationEntity);
-                    GetTracking().GetSet<TEntity>().Track(operationEntity);
-                    //.WithKey(identityWhereOperation.Key);
-                    //Merge(updateEntityOperation.Operation.Entity, refreshResult);
+                    if (DataContext.IsEntityNew(updateEntityOperation.Operation.Entity))
+                    {
+                        operation.Result.Success = false;
+                        var failure = new EntityValidationResult(updateEntityOperation.Operation.EntityType);
+                        failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
+                        updateEntityOperation.Result.RootEntityValidationResult = failure;
+                    }
+                    else
+                    {
+                        EnsurePersistenceKeyInNewEntities(updateEntityOperation.Operation.Entity);
+                        result = await PerformUpdate(updateEntityOperation);
+                        var operationEntity = updateEntityOperation.Operation
+                            .Entity;
+                        await RefreshEntity(operationEntity);
+                        GetTracking().GetSet<TEntity>().Track(operationEntity);
+                    }
                     break;
                 case OperationType.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
-                    result = await PerformDelete(deleteEntityOperation);
-                    GetTracking().GetSet<TEntity>().Untrack(deleteEntityOperation.Operation.Entity);
+                    if (DataContext.IsEntityNew(deleteEntityOperation.Operation.Entity))
+                    {
+                        operation.Result.Success = false;
+                        var failure = new EntityValidationResult(deleteEntityOperation.Operation.EntityType);
+                        failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
+                        deleteEntityOperation.Result.RootEntityValidationResult = failure;
+                    }
+                    else
+                    {
+                        result = await PerformDelete(deleteEntityOperation);
+                        GetTracking().GetSet<TEntity>().Untrack(deleteEntityOperation.Operation.Entity);
+                    }
                     break;
             }
             var entityCrudResult = operation.Result as IEntityCrudResult;
@@ -437,7 +457,7 @@ namespace Iql.Queryable.Data.DataStores
         private static void ParseEntityResult(IDictionary<object, EntityValidationResult> resultsDictionary, object entity,
             EntityValidationResult entityValidationResult)
         {
-            if (resultsDictionary.ContainsKey(entity))
+            if (entityValidationResult == null || resultsDictionary.ContainsKey(entity))
             {
                 return;
             }
@@ -516,21 +536,24 @@ namespace Iql.Queryable.Data.DataStores
         private async Task RefreshEntity<TEntity>(TEntity entity)
             where TEntity : class
         {
-            var identityWhereOperation =
-                DataContext.ResolveWithKeyOperationFromEntity(entity);
-            var queryable = DataContext.AsDbSetByType(typeof(TEntity));
-            //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
-            //if (refreshConfiguration != null)
-            //{
-            //    queryable = refreshConfiguration.GetQueryable<TEntity>()();
-            //}
-            //else
-            //{
-            //    queryable =
-            //        DataContext.AsDbSetByType(typeof(TEntity));
-            //}
-            // This will trigger a merge in the tracking store
-            await queryable.WithKey(identityWhereOperation.Key);
+            if (!DataContext.IsEntityNew(entity))
+            {
+                var identityWhereOperation =
+                    DataContext.ResolveWithKeyOperationFromEntity(entity);
+                var queryable = DataContext.AsDbSetByType(typeof(TEntity));
+                //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
+                //if (refreshConfiguration != null)
+                //{
+                //    queryable = refreshConfiguration.GetQueryable<TEntity>()();
+                //}
+                //else
+                //{
+                //    queryable =
+                //        DataContext.AsDbSetByType(typeof(TEntity));
+                //}
+                // This will trigger a merge in the tracking store
+                await queryable.WithKey(identityWhereOperation.Key);
+            }
         }
     }
 }
