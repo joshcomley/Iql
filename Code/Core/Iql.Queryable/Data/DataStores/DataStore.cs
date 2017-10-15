@@ -265,8 +265,11 @@ namespace Iql.Queryable.Data.DataStores
             {
                 trackingSet.GetChanges().ForEach(update =>
                 {
-                    if (Queue.Any(q => q.GetType().Name == nameof(AddEntityOperation<object>)
-                        && (q as IEntityCrudOperationBase).Entity == update.Entity))
+                    // If we are adding an entity in the same save changes operation
+                    // then we don't need to do any scheduled updates on it because
+                    // they will be negated by the add operation
+                    if (Queue.Any(q => q.Operation.Type == OperationType.Add
+                        && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
                     {
                         return;
                     }
