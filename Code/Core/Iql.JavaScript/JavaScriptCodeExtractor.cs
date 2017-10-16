@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.JavaScript
@@ -7,6 +8,10 @@ namespace Iql.JavaScript
     {
         public static string RemoveComments(string code)
         {
+            if (code == null)
+            {
+                throw new ArgumentException("\"code\" cannot be null.");
+            }
             var quotes = new[] { '\'', '`', '"' };
             var inQuote = false;
             var inComment = false;
@@ -64,6 +69,14 @@ namespace Iql.JavaScript
 
         private static bool StartsWithAt(this string source, int index, string str)
         {
+            if (source == null)
+            {
+                return false;
+            }
+            if (str == null)
+            {
+                throw new ArgumentException("Value cannot be null.");
+            }
             if (index + str.Length > source.Length)
             {
                 return false;
@@ -73,6 +86,10 @@ namespace Iql.JavaScript
 
         public static JavaScriptFunctionBody ExtractBody(string code)
         {
+            if (code == null)
+            {
+                throw new ArgumentNullException(nameof(code));
+            }
             var copy = code;
             var commentsRemoved = RemoveComments(copy);
             copy = commentsRemoved;
