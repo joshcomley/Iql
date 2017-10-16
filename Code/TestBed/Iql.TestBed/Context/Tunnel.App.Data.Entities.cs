@@ -649,13 +649,14 @@ public class Person : PersonBase, IEntity {
 			validationResult.AddFailure("If the name is 'Josh' please match it in the description");
 		}
 		validationResult.AddPropertyValidationResult(this.ValidateTitle());
+		validationResult.AddPropertyValidationResult(this.ValidateDescription());
 		return validationResult;
 	}
 	public PropertyValidationResult ValidateTitle() {
 		var validationResult = new PropertyValidationResult(this.GetType(), "Title");
 		var entity = this;
 		if(!(true)) {
-			validationResult.AddFailure("Please enter a valid title");
+			validationResult.AddFailure("Please enter a valid person title");
 		}
 		if(!(true)) {
 			validationResult.AddFailure("Please enter less than fifty characters");
@@ -668,6 +669,14 @@ public class Person : PersonBase, IEntity {
 		}
 		if(!(true)) {
 			validationResult.AddFailure("Please enter less than five characters");
+		}
+		return validationResult;
+	}
+	public PropertyValidationResult ValidateDescription() {
+		var validationResult = new PropertyValidationResult(this.GetType(), "Description");
+		var entity = this;
+		if(!(true)) {
+			validationResult.AddFailure("Please enter a valid person description");
 		}
 		return validationResult;
 	}
