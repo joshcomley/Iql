@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Iql.OData.Queryable.Applicators;
 using Iql.Queryable;
 using Iql.Queryable.Data;
@@ -9,6 +10,17 @@ using Iql.Queryable.Operations;
 
 namespace Iql.OData.Queryable
 {
+    class ODataUriPart
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+
+        public ODataUriPart(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+    }
     public class ODataQuery<T> : QueryResult<T>, IODataQuery
     {
         private Dictionary<ODataQueryPart, List<string>> QueryParts { get; }
@@ -56,7 +68,7 @@ namespace Iql.OData.Queryable
         public string ToODataQuery(bool isNested = false)
         {
             var query = "";
-            var queryParts = new List<string>();
+            var queryParts = new List<ODataUriPart>();
             if (HasKey)
             {
                 query += $"({WithKeyOperationApplicatorOData.FormatKey(Key)})";
@@ -64,31 +76,31 @@ namespace Iql.OData.Queryable
             var filters = GetQueryPart(ODataQueryPart.Filter);
             if (filters.Count > 0)
             {
-                queryParts.Add("$filter=" + string.Join(" and ", filters));
+                queryParts.Add(new ODataUriPart("$filter", string.Join(" and ", filters)));
             }
             var orderBys = GetQueryPart(ODataQueryPart.OrderBy);
             if (orderBys.Count > 0)
             {
-                queryParts.Add("$orderby=" + string.Join(",", orderBys));
+                queryParts.Add(new ODataUriPart("$orderby", string.Join(",", orderBys)));
             }
             var expands = GetQueryPart(ODataQueryPart.Expand);
             if (expands.Count > 0)
             {
-                queryParts.Add("$expand=" + string.Join(",", expands));
+                queryParts.Add(new ODataUriPart("$expand", string.Join(",", expands)));
             }
             var skip = GetQueryPart(ODataQueryPart.Skip);
             if (skip.Count > 0)
             {
-                queryParts.Add("$skip=" + skip.Last());
+                queryParts.Add(new ODataUriPart("$skip", skip.Last()));
             }
             var take = GetQueryPart(ODataQueryPart.Take);
             if (take.Count > 0)
             {
-                queryParts.Add("$top=" + take.Last());
+                queryParts.Add(new ODataUriPart("$top", take.Last()));
             }
             if (IncludeCount)
             {
-                queryParts.Add("$count=true");
+                queryParts.Add(new ODataUriPart("$count", "true"));
             }
             if (queryParts.Any())
             {
@@ -96,7 +108,7 @@ namespace Iql.OData.Queryable
                 {
                     query += "?";
                 }
-                query += string.Join(isNested ? ";" : "&", queryParts);
+                query += string.Join(isNested ? ";" : "&", queryParts.Select(q => q.Name + "=" + Uri.EscapeDataString(q.Value)));
             }
             return query;
         }
