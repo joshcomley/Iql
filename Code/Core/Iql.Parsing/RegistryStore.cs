@@ -6,12 +6,12 @@ namespace Iql.Parsing
     public class RegistryStore<TInstance, TResolveTo>
         where TResolveTo : class
     {
-        private readonly Dictionary<string, Func<TResolveTo>> _registry =
-            new Dictionary<string, Func<TResolveTo>>();
+        private readonly Dictionary<Type, Func<TResolveTo>> _registry =
+            new Dictionary<Type, Func<TResolveTo>>();
 
         public void Register(Type type, Func<TResolveTo> reducerType)
         {
-            _registry[type.Name] = reducerType;
+            _registry[type] = reducerType;
         }
 
         public TResolveTo Resolve(TInstance expression)
@@ -23,9 +23,9 @@ namespace Iql.Parsing
                 {
                     break;
                 }
-                if (_registry.ContainsKey(type.Name))
+                if (_registry.ContainsKey(type))
                 {
-                    return _registry[type.Name]();
+                    return _registry[type]();
                 }
                 type = type.BaseType;
             }

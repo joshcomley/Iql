@@ -5,22 +5,21 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class EntityConfigurationBuilder
     {
-        private readonly Dictionary<string, IEntityConfiguration> _entities =
-            new Dictionary<string, IEntityConfiguration>();
+        private readonly Dictionary<Type, IEntityConfiguration> _entities =
+            new Dictionary<Type, IEntityConfiguration>();
 
         public EntityConfiguration<T> DefineEntity<T>() where T : class
         {
             var entityType = typeof(T);
             EntityConfiguration<T> entityConfiguration;
-            var name = entityType.Name;
-            if (_entities.ContainsKey(name))
+            if (_entities.ContainsKey(entityType))
             {
-                entityConfiguration = _entities[name] as EntityConfiguration<T>;
+                entityConfiguration = _entities[entityType] as EntityConfiguration<T>;
             }
             else
             {
                 entityConfiguration = new EntityConfiguration<T>(entityType, this);
-                _entities[name] = entityConfiguration;
+                _entities[entityType] = entityConfiguration;
             }
             return entityConfiguration;
         }
@@ -32,21 +31,16 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public EntityConfiguration<T> GetEntity<T>() where T : class
         {
-            return GetEntityByName(typeof(T).Name) as EntityConfiguration<T>;
-        }
-
-        public IEntityConfiguration GetEntityByName(string typeName)
-        {
-            if (!_entities.ContainsKey(typeName))
-            {
-                throw new Exception($"No entity of type \"{typeName}\" has been configured for this context.");
-            }
-            return _entities[typeName];
+            return GetEntityByType(typeof(T)) as EntityConfiguration<T>;
         }
 
         public IEntityConfiguration GetEntityByType(Type type)
         {
-            return GetEntityByName(type.Name);
+            if (!_entities.ContainsKey(type))
+            {
+                throw new Exception($"No entity of type \"{type.Name}\" has been configured for this context.");
+            }
+            return _entities[type];
         }
     }
 }
