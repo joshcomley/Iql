@@ -18,6 +18,7 @@ namespace Iql.Queryable
 
         //new JavaScriptExpressionToIqlConverter()
         public static Func<IExpressionToIqlConverter> ExpressionConverter { get; set; }
+        public static Func<IIqlToNativeConverter> IqlToNativeConverter { get; set; }
 
         public static IqlExpression ExpressionToIqlExpressionTree<T, TProperty>(
             Expression<Func<T, TProperty>> property)

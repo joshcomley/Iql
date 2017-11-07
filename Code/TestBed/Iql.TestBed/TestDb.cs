@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.DotNet;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 
@@ -16,9 +17,13 @@ namespace Iql.TestBed
             // TODO: Create new DotNetQuery class inheriting from above base class that constructs an expression tree
             // TODO: DotNetQuery ToList<>() should apply the expression tree to the list of elements
             //var x = JavaScriptCodeExtractor.ExtractBody("function (p) { return p.Id; }");
-            await TestValidation();
+            //await TestValidation();
             //await TestPaging();
             //await TestCreatingEntityWithCollection();
+            IqlQueryableAdapter.IqlToNativeConverter = () => new IqlToDotNetConverter();
+            var db = new AppDbContext();
+            var query = db.Clients.ExpandAll();
+            var x = 1;
             ////await db.People.ToList();
             ////var dataResult1 = await db.PersonTypes.OrderBy(p => p.Title)
             ////    .ExpandCollection(
