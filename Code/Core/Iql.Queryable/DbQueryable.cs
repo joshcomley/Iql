@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
@@ -317,6 +318,61 @@ namespace Iql.Queryable
             where TTarget : class
         {
             return ExpandQuery(new ExpandQueryExpression<T, TTarget, TTarget>(target));
+        }
+
+        public DbQueryable<T> ExpandRelationship(
+            string propertyName)
+        {
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
+            var relationship = entityConfiguration
+                .Relationships.Single(r =>
+                {
+                    var thisEnd = r.Source.Configuration == entityConfiguration
+                        ? r.Source
+                        : r.Target;
+                    if (thisEnd.Property.PropertyName == propertyName)
+                    {
+                        return true;
+                    }
+                    return false;
+                });
+            var source = relationship.Source.Configuration == entityConfiguration
+                ? relationship.Source
+                : relationship.Target;
+            var target = relationship.Source.Configuration == entityConfiguration
+                ? relationship.Target
+                : relationship.Source;
+            var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.PropertyName);
+            var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
+            var propertyExpression = new IqlPropertyExpression(propertyName, typeof(T).Name, source.Property.ReturnType);
+            propertyExpression.Parent = rootReferenceExpression;
+            var expandOperationType = typeof(ExpandOperation<,,>).MakeGenericType(
+                typeof(T),
+                property.Type,
+                target.Type);
+            var expandOperation = (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
+            expandOperation.Expression = propertyExpression;
+            return Then(expandOperation);
+            //var converter = IqlQueryableAdapter.IqlToNativeConverter();
+            //var target = converter.Parse<T>(propertyExpression);
+            //var method = GetType().GetMethod(nameof(Expand)).MakeGenericMethod(
+            //    typeof(T).GetProperty(propertyName).PropertyType
+            //    );
+            //return (DbQueryable<T>)method.Invoke(this, new object[] { target });
+        }
+
+        public DbQueryable<T> ExpandAll()
+        {
+            var set = this;
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
+            foreach (var relationship in entityConfiguration.Relationships)
+            {
+                var thisEnd = relationship.Source.Configuration == entityConfiguration
+                    ? relationship.Source
+                    : relationship.Target;
+                set = set.ExpandRelationship(thisEnd.Property.PropertyName);
+            }
+            return set;
         }
 
         public DbQueryable<T> ExpandQuery<TTarget>(

@@ -49,6 +49,11 @@ namespace Iql.Queryable
             return (DbSet<T, TKey>)base.Expand(target);
         }
 
+        public new DbSet<T, TKey> ExpandAll()
+        {
+            return (DbSet<T, TKey>)base.ExpandAll();
+        }
+
         public new DbSet<T, TKey> ExpandQuery<TTarget>(
             ExpandQueryExpression<T, TTarget, TTarget> expression)
             where TTarget : class
