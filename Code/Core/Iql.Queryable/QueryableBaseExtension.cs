@@ -200,7 +200,10 @@ namespace Iql.Queryable
                 //{
                 //    detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
                 //}
-                detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
+                if (expandExpression != null)
+                {
+                    detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
+                }
                 return relationshipTarget.Type;
             }
             return null;
