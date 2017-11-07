@@ -19,9 +19,23 @@ namespace Iql.Queryable
 
         public int SkippedSoFar { get; set; }
         public int TotalCount { get; set; }
-        public int PageSize { get; set; }
+        public int PageSize { get; private set; }
         public int Page { get; set; }
-        public int PageCount { get; }
+        public int PageCount { get; private set; }
+
+        public void UpdatePageSize(int pageSize)
+        {
+            PageSize = pageSize;
+            Page = SkippedSoFar / PageSize;
+            var pageCount = 0;
+            var i = TotalCount;
+            while (i > 0)
+            {
+                pageCount++;
+                i -= pageSize;
+            }
+            PageCount = pageCount;
+        }
     }
     public class DbList<T> : List<T> where T : class
     {
@@ -32,7 +46,22 @@ namespace Iql.Queryable
         {
             if (source != null)
             {
+#if TypeScript
+                if (source.GetType() == typeof(int))
+                {
+                    var count = (int)(object)source;
+                    for (var i = 0; i < count; i++)
+                    {
+                        Add(null);
+                    }
+                }
+                else
+                {
+#endif
                 AddRange(source);
+#if TypeScript
+                }
+#endif
             }
         }
 
@@ -72,6 +101,17 @@ namespace Iql.Queryable
         public async Task<DbList<T>> PreviousPage()
         {
             var result = await NewPreviousPageQuery().ToList();
+            return result;
+        }
+
+        public async Task<DbList<T>> Page(int page, int pageSize)
+        {
+            var queryable = SourceQueryable.Copy();
+            var operations = queryable.Operations.Where(o => !(o is SkipOperation)).ToList();
+            queryable.Operations.Clear();
+            queryable.Operations.AddRange(operations);
+            queryable.Operations.Add(new SkipOperation((page - 1) * pageSize));
+            var result = await queryable.ToList();
             return result;
         }
 
