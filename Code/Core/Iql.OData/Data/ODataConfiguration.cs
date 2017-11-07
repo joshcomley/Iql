@@ -19,5 +19,17 @@ namespace Iql.OData.Data
         {
             return _entitySets[typeof(T)];
         }
+
+        public Type GetEntityTypeFromSetName(string entitySetName)
+        {
+            foreach (var entityType in _entitySets.Keys)
+            {
+                if (_entitySets[entityType] == entitySetName)
+                {
+                    return entityType;
+                }
+            }
+            return null;
+        }
     }
 }
