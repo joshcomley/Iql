@@ -4,7 +4,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class Property<TProperty> : PropertyBase
     {
-        public Property(string name, bool isCollection, Type declaringType) : base(name, typeof(TProperty), isCollection, declaringType)
+        public Property(
+            string name, 
+            bool isCollection, 
+            Type declaringType,
+            string convertedFromType = null) : base(name, typeof(TProperty), isCollection, declaringType, convertedFromType)
         {
         }
     }

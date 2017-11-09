@@ -8,5 +8,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
         Type Type { get; }
         bool IsCollection { get; }
         Type DeclaringType { get; }
+        string ConvertedFromType { get; }
     }
 }

@@ -8,13 +8,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public Type Type { get; }
         public bool IsCollection { get; }
         public Type DeclaringType { get; }
+        public string ConvertedFromType { get; }
 
-        public PropertyBase(string name, Type type, bool isCollection, Type declaringType)
+        public PropertyBase(string name, Type type, bool isCollection, Type declaringType, string convertedFromType)
         {
             Name = name;
             Type = type;
             IsCollection = isCollection;
             DeclaringType = declaringType;
+            ConvertedFromType = convertedFromType;
         }
     }
 }
