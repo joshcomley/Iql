@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data
 {
@@ -70,7 +70,7 @@ namespace Iql.Queryable.Data
             Initialize();
             var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
             var keyType = entityKey.KeyType;
-            return (IDbSet) GetType().GetMethod(nameof(AsDbSet))
+            return (IDbSet)GetType().GetMethod(nameof(AsDbSet))
                 .MakeGenericMethod(
                     entityType,
                     keyType
@@ -121,7 +121,7 @@ namespace Iql.Queryable.Data
 
         public bool IsIdMatch(object left, object right)
         {
-            if (new[] {left, right}.Count(i => i == null) == 1)
+            if (new[] { left, right }.Count(i => i == null) == 1)
             {
                 return false;
             }
@@ -144,6 +144,30 @@ namespace Iql.Queryable.Data
                 }
             }
             return isMatch;
+        }
+
+        public async Task<T> RefreshEntity<T>(T entity)
+            where T : class
+        {
+            if (this.IsEntityNew(entity, typeof(T)))
+            {
+                return null;
+            }
+            var identityWhereOperation =
+                this.ResolveWithKeyOperationFromEntity(entity);
+            var queryable = AsDbSetByType(typeof(T));
+            //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
+            //if (refreshConfiguration != null)
+            //{
+            //    queryable = refreshConfiguration.GetQueryable<TEntity>()();
+            //}
+            //else
+            //{
+            //    queryable =
+            //        DataContext.AsDbSetByType(typeof(TEntity));
+            //}
+            // This will trigger a merge in the tracking store
+            return (T) await queryable.WithKey(identityWhereOperation.Key);
         }
     }
 }

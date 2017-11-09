@@ -22,6 +22,22 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public List<IRelationship> Relationships { get; set; }
+
+        public RelationshipMatch FindRelationship(string propertyName)
+        {
+            foreach (var relationship in Relationships)
+            {
+                var ends = new[] {relationship.Source, relationship.Target};
+                for (var i = 0; i < ends.Length; i++)
+                {
+                    if (ends[i].Configuration == this && ends[i].Property.PropertyName == propertyName)
+                    {
+                        return new RelationshipMatch(relationship, i == 0);
+                    }
+                }
+            }
+            return null;
+        }
         public List<IProperty> Properties { get; set; }
         public IEntityKey Key { get; set; }
         public Type Type { get; set; }

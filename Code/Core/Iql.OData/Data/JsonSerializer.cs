@@ -31,7 +31,7 @@ namespace Iql.OData.Data
             var propertyChanges = properties as PropertyChange[] ?? properties.ToArray();
             if (!propertyChanges.Any())
             {
-                if (dataContext.IsEntityNew(entity))
+                if (dataContext.IsEntityNew(entity, entity.GetType()))
                 {
                     propertyChanges = dataContext.EntityNonNullProperties(entity).ToArray();
                 }

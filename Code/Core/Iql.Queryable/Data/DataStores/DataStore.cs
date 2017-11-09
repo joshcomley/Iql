@@ -392,7 +392,7 @@ namespace Iql.Queryable.Data.DataStores
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
                     var localEntity = addEntityOperation.Operation.Entity;
-                    EnsurePersistenceKeyInNewEntities(localEntity);
+                    EnsurePersistenceKeyInNewEntities(localEntity, typeof(TEntity));
                     result = await PerformAdd(addEntityOperation);
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
                     if (remoteEntity != null)
@@ -402,12 +402,12 @@ namespace Iql.Queryable.Data.DataStores
                             localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
                         }
                     }
-                    await RefreshEntity(localEntity);
+                    await DataContext.RefreshEntity(localEntity);
                     GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
-                    if (DataContext.IsEntityNew(updateEntityOperation.Operation.Entity))
+                    if (DataContext.IsEntityNew(updateEntityOperation.Operation.Entity, typeof(TEntity)))
                     {
                         operation.Result.Success = false;
                         var failure = new EntityValidationResult(updateEntityOperation.Operation.EntityType);
@@ -416,17 +416,17 @@ namespace Iql.Queryable.Data.DataStores
                     }
                     else
                     {
-                        EnsurePersistenceKeyInNewEntities(updateEntityOperation.Operation.Entity);
+                        EnsurePersistenceKeyInNewEntities(updateEntityOperation.Operation.Entity, typeof(TEntity));
                         result = await PerformUpdate(updateEntityOperation);
                         var operationEntity = updateEntityOperation.Operation
                             .Entity;
-                        await RefreshEntity(operationEntity);
+                        await DataContext.RefreshEntity(operationEntity);
                         GetTracking().GetSet<TEntity>().Track(operationEntity);
                     }
                     break;
                 case OperationType.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
-                    if (DataContext.IsEntityNew(deleteEntityOperation.Operation.Entity))
+                    if (DataContext.IsEntityNew(deleteEntityOperation.Operation.Entity, typeof(TEntity)))
                     {
                         operation.Result.Success = false;
                         var failure = new EntityValidationResult(deleteEntityOperation.Operation.EntityType);
@@ -481,7 +481,7 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
-        private void EnsurePersistenceKeyInNewEntities(object localEntity, List<object> entitiesAlreadyChecked = null)
+        private void EnsurePersistenceKeyInNewEntities(object localEntity, Type entityType, List<object> entitiesAlreadyChecked = null)
         {
             entitiesAlreadyChecked = entitiesAlreadyChecked ?? new List<object>();
             // Avoid infinite recursion
@@ -490,7 +490,7 @@ namespace Iql.Queryable.Data.DataStores
                 return;
             }
             var type = localEntity.GetType();
-            if (DataContext.IsEntityNew(localEntity))
+            if (DataContext.IsEntityNew(localEntity, entityType))
             {
                 var persistenceKey = DataContext.EntityConfigurationContext.GetEntityByType(type).Properties
                     .FirstOrDefault(p => p.Name == "PersistenceKey");
@@ -509,10 +509,13 @@ namespace Iql.Queryable.Data.DataStores
             foreach (var relationship in entityConfiguration.Relationships)
             {
                 var isSource = relationship.Source.Configuration == entityConfiguration;
-                var propertyName = isSource
-                    ? relationship.Source.Property.PropertyName
-                    : relationship.Target.Property.PropertyName;
-                var relationshipValue = localEntity.GetPropertyValue(propertyName);
+                var property = isSource
+                    ? relationship.Source.Property
+                    : relationship.Target.Property;
+                var relationshipEntityType = isSource
+                    ? relationship.Source.Configuration.Type
+                    : relationship.Target.Configuration.Type;
+                var relationshipValue = localEntity.GetPropertyValue(property.PropertyName);
 
                 if (relationshipValue != null)
                 {
@@ -522,37 +525,14 @@ namespace Iql.Queryable.Data.DataStores
                         var list = (IList)relationshipValue;
                         foreach (var item in list)
                         {
-                            EnsurePersistenceKeyInNewEntities(item);
+                            EnsurePersistenceKeyInNewEntities(item, relationshipEntityType);
                         }
                     }
                     else
                     {
-                        EnsurePersistenceKeyInNewEntities(relationshipValue);
+                        EnsurePersistenceKeyInNewEntities(relationshipValue, relationshipEntityType);
                     }
                 }
-            }
-        }
-
-        private async Task RefreshEntity<TEntity>(TEntity entity)
-            where TEntity : class
-        {
-            if (!DataContext.IsEntityNew(entity))
-            {
-                var identityWhereOperation =
-                    DataContext.ResolveWithKeyOperationFromEntity(entity);
-                var queryable = DataContext.AsDbSetByType(typeof(TEntity));
-                //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
-                //if (refreshConfiguration != null)
-                //{
-                //    queryable = refreshConfiguration.GetQueryable<TEntity>()();
-                //}
-                //else
-                //{
-                //    queryable =
-                //        DataContext.AsDbSetByType(typeof(TEntity));
-                //}
-                // This will trigger a merge in the tracking store
-                await queryable.WithKey(identityWhereOperation.Key);
             }
         }
     }

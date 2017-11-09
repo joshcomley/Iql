@@ -7,9 +7,9 @@ namespace Iql.Queryable.Extensions
 {
     public static class DataContextExtensions
     {
-        public static bool IsEntityNew(this IDataContext dataContext, object entity)
+        public static bool IsEntityNew(this IDataContext dataContext, object entity, Type entityType)
         {
-            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var keyProperty in entityConfiguration.Key.Properties)
             {
                 var value = entity.GetPropertyValue(keyProperty.PropertyName);

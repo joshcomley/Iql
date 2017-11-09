@@ -138,7 +138,7 @@ namespace Iql.Queryable.Data.Tracking
             var key = entityConfiguration.Key;
             T matchedEntity = null;
             var relationships = new List<ITrackedRelationship>();
-            var isNewEntity = DataContext.IsEntityNew(localEntity);
+            var isNewEntity = DataContext.IsEntityNew(localEntity, typeof(T));
             var persistenceKeyProperty = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T)).Properties
                 .FirstOrDefault(p => p.Name == "PersistenceKey");
             object persistenceKey = null;

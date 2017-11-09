@@ -11,5 +11,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IEntityKey Key { get; }
         Type Type { get; }
         IProperty GetProperty(string name);
+        RelationshipMatch FindRelationship(string propertyName);
     }
 }
