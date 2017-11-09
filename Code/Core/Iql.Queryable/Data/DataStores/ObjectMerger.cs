@@ -34,29 +34,38 @@ namespace Iql.Queryable.Data.DataStores
                 // Note: we don't need to set the constraints as they will be merged later
                 if (newRelationshipValue == null)
                 {
-                    ObjectNullifier.ClearProperty(trackedEntity, propertyName);
+                    //ObjectNullifier.ClearProperty(trackedEntity, propertyName);
                 }
                 // A relationship value exists on the new entity
                 else
                 {
+                    var isCollection = newRelationshipValue is IEnumerable && !(newRelationshipValue is string);
                     // //Single entity, no current value locally so just assign
                     // As we have nothing being tracked yet on this entity, we can just set it accordingly
-                    if (trackedRelationshipValue == null)
+                    if (trackedRelationshipValue == null && !isCollection)
                     {
                         trackedEntity.SetPropertyValue(propertyName, MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, newRelationshipValue));
                     }
                     // Both new and existing relationship values exist, so we need to merge
                     else
                     {
-                        var isCollection = newRelationshipValue is IEnumerable && !(newRelationshipValue is string);
                         // We have a collection
                         if (isCollection)
                         {
                             var localList = (IList)trackedRelationshipValue;
                             var remoteList = (IList)newRelationshipValue;
+                            // We have a null local list so just use the new list and merge all items
+                            if (localList == null)
+                            {
+                                trackedEntity.SetPropertyValue(propertyName, remoteList);
+                                foreach (var item in remoteList)
+                                {
+                                    MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, item);
+                                }
+                            }
                             // There is nothing in the existing collection, therefore nothing to merge
                             // so we can safely copy all collection values across from the new entity
-                            if (localList.Count == 0)
+                            else if (localList.Count == 0)
                             {
                                 // There is nothing in the local list to merge so we can safely
                                 // add all remote items

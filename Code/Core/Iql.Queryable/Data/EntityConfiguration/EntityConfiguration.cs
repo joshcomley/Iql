@@ -61,8 +61,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        public EntityConfiguration<T> DefineProperty<TProperty>(
-            Expression<Func<T, TProperty>> property
+        public EntityConfiguration<T> DefineConvertedProperty<TProperty>(
+            Expression<Func<T, TProperty>> property,
+            string convertedFromType
         )
         {
 #if !TypeScript
@@ -74,10 +75,17 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new Property<TProperty>(name, false, typeof(T));
+            var definition = new Property<TProperty>(name, false, typeof(T), convertedFromType);
             Properties.Add(definition);
             _propertiesMap[name] = definition;
             return this;
+        }
+
+        public EntityConfiguration<T> DefineProperty<TProperty>(
+            Expression<Func<T, TProperty>> property
+        )
+        {
+            return DefineConvertedProperty(property, null);
         }
 
         public EntityConfiguration<T> DefineCollectionProperty<TProperty>(

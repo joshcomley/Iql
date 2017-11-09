@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
@@ -12,7 +11,6 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Data.Validation;
-using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
@@ -133,7 +131,7 @@ namespace Iql.Queryable.Data.DataStores
             // don't trickle down to our result
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
 #if TypeScript
-            response.Data = (DbList<TEntity>)EnsureTypedList(typeof(TEntity), response.Data);
+            response.Data = (DbList<TEntity>)EnsureTypedList(typeof(TEntity), response.Data, true);
 #endif
             response.Data.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue)
@@ -176,9 +174,11 @@ namespace Iql.Queryable.Data.DataStores
             return result;
         }
 
-        private IList EnsureTypedList(Type type, IEnumerable responseData)
+        private IList EnsureTypedList(Type type, IEnumerable responseData, bool forceNotNull = false)
         {
-            var list = (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type));
+            var list = responseData != null || forceNotNull ?
+                (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type))
+                : null;
             if (responseData != null)
             {
                 foreach (var entity in responseData)
@@ -386,7 +386,7 @@ namespace Iql.Queryable.Data.DataStores
             SaveChangesResult saveChangesResult) where TEntity : class
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
-            ICrudResult result = null;            
+            ICrudResult result = null;
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
@@ -466,11 +466,11 @@ namespace Iql.Queryable.Data.DataStores
             foreach (var collectionValidationResultSet in entityValidationResult
                 .RelationshipCollectionValidationResults)
             {
-                foreach(var validationResult in collectionValidationResultSet.RelationshipValidationResults)
+                foreach (var validationResult in collectionValidationResultSet.RelationshipValidationResults)
                 {
                     var index = validationResult.Key;
                     var collectionEntity =
-                        ((IList) entity.GetPropertyValue(validationResult.Value.PropertyName))[index];
+                        ((IList)entity.GetPropertyValue(validationResult.Value.PropertyName))[index];
                     ParseEntityResult(resultsDictionary, collectionEntity, validationResult.Value.EntityValidationResult);
                 }
             }
