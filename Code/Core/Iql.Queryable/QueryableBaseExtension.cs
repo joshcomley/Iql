@@ -161,8 +161,10 @@ namespace Iql.Queryable
                 relationshipEntityType
             );
 
-            var relationships = sourceEntityConfiguration.Relationships.Concat(
-                relatedEntityConfiguration.Relationships).ToList();
+            var relationships = sourceEntityConfiguration == relatedEntityConfiguration
+                ? sourceEntityConfiguration.Relationships
+                : sourceEntityConfiguration.Relationships.Concat(
+                    relatedEntityConfiguration.Relationships).ToList();
 
             for (var i = 0; i < relationships.Count; i++)
             {
@@ -170,7 +172,9 @@ namespace Iql.Queryable
                 var relationshipSource = relationship.Source;
                 var relationshipTarget = relationship.Target;
                 var targetExpand = false;
-                if (relationshipTarget.Configuration == sourceEntityConfiguration)
+                var selfTargetingRelationship = sourceEntityConfiguration == relatedEntityConfiguration;
+                if ((selfTargetingRelationship && relationshipSource.Property.PropertyName != propertyToExpand.PropertyName) ||
+                    (!selfTargetingRelationship && relationshipTarget.Configuration == sourceEntityConfiguration))
                 {
                     targetExpand = true;
                     var temp = relationshipSource;

@@ -11,6 +11,7 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
@@ -343,9 +344,7 @@ namespace Iql.Queryable
                 ? relationship.Target
                 : relationship.Source;
             var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.PropertyName);
-            var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
-            var propertyExpression = new IqlPropertyExpression(propertyName, typeof(T).Name, source.Property.ReturnType);
-            propertyExpression.Parent = rootReferenceExpression;
+            var propertyExpression = PropertyExpression(propertyName);
             var expandOperationType = typeof(ExpandOperation<,,>).MakeGenericType(
                 typeof(T),
                 property.Type,
@@ -360,6 +359,15 @@ namespace Iql.Queryable
             //    );
             //return (DbQueryable<T>)method.Invoke(this, new object[] { target });
         }
+
+        //public IqlPropertyExpression PropertyExpression(string propertyName)
+        //{
+        //    var property = this.Configuration.GetEntityByType(typeof(T)).Properties.Single(p => p.Name == propertyName);
+        //    var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
+        //    var propertyExpression = new IqlPropertyExpression(propertyName, typeof(T).Name, property.Type.ToIqlType());
+        //    propertyExpression.Parent = rootReferenceExpression;
+        //    return propertyExpression;
+        //}
 
         public DbQueryable<T> ExpandAll()
         {

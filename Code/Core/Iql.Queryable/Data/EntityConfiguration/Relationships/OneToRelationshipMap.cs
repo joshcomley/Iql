@@ -36,7 +36,10 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 property
             );
             _sourceEntityConfiguration.Relationships.Add(relationship);
-            _targetEntityConfiguration.Relationships.Add(relationship);
+            if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration))
+            {
+                _targetEntityConfiguration.Relationships.Add(relationship);
+            }
             return relationship;
         }
 
@@ -49,7 +52,10 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 property
             );
             _sourceEntityConfiguration.Relationships.Add(relationship);
-            _targetEntityConfiguration.Relationships.Add(relationship);
+            if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration))
+            {
+                _targetEntityConfiguration.Relationships.Add(relationship);
+            }
             return relationship;
         }
     }

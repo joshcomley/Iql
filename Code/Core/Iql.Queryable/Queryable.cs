@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
@@ -43,6 +44,35 @@ namespace Iql.Queryable
                 );
         }
 
+        public TQueryable WherePropertyEquals(string propertyName, object value
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var expression = new IqlIsEqualToExpression(
+                PropertyExpression(propertyName), new IqlLiteralExpression(value, value.GetType().ToIqlType()));
+            return WhereEquals(expression
+#if TypeScript
+                , evaluateContext
+#endif
+);
+        }
+
+        public TQueryable WhereEquals(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var whereOperation = new WhereOperation();
+#if TypeScript
+            whereOperation.EvaluateContext = evaluateContext;
+#endif
+            whereOperation.Expression = expression;
+            return Then(whereOperation);
+        }
+
         public TQueryable WhereQuery(QueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -75,9 +105,20 @@ namespace Iql.Queryable
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
-            )
+        )
         {
             return Then(new OrderByOperation(expression));
+        }
+
+        public TQueryable OrderByProperty(string propetyName, bool descending = false
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var orderByOperation = new OrderByOperation(null, descending);
+            orderByOperation.Expression = PropertyExpression(propetyName);
+            return Then(orderByOperation);
         }
 
         public TQueryable OrderByDescending<TProperty>(Expression<Func<T, TProperty>> expression
@@ -140,6 +181,15 @@ namespace Iql.Queryable
         IQueryableBase IQueryableBase.Copy()
         {
             return Copy();
+        }
+
+        public virtual IqlPropertyExpression PropertyExpression(string propertyName)
+        {
+            //var property = this.Configuration.GetEntityByType(typeof(T)).Properties.Single(p => p.Name == propertyName);
+            var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
+            var propertyExpression = new IqlPropertyExpression(propertyName, typeof(T).Name, IqlType.Unknown);
+            propertyExpression.Parent = rootReferenceExpression;
+            return propertyExpression;
         }
     }
 }

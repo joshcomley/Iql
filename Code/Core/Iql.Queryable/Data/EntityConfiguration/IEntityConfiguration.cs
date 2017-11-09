@@ -7,9 +7,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
     public interface IEntityConfiguration
     {
         List<IRelationship> Relationships { get; }
-        List<IKeyProperty> Properties { get; }
+        List<IProperty> Properties { get; }
         IEntityKey Key { get; }
         Type Type { get; }
-        IKeyProperty GetProperty(string name);
+        IProperty GetProperty(string name);
     }
 }

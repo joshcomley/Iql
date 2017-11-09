@@ -11,22 +11,22 @@ namespace Iql.Queryable.Data.EntityConfiguration
     public class EntityConfiguration<T> : IEntityConfiguration where T : class
     {
         private readonly EntityConfigurationBuilder _builder;
-        private readonly Dictionary<string, IKeyProperty> _propertiesMap = new Dictionary<string, IKeyProperty>();
+        private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
         public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
         {
             Type = type;
             _builder = builder;
             Relationships = new List<IRelationship>();
-            Properties = new List<IKeyProperty>();
+            Properties = new List<IProperty>();
         }
 
         public List<IRelationship> Relationships { get; set; }
-        public List<IKeyProperty> Properties { get; set; }
+        public List<IProperty> Properties { get; set; }
         public IEntityKey Key { get; set; }
         public Type Type { get; set; }
 
-        public IKeyProperty GetProperty(string name)
+        public IProperty GetProperty(string name)
         {
             return _propertiesMap[name];
         }
@@ -74,7 +74,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new KeyProperty<TProperty>(name);
+            var definition = new Property<TProperty>(name, false, typeof(T));
             Properties.Add(definition);
             _propertiesMap[name] = definition;
             return this;
@@ -86,7 +86,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(properties) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new KeyProperty<TProperty>(name);
+            var definition = new Property<TProperty>(name, true, typeof(T));
             Properties.Add(definition);
             _propertiesMap[name] = definition;
             return this;
