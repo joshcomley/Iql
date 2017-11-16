@@ -105,15 +105,27 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public EntityConfiguration<T> DefineCollectionProperty<TProperty>(
-            Expression<Func<T, IEnumerable<TProperty>>> properties)
+            Expression<Func<T, IEnumerable<TProperty>>> property,
+            Expression<Func<T, long?>> countProperty = null
+            )
+        {
+            var collection = MapProperty<TProperty, IEnumerable<TProperty>>(property, true, false, null);
+            if (countProperty != null)
+            {
+                MapProperty<long?, long?>(countProperty, false, true, collection);
+            }
+            return this;
+        }
+
+        private Property<TProperty> MapProperty<TProperty, TValueType>(Expression<Func<T, TValueType>> property, bool isCollection, bool readOnly, IProperty countRelationship)
         {
             var iql =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(properties) as IqlPropertyExpression;
+                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new Property<TProperty>(name, true, typeof(T));
+            var definition = new Property<TProperty>(name, isCollection, typeof(T), null, readOnly, countRelationship);
             Properties.Add(definition);
             _propertiesMap[name] = definition;
-            return this;
+            return definition;
         }
 
         public OneToRelationshipMap<T, TTarget> HasOne<TTarget>(

@@ -81,8 +81,11 @@ namespace Iql.OData.Data
             operation.Result.Success = httpResult.Success;
             if (singleResult)
             {
+                var odataResultRoot = JObject.Parse(httpResult.ResponseData);
+                ParseObj(odataResultRoot);
                 var oDataGetResult =
-                    JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+                    odataResultRoot.ToObject<TEntity>();
+                    //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
                 var enumerable = new[] {oDataGetResult};
                 operation.Result.Data =
                     new DbList<TEntity>(enumerable);
@@ -90,8 +93,9 @@ namespace Iql.OData.Data
             else
             {
                 var odataResultRoot = JObject.Parse(httpResult.ResponseData);
+                ParseObj(odataResultRoot);
                 var oDataGetResult = new ODataGetResult<DbList<TEntity>>();
-                var countToken = odataResultRoot["@odata.count"];
+                var countToken = odataResultRoot["Count"];
                 oDataGetResult.Count = countToken?.ToObject<int?>();
                 var values = odataResultRoot["value"].ToObject<TEntity[]>();
                 oDataGetResult.Value = new DbList<TEntity>(values);
@@ -100,6 +104,41 @@ namespace Iql.OData.Data
                 operation.Result.TotalCount = oDataGetResult.Count;
             }
             return operation.Result;
+        }
+
+        private void ParseObj(object jvalue)
+        {
+            if (jvalue is JArray)
+            {
+                foreach (var child in (JArray)jvalue)
+                {
+                    ParseObj(child);
+                }
+            }
+            else if (jvalue is JObject)
+            {
+                var jobj = (JObject)jvalue;
+                foreach (var prop in jobj.Properties().ToArray())
+                {
+                    var value = jobj[prop.Name];
+                    const string odataKey = "@odata.";
+                    if (prop.Name.Contains(odataKey))
+                    {
+                        var index = prop.Name.IndexOf(odataKey);
+                        var odataName = prop.Name.Substring(index + odataKey.Length);
+                        var before = prop.Name.Substring(0, index);
+                        switch (odataName)
+                        {
+                            case "count":
+                                odataName = "Count";
+                                break;
+                        }
+                        jobj[before + odataName] = value;
+                        jobj.Remove(prop.Name);
+                    }
+                    ParseObj(value);
+                }
+            }
         }
 
         public override async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(

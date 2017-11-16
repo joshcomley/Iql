@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
@@ -19,6 +18,7 @@ namespace Iql.Queryable
 {
     public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
     {
+        public bool TrackEntities { get; set; }
         public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)
         {
@@ -170,7 +170,6 @@ namespace Iql.Queryable
                             var relatedItem = relatedEntity.GetPropertyValue(target.Property.PropertyName);
                             if (relatedItem.IsArray())
                             {
-                                var enumerable2 = relatedItem as IEnumerable;
                                 var enumerable = relatedItem as IList;
                                 if (enumerable != null)
                                 {
@@ -314,6 +313,38 @@ namespace Iql.Queryable
                 result.Success);
         }
 
+        public DbQueryable<T> ExpandCollectionCount<TTarget>(
+            Expression<Func<T, IEnumerable<TTarget>>> target)
+            where TTarget : class
+        {
+            return ExpandCollectionCountQuery(new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(target));
+        }
+
+        public DbQueryable<T> ExpandCollectionCountRelationship(
+            string propertyName)
+        {
+            return ExpandRelationshipInternal(propertyName, typeof(ExpandCountOperation<,,>));
+        }
+
+        public DbQueryable<T> ExpandCollectionCountQuery<TTarget>(
+            ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
+            where TTarget : class
+        {
+            return Then(new ExpandCountOperation<T, IEnumerable<TTarget>, TTarget>(expression));
+        }
+
+        public DbQueryable<T> ExpandAllCollectionCounts()
+        {
+            return AllCollectionRelationships(
+                (queryable, relationship, detail) => queryable.ExpandCollectionCountRelationship(detail.Property.PropertyName));
+        }
+
+        public DbQueryable<T> ExpandAllSingleRelationships()
+        {
+            return AllSingleRelationships(
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
+        }
+
         public DbQueryable<T> Expand<TTarget>(
             Expression<Func<T, TTarget>> target)
             where TTarget : class
@@ -323,6 +354,11 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandRelationship(
             string propertyName)
+        {
+            return ExpandRelationshipInternal(propertyName, typeof(ExpandOperation<,,>));
+        }
+
+        private DbQueryable<T> ExpandRelationshipInternal(string propertyName, Type type)
         {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
             var relationship = entityConfiguration
@@ -345,19 +381,14 @@ namespace Iql.Queryable
                 : relationship.Source;
             var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.PropertyName);
             var propertyExpression = PropertyExpression(propertyName);
-            var expandOperationType = typeof(ExpandOperation<,,>).MakeGenericType(
+            var expandOperationType = type.MakeGenericType(
                 typeof(T),
                 property.Type,
                 target.Type);
-            var expandOperation = (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
+            var expandOperation =
+                (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
             expandOperation.Expression = propertyExpression;
             return Then(expandOperation);
-            //var converter = IqlQueryableAdapter.IqlToNativeConverter();
-            //var target = converter.Parse<T>(propertyExpression);
-            //var method = GetType().GetMethod(nameof(Expand)).MakeGenericMethod(
-            //    typeof(T).GetProperty(propertyName).PropertyType
-            //    );
-            //return (DbQueryable<T>)method.Invoke(this, new object[] { target });
         }
 
         //public IqlPropertyExpression PropertyExpression(string propertyName)
@@ -371,16 +402,8 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandAll()
         {
-            var set = this;
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
-            foreach (var relationship in entityConfiguration.Relationships)
-            {
-                var thisEnd = relationship.Source.Configuration == entityConfiguration
-                    ? relationship.Source
-                    : relationship.Target;
-                set = set.ExpandRelationship(thisEnd.Property.PropertyName);
-            }
-            return set;
+            return AllRelationships(
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
         }
 
         public DbQueryable<T> ExpandQuery<TTarget>(
@@ -411,13 +434,13 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandCollection<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target,
-            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
+            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
             where TTarget : class
         {
             return ExpandCollectionQuery(
                 new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(
                     target,
-                    q => filter((DbQueryable<TTarget>)q)
+                    q => filter == null ? q : filter((DbQueryable<TTarget>)q)
                     ));
         }
 
@@ -426,6 +449,50 @@ namespace Iql.Queryable
             where TTarget : class
         {
             return Then(new ExpandOperation<T, IEnumerable<TTarget>, TTarget>(expression));
+        }
+
+        public DbQueryable<T> AllCollectionRelationships(
+            Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
+        {
+            var entityConfig = Configuration.GetEntityByType(typeof(T));
+            return AllRelationships(
+                (queryable, relationship, detail) =>
+                {
+                    if (entityConfig.GetProperty(detail.Property.PropertyName).IsCollection)
+                    {
+                        return action(queryable, relationship, detail);
+                    }
+                    return queryable;
+                });
+        }
+
+        public DbQueryable<T> AllSingleRelationships(
+            Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
+        {
+            var entityConfig = Configuration.GetEntityByType(typeof(T));
+            return AllRelationships(
+                (queryable, relationship, detail) =>
+                {
+                    if (!entityConfig.GetProperty(detail.Property.PropertyName).IsCollection)
+                    {
+                        return action(queryable, relationship, detail);
+                    }
+                    return queryable;
+                });
+        }
+
+        public DbQueryable<T> AllRelationships(Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
+        {
+            var set = this;
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
+            foreach (var relationship in entityConfiguration.Relationships)
+            {
+                var thisEnd = relationship.Source.Configuration == entityConfiguration
+                    ? relationship.Source
+                    : relationship.Target;
+                set = action(set, relationship, thisEnd);
+            }
+            return set;
         }
 
         public override async Task<object> WithKey(object key)
@@ -452,6 +519,12 @@ namespace Iql.Queryable
         public virtual DbQueryable<T> IncludeCount()
         {
             return Then(new IncludeCountOperation());
+        }
+
+        public DbQueryable<T> SetTracking(bool enabled)
+        {
+            TrackEntities = enabled;
+            return this;
         }
 
         public override DbQueryable<T> New()

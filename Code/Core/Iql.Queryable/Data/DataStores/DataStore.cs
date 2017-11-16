@@ -170,7 +170,10 @@ namespace Iql.Queryable.Data.DataStores
                 }
                 response.Data.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
             }
-            trackingSet.Merge(response.Data);
+            if (response.Data.SourceQueryable.TrackEntities)
+            {
+                trackingSet.Merge(response.Data);
+            }
             return result;
         }
 

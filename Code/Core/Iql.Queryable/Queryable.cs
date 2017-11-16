@@ -154,10 +154,13 @@ namespace Iql.Queryable
             return Then(new TakeOperation(take));
         }
 
-        public virtual TQueryable Then(IQueryOperation operation)
+        public virtual TQueryable Then(IQueryOperation operation = null)
         {
             var queryable = Copy();
-            queryable.Operations.Add(operation);
+            if (operation != null)
+            {
+                queryable.Operations.Add(operation);
+            }
             return queryable;
         }
 

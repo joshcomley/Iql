@@ -22,6 +22,7 @@ namespace Iql.TestBed
             //await TestCreatingEntityWithCollection();
             IqlQueryableAdapter.IqlToNativeConverter = () => new IqlToDotNetConverter();
             var db = new AppDbContext();
+            var countQuery = await db.PersonTypes.ExpandCollection(r => r.People).ToList();
             var query = db.Clients.ExpandAll();
             var x = 1;
             ////await db.People.ToList();

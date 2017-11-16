@@ -11,9 +11,11 @@ namespace Iql.OData.Queryable
     {
         public ODataQueryableAdapter()
         {
+            // The order of these is important
             RegisterApplicator(() => new OrderByOperationApplicatorOData());
             RegisterApplicator(() => new ReverseOperationApplicatorOData());
             RegisterApplicator(() => new WhereOperationApplicatorOData());
+            RegisterApplicator(() => new ExpandCountOperationApplicatorOData());
             RegisterApplicator(() => new ExpandOperationApplicatorOData());
             RegisterApplicator(() => new IncludeCountApplicatorOData());
             RegisterApplicator(() => new WithKeyOperationApplicatorOData());
