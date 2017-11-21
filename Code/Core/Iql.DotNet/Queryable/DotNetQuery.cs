@@ -22,7 +22,7 @@ namespace Iql.DotNet.Queryable
 
         public IList DataSet(string name)
         {
-            var sourceSet = DataContext.GetConfiguration<JavaScriptQueryConfiguration>()
+            var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByName(name);
             var cloneSet = sourceSet.Clone();
             return cloneSet;

@@ -188,45 +188,7 @@ namespace Iql.Queryable.Data.DataStores
         {
             // Sets could be added to whilst detecting changes
             // so get a copy now
-            var trackingSets = GetTracking().Sets.ToList();
-            trackingSets.ForEach(trackingSet =>
-            {
-                trackingSet.GetChanges().ForEach(update =>
-                {
-                    // If we are adding an entity in the same save changes operation
-                    // then we don't need to do any scheduled updates on it because
-                    // they will be negated by the add operation
-                    if (Queue.Any(q => q.Operation.Type == OperationType.Add
-                        && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
-                    {
-                        return;
-                    }
-                    var alreadyBeingUpdatedByAnotherOperation = false;
-                    foreach (var queuedOperation in Queue)
-                    {
-                        if (queuedOperation.Type == QueuedOperationType.Update)
-                        {
-                            var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
-                            var entitiesInObjectGraph = FlattenObjectGraph(entityOperation.Entity);
-                            if (entitiesInObjectGraph.Contains(update.Entity))
-                            {
-                                alreadyBeingUpdatedByAnotherOperation = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!alreadyBeingUpdatedByAnotherOperation)
-                    {
-                        var updateOperation =
-                            Activator.CreateInstance(
-                                typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                        Queue.Add((IQueuedOperation)updateOperation);
-                    }
-                    //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
-                    //Apply(update);
-                });
-                trackingSet.Reset();
-            });
+            Queue.AddRange(GetChanges(true));
             //var observable = this.Observable<SaveChangesResult>();
             var saveChangesResult = new SaveChangesResult(false);
             var count = Queue.Count;
@@ -255,6 +217,54 @@ namespace Iql.Queryable.Data.DataStores
                 await task;
             }
             return saveChangesResult;
+        }
+
+        public IEnumerable<IQueuedOperation> GetChanges(bool reset = false)
+        {
+            var trackingSets = GetTracking().Sets.ToList();
+            var changes = new List<IQueuedOperation>();
+            trackingSets.ForEach(trackingSet =>
+            {
+                trackingSet.GetChanges().ForEach(update =>
+                {
+                    // If we are adding an entity in the same save changes operation
+                    // then we don't need to do any scheduled updates on it because
+                    // they will be negated by the add operation
+                    if (Queue.Any(q => q.Operation.Type == OperationType.Add
+                                       && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
+                    {
+                        return;
+                    }
+                    var alreadyBeingUpdatedByAnotherOperation = false;
+                    foreach (var queuedOperation in Queue)
+                    {
+                        if (queuedOperation.Type == QueuedOperationType.Update)
+                        {
+                            var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
+                            var entitiesInObjectGraph = FlattenObjectGraph(entityOperation.Entity);
+                            if (entitiesInObjectGraph.Contains(update.Entity))
+                            {
+                                alreadyBeingUpdatedByAnotherOperation = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!alreadyBeingUpdatedByAnotherOperation)
+                    {
+                        var updateOperation =
+                            Activator.CreateInstance(
+                                typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                        changes.Add((IQueuedOperation) updateOperation);
+                    }
+                    //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
+                    //Apply(update);
+                });
+                if (reset)
+                {
+                    trackingSet.Reset();
+                }
+            });
+            return changes;
         }
 
         public List<object> FlattenObjectGraph(object objectGraphRoot, List<object> objects = null)

@@ -38,5 +38,7 @@ namespace Iql.Queryable.Data.DataStores
             where TEntity : class;
 
         Task<SaveChangesResult> SaveChanges(SaveChangesOperation operation);
+
+        IEnumerable<IQueuedOperation> GetChanges(bool reset = false);
     }
 }
