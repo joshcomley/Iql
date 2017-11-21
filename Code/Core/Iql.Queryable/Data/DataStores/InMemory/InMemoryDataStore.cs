@@ -19,7 +19,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            var data = operation.Operation.DataContext.GetConfiguration<JavaScriptQueryConfiguration>()
+            var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSource<TEntity>();
             data.Add(operation.Operation.Entity.Clone());
             operation.Result.Success = true;
@@ -28,7 +28,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         private static IList<TEntity> DataSet<TEntity>(ICrudOperation operation)
         {
-            return operation.DataContext.GetConfiguration<JavaScriptQueryConfiguration>().GetSource<TEntity>();
+            return operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>().GetSource<TEntity>();
         }
 
         private int FindEntityIndexFromOperation<TEntity>(EntityCrudOperation<TEntity> operation) where TEntity : class
@@ -64,7 +64,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public override Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
-            //var data = operation.Operation.DataContext.GetConfiguration<JavaScriptQueryConfiguration>()
+            //var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
             //    .GetSource<TEntity>();
             var q = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext);
             //var q = operation.Operation.Queryable.ToQueryWithAdapter(new JavaScriptQueryableAdapter());
