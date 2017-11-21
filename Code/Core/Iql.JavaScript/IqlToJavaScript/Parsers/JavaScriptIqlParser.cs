@@ -1,5 +1,4 @@
 using Iql.JavaScript.QueryToJavaScript;
-using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {

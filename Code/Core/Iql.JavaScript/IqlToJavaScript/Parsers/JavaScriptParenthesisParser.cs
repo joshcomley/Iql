@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
     public class JavaScriptParenthesisParser : JavaScriptActionParserBase<IqlParenthesisExpression>
@@ -8,9 +6,9 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             JavaScriptIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression("("),
+                new IqlFinalExpression<string>("("),
                 action.Expression,
-                new IqlFinalExpression(")")
+                new IqlFinalExpression<string>(")")
             );
         }
     }

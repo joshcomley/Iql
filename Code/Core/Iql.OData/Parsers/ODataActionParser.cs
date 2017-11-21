@@ -8,7 +8,7 @@ namespace Iql.OData.Parsers
             switch (action.Type)
             {
                 case IqlExpressionType.Not:
-                    return new IqlFinalExpression("not");
+                    return new IqlFinalExpression<string>("not");
                 default:
                     ODataErrors.OperationNotSupported(action.Type);
                     break;

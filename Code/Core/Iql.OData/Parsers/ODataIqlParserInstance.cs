@@ -2,7 +2,7 @@ using Iql.Parsing;
 
 namespace Iql.OData.Parsers
 {
-    public class ODataIqlParserInstance : ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter, ODataOutput>
+    public class ODataIqlParserInstance : ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput>
     {
         public ODataIqlParserInstance(ODataIqlExpressionAdapter adapter) : base(adapter)
         {

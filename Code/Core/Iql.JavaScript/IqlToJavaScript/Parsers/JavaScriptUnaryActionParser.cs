@@ -8,7 +8,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             JavaScriptIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression(ResolveOperator(action)),
+                new IqlFinalExpression<string>(ResolveOperator(action)),
                 new IqlLiteralExpression(
                     action.Value,
                     (action.Value == null ? typeof(string) : action.Value.GetType()).ToIqlType()

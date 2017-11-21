@@ -6,9 +6,9 @@ namespace Iql.OData.Parsers
             ODataIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression("("),
+                new IqlFinalExpression<string>("("),
                 action.Expression,
-                new IqlFinalExpression(")"));
+                new IqlFinalExpression<string>(")"));
         }
     }
 }

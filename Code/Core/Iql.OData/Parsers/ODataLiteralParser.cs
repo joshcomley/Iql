@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Iql.Parsing;
 
 namespace Iql.OData.Parsers
 {
@@ -13,9 +12,9 @@ namespace Iql.OData.Parsers
                 var str = action.Value as string;
                 str = Regex.Replace(str, "'", "''");
                 return new IqlAggregateExpression(
-                    new IqlFinalExpression("'"), new IqlFinalExpression(str), new IqlFinalExpression("'"));
+                    new IqlFinalExpression<string>("'"), new IqlFinalExpression<string>(str), new IqlFinalExpression<string>("'"));
             }
-            return new IqlFinalExpression(action.Value.ToString());
+            return new IqlFinalExpression<string>(action.Value.ToString());
         }
     }
 }

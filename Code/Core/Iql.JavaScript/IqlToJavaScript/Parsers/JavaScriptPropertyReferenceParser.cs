@@ -1,5 +1,4 @@
 using Iql.JavaScript.Extensions;
-using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
@@ -16,7 +15,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             {
                 parent = action.Parent;
             }
-            IqlExpression propertyName = new IqlFinalExpression(action.PropertyName);
+            IqlExpression propertyName = new IqlFinalExpression<string>(action.PropertyName);
             var accessorExpression = 
                 parent == null 
                 ? propertyName
@@ -28,7 +27,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                     return parent.Coalesce(
                         accessorExpression);
                 }
-                return new IqlFinalExpression(action.PropertyName);
+                return new IqlFinalExpression<string>(action.PropertyName);
             }
             return accessorExpression;
         }

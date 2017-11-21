@@ -1,6 +1,5 @@
 using Iql.JavaScript.IqlToJavaScript;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
-using Iql.Parsing;
 using Iql.Queryable;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Operations;

@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
     public class JavaScriptNotActionParser : JavaScriptActionParserBase<IqlNotExpression>
@@ -7,7 +5,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
         public override IqlExpression ToQueryString(IqlNotExpression action, JavaScriptIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression("!"),
+                new IqlFinalExpression<string>("!"),
                 new IqlParenthesisExpression(action.Expression)
                 );
         }

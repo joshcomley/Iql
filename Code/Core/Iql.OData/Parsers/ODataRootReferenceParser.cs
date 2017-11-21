@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
     public class ODataRootReferenceParser : ODataActionParserBase<IqlRootReferenceExpression>
@@ -7,7 +5,7 @@ namespace Iql.OData.Parsers
         public override IqlExpression ToQueryString(IqlRootReferenceExpression action,
             ODataIqlParserInstance parser)
         {
-            return new IqlFinalExpression("");
+            return new IqlFinalExpression<string>("");
         }
     }
 }

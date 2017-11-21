@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
     public class JavaScriptBinaryActionParser : JavaScriptActionParserBase<IqlBinaryExpression>
@@ -19,7 +17,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             IqlBinaryExpression action,
             JavaScriptIqlParserInstance parser)
         {
-            var spacer = new IqlFinalExpression(" ");
+            var spacer = new IqlFinalExpression<string>(" ");
             var isStringComparison = false;
             if (action.Type == IqlExpressionType.IsEqualTo || action.Type == IqlExpressionType.IsNotEqualTo)
             {
@@ -38,7 +36,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                 new IqlAggregateExpression(
                     left,
                     spacer,
-                    new IqlFinalExpression(ResolveOperator(action)),
+                    new IqlFinalExpression<string>(ResolveOperator(action)),
                     spacer,
                     right
                 )
@@ -48,7 +46,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
         private IqlExpression CoalesceOrUpperCase(IqlExpression left,
             JavaScriptIqlParserInstance parser)
         {
-            var checkExpression = new IqlIsEqualToExpression(left, new IqlFinalExpression("null"));
+            var checkExpression = new IqlIsEqualToExpression(left, new IqlFinalExpression<string>("null"));
             parser.Data.AlreadyCoalesced.Add(checkExpression);
             var finalExpression =
                 left.Type == IqlExpressionType.Literal && (left as IqlLiteralExpression).Value == null
@@ -58,9 +56,9 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                 new IqlParenthesisExpression(
                     new IqlAggregateExpression(
                         checkExpression,
-                        new IqlFinalExpression(" ? "),
-                        new IqlFinalExpression("null"),
-                        new IqlFinalExpression(" : "),
+                        new IqlFinalExpression<string>(" ? "),
+                        new IqlFinalExpression<string>("null"),
+                        new IqlFinalExpression<string>(" : "),
                         finalExpression
                     )
                 );

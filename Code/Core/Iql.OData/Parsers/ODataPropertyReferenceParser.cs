@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
     public class ODataPropertyReferenceParser : ODataActionParserBase<IqlPropertyExpression>
@@ -9,10 +7,10 @@ namespace Iql.OData.Parsers
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
             ODataIqlParserInstance parser)
         {
-            var property = new IqlFinalExpression(action.PropertyName);
+            var property = new IqlFinalExpression<string>(action.PropertyName);
             if (action.Parent != null && action.Parent.Type != IqlExpressionType.RootReference)
             {
-                return new IqlAggregateExpression(action.Parent, new IqlFinalExpression(Separator), property);
+                return new IqlAggregateExpression(action.Parent, new IqlFinalExpression<string>(Separator), property);
             }
             return property;
         }

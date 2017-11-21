@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
     public class JavaScriptStringLengthParser : JavaScriptActionParserBase<IqlStringLengthExpression>
@@ -11,7 +9,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
         {
             return new IqlAggregateExpression(
                 action.Parent,
-                new IqlFinalExpression(".length"));
+                new IqlFinalExpression<string>(".length"));
         }
     }
 }

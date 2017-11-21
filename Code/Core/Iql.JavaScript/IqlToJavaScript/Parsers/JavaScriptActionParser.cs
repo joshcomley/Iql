@@ -12,7 +12,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                 case IqlExpressionType.StringTrim:
                     return new JavaScriptStringSourceActionParser().ToQueryString(action, parser);
                 case IqlExpressionType.Not:
-                    return new IqlFinalExpression("not");
+                    return new IqlFinalExpression<string>("not");
             }
             JavaScriptErrors.OperationNotSupported(action.Type);
             return null;

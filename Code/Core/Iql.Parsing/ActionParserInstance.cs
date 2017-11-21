@@ -3,9 +3,9 @@ using Iql.Parsing.Reduction;
 
 namespace Iql.Parsing
 {
-    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput> : IActionParserInstance
+    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput, TParserOutput> : IActionParserInstance
         where TQueryAdapter : IIqlExpressionAdapter<TIqlData>
-        where TOutput : IParserOutput
+        where TParserOutput : IParserOutput
     {
         public ActionParserInstance(TQueryAdapter adapter)
         {
@@ -19,7 +19,7 @@ namespace Iql.Parsing
 
         public TQueryAdapter Adapter { get; set; }
 
-        public abstract TOutput Parse(IqlExpression expression
+        public abstract TParserOutput Parse(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
@@ -36,7 +36,7 @@ namespace Iql.Parsing
                 {
                     return "";
                 }
-                var finalExpression = expression as IqlFinalExpression;
+                var finalExpression = expression as IqlFinalExpression<string>;
                 if (finalExpression != null)
                 {
                     return finalExpression.Value;
@@ -74,9 +74,9 @@ namespace Iql.Parsing
 
                 if (result != null)
                 {
-                    if (result is IqlFinalExpression)
+                    if (result is IqlFinalExpressionBase)
                     {
-                        return (result as IqlFinalExpression).Value;
+                        return (result as IqlFinalExpression<string>).Value;
                     }
                     expression = result;
                     continue;

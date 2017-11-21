@@ -1,5 +1,3 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
     public class ODataUnaryActionParser : ODataActionParserBase<IqlUnaryExpression>
@@ -9,8 +7,8 @@ namespace Iql.OData.Parsers
         {
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(
-                    new IqlFinalExpression(ResolveOperator(action)),
-                    new IqlFinalExpression(action.Value.ToString())
+                    new IqlFinalExpression<string>(ResolveOperator(action)),
+                    new IqlFinalExpression<string>(action.Value.ToString())
                 )
             );
         }
