@@ -31,8 +31,24 @@ namespace Iql.Queryable
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder Configuration { get; set; }
 
-        public async Task<GetSingleResult<T>> Single(Expression<Func<T, bool>> expression = null,
-            EvaluateContext evaluateContext = null)
+        public async Task<T> Single(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+        {
+            return (await SingleWithResponse(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+                )).Data;
+        }
+
+        public async Task<GetSingleResult<T>> SingleWithResponse(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var result = await UseWhereIfExists(expression
 #if TypeScript
@@ -43,8 +59,11 @@ namespace Iql.Queryable
             return ResolveSingle(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression<T> expression,
-            EvaluateContext evaluateContext = null)
+        public async Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression<T> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var result = await UseWhereQueryIfExists(expression
 #if TypeScript
@@ -55,8 +74,24 @@ namespace Iql.Queryable
             return ResolveSingle(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleOrDefault(Expression<Func<T, bool>> expression = null,
-            EvaluateContext evaluateContext = null)
+        public async Task<T> SingleOrDefault(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+        {
+            return (await SingleOrDefaultWithResponse(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+                )).Data;
+        }
+
+        public async Task<GetSingleResult<T>> SingleOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var result = await UseWhereIfExists(expression
 #if TypeScript
@@ -67,8 +102,11 @@ namespace Iql.Queryable
             return ResolveSingleOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression<T> expression,
-            EvaluateContext evaluateContext = null)
+        public async Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression<T> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var result = await UseWhereQueryIfExists(expression
 #if TypeScript
@@ -79,8 +117,24 @@ namespace Iql.Queryable
             return ResolveSingleOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> First(Expression<Func<T, bool>> expression = null,
-            EvaluateContext evaluateContext = null)
+        public async Task<T> First(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await FirstWithResponse(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).Data;
+        }
+
+        public async Task<GetSingleResult<T>> FirstWithResponse(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             var result = await UseWhereIfExists(expression
 #if TypeScript
@@ -91,8 +145,11 @@ namespace Iql.Queryable
             return ResolveFirst(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression<T> expression,
-            EvaluateContext evaluateContext = null)
+        public async Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression<T> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var result = await UseWhereQueryIfExists(expression
 #if TypeScript
@@ -103,8 +160,24 @@ namespace Iql.Queryable
             return ResolveFirst(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstOrDefault(Expression<Func<T, bool>> expression = null,
-            EvaluateContext evaluateContext = null)
+        public async Task<T> FirstOrDefault(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await FirstOrDefaultWithResponse(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).Data;
+        }
+
+        public async Task<GetSingleResult<T>> FirstOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             var result = await UseWhereIfExists(expression
 #if TypeScript
@@ -115,8 +188,11 @@ namespace Iql.Queryable
             return ResolveFirstOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression<T> expression,
-            EvaluateContext evaluateContext = null)
+        public async Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression<T> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             var result = await UseWhereQueryIfExists(expression
 #if TypeScript
@@ -125,6 +201,94 @@ namespace Iql.Queryable
                 )
                 .ToListWithResponse();
             return ResolveFirstOrDefault(result);
+        }
+
+
+        public async Task<T> Last(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await LastWithResponse(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).Data;
+        }
+
+        public async Task<GetSingleResult<T>> LastWithResponse(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var result = await UseWhereIfExists(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+                )
+                .ToListWithResponse();
+            return ResolveLast(result);
+        }
+
+        public async Task<GetSingleResult<T>> LastQuery(WhereQueryExpression<T> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+        {
+            var result = await UseWhereQueryIfExists(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+                )
+                .ToListWithResponse();
+            return ResolveLast(result);
+        }
+
+        public async Task<T> LastOrDefault(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await LastOrDefaultWithResponse(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).Data;
+        }
+
+        public async Task<GetSingleResult<T>> LastOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var result = await UseWhereIfExists(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+                )
+                .ToListWithResponse();
+            return ResolveLastOrDefault(result);
+        }
+
+
+        public async Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression<T> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+        {
+            var result = await UseWhereQueryIfExists(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+                )
+                .ToListWithResponse();
+            return ResolveLastOrDefault(result);
         }
 
         public async Task<DbList<T>> ToList()
@@ -296,7 +460,7 @@ namespace Iql.Queryable
         {
             if (result.Data.Count < 1)
             {
-                throw new Exception("No entities returned for \"first\" call");
+                throw new Exception("No entities returned for \"First\" call");
             }
             return new GetSingleResult<T>(
                 result.Data[0],
@@ -307,6 +471,27 @@ namespace Iql.Queryable
         private static GetSingleResult<T> ResolveFirstOrDefault(GetDataResult<T> result)
         {
             var data = result.Data.Count < 1 ? null : result.Data[0];
+            return new GetSingleResult<T>(
+                data,
+                result.Operation,
+                result.Success);
+        }
+
+        private static GetSingleResult<T> ResolveLast(GetDataResult<T> result)
+        {
+            if (result.Data.Count < 1)
+            {
+                throw new Exception("No entities returned for \"Last\" call");
+            }
+            return new GetSingleResult<T>(
+                result.Data[result.Data.Count],
+                result.Operation,
+                result.Success);
+        }
+
+        private static GetSingleResult<T> ResolveLastOrDefault(GetDataResult<T> result)
+        {
+            var data = result.Data.Count < 1 ? null : result.Data[result.Data.Count];
             return new GetSingleResult<T>(
                 data,
                 result.Operation,

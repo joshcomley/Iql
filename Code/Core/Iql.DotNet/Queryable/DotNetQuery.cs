@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores.InMemory;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Operations;
 
 namespace Iql.DotNet.Queryable
 {
@@ -18,7 +20,9 @@ namespace Iql.DotNet.Queryable
 
         public IDataContext DataContext { get; }
 
-        public List<Func<IList, IList>> Actions { get; } = new List<Func<IList, IList>>();
+        public List<Func<IEnumerable, IEnumerable>> Actions { get; } = new List<Func<IEnumerable, IEnumerable>>();
+        public bool HasKey { get; set; }
+        public CompositeKey Key { get; set; }
 
         public IList DataSet(string name)
         {
@@ -30,12 +34,12 @@ namespace Iql.DotNet.Queryable
 
         public override List<T> ToList()
         {
-            var list = DataSet(typeof(T).Name);
+            var list = (IEnumerable<T>)DataSet(typeof(T).Name);
             foreach (var action in Actions)
             {
-                list = action(list);
+                list = (IEnumerable<T>) action(list);
             }
-            return (List<T>) list;
+            return new DbList<T>(list.ToList());
         }
     }
 }

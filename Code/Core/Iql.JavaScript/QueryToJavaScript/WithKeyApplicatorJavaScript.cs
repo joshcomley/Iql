@@ -11,7 +11,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             IQueryOperationContext<WithKeyOperation, TEntity, IJavaScriptQueryResult> context)
         {
             context.Data.AppendWhere(JavaScriptQueryableAdapter.GetExpression(
-                context.ResolveWithKkeyWhereOperation(),
+                context.ResolveWithKeyWhereOperation(),
                 true,
                 context.DataContext.EntityConfigurationContext));
             context.Data.Key = context.Operation.Key;
