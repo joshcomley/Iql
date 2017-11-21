@@ -3,8 +3,9 @@ using Iql.Parsing.Reduction;
 
 namespace Iql.Parsing
 {
-    public class ActionParserInstance<TIqlData, TQueryAdapter> : IActionParserInstance
+    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput> : IActionParserInstance
         where TQueryAdapter : IIqlExpressionAdapter<TIqlData>
+        where TOutput : IParserOutput
     {
         public ActionParserInstance(TQueryAdapter adapter)
         {
@@ -18,12 +19,17 @@ namespace Iql.Parsing
 
         public TQueryAdapter Adapter { get; set; }
 
-        public string Parse(IqlExpression expression
+        public abstract TOutput Parse(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
-            )
-        {
+        );
+
+        public virtual string ParseAsString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+            ){
             while (true)
             {
                 if (expression == null)
@@ -40,11 +46,14 @@ namespace Iql.Parsing
                 {
                     var aggregate = aggregateExpression;
                     var str1 = "";
-                    aggregate.Expressions.ForEach(element => { str1 += Parse(element
+                    aggregate.Expressions.ForEach(element =>
+                    {
+                        str1 += Parse(element
 #if TypeScript
                         , evaluateContext
 #endif
-                        ); });
+                        );
+                    });
                     return str1;
                 }
                 var oldExpression = Expression;
@@ -60,7 +69,7 @@ namespace Iql.Parsing
 #if TypeScript
                             evaluateContext
 #endif
-                    );
+                );
                 result = reducer.ReduceStaticContent(result);
 
                 if (result != null)
@@ -75,6 +84,11 @@ namespace Iql.Parsing
                 Expression = oldExpression;
                 return null;
             }
+        }
+
+    object IActionParserInstance.Parse(IqlExpression expression)
+        {
+            return Parse(expression);
         }
         //     }
         //         return "";

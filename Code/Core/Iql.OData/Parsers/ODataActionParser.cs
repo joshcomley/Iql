@@ -1,11 +1,9 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
-    public class ODataActionParser : ActionParser<IqlExpression, ODataIqlData, ODataIqlExpressionAdapter>
+    public class ODataActionParser : ODataActionParserBase<IqlExpression>
     {
         public override IqlExpression ToQueryString(IqlExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             switch (action.Type)
             {

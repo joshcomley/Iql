@@ -1,4 +1,5 @@
 using Iql.JavaScript.IqlToJavaScript;
+using Iql.JavaScript.IqlToJavaScript.Parsers;
 using Iql.Parsing;
 using Iql.Queryable;
 using Iql.Queryable.Data.EntityConfiguration;
@@ -44,7 +45,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                 rootVariableName ?? "q"
             // + new Date().getTime()
             );
-            var parser = new ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter>(
+            var parser = new JavaScriptIqlParserInstance(
                 adapter);
             parser.IsFilter = isFilter;
             var expression = new JavaScriptExpression(adapter.RootVariableName,
@@ -52,7 +53,7 @@ namespace Iql.JavaScript.QueryToJavaScript
 #if TypeScript
 , operation.EvaluateContext
 #endif
-                ));
+                ).ToCodeString());
             return expression;
         }
     }

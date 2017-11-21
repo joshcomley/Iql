@@ -2,10 +2,10 @@ using Iql.Parsing;
 
 namespace Iql.OData.Parsers
 {
-    public class ODataUnaryActionParser : ActionParser<IqlUnaryExpression, ODataIqlData, ODataIqlExpressionAdapter>
+    public class ODataUnaryActionParser : ODataActionParserBase<IqlUnaryExpression>
     {
         public override IqlExpression ToQueryString(IqlUnaryExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(

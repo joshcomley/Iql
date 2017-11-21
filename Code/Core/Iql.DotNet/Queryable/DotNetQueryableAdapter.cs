@@ -44,11 +44,11 @@ namespace Iql.DotNet.Queryable
                 rootVariableName ?? "q"
             // + new Date().getTime()
             );
-            var parser = new ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter>(
+            var parser = new DotNetIqlParserInstance(
                 adapter);
             parser.IsFilter = isFilter;
             var expression = parser.Parse(operation.Expression);
-            return null;
+            return expression.Expression;
         }
     }
 }

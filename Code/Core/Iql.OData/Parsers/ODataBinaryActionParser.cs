@@ -2,10 +2,10 @@ using Iql.Parsing;
 
 namespace Iql.OData.Parsers
 {
-    public class ODataBinaryActionParser : ActionParser<IqlBinaryExpression, ODataIqlData, ODataIqlExpressionAdapter>
+    public class ODataBinaryActionParser : ODataActionParserBase<IqlBinaryExpression>
     {
         public override IqlExpression ToQueryString(IqlBinaryExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             var spacer = " ";
             return new IqlParenthesisExpression(

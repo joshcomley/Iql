@@ -5,11 +5,11 @@ using Iql.Parsing;
 namespace Iql.OData.Parsers
 {
     public abstract class
-        ODataMethodActionParser<TAction> : ActionParser<TAction, ODataIqlData, ODataIqlExpressionAdapter>
+        ODataMethodActionParser<TAction> : ODataActionParserBase<TAction>
         where TAction : IqlExpression
     {
         public override IqlExpression ToQueryString(TAction action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             return ODataMethod(ResolveMethodName(action), ResolveMethodArguments(action));
         }

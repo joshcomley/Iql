@@ -46,7 +46,7 @@ namespace Iql.TestBed
 #endif
                 );
             var parser =
-                new ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter>(new ODataIqlExpressionAdapter());
+                new ODataIqlParserInstance(new ODataIqlExpressionAdapter());
             var odata = parser.Parse(iql);
             Console.WriteLine("OData:");
             Console.WriteLine(odata);

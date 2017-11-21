@@ -2,8 +2,7 @@ using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptBinaryActionParser : ActionParser<IqlBinaryExpression, JavaScriptIqlData,
-        JavaScriptIqlExpressionAdapter>
+    public class JavaScriptBinaryActionParser : JavaScriptActionParserBase<IqlBinaryExpression>
     {
         public static bool IsString(IqlExpression expression)
         {
@@ -18,7 +17,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
 
         public override IqlExpression ToQueryString(
             IqlBinaryExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             var spacer = new IqlFinalExpression(" ");
             var isStringComparison = false;
@@ -47,7 +46,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
         }
 
         private IqlExpression CoalesceOrUpperCase(IqlExpression left,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             var checkExpression = new IqlIsEqualToExpression(left, new IqlFinalExpression("null"));
             parser.Data.AlreadyCoalesced.Add(checkExpression);

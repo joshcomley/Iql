@@ -3,10 +3,10 @@ using Iql.Parsing;
 
 namespace Iql.OData.Parsers
 {
-    public class ODataLiteralParser : ActionParser<IqlLiteralExpression, ODataIqlData, ODataIqlExpressionAdapter>
+    public class ODataLiteralParser : ODataActionParserBase<IqlLiteralExpression>
     {
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             if (action.Value is string)
             {

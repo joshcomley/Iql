@@ -12,14 +12,14 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             )
         {
             var adapter = new JavaScriptIqlExpressionAdapter("entity");
-            var parser = new ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter>(adapter);
+            var parser = new JavaScriptIqlParserInstance(adapter);
             parser.IsFilter = true;
             var javascriptExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext
 #endif
                 );
-            var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression);
+            var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression.ToCodeString());
             return javascript;
         }
     }

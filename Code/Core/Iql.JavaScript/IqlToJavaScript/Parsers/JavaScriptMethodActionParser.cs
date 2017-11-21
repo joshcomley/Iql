@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Iql.JavaScript.Extensions;
-using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
     public abstract class
-        JavaScriptMethodActionParser<TAction> : ActionParser<TAction, JavaScriptIqlData, JavaScriptIqlExpressionAdapter>
+        JavaScriptMethodActionParser<TAction> : JavaScriptActionParserBase<TAction>
         where TAction : IqlExpression
     {
         public override IqlExpression ToQueryString(TAction action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             return JavaScriptMethod(
                 ResolveMethodName(action),

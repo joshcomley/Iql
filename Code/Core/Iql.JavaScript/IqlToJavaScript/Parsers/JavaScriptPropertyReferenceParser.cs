@@ -3,13 +3,12 @@ using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptPropertyReferenceParser : ActionParser<IqlPropertyExpression, JavaScriptIqlData,
-        JavaScriptIqlExpressionAdapter>
+    public class JavaScriptPropertyReferenceParser : JavaScriptActionParserBase<IqlPropertyExpression>
     {
         protected string Separator = ".";
 
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             IqlExpression parent = null;
             if (action.Parent != null && (action.Parent.Type != IqlExpressionType.RootReference ||

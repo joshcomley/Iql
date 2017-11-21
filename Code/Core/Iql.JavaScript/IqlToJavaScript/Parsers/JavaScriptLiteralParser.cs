@@ -3,11 +3,10 @@ using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptLiteralParser : ActionParser<IqlLiteralExpression, JavaScriptIqlData,
-        JavaScriptIqlExpressionAdapter>
+    public class JavaScriptLiteralParser : JavaScriptActionParserBase<IqlLiteralExpression>
     {
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             if (action.ReturnType == IqlType.String)
             {

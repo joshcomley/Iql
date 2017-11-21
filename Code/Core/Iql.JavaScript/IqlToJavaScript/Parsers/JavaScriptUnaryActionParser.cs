@@ -1,13 +1,11 @@
 using Iql.Extensions;
-using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptUnaryActionParser : ActionParser<IqlUnaryExpression, JavaScriptIqlData,
-        JavaScriptIqlExpressionAdapter>
+    public class JavaScriptUnaryActionParser : JavaScriptActionParserBase<IqlUnaryExpression>
     {
         public override IqlExpression ToQueryString(IqlUnaryExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
                 new IqlFinalExpression(ResolveOperator(action)),
