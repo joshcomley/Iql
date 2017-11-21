@@ -91,7 +91,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new Property<TProperty>(name, false, typeof(T), convertedFromType);
+            var definition = new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
             Properties.Add(definition);
             _propertiesMap[name] = definition;
             return this;

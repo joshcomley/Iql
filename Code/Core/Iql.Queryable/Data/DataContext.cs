@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data
@@ -167,7 +169,96 @@ namespace Iql.Queryable.Data
             //        DataContext.AsDbSetByType(typeof(TEntity));
             //}
             // This will trigger a merge in the tracking store
-            return (T) await queryable.WithKey(identityWhereOperation.Key);
+            return (T)await queryable.WithKey(identityWhereOperation.Key);
+        }
+
+        public T EnsureTypedEntity<T>(object entity)
+        {
+            return (T)EnsureTypedEntityByType(entity, typeof(T));
+        }
+
+        public object EnsureTypedEntityByType(object entity, Type type)
+        {
+            if (entity != null)
+            {
+                var entityConfiguration = EntityConfigurationContext.GetEntityByType(type);
+                var typedEntity = Activator.CreateInstance(type);
+                foreach (var property in entityConfiguration.Properties)
+                {
+                    //var instanceValue = typedEntity.GetPropertyValue(property.Name);
+                    var remoteValue = entity.GetPropertyValue(property.Name);
+                    if (remoteValue != null)
+                    {
+                        typedEntity.SetPropertyValue(property.Name, remoteValue);
+                    }
+                }
+                foreach (var relationship in entityConfiguration.Relationships)
+                {
+                    var isSource = relationship.Source.Configuration == entityConfiguration;
+                    var propertyName = isSource
+                        ? relationship.Source.Property.PropertyName
+                        : relationship.Target.Property.PropertyName;
+                    if (isSource)
+                    {
+                        switch (relationship.Type)
+                        {
+                            case RelationshipType.OneToMany:
+                            case RelationshipType.OneToOne:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedEntityByType(
+                                        entity.GetPropertyValue(propertyName),
+                                        relationship.Target.Type
+                                    ));
+                                break;
+                            case RelationshipType.ManyToMany:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Target.Type));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (relationship.Type)
+                        {
+                            case RelationshipType.OneToOne:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedEntityByType(
+                                        entity.GetPropertyValue(propertyName),
+                                        relationship.Source.Type)
+                                );
+                                break;
+                            case RelationshipType.OneToMany:
+                            case RelationshipType.ManyToMany:
+                                typedEntity.SetPropertyValue(propertyName,
+                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Source.Type));
+                                break;
+                        }
+                    }
+                }
+                entity = typedEntity;
+            }
+            return entity;
+        }
+
+        public IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false)
+        {
+            return (IList<T>)EnsureTypedListByType(responseData, typeof(T), forceNotNull);
+        }
+
+        public IList EnsureTypedListByType(IEnumerable responseData, Type type, bool forceNotNull = false)
+        {
+            var list = responseData != null || forceNotNull ?
+                (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type))
+                : null;
+            if (responseData != null)
+            {
+                foreach (var entity in responseData)
+                {
+                    var typedEntity = EnsureTypedEntityByType(entity, type);
+                    list.Add(typedEntity);
+                }
+            }
+            return list;
         }
     }
 }

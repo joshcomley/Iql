@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.DataStores;
@@ -24,5 +26,10 @@ namespace Iql.Queryable.Data
         Task<T> RefreshEntity<T>(T entity)
             where T : class
             ;
+
+        T EnsureTypedEntity<T>(object entity);
+        object EnsureTypedEntityByType(object entity, Type type);
+        IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false);
+        IList EnsureTypedListByType(IEnumerable responseData, Type type, bool forceNotNull = false);
     }
 }

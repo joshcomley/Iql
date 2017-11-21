@@ -311,7 +311,7 @@ namespace Iql.Queryable.Data.Tracking
                 var clone = FindClone(entity);
                 if (clone != null)
                 {
-                    var changedProperties = GetChangedProperties(entity, clone);
+                    var changedProperties = GetChangedProperties(entity, clone, typeof(T));
                     if (changedProperties.Any())
                     {
                         updates.Add(new UpdateEntityOperation<T>(entity, DataContext, changedProperties.ToArray()));
@@ -321,7 +321,7 @@ namespace Iql.Queryable.Data.Tracking
             return updates;
         }
 
-        private List<PropertyChange> GetChangedProperties(object entity, object clone)
+        private List<PropertyChange> GetChangedProperties(object entity, object clone, Type entityType)
         {
             var changedProperties = new List<PropertyChange>();
             var entityDefinition = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
@@ -371,7 +371,7 @@ namespace Iql.Queryable.Data.Tracking
                                 entityHasChanged = true;
                                 break;
                             }
-                            var changedChildProperties = GetChangedProperties(entityValueAtIndex, cloneValueAtIndex);
+                            var changedChildProperties = GetChangedProperties(entityValueAtIndex, cloneValueAtIndex, property.Type);
                             if (!changedChildProperties.Any())
                             {
                                 continue;
@@ -389,7 +389,7 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     if (entityValue.GetType().IsClass && !(entityValue is string))
                     {
-                        var propertyChanges = GetChangedProperties(entityValue, cloneValue);
+                        var propertyChanges = GetChangedProperties(entityValue, cloneValue, property.Type);
                         if (propertyChanges.Any())
                         {
                             propertyChange.ChildChangedProperties.AddRange(propertyChanges);

@@ -131,7 +131,7 @@ namespace Iql.Queryable.Data.DataStores
             // don't trickle down to our result
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
 #if TypeScript
-            response.Data = (DbList<TEntity>)EnsureTypedList(typeof(TEntity), response.Data, true);
+            response.Data = (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), true);
 #endif
             response.Data.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue)
@@ -175,81 +175,6 @@ namespace Iql.Queryable.Data.DataStores
                 trackingSet.Merge(response.Data);
             }
             return result;
-        }
-
-        private IList EnsureTypedList(Type type, IEnumerable responseData, bool forceNotNull = false)
-        {
-            var list = responseData != null || forceNotNull ?
-                (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type))
-                : null;
-            if (responseData != null)
-            {
-                foreach (var entity in responseData)
-                {
-                    var typedEntity = EnsureTypedEntity(type, entity);
-                    list.Add(typedEntity);
-                }
-            }
-            return list;
-        }
-
-        private object EnsureTypedEntity(Type type, object entity)
-        {
-            if (entity != null)
-            {
-                var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(type);
-                var typedEntity = Activator.CreateInstance(type);
-                foreach (var property in entityConfiguration.Properties)
-                {
-                    //var instanceValue = typedEntity.GetPropertyValue(property.Name);
-                    var remoteValue = entity.GetPropertyValue(property.Name);
-                    if (remoteValue != null)
-                    {
-                        typedEntity.SetPropertyValue(property.Name, remoteValue);
-                    }
-                }
-                foreach (var relationship in entityConfiguration.Relationships)
-                {
-                    var isSource = relationship.Source.Configuration == entityConfiguration;
-                    var propertyName = isSource
-                        ? relationship.Source.Property.PropertyName
-                        : relationship.Target.Property.PropertyName;
-                    if (isSource)
-                    {
-                        switch (relationship.Type)
-                        {
-                            case RelationshipType.OneToMany:
-                            case RelationshipType.OneToOne:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedEntity(relationship.Target.Type,
-                                        entity.GetPropertyValue(propertyName)));
-                                break;
-                            case RelationshipType.ManyToMany:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedList(relationship.Target.Type, (IEnumerable)entity.GetPropertyValue(propertyName)));
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch (relationship.Type)
-                        {
-                            case RelationshipType.OneToOne:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedEntity(relationship.Source.Type,
-                                        entity.GetPropertyValue(propertyName)));
-                                break;
-                            case RelationshipType.OneToMany:
-                            case RelationshipType.ManyToMany:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedList(relationship.Source.Type, (IEnumerable)entity.GetPropertyValue(propertyName)));
-                                break;
-                        }
-                    }
-                }
-                entity = typedEntity;
-            }
-            return entity;
         }
 
         public virtual async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
