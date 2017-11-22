@@ -67,11 +67,31 @@ namespace Iql.Tests
         }
 
         [TestMethod]
+        public async Task TestWhereDifferentCase()
+        {
+            var id = 1;
+            Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
+            var id2 = id + 1;
+            Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.Where(ct => ct.Name == "SECOND").Single();
+            Assert.IsNotNull(clientType);
+            Assert.AreEqual(clientType.Id, id2);
+        }
+
+        [TestMethod]
         public async Task ChangingAnEntity()
         {
-            Db.ClientTypes.Add(new ClientType() { Id = 2 });
+            var entity = new ClientType { Id = 2 };
+            Db.ClientTypes.Add(entity);
             await Db.SaveChanges();
-            var clientType = await Db.ClientTypes.First(ct => ct.Id == 2);
+            var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
+            Assert.AreEqual(entity.Id, clientType.Id);
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Count());
+            clientType.Name = "Something else";
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Count());
         }
     }
 }

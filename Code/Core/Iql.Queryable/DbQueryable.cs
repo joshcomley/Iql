@@ -18,7 +18,7 @@ namespace Iql.Queryable
 {
     public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
     {
-        public bool TrackEntities { get; set; }
+        public bool TrackEntities { get; set; } = true;
         public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)
         {
