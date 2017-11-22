@@ -8,9 +8,12 @@ namespace Iql.DotNet
 {
     public class DotNetIqlParserInstance : ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput>
     {
-        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter) : base(adapter)
+        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type rootEntityType) : base(adapter, rootEntityType)
         {
+            RootEntity = System.Linq.Expressions.Expression.Parameter(rootEntityType, "entity");
         }
+
+        public ParameterExpression RootEntity { get; }
 
         public override DotNetOutput Parse(IqlExpression expression)
         {

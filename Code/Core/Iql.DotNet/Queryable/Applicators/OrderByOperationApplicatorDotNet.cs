@@ -10,13 +10,7 @@ namespace Iql.DotNet.Queryable.Applicators
 {
     public class OrderByOperationApplicatorDotNet : DotNetQueryOperationApplicator<OrderByOperation>
     {
-        public override void Apply<TEntity>(
-            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context)
-        {
-            AddPropertyAction(context);
-        }
-
-        protected override IEnumerable<TEntity> Apply<TEntity>(IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
+        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
         {
             var property = Expression.Property(root,
                 (context.Operation.Expression as IqlPropertyExpression).PropertyName);

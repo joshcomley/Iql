@@ -15,10 +15,10 @@ namespace Iql.DotNet
 
     public static class IqlToDotNetParser
     {
-        public static LambdaExpression GetExpression(IqlExpression iql)
+        public static LambdaExpression GetExpression(IqlExpression iql, Type rootEntityType)
         {
             var adapter = new DotNetIqlExpressionAdapter("entity");
-            var parser = new DotNetIqlParserInstance(adapter);
+            var parser = new DotNetIqlParserInstance(adapter, rootEntityType);
             parser.IsFilter = true;
             var javascriptExpression = parser.Parse(iql);
             throw new NotImplementedException();

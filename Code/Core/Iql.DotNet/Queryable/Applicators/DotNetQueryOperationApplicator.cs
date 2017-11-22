@@ -10,19 +10,19 @@ namespace Iql.DotNet.Queryable.Applicators
 {
     public abstract class DotNetQueryOperationApplicator<T> : QueryOperationApplicator<T, IDotNetQueryResult> where T : IQueryOperation
     {
-        protected void AddPropertyAction<TEntity>(IQueryOperationContext<T, TEntity, IDotNetQueryResult> context) where TEntity : class
+        public override void Apply<TEntity>(IQueryOperationContext<T, TEntity, IDotNetQueryResult> context)
         {
             context.Data.Actions.Add(list =>
             {
                 var typedList = list as IList<TEntity>;
                 var root = Expression.Parameter(typeof(TEntity));
-                return Apply(context, root, typedList);
+                return ApplyTyped(context, root, typedList);
                 //var result = typedList.OrderBy((Func<TEntity, object>)sort.Compile()).ToList();
                 //return result;
             });
         }
 
-        protected abstract IEnumerable<TEntity> Apply<TEntity>(
+        protected abstract IEnumerable<TEntity> ApplyTyped<TEntity>(
             IQueryOperationContext<T, TEntity, IDotNetQueryResult> context,
             ParameterExpression root,
             IEnumerable<TEntity> typedList)

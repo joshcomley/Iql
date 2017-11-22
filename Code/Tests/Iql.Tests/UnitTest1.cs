@@ -24,6 +24,12 @@ namespace Iql.Tests
 
         }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            Db.InMemoryDb.ClientTypes.Clear();
+        }
+
         [TestMethod]
         public async Task AddingAnEntityPersistsToDb()
         {
@@ -33,6 +39,31 @@ namespace Iql.Tests
             await Db.SaveChanges();
             Assert.AreEqual(0, Db.DataStore.Queue.Count);
             Assert.AreEqual(1, Db.InMemoryDb.ClientTypes.Count);
+        }
+
+        [TestMethod]
+        public async Task TestWithKey()
+        {
+            var id = 1;
+            Db.ClientTypes.Add(new ClientType { Id = id });
+            Db.ClientTypes.Add(new ClientType { Id = id + 1 });
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.WithKey(id);
+            Assert.IsNotNull(clientType);
+            Assert.AreEqual(clientType.Id, id);
+        }
+
+        [TestMethod]
+        public async Task TestWhere()
+        {
+            var id = 1;
+            Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
+            var id2 = id + 1;
+            Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.Where(ct => ct.Name == "Second").Single();
+            Assert.IsNotNull(clientType);
+            Assert.AreEqual(clientType.Id, id2);
         }
 
         [TestMethod]

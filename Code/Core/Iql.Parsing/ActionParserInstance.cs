@@ -7,9 +7,10 @@ namespace Iql.Parsing
         where TQueryAdapter : IIqlExpressionAdapter<TIqlData>
         where TParserOutput : IParserOutput
     {
-        public ActionParserInstance(TQueryAdapter adapter)
+        protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType)
         {
             Adapter = adapter;
+            RootEntityType = rootEntityType;
             Data = Adapter.NewData();
         }
 
@@ -18,6 +19,7 @@ namespace Iql.Parsing
         public bool IsFilter { get; set; } = false;
 
         public TQueryAdapter Adapter { get; set; }
+        public Type RootEntityType { get; }
 
         public abstract TParserOutput Parse(IqlExpression expression
 #if TypeScript

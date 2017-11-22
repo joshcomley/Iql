@@ -11,7 +11,7 @@ namespace Iql.DotNet.Queryable.Applicators
         {
         }
 
-        protected override IEnumerable<TEntity> Apply<TEntity>(IQueryOperationContext<IncludeCountOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
+        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<IncludeCountOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
         {
             return typedList;
         }

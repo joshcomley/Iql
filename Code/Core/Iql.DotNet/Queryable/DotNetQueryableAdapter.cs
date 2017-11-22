@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNet;
 using Iql.DotNet.Queryable.Applicators;
@@ -32,10 +33,11 @@ namespace Iql.DotNet.Queryable
             return new DotNetQuery<TEntity>(Context);
         }
 
-        public static Expression GetExpression(
+        public static LambdaExpression GetExpression(
             IExpressionQueryOperation operation,
             bool isFilter,
             EntityConfigurationBuilder entityConfigurationContext,
+            Type rootEntityType,
             string rootVariableName = null)
         {
             var adapter = new DotNetIqlExpressionAdapter(
@@ -44,10 +46,12 @@ namespace Iql.DotNet.Queryable
             // + new Date().getTime()
             );
             var parser = new DotNetIqlParserInstance(
-                adapter);
+                adapter,
+                rootEntityType);
             parser.IsFilter = isFilter;
             var expression = parser.Parse(operation.Expression);
-            return expression.Expression;
+            var lambda = Expression.Lambda(expression.Expression, parser.RootEntity);
+            return lambda;
         }
     }
 }
