@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -25,19 +26,26 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public RelationshipMatch FindRelationship(string propertyName)
         {
+            return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.PropertyName == propertyName);
+        }
+
+        public List<RelationshipMatch> AllRelationships()
+        {
+            var list = new List<RelationshipMatch>();
             foreach (var relationship in Relationships)
             {
-                var ends = new[] {relationship.Source, relationship.Target};
+                var ends = new[] { relationship.Source, relationship.Target };
                 for (var i = 0; i < ends.Length; i++)
                 {
-                    if (ends[i].Configuration == this && ends[i].Property.PropertyName == propertyName)
+                    if (ends[i].Configuration == this)
                     {
-                        return new RelationshipMatch(relationship, i == 0);
+                        list.Add(new RelationshipMatch(relationship, i == 0));
                     }
                 }
             }
-            return null;
+            return list;
         }
+
         public List<IProperty> Properties { get; set; }
         public IEntityKey Key { get; set; }
         public Type Type { get; set; }

@@ -23,9 +23,23 @@ namespace Iql.Queryable.Data.Tracking
         {
             ClearParents();
             var changes = new List<IEntityCrudOperationBase>();
-            foreach (var set in Sets)
+            var setsChecked = new List<ITrackingSet>();
+
+            while (true)
             {
-                changes.AddRange(set.GetChangesInternal());
+                var sets = Sets.ToList();
+                foreach (var set in sets)
+                {
+                    if (!setsChecked.Contains(set))
+                    {
+                        changes.AddRange(set.GetChangesInternal());
+                        setsChecked.Add(set);
+                    }
+                }
+                if (Sets.Count == sets.Count)
+                {
+                    break;
+                }
             }
             return changes;
         }
@@ -133,14 +147,6 @@ namespace Iql.Queryable.Data.Tracking
                 throw new DuplicateParentException(entity);
             }
             _parents[entity].Add(property, parent);
-        }
-    }
-
-    internal class DuplicateParentException : Exception
-    {
-        public DuplicateParentException(object entity)
-        {
-            
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,6 +6,7 @@ using Iql.DotNet;
 using Iql.Queryable;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
+using Iql.Queryable.Data.Tracking;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -148,8 +150,9 @@ namespace Iql.Tests
         }
 
         [TestMethod]
-        public async Task UpdatingAnExistingEntityWithChildCollectionShouldResultInAnAddEntityOperationAndChildOperations()
+        public async Task AssigningChildToMulitpleParentsOnTheSameRelationshipShouldResultInDuplicateParentException()
         {
+            // Create two new client types
             Db.ClientTypes.Add(new ClientType
             {
                 Id = 2,
@@ -172,8 +175,10 @@ namespace Iql.Tests
             Db = new AppDbContext();
             var entity1 = await Db.ClientTypes.WithKey(2);
             var entity2 = await Db.ClientTypes.WithKey(3);
-            entity1.Clients.Add(new Client{Id = 3, Name = "Client 1 b"});
-            entity1.Clients.Add(new Client{Id = 4, Name = "Client 1 c"});
+            // Assign two existing clients to the first client type
+            entity1.Clients.Add(new Client { Id = 3, Name = "Client 1 b" });
+            entity1.Clients.Add(new Client { Id = 4, Name = "Client 1 c" });
+            // Assign a client from the first client type to the second
             entity1.Clients.Add(entity2.Clients[0]);
             /* Here's what should happen:
              * entity2.Clients[0] has two inferred TypeIds and as such an error should be thrown
@@ -184,13 +189,15 @@ namespace Iql.Tests
             {
                 changes = Db.DataStore.GetChanges().ToList();
             }
-            catch
+            catch (DuplicateParentException e)
             {
                 errorThrown = true;
             }
             Assert.IsTrue(errorThrown, "No error thrown for having a child entity belonging to multiple one-to-many collections.");
-            entity2.Clients.RemoveAt(0);
-            changes = Db.DataStore.GetChanges().ToList();
+
+
+            //entity2.Clients.RemoveAt(0);
+            //changes = Db.DataStore.GetChanges().ToList();
             /* Here's what should happen:
              * entity2 should be updated internally only
              * entity2.Clients[0].TypeId should be set to 2
@@ -201,6 +208,66 @@ namespace Iql.Tests
              * - Two adds of the new clients
              */
 
+        }
+
+        [TestMethod]
+        public async Task AnotherTest()
+        {
+            // Create two new client types
+            Db.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Something else",
+                Clients = new List<Client>(new[]
+                {
+                    new Client {Id = 1, Name = "Client 1"}
+                })
+            });
+            Db.ClientTypes.Add(new ClientType
+            {
+                Id = 3,
+                Name = "Another",
+                Clients = new List<Client>(new[]
+                {
+                    new Client {Id = 2, Name = "Client 2"}
+                })
+            });
+            await Db.SaveChanges();
+            Db = new AppDbContext();
+            var entity1 = await Db.ClientTypes.WithKey(2);
+            var entity2 = await Db.ClientTypes.WithKey(3);
+            // Assign two existing clients to the first client type
+            entity1.Clients.Add(new Client { Id = 3, Name = "Client 1 b" });
+            entity1.Clients.Add(new Client { Id = 4, Name = "Client 1 c" });
+            var changes = Db.DataStore.GetChanges().ToList();
+
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
+        {
+            // Create two new client types
+            Db.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Something else",
+                Clients = new List<Client>(new[]
+                {
+                    new Client {Id = 1, Name = "Client 1"}
+                })
+            });
+            Db.ClientTypes.Add(new ClientType
+            {
+                Id = 3,
+                Name = "Another",
+                Clients = new List<Client>(new[]
+                {
+                    new Client {Id = 2, Name = "Client 2"}
+                })
+            });
+            await Db.SaveChanges();
+            Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType{Id = 2, Name = "This should cause an error"}});
+            var changes = Db.DataStore.GetChanges().ToList();
         }
     }
 }

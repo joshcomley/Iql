@@ -12,5 +12,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
         Type Type { get; }
         IProperty GetProperty(string name);
         RelationshipMatch FindRelationship(string propertyName);
+        List<RelationshipMatch> AllRelationships();
     }
 }

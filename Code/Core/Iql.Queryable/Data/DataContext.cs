@@ -121,7 +121,7 @@ namespace Iql.Queryable.Data
             return await DataStore.SaveChanges(new SaveChangesOperation(this));
         }
 
-        public bool IsIdMatch(object left, object right)
+        public bool IsIdMatch(object left, object right, Type type)
         {
             if (new[] { left, right }.Count(i => i == null) == 1)
             {
@@ -135,7 +135,7 @@ namespace Iql.Queryable.Data
             {
                 return true;
             }
-            var configuration = EntityConfigurationContext.GetEntityByType(left.GetType());
+            var configuration = EntityConfigurationContext.GetEntityByType(type);
             var isMatch = true;
             foreach (var id in configuration.Key.Properties)
             {

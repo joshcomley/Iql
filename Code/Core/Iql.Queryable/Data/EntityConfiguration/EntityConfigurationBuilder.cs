@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -41,6 +42,57 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 throw new Exception($"No entity of type \"{type.Name}\" has been configured for this context.");
             }
             return _entities[type];
+        }
+
+        /// <summary>
+        /// Flattens an object graph, producing a list of distinctive entities contained within
+        /// </summary>
+        /// <param name="entity">The entity to flatten</param>
+        /// <param name="entityType">The type of the entity to flatten</param>
+        /// <returns></returns>
+        public List<object> FlattenObjectGraph(object entity, Type entityType)
+        {
+            return FlattenObjectGraphInternal(entity, entityType, new List<object>());
+        }
+
+        private List<object> FlattenObjectGraphInternal(object objectGraphRoot, Type entityType, List<object> objects)
+        {
+            if (objects.Contains(objectGraphRoot))
+            {
+                // Prevent infinite recursion
+                return objects;
+            }
+            objects.Add(objectGraphRoot);
+            var graphEntityConfiguration =
+                GetEntityByType(entityType);
+            foreach (var relationship in graphEntityConfiguration.Relationships)
+            {
+                var isSource = relationship.Source.Configuration == graphEntityConfiguration;
+                var propertyName = isSource
+                    ? relationship.Source.Property.PropertyName
+                    : relationship.Target.Property.PropertyName;
+                var relationshipValue = objectGraphRoot.GetPropertyValue(propertyName);
+                var childType = isSource
+                    ? relationship.Target.Type
+                    : relationship.Source.Type;
+                if (relationshipValue != null)
+                {
+                    var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
+                    if (isArray)
+                    {
+                        var list = (IList)relationshipValue;
+                        foreach (var item in list)
+                        {
+                            FlattenObjectGraphInternal(item, childType, objects);
+                        }
+                    }
+                    else
+                    {
+                        FlattenObjectGraphInternal(relationshipValue, childType, objects);
+                    }
+                }
+            }
+            return objects;
         }
     }
 }
