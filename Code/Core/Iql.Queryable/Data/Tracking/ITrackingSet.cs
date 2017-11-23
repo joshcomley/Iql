@@ -58,7 +58,7 @@ namespace Iql.Queryable.Data.Tracking
         void Track(object entity);
         void TrackWithClone(object entity, object clone);
         void Merge(IList data);
-        List<IEntityCrudOperationBase> GetChanges();
+        List<IEntityCrudOperationBase> GetChangesInternal(bool reset = false);
         void Reset();
         object FindClone(object entity);
         ITrackedEntity FindTrackedEntity(object entity);
