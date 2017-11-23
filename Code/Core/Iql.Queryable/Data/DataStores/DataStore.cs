@@ -26,7 +26,7 @@ namespace Iql.Queryable.Data.DataStores
         public virtual AddEntityResult<TEntity> Add<TEntity>(AddEntityOperation<TEntity> operation)
             where TEntity : class
         {
-            GetTracking().GetSet<TEntity>().Track(operation.Entity);
+            GetTracking().Track(operation.Entity, typeof(TEntity));
             var result = new AddEntityResult<TEntity>(true, operation);
             Queue.Add(new QueuedAddEntityOperation<TEntity>(
                 operation,
@@ -241,9 +241,16 @@ namespace Iql.Queryable.Data.DataStores
                         var entitiesInObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
                             entityOperation.Entity,
                             queuedOperation.Operation.EntityType);
-                        if (entitiesInObjectGraph.Contains(update.Entity))
+                        foreach (var flattenedEntity in entitiesInObjectGraph)
                         {
-                            alreadyBeingUpdatedByAnotherOperation = true;
+                            if (flattenedEntity.Entity == update.Entity)
+                            {
+                                alreadyBeingUpdatedByAnotherOperation = true;
+                                break;
+                            }
+                        }
+                        if (alreadyBeingUpdatedByAnotherOperation)
+                        {
                             break;
                         }
                     }

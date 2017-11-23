@@ -266,8 +266,51 @@ namespace Iql.Tests
                 })
             });
             await Db.SaveChanges();
-            Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType{Id = 2, Name = "This should cause an error"}});
-            var changes = Db.DataStore.GetChanges().ToList();
+            var exceptionThrown = false;
+            try
+            {
+                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 2, Name = "This should cause an error" } });
+            }
+            catch (EntityAlreadyTrackedException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithANewKeyShouldNotThrowException()
+        {
+            // Create two new client types
+            Db.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Something else",
+                Clients = new List<Client>(new[]
+                {
+                    new Client {Id = 1, Name = "Client 1"}
+                })
+            });
+            Db.ClientTypes.Add(new ClientType
+            {
+                Id = 3,
+                Name = "Another",
+                Clients = new List<Client>(new[]
+                {
+                    new Client {Id = 2, Name = "Client 2"}
+                })
+            });
+            await Db.SaveChanges();
+            var exceptionThrown = false;
+            try
+            {
+                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 4, Name = "This should not cause an error" } });
+            }
+            catch (EntityAlreadyTrackedException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsFalse(exceptionThrown);
         }
     }
 }

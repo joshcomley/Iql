@@ -71,34 +71,48 @@ namespace Iql.Queryable.Data.Tracking
             }
         }
 
-        public void Track(T entity)
+        public void Merge(List<T> data)
         {
-            var clone = entity.Clone();
-            TrackWithClone(entity, clone);
+            for (var i = 0; i < data.Count; i++)
+            {
+                var element = data[i];
+                if (element == null)
+                {
+                    continue;
+                }
+                TrackInternal(element, true);
+                data[i] = FindTrackedEntity(data[i]).Entity;
+            }
         }
 
-        public void TrackWithClone(T entity, T clone)
+        public void Track(T entity)
+        {
+            TrackInternal(entity, false);
+        }
+
+        private void TrackInternal(T entity, bool allowMerge)
         {
             var existingEntity = FindTrackedEntity(entity);
             var found = existingEntity != null;
-            if (found)
+            if (!allowMerge && found)
             {
                 found = false;
                 foreach (var trackedEntity in Set)
                 {
-                    if (trackedEntity == existingEntity.Entity)
+                    if (trackedEntity == entity)
                     {
                         found = true;
                         break;
                     }
-                    if (!DataContext.IsEntityNew(existingEntity.Entity, typeof(T))
+                    if (!DataContext.IsEntityNew(entity, typeof(T))
                         && !DataContext.IsEntityNew(trackedEntity, typeof(T))
-                        && DataContext.IsIdMatch(existingEntity.Entity, trackedEntity, typeof(T)))
+                        && DataContext.IsIdMatch(entity, trackedEntity, typeof(T)))
                     {
-                        throw new Exception("Already tracking an entity with the same key.");
+                        throw new EntityAlreadyTrackedException("Already tracking an entity with the same key.");
                     }
                 }
             }
+            var clone = entity.Clone();
             if (!found)
             {
                 Set.Add(entity);
@@ -301,25 +315,6 @@ namespace Iql.Queryable.Data.Tracking
         ITrackedEntity ITrackingSet.FindTrackedEntity(object entity)
         {
             return FindTrackedEntity((T)entity);
-        }
-
-        void ITrackingSet.TrackWithClone(object entity, object clone)
-        {
-            TrackWithClone((T)entity, (T)clone);
-        }
-
-        public void Merge(List<T> data)
-        {
-            for (var i = 0; i < data.Count; i++)
-            {
-                var element = data[i];
-                if (element == null)
-                {
-                    continue;
-                }
-                Track(element);
-                data[i] = FindTrackedEntity(data[i]).Entity;
-            }
         }
 
         public List<UpdateEntityOperation<T>> GetChangesInternal(bool reset = false)

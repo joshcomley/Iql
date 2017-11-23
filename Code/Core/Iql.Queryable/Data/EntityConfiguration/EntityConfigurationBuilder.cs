@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -50,19 +51,20 @@ namespace Iql.Queryable.Data.EntityConfiguration
         /// <param name="entity">The entity to flatten</param>
         /// <param name="entityType">The type of the entity to flatten</param>
         /// <returns></returns>
-        public List<object> FlattenObjectGraph(object entity, Type entityType)
+        public List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType)
         {
-            return FlattenObjectGraphInternal(entity, entityType, new List<object>());
+            return FlattenObjectGraphInternal(entity, entityType, new List<FlattenedEntity>());
         }
 
-        private List<object> FlattenObjectGraphInternal(object objectGraphRoot, Type entityType, List<object> objects)
+        private List<FlattenedEntity> FlattenObjectGraphInternal(object objectGraphRoot, Type entityType, List<FlattenedEntity> objects)
         {
-            if (objects.Contains(objectGraphRoot))
+            if (objects.Any(o => o.Entity == objectGraphRoot))
             {
                 // Prevent infinite recursion
                 return objects;
             }
-            objects.Add(objectGraphRoot);
+            var flattenedEntity = new FlattenedEntity(objectGraphRoot, entityType);
+            objects.Add(flattenedEntity);
             var graphEntityConfiguration =
                 GetEntityByType(entityType);
             foreach (var relationship in graphEntityConfiguration.Relationships)

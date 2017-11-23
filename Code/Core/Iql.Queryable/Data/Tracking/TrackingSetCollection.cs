@@ -58,18 +58,12 @@ namespace Iql.Queryable.Data.Tracking
 
         public void Track(object entity, Type entityType)
         {
-            var set = TrackingSet(entityType);
-            foreach (var obj in DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType))
+            var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
+            foreach (var obj in flattenObjectGraph)
             {
-                set.Track(obj);
+                var set = TrackingSet(obj.EntityType);
+                set.Track(obj.Entity);
             }
-        }
-
-        public void TrackWithClone(object entity, object clone)
-        {
-            var entityType = entity.GetType();
-            var set = TrackingSet(entityType);
-            set.TrackWithClone(entity, clone);
         }
 
         public ITrackingSet TrackingSet(Type entityType)
