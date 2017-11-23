@@ -380,7 +380,7 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         foreach (var child in values)
                         {
-                            TrackingSetCollection.Track(child);
+                            TrackingSetCollection.Track(child, relationship.OtherEnd.Type);
                             TrackingSetCollection.RecordParent(child, entity, relationship.ThisEnd.Property.PropertyName);
                         }
                     }

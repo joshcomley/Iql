@@ -395,7 +395,7 @@ namespace Iql.Queryable.Data.DataStores
                 var trackedEntity = tracking.FindEntity(localEntity);
                 if (trackedEntity == null)
                 {
-                    tracking.Track(localEntity);
+                    tracking.Track(localEntity, entityType);
                 }
             }
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(type);
