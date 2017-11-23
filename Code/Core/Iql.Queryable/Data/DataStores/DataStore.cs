@@ -221,48 +221,40 @@ namespace Iql.Queryable.Data.DataStores
 
         public IEnumerable<IQueuedOperation> GetChanges(bool reset = false)
         {
-            var trackingSets = GetTracking().Sets.ToList();
             var changes = new List<IQueuedOperation>();
-            trackingSets.ForEach(trackingSet =>
+            GetTracking().GetChanges(reset).ForEach(update =>
             {
-                trackingSet.GetChanges().ForEach(update =>
+                // If we are adding an entity in the same save changes operation
+                // then we don't need to do any scheduled updates on it because
+                // they will be negated by the add operation
+                if (Queue.Any(q => q.Operation.Type == OperationType.Add
+                                   && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
                 {
-                    // If we are adding an entity in the same save changes operation
-                    // then we don't need to do any scheduled updates on it because
-                    // they will be negated by the add operation
-                    if (Queue.Any(q => q.Operation.Type == OperationType.Add
-                                       && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
+                    return;
+                }
+                var alreadyBeingUpdatedByAnotherOperation = false;
+                foreach (var queuedOperation in Queue)
+                {
+                    if (queuedOperation.Type == QueuedOperationType.Update)
                     {
-                        return;
-                    }
-                    var alreadyBeingUpdatedByAnotherOperation = false;
-                    foreach (var queuedOperation in Queue)
-                    {
-                        if (queuedOperation.Type == QueuedOperationType.Update)
+                        var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
+                        var entitiesInObjectGraph = FlattenObjectGraph(entityOperation.Entity);
+                        if (entitiesInObjectGraph.Contains(update.Entity))
                         {
-                            var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
-                            var entitiesInObjectGraph = FlattenObjectGraph(entityOperation.Entity);
-                            if (entitiesInObjectGraph.Contains(update.Entity))
-                            {
-                                alreadyBeingUpdatedByAnotherOperation = true;
-                                break;
-                            }
+                            alreadyBeingUpdatedByAnotherOperation = true;
+                            break;
                         }
                     }
-                    if (!alreadyBeingUpdatedByAnotherOperation)
-                    {
-                        var updateOperation =
-                            Activator.CreateInstance(
-                                typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                        changes.Add((IQueuedOperation) updateOperation);
-                    }
-                    //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
-                    //Apply(update);
-                });
-                if (reset)
-                {
-                    trackingSet.Reset();
                 }
+                if (!alreadyBeingUpdatedByAnotherOperation)
+                {
+                    var updateOperation =
+                        Activator.CreateInstance(
+                            typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                    changes.Add((IQueuedOperation)updateOperation);
+                }
+                //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
+                //Apply(update);
             });
             return changes;
         }

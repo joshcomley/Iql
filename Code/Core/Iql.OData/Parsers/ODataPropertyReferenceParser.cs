@@ -1,19 +1,16 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
-    public class ODataPropertyReferenceParser : ActionParser<IqlPropertyExpression, ODataIqlData,
-        ODataIqlExpressionAdapter>
+    public class ODataPropertyReferenceParser : ODataActionParserBase<IqlPropertyExpression>
     {
         protected string Separator { get; } = "/";
 
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
-            var property = new IqlFinalExpression(action.PropertyName);
+            var property = new IqlFinalExpression<string>(action.PropertyName);
             if (action.Parent != null && action.Parent.Type != IqlExpressionType.RootReference)
             {
-                return new IqlAggregateExpression(action.Parent, new IqlFinalExpression(Separator), property);
+                return new IqlAggregateExpression(action.Parent, new IqlFinalExpression<string>(Separator), property);
             }
             return property;
         }

@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Iql.JavaScript.Extensions;
-using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
     public abstract class
-        JavaScriptMethodActionParser<TAction> : ActionParser<TAction, JavaScriptIqlData, JavaScriptIqlExpressionAdapter>
+        JavaScriptMethodActionParser<TAction> : JavaScriptActionParserBase<TAction>
         where TAction : IqlExpression
     {
         public override IqlExpression ToQueryString(TAction action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             return JavaScriptMethod(
                 ResolveMethodName(action),
@@ -25,17 +24,17 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             {
                 
             }
-            arr.Add(new IqlFinalExpression(name));
-            arr.Add(new IqlFinalExpression("("));
+            arr.Add(new IqlFinalExpression<string>(name));
+            arr.Add(new IqlFinalExpression<string>("("));
             for (var i = 0; i < args.Length; i++)
             {
                 arr.Add(args[i]);
                 if (i < args.Length - 1)
                 {
-                    arr.Add(new IqlFinalExpression(","));
+                    arr.Add(new IqlFinalExpression<string>(","));
                 }
             }
-            arr.Add(new IqlFinalExpression(")"));
+            arr.Add(new IqlFinalExpression<string>(")"));
             var invocation = new IqlAggregateExpression(arr.ToArray());
             return 
                 caller == null

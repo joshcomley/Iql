@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Extensions;
 
@@ -26,9 +24,9 @@ namespace Iql.Queryable.Data.Tracking
         private IDataContext DataContext { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
 
-        List<IEntityCrudOperationBase> ITrackingSet.GetChanges()
+        List<IEntityCrudOperationBase> ITrackingSet.GetChangesInternal(bool reset = false)
         {
-            return GetChanges().Cast<IEntityCrudOperationBase>().ToList();
+            return GetChangesInternal(reset).Cast<IEntityCrudOperationBase>().ToList();
         }
 
         public void Reset()
@@ -302,7 +300,7 @@ namespace Iql.Queryable.Data.Tracking
             }
         }
 
-        public List<UpdateEntityOperation<T>> GetChanges()
+        public List<UpdateEntityOperation<T>> GetChangesInternal(bool reset = false)
         {
             var updates = new List<UpdateEntityOperation<T>>();
             Set.ForEach(entity =>
@@ -318,11 +316,23 @@ namespace Iql.Queryable.Data.Tracking
                     }
                 }
             });
+            if (reset)
+            {
+                Reset();
+            }
             return updates;
         }
 
         private List<PropertyChange> GetChangedProperties(object entity, object clone, Type entityType)
         {
+            /* Iterate through the relationships
+             * Log the parent for each child, ensuring local integrity check
+             * - For one to one relationships check the ID and the attached object.
+             *   - If the ID has changed, assume deliberate and ignore checking the related object property
+             *   - If the attached object has changed, update the ID to either the attached object's ID or, if it is new, to null/default
+             * Iterate through the remaining properties and perform simple value equality check
+             * 
+             */ 
             var changedProperties = new List<PropertyChange>();
             var entityDefinition = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             var properties = entityDefinition.Properties;

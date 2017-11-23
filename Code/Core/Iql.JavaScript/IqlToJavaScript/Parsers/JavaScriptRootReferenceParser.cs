@@ -1,14 +1,11 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptRootReferenceParser : ActionParser<IqlRootReferenceExpression, JavaScriptIqlData,
-        JavaScriptIqlExpressionAdapter>
+    public class JavaScriptRootReferenceParser : JavaScriptActionParserBase<IqlRootReferenceExpression>
     {
         public override IqlExpression ToQueryString(IqlRootReferenceExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
-            return new IqlFinalExpression(parser.Adapter.RootVariableName);
+            return new IqlFinalExpression<string>(parser.Adapter.RootVariableName);
         }
     }
 }

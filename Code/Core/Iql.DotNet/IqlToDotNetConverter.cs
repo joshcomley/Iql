@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNet;
-using Iql.Parsing;
 using Iql.Queryable.Expressions;
 
 namespace Iql.DotNet
@@ -16,10 +15,10 @@ namespace Iql.DotNet
 
     public static class IqlToDotNetParser
     {
-        public static LambdaExpression GetExpression(IqlExpression iql)
+        public static LambdaExpression GetExpression(IqlExpression iql, Type rootEntityType)
         {
             var adapter = new DotNetIqlExpressionAdapter("entity");
-            var parser = new ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter>(adapter);
+            var parser = new DotNetIqlParserInstance(adapter, rootEntityType);
             parser.IsFilter = true;
             var javascriptExpression = parser.Parse(iql);
             throw new NotImplementedException();

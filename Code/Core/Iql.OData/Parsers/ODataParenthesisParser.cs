@@ -1,17 +1,14 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
-    public class ODataParenthesisParser : ActionParser<IqlParenthesisExpression, ODataIqlData, ODataIqlExpressionAdapter
-    >
+    public class ODataParenthesisParser : ODataActionParserBase<IqlParenthesisExpression>
     {
         public override IqlExpression ToQueryString(IqlParenthesisExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression("("),
+                new IqlFinalExpression<string>("("),
                 action.Expression,
-                new IqlFinalExpression(")"));
+                new IqlFinalExpression<string>(")"));
         }
     }
 }

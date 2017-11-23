@@ -1,4 +1,5 @@
-﻿using Iql.Parsing;
+﻿using Iql.DotNet.IqlToDotNet.Parsers;
+using Iql.Parsing;
 
 namespace Iql.DotNet.IqlToDotNet
 {
@@ -11,14 +12,14 @@ namespace Iql.DotNet.IqlToDotNet
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptStringSourceActionParser());
             //Registry.Register(typeof(IqlNotExpression), () => new JavaScriptNotActionParser());
             //Registry.Register(typeof(IqlParenthesisExpression), () => new JavaScriptParenthesisParser());
-            //Registry.Register(typeof(IqlPropertyExpression), () => new JavaScriptPropertyReferenceParser());
-            //Registry.Register(typeof(IqlRootReferenceExpression), () => new JavaScriptRootReferenceParser());
-            //Registry.Register(typeof(IqlLiteralExpression), () => new JavaScriptLiteralParser());
+            Registry.Register(typeof(IqlPropertyExpression), () => new DotNetPropertyReferenceParser());
+            Registry.Register(typeof(IqlRootReferenceExpression), () => new DotNetRootReferenceParser());
+            Registry.Register(typeof(IqlLiteralExpression), () => new DotNetLiteralParser());
             //Registry.Register(typeof(IqlStringSubStringExpression), () => new JavaScriptStringSubStringActionParser());
             //Registry.Register(typeof(IqlParentValueExpression), () => new JavaScriptStringSourceValueActionParser());
             //Registry.Register(typeof(IqlStringLengthExpression), () => new JavaScriptStringLengthParser());
             //Registry.Register(typeof(IqlUnaryExpression), () => new JavaScriptUnaryActionParser());
-            //Registry.Register(typeof(IqlBinaryExpression), () => new JavaScriptBinaryActionParser());
+            Registry.Register(typeof(IqlBinaryExpression), () => new DotNetBinaryActionParser());
         }
 
         public string RootVariableName { get; set; }

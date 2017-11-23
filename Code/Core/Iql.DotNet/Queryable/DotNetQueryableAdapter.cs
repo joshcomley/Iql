@@ -1,5 +1,10 @@
+using System;
+using System.Linq.Expressions;
+using Iql.DotNet.IqlToDotNet;
 using Iql.DotNet.Queryable.Applicators;
 using Iql.Queryable;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Operations;
 
 namespace Iql.DotNet.Queryable
 {
@@ -7,7 +12,10 @@ namespace Iql.DotNet.Queryable
     {
         public DotNetQueryableAdapter()
         {
-            RegisterApplicator(() => new DotNetOrderByOperationApplicator());
+            RegisterApplicator(() => new OrderByOperationApplicatorDotNet());
+            RegisterApplicator(() => new WithKeyOperationApplicatorDotNet());
+            RegisterApplicator(() => new IncludeCountOperationApplicatorDotNet());
+            RegisterApplicator(() => new WhereOperationApplicatorDotNet());
             //this.RegisterApplicator(() => new ReverseOperationApplicatorJavaScript());
             //this.RegisterApplicator(() => new WhereOperationApplicatorJavaScript());
             //this.RegisterApplicator(() => new ExpandOperationApplicatorJavaScript());
@@ -23,6 +31,27 @@ namespace Iql.DotNet.Queryable
         public override IDotNetQueryResult NewQueryData<TEntity>(IQueryable<TEntity> queryable)
         {
             return new DotNetQuery<TEntity>(Context);
+        }
+
+        public static LambdaExpression GetExpression(
+            IExpressionQueryOperation operation,
+            bool isFilter,
+            EntityConfigurationBuilder entityConfigurationContext,
+            Type rootEntityType,
+            string rootVariableName = null)
+        {
+            var adapter = new DotNetIqlExpressionAdapter(
+                //"___" + 
+                rootVariableName ?? "q"
+            // + new Date().getTime()
+            );
+            var parser = new DotNetIqlParserInstance(
+                adapter,
+                rootEntityType);
+            parser.IsFilter = isFilter;
+            var expression = parser.Parse(operation.Expression);
+            var lambda = Expression.Lambda(expression.Expression, parser.RootEntity);
+            return lambda;
         }
     }
 }

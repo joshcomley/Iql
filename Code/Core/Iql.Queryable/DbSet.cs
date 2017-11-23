@@ -40,7 +40,7 @@ namespace Iql.Queryable
             {
                 compositeKey = GetCompositeKeyFromSingularKey(key);
             }
-            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefault();
+            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefaultWithResponse();
         }
 
         public new DbSet<T, TKey> ExpandCollectionCount<TTarget>(

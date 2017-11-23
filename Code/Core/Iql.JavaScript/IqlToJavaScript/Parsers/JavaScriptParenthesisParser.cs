@@ -1,17 +1,14 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptParenthesisParser : ActionParser<IqlParenthesisExpression, JavaScriptIqlData,
-        JavaScriptIqlExpressionAdapter>
+    public class JavaScriptParenthesisParser : JavaScriptActionParserBase<IqlParenthesisExpression>
     {
         public override IqlExpression ToQueryString(IqlParenthesisExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression("("),
+                new IqlFinalExpression<string>("("),
                 action.Expression,
-                new IqlFinalExpression(")")
+                new IqlFinalExpression<string>(")")
             );
         }
     }

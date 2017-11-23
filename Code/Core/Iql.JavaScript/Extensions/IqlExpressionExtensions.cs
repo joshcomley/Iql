@@ -6,7 +6,7 @@
         {
             var accessorExpression = new IqlAggregateExpression(
                 parent,
-                new IqlFinalExpression("."),
+                new IqlFinalExpression<string>("."),
                 action
             );
             return accessorExpression;
@@ -15,13 +15,13 @@
         public static IqlExpression Coalesce(this IqlExpression parent, IqlExpression accessorExpression)
         {
             return new IqlAggregateExpression(
-                new IqlFinalExpression(@"(function() { return "),
+                new IqlFinalExpression<string>(@"(function() { return "),
                 parent,
-                new IqlFinalExpression(@" === null || "),
+                new IqlFinalExpression<string>(@" === null || "),
                 parent,
-                new IqlFinalExpression(@" === undefined ? null : "),
+                new IqlFinalExpression<string>(@" === undefined ? null : "),
                 accessorExpression,
-                new IqlFinalExpression(";})()")
+                new IqlFinalExpression<string>(";})()")
             );
         }
     }

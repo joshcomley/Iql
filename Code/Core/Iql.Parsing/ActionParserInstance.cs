@@ -3,12 +3,14 @@ using Iql.Parsing.Reduction;
 
 namespace Iql.Parsing
 {
-    public class ActionParserInstance<TIqlData, TQueryAdapter> : IActionParserInstance
+    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput, TParserOutput> : IActionParserInstance
         where TQueryAdapter : IIqlExpressionAdapter<TIqlData>
+        where TParserOutput : IParserOutput
     {
-        public ActionParserInstance(TQueryAdapter adapter)
+        protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType)
         {
             Adapter = adapter;
+            RootEntityType = rootEntityType;
             Data = Adapter.NewData();
         }
 
@@ -17,20 +19,26 @@ namespace Iql.Parsing
         public bool IsFilter { get; set; } = false;
 
         public TQueryAdapter Adapter { get; set; }
+        public Type RootEntityType { get; }
 
-        public string Parse(IqlExpression expression
+        public abstract TParserOutput Parse(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
-            )
-        {
+        );
+
+        public virtual string ParseAsString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+            ){
             while (true)
             {
                 if (expression == null)
                 {
                     return "";
                 }
-                var finalExpression = expression as IqlFinalExpression;
+                var finalExpression = expression as IqlFinalExpression<string>;
                 if (finalExpression != null)
                 {
                     return finalExpression.Value;
@@ -40,11 +48,14 @@ namespace Iql.Parsing
                 {
                     var aggregate = aggregateExpression;
                     var str1 = "";
-                    aggregate.Expressions.ForEach(element => { str1 += Parse(element
+                    aggregate.Expressions.ForEach(element =>
+                    {
+                        str1 += Parse(element
 #if TypeScript
                         , evaluateContext
 #endif
-                        ); });
+                        );
+                    });
                     return str1;
                 }
                 var oldExpression = Expression;
@@ -60,14 +71,14 @@ namespace Iql.Parsing
 #if TypeScript
                             evaluateContext
 #endif
-                    );
+                );
                 result = reducer.ReduceStaticContent(result);
 
                 if (result != null)
                 {
-                    if (result is IqlFinalExpression)
+                    if (result is IqlFinalExpressionBase)
                     {
-                        return (result as IqlFinalExpression).Value;
+                        return (result as IqlFinalExpression<string>).Value;
                     }
                     expression = result;
                     continue;
@@ -75,6 +86,11 @@ namespace Iql.Parsing
                 Expression = oldExpression;
                 return null;
             }
+        }
+
+    object IActionParserInstance.Parse(IqlExpression expression)
+        {
+            return Parse(expression);
         }
         //     }
         //         return "";

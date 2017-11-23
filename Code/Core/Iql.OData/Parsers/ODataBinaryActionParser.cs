@@ -1,19 +1,17 @@
-using Iql.Parsing;
-
 namespace Iql.OData.Parsers
 {
-    public class ODataBinaryActionParser : ActionParser<IqlBinaryExpression, ODataIqlData, ODataIqlExpressionAdapter>
+    public class ODataBinaryActionParser : ODataActionParserBase<IqlBinaryExpression>
     {
         public override IqlExpression ToQueryString(IqlBinaryExpression action,
-            ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter> parser)
+            ODataIqlParserInstance parser)
         {
             var spacer = " ";
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(
                     action.Left,
-                    new IqlFinalExpression(spacer),
-                    new IqlFinalExpression(ResolveOperator(action)),
-                    new IqlFinalExpression(spacer),
+                    new IqlFinalExpression<string>(spacer),
+                    new IqlFinalExpression<string>(ResolveOperator(action)),
+                    new IqlFinalExpression<string>(spacer),
                     action.Right
                 )
             );

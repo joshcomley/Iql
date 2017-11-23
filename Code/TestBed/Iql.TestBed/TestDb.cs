@@ -234,7 +234,7 @@ namespace Iql.TestBed
             marta.Types = marta.Types ?? new List<PersonTypeMap>();
             var personTypeMap = new PersonTypeMap
             {
-                TypeId = polish.Data.Id,
+                TypeId = polish.Id,
                 Notes = "test 1212"
             };
             marta.Types.Add(personTypeMap);
@@ -245,7 +245,7 @@ namespace Iql.TestBed
             marta2.Types = marta2.Types ?? new List<PersonTypeMap>();
             var personTypeMap2 = new PersonTypeMap
             {
-                TypeId = polish.Data.Id,
+                TypeId = polish.Id,
                 Notes = "test 232323"
             };
             marta2.Types.Add(personTypeMap2);

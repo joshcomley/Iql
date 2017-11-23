@@ -1,6 +1,5 @@
 ﻿using Iql.OData.Parsers;
 using Iql.OData.Queryable.Applicators;
-using Iql.Parsing;
 using Iql.Queryable;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Operations;
@@ -29,13 +28,13 @@ namespace Iql.OData.Queryable
             EntityConfigurationBuilder entityConfigurationContext
         )
         {
-            return new ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter>(
+            return new ODataIqlParserInstance(
                     new ODataIqlExpressionAdapter())
                 .Parse(operation.Expression
 #if TypeScript
                 , operation.EvaluateContext
 #endif
-                );
+                ).ToCodeString();
         }
 
         // public generateQuery(): ODataQuery<T> {

@@ -12,7 +12,7 @@ namespace Iql.Queryable.Extensions
 {
     public static class QueryOperationContextExtensions
     {
-        public static WhereOperation ResolveWithKkeyWhereOperation(this IQueryOperationContextBase context)
+        public static WhereOperation ResolveWithKeyWhereOperation(this IQueryOperationContextBase context)
         {
             var key = (context.Operation as WithKeyOperation).Key;
             var dataContext = context.DataContext;

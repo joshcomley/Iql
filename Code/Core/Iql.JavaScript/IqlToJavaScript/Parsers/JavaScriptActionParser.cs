@@ -1,11 +1,9 @@
-using Iql.Parsing;
-
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {
-    public class JavaScriptActionParser : ActionParser<IqlExpression, JavaScriptIqlData, JavaScriptIqlExpressionAdapter>
+    public class JavaScriptActionParser : JavaScriptActionParserBase<IqlExpression>
     {
         public override IqlExpression ToQueryString(IqlExpression action,
-            ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter> parser)
+            JavaScriptIqlParserInstance parser)
         {
             switch (action.Type)
             {
@@ -14,7 +12,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                 case IqlExpressionType.StringTrim:
                     return new JavaScriptStringSourceActionParser().ToQueryString(action, parser);
                 case IqlExpressionType.Not:
-                    return new IqlFinalExpression("not");
+                    return new IqlFinalExpression<string>("not");
             }
             JavaScriptErrors.OperationNotSupported(action.Type);
             return null;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Queryable.Data.Crud.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -17,6 +18,17 @@ namespace Iql.Queryable.Data.Tracking
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
         public List<ITrackingSet> Sets { get; set; }
         private IDataContext DataContext { get; }
+
+        public List<IEntityCrudOperationBase> GetChanges(bool reset = false)
+        {
+            ClearParents();
+            var changes = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                changes.AddRange(set.GetChangesInternal());
+            }
+            return changes;
+        }
 
         public TrackingSet<T> GetSet<T>() where T : class
         {
@@ -90,6 +102,45 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
             return null;
+        }
+
+        internal void ClearParents()
+        {
+            _parents = new Dictionary<object, Dictionary<string, object>>();
+        }
+
+        /// <summary>
+        /// First we look up an entity.
+        /// Then we look up the relationship property that we're concerned with.
+        /// </summary>
+        private Dictionary<object, Dictionary<string, object>> _parents = new Dictionary<object, Dictionary<string, object>>();
+        /// <summary>
+        /// Part of the integrity check.
+        /// If an entity is assigned to multiple parents when the relationship only allows one
+        /// then we throw an exception.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="parent"></param>
+        /// <param name="property"></param>
+        internal void RecordParent(object entity, object parent, string property)
+        {
+            if (!_parents.ContainsKey(entity))
+            {
+                _parents.Add(entity, new Dictionary<string, object>());
+            }
+            if (_parents[entity].ContainsKey(property) && _parents[entity][property] != parent)
+            {
+                throw new DuplicateParentException(entity);
+            }
+            _parents[entity].Add(property, parent);
+        }
+    }
+
+    internal class DuplicateParentException : Exception
+    {
+        public DuplicateParentException(object entity)
+        {
+            
         }
     }
 }

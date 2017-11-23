@@ -1,17 +1,17 @@
 namespace Iql
 {
-    public class IqlFinalExpression : IqlExpression
+    public class IqlFinalExpression<TValue> : IqlFinalExpressionBase
     {
         public IqlFinalExpression(
-            string value) : base(IqlExpressionType.Final)
+            TValue value) : base(IqlExpressionType.Final, null)
         {
             Value = value;
         }
 
-        public IqlFinalExpression() : this(null)
+        public IqlFinalExpression() : this(default(TValue))
         {
         }
 
-        public string Value { get; set; }
+        public TValue Value { get; set; }
     }
 }
