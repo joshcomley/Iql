@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Extensions;
 
@@ -17,10 +18,12 @@ namespace Iql.Queryable.Data.Tracking
             TrackingSetCollection = trackingSetCollection;
             Set = new List<T>();
             Clone = new List<T>();
+            EntityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
         }
 
         public List<T> Set { get; set; }
         public List<T> Clone { get; set; }
+        public IEntityConfiguration EntityConfiguration { get; }
         private IDataContext DataContext { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
 
@@ -77,7 +80,26 @@ namespace Iql.Queryable.Data.Tracking
         public void TrackWithClone(T entity, T clone)
         {
             var existingEntity = FindTrackedEntity(entity);
-            if (existingEntity == null)
+            var found = existingEntity != null;
+            if (found)
+            {
+                found = false;
+                foreach (var trackedEntity in Set)
+                {
+                    if (trackedEntity == existingEntity.Entity)
+                    {
+                        found = true;
+                        break;
+                    }
+                    if (!DataContext.IsEntityNew(existingEntity.Entity, typeof(T))
+                        && !DataContext.IsEntityNew(trackedEntity, typeof(T))
+                        && DataContext.IsIdMatch(existingEntity.Entity, trackedEntity, typeof(T)))
+                    {
+                        throw new Exception("Already tracking an entity with the same key.");
+                    }
+                }
+            }
+            if (!found)
             {
                 Set.Add(entity);
                 Clone.Add(clone);
@@ -198,7 +220,7 @@ namespace Iql.Queryable.Data.Tracking
                             var isArray = ownerRelationshipValue is IEnumerable && !(ownerRelationshipValue is string);
                             if (isArray)
                             {
-                                var relationshipList = (IList) ownerRelationshipValue;
+                                var relationshipList = (IList)ownerRelationshipValue;
                                 foreach (var remoteItem in relationshipList)
                                 {
                                     matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, remoteItem, targetRelationship, owner, relationships, matchedEntity);
@@ -255,12 +277,12 @@ namespace Iql.Queryable.Data.Tracking
             }
             if (match != null)
             {
-                var trakcedRelationship = (ITrackedRelationship) GetType()
+                var trakcedRelationship = (ITrackedRelationship)GetType()
                     .GetMethod(nameof(NewTrackedRelationship))
                     .MakeGenericMethod(targetRelationship.Type, sourceRelationship.Type)
-                    .Invoke(this, new object[] {owner, remoteItem, relationship});
+                    .Invoke(this, new object[] { owner, remoteItem, relationship });
                 relationships.Add(trakcedRelationship);
-                matchedEntity = (T) match;
+                matchedEntity = (T)match;
             }
             return matchedEntity;
         }
@@ -325,14 +347,54 @@ namespace Iql.Queryable.Data.Tracking
 
         private List<PropertyChange> GetChangedProperties(object entity, object clone)
         {
+            Sanitize(entity);
+            return new List<PropertyChange>();
+        }
+
+        private void Sanitize(object entity)
+        {
             /* Iterate through the relationships
              * Log the parent for each child, ensuring local integrity check
+             * For one-endian relationships:
+             * - If the "parent" ID has changed, mark that property as changed, and if the attached parent does not match the parent ID, delete association
+             * - If the "parent" ID has not changed, but does not match the current parent, change the parent ID and mark that property as changed
+             * - If the entity is new, track the entity, and if the parent ID does not match the attached parent, throw exception
+             * 
+             * For multi-endian relaitonships:
+             * - 
+             * - Log parent ID as 
              * - For one to one relationships check the ID and the attached object.
              *   - If the ID has changed, assume deliberate and ignore checking the related object property
              *   - If the attached object has changed, update the ID to either the attached object's ID or, if it is new, to null/default
              * Iterate through the remaining properties and perform simple value equality check
              * 
-             */ 
+             */
+            var relationships = EntityConfiguration.AllRelationships();
+            foreach (var relationship in relationships)
+            {
+                var value = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName);
+                if (value.IsArray())
+                {
+                    var values = value as IEnumerable;
+                    if (values != null)
+                    {
+                        foreach (var child in values)
+                        {
+                            TrackingSetCollection.Track(child);
+                            TrackingSetCollection.RecordParent(child, entity, relationship.ThisEnd.Property.PropertyName);
+                        }
+                    }
+                }
+                SanitizeRelationship(relationship.Relationship, relationship.ThisEnd, entity, value);
+            }
+        }
+
+        private void SanitizeRelationship(IRelationship relationship, IRelationshipDetail detail, object parent, object child)
+        {
+        }
+
+        private List<PropertyChange> GetChangedPropertiesOld(object entity, object clone)
+        {
             var changedProperties = new List<PropertyChange>();
             var entityDefinition = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             var properties = entityDefinition.Properties;

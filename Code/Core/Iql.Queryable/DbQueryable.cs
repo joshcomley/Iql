@@ -340,7 +340,7 @@ namespace Iql.Queryable
                                     var toRemove = new List<object>();
                                     foreach (var relatedArrayItem in enumerable)
                                     {
-                                        if (DataContext.IsIdMatch(entity, relatedArrayItem))
+                                        if (DataContext.IsIdMatch(entity, relatedArrayItem, typeof(T)))
                                         {
                                             toRemove.Add(relatedArrayItem);
                                         }
@@ -353,7 +353,7 @@ namespace Iql.Queryable
                             }
                             else
                             {
-                                if (DataContext.IsIdMatch(entity, relatedItem))
+                                if (DataContext.IsIdMatch(entity, relatedItem, typeof(T)))
                                 {
                                     relatedEntity.SetPropertyValue(target.Property.PropertyName, null);
                                     foreach (var constraint in relationship.Constraints)
