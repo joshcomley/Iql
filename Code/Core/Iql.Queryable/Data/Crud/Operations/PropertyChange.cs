@@ -7,16 +7,20 @@ namespace Iql.Queryable.Data.Crud.Operations
     [DebuggerDisplay("{Property.Name}")]
     public class PropertyChange
     {
-        public PropertyChange(IProperty property, RelationshipMatch relationship)
+        public PropertyChange(IProperty property, object oldValue, object newValue)
         {
             Property = property;
-            Relationship = relationship;
+            OldValue = oldValue;
+            NewValue = newValue;
         }
 
+        public object OldValue { get; set; }
+        public object NewValue { get; set; }
+
         public IProperty Property { get; }
-        public RelationshipMatch Relationship { get; }
-        public bool IsRelationship { get; }
         public List<PropertyChange> ChildChangedProperties { get; } = new List<PropertyChange>();
-        public Dictionary<int, List<PropertyChange>> EnumerableChangedProperties { get; } = new Dictionary<int, List<PropertyChange>>();
+
+        public Dictionary<int, List<PropertyChange>> EnumerableChangedProperties { get; } =
+            new Dictionary<int, List<PropertyChange>>();
     }
 }

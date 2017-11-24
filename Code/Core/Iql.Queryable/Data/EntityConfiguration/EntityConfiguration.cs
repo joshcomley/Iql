@@ -50,9 +50,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public IEntityKey Key { get; set; }
         public Type Type { get; set; }
 
-        public IProperty GetProperty(string name)
+        public IProperty FindProperty(string name)
         {
-            return _propertiesMap[name];
+            return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
         }
 
         public IEntityKey GetKey()
@@ -99,7 +99,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = GetProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
+            var definition = FindProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);
@@ -132,12 +132,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var countDefinition = MapProperty<long?, long?>(countProperty, false, true, collection);
                 countDefinition.Kind = PropertyKind.Count;
             }
-            var relationship = FindRelationship(collection.Name);
-            if (relationship != null)
-            {
-                collection.Kind = PropertyKind.Relationship;
-                collection.Relationship = relationship;
-            }
+            TryAssignRelationshipToPropertyDefinition(collection);
             return this;
         }
 
@@ -150,18 +145,13 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = GetProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, isCollection, typeof(T), null, readOnly, countRelationship);
+            var definition = FindProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, isCollection, typeof(T), null, readOnly, countRelationship);
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);
                 _propertiesMap[name] = definition;
             }
-            var relationship = FindRelationship(name);
-            if (relationship != null)
-            {
-                definition.Kind = PropertyKind.Relationship;
-                definition.Relationship = relationship;
-            }
+            TryAssignRelationshipToPropertyDefinition(definition);
             return definition;
         }
 
@@ -187,14 +177,46 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 property);
         }
 
-        internal void TryAssignRelationshipToPropertyDefinition(string propertyName)
+        internal void TryAssignRelationshipToProperty(string propertyName)
         {
-            var propertyDefinition = GetProperty(propertyName);
+            var propertyDefinition = FindProperty(propertyName);
             if (propertyDefinition != null)
             {
-                propertyDefinition.Relationship =
-                    FindRelationship(propertyName);
-                propertyDefinition.Kind = PropertyKind.Relationship;
+                TryAssignRelationshipToPropertyDefinition(propertyDefinition);
+            }
+        }
+
+        internal void TryAssignRelationshipToPropertyDefinition(IProperty definition)
+        {
+            var relationship = FindRelationship(definition.Name);
+            if (relationship != null)
+            {
+                definition.Kind = PropertyKind.Relationship;
+                definition.Relationship = relationship;
+                foreach (var constraint in relationship.Relationship.Constraints)
+                {
+                    var otherEndConfiguration = _builder.GetEntityByType(relationship.OtherEnd.Type);
+                    var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName);
+                    if (constraintProperty != null)
+                    {
+                        constraintProperty.Kind = PropertyKind.RelationshipKey;
+                        constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.PropertyName);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var relationshipMatch in AllRelationships())
+                {
+                    foreach (var constraint in relationshipMatch.Relationship.Constraints)
+                    {
+                        if (constraint.SourceKeyProperty.PropertyName == definition.Name)
+                        {
+                            definition.Kind = PropertyKind.RelationshipKey;
+                            definition.Relationship = relationshipMatch;
+                        }
+                    }
+                }
             }
         }
     }

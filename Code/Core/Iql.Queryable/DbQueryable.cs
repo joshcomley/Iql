@@ -643,7 +643,7 @@ namespace Iql.Queryable
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (entityConfig.GetProperty(detail.Property.PropertyName).IsCollection)
+                    if (entityConfig.FindProperty(detail.Property.PropertyName).IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -658,7 +658,7 @@ namespace Iql.Queryable
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (!entityConfig.GetProperty(detail.Property.PropertyName).IsCollection)
+                    if (!entityConfig.FindProperty(detail.Property.PropertyName).IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }

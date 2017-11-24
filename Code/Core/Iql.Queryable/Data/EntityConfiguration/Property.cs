@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
+    [DebuggerDisplay("{Name} - {Kind}")]
     public class Property<TProperty> : PropertyBase
     {
         public Property(

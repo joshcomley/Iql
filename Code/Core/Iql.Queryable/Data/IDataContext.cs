@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
 {
@@ -23,6 +24,7 @@ namespace Iql.Queryable.Data
         IDbSet AsDbSetByType(Type entityType);
         DbSet<T, TKey> AsDbSet<T, TKey>() where T : class;
         bool IsIdMatch(object left, object right, Type type);
+        bool EntityHasKey(object left, Type type, CompositeKey key);
         Task<T> RefreshEntity<T>(T entity)
             where T : class
             ;

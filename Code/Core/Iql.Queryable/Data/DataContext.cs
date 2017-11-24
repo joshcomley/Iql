@@ -10,6 +10,7 @@ using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
 {
@@ -140,6 +141,26 @@ namespace Iql.Queryable.Data
             foreach (var id in configuration.Key.Properties)
             {
                 if (!Equals(left.GetPropertyValue(id.PropertyName), right.GetPropertyValue(id.PropertyName)))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
+
+        public bool EntityHasKey(object left, Type type, CompositeKey key)
+        {
+            var configuration = EntityConfigurationContext.GetEntityByType(type);
+            var isMatch = true;
+            foreach (var id in configuration.Key.Properties)
+            {
+                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.PropertyName);
+                if (compositeKeyValue == null)
+                {
+                    return false;
+                }
+                if (!Equals(left.GetPropertyValue(id.PropertyName), compositeKeyValue.Value))
                 {
                     isMatch = false;
                     break;

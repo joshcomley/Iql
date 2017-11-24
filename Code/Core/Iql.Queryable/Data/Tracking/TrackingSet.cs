@@ -7,6 +7,7 @@ using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -27,9 +28,9 @@ namespace Iql.Queryable.Data.Tracking
         private IDataContext DataContext { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
 
-        List<IEntityCrudOperationBase> ITrackingSet.GetChangesInternal(bool reset = false)
+        List<IUpdateEntityOperation> ITrackingSet.GetChangesInternal(bool reset = false)
         {
-            return GetChangesInternal(reset).Cast<IEntityCrudOperationBase>().ToList();
+            return GetChangesInternal(reset).Cast<IUpdateEntityOperation>().ToList();
         }
 
         public void Reset()
@@ -162,6 +163,18 @@ namespace Iql.Queryable.Data.Tracking
             if (trackedEntity != null && _trackedEntityClones.ContainsKey(trackedEntity.Entity))
             {
                 return _trackedEntityClones[trackedEntity.Entity];
+            }
+            return null;
+        }
+
+        public virtual TrackedEntity<T> FindTrackedEntityByKey(CompositeKey key)
+        {
+            foreach (var entity in Set)
+            {
+                if (DataContext.EntityHasKey(entity, typeof(T), key))
+                {
+                    return FindTrackedEntity(entity);
+                }
             }
             return null;
         }
@@ -317,6 +330,11 @@ namespace Iql.Queryable.Data.Tracking
             return FindTrackedEntity((T)entity);
         }
 
+        ITrackedEntity ITrackingSet.FindTrackedEntityByKey(CompositeKey key)
+        {
+            return FindTrackedEntityByKey(key);
+        }
+
         public List<UpdateEntityOperation<T>> GetChangesInternal(bool reset = false)
         {
             var updates = new List<UpdateEntityOperation<T>>();
@@ -345,24 +363,82 @@ namespace Iql.Queryable.Data.Tracking
             var changedProperties = new List<PropertyChange>();
             foreach (var property in EntityConfiguration.Properties)
             {
-                var relationship = EntityConfiguration.FindRelationship(property.Name);
-                var oldValue = entity.GetPropertyValue(property.Name);
-                var newValue = clone.GetPropertyValue(property.Name);
-                if (new[] { oldValue, newValue }.Count(x => x == null) == 1)
+                var oldValue = clone.GetPropertyValue(property.Name);
+                var newValue = entity.GetPropertyValue(property.Name);
+                var hasChanged = false;
+                var nullCount = new[] {oldValue, newValue}.Count(x => x == null);
+                if (nullCount == 1)
                 {
-                    var propertyChange = new PropertyChange(property, relationship);
+                    hasChanged = true;
+                }
+                else if(nullCount == 0)
+                {
+                    switch (property.Kind)
+                    {
+                        case PropertyKind.Primitive:
+                        case PropertyKind.RelationshipKey:
+                            if (!Equals(oldValue, newValue))
+                            {
+                                hasChanged = true;
+                            }
+                            break;
+                        case PropertyKind.Relationship:
+                            if (!property.IsCollection)
+                            {
+                                if (DataContext.IsIdMatch(oldValue, newValue, property.Relationship.ThisEnd.Type))
+                                {
+
+                                }
+                            }
+                            break;
+                    }
+                }
+                if (hasChanged)
+                {
+                    var propertyChange = new PropertyChange(property, oldValue, newValue);
                     changedProperties.Add(propertyChange);
                 }
             }
+
+            foreach (var change in changedProperties)
+            {
+                // If we changed the key, check if we've changed the relationship property
+                // If we haven't, then the key change should propogate to the relationship property
+                // If we have, then the key of the realtionship property should match this
+                switch (change.Property.Kind)
+                {
+                    case PropertyKind.RelationshipKey:
+                        var relationshipPropertyName = change.Property.Relationship.ThisEnd.Property.PropertyName;
+                        var relationshipChange = changedProperties.SingleOrDefault(p =>
+                            p.Property.Name == relationshipPropertyName);
+                        if (relationshipChange == null)
+                        {
+                            var compositeKey = new CompositeKey();
+                            foreach (var constraint in change.Property.Relationship.Relationship.Constraints)
+                            {
+                                compositeKey.Keys.Add(new KeyValue(constraint.TargetKeyProperty.PropertyName, entity.GetPropertyValue(constraint.SourceKeyProperty.PropertyName)));
+                            }
+                            var relatedTrackedEntity = TrackingSetCollection.TrackingSet(change.Property.Relationship.OtherEnd.Type)
+                                .FindTrackedEntityByKey(compositeKey);
+                            entity.SetPropertyValue(relationshipPropertyName, relatedTrackedEntity?.Entity);
+                        }
+                        if (relationshipChange != null)
+                        {
+                            
+                        }
+                        break;
+                }
+            }
+
+            EnsureIntegrity(entity);
             if (changedProperties.Any())
             {
                 return new EntityState(entity, entityType, changedProperties);
             }
-            //Sanitize(entity);
             return null;
         }
 
-        private void Sanitize(object entity)
+        private void EnsureIntegrity(object entity)
         {
             /* Iterate through the relationships
              * Log the parent for each child, ensuring local integrity check
@@ -391,7 +467,10 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         foreach (var child in values)
                         {
-                            TrackingSetCollection.Track(child, relationship.OtherEnd.Type);
+                            if (!TrackingSetCollection.IsTracked(child, relationship.OtherEnd.Type))
+                            {
+                                TrackingSetCollection.Track(child, relationship.OtherEnd.Type);
+                            }
                             TrackingSetCollection.RecordParent(child, entity, relationship.ThisEnd.Property.PropertyName);
                         }
                     }

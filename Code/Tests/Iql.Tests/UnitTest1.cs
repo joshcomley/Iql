@@ -331,6 +331,7 @@ namespace Iql.Tests
             item1Client.TypeId = clientTypes.clientType2.Clients[0].Id;
             // Trigger sanitisation
             var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(item1Client.Type, clientTypes.clientType1);
             Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
             Assert.IsTrue(clientTypes.clientType2.Clients.Contains(item1Client));
         }

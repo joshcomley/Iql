@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -57,9 +58,10 @@ namespace Iql.Queryable.Data.Tracking
         Type EntityType { get; }
         void Track(object entity);
         void Merge(IList data);
-        List<IEntityCrudOperationBase> GetChangesInternal(bool reset = false);
+        List<IUpdateEntityOperation> GetChangesInternal(bool reset = false);
         void Reset();
         object FindClone(object entity);
         ITrackedEntity FindTrackedEntity(object entity);
+        ITrackedEntity FindTrackedEntityByKey(CompositeKey key);
     }
 }

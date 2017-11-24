@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -19,10 +20,10 @@ namespace Iql.Queryable.Data.Tracking
         public List<ITrackingSet> Sets { get; set; }
         private IDataContext DataContext { get; }
 
-        public List<IEntityCrudOperationBase> GetChanges(bool reset = false)
+        public List<IUpdateEntityOperation> GetChanges(bool reset = false)
         {
             ClearParents();
-            var changes = new List<IEntityCrudOperationBase>();
+            var changes = new Dictionary<Type, List<IUpdateEntityOperation>>();
             var setsChecked = new List<ITrackingSet>();
 
             while (true)
@@ -32,7 +33,11 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     if (!setsChecked.Contains(set))
                     {
-                        changes.AddRange(set.GetChangesInternal());
+                        if (!changes.ContainsKey(set.EntityType))
+                        {
+                            changes.Add(set.EntityType, new List<IUpdateEntityOperation>());
+                        }
+                        changes[set.EntityType].AddRange(set.GetChangesInternal());
                         setsChecked.Add(set);
                     }
                 }
@@ -41,7 +46,23 @@ namespace Iql.Queryable.Data.Tracking
                     break;
                 }
             }
-            return changes;
+            var allChanges = new List<IUpdateEntityOperation>();
+            // At this point we must sanitise the changes
+            foreach (var type in changes)
+            {
+                allChanges.AddRange(changes[type.Key]);
+                foreach (var change in type.Value)
+                {
+                    var relationshipChanges =
+                        change.EntityState.ChangedProperties.Where(p => p.Property.Kind == PropertyKind.Relationship)
+                            .ToList();
+                    var relationshipKeyChanges =
+                        change.EntityState.ChangedProperties.Where(p => p.Property.Kind == PropertyKind.RelationshipKey)
+                            .ToList();
+                    int a = 0;
+                }
+            }
+            return allChanges;
         }
 
         public TrackingSet<T> GetSet<T>() where T : class
@@ -54,6 +75,13 @@ namespace Iql.Queryable.Data.Tracking
                 Sets.Add(set);
             }
             return SetsMap[type.Name] as TrackingSet<T>;
+        }
+
+        public bool IsTracked(object entity, Type entityType)
+        {
+            var set = TrackingSet(entityType);
+            var trackedEntity = set.FindTrackedEntity(entity);
+            return trackedEntity != null && trackedEntity.Entity == entity;
         }
 
         public void Track(object entity, Type entityType)

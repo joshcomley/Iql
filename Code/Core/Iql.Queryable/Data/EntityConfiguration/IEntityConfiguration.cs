@@ -10,7 +10,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         List<IProperty> Properties { get; }
         IEntityKey Key { get; }
         Type Type { get; }
-        IProperty GetProperty(string name);
+        IProperty FindProperty(string name);
         RelationshipMatch FindRelationship(string propertyName);
         List<RelationshipMatch> AllRelationships();
     }

@@ -1,6 +1,6 @@
 namespace Iql.Queryable.Data.Crud.Operations
 {
-    public class UpdateEntityOperation<T> : EntityCrudOperation<T>
+    public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation
     {
         public EntityState EntityState { get; }
 

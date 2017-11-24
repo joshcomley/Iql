@@ -156,7 +156,7 @@ namespace Iql.Queryable
             var sourceEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
                 typeConstructor
             );
-            var relationshipEntityType = sourceEntityConfiguration.GetProperty(propertyToExpand.PropertyName).Type;
+            var relationshipEntityType = sourceEntityConfiguration.FindProperty(propertyToExpand.PropertyName).Type;
             var relatedEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
                 relationshipEntityType
             );
