@@ -10,7 +10,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Type declaringType,
             string convertedFromType,
             bool readOnly,
-            IProperty countRelationship) : base(name, typeof(TProperty), isCollection, declaringType, convertedFromType, readOnly, countRelationship)
+            IProperty countRelationship) : base(
+                name, 
+                typeof(TProperty), 
+                isCollection, 
+                declaringType, 
+                convertedFromType, 
+                readOnly, 
+                countRelationship)
         {
         }
     }

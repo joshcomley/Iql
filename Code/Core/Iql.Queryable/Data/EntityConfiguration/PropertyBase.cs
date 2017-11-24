@@ -4,6 +4,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class PropertyBase : IProperty
     {
+        public PropertyKind Kind { get; }
         public IProperty CountRelationship { get; }
         public bool ReadOnly { get; }
         public string Name { get; }
@@ -12,7 +13,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public Type DeclaringType { get; }
         public string ConvertedFromType { get; }
 
-        public PropertyBase(string name, Type type, bool isCollection, Type declaringType, string convertedFromType, bool readOnly, IProperty countRelationship)
+        public PropertyBase(
+            string name, 
+            Type type, 
+            bool isCollection,
+            Type declaringType, 
+            string convertedFromType, 
+            bool readOnly, 
+            IProperty countRelationship
+            )
         {
             Name = name;
             Type = type;

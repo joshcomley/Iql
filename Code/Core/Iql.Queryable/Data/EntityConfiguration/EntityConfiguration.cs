@@ -125,7 +125,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        private Property<TProperty> MapProperty<TProperty, TValueType>(Expression<Func<T, TValueType>> property, bool isCollection, bool readOnly, IProperty countRelationship)
+        private Property<TProperty> MapProperty<TProperty, TValueType>(
+            Expression<Func<T, TValueType>> property, 
+            bool isCollection, 
+            bool readOnly, 
+            IProperty countRelationship)
         {
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;

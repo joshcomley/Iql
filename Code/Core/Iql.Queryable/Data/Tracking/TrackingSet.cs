@@ -326,10 +326,10 @@ namespace Iql.Queryable.Data.Tracking
                 var clone = FindClone(entity);
                 if (clone != null)
                 {
-                    var changedProperties = GetChangedProperties(entity, clone, typeof(T));
-                    if (changedProperties.Any())
+                    var entityState = GetEntityState(entity, clone, typeof(T));
+                    if (entityState != null)
                     {
-                        updates.Add(new UpdateEntityOperation<T>(entity, DataContext, changedProperties.ToArray()));
+                        updates.Add(new UpdateEntityOperation<T>(entity, DataContext, entityState));
                     }
                 }
             });
@@ -340,10 +340,26 @@ namespace Iql.Queryable.Data.Tracking
             return updates;
         }
 
-        private List<PropertyChange> GetChangedProperties(object entity, object clone, Type entityType)
+        private EntityState GetEntityState(object entity, object clone, Type entityType)
         {
-            Sanitize(entity);
-            return new List<PropertyChange>();
+            var changedProperties = new List<PropertyChange>();
+            foreach (var property in EntityConfiguration.Properties)
+            {
+                var relationship = EntityConfiguration.FindRelationship(property.Name);
+                var oldValue = entity.GetPropertyValue(property.Name);
+                var newValue = clone.GetPropertyValue(property.Name);
+                if (new[] { oldValue, newValue }.Count(x => x == null) == 1)
+                {
+                    var propertyChange = new PropertyChange(property, relationship);
+                    changedProperties.Add(propertyChange);
+                }
+            }
+            if (changedProperties.Any())
+            {
+                return new EntityState(entity, entityType, changedProperties);
+            }
+            //Sanitize(entity);
+            return null;
         }
 
         private void Sanitize(object entity)
@@ -388,93 +404,93 @@ namespace Iql.Queryable.Data.Tracking
         {
         }
 
-        private List<PropertyChange> GetChangedPropertiesOld(object entity, object clone)
-        {
-            var changedProperties = new List<PropertyChange>();
-            var entityDefinition = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            var properties = entityDefinition.Properties;
-            for (var i = 0; i < properties.Count; i++)
-            {
-                var property = properties[i];
-                var propertyChange = new PropertyChange(property);
-                var entityValue = entity.GetPropertyValue(property.Name);
-                var cloneValue = clone.GetPropertyValue(property.Name);
-                var entityHasChanged = false;
-                if (entityValue == null && cloneValue == null)
-                {
-                    continue;
-                }
-                if (new[] { entityValue, cloneValue }.Count(e => e == null) == 1)
-                {
-                    entityHasChanged = true;
-                }
-                else if (entityValue is IEnumerable && !(entityValue is string))
-                {
-                    var entityValueEnumerable = (entityValue as IEnumerable).Cast<object>().ToArray();
-                    var cloneValueEnumerable = (cloneValue as IEnumerable).Cast<object>().ToArray();
-                    for (var valueIndex = 0; valueIndex < entityValueEnumerable.Length; valueIndex++)
-                    {
-                        var entityValueAtIndex = entityValueEnumerable[valueIndex];
-                        var cloneValueAtIndex = TrackingSetCollection.FindClone(entityValueAtIndex);
-                        if (cloneValueAtIndex == null)
-                        {
-                            propertyChange.EnumerableChangedProperties.Add(valueIndex, new List<PropertyChange>());
-                            entityHasChanged = true;
-                            continue;
-                        }
-                        if (entityValueAtIndex is string || !entityValueAtIndex.GetType().IsClass)
-                        {
-                            if (Equals(entityValueAtIndex, cloneValueAtIndex))
-                            {
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            var nullCount = new[] { entityValueAtIndex, cloneValueAtIndex }
-                                .Count(x => x == null);
-                            if (nullCount == 1)
-                            {
-                                entityHasChanged = true;
-                                break;
-                            }
-                            var changedChildProperties = GetChangedProperties(entityValueAtIndex, cloneValueAtIndex, property.Type);
-                            if (!changedChildProperties.Any())
-                            {
-                                continue;
-                            }
-                            propertyChange.EnumerableChangedProperties.Add(valueIndex, changedChildProperties);
-                        }
-                        entityHasChanged = true;
-                    }
-                    if (entityValueEnumerable.Length != cloneValueEnumerable.Length)
-                    {
-                        entityHasChanged = true;
-                    }
-                }
-                else
-                {
-                    if (entityValue.GetType().IsClass && !(entityValue is string))
-                    {
-                        var propertyChanges = GetChangedProperties(entityValue, cloneValue, property.Type);
-                        if (propertyChanges.Any())
-                        {
-                            propertyChange.ChildChangedProperties.AddRange(propertyChanges);
-                            entityHasChanged = true;
-                        }
-                    }
-                    else if (!Equals(entityValue, cloneValue))
-                    {
-                        entityHasChanged = true;
-                    }
-                }
-                if (!entityHasChanged)
-                {
-                    continue;
-                }
-                changedProperties.Add(propertyChange);
-            }
-            return changedProperties;
-        }
+        //private List<PropertyChange> GetChangedPropertiesOld(object entity, object clone)
+        //{
+        //    var changedProperties = new List<PropertyChange>();
+        //    var entityDefinition = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+        //    var properties = entityDefinition.Properties;
+        //    for (var i = 0; i < properties.Count; i++)
+        //    {
+        //        var property = properties[i];
+        //        var propertyChange = new PropertyChange(property);
+        //        var entityValue = entity.GetPropertyValue(property.Name);
+        //        var cloneValue = clone.GetPropertyValue(property.Name);
+        //        var entityHasChanged = false;
+        //        if (entityValue == null && cloneValue == null)
+        //        {
+        //            continue;
+        //        }
+        //        if (new[] { entityValue, cloneValue }.Count(e => e == null) == 1)
+        //        {
+        //            entityHasChanged = true;
+        //        }
+        //        else if (entityValue is IEnumerable && !(entityValue is string))
+        //        {
+        //            var entityValueEnumerable = (entityValue as IEnumerable).Cast<object>().ToArray();
+        //            var cloneValueEnumerable = (cloneValue as IEnumerable).Cast<object>().ToArray();
+        //            for (var valueIndex = 0; valueIndex < entityValueEnumerable.Length; valueIndex++)
+        //            {
+        //                var entityValueAtIndex = entityValueEnumerable[valueIndex];
+        //                var cloneValueAtIndex = TrackingSetCollection.FindClone(entityValueAtIndex);
+        //                if (cloneValueAtIndex == null)
+        //                {
+        //                    propertyChange.EnumerableChangedProperties.Add(valueIndex, new List<PropertyChange>());
+        //                    entityHasChanged = true;
+        //                    continue;
+        //                }
+        //                if (entityValueAtIndex is string || !entityValueAtIndex.GetType().IsClass)
+        //                {
+        //                    if (Equals(entityValueAtIndex, cloneValueAtIndex))
+        //                    {
+        //                        continue;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    var nullCount = new[] { entityValueAtIndex, cloneValueAtIndex }
+        //                        .Count(x => x == null);
+        //                    if (nullCount == 1)
+        //                    {
+        //                        entityHasChanged = true;
+        //                        break;
+        //                    }
+        //                    var changedChildProperties = GetChangedProperties(entityValueAtIndex, cloneValueAtIndex, property.Type);
+        //                    if (!changedChildProperties.Any())
+        //                    {
+        //                        continue;
+        //                    }
+        //                    propertyChange.EnumerableChangedProperties.Add(valueIndex, changedChildProperties);
+        //                }
+        //                entityHasChanged = true;
+        //            }
+        //            if (entityValueEnumerable.Length != cloneValueEnumerable.Length)
+        //            {
+        //                entityHasChanged = true;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (entityValue.GetType().IsClass && !(entityValue is string))
+        //            {
+        //                var propertyChanges = GetChangedProperties(entityValue, cloneValue, property.Type);
+        //                if (propertyChanges.Any())
+        //                {
+        //                    propertyChange.ChildChangedProperties.AddRange(propertyChanges);
+        //                    entityHasChanged = true;
+        //                }
+        //            }
+        //            else if (!Equals(entityValue, cloneValue))
+        //            {
+        //                entityHasChanged = true;
+        //            }
+        //        }
+        //        if (!entityHasChanged)
+        //        {
+        //            continue;
+        //        }
+        //        changedProperties.Add(propertyChange);
+        //    }
+        //    return changedProperties;
+        //}
     }
 }

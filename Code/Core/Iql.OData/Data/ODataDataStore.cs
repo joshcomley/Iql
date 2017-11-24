@@ -162,7 +162,7 @@ namespace Iql.OData.Data
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var properties = new List<string>();
-            foreach (var property in operation.Operation.ChangedProperties)
+            foreach (var property in operation.Operation.EntityState.ChangedProperties)
             {
                 properties.Add(property.Property.Name);
             }
@@ -173,7 +173,7 @@ namespace Iql.OData.Data
             var json = JsonSerializer.Serialize(
                 operation.Operation.Entity,
                 DataContext,
-                operation.Operation.ChangedProperties.ToArray());
+                operation.Operation.EntityState.ChangedProperties.ToArray());
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = httpResult.Success;

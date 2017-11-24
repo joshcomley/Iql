@@ -4,6 +4,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IProperty
     {
+        PropertyKind Kind { get; }
         IProperty CountRelationship { get; }
         bool ReadOnly { get; }
         string Name { get; }

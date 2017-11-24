@@ -102,8 +102,8 @@ namespace Iql.Tests
             Assert.AreEqual(QueuedOperationType.Update, change.Type);
             var updateOperation = change as QueuedUpdateEntityOperation<ClientType>;
             Assert.IsNotNull(updateOperation);
-            Assert.AreEqual(1, updateOperation.Operation.ChangedProperties.Length);
-            var property = updateOperation.Operation.ChangedProperties[0];
+            Assert.AreEqual(1, updateOperation.Operation.EntityState.ChangedProperties.Count);
+            var property = updateOperation.Operation.EntityState.ChangedProperties[0];
             Assert.AreEqual(nameof(ClientType.Name), property.Property.Name);
             Assert.AreEqual(0, property.ChildChangedProperties.Count);
             Assert.AreEqual(0, property.EnumerableChangedProperties.Count);
@@ -187,7 +187,19 @@ namespace Iql.Tests
             var errorThrown = false;
             try
             {
+                // Just getting the changes alone should trigger the error
                 changes = Db.DataStore.GetChanges().ToList();
+            }
+            catch (DuplicateParentException e)
+            {
+                errorThrown = true;
+            }
+            Assert.IsTrue(errorThrown, "No error thrown for having a child entity belonging to multiple one-to-many collections.");
+            errorThrown = false;
+            try
+            {
+                // Attempting to save changes should also trigger the error
+                await Db.SaveChanges();
             }
             catch (DuplicateParentException e)
             {
@@ -211,43 +223,32 @@ namespace Iql.Tests
         }
 
         [TestMethod]
-        public async Task AnotherTest()
+        public async Task FetchingEntitiesWithANewDataContextShouldReturnDifferentObjectsThatWereInserted()
         {
-            // Create two new client types
-            Db.ClientTypes.Add(new ClientType
-            {
-                Id = 2,
-                Name = "Something else",
-                Clients = new List<Client>(new[]
-                {
-                    new Client {Id = 1, Name = "Client 1"}
-                })
-            });
-            Db.ClientTypes.Add(new ClientType
-            {
-                Id = 3,
-                Name = "Another",
-                Clients = new List<Client>(new[]
-                {
-                    new Client {Id = 2, Name = "Client 2"}
-                })
-            });
+            var clientTypes = AddClientTypes();
             await Db.SaveChanges();
             Db = new AppDbContext();
             var entity1 = await Db.ClientTypes.WithKey(2);
             var entity2 = await Db.ClientTypes.WithKey(3);
-            // Assign two existing clients to the first client type
-            entity1.Clients.Add(new Client { Id = 3, Name = "Client 1 b" });
-            entity1.Clients.Add(new Client { Id = 4, Name = "Client 1 c" });
-            var changes = Db.DataStore.GetChanges().ToList();
-
+            Assert.AreNotEqual(entity1, clientTypes.clientType1);
+            Assert.AreNotEqual(entity2, clientTypes.clientType2);
         }
 
         [TestMethod]
-        public async Task AddingAnEntityWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
+        public async Task FetchingEntitiesWithTheSameDataContextShouldReturnTheSameObjectsThatWereInserted()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var entity1 = await Db.ClientTypes.WithKey(2);
+            var entity2 = await Db.ClientTypes.WithKey(3);
+            Assert.AreEqual(entity1, clientTypes.clientType1);
+            Assert.AreEqual(entity2, clientTypes.clientType2);
+        }
+
+        private static (ClientType clientType1, ClientType clientType2) AddClientTypes()
         {
             // Create two new client types
-            Db.ClientTypes.Add(new ClientType
+            var clientType1 = new ClientType
             {
                 Id = 2,
                 Name = "Something else",
@@ -255,8 +256,9 @@ namespace Iql.Tests
                 {
                     new Client {Id = 1, Name = "Client 1"}
                 })
-            });
-            Db.ClientTypes.Add(new ClientType
+            };
+            Db.ClientTypes.Add(clientType1);
+            var clientType2 = new ClientType
             {
                 Id = 3,
                 Name = "Another",
@@ -264,7 +266,15 @@ namespace Iql.Tests
                 {
                     new Client {Id = 2, Name = "Client 2"}
                 })
-            });
+            };
+            Db.ClientTypes.Add(clientType2);
+            return (clientType1, clientType2);
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithAnAttachedEntityWithWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
+        {
+            AddClientTypes();
             await Db.SaveChanges();
             var exceptionThrown = false;
             try
@@ -279,27 +289,9 @@ namespace Iql.Tests
         }
 
         [TestMethod]
-        public async Task AddingAnEntityWithANewKeyShouldNotThrowException()
+        public async Task AddingAnEntityWithAnAttachedEntityWithANewKeyShouldNotThrowException()
         {
-            // Create two new client types
-            Db.ClientTypes.Add(new ClientType
-            {
-                Id = 2,
-                Name = "Something else",
-                Clients = new List<Client>(new[]
-                {
-                    new Client {Id = 1, Name = "Client 1"}
-                })
-            });
-            Db.ClientTypes.Add(new ClientType
-            {
-                Id = 3,
-                Name = "Another",
-                Clients = new List<Client>(new[]
-                {
-                    new Client {Id = 2, Name = "Client 2"}
-                })
-            });
+            AddClientTypes();
             await Db.SaveChanges();
             var exceptionThrown = false;
             try
@@ -311,6 +303,36 @@ namespace Iql.Tests
                 exceptionThrown = true;
             }
             Assert.IsFalse(exceptionThrown);
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithAnAttachedEntityWithWithNoKeyKeyShouldNotThrowException()
+        {
+            AddClientTypes();
+            await Db.SaveChanges();
+            var exceptionThrown = false;
+            try
+            {
+                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Name = "This should not cause an error" } });
+            }
+            catch (EntityAlreadyTrackedException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsFalse(exceptionThrown);
+        }
+
+        [TestMethod]
+        public async Task ChangingAChildObjectsParentIdShouldSanitiseTheParentObjectConnection()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var item1Client = clientTypes.clientType1.Clients[0];
+            item1Client.TypeId = clientTypes.clientType2.Clients[0].Id;
+            // Trigger sanitisation
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
+            Assert.IsTrue(clientTypes.clientType2.Clients.Contains(item1Client));
         }
     }
 }

@@ -2,12 +2,12 @@ namespace Iql.Queryable.Data.Crud.Operations
 {
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>
     {
-        public PropertyChange[] ChangedProperties { get; }
+        public EntityState EntityState { get; }
 
-        public UpdateEntityOperation(T entity, IDataContext dataContext, params PropertyChange[] changedProperties)
+        public UpdateEntityOperation(T entity, IDataContext dataContext, EntityState entityState = null)
             : base(OperationType.Update, entity, dataContext)
         {
-            ChangedProperties = changedProperties;
+            EntityState = entityState;
         }
     }
 }
