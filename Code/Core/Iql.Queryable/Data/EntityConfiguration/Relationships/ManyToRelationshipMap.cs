@@ -44,6 +44,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
+            _sourceEntityConfiguration.TryAssignRelationshipToPropertyDefinition(relationship.Target.Property.PropertyName);
             return relationship;
         }
     }

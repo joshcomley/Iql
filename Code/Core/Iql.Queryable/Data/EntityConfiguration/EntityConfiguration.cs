@@ -99,9 +99,18 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
-            Properties.Add(definition);
-            _propertiesMap[name] = definition;
+            var definition = GetProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
+            if (!Properties.Contains(definition))
+            {
+                Properties.Add(definition);
+                _propertiesMap[name] = definition;
+            }
+            var relationship = FindRelationship(name);
+            if (relationship != null)
+            {
+                definition.Kind = PropertyKind.Relationship;
+                definition.Relationship = relationship;
+            }
             return this;
         }
 
@@ -120,23 +129,39 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var collection = MapProperty<TProperty, IEnumerable<TProperty>>(property, true, false, null);
             if (countProperty != null)
             {
-                MapProperty<long?, long?>(countProperty, false, true, collection);
+                var countDefinition = MapProperty<long?, long?>(countProperty, false, true, collection);
+                countDefinition.Kind = PropertyKind.Count;
+            }
+            var relationship = FindRelationship(collection.Name);
+            if (relationship != null)
+            {
+                collection.Kind = PropertyKind.Relationship;
+                collection.Relationship = relationship;
             }
             return this;
         }
 
         private Property<TProperty> MapProperty<TProperty, TValueType>(
-            Expression<Func<T, TValueType>> property, 
-            bool isCollection, 
-            bool readOnly, 
+            Expression<Func<T, TValueType>> property,
+            bool isCollection,
+            bool readOnly,
             IProperty countRelationship)
         {
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = new Property<TProperty>(name, isCollection, typeof(T), null, readOnly, countRelationship);
-            Properties.Add(definition);
-            _propertiesMap[name] = definition;
+            var definition = GetProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, isCollection, typeof(T), null, readOnly, countRelationship);
+            if (!Properties.Contains(definition))
+            {
+                Properties.Add(definition);
+                _propertiesMap[name] = definition;
+            }
+            var relationship = FindRelationship(name);
+            if (relationship != null)
+            {
+                definition.Kind = PropertyKind.Relationship;
+                definition.Relationship = relationship;
+            }
             return definition;
         }
 
@@ -160,6 +185,17 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 _builder.DefineEntity<TTarget>(),
                 RelationshipMapType.Many,
                 property);
+        }
+
+        internal void TryAssignRelationshipToPropertyDefinition(string propertyName)
+        {
+            var propertyDefinition = GetProperty(propertyName);
+            if (propertyDefinition != null)
+            {
+                propertyDefinition.Relationship =
+                    FindRelationship(propertyName);
+                propertyDefinition.Kind = PropertyKind.Relationship;
+            }
         }
     }
 }

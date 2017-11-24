@@ -4,7 +4,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class PropertyBase : IProperty
     {
-        public PropertyKind Kind { get; }
+        public RelationshipMatch Relationship { get; set; }
+        public PropertyKind Kind { get; set; }
         public IProperty CountRelationship { get; }
         public bool ReadOnly { get; }
         public string Name { get; }
