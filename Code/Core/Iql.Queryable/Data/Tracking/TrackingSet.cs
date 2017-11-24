@@ -411,20 +411,24 @@ namespace Iql.Queryable.Data.Tracking
                         var relationshipPropertyName = change.Property.Relationship.ThisEnd.Property.PropertyName;
                         var relationshipChange = changedProperties.SingleOrDefault(p =>
                             p.Property.Name == relationshipPropertyName);
+                        var compositeKey = new CompositeKey();
+                        foreach (var constraint in change.Property.Relationship.Relationship.Constraints)
+                        {
+                            compositeKey.Keys.Add(new KeyValue(constraint.TargetKeyProperty.PropertyName, entity.GetPropertyValue(constraint.SourceKeyProperty.PropertyName)));
+                        }
                         if (relationshipChange == null)
                         {
-                            var compositeKey = new CompositeKey();
-                            foreach (var constraint in change.Property.Relationship.Relationship.Constraints)
-                            {
-                                compositeKey.Keys.Add(new KeyValue(constraint.TargetKeyProperty.PropertyName, entity.GetPropertyValue(constraint.SourceKeyProperty.PropertyName)));
-                            }
                             var relatedTrackedEntity = TrackingSetCollection.TrackingSet(change.Property.Relationship.OtherEnd.Type)
                                 .FindTrackedEntityByKey(compositeKey);
                             entity.SetPropertyValue(relationshipPropertyName, relatedTrackedEntity?.Entity);
                         }
-                        if (relationshipChange != null)
+                        else if(relationshipChange.NewValue != null)
                         {
-                            
+                            if (!DataContext.EntityHasKey(relationshipChange.NewValue,
+                                relationshipChange.Property.Relationship.OtherEnd.Type, compositeKey))
+                            {
+                                throw new InconsistentRelationshipAssignmentException();
+                            }
                         }
                         break;
                 }

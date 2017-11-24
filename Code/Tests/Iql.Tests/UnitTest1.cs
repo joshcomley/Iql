@@ -328,12 +328,36 @@ namespace Iql.Tests
             var clientTypes = AddClientTypes();
             await Db.SaveChanges();
             var item1Client = clientTypes.clientType1.Clients[0];
-            item1Client.TypeId = clientTypes.clientType2.Clients[0].Id;
+            item1Client.TypeId = clientTypes.clientType2.Id;
             // Trigger sanitisation
             var changes = Db.DataStore.GetChanges().ToList();
-            Assert.AreEqual(item1Client.Type, clientTypes.clientType1);
+            Assert.AreEqual(item1Client.Type, clientTypes.clientType2);
             Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
             Assert.IsTrue(clientTypes.clientType2.Clients.Contains(item1Client));
+        }
+
+        [TestMethod]
+        public async Task ChangingBothARelationshipAndARelationshipKeyShouldThrowAnErrorIfNotConsistent()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var item1Client = clientTypes.clientType1.Clients[0];
+            item1Client.TypeId = clientTypes.clientType2.Id;
+            item1Client.Type = new ClientType
+            {
+                Id = 5
+            };
+            // Trigger sanitisation
+            var exceptionThrown = false;
+            try
+            {
+                var changes = Db.DataStore.GetChanges().ToList();
+            }
+            catch (InconsistentRelationshipAssignmentException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsTrue(exceptionThrown);
         }
     }
 }

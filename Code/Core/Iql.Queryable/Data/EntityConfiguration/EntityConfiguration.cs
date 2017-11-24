@@ -9,7 +9,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
-    public class EntityConfiguration<T> : IEntityConfiguration where T : class
+    public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
         private readonly EntityConfigurationBuilder _builder;
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
@@ -177,31 +177,40 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 property);
         }
 
-        internal void TryAssignRelationshipToProperty(string propertyName)
+        internal override void TryAssignRelationshipToProperty(string propertyName, bool tryAssignOtherEnd = true)
         {
             var propertyDefinition = FindProperty(propertyName);
             if (propertyDefinition != null)
             {
-                TryAssignRelationshipToPropertyDefinition(propertyDefinition);
+                TryAssignRelationshipToPropertyDefinition(propertyDefinition, tryAssignOtherEnd);
             }
         }
 
-        internal void TryAssignRelationshipToPropertyDefinition(IProperty definition)
+        internal override void TryAssignRelationshipToPropertyDefinition(IProperty definition, bool tryAssignOtherEnd = true)
         {
+            if (definition.Name == "Type")
+            {
+                int a = 0;
+            }
             var relationship = FindRelationship(definition.Name);
             if (relationship != null)
             {
                 definition.Kind = PropertyKind.Relationship;
                 definition.Relationship = relationship;
+                var otherEndConfiguration = _builder.GetEntityByType(relationship.OtherEnd.Type);
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
-                    var otherEndConfiguration = _builder.GetEntityByType(relationship.OtherEnd.Type);
                     var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName);
                     if (constraintProperty != null)
                     {
                         constraintProperty.Kind = PropertyKind.RelationshipKey;
                         constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.PropertyName);
                     }
+                }
+                if (tryAssignOtherEnd)
+                {
+                    (otherEndConfiguration as EntityConfigurationBase)
+                        .TryAssignRelationshipToProperty(relationship.OtherEnd.Property.PropertyName, false);
                 }
             }
             else
