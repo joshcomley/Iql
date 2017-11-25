@@ -245,7 +245,20 @@ namespace Iql.Tests
             Assert.AreEqual(entity2, clientTypes.clientType2);
         }
 
-        private static (ClientType clientType1, ClientType clientType2) AddClientTypes()
+        class ClientTypes
+        {
+            public ClientType clientType1 { get; set; }
+            public ClientType clientType2 { get; set; }
+            public ClientType clientType3 { get; set; }
+
+            public ClientTypes(ClientType clientType1, ClientType clientType2, ClientType clientType3)
+            {
+                this.clientType1 = clientType1;
+                this.clientType2 = clientType2;
+                this.clientType3 = clientType3;
+            }
+        }
+        private static ClientTypes AddClientTypes()
         {
             // Create two new client types
             var clientType1 = new ClientType
@@ -268,7 +281,24 @@ namespace Iql.Tests
                 })
             };
             Db.ClientTypes.Add(clientType2);
-            return (clientType1, clientType2);
+            var clientType3 = new ClientType
+            {
+                Id = 41,
+                Name = "Another",
+                Clients = new List<Client>()
+            };
+            Db.ClientTypes.Add(clientType3);
+            return new ClientTypes(clientType1, clientType2, clientType3);
+        }
+
+        [TestMethod]
+        public async Task AttemptingToAddAnEntityThatAlreadyExistsShouldNotThrowAnException()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var addEntityResult = Db.ClientTypes.Add(clientTypes.clientType2);
+            await Db.SaveChanges();
+            Assert.IsNull(addEntityResult);
         }
 
         [TestMethod]
@@ -323,17 +353,32 @@ namespace Iql.Tests
         }
 
         [TestMethod]
-        public async Task ChangingAChildObjectsParentIdShouldSanitiseTheParentObjectConnection()
+        public async Task ChangingAChildObjectsParentIdForOneToManyShouldSanitiseTheParentObjectsCollection()
         {
             var clientTypes = AddClientTypes();
             await Db.SaveChanges();
-            var item1Client = clientTypes.clientType1.Clients[0];
-            item1Client.TypeId = clientTypes.clientType2.Id;
+            var type1Client = clientTypes.clientType1.Clients[0];
+            type1Client.TypeId = clientTypes.clientType2.Id;
             // Trigger sanitisation
             var changes = Db.DataStore.GetChanges().ToList();
-            Assert.AreEqual(item1Client.Type, clientTypes.clientType2);
+            Assert.AreEqual(type1Client.Type, clientTypes.clientType2);
             Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
-            Assert.IsTrue(clientTypes.clientType2.Clients.Contains(item1Client));
+            Assert.IsTrue(clientTypes.clientType2.Clients.Contains(type1Client));
+        }
+
+        [TestMethod]
+        public async Task TwoInconsistentChangesToChildCollectionsShouldThrowInconsistentChangeException()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var type1Client = clientTypes.clientType1.Clients[0];
+            type1Client.TypeId = clientTypes.clientType2.Id;
+            clientTypes.clientType3.Clients.Add(type1Client);
+            // Trigger sanitisation
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(type1Client.Type, clientTypes.clientType2);
+            Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
+            Assert.IsTrue(clientTypes.clientType2.Clients.Contains(type1Client));
         }
 
         [TestMethod]

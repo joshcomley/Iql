@@ -390,6 +390,10 @@ namespace Iql.Queryable.Data.Tracking
 
                                 }
                             }
+                            else
+                            {
+                                int a = 0;
+                            }
                             break;
                     }
                 }
@@ -475,6 +479,8 @@ namespace Iql.Queryable.Data.Tracking
                             {
                                 TrackingSetCollection.Track(child, relationship.OtherEnd.Type);
                             }
+                            // Check if the child's relationship keys
+                            var key = relationship.OtherEnd.GetCompositeKey(child);
                             TrackingSetCollection.RecordParent(child, entity, relationship.ThisEnd.Property.PropertyName);
                         }
                     }

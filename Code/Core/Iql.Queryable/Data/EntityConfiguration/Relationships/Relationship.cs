@@ -16,8 +16,8 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             //_configuration = configuration;
             Type = type;
             Constraints = new List<IRelationshipConstraint>();
-            Source = new RelationshipDetail<TSource, TSourceProperty>(configuration, sourceProperty);
-            Target = new RelationshipDetail<TTarget, TTargetProperty>(configuration, targetProperty);
+            Source = new RelationshipDetail<TSource, TSourceProperty>(this, RelationshipSide.Source, configuration, sourceProperty);
+            Target = new RelationshipDetail<TTarget, TTargetProperty>(this, RelationshipSide.Target, configuration, targetProperty);
         }
 
         public List<IRelationshipConstraint> Constraints { get; }
