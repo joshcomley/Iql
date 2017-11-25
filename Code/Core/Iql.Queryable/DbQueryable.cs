@@ -700,7 +700,8 @@ namespace Iql.Queryable
             var propertyName = DataContext.EntityConfigurationContext.GetEntity<T>().Key.Properties.First().PropertyName;
             compositeKey.Keys.Add(new KeyValue(
                 propertyName,
-                key
+                key,
+                DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).Type
             ));
             return compositeKey;
         }

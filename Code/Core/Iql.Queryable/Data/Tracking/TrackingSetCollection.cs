@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -44,6 +45,73 @@ namespace Iql.Queryable.Data.Tracking
                 if (Sets.Count == sets.Count)
                 {
                     break;
+                }
+            }
+            foreach (var set in Sets.ToList())
+            {
+                foreach (var entity in set.TrackedEntites())
+                {
+                    var relationships = set.FindTrackedEntity(entity).TrackedRelationships;
+                    foreach (var relationship in relationships)
+                    {
+                        var compositeKey = relationship.OwnerDetail.GetCompositeKey(relationship.Owner, true);
+                        if (!DataContext.EntityPropertiesMatch(
+                            relationship.Entity,
+                            compositeKey))
+                        {
+                            var entityKey = relationship.EntityDetail.GetCompositeKey(relationship.Entity);
+                            //var properties = new List<string>();
+                            //foreach (var constraint in relationship.OwnerDetail.Constraints())
+                            //{
+                            //    properties.Add(constraint.PropertyName);
+                            //}
+                            //properties.Add(relationship.OwnerDetail.Property.PropertyName);
+                            if (changes.ContainsKey(relationship.OwnerDetail.Type))
+                            {
+                                if (changes[relationship.OwnerDetail.Type].Any(c =>
+                                    c.EntityState.Entity == relationship.Entity &&
+                                    c.EntityState.ChangedProperties.Any(cp =>
+                                        cp.Property.Name == relationship.OwnerDetail.Property.PropertyName)))
+                                {
+                                    // This is a deliberate change
+                                    // Throw some error
+                                }
+                                else if(entityKey.Keys.All(k => !Equals(k.Value,Activator.CreateInstance(k.ValueType))))
+                                {
+                                    var value = relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property
+                                        .PropertyName);
+                                    if (relationship.OwnerDetail.IsCollection)
+                                    {
+                                        var collection = value as IList;
+                                        collection.Remove(relationship.Entity);
+                                    }
+                                    else
+                                    {
+                                        relationship.Owner.SetPropertyValue(relationship.OwnerDetail.Property
+                                            .PropertyName, null);
+                                    }
+                                }
+                            }
+                        }
+                        //var ownerProperty =
+                        //    relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property.PropertyName);
+                        //if (relationship.OwnerDetail.IsCollection)
+                        //{
+                        //    var collection = ownerProperty as IList;
+
+                        //}
+                    }
+                    /* - Run through each relationship
+                     * - Check integrity
+                     * - If OK
+                     *   - Do nothing
+                     * - Else
+                     *   - Check if this is a deliberate change from the user (i.e. we have a record of it in the changes above)
+                     *     - If it is deliberate
+                     *       - Throw integrity check error
+                     *     - If not
+                     *       - Correct integrity
+                     */
                 }
             }
             var allChanges = new List<IUpdateEntityOperation>();
@@ -96,7 +164,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public ITrackingSet TrackingSet(Type entityType)
         {
-            var set = (ITrackingSet) typeof(TrackingSetCollection).GetRuntimeMethods()
+            var set = (ITrackingSet)typeof(TrackingSetCollection).GetRuntimeMethods()
                 .First(m => m.Name == nameof(GetSet))
                 .MakeGenericMethod(entityType)
                 .Invoke(this, new object[]

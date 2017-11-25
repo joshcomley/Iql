@@ -149,6 +149,20 @@ namespace Iql.Queryable.Data
             return isMatch;
         }
 
+        public bool EntityPropertiesMatch(object left, CompositeKey compositeKey)
+        {
+            var isMatch = true;
+            foreach (var key in compositeKey.Keys)
+            {
+                if (!Equals(left.GetPropertyValue(key.Name), key.Value))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
+
         public bool EntityHasKey(object left, Type type, CompositeKey key)
         {
             var configuration = EntityConfigurationContext.GetEntityByType(type);

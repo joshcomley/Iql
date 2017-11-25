@@ -28,7 +28,10 @@ namespace Iql.Queryable.Extensions
             var compositeKey = new CompositeKey();
             compositeKey.Keys
                 .AddRange(
-                    keyDefinition.Properties.Select(kp => new KeyValue(kp.PropertyName, entity.GetPropertyValue(kp.PropertyName)))
+                    keyDefinition.Properties.Select(kp => new KeyValue(
+                        kp.PropertyName, 
+                        entity.GetPropertyValue(kp.PropertyName),
+                        configuration.FindProperty(kp.PropertyName).Type))
                 );
             var withKeyOperation = new WithKeyOperation(compositeKey);
             return withKeyOperation;

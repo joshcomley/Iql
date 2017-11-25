@@ -217,7 +217,7 @@ namespace Iql.OData.Data
             }
             var key = DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
             var compositeKeyProperties =
-                key.Properties.Select(p => new KeyValue(p.PropertyName, entity.GetPropertyValue(p.PropertyName)));
+                key.Properties.Select(p => new KeyValue(p.PropertyName, entity.GetPropertyValue(p.PropertyName), null));
             var compositeKey = new CompositeKey();
             compositeKey.Keys.AddRange(compositeKeyProperties);
             var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";

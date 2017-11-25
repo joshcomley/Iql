@@ -266,10 +266,10 @@ namespace Iql.Queryable.Data.Tracking
                                 }
                             }
                         }
-                        if (matchedEntity != null)
-                        {
-                            break;
-                        }
+//                        if (matchedEntity != null)
+//                       {
+ //                           break;
+ //                       }
                     }
                 }
             }
@@ -285,17 +285,16 @@ namespace Iql.Queryable.Data.Tracking
         {
             object match = null;
             var isMatch = true;
-            if (remoteItem == localEntity)
+            if (remoteItem != localEntity)
             {
-                return localEntity;
-            }
-            foreach (var keyProperty in sourceRelationship.Configuration.Key.Properties)
-            {
-                if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
-                    localEntity.GetPropertyValue(keyProperty.PropertyName)))
+                foreach (var keyProperty in sourceRelationship.Configuration.Key.Properties)
                 {
-                    isMatch = false;
-                    break;
+                    if (!Equals(remoteItem.GetPropertyValue(keyProperty.PropertyName),
+                        localEntity.GetPropertyValue(keyProperty.PropertyName)))
+                    {
+                        isMatch = false;
+                        break;
+                    }
                 }
             }
             if (isMatch)
@@ -418,12 +417,15 @@ namespace Iql.Queryable.Data.Tracking
                         var compositeKey = new CompositeKey();
                         foreach (var constraint in change.Property.Relationship.Relationship.Constraints)
                         {
-                            compositeKey.Keys.Add(new KeyValue(constraint.TargetKeyProperty.PropertyName, entity.GetPropertyValue(constraint.SourceKeyProperty.PropertyName)));
+                            compositeKey.Keys.Add(new KeyValue(
+                                constraint.TargetKeyProperty.PropertyName, 
+                                entity.GetPropertyValue(constraint.SourceKeyProperty.PropertyName),
+                                EntityConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName).Type));
                         }
+                        var relatedTrackedEntity = TrackingSetCollection.TrackingSet(change.Property.Relationship.OtherEnd.Type)
+                            .FindTrackedEntityByKey(compositeKey);
                         if (relationshipChange == null)
                         {
-                            var relatedTrackedEntity = TrackingSetCollection.TrackingSet(change.Property.Relationship.OtherEnd.Type)
-                                .FindTrackedEntityByKey(compositeKey);
                             entity.SetPropertyValue(relationshipPropertyName, relatedTrackedEntity?.Entity);
                         }
                         else if(relationshipChange.NewValue != null)
@@ -432,6 +434,18 @@ namespace Iql.Queryable.Data.Tracking
                                 relationshipChange.Property.Relationship.OtherEnd.Type, compositeKey))
                             {
                                 throw new InconsistentRelationshipAssignmentException();
+                            }
+                        }
+                        if (relatedTrackedEntity != null)
+                        {
+                            //var entityRelationships = FindTrackedEntity((T)entity).TrackedRelationships;
+                            var partnerPropertyName = change.Property.Relationship.OtherEnd.Property.PropertyName;
+                            var partnerType = change.Property.Relationship.ThisEnd.Type;
+                            var partnerCollection = relatedTrackedEntity.Entity.GetPropertyValue(partnerPropertyName) as IList;
+                            if (partnerCollection != null)
+                            {
+                                partnerCollection.Add(entity);
+                                //TrackingSetCollection.RecordParent(entity, relatedTrackedEntity.Entity, partnerPropertyName);
                             }
                         }
                         break;

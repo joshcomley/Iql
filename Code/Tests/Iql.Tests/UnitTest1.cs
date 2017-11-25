@@ -364,9 +364,11 @@ namespace Iql.Tests
             Assert.AreEqual(type1Client.Type, clientTypes.clientType2);
             Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
             Assert.IsTrue(clientTypes.clientType2.Clients.Contains(type1Client));
+            Assert.IsTrue(clientTypes.clientType1.Clients.Count == 0);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(DuplicateParentException))]
         public async Task TwoInconsistentChangesToChildCollectionsShouldThrowInconsistentChangeException()
         {
             var clientTypes = AddClientTypes();
@@ -376,12 +378,10 @@ namespace Iql.Tests
             clientTypes.clientType3.Clients.Add(type1Client);
             // Trigger sanitisation
             var changes = Db.DataStore.GetChanges().ToList();
-            Assert.AreEqual(type1Client.Type, clientTypes.clientType2);
-            Assert.IsTrue(clientTypes.clientType2.Clients.Count == 2);
-            Assert.IsTrue(clientTypes.clientType2.Clients.Contains(type1Client));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InconsistentRelationshipAssignmentException))]
         public async Task ChangingBothARelationshipAndARelationshipKeyShouldThrowAnErrorIfNotConsistent()
         {
             var clientTypes = AddClientTypes();
@@ -392,17 +392,8 @@ namespace Iql.Tests
             {
                 Id = 5
             };
-            // Trigger sanitisation
-            var exceptionThrown = false;
-            try
-            {
-                var changes = Db.DataStore.GetChanges().ToList();
-            }
-            catch (InconsistentRelationshipAssignmentException)
-            {
-                exceptionThrown = true;
-            }
-            Assert.IsTrue(exceptionThrown);
+            // Trigger sanitisation and exception
+            Db.DataStore.GetChanges();
         }
     }
 }

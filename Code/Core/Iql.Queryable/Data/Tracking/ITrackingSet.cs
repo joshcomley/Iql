@@ -14,10 +14,14 @@ namespace Iql.Queryable.Data.Tracking
             Owner = owner;
             Entity = entity;
             Relationship = relationship;
+            OwnerDetail = relationship.Target.Type == typeof(TOwner) ? relationship.Target : relationship.Source;
+            EntityDetail = relationship.Target.Type == typeof(TEntity) ? relationship.Target : relationship.Source;
         }
 
         public TOwner Owner { get;}
         public TEntity Entity { get; }
+        public IRelationshipDetail OwnerDetail { get; }
+        public IRelationshipDetail EntityDetail { get; }
         public IRelationship Relationship { get; }
 
         object ITrackedRelationship.Owner => Owner;
@@ -29,6 +33,8 @@ namespace Iql.Queryable.Data.Tracking
     {
         object Owner { get; }
         object Entity { get;}
+        IRelationshipDetail OwnerDetail { get; }
+        IRelationshipDetail EntityDetail { get; }
         IRelationship Relationship { get;}
     }
 

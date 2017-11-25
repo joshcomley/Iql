@@ -19,12 +19,21 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             Property =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
                     IqlPropertyExpression;
-
+            switch (relationship.Type)
+            {
+                case RelationshipType.ManyToMany:
+                    IsCollection = true;
+                    break;
+                case RelationshipType.OneToMany:
+                    IsCollection = relationshipSide == RelationshipSide.Target;
+                    break;
+            }
         }
 
         public RelationshipSide RelationshipSide { get; }
         public IRelationship Relationship { get; }
         public Type Type => typeof(T);
+        public bool IsCollection { get; }
         public IqlPropertyExpression Property { get; set; }
         public IqlPropertyExpression KeyProperty { get; set; }
         public IEntityConfiguration Configuration { get; set; }
@@ -41,13 +50,22 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             throw new NotSupportedException();
         }
 
-        public CompositeKey GetCompositeKey(object entity)
+        public CompositeKey GetCompositeKey(object entity, bool inverse = false)
         {
             var constraints = Constraints();
+            var inverseConstraints = RelationshipSide == RelationshipSide.Source
+                ? Relationship.Target.Constraints()
+                : Relationship.Source.Constraints();
             var compositeKey = new CompositeKey();
-            foreach (var constraint in constraints)
+            for(var i = 0; i < constraints.Length; i++)
             {
-                compositeKey.Keys.Add(new KeyValue(constraint.PropertyName, entity.GetPropertyValue(constraint.PropertyName)));
+                var constraint = constraints[i];
+                compositeKey.Keys.Add(new KeyValue(
+                    inverse
+                        ? inverseConstraints[i].PropertyName
+                        : constraint.PropertyName,
+                    entity.GetPropertyValue(constraint.PropertyName),
+                    Configuration.FindProperty(constraint.PropertyName).Type));
             }
             return compositeKey;
         }
