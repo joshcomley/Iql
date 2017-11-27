@@ -21,7 +21,7 @@ namespace Iql.Queryable.Data.Tracking
         public List<ITrackingSet> Sets { get; set; }
         private IDataContext DataContext { get; }
 
-        public List<IUpdateEntityOperation> GetChanges(bool reset = false)
+        public List<IUpdateEntityOperation> GetChanges(List<IQueuedOperation> queue, bool reset = false)
         {
             ClearParents();
             var changes = new Dictionary<Type, List<IUpdateEntityOperation>>();
@@ -38,7 +38,8 @@ namespace Iql.Queryable.Data.Tracking
                         {
                             changes.Add(set.EntityType, new List<IUpdateEntityOperation>());
                         }
-                        changes[set.EntityType].AddRange(set.GetChangesInternal());
+                        var updateEntityOperations = set.GetChangesInternal(queue);                        
+                        changes[set.EntityType].AddRange(updateEntityOperations);
                         setsChecked.Add(set);
                     }
                 }
@@ -47,14 +48,17 @@ namespace Iql.Queryable.Data.Tracking
                     break;
                 }
             }
+            ClearParents();
             foreach (var set in Sets.ToList())
             {
+                set.EnsureIntegrity();
                 foreach (var entity in set.TrackedEntites())
                 {
                     var relationships = set.FindTrackedEntity(entity).TrackedRelationships;
                     foreach (var relationship in relationships)
                     {
                         var compositeKey = relationship.OwnerDetail.GetCompositeKey(relationship.Owner, true);
+                        // Sanitize the relationship
                         if (!DataContext.EntityPropertiesMatch(
                             relationship.Entity,
                             compositeKey))
@@ -76,7 +80,7 @@ namespace Iql.Queryable.Data.Tracking
                                     // This is a deliberate change
                                     // Throw some error
                                 }
-                                else if(entityKey.Keys.All(k => !Equals(k.Value,Activator.CreateInstance(k.ValueType))))
+                                else if (entityKey.Keys.All(k => !Equals(k.Value, Activator.CreateInstance(k.ValueType))))
                                 {
                                     var value = relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property
                                         .PropertyName);
@@ -159,6 +163,16 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var set = TrackingSet(obj.EntityType);
                 set.Track(obj.Entity);
+            }
+        }
+
+        public void Merge(object entity, Type entityType)
+        {
+            var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
+            foreach (var obj in flattenObjectGraph)
+            {
+                var set = TrackingSet(obj.EntityType);
+                set.MergeEntity(obj.Entity);
             }
         }
 

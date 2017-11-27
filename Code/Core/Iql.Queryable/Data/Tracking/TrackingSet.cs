@@ -28,14 +28,14 @@ namespace Iql.Queryable.Data.Tracking
         private IDataContext DataContext { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
 
-        List<IUpdateEntityOperation> ITrackingSet.GetChangesInternal(bool reset = false)
+        List<IUpdateEntityOperation> ITrackingSet.GetChangesInternal(List<IQueuedOperation> queue, bool reset = false)
         {
-            return GetChangesInternal(reset).Cast<IUpdateEntityOperation>().ToList();
+            return GetChangesInternal(queue, reset).Cast<IUpdateEntityOperation>().ToList();
         }
 
         public void Reset()
         {
-            Clone = Set.Clone();
+            Clone = Set.CloneAs(DataContext, typeof(T));
         }
 
         public IEnumerable<object> TrackedEntites()
@@ -55,6 +55,10 @@ namespace Iql.Queryable.Data.Tracking
             Merge((List<T>)data);
         }
 
+        void ITrackingSet.MergeEntity(object entity)
+        {
+            MergeEntity((T)entity);
+        }
         private readonly Dictionary<T, T> _trackedEntityClones = new Dictionary<T, T>();
 
         public void Untrack(T entity)
@@ -81,9 +85,14 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     continue;
                 }
-                TrackInternal(element, true);
+                MergeEntity(element);
                 data[i] = FindTrackedEntity(data[i]).Entity;
             }
+        }
+
+        public void MergeEntity(T element)
+        {
+            TrackInternal(element, true);
         }
 
         public void Track(T entity)
@@ -113,7 +122,11 @@ namespace Iql.Queryable.Data.Tracking
                     }
                 }
             }
-            var clone = entity.Clone();
+            if (!allowMerge && found)
+            {
+                return;
+            }
+            var clone = entity.CloneAs(DataContext, typeof(T));
             if (!found)
             {
                 Set.Add(entity);
@@ -122,7 +135,10 @@ namespace Iql.Queryable.Data.Tracking
             }
             else
             {
-                ObjectMerger.Merge(DataContext, TrackingSetCollection, entity);
+                if (existingEntity.Entity != entity)
+                {
+                    ObjectMerger.Merge(DataContext, TrackingSetCollection, entity);
+                }
                 _trackedEntityClones[existingEntity.Entity] = clone;
             }
             //var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
@@ -250,26 +266,27 @@ namespace Iql.Queryable.Data.Tracking
                                 var relationshipList = (IList)ownerRelationshipValue;
                                 foreach (var remoteItem in relationshipList)
                                 {
-                                    matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, remoteItem, targetRelationship, owner, relationships, matchedEntity);
-                                    if (matchedEntity != null)
+                                    var newMatchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, remoteItem, targetRelationship, owner, relationships, matchedEntity);
+                                    if (newMatchedEntity != null)
                                     {
+                                        matchedEntity = newMatchedEntity;
                                         break;
                                     }
                                 }
                             }
                             else
                             {
-                                matchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, ownerRelationshipValue, targetRelationship, owner, relationships, matchedEntity);
-                                if (matchedEntity != null)
+                                var newMatchedEntity = MatchedEntity(localEntity, sourceRelationship, relationship, ownerRelationshipValue, targetRelationship, owner, relationships, matchedEntity);
+                                if (newMatchedEntity != null)
                                 {
                                     break;
                                 }
                             }
                         }
-//                        if (matchedEntity != null)
-//                       {
- //                           break;
- //                       }
+                        //                        if (matchedEntity != null)
+                        //                       {
+                        //                           break;
+                        //                       }
                     }
                 }
             }
@@ -303,14 +320,17 @@ namespace Iql.Queryable.Data.Tracking
             }
             if (match != null)
             {
-                var trakcedRelationship = (ITrackedRelationship)GetType()
-                    .GetMethod(nameof(NewTrackedRelationship))
-                    .MakeGenericMethod(targetRelationship.Type, sourceRelationship.Type)
-                    .Invoke(this, new object[] { owner, remoteItem, relationship });
-                relationships.Add(trakcedRelationship);
-                matchedEntity = (T)match;
+                if (!relationships.Any(r => r.Owner == owner && r.Entity == remoteItem && r.Relationship == relationship))
+                {
+                    var trackedRelationship = (ITrackedRelationship)GetType()
+                        .GetMethod(nameof(NewTrackedRelationship))
+                        .MakeGenericMethod(targetRelationship.Type, sourceRelationship.Type)
+                        .Invoke(this, new object[] { owner, remoteItem, relationship });
+                    relationships.Add(trackedRelationship);
+                }
+                return (T)match;
             }
-            return matchedEntity;
+            return null;
         }
 
         public ITrackedRelationship NewTrackedRelationship<TOwner, TEntity>(TOwner owner, TEntity entity,
@@ -334,7 +354,7 @@ namespace Iql.Queryable.Data.Tracking
             return FindTrackedEntityByKey(key);
         }
 
-        public List<UpdateEntityOperation<T>> GetChangesInternal(bool reset = false)
+        public List<UpdateEntityOperation<T>> GetChangesInternal(List<IQueuedOperation> queue, bool reset = false)
         {
             var updates = new List<UpdateEntityOperation<T>>();
             Set.ForEach(entity =>
@@ -343,7 +363,7 @@ namespace Iql.Queryable.Data.Tracking
                 var clone = FindClone(entity);
                 if (clone != null)
                 {
-                    var entityState = GetEntityState(entity, clone, typeof(T));
+                    var entityState = GetEntityState(queue, entity, clone, typeof(T));
                     if (entityState != null)
                     {
                         updates.Add(new UpdateEntityOperation<T>(entity, DataContext, entityState));
@@ -357,49 +377,139 @@ namespace Iql.Queryable.Data.Tracking
             return updates;
         }
 
-        private EntityState GetEntityState(object entity, object clone, Type entityType)
+        private PropertyChange GetPropertyChange(IProperty property, object entity, object clone)
+        {
+            var oldValue = clone.GetPropertyValue(property.Name);
+            var newValue = entity.GetPropertyValue(property.Name);
+            var hasChanged = false;
+            var nullCount = new[] { oldValue, newValue }.Count(x => x == null);
+            PropertyChange propertyChange = null;
+            if (nullCount == 1)
+            {
+                hasChanged = true;
+            }
+            else if (nullCount == 0)
+            {
+                hasChanged = !Equals(oldValue, newValue);
+            }
+            if (hasChanged)
+            {
+                propertyChange = new PropertyChange(property, oldValue, newValue);
+            }
+            return propertyChange;
+        }
+
+        private EntityState GetEntityState(List<IQueuedOperation> queue, T entity, object clone, Type entityType)
         {
             var changedProperties = new List<PropertyChange>();
-            foreach (var property in EntityConfiguration.Properties)
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entityType);
+            foreach (var property in entityConfiguration.Properties)
             {
-                var oldValue = clone.GetPropertyValue(property.Name);
-                var newValue = entity.GetPropertyValue(property.Name);
-                var hasChanged = false;
-                var nullCount = new[] {oldValue, newValue}.Count(x => x == null);
-                if (nullCount == 1)
+                switch (property.Kind)
                 {
-                    hasChanged = true;
-                }
-                else if(nullCount == 0)
-                {
-                    switch (property.Kind)
-                    {
-                        case PropertyKind.Primitive:
-                        case PropertyKind.RelationshipKey:
-                            if (!Equals(oldValue, newValue))
+                    case PropertyKind.Key:
+                    case PropertyKind.Primitive:
+                        var change = GetPropertyChange(property, entity, clone);
+                        if (change != null)
+                        {
+                            changedProperties.Add(change);
+                        }
+                        break;
+                    case PropertyKind.Relationship:
+                        if (!property.IsCollection)
+                        {
+                            var constraints = property.Relationship.ThisEnd.GetCompositeKey(entity);
+                            var constraintChanges = new List<PropertyChange>();
+                            foreach (var constraint in constraints.Keys)
                             {
-                                hasChanged = true;
-                            }
-                            break;
-                        case PropertyKind.Relationship:
-                            if (!property.IsCollection)
-                            {
-                                if (DataContext.IsIdMatch(oldValue, newValue, property.Relationship.ThisEnd.Type))
+                                var constraintProperty = entityConfiguration.FindProperty(constraint.Name);
+                                var constraintChange = GetPropertyChange(constraintProperty, entity, clone);
+                                if (constraintChange != null)
                                 {
-
+                                    constraintChanges.Add(constraintChange);
                                 }
                             }
-                            else
+                            var relationshipChange = GetPropertyChange(property, entity, clone);
+                            var relationshipChanged = false;
+
+                            if (relationshipChange != null)
                             {
-                                int a = 0;
+                                relationshipChanged = !DataContext.IsIdMatch(relationshipChange.OldValue,
+                                    relationshipChange.NewValue, relationshipChange.Property.Type);
                             }
-                            break;
-                    }
-                }
-                if (hasChanged)
-                {
-                    var propertyChange = new PropertyChange(property, oldValue, newValue);
-                    changedProperties.Add(propertyChange);
+                            if (relationshipChanged &&
+                                constraintChanges.Any() &&
+                                relationshipChange.NewValue != null)
+                            {
+                                // Ensure these match, as we've changed them both
+                                var constraintsInverse = property.Relationship.ThisEnd.GetCompositeKey(entity, true);
+                                if (!DataContext.EntityPropertiesMatch(relationshipChange.NewValue, constraintsInverse))
+                                {
+                                    throw new InconsistentRelationshipAssignmentException();
+                                }
+                                // If we get to here, both key value and relationship value have changed
+                                // and they are consistent
+                            }
+                            else if (relationshipChanged || constraintChanges.Any())
+                            {
+                                var constraintsInverse = property.Relationship.ThisEnd.GetCompositeKey(entity, true);
+                                if (!relationshipChanged)
+                                {
+                                    var childEntity = TrackingSetCollection
+                                        .TrackingSet(property.Relationship.OtherEnd.Type)
+                                        .FindTrackedEntityByKey(constraintsInverse);
+                                    if (childEntity != null)
+                                    {
+                                        entity.SetPropertyValue(property.Name, childEntity.Entity);
+                                        AssignRelationship(entity, property.Relationship.OtherEnd, childEntity.Entity,
+                                            property);
+                                    }
+                                }
+                                else if (!constraintChanges.Any())
+                                {
+                                    var childEntity = TrackingSetCollection
+                                        .TrackingSet(property.Relationship.OtherEnd.Type)
+                                        .FindTrackedEntityByKey(constraintsInverse);
+                                    var constraintsDirect = property.Relationship.ThisEnd.GetCompositeKey(entity);
+                                    foreach (var key in constraintsDirect.Keys)
+                                    {
+                                        entity.SetPropertyValue(key.Name, key.Value);
+                                        if (childEntity != null)
+                                        {
+                                            AssignRelationship(entity, property.Relationship.OtherEnd, childEntity,
+                                                property);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var relationshipChange = GetPropertyChange(property, entity, clone);
+                            if (relationshipChange != null)
+                            {
+                                var oldCollection = relationshipChange.OldValue as IList;
+                                var newCollection = relationshipChange.NewValue as IList;
+                                var oldValues = new List<CompositeKey>();
+                                var newValues = new List<CompositeKey>();
+                                if (oldCollection != null)
+                                {
+                                    foreach (var item in oldCollection)
+                                    {
+                                        
+                                    }
+                                }
+
+                            }
+                        }
+                        // If the old has a value, and the new doesn't, don't do anything
+                        // If the old has a value, and the new has a new non-null value, check it matches
+                        // the key constraint
+                        // - If it doesn't match
+                        // If the old does not have a value, and the new does, check it matches the
+                        // key constraint. If the key constraint has been changed also and is different, throw
+                        // an error, otherwise reassign the key constraint
+                        break;
                 }
             }
 
@@ -418,9 +528,9 @@ namespace Iql.Queryable.Data.Tracking
                         foreach (var constraint in change.Property.Relationship.Relationship.Constraints)
                         {
                             compositeKey.Keys.Add(new KeyValue(
-                                constraint.TargetKeyProperty.PropertyName, 
+                                constraint.TargetKeyProperty.PropertyName,
                                 entity.GetPropertyValue(constraint.SourceKeyProperty.PropertyName),
-                                EntityConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName).Type));
+                                entityConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName).Type));
                         }
                         var relatedTrackedEntity = TrackingSetCollection.TrackingSet(change.Property.Relationship.OtherEnd.Type)
                             .FindTrackedEntityByKey(compositeKey);
@@ -428,7 +538,7 @@ namespace Iql.Queryable.Data.Tracking
                         {
                             entity.SetPropertyValue(relationshipPropertyName, relatedTrackedEntity?.Entity);
                         }
-                        else if(relationshipChange.NewValue != null)
+                        else if (relationshipChange.NewValue != null)
                         {
                             if (!DataContext.EntityHasKey(relationshipChange.NewValue,
                                 relationshipChange.Property.Relationship.OtherEnd.Type, compositeKey))
@@ -442,7 +552,7 @@ namespace Iql.Queryable.Data.Tracking
                             var partnerPropertyName = change.Property.Relationship.OtherEnd.Property.PropertyName;
                             var partnerType = change.Property.Relationship.ThisEnd.Type;
                             var partnerCollection = relatedTrackedEntity.Entity.GetPropertyValue(partnerPropertyName) as IList;
-                            if (partnerCollection != null)
+                            if (partnerCollection != null && !partnerCollection.Contains(entity))
                             {
                                 partnerCollection.Add(entity);
                                 //TrackingSetCollection.RecordParent(entity, relatedTrackedEntity.Entity, partnerPropertyName);
@@ -452,7 +562,7 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
 
-            EnsureIntegrity(entity);
+            EnsureEntityIntegrity(entity);
             if (changedProperties.Any())
             {
                 return new EntityState(entity, entityType, changedProperties);
@@ -460,7 +570,71 @@ namespace Iql.Queryable.Data.Tracking
             return null;
         }
 
-        private void EnsureIntegrity(object entity)
+        private void AssignRelationship(T entity, IRelationshipDetail relationshipDetail,
+            object childEntity, IProperty property)
+        {
+            if (relationshipDetail.IsCollection)
+            {
+                var collection =
+                    childEntity.GetPropertyValue(property.Relationship.OtherEnd
+                        .Property.PropertyName) as IList;
+                if (collection != null && !collection.Contains(entity))
+                {
+                    collection.Add(entity);
+                }
+            }
+            else
+            {
+                childEntity.SetPropertyValue(
+                    property.Relationship.OtherEnd.Property.PropertyName, entity);
+            }
+            // Go through all the relationships that contain this entity
+            // and update them if need be
+            var trackedEntity = FindTrackedEntity(entity);
+            if (trackedEntity != null)
+            {
+                foreach (var relationship in trackedEntity.TrackedRelationships)
+                {
+                    if (!RelationshipIsValid(relationship))
+                    {
+                        if (relationship.OwnerDetail.IsCollection)
+                        {
+                            var collection =
+                                relationship.Owner.GetPropertyValue(property.Relationship.OtherEnd
+                                    .Property.PropertyName) as IList;
+                            if (collection != null && collection.Contains(entity))
+                            {
+                                collection.Remove(entity);
+                            }
+                        }
+                        else
+                        {
+                            int a = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool RelationshipIsValid(ITrackedRelationship relationship)
+        {
+            var entityKey = relationship.EntityDetail.GetCompositeKey(relationship.Entity, true);
+            if (!DataContext.EntityPropertiesMatch(relationship.Owner, entityKey))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void EnsureIntegrity()
+        {
+            foreach (var entity in TrackedEntites())
+            {
+                EnsureEntityIntegrity(entity);
+            }
+        }
+
+        private void EnsureEntityIntegrity(object entity)
         {
             /* Iterate through the relationships
              * Log the parent for each child, ensuring local integrity check

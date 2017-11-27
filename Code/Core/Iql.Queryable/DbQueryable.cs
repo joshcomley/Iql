@@ -304,12 +304,8 @@ namespace Iql.Queryable
 
         public AddEntityResult<T> Add(T entity)
         {
-            if (!DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
-            {
-                return DataContext.DataStore.Add(
-                    new AddEntityOperation<T>(entity, DataContext));
-            }
-            return null;
+            return DataContext.DataStore.Add(
+                new AddEntityOperation<T>(entity, DataContext));
         }
 
         public UpdateEntityResult<T> Update(T entity)

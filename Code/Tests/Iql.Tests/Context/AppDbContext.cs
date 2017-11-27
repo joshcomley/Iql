@@ -18,6 +18,7 @@ namespace Iql.Tests.Context
         {
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
         }
 
         public static InMemoryDataBase InMemoryDb { get; set; }

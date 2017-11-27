@@ -60,11 +60,13 @@ namespace Iql.Queryable.Data.Tracking
 
     public interface ITrackingSet
     {
+        void EnsureIntegrity();
         IEnumerable<object> TrackedEntites();
         Type EntityType { get; }
         void Track(object entity);
         void Merge(IList data);
-        List<IUpdateEntityOperation> GetChangesInternal(bool reset = false);
+        void MergeEntity(object entity);
+        List<IUpdateEntityOperation> GetChangesInternal(List<IQueuedOperation> queue, bool reset = false);
         void Reset();
         object FindClone(object entity);
         ITrackedEntity FindTrackedEntity(object entity);

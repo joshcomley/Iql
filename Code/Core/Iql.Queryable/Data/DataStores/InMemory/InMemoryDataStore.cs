@@ -19,9 +19,15 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-                .GetSource<TEntity>();
-            data.Add(operation.Operation.Entity.Clone());
+            var flattened =
+                operation.Operation.DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                    operation.Operation.Entity, typeof(TEntity));
+            foreach (var entity in flattened)
+            {
+                var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
+                    .GetSourceByType(entity.EntityType);
+                data.Add(entity.Entity.CloneAs(DataContext, entity.EntityType));
+            }
             operation.Result.Success = true;
             return Task.FromResult(operation.Result);
         }

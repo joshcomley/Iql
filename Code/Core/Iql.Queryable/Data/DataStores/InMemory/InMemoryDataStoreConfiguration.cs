@@ -16,11 +16,20 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public IList<T> GetSource<T>()
         {
-            return GetSourceByName(typeof(T).Name) as IList<T>;
+            return GetSourceByType(typeof(T)) as IList<T>;
         }
 
-        public IList GetSourceByName(string name)
+        public IList GetSourceByType(Type type)
         {
+            return GetSourceByTypeName(type.Name);
+        }
+
+        public IList GetSourceByTypeName(string name)
+        {
+            if (!_sources.ContainsKey(name))
+            {
+                throw new Exception($"Unable to find data source with name \"{name}\"");
+            }
             return _sources[name].Compile().DynamicInvoke() as IList;
         }
     }

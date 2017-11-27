@@ -31,6 +31,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             ConvertedFromType = convertedFromType;
             ReadOnly = readOnly;
             CountRelationship = countRelationship;
+            Kind = PropertyKind.Primitive;
         }
     }
 }

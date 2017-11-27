@@ -68,7 +68,20 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             iql.ReturnType = typeof(TKey).ToIqlType();
             Key.Properties.Add(iql);
+            TrySetKey(iql.PropertyName);
             return this;
+        }
+
+        private void TrySetKey(string propertyName)
+        {
+            if (Key.Properties.Any(p => p.PropertyName == propertyName))
+            {
+                var property = FindProperty(propertyName);
+                if (property != null)
+                {
+                    property.Kind = PropertyKind.Key;
+                }
+            }
         }
 
         public EntityConfiguration<T> HasCompositeKey(
@@ -111,6 +124,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 definition.Kind = PropertyKind.Relationship;
                 definition.Relationship = relationship;
             }
+            TrySetKey(iql.PropertyName);
             return this;
         }
 
@@ -188,10 +202,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         internal override void TryAssignRelationshipToPropertyDefinition(IProperty definition, bool tryAssignOtherEnd = true)
         {
-            if (definition.Name == "Type")
-            {
-                int a = 0;
-            }
             var relationship = FindRelationship(definition.Name);
             if (relationship != null)
             {

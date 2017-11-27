@@ -11,5 +11,7 @@ namespace Iql.DotNet.Queryable
         List<Func<IEnumerable, IEnumerable>> Actions { get; }
         bool HasKey { get; set; }
         CompositeKey Key { get; set; }
+        string GetDataSetObjectName(Type type);
+        IList DataSetByType(Type type);
     }
 }

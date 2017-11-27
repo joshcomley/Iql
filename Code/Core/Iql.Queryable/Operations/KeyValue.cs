@@ -13,5 +13,10 @@ namespace Iql.Queryable.Operations
             Value = value;
             ValueType = valueType;
         }
+
+        public bool IsDefaultValue()
+        {
+            return Equals(Value, null) || Equals(Value, Activator.CreateInstance(ValueType));
+        }
     }
 }

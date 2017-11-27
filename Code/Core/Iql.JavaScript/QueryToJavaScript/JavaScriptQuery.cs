@@ -94,8 +94,8 @@ namespace Iql.JavaScript.QueryToJavaScript
         public object DataSet(string name)
         {
             var sourceSet = Context.GetConfiguration<InMemoryDataStoreConfiguration>()
-                .GetSourceByName(name);
-            var cloneSet = sourceSet.Clone();
+                .GetSourceByTypeName(name);
+            var cloneSet = sourceSet.CloneAs(Context, typeof(T));
             return cloneSet;
         }
    }

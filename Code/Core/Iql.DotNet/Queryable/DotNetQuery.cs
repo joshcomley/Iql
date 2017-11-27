@@ -20,21 +20,26 @@ namespace Iql.DotNet.Queryable
 
         public IDataContext DataContext { get; }
 
+        public string GetDataSetObjectName(Type type)
+        {
+            return "dataSet_" + type.Name;
+        }
+
         public List<Func<IEnumerable, IEnumerable>> Actions { get; } = new List<Func<IEnumerable, IEnumerable>>();
         public bool HasKey { get; set; }
         public CompositeKey Key { get; set; }
 
-        public IList DataSet(string name)
+        public IList DataSetByType(Type type)
         {
             var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-                .GetSourceByName(name);
-            var cloneSet = sourceSet.Clone();
-            return cloneSet;
+                .GetSourceByType(type);
+            //var cloneSet = sourceSet.CloneAs(DataContext, type);
+            return sourceSet;
         }
 
         public override List<T> ToList()
         {
-            var list = (IEnumerable<T>)DataSet(typeof(T).Name);
+            var list = (IEnumerable<T>)DataSetByType(typeof(T));
             foreach (var action in Actions)
             {
                 list = (IEnumerable<T>) action(list);

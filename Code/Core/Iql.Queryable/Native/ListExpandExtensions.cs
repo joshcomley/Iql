@@ -7,22 +7,53 @@ namespace Iql.JavaScript.QueryToJavaScript
 {
     public static class ListExpandExtensions
     {
+        public static int Count(this IEnumerable source)
+        {
+            if (source is IList)
+            {
+                return (source as IList).Count;
+            }
+            int i = 0;
+            foreach (var item in source)
+            {
+                i++;
+            }
+            return i;
+        }
+
+        public static object ItemAt(this IEnumerable source, int index)
+        {
+            if (source is IList)
+            {
+                return (source as IList)[index];
+            }
+            long i = 0;
+            foreach (var item in source)
+            {
+                if (i == index)
+                {
+                    return item;
+                }
+            }
+            throw new IndexOutOfRangeException();
+        }
+
         public static void ExpandOneToOne(
-            this IList source,
-            IList target,
+            this IEnumerable source,
+            IEnumerable target,
             string sourceProperty,
             string targetProperty,
             string sourceTargetKeyProperty,
             string targetKeyProperty
         )
         {
-            for (var i = 0; i < source.Count; i++)
+            for (var i = 0; i < source.Count(); i++)
             {
-                var sourceEntity = source[i];
+                var sourceEntity = source.ItemAt(i);
                 var targetKey = sourceEntity.GetPropertyValue(sourceTargetKeyProperty);
-                for (var j = 0; j < target.Count; j++)
+                for (var j = 0; j < target.Count(); j++)
                 {
-                    var targetEntity = target[j];
+                    var targetEntity = target.ItemAt(j);
                     if (Equals(targetEntity.GetPropertyValue(targetKeyProperty), targetKey))
                     {
                         sourceEntity.SetPropertyValue(sourceProperty, targetEntity);
@@ -34,26 +65,31 @@ namespace Iql.JavaScript.QueryToJavaScript
         }
 
         public static void ExpandOneToMany(
-            this IList source,
+            this IEnumerable source,
             Type sourceType,
-            IList target,
+            IEnumerable target,
             string sourceProperty,
             string targetProperty,
             string sourceTargetKeyProperty,
             string targetKeyProperty)
         {
-            for (var i = 0; i < source.Count; i++)
+            var targetsRefreshed = new Dictionary<object, bool>();
+            for (var i = 0; i < source.Count(); i++)
             {
-                var sourceEntity = source[i];
+                var sourceEntity = source.ItemAt(i);
                 var targetKey = sourceEntity.GetPropertyValue(sourceTargetKeyProperty);
-                for (var j = 0; j < target.Count; j++)
+                for (var j = 0; j < target.Count(); j++)
                 {
-                    var targetEntity = target[j];
-                    if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
+                    var targetEntity = target.ItemAt(j);
+                    if (!targetsRefreshed.ContainsKey(targetEntity))
                     {
+                        targetsRefreshed.Add(targetEntity, true);
                         targetEntity.SetPropertyValue(targetProperty,
                             Activator.CreateInstance(typeof(List<>).MakeGenericType(sourceType)));
                     }
+                    //if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
+                    //{
+                    //}
                     if (Equals(targetEntity.GetPropertyValue(targetKeyProperty), targetKey))
                     {
                         sourceEntity.SetPropertyValue(sourceProperty, targetEntity);
@@ -64,11 +100,11 @@ namespace Iql.JavaScript.QueryToJavaScript
         }
 
         public static void ExpandManyToMany(
-            this IList source,
+            this IEnumerable source,
             Type sourceType,
             Type targetType,
-            IList target,
-            IList pivot,
+            IEnumerable target,
+            IEnumerable pivot,
             string pivotSourceKeyProperty,
             string pivotTargetKeyPropery,
             string sourceProperty,
@@ -76,25 +112,25 @@ namespace Iql.JavaScript.QueryToJavaScript
             string sourceKeyProperty,
             string targetKeyProperty)
         {
-            for (var i = 0; i < source.Count; i++)
+            for (var i = 0; i < source.Count(); i++)
             {
-                var sourceEntity = source[i];
+                var sourceEntity = source.ItemAt(i);
                 if (Equals(sourceEntity.GetPropertyValue(sourceProperty), null))
                 {
                     sourceEntity.SetPropertyValue(sourceProperty,
                         Activator.CreateInstance(typeof(List<>).MakeGenericType(targetType)));
                 }
-                for (var j = 0; j < target.Count; j++)
+                for (var j = 0; j < target.Count(); j++)
                 {
-                    var targetEntity = target[j];
+                    var targetEntity = target.ItemAt(j);
                     if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
                     {
                         targetEntity.SetPropertyValue(targetProperty,
                             Activator.CreateInstance(typeof(List<>).MakeGenericType(sourceType)));
                     }
-                    for (var k = 0; k < pivot.Count; k++)
+                    for (var k = 0; k < pivot.Count(); k++)
                     {
-                        var pivotEntity = pivot[k];
+                        var pivotEntity = pivot.ItemAt(k);
                         if (Equals(pivotEntity.GetPropertyValue(pivotSourceKeyProperty),
                                 sourceEntity.GetPropertyValue(sourceKeyProperty)) &&
                             Equals(pivotEntity.GetPropertyValue(pivotTargetKeyPropery),

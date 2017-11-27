@@ -18,7 +18,7 @@ namespace Iql.Queryable.Data.DataStores
 {
     public class DataStore : IDataStore
     {
-        public TrackingSetCollection Tracking2;
+        public TrackingSetCollection Tracking { get; private set; }
 
         public IDataContext DataContext { get; set; }
         public List<IQueuedOperation> Queue { get; set; } = new List<IQueuedOperation>();
@@ -26,12 +26,102 @@ namespace Iql.Queryable.Data.DataStores
         public virtual AddEntityResult<TEntity> Add<TEntity>(AddEntityOperation<TEntity> operation)
             where TEntity : class
         {
-            GetTracking().Track(operation.Entity, typeof(TEntity));
-            var result = new AddEntityResult<TEntity>(true, operation);
-            Queue.Add(new QueuedAddEntityOperation<TEntity>(
-                operation,
-                result));
+            //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, operation.EntityType);
+            foreach (var entity in flattened)
+            {
+                PersistRelationships(entity.Entity, entity.EntityType);
+            }
+            AddEntityResult<TEntity> result = null;
+            foreach (var entity in flattened)
+            {
+                var alreadyTracked = DataContext.DataStore.GetTracking().IsTracked(entity.Entity, entity.EntityType);
+                if (!alreadyTracked)
+                {
+                    var trackingSetCollection = GetTracking();
+                    trackingSetCollection.Track(entity.Entity, entity.EntityType);
+                    var isRootEntity = entity.Entity == operation.Entity;
+                    var entityOperation =
+                        isRootEntity
+                            ? operation
+                            : Activator.CreateInstance(typeof(AddEntityOperation<>).MakeGenericType(entity.EntityType),
+                                new object[] { entity.Entity, operation.DataContext });
+                    var entityResult = Activator.CreateInstance(typeof(AddEntityResult<>).MakeGenericType(entity.EntityType),
+                        new object[]
+                        {
+                            true,
+                            entityOperation
+                        });
+                    var queuedOperation =
+                        (IQueuedOperation)Activator.CreateInstance(typeof(QueuedAddEntityOperation<>).MakeGenericType(entity.EntityType),
+                            new object[] { operation, entityResult });
+                    Queue.Add(queuedOperation);
+                    if (isRootEntity)
+                    {
+                        result = (AddEntityResult<TEntity>)entityResult;
+                    }
+                }
+            }
             return result;
+        }
+
+        private void PersistRelationships(object entity, Type entityType)
+        {
+            foreach (var relationship in DataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
+            {
+                var key = relationship.ThisEnd.GetCompositeKey(entity, true);
+                //var inverseKey = relationship.ThisEnd.GetCompositeKey(entity);
+                if (key.HasDefaultValue())
+                {
+                    continue;
+                }
+                var set = DataContext.DataStore.GetTracking().TrackingSet(relationship.OtherEnd.Type);
+                if (relationship.ThisEnd.IsCollection)
+                {
+                    var collection = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName) as IList;
+                    if (collection != null)
+                    {
+                        foreach (var child in collection)
+                        {
+                            foreach (var keyPart in key.Keys)
+                            {
+                                child.SetPropertyValue(keyPart.Name, keyPart.Value);
+                            }
+                            child.SetPropertyValue(relationship.OtherEnd.Property.PropertyName, entity);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var relatedEntity in set.TrackedEntites())
+                    {
+                        if (DataContext.EntityPropertiesMatch(relatedEntity, key))
+                        {
+                            PersistRelationship(relationship.OtherEnd, relatedEntity, entity);
+                            PersistRelationship(relationship.ThisEnd, entity, relatedEntity);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void PersistRelationship(IRelationshipDetail relationshipSide, object entity, object relatedEntity)
+        {
+            // Set the entity's relationship entity
+            if (relationshipSide.IsCollection)
+            {
+                // Add it to the entity's related collection
+                var relatedValue = entity.GetPropertyValue(relationshipSide.Property.PropertyName);
+                var collection = relatedValue as IList;
+                if (collection != null && !collection.Contains(relatedEntity))
+                {
+                    collection.Add(relatedEntity);
+                }
+            }
+            else
+            {
+                entity.SetPropertyValue(relationshipSide.Property.PropertyName, relatedEntity);
+            }
         }
 
         public virtual UpdateEntityResult<TEntity> Update<TEntity>(
@@ -78,11 +168,7 @@ namespace Iql.Queryable.Data.DataStores
 
         public virtual TrackingSetCollection GetTracking()
         {
-            if (Tracking2 == null)
-            {
-                Tracking2 = new TrackingSetCollection(DataContext);
-            }
-            return Tracking2;
+            return Tracking ?? (Tracking = new TrackingSetCollection(DataContext));
         }
 
         public virtual async Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
@@ -191,15 +277,6 @@ namespace Iql.Queryable.Data.DataStores
             Queue.AddRange(GetChanges(true));
             //var observable = this.Observable<SaveChangesResult>();
             var saveChangesResult = new SaveChangesResult(false);
-            var count = Queue.Count;
-            Action decrement = () =>
-            {
-                count--;
-                if (count == 0)
-                {
-                    //observable.SetData(saveChangesResult);
-                }
-            };
             var queue = Queue;
             Queue = new List<IQueuedOperation>();
             foreach (var queuedOperation in queue)
@@ -209,7 +286,7 @@ namespace Iql.Queryable.Data.DataStores
                     .MakeGenericMethod(queuedOperation.Operation.EntityType)
                     .Invoke(this, new object[]
                     {
-                        queuedOperation, decrement, saveChangesResult
+                        queuedOperation, saveChangesResult
 #if TypeScript // The type info
                         ,queuedOperation.Operation.EntityType
 #endif
@@ -222,7 +299,7 @@ namespace Iql.Queryable.Data.DataStores
         public IEnumerable<IQueuedOperation> GetChanges(bool reset = false)
         {
             var changes = new List<IQueuedOperation>();
-            GetTracking().GetChanges(reset).ForEach(update =>
+            GetTracking().GetChanges(this.Queue, reset).ForEach(update =>
             {
                 // If we are adding an entity in the same save changes operation
                 // then we don't need to do any scheduled updates on it because
@@ -282,7 +359,6 @@ namespace Iql.Queryable.Data.DataStores
 
         public virtual async Task Perform<TEntity>(
             IQueuedOperation operation,
-            Action decrement,
             SaveChangesResult saveChangesResult) where TEntity : class
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
@@ -303,7 +379,7 @@ namespace Iql.Queryable.Data.DataStores
                         }
                     }
                     await DataContext.RefreshEntity(localEntity);
-                    GetTracking().GetSet<TEntity>().Track(addEntityOperation.Operation.Entity);
+                    GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity));
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
@@ -351,7 +427,6 @@ namespace Iql.Queryable.Data.DataStores
                     entityCrudResult.LocalEntity,
                     entityCrudResult.RootEntityValidationResult);
             }
-            decrement();
         }
 
         private static void ParseEntityResult(IDictionary<object, EntityValidationResult> resultsDictionary, object entity,
@@ -381,56 +456,24 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
-        private void EnsurePersistenceKeyInNewEntities(object localEntity, Type entityType, List<object> entitiesAlreadyChecked = null)
+        private void EnsurePersistenceKeyInNewEntities(object localEntity, Type entityType)
         {
-            entitiesAlreadyChecked = entitiesAlreadyChecked ?? new List<object>();
-            // Avoid infinite recursion
-            if (entitiesAlreadyChecked.Contains(localEntity))
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(localEntity, entityType);
+            foreach (var entity in flattened)
             {
-                return;
-            }
-            var type = localEntity.GetType();
-            if (DataContext.IsEntityNew(localEntity, entityType))
-            {
-                var persistenceKey = DataContext.EntityConfigurationContext.GetEntityByType(type).Properties
-                    .FirstOrDefault(p => p.Name == "PersistenceKey");
-                if (persistenceKey != null)
+                if (DataContext.IsEntityNew(entity.Entity, entity.EntityType))
                 {
-                    localEntity.SetPropertyValue("PersistenceKey", Guid.NewGuid());
-                }
-                var tracking = GetTracking();
-                var trackedEntity = tracking.FindEntity(localEntity);
-                if (trackedEntity == null)
-                {
-                    tracking.Track(localEntity, entityType);
-                }
-            }
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(type);
-            foreach (var relationship in entityConfiguration.Relationships)
-            {
-                var isSource = relationship.Source.Configuration == entityConfiguration;
-                var property = isSource
-                    ? relationship.Source.Property
-                    : relationship.Target.Property;
-                var relationshipEntityType = isSource
-                    ? relationship.Source.Configuration.Type
-                    : relationship.Target.Configuration.Type;
-                var relationshipValue = localEntity.GetPropertyValue(property.PropertyName);
-
-                if (relationshipValue != null)
-                {
-                    var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
-                    if (isArray)
+                    var persistenceKey = DataContext.EntityConfigurationContext.GetEntityByType(entity.EntityType).Properties
+                        .FirstOrDefault(p => p.Name == "PersistenceKey");
+                    if (persistenceKey != null)
                     {
-                        var list = (IList)relationshipValue;
-                        foreach (var item in list)
-                        {
-                            EnsurePersistenceKeyInNewEntities(item, relationshipEntityType);
-                        }
+                        entity.Entity.SetPropertyValue("PersistenceKey", Guid.NewGuid());
                     }
-                    else
+                    var tracking = GetTracking();
+                    var trackedEntity = tracking.FindEntity(entity.Entity);
+                    if (trackedEntity == null)
                     {
-                        EnsurePersistenceKeyInNewEntities(relationshipValue, relationshipEntityType);
+                        tracking.Track(entity.Entity, entityType);
                     }
                 }
             }
