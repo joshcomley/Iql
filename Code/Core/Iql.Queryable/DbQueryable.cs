@@ -680,6 +680,11 @@ namespace Iql.Queryable
             return set;
         }
 
+        public override void AddEntity(object entity)
+        {
+            Add((T)entity);
+        }
+
         public override async Task<object> WithKey(object key)
         {
             var compositeKey = GetCompositeKeyFromSingularKey(key);

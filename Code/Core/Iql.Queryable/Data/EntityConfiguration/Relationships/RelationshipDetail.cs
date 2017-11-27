@@ -57,6 +57,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 ? Relationship.Target.Constraints()
                 : Relationship.Source.Constraints();
             var compositeKey = new CompositeKey();
+            compositeKey.Entity = entity;
             for(var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];

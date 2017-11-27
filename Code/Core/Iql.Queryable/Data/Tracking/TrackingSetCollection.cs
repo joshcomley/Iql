@@ -84,6 +84,8 @@ namespace Iql.Queryable.Data.Tracking
                                 {
                                     var value = relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property
                                         .PropertyName);
+                                    ClearParent(value, relationship.OwnerDetail.Property
+                                        .PropertyName);
                                     if (relationship.OwnerDetail.IsCollection)
                                     {
                                         var collection = value as IList;
@@ -253,6 +255,18 @@ namespace Iql.Queryable.Data.Tracking
                 throw new DuplicateParentException(entity);
             }
             _parents[entity].Add(property, parent);
+        }
+        internal void ClearParent(object entity, string property)
+        {
+            return;
+            if (!_parents.ContainsKey(entity))
+            {
+                _parents.Add(entity, new Dictionary<string, object>());
+            }
+            if (_parents[entity].ContainsKey(property))
+            {
+                _parents[entity].Remove(property);
+            }
         }
     }
 }

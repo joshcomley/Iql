@@ -496,10 +496,38 @@ namespace Iql.Queryable.Data.Tracking
                                 {
                                     foreach (var item in oldCollection)
                                     {
-                                        
+                                        oldValues.Add(property.Relationship.OtherEnd.GetCompositeKey(item, true));
                                     }
                                 }
-
+                                if (newCollection != null)
+                                {
+                                    foreach (var item in newCollection)
+                                    {
+                                        newValues.Add(property.Relationship.OtherEnd.GetCompositeKey(item, true));
+                                    }
+                                    foreach (var value in newValues)
+                                    {
+                                        DataContext.AsDbSetByType(property.Relationship.OtherEnd.Type).AddEntity(value.Entity);
+                                        if (!DataContext.EntityPropertiesMatch(entity, value))
+                                        {
+                                            if (oldValues.Any(v => DataContext.EntityPropertiesMatch(v.Entity, value)))
+                                            {
+                                                TrackingSetCollection.ClearParent(entity, property.Name);
+                                                newCollection.Remove(value.Entity);
+                                            }
+                                            else
+                                            {
+                                                AssignRelationship(entity, property.Relationship.OtherEnd, value.Entity,
+                                                    property);
+                                                //var composite = property.Relationship.ThisEnd.GetCompositeKey(entity, true);
+                                                //foreach (var key in composite.Keys)
+                                                //{
+                                                //    value.Entity.SetPropertyValue(key.Name, key.Value);
+                                                //}
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         // If the old has a value, and the new doesn't, don't do anything
@@ -562,7 +590,6 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
 
-            EnsureEntityIntegrity(entity);
             if (changedProperties.Any())
             {
                 return new EntityState(entity, entityType, changedProperties);
@@ -585,8 +612,15 @@ namespace Iql.Queryable.Data.Tracking
             }
             else
             {
+                var composite = property.Relationship.ThisEnd.GetCompositeKey(entity, true);
+                foreach (var key in composite.Keys)
+                {
+                    childEntity.SetPropertyValue(key.Name, key.Value);
+                }
                 childEntity.SetPropertyValue(
                     property.Relationship.OtherEnd.Property.PropertyName, entity);
+                TrackingSetCollection.ClearParent(childEntity, property.Relationship.ThisEnd.Property.PropertyName);
+                //TrackingSetCollection.RecordParent(childEntity, entity, property.Relationship.ThisEnd.Property.PropertyName);
             }
             // Go through all the relationships that contain this entity
             // and update them if need be
@@ -604,6 +638,7 @@ namespace Iql.Queryable.Data.Tracking
                                     .Property.PropertyName) as IList;
                             if (collection != null && collection.Contains(entity))
                             {
+                                TrackingSetCollection.ClearParent(entity, property.Name);
                                 collection.Remove(entity);
                             }
                         }

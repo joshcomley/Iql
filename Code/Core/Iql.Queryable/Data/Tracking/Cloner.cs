@@ -12,13 +12,13 @@ namespace Iql.Queryable.Data.Tracking
     [DoNotConvert]
     public static class Cloner
     {
-        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType)
+        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, bool cloneRelationships = true)
             where T : class
         {
-            return (T) obj.Clone(dataContext, entityType);
+            return (T)obj.Clone(dataContext, entityType, cloneRelationships);
         }
 
-        public static object Clone(this object obj, IDataContext dataContext, Type entityType)
+        public static object Clone(this object obj, IDataContext dataContext, Type entityType, bool cloneRelationships = true)
         {
             if (obj == null)
             {
@@ -46,32 +46,62 @@ namespace Iql.Queryable.Data.Tracking
                         clone.SetPropertyValue(property.Name, obj.GetPropertyValue(property.Name));
                         break;
                     case PropertyKind.Relationship:
-                        if (!property.IsCollection)
+                        if (cloneRelationships)
                         {
                             var value = obj.GetPropertyValue(property.Name);
                             if (value != null)
                             {
-                                var newValue = Activator.CreateInstance(property.Relationship.OtherEnd.Type);
-                                var relationshipTypeConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(property.Relationship.OtherEnd.Type);
-                                foreach (var relationshipProperty in relationshipTypeConfiguration.Properties)
+                                if (!property.IsCollection)
                                 {
-                                    if (relationshipProperty.Kind == PropertyKind.Key)
-                                    {
-                                        newValue.SetPropertyValue(relationshipProperty.Name, value.GetPropertyValue(relationshipProperty.Name));
-                                    }
+                                    clone.SetPropertyValue(
+                                        property.Name,
+                                        CloneKeysOnly(dataContext, property, value)
+                                    );
                                 }
-                                clone.SetPropertyValue(property.Name, newValue);
+                                else
+                                {
+                                    var newValue = Activator.CreateInstance(value.GetType()) as IList;
+                                    var oldValue = value as IList;
+                                    if (oldValue != null && newValue != null)
+                                    {
+                                        foreach (var item in oldValue)
+                                        {
+                                            newValue.Add(CloneKeysOnly(dataContext, property, item));
+                                        }
+                                    }
+                                    clone.SetPropertyValue(
+                                        property.Name,
+                                        newValue
+                                    );
+                                }
                             }
                         }
                         break;
                 }
             }
             return clone;
-//#if TypeScript
-//            return obj;
-//#else
-//            return obj.Copy();
-//#endif
+            //#if TypeScript
+            //            return obj;
+            //#else
+            //            return obj.Copy();
+            //#endif
+        }
+
+        private static object CloneKeysOnly(IDataContext dataContext, IProperty property, object value)
+        {
+            var newValue = Activator.CreateInstance(property.Relationship.OtherEnd.Type);
+            var relationshipTypeConfiguration =
+                dataContext.EntityConfigurationContext.GetEntityByType(property.Relationship
+                    .OtherEnd.Type);
+            foreach (var relationshipProperty in relationshipTypeConfiguration.Properties)
+            {
+                if (relationshipProperty.Kind == PropertyKind.Key)
+                {
+                    newValue.SetPropertyValue(relationshipProperty.Name,
+                        value.GetPropertyValue(relationshipProperty.Name));
+                }
+            }
+            return newValue;
         }
     }
 }

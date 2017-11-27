@@ -1,10 +1,11 @@
+using System;
 using System.Threading.Tasks;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
 {
     public interface IDbSet : IQueryableBase
     {
+        void AddEntity(object entity);
         Task<object> WithKey(object key);
     }
 }

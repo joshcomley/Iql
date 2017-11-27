@@ -26,7 +26,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             {
                 var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                     .GetSourceByType(entity.EntityType);
-                data.Add(entity.Entity.CloneAs(DataContext, entity.EntityType));
+                data.Add(entity.Entity.CloneAs(DataContext, entity.EntityType, false));
             }
             operation.Result.Success = true;
             return Task.FromResult(operation.Result);

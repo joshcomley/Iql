@@ -23,6 +23,8 @@ namespace Iql.Queryable
         public EvaluateContext EvaluateContext { get; set; }
 
         public List<IQueryOperation> Operations { get; }
+
+        public abstract void AddEntity(object entity);
         public abstract Task<object> WithKey(object key);
 
         public TQueryable Reverse()

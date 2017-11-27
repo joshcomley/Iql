@@ -181,14 +181,13 @@ namespace Iql.Tests
             await Db.SaveChanges();
             Db = new AppDbContext();
             var entity1 = await Db.ClientTypes.Expand(c => c.Clients).WithKey(2);
-            var entity1a = await Db.ClientTypes.Expand(c => c.Clients).WithKey(2);
             var entity2 = await Db.ClientTypes.Expand(c => c.Clients).WithKey(3);
-            var entity2a = await Db.ClientTypes.Expand(c => c.Clients).WithKey(3);
             // Assign two existing clients to the first client type
-            entity1.Clients.Add(new Client { Id = 3, Name = "Client 1 b" });
+            var client = new Client { Id = 3, Name = "Client 1 b" };
+            entity1.Clients.Add(client);
             entity1.Clients.Add(new Client { Id = 4, Name = "Client 1 c" });
             // Assign a client from the first client type to the second
-            entity1.Clients.Add(entity2.Clients[0]);
+            entity2.Clients.Add(client);
             /* Here's what should happen:
              * entity2.Clients[0] has two inferred TypeIds and as such an error should be thrown
              */
@@ -482,7 +481,6 @@ namespace Iql.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InconsistentRelationshipAssignmentException))]
         public async Task AddingAnEntityToAChildCollectionShouldPersistRelationship()
         {
             var clientTypes = AddClientTypes();
@@ -491,6 +489,7 @@ namespace Iql.Tests
             clientTypes.ClientType3.Clients.Add(type1Client);
             // Trigger sanitisation
             var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
         }
 
         [TestMethod]
