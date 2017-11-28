@@ -30,9 +30,9 @@ namespace Iql.Queryable
         // }
 
         public abstract TQueryResult ToQueryResult<TEntity>(IQueryable<TEntity> queryable, TQueryResult data)
-            where TEntity : class;
+            where TEntity : class, IEntity;
 
-        public abstract TQueryResult NewQueryData<TEntity>(IQueryable<TEntity> queryable) where TEntity : class;
+        public abstract TQueryResult NewQueryData<TEntity>(IQueryable<TEntity> queryable) where TEntity : class, IEntity;
 
         public virtual IQueryOperationApplicatorBase ResolveApplicator<TOperation>(TOperation operation)
             where TOperation : IQueryOperation

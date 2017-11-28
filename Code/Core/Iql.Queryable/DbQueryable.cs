@@ -16,7 +16,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class, IEntity
     {
         public bool TrackEntities { get; set; } = true;
         public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
@@ -601,7 +601,7 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandSingle<TTarget>(
             Expression<Func<T, TTarget>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return ExpandSingleQuery(
                 new ExpandQueryExpression<T, TTarget, TTarget>(
@@ -612,7 +612,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandSingleQuery<TTarget>(
             ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
         }
@@ -620,7 +620,7 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandCollection<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return ExpandCollectionQuery(
                 new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(

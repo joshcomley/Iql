@@ -7,7 +7,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbList<T> : List<T> where T : class
+    public class DbList<T> : List<T> where T : class, IEntity
     {
         public DbQueryable<T> SourceQueryable { get; set; }
         public PagingInfo PagingInfo { get; set; }

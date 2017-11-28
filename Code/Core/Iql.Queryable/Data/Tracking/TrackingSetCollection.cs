@@ -139,7 +139,7 @@ namespace Iql.Queryable.Data.Tracking
             return allChanges;
         }
 
-        public TrackingSet<T> GetSet<T>() where T : class
+        public TrackingSet<T> GetSet<T>() where T : class, IEntity
         {
             var type = typeof(T);
             if (!SetsMap.ContainsKey(type.Name))

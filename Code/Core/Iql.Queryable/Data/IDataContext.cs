@@ -22,17 +22,17 @@ namespace Iql.Queryable.Data
             where T : class;
 
         IDbSet AsDbSetByType(Type entityType);
-        DbSet<T, TKey> AsDbSet<T, TKey>() where T : class;
+        DbSet<T, TKey> AsDbSet<T, TKey>() where T : class, IEntity;
         bool IsIdMatch(object left, object right, Type type);
         bool EntityPropertiesMatch(object left, CompositeKey key);
         bool EntityHasKey(object left, Type type, CompositeKey key);
         Task<T> RefreshEntity<T>(T entity)
-            where T : class
+            where T : class, IEntity
             ;
 
-        T EnsureTypedEntity<T>(object entity);
+        T EnsureTypedEntity<T>(object entity) where T : class, IEntity;
         object EnsureTypedEntityByType(object entity, Type type);
-        IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false);
+        IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false) where T : class, IEntity;
         IList EnsureTypedListByType(IEnumerable responseData, Type type, bool forceNotNull = false);
     }
 }

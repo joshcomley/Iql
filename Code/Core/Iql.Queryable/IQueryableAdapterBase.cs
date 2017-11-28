@@ -7,7 +7,7 @@ namespace Iql.Queryable
     public interface IQueryableAdapterBase
     {
         IDataContext Context { get; set; }
-        IQueryResultBase NewQueryData<TEntity>(IQueryable<TEntity> queryable) where TEntity : class;
+        IQueryResultBase NewQueryData<TEntity>(IQueryable<TEntity> queryable) where TEntity : class, IEntity;
 
         IQueryOperationApplicatorBase ResolveApplicator<TOperation>(TOperation operation)
             where TOperation : IQueryOperation;

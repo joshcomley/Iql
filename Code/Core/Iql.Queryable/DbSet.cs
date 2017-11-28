@@ -13,7 +13,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbSet<T, TKey> : DbQueryable<T>, IDbSetOperations<T, TKey> where T : class
+    public class DbSet<T, TKey> : DbQueryable<T>, IDbSetOperations<T, TKey> where T : class, IEntity
     {
         public DbSet(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(
@@ -95,14 +95,14 @@ namespace Iql.Queryable
         public new DbSet<T, TKey> ExpandSingle<TTarget>(
             Expression<Func<T, TTarget>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandSingle(target, filter);
         }
 
         public new DbSet<T, TKey> ExpandSingleQuery<TTarget>(
             ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandSingleQuery(expression);
         }
@@ -110,14 +110,14 @@ namespace Iql.Queryable
         public new DbSet<T, TKey> ExpandCollection<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandCollection(target, filter);
         }
 
         public new DbSet<T, TKey> ExpandCollectionQuery<TTarget>(
             ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandCollectionQuery(expression);
         }

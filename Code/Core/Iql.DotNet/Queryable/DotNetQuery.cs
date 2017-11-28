@@ -11,7 +11,7 @@ using Iql.Queryable.Operations;
 namespace Iql.DotNet.Queryable
 {
     public class DotNetQuery<T> : QueryResult<T>, IDotNetQueryResult
-        where T : class
+        where T : class, IEntity
     {
         public DotNetQuery(IDataContext dataContext)
         {

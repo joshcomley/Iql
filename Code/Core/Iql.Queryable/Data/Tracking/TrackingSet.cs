@@ -11,7 +11,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
-    public class TrackingSet<T> : ITrackingSet where T : class
+    public class TrackingSet<T> : ITrackingSet where T : class, IEntity
     {
         public TrackingSet(IDataContext dataContext, TrackingSetCollection trackingSetCollection)
         {

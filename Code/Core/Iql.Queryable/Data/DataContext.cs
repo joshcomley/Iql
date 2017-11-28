@@ -88,7 +88,7 @@ namespace Iql.Queryable.Data
         }
 
         private bool _initialized;
-        public DbSet<T, TKey> AsDbSet<T, TKey>() where T : class
+        public DbSet<T, TKey> AsDbSet<T, TKey>() where T : class, IEntity
         {
             Initialize();
             return new DbSet<T, TKey>(
@@ -184,7 +184,7 @@ namespace Iql.Queryable.Data
         }
 
         public async Task<T> RefreshEntity<T>(T entity)
-            where T : class
+            where T : class, IEntity
         {
             if (this.IsEntityNew(entity, typeof(T)))
             {
@@ -208,6 +208,7 @@ namespace Iql.Queryable.Data
         }
 
         public T EnsureTypedEntity<T>(object entity)
+            where T : class, IEntity
         {
             return (T)EnsureTypedEntityByType(entity, typeof(T));
         }
@@ -276,6 +277,7 @@ namespace Iql.Queryable.Data
         }
 
         public IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false)
+            where T : class, IEntity
         {
             return (IList<T>)EnsureTypedListByType(responseData, typeof(T), forceNotNull);
         }

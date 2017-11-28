@@ -31,32 +31,32 @@ public class ISiteDataContextBase : DataContext {
 		this.SiteInspections = (DbSet<SiteInspection,int>)this.AsDbSet<SiteInspection, int>();
 		this.UserSites = (DbSet<UserSite,CompositeKey>)this.AsDbSet<UserSite, CompositeKey>();
 		this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
-		this.ODataConfiguration.RegisterEntitySet<ApplicationUser>("Users");
-		this.ODataConfiguration.RegisterEntitySet<Client>("Clients");
-		this.ODataConfiguration.RegisterEntitySet<ClientType>("ClientTypes");
-		this.ODataConfiguration.RegisterEntitySet<DocumentCategory>("DocumentCategories");
-		this.ODataConfiguration.RegisterEntitySet<SiteDocument>("SiteDocuments");
-		this.ODataConfiguration.RegisterEntitySet<FaultActionsTaken>("FaultActionsTaken");
-		this.ODataConfiguration.RegisterEntitySet<FaultCategory>("FaultCategories");
-		this.ODataConfiguration.RegisterEntitySet<FaultDefaultRecommendation>("FaultDefaultRecommendations");
-		this.ODataConfiguration.RegisterEntitySet<FaultRecommendation>("FaultRecommendations");
-		this.ODataConfiguration.RegisterEntitySet<FaultReport>("FaultReports");
-		this.ODataConfiguration.RegisterEntitySet<FaultType>("FaultTypes");
-		this.ODataConfiguration.RegisterEntitySet<Project>("Projects");
-		this.ODataConfiguration.RegisterEntitySet<ReportReceiverEmailAddress>("ReportReceiverEmailAddresses");
-		this.ODataConfiguration.RegisterEntitySet<RiskAssessment>("RiskAssessments");
-		this.ODataConfiguration.RegisterEntitySet<RiskAssessmentAnswer>("RiskAssessmentAnswers");
-		this.ODataConfiguration.RegisterEntitySet<RiskAssessmentQuestion>("RiskAssessmentQuestions");
-		this.ODataConfiguration.RegisterEntitySet<Scaffold>("Scaffolds");
-		this.ODataConfiguration.RegisterEntitySet<ScaffoldInspection>("ScaffoldInspections");
-		this.ODataConfiguration.RegisterEntitySet<ScaffoldLoading>("ScaffoldLoadings");
-		this.ODataConfiguration.RegisterEntitySet<ScaffoldType>("ScaffoldTypes");
-		this.ODataConfiguration.RegisterEntitySet<Site>("Sites");
-		this.ODataConfiguration.RegisterEntitySet<SiteInspection>("SiteInspections");
-		this.ODataConfiguration.RegisterEntitySet<UserSite>("UserSites");
+		this.ODataConfiguration.RegisterEntitySet<ApplicationUser>(nameof(Users));
+		this.ODataConfiguration.RegisterEntitySet<Client>(nameof(Clients));
+		this.ODataConfiguration.RegisterEntitySet<ClientType>(nameof(ClientTypes));
+		this.ODataConfiguration.RegisterEntitySet<DocumentCategory>(nameof(DocumentCategories));
+		this.ODataConfiguration.RegisterEntitySet<SiteDocument>(nameof(SiteDocuments));
+		this.ODataConfiguration.RegisterEntitySet<FaultActionsTaken>(nameof(FaultActionsTaken));
+		this.ODataConfiguration.RegisterEntitySet<FaultCategory>(nameof(FaultCategories));
+		this.ODataConfiguration.RegisterEntitySet<FaultDefaultRecommendation>(nameof(FaultDefaultRecommendations));
+		this.ODataConfiguration.RegisterEntitySet<FaultRecommendation>(nameof(FaultRecommendations));
+		this.ODataConfiguration.RegisterEntitySet<FaultReport>(nameof(FaultReports));
+		this.ODataConfiguration.RegisterEntitySet<FaultType>(nameof(FaultTypes));
+		this.ODataConfiguration.RegisterEntitySet<Project>(nameof(Projects));
+		this.ODataConfiguration.RegisterEntitySet<ReportReceiverEmailAddress>(nameof(ReportReceiverEmailAddresses));
+		this.ODataConfiguration.RegisterEntitySet<RiskAssessment>(nameof(RiskAssessments));
+		this.ODataConfiguration.RegisterEntitySet<RiskAssessmentAnswer>(nameof(RiskAssessmentAnswers));
+		this.ODataConfiguration.RegisterEntitySet<RiskAssessmentQuestion>(nameof(RiskAssessmentQuestions));
+		this.ODataConfiguration.RegisterEntitySet<Scaffold>(nameof(Scaffolds));
+		this.ODataConfiguration.RegisterEntitySet<ScaffoldInspection>(nameof(ScaffoldInspections));
+		this.ODataConfiguration.RegisterEntitySet<ScaffoldLoading>(nameof(ScaffoldLoadings));
+		this.ODataConfiguration.RegisterEntitySet<ScaffoldType>(nameof(ScaffoldTypes));
+		this.ODataConfiguration.RegisterEntitySet<Site>(nameof(Sites));
+		this.ODataConfiguration.RegisterEntitySet<SiteInspection>(nameof(SiteInspections));
+		this.ODataConfiguration.RegisterEntitySet<UserSite>(nameof(UserSites));
 	}
 	
-	public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration;
+	public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration();
 	
 	public override void Configure(EntityConfigurationBuilder builder) {
 		builder.DefineEntity<ApplicationUser>()
