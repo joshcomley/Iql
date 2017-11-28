@@ -8,9 +8,17 @@ namespace Iql.OData.Parsers
         {
         }
 
-        public override ODataOutput Parse(IqlExpression expression)
+        public override ODataOutput Parse(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
-            return new ODataOutput(ParseAsString(expression));
+            return new ODataOutput(ParseAsString(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                ));
         }
     }
 }

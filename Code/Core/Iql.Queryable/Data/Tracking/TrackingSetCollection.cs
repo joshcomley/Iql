@@ -258,15 +258,14 @@ namespace Iql.Queryable.Data.Tracking
         }
         internal void ClearParent(object entity, string property)
         {
-            return;
-            if (!_parents.ContainsKey(entity))
-            {
-                _parents.Add(entity, new Dictionary<string, object>());
-            }
-            if (_parents[entity].ContainsKey(property))
-            {
-                _parents[entity].Remove(property);
-            }
+            //if (!_parents.ContainsKey(entity))
+            //{
+            //    _parents.Add(entity, new Dictionary<string, object>());
+            //}
+            //if (_parents[entity].ContainsKey(property))
+            //{
+            //    _parents[entity].Remove(property);
+            //}
         }
     }
 }

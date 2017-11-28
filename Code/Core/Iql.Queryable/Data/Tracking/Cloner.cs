@@ -9,7 +9,6 @@ using Iql.Queryable.Data.Tracking.Cloning;
 
 namespace Iql.Queryable.Data.Tracking
 {
-    [DoNotConvert]
     public static class Cloner
     {
         public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, bool cloneRelationships = true)

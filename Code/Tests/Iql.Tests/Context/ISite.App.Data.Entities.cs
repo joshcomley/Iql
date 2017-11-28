@@ -7,7 +7,7 @@ using System;
 
 public class UserSiteBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -25,7 +25,7 @@ public class UserSiteBase : IEntity {
 
 public class SiteInspectionBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -43,7 +43,7 @@ public class SiteInspectionBase : IEntity {
 
 public class SiteBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -61,7 +61,7 @@ public class SiteBase : IEntity {
 
 public class ScaffoldTypeBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -79,7 +79,7 @@ public class ScaffoldTypeBase : IEntity {
 
 public class ScaffoldLoadingBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -97,7 +97,7 @@ public class ScaffoldLoadingBase : IEntity {
 
 public class ScaffoldInspectionBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -115,7 +115,7 @@ public class ScaffoldInspectionBase : IEntity {
 
 public class ScaffoldBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -133,7 +133,7 @@ public class ScaffoldBase : IEntity {
 
 public class RiskAssessmentQuestionBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -151,7 +151,7 @@ public class RiskAssessmentQuestionBase : IEntity {
 
 public class RiskAssessmentAnswerBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -169,7 +169,7 @@ public class RiskAssessmentAnswerBase : IEntity {
 
 public class RiskAssessmentBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -187,7 +187,7 @@ public class RiskAssessmentBase : IEntity {
 
 public class ReportReceiverEmailAddressBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -205,7 +205,7 @@ public class ReportReceiverEmailAddressBase : IEntity {
 
 public class ProjectBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -223,7 +223,7 @@ public class ProjectBase : IEntity {
 
 public class FaultTypeBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -241,7 +241,7 @@ public class FaultTypeBase : IEntity {
 
 public class FaultReportBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -259,7 +259,7 @@ public class FaultReportBase : IEntity {
 
 public class FaultRecommendationBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -277,7 +277,7 @@ public class FaultRecommendationBase : IEntity {
 
 public class FaultDefaultRecommendationBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -295,7 +295,7 @@ public class FaultDefaultRecommendationBase : IEntity {
 
 public class FaultCategoryBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -313,7 +313,7 @@ public class FaultCategoryBase : IEntity {
 
 public class FaultActionsTakenBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -331,7 +331,7 @@ public class FaultActionsTakenBase : IEntity {
 
 public class SiteDocumentBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -349,7 +349,7 @@ public class SiteDocumentBase : IEntity {
 
 public class DocumentCategoryBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -367,7 +367,7 @@ public class DocumentCategoryBase : IEntity {
 
 public class ClientTypeBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -385,7 +385,7 @@ public class ClientTypeBase : IEntity {
 
 public class ClientBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -403,7 +403,7 @@ public class ClientBase : IEntity {
 
 public class ApplicationUserBase : IEntity {
 	
-	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; }
+	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -697,17 +697,6 @@ public class Site : SiteBase, IEntity {
 		{
 			_createdByUserId = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("CreatedByUserId", this));
-		}
-	}
-
-	private double _weeklyCharge;
-	public double WeeklyCharge
-	{
-		get => _weeklyCharge;
-		set
-		{
-			_weeklyCharge = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("WeeklyCharge", this));
 		}
 	}
 

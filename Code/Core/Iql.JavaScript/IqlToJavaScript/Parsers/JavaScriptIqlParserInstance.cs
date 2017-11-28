@@ -8,9 +8,17 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
         {
         }
 
-        public override JavaScriptOutput Parse(IqlExpression expression)
+        public override JavaScriptOutput Parse(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
-            return new JavaScriptOutput(ParseAsString(expression));
+            return new JavaScriptOutput(ParseAsString(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                ));
         }
     }
 }

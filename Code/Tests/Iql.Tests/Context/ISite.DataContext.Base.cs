@@ -56,7 +56,7 @@ public class ISiteDataContextBase : DataContext {
 		this.ODataConfiguration.RegisterEntitySet<UserSite>("UserSites");
 	}
 	
-	public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration();
+	public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration;
 	
 	public override void Configure(EntityConfigurationBuilder builder) {
 		builder.DefineEntity<ApplicationUser>()
@@ -528,7 +528,6 @@ public class ISiteDataContextBase : DataContext {
 			.DefineProperty(p => p.Id)
 			.DefineProperty(p => p.ParentId)
 			.DefineProperty(p => p.CreatedByUserId)
-			.DefineProperty(p => p.WeeklyCharge)
 			.DefineProperty(p => p.Address)
 			.DefineProperty(p => p.PostCode)
 			.DefineProperty(p => p.ClientId)

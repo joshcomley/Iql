@@ -1,4 +1,7 @@
 using Iql.JavaScript.QueryToJavaScript;
+#if TypeScript
+using Iql.Parsing;
+#endif
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
 {

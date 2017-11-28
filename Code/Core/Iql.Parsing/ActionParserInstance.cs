@@ -88,9 +88,17 @@ namespace Iql.Parsing
             }
         }
 
-    object IActionParserInstance.Parse(IqlExpression expression)
+    object IActionParserInstance.Parse(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
         {
-            return Parse(expression);
+            return Parse(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                );
         }
         //     }
         //         return "";

@@ -3,6 +3,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Expressions.QueryExpressions;
+#if TypeScript
+using Iql.Parsing;
+#endif
 
 namespace Iql.Queryable
 {
