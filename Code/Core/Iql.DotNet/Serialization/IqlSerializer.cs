@@ -12,7 +12,10 @@ namespace Iql.DotNet.Serialization
         static IqlSerializer()
         {
             var allTypes = typeof(IqlExpression).GetTypeInfo().Assembly.GetTypes();
-            IqlTypes = allTypes.Where(t => typeof(IqlExpression).GetTypeInfo().IsAssignableFrom(t))
+            IqlTypes = allTypes.Where(t =>
+                    typeof(IqlExpression).GetTypeInfo().IsAssignableFrom(t) &&
+                    t != typeof(IqlFinalExpression<>)
+                )
                 .ToArray();
         }
 

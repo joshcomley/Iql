@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.DotNet;
@@ -131,7 +132,7 @@ namespace Iql.Tests
             {
                 Id = 2,
                 Name = "Something else",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Name = "Client 1"}
                 })
@@ -158,7 +159,7 @@ namespace Iql.Tests
             {
                 Id = 2,
                 Name = "Something else",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 1, Name = "Client 1"}
                 })
@@ -170,7 +171,7 @@ namespace Iql.Tests
             {
                 Id = 3,
                 Name = "Another",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 2, Name = "Client 2"}
                 })
@@ -278,7 +279,7 @@ namespace Iql.Tests
             {
                 Id = 2,
                 Name = "Something else",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 1, Name = "Client 1"}
                 })
@@ -288,7 +289,7 @@ namespace Iql.Tests
             {
                 Id = 3,
                 Name = "Another",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 2, Name = "Client 2"}
                 })
@@ -298,14 +299,14 @@ namespace Iql.Tests
             {
                 Id = 41,
                 Name = "Another",
-                Clients = new List<Client>()
+                Clients = new ObservableCollection<Client>()
             };
             Db.ClientTypes.Add(clientType3);
             var clientType4 = new ClientType
             {
                 Id = 42,
                 Name = "A fourth",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 21, Name = "Client 21"}
                 })
@@ -315,7 +316,7 @@ namespace Iql.Tests
             {
                 Id = 43,
                 Name = "A fifth",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 22, Name = "Client 22"},
                     new Client {Id = 23, Name = "Client 23"}
@@ -427,7 +428,7 @@ namespace Iql.Tests
             {
                 Id = 2,
                 Name = "Something else",
-                Clients = new List<Client>(new[]
+                Clients = new ObservableCollection<Client>(new[]
                 {
                     new Client {Id = 1, Name = "Client 1"}
                 })
@@ -437,7 +438,7 @@ namespace Iql.Tests
             {
                 Id = 3,
                 Name = "Another",
-                Clients = new List<Client>()
+                Clients = new ObservableCollection<Client>()
             };
             Db.ClientTypes.Add(clientType2);
             await Db.SaveChanges();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,37 +7,67 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class PagingInfo
+    public class RelatedList<T> : IList<T> where T : class
     {
-        public PagingInfo(int skippedSoFar, int totalCount, int pageSize, int page, int pageCount)
+        public IEnumerator<T> GetEnumerator()
         {
-            SkippedSoFar = skippedSoFar;
-            TotalCount = totalCount;
-            PageSize = pageSize;
-            Page = page;
-            PageCount = pageCount;
+            throw new NotImplementedException();
         }
 
-        public int SkippedSoFar { get; set; }
-        public int TotalCount { get; set; }
-        public int PageSize { get; private set; }
-        public int Page { get; set; }
-        public int PageCount { get; private set; }
-
-        public void UpdatePageSize(int pageSize)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            PageSize = pageSize;
-            Page = SkippedSoFar / PageSize;
-            var pageCount = 0;
-            var i = TotalCount;
-            while (i > 0)
-            {
-                pageCount++;
-                i -= pageSize;
-            }
-            PageCount = pageCount;
+            return GetEnumerator();
+        }
+
+        public void Add(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count { get; }
+        public bool IsReadOnly { get; }
+        public int IndexOf(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T this[int index]
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
     }
+
     public class DbList<T> : List<T> where T : class
     {
         public DbQueryable<T> SourceQueryable { get; set; }

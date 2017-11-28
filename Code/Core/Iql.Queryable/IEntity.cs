@@ -1,12 +1,13 @@
 using Iql.Queryable.Data.Validation;
+using Iql.Queryable.Events;
 
-namespace Iql.OData.Data
+namespace Iql.Queryable
 {
     public interface IEntity
     {
         bool OnSaving();
         bool OnDeleting();
         EntityValidationResult ValidateEntity();
-        ODataDataStore GetODataDataStore();
+        EventEmitter<IPropertyChangeEvent> PropertyChanged { get; }
     }
 }
