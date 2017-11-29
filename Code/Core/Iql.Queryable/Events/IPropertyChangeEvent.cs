@@ -7,6 +7,7 @@ namespace Iql.Queryable.Events
         string PropertyName { get; }
         object Entity { get; }
         Type EntityType { get; }
-
+        object OldValue { get; }
+        object NewValue { get; }
     }
 }

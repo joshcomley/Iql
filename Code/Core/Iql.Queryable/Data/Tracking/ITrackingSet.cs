@@ -60,6 +60,7 @@ namespace Iql.Queryable.Data.Tracking
 
     public interface ITrackingSet
     {
+        EntityState GetEntityState(object entity);
         void EnsureIntegrity();
         IEnumerable<object> TrackedEntites();
         Type EntityType { get; }

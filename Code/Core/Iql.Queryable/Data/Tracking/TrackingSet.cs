@@ -11,8 +11,9 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
-    public class TrackingSet<T> : ITrackingSet where T : class, IEntity
+    public class TrackingSet<T> : ITrackingSet where T : class
     {
+        private Dictionary<T, EntityState> EntityStates { get; } = new Dictionary<T, EntityState>();
         public TrackingSet(IDataContext dataContext, TrackingSetCollection trackingSetCollection)
         {
             DataContext = dataContext;
@@ -130,10 +131,11 @@ namespace Iql.Queryable.Data.Tracking
             if (!found)
             {
                 Set.Add(entity);
-                entity.PropertyChanged.Subscribe(pc =>
+                (entity as IEntity)?.PropertyChanged?.Subscribe(pc =>
                 {
-                    // Do your damage...
-                    int a = 0;
+                    var entityState = GetEntityState(entity);
+                    var oldState = entityState.GetPropertyState(pc.PropertyName);
+                    entityState.SetPropertyState(pc.PropertyName, oldState == null ? pc.OldValue : oldState.OldValue, pc.NewValue);
                 });
                 Clone.Add(clone);
                 _trackedEntityClones.Add(entity, clone);
@@ -368,7 +370,7 @@ namespace Iql.Queryable.Data.Tracking
                 var clone = FindClone(entity);
                 if (clone != null)
                 {
-                    var entityState = GetEntityState(queue, entity, clone, typeof(T));
+                    var entityState = GetEntityStateOld(queue, entity, clone, typeof(T));
                     if (entityState != null)
                     {
                         updates.Add(new UpdateEntityOperation<T>(entity, DataContext, entityState));
@@ -399,12 +401,21 @@ namespace Iql.Queryable.Data.Tracking
             }
             if (hasChanged)
             {
-                propertyChange = new PropertyChange(property, oldValue, newValue);
+                propertyChange = new PropertyChange(property, oldValue, newValue, null);
             }
             return propertyChange;
         }
 
-        private EntityState GetEntityState(List<IQueuedOperation> queue, T entity, object clone, Type entityType)
+        public EntityState GetEntityState(T entity)
+        {
+            if (!EntityStates.ContainsKey(entity))
+            {
+                EntityStates.Add(entity, new EntityState(entity, typeof(T), EntityConfiguration));
+            }
+            return EntityStates[entity];
+        }
+
+        private EntityState GetEntityStateOld(List<IQueuedOperation> queue, T entity, object clone, Type entityType)
         {
             var changedProperties = new List<PropertyChange>();
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entityType);
@@ -597,7 +608,9 @@ namespace Iql.Queryable.Data.Tracking
 
             if (changedProperties.Any())
             {
-                return new EntityState(entity, entityType, changedProperties);
+                var state = new EntityState(entity, entityType, EntityConfiguration);
+                state.ChangedProperties.AddRange(changedProperties);
+                return state;
             }
             return null;
         }
@@ -664,6 +677,11 @@ namespace Iql.Queryable.Data.Tracking
                 return false;
             }
             return true;
+        }
+
+        EntityState ITrackingSet.GetEntityState(object entity)
+        {
+            return GetEntityState((T)entity);
         }
 
         public void EnsureIntegrity()

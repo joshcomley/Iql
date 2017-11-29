@@ -24,7 +24,7 @@ namespace Iql.Queryable.Data.DataStores
         public List<IQueuedOperation> Queue { get; set; } = new List<IQueuedOperation>();
 
         public virtual AddEntityResult<TEntity> Add<TEntity>(AddEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity
+            where TEntity : class
         {
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, operation.EntityType);
@@ -126,7 +126,7 @@ namespace Iql.Queryable.Data.DataStores
 
         public virtual UpdateEntityResult<TEntity> Update<TEntity>(
             UpdateEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity
+            where TEntity : class
         {
             var result = new UpdateEntityResult<TEntity>(true, operation);
             Queue.Add(
@@ -138,7 +138,7 @@ namespace Iql.Queryable.Data.DataStores
 
         public virtual DeleteEntityResult<TEntity> Delete<TEntity>(
             DeleteEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity
+            where TEntity : class
         {
             var result = new DeleteEntityResult<TEntity>(true, operation);
             Queue.Add(
@@ -149,19 +149,19 @@ namespace Iql.Queryable.Data.DataStores
         }
 
         public virtual async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
-            QueuedAddEntityOperation<TEntity> operation) where TEntity : class, IEntity
+            QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
         public virtual async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
-            QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class, IEntity
+            QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
         public virtual async Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
-            QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class, IEntity
+            QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
@@ -172,7 +172,7 @@ namespace Iql.Queryable.Data.DataStores
         }
 
         public virtual async Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
-            where TEntity : class, IEntity
+            where TEntity : class
         {
             if (!operation.Queryable.HasDefaults)
             {
@@ -264,7 +264,7 @@ namespace Iql.Queryable.Data.DataStores
         }
 
         public virtual async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
-            where TEntity : class, IEntity
+            where TEntity : class
         {
             throw new NotImplementedException();
         }
@@ -359,7 +359,7 @@ namespace Iql.Queryable.Data.DataStores
 
         public virtual async Task Perform<TEntity>(
             IQueuedOperation operation,
-            SaveChangesResult saveChangesResult) where TEntity : class, IEntity
+            SaveChangesResult saveChangesResult) where TEntity : class
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             ICrudResult result = null;

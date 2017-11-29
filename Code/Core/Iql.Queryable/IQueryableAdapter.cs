@@ -9,8 +9,8 @@ namespace Iql.Queryable
     {
         //    generateQuery(): TQueryResult;
 
-        TQueryResult ToQueryResult<TEntity>(IQueryable<TEntity> queryable, TQueryResult data) where TEntity : class, IEntity;
-        new TQueryResult NewQueryData<TEntity>(IQueryable<TEntity> queryable) where TEntity : class, IEntity;
+        TQueryResult ToQueryResult<TEntity>(IQueryable<TEntity> queryable, TQueryResult data) where TEntity : class;
+        new TQueryResult NewQueryData<TEntity>(IQueryable<TEntity> queryable) where TEntity : class;
 
 
         void RegisterApplicator<TOperation>(Func<IQueryOperationApplicator<TOperation, TQueryResult>> resolve)

@@ -14,28 +14,28 @@ namespace Iql.Queryable.Data.DataStores
         TrackingSetCollection GetTracking();
 
         AddEntityResult<TEntity> Add<TEntity>(AddEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         UpdateEntityResult<TEntity> Update<TEntity>(UpdateEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         DeleteEntityResult<TEntity> Delete<TEntity>(DeleteEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(QueuedDeleteEntityOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
-            where TEntity : class, IEntity;
+            where TEntity : class;
 
         Task<SaveChangesResult> SaveChanges(SaveChangesOperation operation);
 

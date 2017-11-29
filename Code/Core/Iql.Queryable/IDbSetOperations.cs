@@ -9,7 +9,7 @@ using Iql.Parsing;
 
 namespace Iql.Queryable
 {
-    public interface IDbSetOperations<T, in TKey> where T : class, IEntity
+    public interface IDbSetOperations<T, in TKey> where T : class
     {
         AddEntityResult<T> Add(T entity);
         DeleteEntityResult<T> Delete(T entity);

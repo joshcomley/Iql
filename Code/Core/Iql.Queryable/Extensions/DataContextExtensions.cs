@@ -45,7 +45,7 @@ namespace Iql.Queryable.Extensions
                 var propertyValue = entity.GetPropertyValue(property.Name);
                 if (propertyValue != null)
                 {
-                    properties.Add(new PropertyChange(property, null, propertyValue));
+                    properties.Add(new PropertyChange(property, null, propertyValue, null));
                 }
             }
             return properties;

@@ -16,7 +16,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class, IEntity
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
     {
         public bool TrackEntities { get; set; } = true;
         public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
@@ -500,7 +500,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandCollectionCount<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return ExpandCollectionCountQuery(new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(target));
         }
@@ -513,7 +513,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandCollectionCountQuery<TTarget>(
             ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return Then(new ExpandCountOperation<T, IEnumerable<TTarget>, TTarget>(expression));
         }
@@ -532,7 +532,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> Expand<TTarget>(
             Expression<Func<T, TTarget>> target)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return ExpandQuery(new ExpandQueryExpression<T, TTarget, TTarget>(target));
         }
@@ -593,7 +593,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandQuery<TTarget>(
             ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
         }
@@ -601,7 +601,7 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandSingle<TTarget>(
             Expression<Func<T, TTarget>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return ExpandSingleQuery(
                 new ExpandQueryExpression<T, TTarget, TTarget>(
@@ -612,7 +612,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandSingleQuery<TTarget>(
             ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
         }
@@ -620,7 +620,7 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandCollection<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return ExpandCollectionQuery(
                 new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(
@@ -631,7 +631,7 @@ namespace Iql.Queryable
 
         public DbQueryable<T> ExpandCollectionQuery<TTarget>(
             ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
-            where TTarget : class, IEntity
+            where TTarget : class
         {
             return Then(new ExpandOperation<T, IEnumerable<TTarget>, TTarget>(expression));
         }
