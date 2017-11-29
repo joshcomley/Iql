@@ -8,6 +8,7 @@ using Iql.Queryable;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Events;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -491,6 +492,21 @@ namespace Iql.Tests
             // Trigger sanitisation
             var changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
+        }
+
+        [TestMethod]
+        public async Task PropertyChangeEventShouldFireWhenAPropertyIsChanged()
+        {
+            var clientTypes = AddClientTypes();
+            IPropertyChangeEvent propertyChangeEvent = null;
+            clientTypes.ClientType1.PropertyChanged.Subscribe(pc =>
+            {
+                propertyChangeEvent = pc;
+            });
+            clientTypes.ClientType1.Name = "Me";
+            Assert.IsNotNull(propertyChangeEvent);
+            Assert.AreEqual(nameof(ClientType.Name), propertyChangeEvent.PropertyName);
+            Assert.AreEqual(clientTypes.ClientType1, propertyChangeEvent.Entity);
         }
 
         [TestMethod]

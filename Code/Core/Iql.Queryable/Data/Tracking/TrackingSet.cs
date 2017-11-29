@@ -130,6 +130,11 @@ namespace Iql.Queryable.Data.Tracking
             if (!found)
             {
                 Set.Add(entity);
+                entity.PropertyChanged.Subscribe(pc =>
+                {
+                    // Do your damage...
+                    int a = 0;
+                });
                 Clone.Add(clone);
                 _trackedEntityClones.Add(entity, clone);
             }

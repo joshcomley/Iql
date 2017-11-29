@@ -45,7 +45,7 @@ namespace Iql.Queryable
 
         public new DbSet<T, TKey> ExpandCollectionCount<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandCollectionCount(target);
         }
@@ -58,7 +58,7 @@ namespace Iql.Queryable
 
         public new DbSet<T, TKey> ExpandCollectionCountQuery<TTarget>(
             ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandCollectionCountQuery(expression);
         }
@@ -75,7 +75,7 @@ namespace Iql.Queryable
 
         public new DbSet<T, TKey> Expand<TTarget>(
             Expression<Func<T, TTarget>> target)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.Expand(target);
         }
@@ -87,7 +87,7 @@ namespace Iql.Queryable
 
         public new DbSet<T, TKey> ExpandQuery<TTarget>(
             ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class
+            where TTarget : class, IEntity
         {
             return (DbSet<T, TKey>)base.ExpandQuery(expression);
         }
