@@ -199,93 +199,192 @@ namespace Iql.Tests
             Assert.AreEqual(nameState, change);
         }
 
-        //[TestMethod]
-        //public async Task AddingAnEntityPersistsToDb()
-        //{
-        //    Assert.AreEqual(0, AppDbContext.InMemoryDb.ClientTypes.Count);
-        //    Db.ClientTypes.Add(new ClientType() { Id = 1 });
-        //    Assert.AreEqual(1, Db.DataStore.Queue.Count);
-        //    await Db.SaveChanges();
-        //    Assert.AreEqual(0, Db.DataStore.Queue.Count);
-        //    Assert.AreEqual(1, AppDbContext.InMemoryDb.ClientTypes.Count);
-        //}
+        [TestMethod]
+        public async Task AddingAnEntityPersistsToDb()
+        {
+            Assert.AreEqual(0, AppDbContext.InMemoryDb.ClientTypes.Count);
+            Db.ClientTypes.Add(new ClientType() { Id = 1 });
+            Assert.AreEqual(1, Db.DataStore.Queue.Count);
+            await Db.SaveChanges();
+            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(1, AppDbContext.InMemoryDb.ClientTypes.Count);
+        }
 
-        //[TestMethod]
-        //public async Task TestWithKey()
-        //{
-        //    var id = 1;
-        //    Db.ClientTypes.Add(new ClientType { Id = id });
-        //    Db.ClientTypes.Add(new ClientType { Id = id + 1 });
-        //    await Db.SaveChanges();
-        //    var clientType = await Db.ClientTypes.WithKey(id);
-        //    Assert.IsNotNull(clientType);
-        //    Assert.AreEqual(clientType.Id, id);
-        //}
+        [TestMethod]
+        public async Task TestWithKey()
+        {
+            var id = 1;
+            Db.ClientTypes.Add(new ClientType { Id = id });
+            Db.ClientTypes.Add(new ClientType { Id = id + 1 });
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.WithKey(id);
+            Assert.IsNotNull(clientType);
+            Assert.AreEqual(clientType.Id, id);
+        }
 
-        //[TestMethod]
-        //public async Task TestWhere()
-        //{
-        //    var id = 1;
-        //    Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
-        //    var id2 = id + 1;
-        //    Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
-        //    await Db.SaveChanges();
-        //    var clientType = await Db.ClientTypes.Where(ct => ct.Name == "Second").Single();
-        //    Assert.IsNotNull(clientType);
-        //    Assert.AreEqual(clientType.Id, id2);
-        //}
+        [TestMethod]
+        public async Task TestWhere()
+        {
+            var id = 1;
+            Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
+            var id2 = id + 1;
+            Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.Where(ct => ct.Name == "Second").Single();
+            Assert.IsNotNull(clientType);
+            Assert.AreEqual(clientType.Id, id2);
+        }
 
-        //[TestMethod]
-        //public async Task TestWhereDifferentCase()
-        //{
-        //    var id = 1;
-        //    Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
-        //    var id2 = id + 1;
-        //    Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
-        //    await Db.SaveChanges();
-        //    var clientType = await Db.ClientTypes.Where(ct => ct.Name == "SECOND").Single();
-        //    Assert.IsNotNull(clientType);
-        //    Assert.AreEqual(clientType.Id, id2);
-        //}
+        [TestMethod]
+        public async Task TestWhereDifferentCase()
+        {
+            var id = 1;
+            Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
+            var id2 = id + 1;
+            Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.Where(ct => ct.Name == "SECOND").Single();
+            Assert.IsNotNull(clientType);
+            Assert.AreEqual(clientType.Id, id2);
+        }
 
-        //[TestMethod]
-        //public async Task ChangingAnEntity()
-        //{
-        //    var entity = new ClientType { Id = 2 };
-        //    Db.ClientTypes.Add(entity);
-        //    await Db.SaveChanges();
-        //    var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
-        //    Assert.AreEqual(entity.Id, clientType.Id);
-        //    var changes = Db.DataStore.GetChanges().ToList();
-        //    Assert.AreEqual(0, changes.Count);
-        //    clientType.Name = "Something else";
-        //    changes = Db.DataStore.GetChanges().ToList();
-        //    Assert.AreEqual(1, changes.Count);
-        //    var change = changes[0];
-        //    Assert.AreEqual(QueuedOperationType.Update, change.Type);
-        //    var updateOperation = change as QueuedUpdateEntityOperation<ClientType>;
-        //    Assert.IsNotNull(updateOperation);
-        //    Assert.AreEqual(1, updateOperation.Operation.EntityState.ChangedProperties.Count);
-        //    var property = updateOperation.Operation.EntityState.ChangedProperties[0];
-        //    Assert.AreEqual(nameof(ClientType.Name), property.Property.Name);
-        //    Assert.AreEqual(0, property.ChildChangedProperties.Count);
-        //    Assert.AreEqual(0, property.EnumerableChangedProperties.Count);
-        //}
+        [TestMethod]
+        public async Task ChangingAnEntity()
+        {
+            var entity = new ClientType { Id = 2 };
+            Db.ClientTypes.Add(entity);
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
+            Assert.AreEqual(entity.Id, clientType.Id);
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
+            clientType.Name = "Something else";
+            changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(1, changes.Count);
+            var change = changes[0];
+            Assert.AreEqual(QueuedOperationType.Update, change.Type);
+            var updateOperation = change as QueuedUpdateEntityOperation<ClientType>;
+            Assert.IsNotNull(updateOperation);
+            Assert.AreEqual(1, updateOperation.Operation.EntityState.ChangedProperties.Count);
+            var property = updateOperation.Operation.EntityState.ChangedProperties[0];
+            Assert.AreEqual(nameof(ClientType.Name), property.Property.Name);
+            Assert.AreEqual(0, property.ChildChangedProperties.Count);
+            Assert.AreEqual(0, property.EnumerableChangedProperties.Count);
+        }
 
-        //[TestMethod]
-        //public async Task ChangingAnEntityWithTheSameValueShouldResultInNoUpdates()
-        //{
-        //    var entity = new ClientType { Id = 2, Name = "Something else" };
-        //    Db.ClientTypes.Add(entity);
-        //    await Db.SaveChanges();
-        //    var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
-        //    Assert.AreEqual(entity.Id, clientType.Id);
-        //    var changes = Db.DataStore.GetChanges().ToList();
-        //    Assert.AreEqual(0, changes.Count);
-        //    clientType.Name = "Something else";
-        //    changes = Db.DataStore.GetChanges().ToList();
-        //    Assert.AreEqual(0, changes.Count);
-        //}
+        [TestMethod]
+        public async Task ChangingAnEntityWithTheSameValueShouldResultInNoUpdates()
+        {
+            var entity = new ClientType { Id = 2, Name = "Something else" };
+            Db.ClientTypes.Add(entity);
+            await Db.SaveChanges();
+            var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
+            Assert.AreEqual(entity.Id, clientType.Id);
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
+            clientType.Name = "Something else";
+            changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
+        }
+
+        [TestMethod]
+        public async Task FetchingEntitiesWithANewDataContextShouldReturnDifferentObjectsThanWereInserted()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            Db = new AppDbContext();
+            var entity1 = await Db.ClientTypes.WithKey(2);
+            var entity2 = await Db.ClientTypes.WithKey(3);
+            Assert.AreNotEqual(entity1, clientTypes.ClientType1);
+            Assert.AreNotEqual(entity2, clientTypes.ClientType2);
+        }
+
+        [TestMethod]
+        public async Task FetchingEntitiesWithTheSameDataContextShouldReturnTheSameObjectsThatWereInserted()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var entity1 = await Db.ClientTypes.WithKey(2);
+            var entity2 = await Db.ClientTypes.WithKey(3);
+            Assert.AreEqual(entity1, clientTypes.ClientType1);
+            Assert.AreEqual(entity2, clientTypes.ClientType2);
+        }
+
+        [TestMethod]
+        public async Task AttemptingToAddAnEntityThatAlreadyExistsShouldNotThrowAnException()
+        {
+            var clientTypes = AddClientTypes();
+            await Db.SaveChanges();
+            var addEntityResult = Db.ClientTypes.Add(clientTypes.ClientType2);
+            await Db.SaveChanges();
+            Assert.IsNull(addEntityResult);
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithAnAttachedEntityWithWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
+        {
+            AddClientTypes();
+            await Db.SaveChanges();
+            var exceptionThrown = false;
+            try
+            {
+                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 2, Name = "This should cause an error" } });
+            }
+            catch (EntityAlreadyTrackedException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithAnAttachedEntityWithANewKeyShouldNotThrowException()
+        {
+            AddClientTypes();
+            await Db.SaveChanges();
+            var exceptionThrown = false;
+            try
+            {
+                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 4, Name = "This should not cause an error" } });
+            }
+            catch (EntityAlreadyTrackedException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsFalse(exceptionThrown);
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityWithAnAttachedEntityWithWithNoKeyKeyShouldNotThrowException()
+        {
+            AddClientTypes();
+            await Db.SaveChanges();
+            var exceptionThrown = false;
+            try
+            {
+                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Name = "This should not cause an error" } });
+            }
+            catch (EntityAlreadyTrackedException)
+            {
+                exceptionThrown = true;
+            }
+            Assert.IsFalse(exceptionThrown);
+        }
+
+        [TestMethod]
+        public async Task PropertyChangeEventShouldFireWhenAPropertyIsChanged()
+        {
+            var clientTypes = AddClientTypes();
+            IPropertyChangeEvent propertyChangeEvent = null;
+            clientTypes.ClientType1.PropertyChanged.Subscribe(pc =>
+            {
+                propertyChangeEvent = pc;
+            });
+            clientTypes.ClientType1.Name = "Me";
+            Assert.IsNotNull(propertyChangeEvent);
+            Assert.AreEqual(nameof(ClientType.Name), propertyChangeEvent.PropertyName);
+            Assert.AreEqual(clientTypes.ClientType1, propertyChangeEvent.Entity);
+        }
 
         //[TestMethod]
         //public async Task AddingANewEntityWithChildCollectionShouldResultInASingleAddEntityOperation()
@@ -394,90 +493,6 @@ namespace Iql.Tests
         //}
 
         //[TestMethod]
-        //public async Task FetchingEntitiesWithANewDataContextShouldReturnDifferentObjectsThatWereInserted()
-        //{
-        //    var clientTypes = AddClientTypes();
-        //    await Db.SaveChanges();
-        //    Db = new AppDbContext();
-        //    var entity1 = await Db.ClientTypes.WithKey(2);
-        //    var entity2 = await Db.ClientTypes.WithKey(3);
-        //    Assert.AreNotEqual(entity1, clientTypes.ClientType1);
-        //    Assert.AreNotEqual(entity2, clientTypes.ClientType2);
-        //}
-
-        //[TestMethod]
-        //public async Task FetchingEntitiesWithTheSameDataContextShouldReturnTheSameObjectsThatWereInserted()
-        //{
-        //    var clientTypes = AddClientTypes();
-        //    await Db.SaveChanges();
-        //    var entity1 = await Db.ClientTypes.WithKey(2);
-        //    var entity2 = await Db.ClientTypes.WithKey(3);
-        //    Assert.AreEqual(entity1, clientTypes.ClientType1);
-        //    Assert.AreEqual(entity2, clientTypes.ClientType2);
-        //}
-
-        //[TestMethod]
-        //public async Task AttemptingToAddAnEntityThatAlreadyExistsShouldNotThrowAnException()
-        //{
-        //    var clientTypes = AddClientTypes();
-        //    await Db.SaveChanges();
-        //    var addEntityResult = Db.ClientTypes.Add(clientTypes.ClientType2);
-        //    await Db.SaveChanges();
-        //    Assert.IsNull(addEntityResult);
-        //}
-
-        //[TestMethod]
-        //public async Task AddingAnEntityWithAnAttachedEntityWithWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
-        //{
-        //    AddClientTypes();
-        //    await Db.SaveChanges();
-        //    var exceptionThrown = false;
-        //    try
-        //    {
-        //        Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 2, Name = "This should cause an error" } });
-        //    }
-        //    catch (EntityAlreadyTrackedException)
-        //    {
-        //        exceptionThrown = true;
-        //    }
-        //    Assert.IsTrue(exceptionThrown);
-        //}
-
-        //[TestMethod]
-        //public async Task AddingAnEntityWithAnAttachedEntityWithANewKeyShouldNotThrowException()
-        //{
-        //    AddClientTypes();
-        //    await Db.SaveChanges();
-        //    var exceptionThrown = false;
-        //    try
-        //    {
-        //        Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 4, Name = "This should not cause an error" } });
-        //    }
-        //    catch (EntityAlreadyTrackedException)
-        //    {
-        //        exceptionThrown = true;
-        //    }
-        //    Assert.IsFalse(exceptionThrown);
-        //}
-
-        //[TestMethod]
-        //public async Task AddingAnEntityWithAnAttachedEntityWithWithNoKeyKeyShouldNotThrowException()
-        //{
-        //    AddClientTypes();
-        //    await Db.SaveChanges();
-        //    var exceptionThrown = false;
-        //    try
-        //    {
-        //        Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Name = "This should not cause an error" } });
-        //    }
-        //    catch (EntityAlreadyTrackedException)
-        //    {
-        //        exceptionThrown = true;
-        //    }
-        //    Assert.IsFalse(exceptionThrown);
-        //}
-
-        //[TestMethod]
         //public async Task ChangingAChildObjectsParentIdForOneToManyShouldSanitiseTheParentObjectsCollection1()
         //{
         //    var clientTypes = AddClientTypes();
@@ -581,21 +596,6 @@ namespace Iql.Tests
         //    // Trigger sanitisation
         //    var changes = Db.DataStore.GetChanges().ToList();
         //    Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
-        //}
-
-        //[TestMethod]
-        //public async Task PropertyChangeEventShouldFireWhenAPropertyIsChanged()
-        //{
-        //    var clientTypes = AddClientTypes();
-        //    IPropertyChangeEvent propertyChangeEvent = null;
-        //    clientTypes.ClientType1.PropertyChanged.Subscribe(pc =>
-        //    {
-        //        propertyChangeEvent = pc;
-        //    });
-        //    clientTypes.ClientType1.Name = "Me";
-        //    Assert.IsNotNull(propertyChangeEvent);
-        //    Assert.AreEqual(nameof(ClientType.Name), propertyChangeEvent.PropertyName);
-        //    Assert.AreEqual(clientTypes.ClientType1, propertyChangeEvent.Entity);
         //}
 
         //[TestMethod]

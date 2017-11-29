@@ -367,14 +367,19 @@ namespace Iql.Queryable.Data.Tracking
             Set.ForEach(entity =>
             {
                 //let ctor = entity["__ctor"]();
-                var clone = FindClone(entity);
-                if (clone != null)
+                //var clone = FindClone(entity);
+                //if (clone != null)
+                //{
+                //    var entityState = GetEntityStateOld(queue, entity, clone, typeof(T));
+                //    if (entityState != null)
+                //    {
+                //        updates.Add(new UpdateEntityOperation<T>(entity, DataContext, entityState));
+                //    }
+                //}
+                var entityState = GetEntityState(entity);
+                if (entityState.ChangedProperties.Any())
                 {
-                    var entityState = GetEntityStateOld(queue, entity, clone, typeof(T));
-                    if (entityState != null)
-                    {
-                        updates.Add(new UpdateEntityOperation<T>(entity, DataContext, entityState));
-                    }
+                    updates.Add(new UpdateEntityOperation<T>(entity, DataContext, entityState));
                 }
             });
             if (reset)
