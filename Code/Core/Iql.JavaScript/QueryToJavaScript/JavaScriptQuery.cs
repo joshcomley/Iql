@@ -18,7 +18,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             Queryable = queryable;
             Context = context;
         }
-        public StringBuilder Query { get; set; }
+        public StringBuilder Query { get; set; } = new StringBuilder();
         public string GetDataSetObjectName(Type type)
         {
             return "dataSet_" + type.Name;
