@@ -35,8 +35,12 @@ namespace Iql.Queryable
         {
             if (operation.Expression == null)
             {
+                var queryExpression = operation.GetExpression();
+#if TypeScript
+                queryExpression.EvaluateContext = queryExpression.EvaluateContext ?? operation.EvaluateContext;
+#endif
                 return QueryExpressionToIqlExpressionTree<T>(
-                    operation.GetExpression()
+                    queryExpression
                 );
             }
             return operation.Expression;

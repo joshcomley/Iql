@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Parsing;
 using Iql.Queryable;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
@@ -253,6 +254,8 @@ namespace Iql.Tests
             var entity = new ClientType { Id = 2 };
             Db.ClientTypes.Add(entity);
             await Db.SaveChanges();
+            Db.EvaluateContext = new EvaluateContext();
+            Db.EvaluateContext.Evaluate = s => entity;
             var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
             Assert.AreEqual(entity.Id, clientType.Id);
             var changes = Db.DataStore.GetChanges().ToList();
@@ -277,6 +280,8 @@ namespace Iql.Tests
             var entity = new ClientType { Id = 2, Name = "Something else" };
             Db.ClientTypes.Add(entity);
             await Db.SaveChanges();
+            Db.EvaluateContext = new EvaluateContext();
+            Db.EvaluateContext.Evaluate = s => entity;
             var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
             Assert.AreEqual(entity.Id, clientType.Id);
             var changes = Db.DataStore.GetChanges().ToList();

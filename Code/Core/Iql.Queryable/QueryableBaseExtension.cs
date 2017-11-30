@@ -77,7 +77,7 @@ namespace Iql.Queryable
             ApplyOperation(operation, dataContext, newQueryData, applicator);
             return new IqlReducer(
 #if TypeScript
-                    operation.EvaluateContext ?? Queryable.EvaluateContext
+                    operation.EvaluateContext ?? Queryable.EvaluateContext ?? dataContext.EvaluateContext
 #endif
                 // TODO: Add reducer registry
 
@@ -104,6 +104,9 @@ namespace Iql.Queryable
         private void ApplyOperation(IQueryOperation operation, IDataContext dataContext,
             IQueryResultBase newQueryData, IQueryOperationApplicatorBase applicator)
         {
+#if TypeScript
+            operation.EvaluateContext = operation.EvaluateContext ?? dataContext.EvaluateContext;
+#endif
             var contextArgs = new List<object>();
             contextArgs.Add(dataContext);
             contextArgs.Add(operation);
