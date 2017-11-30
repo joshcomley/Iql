@@ -18,6 +18,13 @@ namespace Iql.DotNet.Queryable.Applicators
             IEnumerable<TEntity> typedList)
         {
             var expand = context.Operation;
+            var dotNetQueryResult = context.Data;
+            return ApplyExpand(typedList, expand, dotNetQueryResult);
+        }
+
+        internal static IEnumerable<TEntity> ApplyExpand<TEntity>(IEnumerable<TEntity> typedList, IExpandOperation expand,
+            IDotNetQueryResult dotNetQueryResult)
+        {
             for (var j = 0; j < expand.ExpandDetails.Count; j++)
             {
                 var detail = expand.ExpandDetails[j];
@@ -29,8 +36,8 @@ namespace Iql.DotNet.Queryable.Applicators
                 var constraint = detail.Relationship.Constraints.First();
                 var thisConstraint = detail.IsTarget ? constraint.TargetKeyProperty : constraint.SourceKeyProperty;
                 var otherConstraint = detail.IsTarget ? constraint.SourceKeyProperty : constraint.TargetKeyProperty;
-                var targetList = context.Data.DataSetByType(targetType);
-                var sourceList = (IList)typedList;
+                var targetList = dotNetQueryResult.DataSetByType(targetType);
+                var sourceList = (IList) typedList;
                 if (detail.IsTarget)
                 {
                     var temp = targetList;
@@ -41,7 +48,7 @@ namespace Iql.DotNet.Queryable.Applicators
                 {
                     case RelationshipType.OneToOne:
                         typedList.ExpandOneToOne(
-                            context.Data.DataSetByType(targetType),
+                            dotNetQueryResult.DataSetByType(targetType),
                             thisEnd.Property.PropertyName,
                             otherEnd.Property.PropertyName,
                             thisConstraint.PropertyName,
@@ -61,10 +68,14 @@ namespace Iql.DotNet.Queryable.Applicators
                         typedList.ExpandManyToMany(
                             sourceType,
                             targetType,
-                            context.Data.DataSetByType(targetType),
-                            context.Data.GetDataSetObjectName(manyToMany.PivotType),
-                            detail.IsTarget ? manyToMany.PivotTargetKeyProperty.PropertyName : manyToMany.PivotSourceKeyProperty.PropertyName,
-                            detail.IsTarget ? manyToMany.PivotSourceKeyProperty.PropertyName : manyToMany.PivotTargetKeyProperty.PropertyName,
+                            dotNetQueryResult.DataSetByType(targetType),
+                            dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
+                            detail.IsTarget
+                                ? manyToMany.PivotTargetKeyProperty.PropertyName
+                                : manyToMany.PivotSourceKeyProperty.PropertyName,
+                            detail.IsTarget
+                                ? manyToMany.PivotSourceKeyProperty.PropertyName
+                                : manyToMany.PivotTargetKeyProperty.PropertyName,
                             thisEnd.Property.PropertyName,
                             otherEnd.Property.PropertyName,
                             thisConstraint.PropertyName,

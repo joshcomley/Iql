@@ -10,10 +10,11 @@ namespace Iql.JavaScript.QueryToJavaScript
         public override void Apply<TEntity>(
             IQueryOperationContext<WithKeyOperation, TEntity, IJavaScriptQueryResult> context)
         {
-            context.Data.AppendWhere(JavaScriptQueryableAdapter.GetExpression(
+            var javaScriptExpression = JavaScriptQueryableAdapter.GetExpression(
                 context.ResolveWithKeyWhereOperation(),
                 true,
-                context.DataContext.EntityConfigurationContext));
+                context.DataContext.EntityConfigurationContext);
+            context.Data.AppendWhere(javaScriptExpression);
             context.Data.Key = context.Operation.Key;
             context.Data.HasKey = true;
         }

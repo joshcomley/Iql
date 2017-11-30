@@ -12,10 +12,16 @@ namespace Iql.JavaScript.QueryToJavaScript
         public override void Apply<TEntity>(
             IQueryOperationContext<IExpandOperation, TEntity, IJavaScriptQueryResult> context)
         {
+            var expand = context.Operation;
+            var javaScriptQueryResult = context.Data;
+            ApplyExpand<TEntity>(expand, javaScriptQueryResult);
+        }
+
+        internal static void ApplyExpand<TEntity>(IExpandOperation expand, IJavaScriptQueryResult javaScriptQueryResult)
+        {
             var query = "";
             var types = new List<ExpandEntityType>();
             types.Add(new ExpandEntityType(typeof(TEntity)));
-            var expand = context.Operation;
             for (var j = 0; j < expand.ExpandDetails.Count; j++)
             {
                 var detail = expand.ExpandDetails[j];
@@ -37,13 +43,13 @@ namespace Iql.JavaScript.QueryToJavaScript
                         break;
                 }
                 query += "this." + expandMethodName + "(";
-                query += context.Data.GetDataSetObjectName(sourceType) + ",";
-                query += context.Data.GetDataSetObjectName(targetType) + ",";
+                query += javaScriptQueryResult.GetDataSetObjectName(sourceType) + ",";
+                query += javaScriptQueryResult.GetDataSetObjectName(targetType) + ",";
                 if (detail.Relationship.Type == RelationshipType.ManyToMany)
                 {
                     var manyToMany = detail.Relationship as IManyToManyRelationship;
                     types.Add(new ExpandEntityType(manyToMany.PivotType));
-                    query += context.Data.GetDataSetObjectName(manyToMany.PivotType) + ",";
+                    query += javaScriptQueryResult.GetDataSetObjectName(manyToMany.PivotType) + ",";
                     query += "'" + manyToMany.PivotSourceKeyProperty.PropertyName + "',";
                     query += "'" + manyToMany.PivotTargetKeyProperty.PropertyName + "',";
                 }
@@ -55,7 +61,11 @@ namespace Iql.JavaScript.QueryToJavaScript
                 query += "'" + constraint.TargetKeyProperty.PropertyName + "'";
                 query += ");\n";
             }
-            context.Data.Query.AppendLine(query);
+            foreach (var type in types)
+            {
+                javaScriptQueryResult.RegisterType(type);
+            }
+            javaScriptQueryResult.Query.AppendLine(query);
         }
     }
 }

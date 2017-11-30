@@ -97,6 +97,11 @@ namespace Iql.JavaScript.QueryToJavaScript
                     }
                 }
             }
+            foreach (var targetEntity in targetsRefreshed.Keys)
+            {
+                targetEntity.SetPropertyValue($"{targetProperty}Count",
+                    targetEntity.GetPropertyValueAs<IList>(targetProperty).Count);
+            }
         }
 
         public static void ExpandManyToMany(

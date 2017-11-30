@@ -13,6 +13,8 @@ namespace Iql.JavaScript.QueryToJavaScript
             RegisterApplicator(() => new OrderByOperationApplicatorJavaScript());
             RegisterApplicator(() => new ReverseOperationApplicatorJavaScript());
             RegisterApplicator(() => new WhereOperationApplicatorJavaScript());
+            RegisterApplicator(() => new ExpandCountOperationApplicatorJavaScript());
+            RegisterApplicator(() => new IncludeCountOperationApplicatorJavaScript());
             RegisterApplicator(() => new ExpandOperationApplicatorJavaScript());
             RegisterApplicator(() => new WithKeyOperationApplicatorJavaScript());
             //new QueryParser().parseRoot(queryFilter, new QueryExpressionAdapterJavaScript())({})
@@ -47,12 +49,13 @@ namespace Iql.JavaScript.QueryToJavaScript
             var parser = new JavaScriptIqlParserInstance(
                 adapter);
             parser.IsFilter = isFilter;
-            var expression = new JavaScriptExpression(adapter.RootVariableName,
-                parser.Parse(operation.Expression
+            var javaScriptOutput = parser.Parse(operation.Expression
 #if TypeScript
 , operation.EvaluateContext
 #endif
-                ).ToCodeString());
+            );
+            var expression = new JavaScriptExpression(adapter.RootVariableName,
+                javaScriptOutput.ToCodeString());
             return expression;
         }
     }

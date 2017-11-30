@@ -33,9 +33,11 @@ namespace Iql.JavaScript.QueryToJavaScript
 
         public string ToJavaScriptQuery(bool returnValue = true)
         {
-            var title = "/* " + typeof(T).Name + " */\n";
+            var title = $"/* {typeof(T).Name} */\n";
+            RegisterType(new ExpandEntityType(typeof(T)));
             var operations = Query.ToString();
-            var query = title + ResolveTypes() + operations;
+            var types = ResolveTypes();
+            var query = title + types;
             var varName = GetDataSetObjectName(typeof(T));
             if (!string.IsNullOrWhiteSpace(operations))
             {
@@ -45,7 +47,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             {
                 query += "" + varName + ";\n";
             }
-            return query + "";
+            return query;
         }
 
         private string ResolveTypes()

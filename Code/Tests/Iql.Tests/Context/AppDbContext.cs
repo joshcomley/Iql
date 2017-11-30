@@ -1,4 +1,5 @@
-﻿using Iql.Queryable;
+﻿using Iql.JavaScript.QueryToJavaScript;
+using Iql.Queryable;
 #if TypeScript
 using Iql.JavaScript.QueryToJavaScript;
 using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
@@ -30,7 +31,8 @@ namespace Iql.Tests.Context
 #if TypeScript
             base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
 #else
-            base(new InMemoryDataStore(new DotNetQueryableAdapter()))
+            base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
+            //base(new InMemoryDataStore(new DotNetQueryableAdapter()))
 #endif
         {
             RegisterConfiguration(InMemoryDataStoreConfiguration);
