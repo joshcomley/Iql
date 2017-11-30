@@ -56,6 +56,7 @@ namespace Iql.Tests
             AppDbContext.InMemoryDb.ClientTypes.Clear();
             Db = new AppDbContext();
         }
+
         private static ClientTypes AddClientTypes()
         {
             // Create two new client types
