@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
+    <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
     <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />

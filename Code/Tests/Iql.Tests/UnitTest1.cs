@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.DotNet;
 using Iql.Queryable;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
@@ -41,7 +40,6 @@ namespace Iql.Tests
         [ClassInitialize]
         public static async Task SetUp(TestContext textContext)
         {
-            IqlQueryableAdapter.ExpressionConverter = () => new ExpressionToIqlConverter();
         }
 
         [ClassCleanup]
