@@ -14,7 +14,7 @@ namespace Iql.DotNet.Queryable.Applicators
         {
             context.Data.Actions.Add(list =>
             {
-                var typedList = list as IList<TEntity>;
+                var typedList = list as IEnumerable<TEntity>;
                 var root = Expression.Parameter(typeof(TEntity));
                 return ApplyTyped(context, root, typedList);
                 //var result = typedList.OrderBy((Func<TEntity, object>)sort.Compile()).ToList();

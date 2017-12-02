@@ -166,8 +166,19 @@ namespace Iql.Queryable.Data.DataStores
             throw new NotImplementedException();
         }
 
+        public bool DummyField { get; set; } = false;
+        public int DummyCount { get; set; }
         public virtual TrackingSetCollection GetTracking()
         {
+            DummyField = true;
+            if (DummyCount > 7)
+            {
+                DummyCount = 1;
+            }
+            else if (DummyCount < 9)
+            {
+                DummyCount++;
+            }
             return Tracking ?? (Tracking = new TrackingSetCollection(DataContext));
         }
 

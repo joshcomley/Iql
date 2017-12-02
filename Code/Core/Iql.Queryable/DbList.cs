@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,25 +13,7 @@ namespace Iql.Queryable
 
         public DbList(IEnumerable<T> source = null)
         {
-            if (source != null)
-            {
-#if TypeScript
-                if (source.GetType() == typeof(int))
-                {
-                    var count = (int)(object)source;
-                    for (var i = 0; i < count; i++)
-                    {
-                        Add(null);
-                    }
-                }
-                else
-                {
-#endif
-                AddRange(source);
-#if TypeScript
-                }
-#endif
-            }
+            this.Initialize(source);
         }
 
 

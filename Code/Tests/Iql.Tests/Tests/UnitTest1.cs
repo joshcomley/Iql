@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,34 +10,16 @@ using Iql.Queryable.Events;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iql.Tests
+namespace Iql.Tests.Tests
 {
     [TestClass]
     public class UnitTest1
     {
-        class ClientTypes
-        {
-            public ClientType ClientType1 { get; }
-            public ClientType ClientType2 { get; }
-            public ClientType ClientType3 { get; }
-            public ClientType ClientType4 { get; }
-            public ClientType ClientType5 { get; }
 
-            public ClientTypes(ClientType clientType1, ClientType clientType2, ClientType clientType3, ClientType clientType4,
-                ClientType clientType5)
-            {
-                ClientType1 = clientType1;
-                ClientType2 = clientType2;
-                ClientType3 = clientType3;
-                ClientType4 = clientType4;
-                ClientType5 = clientType5;
-            }
-        }
-
-        private static AppDbContext Db = new AppDbContext();
+        private static AppDbContext Db { get; set; } = new AppDbContext();
 
         [ClassInitialize]
-        public static async Task SetUp(TestContext textContext)
+        public static void SetUp(TestContext textContext)
         {
         }
 
@@ -63,55 +43,54 @@ namespace Iql.Tests
             {
                 Id = 2,
                 Name = "Something else",
-                Clients = new ObservableCollection<Client>(new[]
-                {
-                    new Client {Id = 1, Name = "Client 1"}
-                })
             };
+            clientType1.Clients.AddRange(new[]
+            {
+                new Client {Id = 1, Name = "Client 1"}
+            });
             Db.ClientTypes.Add(clientType1);
             var clientType2 = new ClientType
             {
                 Id = 3,
                 Name = "Another",
-                Clients = new ObservableCollection<Client>(new[]
-                {
-                    new Client {Id = 2, Name = "Client 2"}
-                })
             };
+            clientType2.Clients.AddRange(new[]
+            {
+                new Client {Id = 2, Name = "Client 2"}
+            });
             Db.ClientTypes.Add(clientType2);
             var clientType3 = new ClientType
             {
                 Id = 41,
                 Name = "Another",
-                Clients = new ObservableCollection<Client>()
             };
             Db.ClientTypes.Add(clientType3);
             var clientType4 = new ClientType
             {
                 Id = 42,
                 Name = "A fourth",
-                Clients = new ObservableCollection<Client>(new[]
-                {
-                    new Client {Id = 21, Name = "Client 21"}
-                })
             };
+            clientType4.Clients.AddRange(new[]
+            {
+                new Client {Id = 21, Name = "Client 21"}
+            });
             Db.ClientTypes.Add(clientType4);
             var clientType5 = new ClientType
             {
                 Id = 43,
                 Name = "A fifth",
-                Clients = new ObservableCollection<Client>(new[]
-                {
-                    new Client {Id = 22, Name = "Client 22"},
-                    new Client {Id = 23, Name = "Client 23"}
-                })
             };
+            clientType5.Clients.AddRange(new[]
+            {
+                new Client {Id = 22, Name = "Client 22"},
+                new Client {Id = 23, Name = "Client 23"}
+            });
             Db.ClientTypes.Add(clientType5);
             return new ClientTypes(clientType1, clientType2, clientType3, clientType4, clientType5);
         }
 
         [TestMethod]
-        public async Task TestDetectedPropertyChanges()
+        public void TestDetectedPropertyChanges()
         {
             var clientTypes = AddClientTypes();
             var client = clientTypes.ClientType1.Clients[0];
@@ -376,7 +355,22 @@ namespace Iql.Tests
         }
 
         [TestMethod]
-        public async Task PropertyChangeEventShouldFireWhenAPropertyIsChanged()
+        public void PropertyChangeEventShouldFireWhenAPropertyIsChanged()
+        {
+            var clientTypes = AddClientTypes();
+            IPropertyChangeEvent propertyChangeEvent = null;
+            clientTypes.ClientType1.PropertyChanged.Subscribe(pc =>
+            {
+                propertyChangeEvent = pc;
+            });
+            clientTypes.ClientType1.Name = "Me";
+            Assert.IsNotNull(propertyChangeEvent);
+            Assert.AreEqual(nameof(ClientType.Name), propertyChangeEvent.PropertyName);
+            Assert.AreEqual(clientTypes.ClientType1, propertyChangeEvent.Entity);
+        }
+
+        [TestMethod]
+        public void PropertyChangeEventShouldFireWhenAPropertyIsChanged2()
         {
             var clientTypes = AddClientTypes();
             IPropertyChangeEvent propertyChangeEvent = null;
@@ -397,7 +391,7 @@ namespace Iql.Tests
         //    {
         //        Id = 2,
         //        Name = "Something else",
-        //        Clients = new ObservableCollection<Client>(new[]
+        //        Clients = new RelatedList<Client>(new[]
         //        {
         //            new Client {Name = "Client 1"}
         //        })
@@ -424,7 +418,7 @@ namespace Iql.Tests
         //    {
         //        Id = 2,
         //        Name = "Something else",
-        //        Clients = new ObservableCollection<Client>(new[]
+        //        Clients = new RelatedList<Client>(new[]
         //        {
         //            new Client {Id = 1, Name = "Client 1"}
         //        })
@@ -436,7 +430,7 @@ namespace Iql.Tests
         //    {
         //        Id = 3,
         //        Name = "Another",
-        //        Clients = new ObservableCollection<Client>(new[]
+        //        Clients = new RelatedList<Client>(new[]
         //        {
         //            new Client {Id = 2, Name = "Client 2"}
         //        })
@@ -537,7 +531,7 @@ namespace Iql.Tests
         //    {
         //        Id = 2,
         //        Name = "Something else",
-        //        Clients = new ObservableCollection<Client>(new[]
+        //        Clients = new RelatedList<Client>(new[]
         //        {
         //            new Client {Id = 1, Name = "Client 1"}
         //        })
@@ -547,7 +541,7 @@ namespace Iql.Tests
         //    {
         //        Id = 3,
         //        Name = "Another",
-        //        Clients = new ObservableCollection<Client>()
+        //        Clients = new RelatedList<Client>()
         //    };
         //    Db.ClientTypes.Add(clientType2);
         //    await Db.SaveChanges();
