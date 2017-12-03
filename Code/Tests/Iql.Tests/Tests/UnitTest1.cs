@@ -441,13 +441,52 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestReassigningExistingEntityFromOneCollectionToAnotherAndReverting()
         {
+            await TestReassign(ReassignType.AssignMethod, ReassignType.AssignMethod);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignMethod, ReassignType.Key);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignMethod, ReassignType.Relationship);
+            TestCleanUp();
+            await TestReassign(ReassignType.Key, ReassignType.AssignMethod);
+            TestCleanUp();
+            await TestReassign(ReassignType.Key, ReassignType.Key);
+            TestCleanUp();
+            await TestReassign(ReassignType.Key, ReassignType.Relationship);
+            TestCleanUp();
+            await TestReassign(ReassignType.Relationship, ReassignType.AssignMethod);
+            TestCleanUp();
+            await TestReassign(ReassignType.Relationship, ReassignType.Key);
+            TestCleanUp();
+            await TestReassign(ReassignType.Relationship, ReassignType.Relationship);
+        }
+        
+        public enum ReassignType
+        {
+            Key,
+            Relationship,
+            AssignMethod
+        }
+
+        public async Task TestReassign(ReassignType type1 , ReassignType type2)
+        {
             var clientTypes = AddClientTypes();
             var clientType1 = clientTypes.ClientType1;
             var clientType2 = clientTypes.ClientType2;
             var originalClientType1Client = clientType1.Clients[0];
             var originalClientType2Client = clientType2.Clients[0];
             var existingClient = clientType2.Clients[0];
-            clientType1.Clients.AssignRelationship(existingClient);
+            switch (type1)
+            {
+                case ReassignType.AssignMethod:
+                    clientType1.Clients.AssignRelationship(existingClient);
+                    break;
+                case ReassignType.Key:
+                    existingClient.TypeId = clientType1.Id;
+                    break;
+                case ReassignType.Relationship:
+                    existingClient.Type = clientType1;
+                    break;
+            }
             Assert.AreEqual(2, clientType1.Clients.Count);
             Assert.AreEqual(0, clientType2.Clients.Count);
             Assert.AreEqual(clientType1.Id, existingClient.TypeId);
@@ -485,7 +524,18 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(clientType1, relationshipPropertyChange.NewValue);
 
             // Revert the change
-            clientType2.Clients.AssignRelationship(existingClient);
+            switch (type1)
+            {
+                case ReassignType.AssignMethod:
+                    clientType2.Clients.AssignRelationship(existingClient);
+                    break;
+                case ReassignType.Key:
+                    existingClient.TypeId = clientType2.Id;
+                    break;
+                case ReassignType.Relationship:
+                    existingClient.Type = clientType2;
+                    break;
+            }
             Assert.AreEqual(1, clientType1.Clients.Count);
             Assert.AreEqual(1, clientType2.Clients.Count);
             Assert.AreEqual(originalClientType1Client, clientType1.Clients[0]);
@@ -498,41 +548,6 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, changes.Count);
         }
 
-
-        [TestMethod]
-        public async Task TestReassigningExistingEntityFromOneCollectionToAnotherAndRevertingByChangingRelationshipKeyManually()
-        {
-            var clientTypes = AddClientTypes();
-            var clientType1 = clientTypes.ClientType1;
-            var clientType2 = clientTypes.ClientType2;
-            var originalClientType1Client = clientType1.Clients[0];
-            var originalClientType2Client = clientType2.Clients[0];
-            var existingClient = clientType2.Clients[0];
-            clientType1.Clients.AssignRelationship(existingClient);
-
-            var previousOwnerChangedList = clientTypes.ClientType2.Clients.GetChanges();
-            Assert.AreEqual(1, previousOwnerChangedList.Count);
-            var newOwnerChangedList = clientTypes.ClientType2.Clients.GetChanges();
-            Assert.AreEqual(1, newOwnerChangedList.Count);
-
-            // We should have only one database update to change the TypeId on the Client object
-            var changes = Db.DataStore.GetChanges().ToList();
-            Assert.AreEqual(1, changes.Count);
-
-            // Revert the change
-            existingClient.TypeId = clientType2.Id;
-            Assert.AreEqual(1, clientType1.Clients.Count);
-            Assert.AreEqual(1, clientType2.Clients.Count);
-            Assert.AreEqual(originalClientType1Client, clientType1.Clients[0]);
-            Assert.AreEqual(originalClientType2Client, clientType2.Clients[0]);
-            Assert.AreEqual(0, previousOwnerChangedList.Count);
-            Assert.AreEqual(0, newOwnerChangedList.Count);
-
-            // We should no longer have any changes as we have reverted our update
-            changes = Db.DataStore.GetChanges().ToList();
-            Assert.AreEqual(0, changes.Count);
-        }
-        
         //[TestMethod]
         //public async Task AddingANewEntityWithChildCollectionShouldResultInASingleAddEntityOperation()
         //{
