@@ -46,6 +46,61 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return list;
         }
 
+        public bool EntityHasKey(object entity, CompositeKey key)
+        {
+            var isMatch = true;
+            foreach (var id in Key.Properties)
+            {
+                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.PropertyName);
+                if (compositeKeyValue == null)
+                {
+                    return false;
+                }
+                if (!Equals(entity.GetPropertyValue(id.PropertyName), compositeKeyValue.Value))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
+
+        public bool KeysMatch(object left, object right)
+        {
+            if (new[] { left, right }.Count(i => i == null) == 1)
+            {
+                return false;
+            }
+            if (left.GetType() != right.GetType())
+            {
+                return false;
+            }
+            if (left == right)
+            {
+                return true;
+            }
+            var isMatch = true;
+            foreach (var id in Key.Properties)
+            {
+                if (!Equals(left.GetPropertyValue(id.PropertyName), right.GetPropertyValue(id.PropertyName)))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
+
+        public CompositeKey GetCompositeKey(object entity)
+        {
+            var key = new CompositeKey();
+            foreach (var property in Key.Properties)
+            {
+                key.Keys.Add(new KeyValue(property.PropertyName, entity.GetPropertyValue(property.PropertyName), FindProperty(property.PropertyName).Type));
+            }
+            return key;
+        }
+
         public List<IProperty> Properties { get; set; }
         public IEntityKey Key { get; set; }
         public Type Type { get; set; }

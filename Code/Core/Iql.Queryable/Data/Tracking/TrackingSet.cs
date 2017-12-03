@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
@@ -137,6 +138,29 @@ namespace Iql.Queryable.Data.Tracking
                     var oldState = entityState.GetPropertyState(pc.PropertyName);
                     entityState.SetPropertyState(pc.PropertyName, oldState == null ? pc.OldValue : oldState.OldValue, pc.NewValue);
                 });
+                foreach (var relationship in EntityConfiguration.AllRelationships())
+                {
+                    if (relationship.ThisEnd.IsCollection)
+                    {
+                        var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                            as IRelatedList;
+                        relatedList.Changed.Subscribe(ev =>
+                        {
+                            var method = this.GetType().GetMethod(nameof(ProcessRelationshipChange),
+                                BindingFlags.NonPublic | BindingFlags.Instance)
+                                .MakeGenericMethod(relationship.OtherEnd.Type);
+                            method.Invoke(this, new[]
+                            {
+                                ev,
+                                relationship,
+#if TypeScript
+                                relationship.OtherEnd.Type
+#endif
+                            });
+                            // Do something
+                        });
+                    }
+                }
                 Clone.Add(clone);
                 _trackedEntityClones.Add(entity, clone);
             }
@@ -180,6 +204,111 @@ namespace Iql.Queryable.Data.Tracking
             //}
         }
 
+        private void ProcessRelationshipChange<TRelationship>(
+            RelatedListChangedEvent<T, TRelationship> change,
+            RelationshipMatch relationship)
+            where TRelationship : class
+        {
+            var relationshipConfiguration = DataContext.EntityConfigurationContext
+                .GetEntityByType(typeof(TRelationship));
+            var itemKey = change.ItemKey ?? relationshipConfiguration.GetCompositeKey(change.Item);
+            //var relatedTrackingSet = TrackingSetCollection.TrackingSet(typeof(TRelationship));
+
+            if (change.Item != null)
+            {
+                var oldOwner = FindTrackedEntityByKey(relationship.OtherEnd.GetCompositeKey(change.Item, true));
+
+                if (oldOwner != null && oldOwner.Entity != change.Owner)
+                {
+                    var oldRelatedList =
+                        oldOwner.Entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                            as IRelatedList;
+                    oldRelatedList.AddChange(new RelatedListChange<T, TRelationship>(
+                        RelatedListChangeKind.Remove,
+                        relationship,
+                        itemKey,
+                        change.Item,
+                        oldOwner.Entity,
+                        (RelatedList<T, TRelationship>)oldRelatedList));
+                    var toRemove = new List<object>();
+                    foreach (var child in oldRelatedList)
+                    {
+                        if (Equals(change.Item, child) ||
+                            relationshipConfiguration.KeysMatch(change.Item ?? (object)change.ItemKey, child))
+                        {
+                            toRemove.Add(child);
+                        }
+                    }
+                    foreach (var child in toRemove)
+                    {
+                        oldRelatedList.Remove(child);
+                    }
+                }
+
+                var relatedEntityPropertyValue =
+                    change.Item.GetPropertyValue(relationship.OtherEnd.Property.PropertyName);
+                if (relatedEntityPropertyValue != null)
+                {
+                    //
+                }
+                change.Item.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
+                    change.Owner);
+                var compositeKey = relationship.ThisEnd.GetCompositeKey(change.Owner, true);
+                foreach (var key in compositeKey.Keys)
+                {
+                    change.Item.SetPropertyValue(key.Name, key.Value);
+                }
+            }
+            var newRelatedList =
+                change.Owner.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                    as IRelatedList;
+            newRelatedList.AddChange(new RelatedListChange<T, TRelationship>(
+                RelatedListChangeKind.Assign,
+                relationship,
+                itemKey,
+                change.Item,
+                change.Owner,
+                (RelatedList<T, TRelationship>)newRelatedList));
+            if (change.Item != null)
+            {
+                newRelatedList.Add(change.Item);
+            }
+            //foreach (var entity in Set)
+            //{
+            //    var relationshipPropertyValue =
+            //        entity.GetPropertyValueAs<IList>(relationship.ThisEnd.Property.PropertyName);
+            //    if (entity != change.Owner)
+            //    {
+            //        if (relationshipPropertyValue != null)
+            //        {
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (change.Item != null && !relationshipPropertyValue.Contains(change.Item))
+            //        {
+            //            relationshipPropertyValue.Add(change.Item);
+            //        }
+            //    }
+            //}
+            //var trackedEntity =
+            //    change.Item != null
+            //        ? relatedTrackingSet.FindTrackedEntity(change.Item)
+            //        : relatedTrackingSet.FindTrackedEntityByKey(change.ItemKey);
+            //if (trackedEntity != null)
+            //{
+            //    foreach (var trackedRelationship in trackedEntity.TrackedRelationships)
+            //    {
+            //        trackedRelationship.
+            //    }
+            //}
+            //var existingChange = change.List.GetChanges().FindMatchingChange(itemKey);
+            //if (existingChange != null)
+            //{
+
+            //}
+        }
+
         public T FindClone(T entity)
         {
             var trackedEntity = FindTrackedEntity(entity);
@@ -209,6 +338,7 @@ namespace Iql.Queryable.Data.Tracking
             T matchedEntity = null;
             var relationships = new List<ITrackedRelationship>();
             var isNewEntity = DataContext.IsEntityNew(localEntity, typeof(T));
+            var compositeKey = entityConfiguration.GetCompositeKey(localEntity);
             var persistenceKeyProperty = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T)).Properties
                 .FirstOrDefault(p => p.Name == "PersistenceKey");
             object persistenceKey = null;
@@ -301,7 +431,51 @@ namespace Iql.Queryable.Data.Tracking
             {
                 return null;
             }
-            return new TrackedEntity<T>(matchedEntity, relationships);
+            var findTrackedEntity = new TrackedEntity<T>(matchedEntity, relationships);
+            return findTrackedEntity;
+        }
+
+        IEnumerable<ITrackedRelationship> ITrackingSet.FindRelationships(object entity, CompositeKey key)
+        {
+            return FindRelationships((T)entity, key);
+        }
+
+        public IEnumerable<ITrackedRelationship> FindRelationships(T entity, CompositeKey key)
+        {
+            var relationships = new List<ITrackedRelationship>();
+            foreach (var set in TrackingSetCollection.Sets)
+            {
+                var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(set.EntityType);
+                foreach (var relationship in entityConfiguration.AllRelationships())
+                {
+                    if (relationship.ThisEnd.Type == typeof(T) && !relationship.ThisEnd.IsCollection)
+                    {
+                        foreach (var setEntity in set.TrackedEntites())
+                        {
+                            var relationshipPropertyValue =
+                                setEntity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName);
+                            if (entity != null)
+                            {
+                                if (Equals(entity, relationshipPropertyValue))
+                                {
+                                    // Found a match
+                                    int a = 0;
+                                }
+                            }
+                            else
+                            {
+                                var setEntityRelationshipKey = relationship.ThisEnd.GetCompositeKey(setEntity, true);
+                                if (setEntityRelationshipKey.Matches(key))
+                                {
+                                    // Found a match
+                                    int a = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return relationships;
         }
 
         private T MatchedEntity(T localEntity, IRelationshipDetail sourceRelationship, IRelationship relationship,

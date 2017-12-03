@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -13,5 +14,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IProperty FindProperty(string name);
         RelationshipMatch FindRelationship(string propertyName);
         List<RelationshipMatch> AllRelationships();
+        bool EntityHasKey(object entity, CompositeKey key);
+        bool KeysMatch(object left, object right);
+        CompositeKey GetCompositeKey(object entity);
     }
 }

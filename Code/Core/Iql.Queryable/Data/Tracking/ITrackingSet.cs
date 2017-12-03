@@ -72,5 +72,6 @@ namespace Iql.Queryable.Data.Tracking
         object FindClone(object entity);
         ITrackedEntity FindTrackedEntity(object entity);
         ITrackedEntity FindTrackedEntityByKey(CompositeKey key);
+        IEnumerable<ITrackedRelationship> FindRelationships(object entity, CompositeKey key);
     }
 }

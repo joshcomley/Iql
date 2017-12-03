@@ -24,7 +24,7 @@ namespace Iql.Queryable.Data
         IDbSet AsDbSetByType(Type entityType);
         DbSet<T, TKey> AsDbSet<T, TKey>() where T : class;
         bool IsIdMatch(object left, object right, Type type);
-        bool EntityPropertiesMatch(object left, CompositeKey key);
+        bool EntityPropertiesMatch(object entity, CompositeKey key);
         bool EntityHasKey(object left, Type type, CompositeKey key);
         Task<T> RefreshEntity<T>(T entity)
             where T : class
@@ -33,6 +33,6 @@ namespace Iql.Queryable.Data
         T EnsureTypedEntity<T>(object entity) where T : class;
         object EnsureTypedEntityByType(object entity, Type type);
         IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false) where T : class;
-        IList EnsureTypedListByType(IEnumerable responseData, Type type, bool forceNotNull = false);
+        IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool forceNotNull = false);
     }
 }

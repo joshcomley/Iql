@@ -7,6 +7,7 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Events;
+using Iql.Queryable.Operations;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,7 +16,6 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class UnitTest1
     {
-
         private static AppDbContext Db { get; set; } = new AppDbContext();
 
         [ClassInitialize]
@@ -382,6 +382,109 @@ namespace Iql.Tests.Tests
             Assert.IsNotNull(propertyChangeEvent);
             Assert.AreEqual(nameof(ClientType.Name), propertyChangeEvent.PropertyName);
             Assert.AreEqual(clientTypes.ClientType1, propertyChangeEvent.Entity);
+        }
+
+        [TestMethod]
+        public async Task TestReassigningRelationshipEvents()
+        {
+            var clientTypes = AddClientTypes();
+            var eventFiredCount = 0;
+            var assignEventFiredCount = 0;
+            var removeEventFiredCount = 0;
+            clientTypes.ClientType1.Clients.Changed.Subscribe(e =>
+            {
+                eventFiredCount++;
+                switch (e.Kind)
+                {
+                    case RelatedListChangeKind.Assign:
+                        assignEventFiredCount++;
+                        break;
+                    case RelatedListChangeKind.Remove:
+                        removeEventFiredCount++;
+                        break;
+                }
+            });
+            Assert.AreEqual(0, eventFiredCount);
+            Assert.AreEqual(0, assignEventFiredCount);
+            Assert.AreEqual(0, removeEventFiredCount);
+
+            clientTypes.ClientType1.Clients.AssignRelationshipByKey(new CompositeKey());
+            Assert.AreEqual(1, eventFiredCount);
+            Assert.AreEqual(1, assignEventFiredCount);
+            Assert.AreEqual(0, removeEventFiredCount);
+
+            clientTypes.ClientType1.Clients.AssignRelationshipByKey(new CompositeKey());
+            Assert.AreEqual(2, eventFiredCount);
+            Assert.AreEqual(2, assignEventFiredCount);
+            Assert.AreEqual(0, removeEventFiredCount);
+
+            clientTypes.ClientType1.Clients.AssignRelationship(new Client());
+            Assert.AreEqual(3, eventFiredCount);
+            Assert.AreEqual(3, assignEventFiredCount);
+            Assert.AreEqual(0, removeEventFiredCount);
+
+            clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
+            Assert.AreEqual(4, eventFiredCount);
+            Assert.AreEqual(3, assignEventFiredCount);
+            Assert.AreEqual(1, removeEventFiredCount);
+
+            clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
+            Assert.AreEqual(5, eventFiredCount);
+            Assert.AreEqual(3, assignEventFiredCount);
+            Assert.AreEqual(2, removeEventFiredCount);
+
+            clientTypes.ClientType1.Clients.RemoveRelationship(new Client());
+            Assert.AreEqual(6, eventFiredCount);
+            Assert.AreEqual(3, assignEventFiredCount);
+            Assert.AreEqual(3, removeEventFiredCount);
+        }
+
+        [TestMethod]
+        public async Task TestAssignNewEntityToRelatedListSetsRelationshipKeyValues()
+        {
+            var clientTypes = AddClientTypes();
+            var clientType = clientTypes.ClientType1;
+            var newClient = new Client { Name = "My new client" };
+            clientType.Clients.AssignRelationship(newClient);
+            Assert.AreEqual(clientType.Id, newClient.TypeId);
+            //var changes = Db.DataStore.GetChanges();
+            //Assert.AreEqual(1, changes.Count());
+            //var change = changes.Single();
+            //Assert.AreEqual(QueuedOperationType.Add, change.Type);
+        }
+
+        [TestMethod]
+        public async Task TestReassigningAndRevertingExistingEntityToADifferentRelatedListSetsRelationshipKeyValues()
+        {
+            var clientTypes = AddClientTypes();
+            var clientType1 = clientTypes.ClientType1;
+            var clientType2 = clientTypes.ClientType2;
+            var originalClientType1Client = clientType1.Clients[0];
+            var originalClientType2Client = clientType2.Clients[0];
+            var existingClient = clientType2.Clients[0];
+            clientType1.Clients.AssignRelationship(existingClient);
+            Assert.AreEqual(2, clientType1.Clients.Count);
+            Assert.AreEqual(0, clientType2.Clients.Count);
+            Assert.AreEqual(clientType1.Id, existingClient.TypeId);
+
+            var previousEntityChangedList = clientTypes.ClientType2.Clients.GetChanges();
+            Assert.AreEqual(1, previousEntityChangedList.Count);
+            var previousEntityChangedRecord = previousEntityChangedList[0];
+            Assert.AreEqual(RelatedListChangeKind.Remove, previousEntityChangedRecord.Kind);
+
+            var newEntityChangedList = clientTypes.ClientType1.Clients.GetChanges();
+            Assert.AreEqual(1, newEntityChangedList.Count);
+            var newEntityChangedRecord = newEntityChangedList[0];
+            Assert.AreEqual(RelatedListChangeKind.Assign, newEntityChangedRecord.Kind);
+
+            // Revert the change
+            clientType2.Clients.AssignRelationship(existingClient);
+            Assert.AreEqual(1, clientType1.Clients.Count);
+            Assert.AreEqual(1, clientType2.Clients.Count);
+            Assert.AreEqual(originalClientType1Client, clientType1.Clients[0]);
+            Assert.AreEqual(originalClientType2Client, clientType2.Clients[0]);
+            Assert.AreEqual(0, previousEntityChangedList.Count);
+            Assert.AreEqual(0, newEntityChangedList.Count);
         }
 
         //[TestMethod]

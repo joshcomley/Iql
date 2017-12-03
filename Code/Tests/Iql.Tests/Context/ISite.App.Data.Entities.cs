@@ -1,7 +1,6 @@
 using Iql.Queryable;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Events;
-using System.Collections.Generic;
 using System;
 
 
@@ -628,9 +627,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 	}
 
 	
-	public long? ScaffoldInspectionsCount { get; set; }
-	private List<ScaffoldInspection> _scaffoldInspections;
-	public List<ScaffoldInspection> ScaffoldInspections
+	public Int64 ScaffoldInspectionsCount { get; set; }
+	private RelatedList<SiteInspection,ScaffoldInspection> _scaffoldInspections;
+	public RelatedList<SiteInspection,ScaffoldInspection> ScaffoldInspections
 	{
 		get
 		{
@@ -846,9 +845,9 @@ public class Site : SiteBase, IEntity {
 	}
 
 	
-	public long? DocumentsCount { get; set; }
-	private List<SiteDocument> _documents;
-	public List<SiteDocument> Documents
+	public Int64 DocumentsCount { get; set; }
+	private RelatedList<Site,SiteDocument> _documents;
+	public RelatedList<Site,SiteDocument> Documents
 	{
 		get
 		{
@@ -864,9 +863,9 @@ public class Site : SiteBase, IEntity {
 	}
 
 	
-	public long? AdditionalSendReportsToCount { get; set; }
-	private List<ReportReceiverEmailAddress> _additionalSendReportsTo;
-	public List<ReportReceiverEmailAddress> AdditionalSendReportsTo
+	public Int64 AdditionalSendReportsToCount { get; set; }
+	private RelatedList<Site,ReportReceiverEmailAddress> _additionalSendReportsTo;
+	public RelatedList<Site,ReportReceiverEmailAddress> AdditionalSendReportsTo
 	{
 		get
 		{
@@ -894,9 +893,9 @@ public class Site : SiteBase, IEntity {
 	}
 
 	
-	public long? ChildrenCount { get; set; }
-	private List<Site> _children;
-	public List<Site> Children
+	public Int64 ChildrenCount { get; set; }
+	private RelatedList<Site,Site> _children;
+	public RelatedList<Site,Site> Children
 	{
 		get
 		{
@@ -936,9 +935,9 @@ public class Site : SiteBase, IEntity {
 	}
 
 	
-	public long? SiteInspectionsCount { get; set; }
-	private List<SiteInspection> _siteInspections;
-	public List<SiteInspection> SiteInspections
+	public Int64 SiteInspectionsCount { get; set; }
+	private RelatedList<Site,SiteInspection> _siteInspections;
+	public RelatedList<Site,SiteInspection> SiteInspections
 	{
 		get
 		{
@@ -954,9 +953,9 @@ public class Site : SiteBase, IEntity {
 	}
 
 	
-	public long? UsersCount { get; set; }
-	private List<UserSite> _users;
-	public List<UserSite> Users
+	public Int64 UsersCount { get; set; }
+	private RelatedList<Site,UserSite> _users;
+	public RelatedList<Site,UserSite> Users
 	{
 		get
 		{
@@ -1076,9 +1075,9 @@ public class ScaffoldType : ScaffoldTypeBase, IEntity {
 	}
 
 	
-	public long? ScaffoldsCount { get; set; }
-	private List<Scaffold> _scaffolds;
-	public List<Scaffold> Scaffolds
+	public Int64 ScaffoldsCount { get; set; }
+	private RelatedList<ScaffoldType,Scaffold> _scaffolds;
+	public RelatedList<ScaffoldType,Scaffold> Scaffolds
 	{
 		get
 		{
@@ -1198,9 +1197,9 @@ public class ScaffoldLoading : ScaffoldLoadingBase, IEntity {
 	}
 
 	
-	public long? ScaffoldsCount { get; set; }
-	private List<Scaffold> _scaffolds;
-	public List<Scaffold> Scaffolds
+	public Int64 ScaffoldsCount { get; set; }
+	private RelatedList<ScaffoldLoading,Scaffold> _scaffolds;
+	public RelatedList<ScaffoldLoading,Scaffold> Scaffolds
 	{
 		get
 		{
@@ -1592,9 +1591,9 @@ public class Scaffold : ScaffoldBase, IEntity {
 	}
 
 	
-	public long? FaultReportsCount { get; set; }
-	private List<FaultReport> _faultReports;
-	public List<FaultReport> FaultReports
+	public Int64 FaultReportsCount { get; set; }
+	private RelatedList<Scaffold,FaultReport> _faultReports;
+	public RelatedList<Scaffold,FaultReport> FaultReports
 	{
 		get
 		{
@@ -1769,9 +1768,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 	}
 
 	
-	public long? AnswersCount { get; set; }
-	private List<RiskAssessmentAnswer> _answers;
-	public List<RiskAssessmentAnswer> Answers
+	public Int64 AnswersCount { get; set; }
+	private RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer> _answers;
+	public RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer> Answers
 	{
 		get
 		{
@@ -2355,9 +2354,9 @@ public class FaultType : FaultTypeBase, IEntity {
 	}
 
 	
-	public long? FaultReportsCount { get; set; }
-	private List<FaultReport> _faultReports;
-	public List<FaultReport> FaultReports
+	public Int64 FaultReportsCount { get; set; }
+	private RelatedList<FaultType,FaultReport> _faultReports;
+	public RelatedList<FaultType,FaultReport> FaultReports
 	{
 		get
 		{
@@ -2522,9 +2521,9 @@ public class FaultReport : FaultReportBase, IEntity {
 	}
 
 	
-	public long? ActionsTakenCount { get; set; }
-	private List<FaultActionsTaken> _actionsTaken;
-	public List<FaultActionsTaken> ActionsTaken
+	public Int64 ActionsTakenCount { get; set; }
+	private RelatedList<FaultReport,FaultActionsTaken> _actionsTaken;
+	public RelatedList<FaultReport,FaultActionsTaken> ActionsTaken
 	{
 		get
 		{
@@ -2540,9 +2539,9 @@ public class FaultReport : FaultReportBase, IEntity {
 	}
 
 	
-	public long? RecommendationsCount { get; set; }
-	private List<FaultRecommendation> _recommendations;
-	public List<FaultRecommendation> Recommendations
+	public Int64 RecommendationsCount { get; set; }
+	private RelatedList<FaultReport,FaultRecommendation> _recommendations;
+	public RelatedList<FaultReport,FaultRecommendation> Recommendations
 	{
 		get
 		{
@@ -2862,9 +2861,9 @@ public class FaultDefaultRecommendation : FaultDefaultRecommendationBase, IEntit
 	}
 
 	
-	public long? RecommendationsCount { get; set; }
-	private List<FaultRecommendation> _recommendations;
-	public List<FaultRecommendation> Recommendations
+	public Int64 RecommendationsCount { get; set; }
+	private RelatedList<FaultDefaultRecommendation,FaultRecommendation> _recommendations;
+	public RelatedList<FaultDefaultRecommendation,FaultRecommendation> Recommendations
 	{
 		get
 		{
@@ -2984,9 +2983,9 @@ public class FaultCategory : FaultCategoryBase, IEntity {
 	}
 
 	
-	public long? FaultTypesCount { get; set; }
-	private List<FaultType> _faultTypes;
-	public List<FaultType> FaultTypes
+	public Int64 FaultTypesCount { get; set; }
+	private RelatedList<FaultCategory,FaultType> _faultTypes;
+	public RelatedList<FaultCategory,FaultType> FaultTypes
 	{
 		get
 		{
@@ -3386,9 +3385,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 	}
 
 	
-	public long? DocumentsCount { get; set; }
-	private List<SiteDocument> _documents;
-	public List<SiteDocument> Documents
+	public Int64 DocumentsCount { get; set; }
+	private RelatedList<DocumentCategory,SiteDocument> _documents;
+	public RelatedList<DocumentCategory,SiteDocument> Documents
 	{
 		get
 		{
@@ -3436,9 +3435,9 @@ public class ClientType : ClientTypeBase, IEntity {
 	}
 
 	
-	public long? ClientsCount { get; set; }
-	private List<Client> _clients;
-	public List<Client> Clients
+	public Int64 ClientsCount { get; set; }
+	private RelatedList<ClientType,Client> _clients;
+	public RelatedList<ClientType,Client> Clients
 	{
 		get
 		{
@@ -3570,9 +3569,9 @@ public class Client : ClientBase, IEntity {
 	}
 
 	
-	public long? UsersCount { get; set; }
-	private List<ApplicationUser> _users;
-	public List<ApplicationUser> Users
+	public Int64 UsersCount { get; set; }
+	private RelatedList<Client,ApplicationUser> _users;
+	public RelatedList<Client,ApplicationUser> Users
 	{
 		get
 		{
@@ -3612,9 +3611,9 @@ public class Client : ClientBase, IEntity {
 	}
 
 	
-	public long? ScaffoldsCount { get; set; }
-	private List<Scaffold> _scaffolds;
-	public List<Scaffold> Scaffolds
+	public Int64 ScaffoldsCount { get; set; }
+	private RelatedList<Client,Scaffold> _scaffolds;
+	public RelatedList<Client,Scaffold> Scaffolds
 	{
 		get
 		{
@@ -3734,9 +3733,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ClientsCreatedCount { get; set; }
-	private List<Client> _clientsCreated;
-	public List<Client> ClientsCreated
+	public Int64 ClientsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Client> _clientsCreated;
+	public RelatedList<ApplicationUser,Client> ClientsCreated
 	{
 		get
 		{
@@ -3752,9 +3751,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? DocumentCategoriesCreatedCount { get; set; }
-	private List<DocumentCategory> _documentCategoriesCreated;
-	public List<DocumentCategory> DocumentCategoriesCreated
+	public Int64 DocumentCategoriesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,DocumentCategory> _documentCategoriesCreated;
+	public RelatedList<ApplicationUser,DocumentCategory> DocumentCategoriesCreated
 	{
 		get
 		{
@@ -3770,9 +3769,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? SiteDocumentsCreatedCount { get; set; }
-	private List<SiteDocument> _siteDocumentsCreated;
-	public List<SiteDocument> SiteDocumentsCreated
+	public Int64 SiteDocumentsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,SiteDocument> _siteDocumentsCreated;
+	public RelatedList<ApplicationUser,SiteDocument> SiteDocumentsCreated
 	{
 		get
 		{
@@ -3788,9 +3787,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? FaultActionsTakenCreatedCount { get; set; }
-	private List<FaultActionsTaken> _faultActionsTakenCreated;
-	public List<FaultActionsTaken> FaultActionsTakenCreated
+	public Int64 FaultActionsTakenCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,FaultActionsTaken> _faultActionsTakenCreated;
+	public RelatedList<ApplicationUser,FaultActionsTaken> FaultActionsTakenCreated
 	{
 		get
 		{
@@ -3806,9 +3805,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? FaultCategoriesCreatedCount { get; set; }
-	private List<FaultCategory> _faultCategoriesCreated;
-	public List<FaultCategory> FaultCategoriesCreated
+	public Int64 FaultCategoriesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,FaultCategory> _faultCategoriesCreated;
+	public RelatedList<ApplicationUser,FaultCategory> FaultCategoriesCreated
 	{
 		get
 		{
@@ -3824,9 +3823,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? FaultDefaultRecommendationsCreatedCount { get; set; }
-	private List<FaultDefaultRecommendation> _faultDefaultRecommendationsCreated;
-	public List<FaultDefaultRecommendation> FaultDefaultRecommendationsCreated
+	public Int64 FaultDefaultRecommendationsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,FaultDefaultRecommendation> _faultDefaultRecommendationsCreated;
+	public RelatedList<ApplicationUser,FaultDefaultRecommendation> FaultDefaultRecommendationsCreated
 	{
 		get
 		{
@@ -3842,9 +3841,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? FaultRecommendationsCreatedCount { get; set; }
-	private List<FaultRecommendation> _faultRecommendationsCreated;
-	public List<FaultRecommendation> FaultRecommendationsCreated
+	public Int64 FaultRecommendationsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,FaultRecommendation> _faultRecommendationsCreated;
+	public RelatedList<ApplicationUser,FaultRecommendation> FaultRecommendationsCreated
 	{
 		get
 		{
@@ -3860,9 +3859,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? FaultReportsCreatedCount { get; set; }
-	private List<FaultReport> _faultReportsCreated;
-	public List<FaultReport> FaultReportsCreated
+	public Int64 FaultReportsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,FaultReport> _faultReportsCreated;
+	public RelatedList<ApplicationUser,FaultReport> FaultReportsCreated
 	{
 		get
 		{
@@ -3878,9 +3877,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? FaultTypesCreatedCount { get; set; }
-	private List<FaultType> _faultTypesCreated;
-	public List<FaultType> FaultTypesCreated
+	public Int64 FaultTypesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,FaultType> _faultTypesCreated;
+	public RelatedList<ApplicationUser,FaultType> FaultTypesCreated
 	{
 		get
 		{
@@ -3896,9 +3895,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ProjectCreatedCount { get; set; }
-	private List<Project> _projectCreated;
-	public List<Project> ProjectCreated
+	public Int64 ProjectCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Project> _projectCreated;
+	public RelatedList<ApplicationUser,Project> ProjectCreated
 	{
 		get
 		{
@@ -3914,9 +3913,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ReportReceiverEmailAddressesCreatedCount { get; set; }
-	private List<ReportReceiverEmailAddress> _reportReceiverEmailAddressesCreated;
-	public List<ReportReceiverEmailAddress> ReportReceiverEmailAddressesCreated
+	public Int64 ReportReceiverEmailAddressesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportReceiverEmailAddress> _reportReceiverEmailAddressesCreated;
+	public RelatedList<ApplicationUser,ReportReceiverEmailAddress> ReportReceiverEmailAddressesCreated
 	{
 		get
 		{
@@ -3932,9 +3931,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? RiskAssessmentsCreatedCount { get; set; }
-	private List<RiskAssessment> _riskAssessmentsCreated;
-	public List<RiskAssessment> RiskAssessmentsCreated
+	public Int64 RiskAssessmentsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,RiskAssessment> _riskAssessmentsCreated;
+	public RelatedList<ApplicationUser,RiskAssessment> RiskAssessmentsCreated
 	{
 		get
 		{
@@ -3950,9 +3949,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? RiskAssessmentAnswersCreatedCount { get; set; }
-	private List<RiskAssessmentAnswer> _riskAssessmentAnswersCreated;
-	public List<RiskAssessmentAnswer> RiskAssessmentAnswersCreated
+	public Int64 RiskAssessmentAnswersCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,RiskAssessmentAnswer> _riskAssessmentAnswersCreated;
+	public RelatedList<ApplicationUser,RiskAssessmentAnswer> RiskAssessmentAnswersCreated
 	{
 		get
 		{
@@ -3968,9 +3967,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? RiskAssessmentQuestionsCreatedCount { get; set; }
-	private List<RiskAssessmentQuestion> _riskAssessmentQuestionsCreated;
-	public List<RiskAssessmentQuestion> RiskAssessmentQuestionsCreated
+	public Int64 RiskAssessmentQuestionsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,RiskAssessmentQuestion> _riskAssessmentQuestionsCreated;
+	public RelatedList<ApplicationUser,RiskAssessmentQuestion> RiskAssessmentQuestionsCreated
 	{
 		get
 		{
@@ -3986,9 +3985,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ScaffoldsCreatedCount { get; set; }
-	private List<Scaffold> _scaffoldsCreated;
-	public List<Scaffold> ScaffoldsCreated
+	public Int64 ScaffoldsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Scaffold> _scaffoldsCreated;
+	public RelatedList<ApplicationUser,Scaffold> ScaffoldsCreated
 	{
 		get
 		{
@@ -4004,9 +4003,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ScaffoldInspectionsCreatedCount { get; set; }
-	private List<ScaffoldInspection> _scaffoldInspectionsCreated;
-	public List<ScaffoldInspection> ScaffoldInspectionsCreated
+	public Int64 ScaffoldInspectionsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ScaffoldInspection> _scaffoldInspectionsCreated;
+	public RelatedList<ApplicationUser,ScaffoldInspection> ScaffoldInspectionsCreated
 	{
 		get
 		{
@@ -4022,9 +4021,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ScaffoldLoadingsCreatedCount { get; set; }
-	private List<ScaffoldLoading> _scaffoldLoadingsCreated;
-	public List<ScaffoldLoading> ScaffoldLoadingsCreated
+	public Int64 ScaffoldLoadingsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ScaffoldLoading> _scaffoldLoadingsCreated;
+	public RelatedList<ApplicationUser,ScaffoldLoading> ScaffoldLoadingsCreated
 	{
 		get
 		{
@@ -4040,9 +4039,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? ScaffoldTypesCreatedCount { get; set; }
-	private List<ScaffoldType> _scaffoldTypesCreated;
-	public List<ScaffoldType> ScaffoldTypesCreated
+	public Int64 ScaffoldTypesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ScaffoldType> _scaffoldTypesCreated;
+	public RelatedList<ApplicationUser,ScaffoldType> ScaffoldTypesCreated
 	{
 		get
 		{
@@ -4058,9 +4057,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? SitesCreatedCount { get; set; }
-	private List<Site> _sitesCreated;
-	public List<Site> SitesCreated
+	public Int64 SitesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Site> _sitesCreated;
+	public RelatedList<ApplicationUser,Site> SitesCreated
 	{
 		get
 		{
@@ -4076,9 +4075,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? SiteInspectionsCreatedCount { get; set; }
-	private List<SiteInspection> _siteInspectionsCreated;
-	public List<SiteInspection> SiteInspectionsCreated
+	public Int64 SiteInspectionsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,SiteInspection> _siteInspectionsCreated;
+	public RelatedList<ApplicationUser,SiteInspection> SiteInspectionsCreated
 	{
 		get
 		{
@@ -4094,9 +4093,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	}
 
 	
-	public long? SitesCount { get; set; }
-	private List<UserSite> _sites;
-	public List<UserSite> Sites
+	public Int64 SitesCount { get; set; }
+	private RelatedList<ApplicationUser,UserSite> _sites;
+	public RelatedList<ApplicationUser,UserSite> Sites
 	{
 		get
 		{

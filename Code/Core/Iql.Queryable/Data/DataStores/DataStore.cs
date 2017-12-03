@@ -228,7 +228,7 @@ namespace Iql.Queryable.Data.DataStores
             // don't trickle down to our result
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
 #if TypeScript
-            response.Data = (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), true);
+            response.Data = (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), null, null, true);
 #endif
             response.Data.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue)

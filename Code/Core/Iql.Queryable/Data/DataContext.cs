@@ -124,63 +124,18 @@ namespace Iql.Queryable.Data
 
         public bool IsIdMatch(object left, object right, Type type)
         {
-            if (new[] { left, right }.Count(i => i == null) == 1)
-            {
-                return false;
-            }
-            if (left.GetType() != right.GetType())
-            {
-                return false;
-            }
-            if (left == right)
-            {
-                return true;
-            }
-            var configuration = EntityConfigurationContext.GetEntityByType(type);
-            var isMatch = true;
-            foreach (var id in configuration.Key.Properties)
-            {
-                if (!Equals(left.GetPropertyValue(id.PropertyName), right.GetPropertyValue(id.PropertyName)))
-                {
-                    isMatch = false;
-                    break;
-                }
-            }
-            return isMatch;
+            return EntityConfigurationContext.GetEntityByType(type)
+                .KeysMatch(left, right);
         }
 
-        public bool EntityPropertiesMatch(object left, CompositeKey compositeKey)
+        public bool EntityPropertiesMatch(object entity, CompositeKey compositeKey)
         {
-            var isMatch = true;
-            foreach (var key in compositeKey.Keys)
-            {
-                if (!Equals(left.GetPropertyValue(key.Name), key.Value))
-                {
-                    isMatch = false;
-                    break;
-                }
-            }
-            return isMatch;
+            return compositeKey.MatchesEntity(entity);
         }
 
         public bool EntityHasKey(object left, Type type, CompositeKey key)
         {
-            var configuration = EntityConfigurationContext.GetEntityByType(type);
-            var isMatch = true;
-            foreach (var id in configuration.Key.Properties)
-            {
-                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.PropertyName);
-                if (compositeKeyValue == null)
-                {
-                    return false;
-                }
-                if (!Equals(left.GetPropertyValue(id.PropertyName), compositeKeyValue.Value))
-                {
-                    isMatch = false;
-                    break;
-                }
-            }
-            return isMatch;
+            return EntityConfigurationContext.GetEntityByType(type).EntityHasKey(left, key);
         }
 
         public async Task<T> RefreshEntity<T>(T entity)
@@ -248,7 +203,7 @@ namespace Iql.Queryable.Data
                                 break;
                             case RelationshipType.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Target.Type));
+                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Source.Type, entity, relationship.Target.Type));
                                 break;
                         }
                     }
@@ -266,7 +221,7 @@ namespace Iql.Queryable.Data
                             case RelationshipType.OneToMany:
                             case RelationshipType.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Source.Type));
+                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Target.Type, entity, relationship.Source.Type));
                                 break;
                         }
                     }
@@ -279,14 +234,24 @@ namespace Iql.Queryable.Data
         public IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false)
             where T : class
         {
-            return (IList<T>)EnsureTypedListByType(responseData, typeof(T), forceNotNull);
+            return (IList<T>)EnsureTypedListByType(responseData, typeof(T), null, null, forceNotNull);
         }
 
-        public IList EnsureTypedListByType(IEnumerable responseData, Type type, bool forceNotNull = false)
+        public IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool forceNotNull = false)
         {
-            var list = responseData != null || forceNotNull ?
-                (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type))
-                : null;
+
+            IList list = null;
+            if (responseData != null || forceNotNull)
+            {
+                if (childType == null)
+                {
+                    list = (IList)Activator.CreateInstance(typeof(DbList<>).MakeGenericType(type));
+                }
+                else
+                {
+                    list = (IList)Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(type, childType), new object[]{ owner });
+                }
+            }
             if (responseData != null)
             {
                 foreach (var entity in responseData)
