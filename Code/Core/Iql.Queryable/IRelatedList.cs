@@ -11,6 +11,7 @@ namespace Iql.Queryable
         void AddChange(IRelatedListChange change);
         void RemoveChange(IRelatedListChange change);
         IEventEmitterBase Changed { get; }
+        IEventEmitterBase Changing { get; }
         object Owner { get; }
         void AssignRelationship(object item);
         void RemoveRelationship(object item);

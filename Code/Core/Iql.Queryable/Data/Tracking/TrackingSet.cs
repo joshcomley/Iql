@@ -132,11 +132,73 @@ namespace Iql.Queryable.Data.Tracking
             if (!found)
             {
                 Set.Add(entity);
+                (entity as IEntity)?.PropertyChanging?.Subscribe(pc =>
+                {
+                    var property = EntityConfiguration.FindProperty(pc.PropertyName);
+                    switch (property.Kind)
+                    {
+                        case PropertyKind.Relationship:
+                        case PropertyKind.RelationshipKey:
+                            if (!Equals(pc.OldValue, pc.NewValue))
+                            {
+                                var entityState = GetEntityState(entity);
+                                var oldState = entityState.GetPropertyState(pc.PropertyName);
+                                var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
+                                var relatedTrackingSet = TrackingSetCollection.TrackingSet(property.Relationship.OtherEnd.Type);
+                                if (property.Relationship.OtherEnd.IsCollection)
+                                {
+                                    var relatedEntity =
+                                        entity.GetPropertyValue(property.Relationship.ThisEnd.Property.PropertyName);
+                                    CompositeKey compositeKeyForNewRelationship;
+                                    CompositeKey compositeKeyForOldRelationship;
+                                    if (property.Kind == PropertyKind.RelationshipKey)
+                                    {
+                                        compositeKeyForNewRelationship =
+                                            property.Relationship.ThisEnd.GetCompositeKey(entity);
+                                        compositeKeyForNewRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.NewValue;
+                                        compositeKeyForNewRelationship =
+                                            property.Relationship.ThisEnd.GetCompositeKey(
+                                                compositeKeyForNewRelationship, true);
+
+                                        compositeKeyForOldRelationship =
+                                            property.Relationship.ThisEnd.GetCompositeKey(entity);
+                                        compositeKeyForOldRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.OldValue;
+                                        compositeKeyForOldRelationship =
+                                            property.Relationship.ThisEnd.GetCompositeKey(
+                                                compositeKeyForOldRelationship, true);
+                                    }
+                                    else
+                                    {
+                                        compositeKeyForNewRelationship =
+                                            pc.NewValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(pc.NewValue);
+                                        compositeKeyForOldRelationship =
+                                            oldValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(oldValue);
+                                    }
+                                    //relatedList.AssignRelationshipByKey(compositeKey);
+                                    var trackedEntity = relatedTrackingSet.FindTrackedEntityByKey(compositeKeyForNewRelationship);
+                                    if (trackedEntity != null)
+                                    {
+                                        var relatedList = trackedEntity.Entity.GetPropertyValue(property.Relationship.OtherEnd.Property
+                                            .PropertyName) as IRelatedList;
+                                        relatedList.AssignRelationship(entity);
+                                    }
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                            break;
+                    }
+                });
                 (entity as IEntity)?.PropertyChanged?.Subscribe(pc =>
                 {
                     var entityState = GetEntityState(entity);
                     var oldState = entityState.GetPropertyState(pc.PropertyName);
-                    entityState.SetPropertyState(pc.PropertyName, oldState == null ? pc.OldValue : oldState.OldValue, pc.NewValue);
+                    var property = EntityConfiguration.FindProperty(pc.PropertyName);
+                    var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
+                    entityState.SetPropertyState(pc.PropertyName, oldValue, pc.NewValue);
+
                 });
                 foreach (var relationship in EntityConfiguration.AllRelationships())
                 {
@@ -204,11 +266,30 @@ namespace Iql.Queryable.Data.Tracking
             //}
         }
 
+        private Dictionary<T, List<string>> _processRelationshipChangeStack = new Dictionary<T, List<string>>();
+        private bool _processingRelationshipChange = false;
         private void ProcessRelationshipChange<TRelationship>(
-            RelatedListChangedEvent<T, TRelationship> change,
+            RelatedListChangeEvent<T, TRelationship> change,
             RelationshipMatch relationship)
             where TRelationship : class
         {
+            if (_processingRelationshipChange)
+            {
+                return;
+            }
+            _processingRelationshipChange = true;
+            var newOwner = change.Owner;
+            if (_processRelationshipChangeStack.ContainsKey(newOwner) &&
+                _processRelationshipChangeStack[newOwner].Contains(relationship.ThisEnd.Property.PropertyName))
+            {
+                return;
+            }
+            if (!_processRelationshipChangeStack.ContainsKey(newOwner))
+            {
+                _processRelationshipChangeStack.Add(newOwner, new List<string>());
+            }
+            var stack = _processRelationshipChangeStack[newOwner];
+            stack.Add(relationship.ThisEnd.Property.PropertyName);
             var relationshipConfiguration = DataContext.EntityConfigurationContext
                 .GetEntityByType(typeof(TRelationship));
             var itemKey = change.ItemKey ?? relationshipConfiguration.GetCompositeKey(change.Item);
@@ -218,7 +299,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var oldOwner = FindTrackedEntityByKey(relationship.OtherEnd.GetCompositeKey(change.Item, true));
 
-                if (oldOwner != null && oldOwner.Entity != change.Owner)
+                if (oldOwner != null && oldOwner.Entity != newOwner)
                 {
                     var oldRelatedList =
                         oldOwner.Entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
@@ -252,27 +333,33 @@ namespace Iql.Queryable.Data.Tracking
                     //
                 }
                 change.Item.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
-                    change.Owner);
-                var compositeKey = relationship.ThisEnd.GetCompositeKey(change.Owner, true);
+                    newOwner);
+                var compositeKey = relationship.ThisEnd.GetCompositeKey(newOwner, true);
                 foreach (var key in compositeKey.Keys)
                 {
                     change.Item.SetPropertyValue(key.Name, key.Value);
                 }
             }
             var newRelatedList =
-                change.Owner.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                newOwner.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
                     as IRelatedList;
             newRelatedList.AddChange(new RelatedListChange<T, TRelationship>(
                 RelatedListChangeKind.Assign,
                 relationship,
                 itemKey,
                 change.Item,
-                change.Owner,
+                newOwner,
                 (RelatedList<T, TRelationship>)newRelatedList));
-            if (change.Item != null)
+            if (change.Item != null && !newRelatedList.Contains(change.Item))
             {
                 newRelatedList.Add(change.Item);
             }
+            stack.Remove(relationship.ThisEnd.Property.PropertyName);
+            if (stack.Count == 0)
+            {
+                _processRelationshipChangeStack.Remove(newOwner);
+            }
+            _processingRelationshipChange = false;
             //foreach (var entity in Set)
             //{
             //    var relationshipPropertyValue =

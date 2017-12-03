@@ -4,7 +4,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class RelatedListChangedEvent<TSource, TRelated> : IRelatedListChangedEvent
+    public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangedEvent
         where TRelated : class
     {
         public TSource Owner { get; set; }
@@ -21,7 +21,7 @@ namespace Iql.Queryable
 
         IList IRelatedListChangedEvent.List => List;
 
-        public RelatedListChangedEvent(
+        public RelatedListChangeEvent(
             TSource owner, 
             TRelated item,
             CompositeKey itemKey, 

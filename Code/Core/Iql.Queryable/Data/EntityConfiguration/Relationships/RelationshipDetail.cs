@@ -50,25 +50,25 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             throw new NotSupportedException();
         }
 
-        public CompositeKey GetCompositeKey(object entity, bool inverse = false)
+        public CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false)
         {
             var constraints = Constraints();
             var inverseConstraints = RelationshipSide == RelationshipSide.Source
                 ? Relationship.Target.Constraints()
                 : Relationship.Source.Constraints();
             var compositeKey = new CompositeKey();
-            compositeKey.Entity = entity;
+            compositeKey.Entity = entityOrCompositeKey;
             for(var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
                 object value;
-                if (entity is CompositeKey)
+                if (entityOrCompositeKey is CompositeKey)
                 {
-                    value = (entity as CompositeKey).Keys.Single(k => k.Name == constraint.PropertyName).Value;
+                    value = (entityOrCompositeKey as CompositeKey).Keys.Single(k => k.Name == constraint.PropertyName).Value;
                 }
                 else
                 {
-                    value = entity.GetPropertyValue(constraint.PropertyName);
+                    value = entityOrCompositeKey.GetPropertyValue(constraint.PropertyName);
                 }
                 compositeKey.Keys.Add(new KeyValue(
                     inverse

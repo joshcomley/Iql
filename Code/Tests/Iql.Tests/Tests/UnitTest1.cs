@@ -370,21 +370,6 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public void PropertyChangeEventShouldFireWhenAPropertyIsChanged2()
-        {
-            var clientTypes = AddClientTypes();
-            IPropertyChangeEvent propertyChangeEvent = null;
-            clientTypes.ClientType1.PropertyChanged.Subscribe(pc =>
-            {
-                propertyChangeEvent = pc;
-            });
-            clientTypes.ClientType1.Name = "Me";
-            Assert.IsNotNull(propertyChangeEvent);
-            Assert.AreEqual(nameof(ClientType.Name), propertyChangeEvent.PropertyName);
-            Assert.AreEqual(clientTypes.ClientType1, propertyChangeEvent.Entity);
-        }
-
-        [TestMethod]
         public async Task TestReassigningRelationshipEvents()
         {
             var clientTypes = AddClientTypes();
@@ -454,7 +439,7 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task TestReassigningAndRevertingExistingEntityToADifferentRelatedListSetsRelationshipKeyValues()
+        public async Task TestReassigningExistingEntityFromOneCollectionToAnotherAndReverting()
         {
             var clientTypes = AddClientTypes();
             var clientType1 = clientTypes.ClientType1;
@@ -467,15 +452,37 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, clientType2.Clients.Count);
             Assert.AreEqual(clientType1.Id, existingClient.TypeId);
 
-            var previousEntityChangedList = clientTypes.ClientType2.Clients.GetChanges();
-            Assert.AreEqual(1, previousEntityChangedList.Count);
-            var previousEntityChangedRecord = previousEntityChangedList[0];
-            Assert.AreEqual(RelatedListChangeKind.Remove, previousEntityChangedRecord.Kind);
+            var previousOwnerChangedList = clientTypes.ClientType2.Clients.GetChanges();
+            Assert.AreEqual(1, previousOwnerChangedList.Count);
+            var previousOwnerChangedRecord = previousOwnerChangedList[0];
+            Assert.AreEqual(RelatedListChangeKind.Remove, previousOwnerChangedRecord.Kind);
 
-            var newEntityChangedList = clientTypes.ClientType1.Clients.GetChanges();
-            Assert.AreEqual(1, newEntityChangedList.Count);
-            var newEntityChangedRecord = newEntityChangedList[0];
-            Assert.AreEqual(RelatedListChangeKind.Assign, newEntityChangedRecord.Kind);
+            var newOwnerChangedList = clientTypes.ClientType1.Clients.GetChanges();
+            Assert.AreEqual(1, newOwnerChangedList.Count);
+            var newOwnerChangedRecord = newOwnerChangedList[0];
+            Assert.AreEqual(RelatedListChangeKind.Assign, newOwnerChangedRecord.Kind);
+
+            // We should have only one database update to change the TypeId on the Client object
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(1, changes.Count);
+            var change = changes.First();
+            var changeOperation = change.Operation as UpdateEntityOperation<Client>;
+            Assert.IsNotNull(changeOperation);
+            Assert.AreEqual(QueuedOperationType.Update, change.Type);
+            Assert.AreEqual(existingClient, changeOperation.EntityState.Entity);
+            Assert.AreEqual(existingClient, changeOperation.Entity);
+            var propertyChanges = changeOperation.EntityState.ChangedProperties;
+            Assert.AreEqual(2, propertyChanges.Count);
+
+            var keyPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.TypeId));
+            Assert.IsNotNull(keyPropertyChange);
+            Assert.AreEqual(3, keyPropertyChange.OldValue);
+            Assert.AreEqual(2, keyPropertyChange.NewValue);
+
+            var relationshipPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
+            Assert.IsNotNull(relationshipPropertyChange);
+            Assert.AreEqual(clientType2, relationshipPropertyChange.OldValue);
+            Assert.AreEqual(clientType1, relationshipPropertyChange.NewValue);
 
             // Revert the change
             clientType2.Clients.AssignRelationship(existingClient);
@@ -483,10 +490,49 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, clientType2.Clients.Count);
             Assert.AreEqual(originalClientType1Client, clientType1.Clients[0]);
             Assert.AreEqual(originalClientType2Client, clientType2.Clients[0]);
-            Assert.AreEqual(0, previousEntityChangedList.Count);
-            Assert.AreEqual(0, newEntityChangedList.Count);
+            Assert.AreEqual(0, previousOwnerChangedList.Count);
+            Assert.AreEqual(0, newOwnerChangedList.Count);
+
+            // We should no longer have any changes as we have reverted our update
+            changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
         }
 
+
+        [TestMethod]
+        public async Task TestReassigningExistingEntityFromOneCollectionToAnotherAndRevertingByChangingRelationshipKeyManually()
+        {
+            var clientTypes = AddClientTypes();
+            var clientType1 = clientTypes.ClientType1;
+            var clientType2 = clientTypes.ClientType2;
+            var originalClientType1Client = clientType1.Clients[0];
+            var originalClientType2Client = clientType2.Clients[0];
+            var existingClient = clientType2.Clients[0];
+            clientType1.Clients.AssignRelationship(existingClient);
+
+            var previousOwnerChangedList = clientTypes.ClientType2.Clients.GetChanges();
+            Assert.AreEqual(1, previousOwnerChangedList.Count);
+            var newOwnerChangedList = clientTypes.ClientType2.Clients.GetChanges();
+            Assert.AreEqual(1, newOwnerChangedList.Count);
+
+            // We should have only one database update to change the TypeId on the Client object
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(1, changes.Count);
+
+            // Revert the change
+            existingClient.TypeId = clientType2.Id;
+            Assert.AreEqual(1, clientType1.Clients.Count);
+            Assert.AreEqual(1, clientType2.Clients.Count);
+            Assert.AreEqual(originalClientType1Client, clientType1.Clients[0]);
+            Assert.AreEqual(originalClientType2Client, clientType2.Clients[0]);
+            Assert.AreEqual(0, previousOwnerChangedList.Count);
+            Assert.AreEqual(0, newOwnerChangedList.Count);
+
+            // We should no longer have any changes as we have reverted our update
+            changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
+        }
+        
         //[TestMethod]
         //public async Task AddingANewEntityWithChildCollectionShouldResultInASingleAddEntityOperation()
         //{

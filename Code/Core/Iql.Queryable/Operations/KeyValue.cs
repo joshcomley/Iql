@@ -4,9 +4,9 @@ namespace Iql.Queryable.Operations
 {
     public class KeyValue
     {
-        public string Name { get; }
-        public object Value { get; }
-        public Type ValueType { get; }
+        public string Name { get; set; }
+        public object Value { get; set; }
+        public Type ValueType { get; set; }
         public KeyValue(string name, object value, Type valueType)
         {
             Name = name;

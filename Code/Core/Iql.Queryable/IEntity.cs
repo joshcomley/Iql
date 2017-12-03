@@ -8,6 +8,7 @@ namespace Iql.Queryable
         bool OnSaving();
         bool OnDeleting();
         EntityValidationResult ValidateEntity();
+        EventEmitter<IPropertyChangeEvent> PropertyChanging { get; }
         EventEmitter<IPropertyChangeEvent> PropertyChanged { get; }
     }
 }

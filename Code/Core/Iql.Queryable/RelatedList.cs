@@ -47,8 +47,11 @@ namespace Iql.Queryable
             RemoveChange((RelatedListChange<TSource, T>) change);
         }
 
-        public EventEmitter<RelatedListChangedEvent<TSource, T>> Changed { get; }
-            = new EventEmitter<RelatedListChangedEvent<TSource, T>>();
+        public EventEmitter<RelatedListChangeEvent<TSource, T>> Changed { get; }
+            = new EventEmitter<RelatedListChangeEvent<TSource, T>>();
+
+        public EventEmitter<RelatedListChangeEvent<TSource, T>> Changing { get; }
+            = new EventEmitter<RelatedListChangeEvent<TSource, T>>();
 
         public TSource Owner { get; }
 
@@ -60,6 +63,7 @@ namespace Iql.Queryable
         }
 
         IEventEmitterBase IRelatedList.Changed => Changed;
+        IEventEmitterBase IRelatedList.Changing => Changing;
 
         public RelatedList(TSource owner, IEnumerable<T> source = null)
         {
@@ -74,7 +78,7 @@ namespace Iql.Queryable
 
         private void Emit(T item, CompositeKey itemKey, RelatedListChangeKind kind)
         {
-            Changed.Emit(new RelatedListChangedEvent<TSource, T>(Owner, item, itemKey, kind, this));
+            Changed.Emit(new RelatedListChangeEvent<TSource, T>(Owner, item, itemKey, kind, this));
         }
 
         public void RemoveRelationship(T item)
@@ -100,16 +104,6 @@ namespace Iql.Queryable
         public void RemoveRelationshipByKey(CompositeKey key)
         {
             Emit(null, key, RelatedListChangeKind.Remove);
-        }
-
-        void IRelatedList.AssignRelationshipByKey(CompositeKey item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        void IRelatedList.RemoveRelationshipByKey(CompositeKey item)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
