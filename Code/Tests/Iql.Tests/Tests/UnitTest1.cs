@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Events;
+using Iql.Queryable.Exceptions;
 using Iql.Queryable.Operations;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -408,20 +410,20 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(3, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
-            Assert.AreEqual(4, eventFiredCount);
-            Assert.AreEqual(3, assignEventFiredCount);
-            Assert.AreEqual(1, removeEventFiredCount);
+            //clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
+            //Assert.AreEqual(4, eventFiredCount);
+            //Assert.AreEqual(3, assignEventFiredCount);
+            //Assert.AreEqual(1, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
-            Assert.AreEqual(5, eventFiredCount);
-            Assert.AreEqual(3, assignEventFiredCount);
-            Assert.AreEqual(2, removeEventFiredCount);
+            //clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
+            //Assert.AreEqual(5, eventFiredCount);
+            //Assert.AreEqual(3, assignEventFiredCount);
+            //Assert.AreEqual(2, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.RemoveRelationship(new Client());
-            Assert.AreEqual(6, eventFiredCount);
-            Assert.AreEqual(3, assignEventFiredCount);
-            Assert.AreEqual(3, removeEventFiredCount);
+            //clientTypes.ClientType1.Clients.RemoveRelationship(new Client());
+            //Assert.AreEqual(6, eventFiredCount);
+            //Assert.AreEqual(3, assignEventFiredCount);
+            //Assert.AreEqual(3, removeEventFiredCount);
         }
 
         [TestMethod]
@@ -443,11 +445,15 @@ namespace Iql.Tests.Tests
         {
             await TestReassign(ReassignType.AssignMethod, ReassignType.AssignMethod);
             TestCleanUp();
+            await TestReassign(ReassignType.AssignMethod, ReassignType.AssignByKeyMethod);
+            TestCleanUp();
             await TestReassign(ReassignType.AssignMethod, ReassignType.Key);
             TestCleanUp();
             await TestReassign(ReassignType.AssignMethod, ReassignType.Relationship);
             TestCleanUp();
             await TestReassign(ReassignType.Key, ReassignType.AssignMethod);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignMethod, ReassignType.AssignByKeyMethod);
             TestCleanUp();
             await TestReassign(ReassignType.Key, ReassignType.Key);
             TestCleanUp();
@@ -455,16 +461,114 @@ namespace Iql.Tests.Tests
             TestCleanUp();
             await TestReassign(ReassignType.Relationship, ReassignType.AssignMethod);
             TestCleanUp();
+            await TestReassign(ReassignType.AssignMethod, ReassignType.AssignByKeyMethod);
+            TestCleanUp();
             await TestReassign(ReassignType.Relationship, ReassignType.Key);
             TestCleanUp();
             await TestReassign(ReassignType.Relationship, ReassignType.Relationship);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.AssignMethod);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.AssignByKeyMethod);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.Key);
+            TestCleanUp();
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.Relationship);
         }
-        
+
+        [TestMethod]
+        public async Task AttemptingToSetNullValueToNonNullablePropertyShouldProduceNullNotAllowedException()
+        {
+            var clientTypes = AddClientTypes();
+            var clientType1 = clientTypes.ClientType1;
+            var clientType1Client = clientType1.Clients[0];
+            var operations = Db.DataStore.Queue.ToList();
+            ExpectException<NullNotAllowedException>(() =>
+            {
+                clientType1.Clients.RemoveRelationship(clientType1Client);
+            });
+            //operations = Db.DataStore.Queue.ToList();
+            //Assert.AreEqual(1, operations.Count);
+        }
+
+        private void ExpectException<TException>(Action action)
+            where TException : Exception
+        {
+            var exceptionCount = 0;
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                var ex = e.InnerException ?? e;
+                exceptionCount++;
+                Assert.AreEqual(typeof(TException).Name, ex.GetType().Name);
+            }
+            Assert.AreEqual(1, exceptionCount);
+        }
+
+
+        [TestMethod]
+        public async Task TestRemovingAnAssociationSetsRelevantConstraintsToNull()
+        {
+            var site = new Site
+            {
+                Name = "My site"
+            };
+            var client = new Client
+            {
+                Id = 12,
+                Name = "My client"
+            };
+            client.Sites.Add(site);
+            Db.Clients.Add(client);
+            await Db.SaveChanges();
+            client.Sites.RemoveRelationship(site);
+            Assert.AreEqual(null, site.ClientId);
+        }
+
+        [TestMethod]
+        public async Task TestAssigningAnAssociationWithANewEntityCreatesRelevantCreateAction()
+        {
+            var clientTypes = AddClientTypes();
+            var clientType1 = clientTypes.ClientType1;
+            var clientType1Clients = clientType1.Clients;
+            await Db.SaveChanges();
+            Assert.AreEqual(clientType1Clients, clientType1.Clients);
+            var clientType1NewClient = new Client();
+            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(0, clientType1.Clients.Count);
+            clientType1.Clients.AssignRelationship(clientType1NewClient);
+            Assert.AreEqual(1, clientType1.Clients.GetChanges().Count);
+            Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
+            Assert.AreEqual(clientType1, clientType1NewClient.Type);
+            Assert.AreEqual(1, clientType1.Clients.Count);
+            Assert.AreEqual(1, Db.DataStore.Queue.Count);
+            var addOperation = Db.DataStore.Queue[0] as QueuedAddEntityOperation<Client>;
+            Assert.IsNotNull(addOperation);
+            Assert.AreEqual(clientType1NewClient, addOperation.Operation.Entity);
+
+            // Now remove this association and ensure that the add operation is no longer
+            // in the queue
+            clientType1.Clients.RemoveRelationship(clientType1NewClient);
+            Assert.AreEqual(0, clientType1.Clients.Count);
+            Assert.AreEqual(0, clientType1.Clients.GetChanges().Count);
+            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+        }
+
+        [TestMethod]
+        public async Task TestDoubleAssignmentHasNoSideEffects()
+        {
+            
+        }
+
         public enum ReassignType
         {
             Key,
             Relationship,
-            AssignMethod
+            AssignMethod,
+            AssignByKeyMethod
         }
 
         public async Task TestReassign(ReassignType type1 , ReassignType type2)
@@ -475,10 +579,15 @@ namespace Iql.Tests.Tests
             var originalClientType1Client = clientType1.Clients[0];
             var originalClientType2Client = clientType2.Clients[0];
             var existingClient = clientType2.Clients[0];
+            var existingClientKey = Db.EntityConfigurationContext.GetEntityByType(typeof(Client))
+                .GetCompositeKey(existingClient);
             switch (type1)
             {
                 case ReassignType.AssignMethod:
                     clientType1.Clients.AssignRelationship(existingClient);
+                    break;
+                case ReassignType.AssignByKeyMethod:
+                    clientType1.Clients.AssignRelationshipByKey(existingClientKey);
                     break;
                 case ReassignType.Key:
                     existingClient.TypeId = clientType1.Id;
@@ -528,6 +637,9 @@ namespace Iql.Tests.Tests
             {
                 case ReassignType.AssignMethod:
                     clientType2.Clients.AssignRelationship(existingClient);
+                    break;
+                case ReassignType.AssignByKeyMethod:
+                    clientType2.Clients.AssignRelationshipByKey(existingClientKey);
                     break;
                 case ReassignType.Key:
                     existingClient.TypeId = clientType2.Id;

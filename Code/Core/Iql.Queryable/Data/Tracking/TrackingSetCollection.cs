@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Exceptions;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -17,6 +18,7 @@ namespace Iql.Queryable.Data.Tracking
             Sets = new List<ITrackingSet>();
         }
 
+        internal bool ProcessingRelationshipChange { get; set; }
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
         public List<ITrackingSet> Sets { get; set; }
         private IDataContext DataContext { get; }

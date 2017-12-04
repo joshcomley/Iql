@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Queryable.Exceptions
 {
     public class EntityAlreadyTrackedException : Exception
     {

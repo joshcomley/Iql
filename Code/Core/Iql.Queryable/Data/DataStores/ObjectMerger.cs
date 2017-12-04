@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Tracking;
+using TypeSharp.Extensions;
 
 namespace Iql.Queryable.Data.DataStores
 {
     public class ObjectMerger
     {
-        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object newEntity)
+        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object newEntity, Type entityType)
         {
             var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity)?.Entity;
             if (trackedEntity == newEntity || trackedEntity == null)
@@ -141,7 +142,7 @@ namespace Iql.Queryable.Data.DataStores
                 {
                     continue;
                 }
-                MergeSimpleProperty(trackedEntity, newEntity, property.Name);
+                MergeSimpleProperty(trackedEntity, newEntity, property.Name, entityType, dataContext);
             }
         }
 
@@ -160,22 +161,36 @@ namespace Iql.Queryable.Data.DataStores
                     trackedEntity.SetPropertyValue(keyProperty.PropertyName,
                         newEntity.GetPropertyValue(keyProperty.PropertyName));
                 }
-                Merge(dataContext, trackingSetCollection, newEntity);
+                Merge(dataContext, trackingSetCollection, newEntity, entityType);
                 return trackedEntity;
             }
             trackingSetCollection.Track(newEntity, entityType);
             return newEntity;
         }
 
-        private static void MergeSimpleProperty(object localEntity, object remoteEntity,
-            string propertyName)
+        private static void MergeSimpleProperty(object localEntity, object remoteEntity, string propertyName, Type entityType, IDataContext dataContext)
         {
+            var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType).FindProperty(propertyName);
             var localValue = localEntity.GetPropertyValue(propertyName);
             var remoteValue = remoteEntity.GetPropertyValue(propertyName);
             var isCollection = remoteValue is IEnumerable && !(remoteValue is string);
             // Local value or remote value is a primitive value or null, so just reassign
             if (!isCollection || localValue == null || remoteValue == null)
             {
+                if (!property.Nullable)
+                {
+                    if (Platform.Name == "JavaScript")
+                    {
+                        if (property.Type == typeof(DateTime))
+                        {
+                            remoteValue = 0;
+                        }
+                        else if (property.ConvertedFromType == "Guid")
+                        {
+                            remoteValue = Guid.Empty;
+                        }
+                    }
+                }
                 localEntity.SetPropertyValue(propertyName, remoteValue);
             }
             else

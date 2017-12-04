@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Exceptions;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
@@ -134,7 +136,23 @@ namespace Iql.Queryable.Data.Tracking
                 Set.Add(entity);
                 (entity as IEntity)?.PropertyChanging?.Subscribe(pc =>
                 {
+                    if (Equals(pc.NewValue, 0))
+                    {
+                        int a = 0;
+                    }
+                    if (TrackingSetCollection.ProcessingRelationshipChange)
+                    {
+                        return;
+                    }
                     var property = EntityConfiguration.FindProperty(pc.PropertyName);
+                    if (pc.NewValue == null && !property.Nullable
+#if TypeScript
+                    && property.ConvertedFromType != "Guid"
+#endif
+                    )
+                    {
+                        throw new NullNotAllowedException(typeof(T), property.Name);
+                    }
                     switch (property.Kind)
                     {
                         case PropertyKind.Relationship:
@@ -230,7 +248,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 if (existingEntity.Entity != entity)
                 {
-                    ObjectMerger.Merge(DataContext, TrackingSetCollection, entity);
+                    ObjectMerger.Merge(DataContext, TrackingSetCollection, entity, typeof(T));
                 }
                 _trackedEntityClones[existingEntity.Entity] = clone;
             }
@@ -266,40 +284,61 @@ namespace Iql.Queryable.Data.Tracking
             //}
         }
 
-        private Dictionary<T, List<string>> _processRelationshipChangeStack = new Dictionary<T, List<string>>();
-        private bool _processingRelationshipChange = false;
         private void ProcessRelationshipChange<TRelationship>(
             RelatedListChangeEvent<T, TRelationship> change,
             RelationshipMatch relationship)
             where TRelationship : class
         {
-            if (_processingRelationshipChange)
-            {
-                return;
-            }
-            _processingRelationshipChange = true;
-            var newOwner = change.Owner;
-            if (_processRelationshipChangeStack.ContainsKey(newOwner) &&
-                _processRelationshipChangeStack[newOwner].Contains(relationship.ThisEnd.Property.PropertyName))
-            {
-                return;
-            }
-            if (!_processRelationshipChangeStack.ContainsKey(newOwner))
-            {
-                _processRelationshipChangeStack.Add(newOwner, new List<string>());
-            }
-            var stack = _processRelationshipChangeStack[newOwner];
-            stack.Add(relationship.ThisEnd.Property.PropertyName);
             var relationshipConfiguration = DataContext.EntityConfigurationContext
                 .GetEntityByType(typeof(TRelationship));
+            bool nullable = true;
+            if (change.Kind == RelatedListChangeKind.Remove)
+            {
+                var constraints = relationship.OtherEnd.Constraints();
+                foreach (var constraint in constraints)
+                {
+                    var property = relationshipConfiguration.FindProperty(constraint.PropertyName);
+                    if (!property.Nullable)
+                    {
+                        if (change.Item != null && DataContext.IsEntityNew(change.Item, typeof(TRelationship)))
+                        {
+                            nullable = false;
+                            break;
+                        }
+                        throw new NullNotAllowedException(typeof(TRelationship), constraint.PropertyName);
+                    }
+                }
+            }
+            if (TrackingSetCollection.ProcessingRelationshipChange)
+            {
+                return;
+            }
+            TrackingSetCollection.ProcessingRelationshipChange = true;
+            var newOwner = change.Owner;
             var itemKey = change.ItemKey ?? relationshipConfiguration.GetCompositeKey(change.Item);
-            //var relatedTrackingSet = TrackingSetCollection.TrackingSet(typeof(TRelationship));
-
+            if (change.Item == null)
+            {
+                var trackedItem = TrackingSetCollection.TrackingSet(typeof(TRelationship))
+                    .FindTrackedEntityByKey(itemKey);
+                if (trackedItem != null)
+                {
+                    change.Item = (TRelationship)trackedItem.Entity;
+                }
+            }
+            var relatedTrackingSet = TrackingSetCollection.TrackingSet(typeof(TRelationship));
+            var isNewEntity = false;
             if (change.Item != null)
             {
+                isNewEntity = DataContext.IsEntityNew(change.Item, typeof(TRelationship));
+                if (change.Kind == RelatedListChangeKind.Assign &&
+                    isNewEntity)
+                {
+                    var set = DataContext.AsDbSetByType(typeof(TRelationship));
+                    set.AddEntity(change.Item);
+                }
                 var oldOwner = FindTrackedEntityByKey(relationship.OtherEnd.GetCompositeKey(change.Item, true));
 
-                if (oldOwner != null && oldOwner.Entity != newOwner)
+                if (oldOwner != null && (oldOwner.Entity != newOwner || change.Kind == RelatedListChangeKind.Remove))
                 {
                     var oldRelatedList =
                         oldOwner.Entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
@@ -326,40 +365,69 @@ namespace Iql.Queryable.Data.Tracking
                     }
                 }
 
-                var relatedEntityPropertyValue =
-                    change.Item.GetPropertyValue(relationship.OtherEnd.Property.PropertyName);
-                if (relatedEntityPropertyValue != null)
+                if (change.Kind == RelatedListChangeKind.Assign)
                 {
-                    //
+                    change.Item.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
+                        newOwner);
+                    var compositeKey = relationship.ThisEnd.GetCompositeKey(newOwner, true);
+                    foreach (var key in compositeKey.Keys)
+                    {
+                        change.Item.SetPropertyValue(key.Name, key.Value);
+                    }
                 }
-                change.Item.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
-                    newOwner);
-                var compositeKey = relationship.ThisEnd.GetCompositeKey(newOwner, true);
-                foreach (var key in compositeKey.Keys)
+                else
                 {
-                    change.Item.SetPropertyValue(key.Name, key.Value);
+                    if (nullable)
+                    {
+                        change.Item.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
+                            null);
+                        var compositeKey = relationship.ThisEnd.GetCompositeKey(newOwner, true);
+                        foreach (var key in compositeKey.Keys)
+                        {
+                            change.Item.SetPropertyValue(key.Name, null);
+                        }
+                    }
                 }
             }
             var newRelatedList =
                 newOwner.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
                     as IRelatedList;
-            newRelatedList.AddChange(new RelatedListChange<T, TRelationship>(
-                RelatedListChangeKind.Assign,
-                relationship,
-                itemKey,
-                change.Item,
-                newOwner,
-                (RelatedList<T, TRelationship>)newRelatedList));
-            if (change.Item != null && !newRelatedList.Contains(change.Item))
+            if (change.Item != null && !newRelatedList.Contains(change.Item) && change.Kind == RelatedListChangeKind.Assign)
             {
+                newRelatedList.AddChange(new RelatedListChange<T, TRelationship>(
+                    RelatedListChangeKind.Assign,
+                    relationship,
+                    itemKey,
+                    change.Item,
+                    newOwner,
+                    (RelatedList<T, TRelationship>)newRelatedList));
                 newRelatedList.Add(change.Item);
             }
-            stack.Remove(relationship.ThisEnd.Property.PropertyName);
-            if (stack.Count == 0)
+
+            // If we were creating a new entity as a chlid relationship, but now
+            // we've removed that relationship and the entity is nowhere else in the
+            // object graph then remove the AddEntityOperation
+            if (change.Item != null && isNewEntity && change.Kind == RelatedListChangeKind.Remove)
             {
-                _processRelationshipChangeStack.Remove(newOwner);
+                var tracked = relatedTrackingSet.FindTrackedEntity(change.Item);
+                if (tracked != null && tracked.TrackedRelationships.Count == 0)
+                {
+                    var addOperationsToRemove = DataContext.DataStore.Queue
+                        .Where(q => q is QueuedAddEntityOperation<TRelationship>)
+                        .Cast<QueuedAddEntityOperation<TRelationship>>()
+                        .Where(q => q.Operation.Entity == change.Item)
+                        .ToList();
+                    foreach (var item in addOperationsToRemove)
+                    {
+                        DataContext.DataStore.Queue.Remove(item);
+                    }
+                }
+                else if (!nullable)
+                {
+                    throw new NullNotAllowedException(typeof(TRelationship), relationship.OtherEnd.Property.PropertyName);
+                }
             }
-            _processingRelationshipChange = false;
+            TrackingSetCollection.ProcessingRelationshipChange = false;
             //foreach (var entity in Set)
             //{
             //    var relationshipPropertyValue =

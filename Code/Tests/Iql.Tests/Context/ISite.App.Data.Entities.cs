@@ -778,6 +778,19 @@ public class Site : SiteBase, IEntity {
 		}
 	}
 
+	private int? _clientId;
+	public int? ClientId
+	{
+		get => _clientId;
+		set
+		{
+			var oldValue = _clientId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
+			_clientId = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
+		}
+	}
+
 	private string _createdByUserId;
 	public string CreatedByUserId
 	{
@@ -814,19 +827,6 @@ public class Site : SiteBase, IEntity {
 			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
 			_postCode = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
-		}
-	}
-
-	private int? _clientId;
-	public int? ClientId
-	{
-		get => _clientId;
-		set
-		{
-			var oldValue = _clientId;
-			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
-			_clientId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
 		}
 	}
 
@@ -991,19 +991,6 @@ public class Site : SiteBase, IEntity {
 		}
 	}
 
-	private ApplicationUser _createdByUser;
-	public ApplicationUser CreatedByUser
-	{
-		get => _createdByUser;
-		set
-		{
-			var oldValue = _createdByUser;
-			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
-			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
-		}
-	}
-
 	private Client _client;
 	public Client Client
 	{
@@ -1014,6 +1001,19 @@ public class Site : SiteBase, IEntity {
 			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
 			_client = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
+		}
+	}
+
+	private ApplicationUser _createdByUser;
+	public ApplicationUser CreatedByUser
+	{
+		get => _createdByUser;
+		set
+		{
+			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
+			_createdByUser = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -3745,6 +3745,19 @@ public class Client : ClientBase, IEntity {
 		}
 	}
 
+	private int _id;
+	public int Id
+	{
+		get => _id;
+		set
+		{
+			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
+			_id = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
+		}
+	}
+
 	private string _createdByUserId;
 	public string CreatedByUserId
 	{
@@ -3794,19 +3807,6 @@ public class Client : ClientBase, IEntity {
 			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
 			_guid = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
-		}
-	}
-
-	private int _id;
-	public int Id
-	{
-		get => _id;
-		set
-		{
-			var oldValue = _id;
-			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
-			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3910,6 +3910,25 @@ public class Client : ClientBase, IEntity {
 			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Scaffolds), this, oldValue, value));
 			_scaffolds = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Scaffolds), this, oldValue, value));
+		}
+	}
+
+	
+	public Int64 SitesCount { get; set; }
+	private RelatedList<Client,Site> _sites;
+	public RelatedList<Client,Site> Sites
+	{
+		get
+		{
+			this._sites = _sites ?? new RelatedList<Client,Site>(this);
+			return _sites;
+		}
+		set
+		{
+			var oldValue = _sites;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
+			_sites = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
 		}
 	}
 

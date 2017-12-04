@@ -155,7 +155,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public EntityConfiguration<T> DefineConvertedProperty<TProperty>(
             Expression<Func<T, TProperty>> property,
-            string convertedFromType
+            string convertedFromType,
+            bool nullable = true
         )
         {
 #if !TypeScript
@@ -168,6 +169,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
+            definition.Nullable = nullable;
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);
@@ -184,10 +186,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public EntityConfiguration<T> DefineProperty<TProperty>(
-            Expression<Func<T, TProperty>> property
+            Expression<Func<T, TProperty>> property,
+            bool nullable = true
         )
         {
-            return DefineConvertedProperty(property, null);
+            return DefineConvertedProperty(property, null, nullable);
         }
 
         public EntityConfiguration<T> DefineCollectionProperty<TProperty>(
