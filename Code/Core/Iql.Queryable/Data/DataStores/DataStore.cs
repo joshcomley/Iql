@@ -28,9 +28,13 @@ namespace Iql.Queryable.Data.DataStores
         {
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, operation.EntityType);
+            var relationshipManager = new RelationshipManager(DataContext);
             foreach (var entity in flattened)
             {
-                PersistRelationships(entity.Entity, entity.EntityType);
+                if (!GetTracking().IsTracked(entity.Entity, entity.EntityType))
+                {
+                    relationshipManager.PersistRelationships(entity.Entity, entity.EntityType);
+                }
             }
             AddEntityResult<TEntity> result = null;
             foreach (var entity in flattened)
@@ -65,65 +69,6 @@ namespace Iql.Queryable.Data.DataStores
             return result;
         }
 
-        private void PersistRelationships(object entity, Type entityType)
-        {
-            foreach (var relationship in DataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
-            {
-                var key = relationship.ThisEnd.GetCompositeKey(entity, true);
-                //var inverseKey = relationship.ThisEnd.GetCompositeKey(entity);
-                if (key.HasDefaultValue())
-                {
-                    continue;
-                }
-                var set = DataContext.DataStore.GetTracking().TrackingSet(relationship.OtherEnd.Type);
-                if (relationship.ThisEnd.IsCollection)
-                {
-                    var collection = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName) as IList;
-                    if (collection != null)
-                    {
-                        foreach (var child in collection)
-                        {
-                            foreach (var keyPart in key.Keys)
-                            {
-                                child.SetPropertyValue(keyPart.Name, keyPart.Value);
-                            }
-                            child.SetPropertyValue(relationship.OtherEnd.Property.PropertyName, entity);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var relatedEntity in set.TrackedEntites())
-                    {
-                        if (DataContext.EntityPropertiesMatch(relatedEntity, key))
-                        {
-                            PersistRelationship(relationship.OtherEnd, relatedEntity, entity);
-                            PersistRelationship(relationship.ThisEnd, entity, relatedEntity);
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void PersistRelationship(IRelationshipDetail relationshipSide, object entity, object relatedEntity)
-        {
-            // Set the entity's relationship entity
-            if (relationshipSide.IsCollection)
-            {
-                // Add it to the entity's related collection
-                var relatedValue = entity.GetPropertyValue(relationshipSide.Property.PropertyName);
-                var collection = relatedValue as IList;
-                if (collection != null && !collection.Contains(relatedEntity))
-                {
-                    collection.Add(relatedEntity);
-                }
-            }
-            else
-            {
-                entity.SetPropertyValue(relationshipSide.Property.PropertyName, relatedEntity);
-            }
-        }
-
         public virtual UpdateEntityResult<TEntity> Update<TEntity>(
             UpdateEntityOperation<TEntity> operation)
             where TEntity : class
@@ -140,6 +85,7 @@ namespace Iql.Queryable.Data.DataStores
             DeleteEntityOperation<TEntity> operation)
             where TEntity : class
         {
+//            new RelationshipManager(DataContext).DeleteRelationships(operation.Entity, operation.EntityType);
             var result = new DeleteEntityResult<TEntity>(true, operation);
             Queue.Add(
                 new QueuedDeleteEntityOperation<TEntity>(
@@ -487,6 +433,19 @@ namespace Iql.Queryable.Data.DataStores
                         tracking.Track(entity.Entity, entityType);
                     }
                 }
+            }
+        }
+        public void RemoveQueuedOperationsForEntity(
+            object changeItem,
+            QueuedOperationType queuedOperationType)
+        {
+            var addOperationsToRemove = DataContext.DataStore.Queue
+                .Where(q => q.Type == queuedOperationType)
+                .Where(q => ((IEntityCrudOperationBase)q.Operation).Entity == changeItem)
+                .ToList();
+            foreach (var item in addOperationsToRemove)
+            {
+                DataContext.DataStore.Queue.Remove(item);
             }
         }
     }

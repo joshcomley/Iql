@@ -569,8 +569,8 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		}
 	}
 
-	private int _riskAssessmentId;
-	public int RiskAssessmentId
+	private int? _riskAssessmentId;
+	public int? RiskAssessmentId
 	{
 		get => _riskAssessmentId;
 		set

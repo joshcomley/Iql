@@ -1,5 +1,6 @@
 ﻿using Iql.JavaScript.QueryToJavaScript;
 using Iql.Queryable;
+using Iql.Queryable.Data;
 #if TypeScript
 using Iql.JavaScript.QueryToJavaScript;
 using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
@@ -39,6 +40,11 @@ namespace Iql.Tests.Context
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteInspections);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessments);
+            var defaultQueries = new EntityDefaultQueryConfiguration();
+            defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
+            RegisterConfiguration(defaultQueries);
         }
 
         public static InMemoryDataBase InMemoryDb { get; set; }

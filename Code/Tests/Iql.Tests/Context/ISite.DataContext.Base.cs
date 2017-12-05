@@ -566,7 +566,7 @@ public class ISiteDataContextBase : DataContext {
 		builder.DefineEntity<SiteInspection>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
-			.DefineProperty(p => p.RiskAssessmentId, false)
+			.DefineProperty(p => p.RiskAssessmentId)
 			.DefineProperty(p => p.SiteId, false)
 			.DefineProperty(p => p.CreatedByUserId)
 			.DefineProperty(p => p.StartTime, false)

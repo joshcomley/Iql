@@ -24,16 +24,35 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public RelationshipType Type { get; set; }
         public IRelationshipDetail Source { get; }
         public IRelationshipDetail Target { get; }
+        public IRelationship InverseRelationship { get; set; }
 
         public Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> WithConstraint(
             Expression<Func<TSource, object>> sourceKeyProperty,
             Expression<Func<TTarget, object>> targetKeyProperty)
         {
+            var sourceIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(sourceKeyProperty) as
+                IqlPropertyExpression;
+            var targetIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetKeyProperty) as
+                IqlPropertyExpression;
+            if(sourceIqlProperty.PropertyName == "SiteInspectionId" || targetIqlProperty.PropertyName == "SiteInspectionId")
+            {
+                int a = 0;
+            }
+            var sourceProperty = Source.Configuration.FindProperty(sourceIqlProperty.PropertyName);
+            if (sourceProperty != null && sourceProperty.Kind == PropertyKind.Primitive)
+            {
+                sourceProperty.Kind = PropertyKind.RelationshipKey;
+                sourceProperty.Relationship = Source.Configuration.FindRelationship(Source.Property.PropertyName);
+            }
+            var targetProperty = Target.Configuration.FindProperty(targetIqlProperty.PropertyName);
+            if (targetProperty != null && targetProperty.Kind == PropertyKind.Primitive)
+            {
+                targetProperty.Kind = PropertyKind.RelationshipKey;
+                targetProperty.Relationship = Target.Configuration.FindRelationship(Target.Property.PropertyName);
+            }
             Constraints.Add(new RelationshipConstraint(
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(sourceKeyProperty) as
-                    IqlPropertyExpression,
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetKeyProperty) as
-                    IqlPropertyExpression));
+                sourceIqlProperty,
+                targetIqlProperty));
             return this;
         }
     }

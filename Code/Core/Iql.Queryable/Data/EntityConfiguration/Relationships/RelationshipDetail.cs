@@ -38,7 +38,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public IqlPropertyExpression KeyProperty { get; set; }
         public IEntityConfiguration Configuration { get; set; }
 
-        public IqlPropertyExpression[] Constraints()
+        public IqlPropertyExpression[] Constraints(bool inverse = false)
         {
             switch (RelationshipSide)
             {
@@ -52,7 +52,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 
         public CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false)
         {
-            var constraints = Constraints();
+            var constraints = Constraints(inverse);
             var inverseConstraints = RelationshipSide == RelationshipSide.Source
                 ? Relationship.Target.Constraints()
                 : Relationship.Source.Constraints();

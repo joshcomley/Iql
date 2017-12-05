@@ -35,6 +35,10 @@ namespace Iql.Tests.Tests
         public void TestCleanUp()
         {
             AppDbContext.InMemoryDb.ClientTypes.Clear();
+            AppDbContext.InMemoryDb.Clients.Clear();
+            AppDbContext.InMemoryDb.Sites.Clear();
+            AppDbContext.InMemoryDb.SiteInspections.Clear();
+            AppDbContext.InMemoryDb.RiskAssessments.Clear();
             Db = new AppDbContext();
         }
 
@@ -531,6 +535,11 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestAssigningAnAssociationWithANewEntityCreatesRelevantCreateAction()
         {
+            await AssigningAnAssociationWithANewEntity(1);
+        }
+
+        private static async Task AssigningAnAssociationWithANewEntity(int assignCount)
+        {
             var clientTypes = AddClientTypes();
             var clientType1 = clientTypes.ClientType1;
             var clientType1Clients = clientType1.Clients;
@@ -538,21 +547,30 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(clientType1Clients, clientType1.Clients);
             var clientType1NewClient = new Client();
             Assert.AreEqual(0, Db.DataStore.Queue.Count);
-            Assert.AreEqual(0, clientType1.Clients.Count);
-            clientType1.Clients.AssignRelationship(clientType1NewClient);
-            Assert.AreEqual(1, clientType1.Clients.GetChanges().Count);
-            Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
-            Assert.AreEqual(clientType1, clientType1NewClient.Type);
             Assert.AreEqual(1, clientType1.Clients.Count);
-            Assert.AreEqual(1, Db.DataStore.Queue.Count);
-            var addOperation = Db.DataStore.Queue[0] as QueuedAddEntityOperation<Client>;
-            Assert.IsNotNull(addOperation);
-            Assert.AreEqual(clientType1NewClient, addOperation.Operation.Entity);
+
+            void AssertCheck()
+            {
+                Assert.AreEqual(1, clientType1.Clients.GetChanges().Count);
+                Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
+                Assert.AreEqual(clientType1, clientType1NewClient.Type);
+                Assert.AreEqual(2, clientType1.Clients.Count);
+                Assert.AreEqual(1, Db.DataStore.Queue.Count);
+                var addOperation = Db.DataStore.Queue[0] as QueuedAddEntityOperation<Client>;
+                Assert.IsNotNull(addOperation);
+                Assert.AreEqual(clientType1NewClient, addOperation.Operation.Entity);
+            }
+
+            for (var i = 0; i < assignCount; i++)
+            {
+                clientType1.Clients.AssignRelationship(clientType1NewClient);
+                AssertCheck();
+            }
 
             // Now remove this association and ensure that the add operation is no longer
             // in the queue
             clientType1.Clients.RemoveRelationship(clientType1NewClient);
-            Assert.AreEqual(0, clientType1.Clients.Count);
+            Assert.AreEqual(1, clientType1.Clients.Count);
             Assert.AreEqual(0, clientType1.Clients.GetChanges().Count);
             Assert.AreEqual(0, Db.DataStore.Queue.Count);
         }
@@ -560,7 +578,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestDoubleAssignmentHasNoSideEffects()
         {
-            
+            await AssigningAnAssociationWithANewEntity(5);
         }
 
         public enum ReassignType
@@ -658,6 +676,130 @@ namespace Iql.Tests.Tests
             // We should no longer have any changes as we have reverted our update
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
+        }
+
+        [TestMethod]
+        public async Task
+            DeletingAnEntityThatIsInAChildCollectionOfAnotherEntityShouldRemoveTheEntityFromTheChildCollection()
+        {
+            var clients = AddClientTypes();
+            Assert.AreEqual(1, clients.ClientType1.Clients.Count);
+            await Db.SaveChanges();
+            Assert.AreEqual(1, clients.ClientType1.Clients.Count);
+
+            var clientToDelete = clients.ClientType1.Clients[0];
+            Db.Clients.Delete(clientToDelete);
+            Assert.AreEqual(0, clients.ClientType1.Clients.Count);
+            Assert.AreEqual(1, Db.DataStore.Queue.Count);
+            var deleteOperation = Db.DataStore.Queue[0] as QueuedDeleteEntityOperation<Client>;
+            Assert.IsNotNull(deleteOperation);
+            Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
+
+            await Db.SaveChanges();
+            Assert.AreEqual(0, clients.ClientType1.Clients.Count);
+        }
+
+        [TestMethod]
+        public async Task
+            PuttingADeletedEntityBackShouldRemoveTheDeleteEntityOperation()
+        {
+            var clients = AddClientTypes();
+            await Db.SaveChanges();
+            var clientToDelete = clients.ClientType1.Clients[0];
+            Db.Clients.Delete(clientToDelete);
+            var deleteOperation = Db.DataStore.Queue[0] as QueuedDeleteEntityOperation<Client>;
+            Assert.IsNotNull(deleteOperation);
+            Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
+
+            // Reinstate the deleted entity
+            clients.ClientType2.Clients.AssignRelationship(deleteOperation.Operation.Entity);
+
+            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+        }
+
+        [TestMethod]
+        public async Task
+            AddingAnEntityWithAAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
+        {
+            var siteInspection1 = new SiteInspection
+            {
+                Id = 7
+            };
+            var siteInspection2 = new SiteInspection
+            {
+                Id = 8
+            };
+            Db.SiteInspections.Add(siteInspection1);
+            Db.SiteInspections.Add(siteInspection2);
+            await Db.SaveChanges();
+            var riskAssessment = new RiskAssessment
+            {
+                Id = 42,
+                SiteInspectionId = siteInspection1.Id
+            };
+            Db.RiskAssessments.Add(riskAssessment);
+            Assert.AreEqual(siteInspection1.RiskAssessmentId, riskAssessment.Id);
+            Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
+            Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
+            Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
+        }
+
+        [TestMethod]
+        public async Task
+            AssigningAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
+        {
+            var siteInspection1 = new SiteInspection
+            {
+                Id = 7
+            };
+            var siteInspection2 = new SiteInspection
+            {
+                Id = 8
+            };
+            Db.SiteInspections.Add(siteInspection1);
+            Db.SiteInspections.Add(siteInspection2);
+            await Db.SaveChanges();
+            var riskAssessment = new RiskAssessment
+            {
+                Id = 42,
+            };
+            Db.RiskAssessments.Add(riskAssessment);
+            riskAssessment.SiteInspectionId = siteInspection1.Id;
+            Assert.AreEqual(siteInspection1.RiskAssessmentId, riskAssessment.Id);
+            Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
+            Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
+            Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
+        }
+
+
+        [TestMethod]
+        public async Task
+            RemovingAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
+        {
+            var siteInspection1 = new SiteInspection
+            {
+                Id = 7
+            };
+            var siteInspection2 = new SiteInspection
+            {
+                Id = 8
+            };
+            Db.SiteInspections.Add(siteInspection1);
+            Db.SiteInspections.Add(siteInspection2);
+            await Db.SaveChanges();
+            var riskAssessment = new RiskAssessment
+            {
+                Id = 42,
+                SiteInspectionId = siteInspection1.Id
+            };
+            Db.RiskAssessments.Add(riskAssessment);
+            Assert.AreEqual(siteInspection1.RiskAssessmentId, riskAssessment.Id);
+            Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
+            Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
+            Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
+            Db.RiskAssessments.Delete(riskAssessment);
+            Assert.AreEqual(siteInspection1.RiskAssessmentId, null);
+            Assert.AreEqual(siteInspection1.RiskAssessment, null);
         }
 
         //[TestMethod]

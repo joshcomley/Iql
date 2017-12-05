@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Iql.Queryable;
@@ -24,6 +25,17 @@ namespace Iql.JavaScript.QueryToJavaScript
             return "dataSet_" + type.Name;
         }
 
+        public void ExpandOneToMany(
+            IEnumerable source,
+            IEnumerable target,
+            string sourceProperty,
+            string targetProperty,
+            string sourceTargetKeyProperty,
+            string targetKeyProperty)
+        {
+            source.ExpandOneToMany(typeof(T), target, sourceProperty, targetProperty, sourceTargetKeyProperty, targetKeyProperty);
+        }
+
         private IQueryable<T> Queryable { get; }
         public IDataContext Context { get; }
 
@@ -41,7 +53,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             var varName = GetDataSetObjectName(typeof(T));
             if (!string.IsNullOrWhiteSpace(operations))
             {
-                query += varName + " = " + varName + operations.Trim() + ";\n";
+                query += operations.Trim() + ";\n";
             }
             if (returnValue)
             {
@@ -64,8 +76,8 @@ namespace Iql.JavaScript.QueryToJavaScript
                 }
                 else
                 {
-                    typeDefs += "var " + GetDataSetObjectName(Types[i].QueryableType) + " = this." +
-                                nameof(DataSet) + "('" + Types[i].QueryableType.Name + "');\n\n";
+                    typeDefs +=
+                        $"var {GetDataSetObjectName(Types[i].QueryableType)} = this.{nameof(DataSet)}(\'{Types[i].QueryableType.Name}\');\n\n";
                 }
             }
             return typeDefs;
@@ -81,8 +93,8 @@ namespace Iql.JavaScript.QueryToJavaScript
 
         public void AppendWhere(JavaScriptExpression filterExpression)
         {
-            Query.AppendLine(
-                ".filter(function(" + filterExpression.RootVariableName + ") { return " + filterExpression.Expression + "} )");
+            Query.Append(
+                $".filter(function({filterExpression.RootVariableName}) {{ return {filterExpression.Expression}}} )");
         }
 
         public override List<T> ToList()
@@ -97,8 +109,15 @@ namespace Iql.JavaScript.QueryToJavaScript
         {
             var sourceSet = Context.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByTypeName(name);
-            var cloneSet = sourceSet.CloneAs(Context, typeof(T));
-            return cloneSet;
+            foreach (var configuration in Context.EntityConfigurationContext.AllConfigurations())
+            {
+                if (configuration.Type.Name == name)
+                {
+                    var cloneSet = sourceSet.CloneAs(Context, configuration.Type);
+                    return cloneSet;
+                }
+            }
+            throw new Exception($"Unable to find entity type \"{name}\"");
         }
    }
 }

@@ -10,8 +10,25 @@ namespace Iql.Queryable.Data.DataStores
 {
     public class ObjectMerger
     {
-        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection, object newEntity, Type entityType)
+        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection,
+            object newEntity, Type entityType)
         {
+            MergeInternal(new List<object>(), dataContext, trackingSetCollection, newEntity, entityType);
+        }
+
+        private static void MergeInternal(
+            List<object> alreadyMerged,
+            IDataContext dataContext, TrackingSetCollection trackingSetCollection, object newEntity, Type entityType)
+        {
+            // Prevent infinite recursion
+            if (!alreadyMerged.Contains(newEntity))
+            {
+                alreadyMerged.Add(newEntity);
+            }
+            else
+            {
+                return;
+            }
             var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity)?.Entity;
             if (trackedEntity == newEntity || trackedEntity == null)
             {
@@ -46,7 +63,7 @@ namespace Iql.Queryable.Data.DataStores
                     // As we have nothing being tracked yet on this entity, we can just set it accordingly
                     if (trackedRelationshipValue == null && !isCollection)
                     {
-                        trackedEntity.SetPropertyValue(propertyName, MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, targetRelationship.Type, newRelationshipValue));
+                        trackedEntity.SetPropertyValue(propertyName, MergeWithExistingTrackedEntity(alreadyMerged, dataContext, trackingSetCollection, targetRelationship.Type, newRelationshipValue));
                     }
                     // Both new and existing relationship values exist, so we need to merge
                     else
@@ -62,7 +79,7 @@ namespace Iql.Queryable.Data.DataStores
                                 trackedEntity.SetPropertyValue(propertyName, remoteList);
                                 foreach (var item in remoteList)
                                 {
-                                    MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, targetRelationship.Type, item);
+                                    MergeWithExistingTrackedEntity(alreadyMerged, dataContext, trackingSetCollection, targetRelationship.Type, item);
                                 }
                             }
                             // There is nothing in the existing collection, therefore nothing to merge
@@ -73,7 +90,7 @@ namespace Iql.Queryable.Data.DataStores
                                 // add all remote items
                                 foreach (var item in remoteList)
                                 {
-                                    localList.Add(MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, targetRelationship.Type, item));
+                                    localList.Add(MergeWithExistingTrackedEntity(alreadyMerged, dataContext, trackingSetCollection, targetRelationship.Type, item));
                                 }
                             }
                             else
@@ -122,7 +139,7 @@ namespace Iql.Queryable.Data.DataStores
                                         existingItem = trackingSetCollection.FindEntity(newItem)?.Entity ?? newItem;
                                     }
                                     // We've found no matching local item in the list, so add it
-                                    localList.Add(MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, targetRelationship.Type, newItem, existingItem));
+                                    localList.Add(MergeWithExistingTrackedEntity(alreadyMerged, dataContext, trackingSetCollection, targetRelationship.Type, newItem, existingItem));
                                 }
                             }
                         }
@@ -130,7 +147,7 @@ namespace Iql.Queryable.Data.DataStores
                         {
                             // Although we have this entity already, ensure the entity is definitely tracked
                             trackingSetCollection.Track(trackedRelationshipValue, targetRelationship.Type);
-                            MergeWithExistingTrackedEntity(dataContext, trackingSetCollection, targetRelationship.Type, newRelationshipValue, trackedRelationshipValue);
+                            MergeWithExistingTrackedEntity(alreadyMerged, dataContext, trackingSetCollection, targetRelationship.Type, newRelationshipValue, trackedRelationshipValue);
                         }
                     }
                 }
@@ -146,7 +163,9 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
-        private static object MergeWithExistingTrackedEntity(IDataContext dataContext,
+        private static object MergeWithExistingTrackedEntity(
+            List<object> alreadyMerged,
+            IDataContext dataContext,
             TrackingSetCollection trackingSetCollection, Type entityType, object newEntity, object trackedEntity = null)
         {
             if (trackedEntity == null)
@@ -161,7 +180,7 @@ namespace Iql.Queryable.Data.DataStores
                     trackedEntity.SetPropertyValue(keyProperty.PropertyName,
                         newEntity.GetPropertyValue(keyProperty.PropertyName));
                 }
-                Merge(dataContext, trackingSetCollection, newEntity, entityType);
+                MergeInternal(alreadyMerged, dataContext, trackingSetCollection, newEntity, entityType);
                 return trackedEntity;
             }
             trackingSetCollection.Track(newEntity, entityType);

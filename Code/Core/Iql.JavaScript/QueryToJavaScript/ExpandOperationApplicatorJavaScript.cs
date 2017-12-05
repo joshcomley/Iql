@@ -42,7 +42,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                         expandMethodName = nameof(ListExpandExtensions.ExpandManyToMany);
                         break;
                 }
-                query += "this." + expandMethodName + "(";
+                query += "\nthis." + expandMethodName + "(";
                 query += javaScriptQueryResult.GetDataSetObjectName(sourceType) + ",";
                 query += javaScriptQueryResult.GetDataSetObjectName(targetType) + ",";
                 if (detail.Relationship.Type == RelationshipType.ManyToMany)

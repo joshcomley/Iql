@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Iql.Queryable;
 using Iql.Queryable.Data;
 
 namespace Iql.JavaScript.QueryToJavaScript
@@ -84,8 +85,18 @@ namespace Iql.JavaScript.QueryToJavaScript
                     if (!targetsRefreshed.ContainsKey(targetEntity))
                     {
                         targetsRefreshed.Add(targetEntity, true);
+                        var targetType = targetEntity.GetType();
                         targetEntity.SetPropertyValue(targetProperty,
-                            Activator.CreateInstance(typeof(List<>).MakeGenericType(sourceType)));
+                            Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(targetType, sourceType), new object[]
+                            {
+                                targetEntity,
+                                null
+#if TypeScript
+                                ,
+                                targetType,
+                                sourceType
+#endif
+                            }));
                     }
                     //if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
                     //{

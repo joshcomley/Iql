@@ -170,7 +170,7 @@ namespace Iql.Queryable.Data
 
         public object EnsureTypedEntityByType(object entity, Type type)
         {
-            if (entity != null)
+            if (entity != null && entity.GetType() != type /* prevent infinite recursion */)
             {
                 var entityConfiguration = EntityConfigurationContext.GetEntityByType(type);
                 var typedEntity = Activator.CreateInstance(type);
@@ -221,7 +221,11 @@ namespace Iql.Queryable.Data
                             case RelationshipType.OneToMany:
                             case RelationshipType.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Target.Type, entity, relationship.Source.Type));
+                                    EnsureTypedListByType(
+                                        (IEnumerable)entity.GetPropertyValue(propertyName), 
+                                        relationship.Target.Type, 
+                                        entity, 
+                                        relationship.Source.Type));
                                 break;
                         }
                     }
@@ -239,7 +243,6 @@ namespace Iql.Queryable.Data
 
         public IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool forceNotNull = false)
         {
-
             IList list = null;
             if (responseData != null || forceNotNull)
             {
@@ -249,14 +252,14 @@ namespace Iql.Queryable.Data
                 }
                 else
                 {
-                    list = (IList)Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(type, childType), new object[]{ owner });
+                    list = (IList)Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(childType, type), new object[]{ owner });
                 }
             }
             if (responseData != null)
             {
                 foreach (var entity in responseData)
                 {
-                    var typedEntity = EnsureTypedEntityByType(entity, type);
+                    var typedEntity = EnsureTypedEntityByType(entity, childType ?? type);
                     list.Add(typedEntity);
                 }
             }

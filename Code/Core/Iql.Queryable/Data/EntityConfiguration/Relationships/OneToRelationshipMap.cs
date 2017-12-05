@@ -35,17 +35,33 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 _property,
                 property
             );
-            if (_sourceEntityConfiguration.FindRelationship(relationship.Source.Property.PropertyName) == null)
+            //relationship.Type == RelationshipType.OneToOne
+            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationship(relationship.Source.Property.PropertyName);
+            if (sourceRelationshipMatch == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
+            else
+            {
+                sourceRelationshipMatch.Relationship.InverseRelationship = relationship;
+                relationship.InverseRelationship = sourceRelationshipMatch.Relationship;
+            }
+            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationship(relationship.Target.Property.PropertyName);
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
-                _targetEntityConfiguration.FindRelationship(relationship.Target.Property.PropertyName) == null)
+                targetRelationshipMatch == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
+            else
+            {
+                targetRelationshipMatch.Relationship.InverseRelationship = relationship;
+                relationship.InverseRelationship = targetRelationshipMatch.Relationship;
+            }
             _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.PropertyName);
-            //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.PropertyName);
+            if (relationship.InverseRelationship != null)
+            {
+                _targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.InverseRelationship.Source.Property.PropertyName);
+            }
             return relationship;
         }
 

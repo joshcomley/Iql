@@ -136,10 +136,6 @@ namespace Iql.Queryable.Data.Tracking
                 Set.Add(entity);
                 (entity as IEntity)?.PropertyChanging?.Subscribe(pc =>
                 {
-                    if (Equals(pc.NewValue, 0))
-                    {
-                        int a = 0;
-                    }
                     if (TrackingSetCollection.ProcessingRelationshipChange)
                     {
                         return;
@@ -159,51 +155,53 @@ namespace Iql.Queryable.Data.Tracking
                         case PropertyKind.RelationshipKey:
                             if (!Equals(pc.OldValue, pc.NewValue))
                             {
-                                var entityState = GetEntityState(entity);
-                                var oldState = entityState.GetPropertyState(pc.PropertyName);
-                                var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
-                                var relatedTrackingSet = TrackingSetCollection.TrackingSet(property.Relationship.OtherEnd.Type);
-                                if (property.Relationship.OtherEnd.IsCollection)
+                                switch (property.Relationship.ThisEnd.Relationship.Type)
                                 {
-                                    var relatedEntity =
-                                        entity.GetPropertyValue(property.Relationship.ThisEnd.Property.PropertyName);
-                                    CompositeKey compositeKeyForNewRelationship;
-                                    CompositeKey compositeKeyForOldRelationship;
-                                    if (property.Kind == PropertyKind.RelationshipKey)
-                                    {
-                                        compositeKeyForNewRelationship =
-                                            property.Relationship.ThisEnd.GetCompositeKey(entity);
-                                        compositeKeyForNewRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.NewValue;
-                                        compositeKeyForNewRelationship =
-                                            property.Relationship.ThisEnd.GetCompositeKey(
-                                                compositeKeyForNewRelationship, true);
+                                    case RelationshipType.ManyToMany:
+                                    case RelationshipType.OneToMany:
+                                        var entityState = GetEntityState(entity);
+                                        var oldState = entityState.GetPropertyState(pc.PropertyName);
+                                        var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
+                                        var relatedTrackingSet = TrackingSetCollection.TrackingSet(property.Relationship.OtherEnd.Type);
+                                        if (property.Relationship.OtherEnd.IsCollection)
+                                        {
+                                            var relatedEntity =
+                                                entity.GetPropertyValue(property.Relationship.ThisEnd.Property.PropertyName);
+                                            CompositeKey compositeKeyForNewRelationship;
+                                            CompositeKey compositeKeyForOldRelationship;
+                                            if (property.Kind == PropertyKind.RelationshipKey)
+                                            {
+                                                compositeKeyForNewRelationship =
+                                                    property.Relationship.ThisEnd.GetCompositeKey(entity);
+                                                compositeKeyForNewRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.NewValue;
+                                                compositeKeyForNewRelationship =
+                                                    property.Relationship.ThisEnd.GetCompositeKey(
+                                                        compositeKeyForNewRelationship, true);
 
-                                        compositeKeyForOldRelationship =
-                                            property.Relationship.ThisEnd.GetCompositeKey(entity);
-                                        compositeKeyForOldRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.OldValue;
-                                        compositeKeyForOldRelationship =
-                                            property.Relationship.ThisEnd.GetCompositeKey(
-                                                compositeKeyForOldRelationship, true);
-                                    }
-                                    else
-                                    {
-                                        compositeKeyForNewRelationship =
-                                            pc.NewValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(pc.NewValue);
-                                        compositeKeyForOldRelationship =
-                                            oldValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(oldValue);
-                                    }
-                                    //relatedList.AssignRelationshipByKey(compositeKey);
-                                    var trackedEntity = relatedTrackingSet.FindTrackedEntityByKey(compositeKeyForNewRelationship);
-                                    if (trackedEntity != null)
-                                    {
-                                        var relatedList = trackedEntity.Entity.GetPropertyValue(property.Relationship.OtherEnd.Property
-                                            .PropertyName) as IRelatedList;
-                                        relatedList.AssignRelationship(entity);
-                                    }
-                                }
-                                else
-                                {
-
+                                                compositeKeyForOldRelationship =
+                                                    property.Relationship.ThisEnd.GetCompositeKey(entity);
+                                                compositeKeyForOldRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.OldValue;
+                                                compositeKeyForOldRelationship =
+                                                    property.Relationship.ThisEnd.GetCompositeKey(
+                                                        compositeKeyForOldRelationship, true);
+                                            }
+                                            else
+                                            {
+                                                compositeKeyForNewRelationship =
+                                                    pc.NewValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(pc.NewValue);
+                                                compositeKeyForOldRelationship =
+                                                    oldValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(oldValue);
+                                            }
+                                            //relatedList.AssignRelationshipByKey(compositeKey);
+                                            var trackedEntity = relatedTrackingSet.FindTrackedEntityByKey(compositeKeyForNewRelationship);
+                                            if (trackedEntity != null)
+                                            {
+                                                var relatedList = trackedEntity.Entity.GetPropertyValue(property.Relationship.OtherEnd.Property
+                                                    .PropertyName) as IRelatedList;
+                                                relatedList.AssignRelationship(entity);
+                                            }
+                                        }
+                                        break;
                                 }
                             }
                             break;
@@ -216,7 +214,12 @@ namespace Iql.Queryable.Data.Tracking
                     var property = EntityConfiguration.FindProperty(pc.PropertyName);
                     var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
                     entityState.SetPropertyState(pc.PropertyName, oldValue, pc.NewValue);
-
+                    if (property.Kind == PropertyKind.RelationshipKey &&
+                        property.Relationship.Relationship.Type == RelationshipType.OneToOne &&
+                        !Equals(pc.OldValue, pc.NewValue))
+                    {
+                        new RelationshipManager(DataContext).PersistRelationships(pc.Entity, pc.EntityType);
+                    }
                 });
                 foreach (var relationship in EntityConfiguration.AllRelationships())
                 {
@@ -226,7 +229,7 @@ namespace Iql.Queryable.Data.Tracking
                             as IRelatedList;
                         relatedList.Changed.Subscribe(ev =>
                         {
-                            var method = this.GetType().GetMethod(nameof(ProcessRelationshipChange),
+                            var method = this.GetType().GetMethod(nameof(ProcessOneToManyCollectionChange),
                                 BindingFlags.NonPublic | BindingFlags.Instance)
                                 .MakeGenericMethod(relationship.OtherEnd.Type);
                             method.Invoke(this, new[]
@@ -284,7 +287,7 @@ namespace Iql.Queryable.Data.Tracking
             //}
         }
 
-        private void ProcessRelationshipChange<TRelationship>(
+        private void ProcessOneToManyCollectionChange<TRelationship>(
             RelatedListChangeEvent<T, TRelationship> change,
             RelationshipMatch relationship)
             where TRelationship : class
@@ -407,24 +410,27 @@ namespace Iql.Queryable.Data.Tracking
             // If we were creating a new entity as a chlid relationship, but now
             // we've removed that relationship and the entity is nowhere else in the
             // object graph then remove the AddEntityOperation
-            if (change.Item != null && isNewEntity && change.Kind == RelatedListChangeKind.Remove)
+            if (change.Item != null)
             {
-                var tracked = relatedTrackingSet.FindTrackedEntity(change.Item);
-                if (tracked != null && tracked.TrackedRelationships.Count == 0)
+                switch (change.Kind)
                 {
-                    var addOperationsToRemove = DataContext.DataStore.Queue
-                        .Where(q => q is QueuedAddEntityOperation<TRelationship>)
-                        .Cast<QueuedAddEntityOperation<TRelationship>>()
-                        .Where(q => q.Operation.Entity == change.Item)
-                        .ToList();
-                    foreach (var item in addOperationsToRemove)
-                    {
-                        DataContext.DataStore.Queue.Remove(item);
-                    }
-                }
-                else if (!nullable)
-                {
-                    throw new NullNotAllowedException(typeof(TRelationship), relationship.OtherEnd.Property.PropertyName);
+                    case RelatedListChangeKind.Remove:
+                        if (isNewEntity)
+                        {
+                            var tracked = relatedTrackingSet.FindTrackedEntity(change.Item);
+                            if (tracked != null && tracked.TrackedRelationships.Count == 0)
+                            {
+                                DataContext.DataStore.RemoveQueuedOperationsForEntity(change.Item, QueuedOperationType.Add);
+                            }
+                            else if (!nullable)
+                            {
+                                throw new NullNotAllowedException(typeof(TRelationship), relationship.OtherEnd.Property.PropertyName);
+                            }
+                        }
+                        break;
+                    case RelatedListChangeKind.Assign:
+                        DataContext.DataStore.RemoveQueuedOperationsForEntity(change.Item, QueuedOperationType.Delete);
+                        break;
                 }
             }
             TrackingSetCollection.ProcessingRelationshipChange = false;

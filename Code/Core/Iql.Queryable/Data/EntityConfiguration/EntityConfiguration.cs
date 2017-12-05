@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Operations;
@@ -31,6 +32,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public List<RelationshipMatch> AllRelationships()
         {
+            return AllRelationshipsInternal(true);
+        }
+
+        public List<RelationshipMatch> AllRelationshipsInternal(bool nested)
+        {
             var list = new List<RelationshipMatch>();
             foreach (var relationship in Relationships)
             {
@@ -39,11 +45,32 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 {
                     if (ends[i].Configuration == this)
                     {
-                        list.Add(new RelationshipMatch(relationship, i == 0));
+                        var relationshipMatch = new RelationshipMatch(relationship, i == 0);
+                        if (relationship.Type == RelationshipType.OneToOne && nested)
+                        {
+                            //var matches = (List<RelationshipMatch>)GetType().GetMethod(nameof(FindAllRelationships),
+                            //    BindingFlags.Instance | BindingFlags.NonPublic)
+                            //    .MakeGenericMethod(relationshipMatch.OtherEnd.Type)
+                            //    .Invoke(this, new object[]{ relationshipMatch.OtherEnd.Configuration });
+                            //var match = matches.SingleOrDefault(m => m.Relationship.Type == RelationshipType.OneToOne &&
+                            //                                         m.OtherEnd.Property.PropertyName ==
+                            //                                         relationshipMatch.ThisEnd.Property.PropertyName &&
+                            //                                         m.ThisEnd.Property.PropertyName ==
+                            //                                         relationshipMatch.OtherEnd.Property.PropertyName &&
+                            //                                         relationshipMatch.Relationship != relationship);
+                            //relationshipMatch.InverseOneToOneRelationship = match;
+                            //match.InverseOneToOneRelationship = relationshipMatch;
+                        }
+                        list.Add(relationshipMatch);
                     }
                 }
             }
             return list;
+        }
+
+        private List<RelationshipMatch> FindAllRelationships<TRelationship>(EntityConfiguration<TRelationship> configuration) where TRelationship : class
+        {
+            return configuration.AllRelationshipsInternal(false);
         }
 
         public bool EntityHasKey(object entity, CompositeKey key)
@@ -135,6 +162,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 if (property != null)
                 {
                     property.Kind = PropertyKind.Key;
+                    property.Relationship = null;
                 }
             }
         }
@@ -269,7 +297,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
                     var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName);
-                    if (constraintProperty != null)
+                    if (constraintProperty != null && constraintProperty.Kind != PropertyKind.RelationshipKey && constraintProperty.Kind != PropertyKind.Key)
                     {
                         constraintProperty.Kind = PropertyKind.RelationshipKey;
                         constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.PropertyName);
@@ -287,7 +315,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 {
                     foreach (var constraint in relationshipMatch.Relationship.Constraints)
                     {
-                        if (constraint.SourceKeyProperty.PropertyName == definition.Name)
+                        if (constraint.SourceKeyProperty.PropertyName == definition.Name && definition.Kind != PropertyKind.RelationshipKey && definition.Kind != PropertyKind.Key)
                         {
                             definition.Kind = PropertyKind.RelationshipKey;
                             definition.Relationship = relationshipMatch;

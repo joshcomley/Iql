@@ -10,6 +10,10 @@ namespace Iql.Queryable.Data.DataStores
     public interface IDataStore
     {
         List<IQueuedOperation> Queue { get; set; }
+
+        void RemoveQueuedOperationsForEntity(
+            object changeItem,
+            QueuedOperationType queuedOperationType);
         IDataContext DataContext { get; set; }
         TrackingSetCollection GetTracking();
 

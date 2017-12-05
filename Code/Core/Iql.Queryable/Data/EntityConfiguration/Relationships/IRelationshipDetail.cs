@@ -12,6 +12,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         IqlPropertyExpression Property { get; set; }
         IEntityConfiguration Configuration { get; set; }
         CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false);
-        IqlPropertyExpression[] Constraints();
+        IqlPropertyExpression[] Constraints(bool inverse = false);
     }
 }

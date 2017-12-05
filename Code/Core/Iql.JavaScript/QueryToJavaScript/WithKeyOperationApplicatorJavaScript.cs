@@ -14,6 +14,10 @@ namespace Iql.JavaScript.QueryToJavaScript
                 context.ResolveWithKeyWhereOperation(),
                 true,
                 context.DataContext.EntityConfigurationContext);
+            var dataSetObjectName = context.Data.GetDataSetObjectName(context.Queryable.ItemType);
+            context.Data.Query.AppendLine();
+            context.Data.Query.Append(
+                $"{dataSetObjectName} = {dataSetObjectName}");
             context.Data.AppendWhere(javaScriptExpression);
             context.Data.Key = context.Operation.Key;
             context.Data.HasKey = true;
