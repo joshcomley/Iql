@@ -738,7 +738,6 @@ namespace Iql.Tests.Tests
                 SiteInspectionId = siteInspection1.Id
             };
             Db.RiskAssessments.Add(riskAssessment);
-            Assert.AreEqual(siteInspection1.RiskAssessmentId, riskAssessment.Id);
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
             Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
             Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
@@ -765,7 +764,6 @@ namespace Iql.Tests.Tests
             };
             Db.RiskAssessments.Add(riskAssessment);
             riskAssessment.SiteInspectionId = siteInspection1.Id;
-            Assert.AreEqual(siteInspection1.RiskAssessmentId, riskAssessment.Id);
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
             Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
             Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
@@ -793,12 +791,10 @@ namespace Iql.Tests.Tests
                 SiteInspectionId = siteInspection1.Id
             };
             Db.RiskAssessments.Add(riskAssessment);
-            Assert.AreEqual(siteInspection1.RiskAssessmentId, riskAssessment.Id);
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
             Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
             Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
             Db.RiskAssessments.Delete(riskAssessment);
-            Assert.AreEqual(siteInspection1.RiskAssessmentId, null);
             Assert.AreEqual(siteInspection1.RiskAssessment, null);
         }
 

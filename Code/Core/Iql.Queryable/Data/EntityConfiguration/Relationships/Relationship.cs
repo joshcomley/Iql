@@ -24,7 +24,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public RelationshipType Type { get; set; }
         public IRelationshipDetail Source { get; }
         public IRelationshipDetail Target { get; }
-        public IRelationship InverseRelationship { get; set; }
 
         public Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> WithConstraint(
             Expression<Func<TSource, object>> sourceKeyProperty,
@@ -34,10 +33,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 IqlPropertyExpression;
             var targetIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetKeyProperty) as
                 IqlPropertyExpression;
-            if(sourceIqlProperty.PropertyName == "SiteInspectionId" || targetIqlProperty.PropertyName == "SiteInspectionId")
-            {
-                int a = 0;
-            }
             var sourceProperty = Source.Configuration.FindProperty(sourceIqlProperty.PropertyName);
             if (sourceProperty != null && sourceProperty.Kind == PropertyKind.Primitive)
             {

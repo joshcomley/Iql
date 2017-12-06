@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
@@ -7,6 +6,8 @@ namespace Iql.Queryable
     public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangedEvent
         where TRelated : class
     {
+        public Type ItemType => typeof(TRelated);
+        public Type OwnerType => typeof(TSource);
         public TSource Owner { get; set; }
         public TRelated Item { get; set; }
         public CompositeKey ItemKey { get; }
@@ -19,7 +20,7 @@ namespace Iql.Queryable
 
         RelatedListChangeKind IRelatedListChangedEvent.Kind => Kind;
 
-        IList IRelatedListChangedEvent.List => List;
+        IRelatedList IRelatedListChangedEvent.List => List;
 
         public RelatedListChangeEvent(
             TSource owner, 

@@ -359,9 +359,9 @@ public class ISiteDataContextBase : DataContext {
 		builder.DefineEntity<RiskAssessment>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.SiteInspectionId, false)
-			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
 			.DefineConvertedProperty(p => p.Guid, "Guid", false)
+			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedDate, false)
 			.DefineProperty(p => p.Version, false)
 			.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
@@ -372,11 +372,6 @@ public class ISiteDataContextBase : DataContext {
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.RiskAssessmentsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
-		
-		builder.DefineEntity<RiskAssessment>()
-			.HasOne(p => p.SiteInspection)
-			.WithOne(p => p.RiskAssessment)
-			.WithConstraint(p => p.Id, p => p.RiskAssessmentId);
 		
 		builder.DefineEntity<RiskAssessmentAnswer>()
 			.HasKey(p => p.Id)
@@ -530,6 +525,7 @@ public class ISiteDataContextBase : DataContext {
 			.DefineProperty(p => p.ParentId)
 			.DefineProperty(p => p.ClientId)
 			.DefineProperty(p => p.CreatedByUserId)
+			.DefineProperty(p => p.WeeklyCharge, false)
 			.DefineProperty(p => p.Address)
 			.DefineProperty(p => p.PostCode)
 			.DefineProperty(p => p.Name)
@@ -566,7 +562,6 @@ public class ISiteDataContextBase : DataContext {
 		builder.DefineEntity<SiteInspection>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
-			.DefineProperty(p => p.RiskAssessmentId)
 			.DefineProperty(p => p.SiteId, false)
 			.DefineProperty(p => p.CreatedByUserId)
 			.DefineProperty(p => p.StartTime, false)

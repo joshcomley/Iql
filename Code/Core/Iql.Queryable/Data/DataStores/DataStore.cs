@@ -28,14 +28,14 @@ namespace Iql.Queryable.Data.DataStores
         {
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, operation.EntityType);
-            var relationshipManager = new RelationshipManager(DataContext);
-            foreach (var entity in flattened)
-            {
-                if (!GetTracking().IsTracked(entity.Entity, entity.EntityType))
-                {
-                    relationshipManager.PersistRelationships(entity.Entity, entity.EntityType);
-                }
-            }
+            //var relationshipManager = new RelationshipManager(DataContext);
+            //foreach (var entity in flattened)
+            //{
+            //    if (!GetTracking().IsTracked(entity.Entity, entity.EntityType))
+            //    {
+            //        relationshipManager.TrackRelationships(entity.Entity, entity.EntityType);
+            //    }
+            //}
             AddEntityResult<TEntity> result = null;
             foreach (var entity in flattened)
             {

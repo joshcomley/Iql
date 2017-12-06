@@ -569,19 +569,6 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		}
 	}
 
-	private int? _riskAssessmentId;
-	public int? RiskAssessmentId
-	{
-		get => _riskAssessmentId;
-		set
-		{
-			var oldValue = _riskAssessmentId;
-			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessmentId), this, oldValue, value));
-			_riskAssessmentId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessmentId), this, oldValue, value));
-		}
-	}
-
 	private int _siteId;
 	public int SiteId
 	{
@@ -693,7 +680,7 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 	{
 		get
 		{
-			this._scaffoldInspections = _scaffoldInspections ?? new RelatedList<SiteInspection,ScaffoldInspection>(this);
+			this._scaffoldInspections = _scaffoldInspections ?? new RelatedList<SiteInspection,ScaffoldInspection>(this, nameof(ScaffoldInspections));
 			return _scaffoldInspections;
 		}
 		set
@@ -801,6 +788,19 @@ public class Site : SiteBase, IEntity {
 			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
+		}
+	}
+
+	private double _weeklyCharge;
+	public double WeeklyCharge
+	{
+		get => _weeklyCharge;
+		set
+		{
+			var oldValue = _weeklyCharge;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(WeeklyCharge), this, oldValue, value));
+			_weeklyCharge = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(WeeklyCharge), this, oldValue, value));
 		}
 	}
 
@@ -928,7 +928,7 @@ public class Site : SiteBase, IEntity {
 	{
 		get
 		{
-			this._documents = _documents ?? new RelatedList<Site,SiteDocument>(this);
+			this._documents = _documents ?? new RelatedList<Site,SiteDocument>(this, nameof(Documents));
 			return _documents;
 		}
 		set
@@ -947,7 +947,7 @@ public class Site : SiteBase, IEntity {
 	{
 		get
 		{
-			this._additionalSendReportsTo = _additionalSendReportsTo ?? new RelatedList<Site,ReportReceiverEmailAddress>(this);
+			this._additionalSendReportsTo = _additionalSendReportsTo ?? new RelatedList<Site,ReportReceiverEmailAddress>(this, nameof(AdditionalSendReportsTo));
 			return _additionalSendReportsTo;
 		}
 		set
@@ -979,7 +979,7 @@ public class Site : SiteBase, IEntity {
 	{
 		get
 		{
-			this._children = _children ?? new RelatedList<Site,Site>(this);
+			this._children = _children ?? new RelatedList<Site,Site>(this, nameof(Children));
 			return _children;
 		}
 		set
@@ -1024,7 +1024,7 @@ public class Site : SiteBase, IEntity {
 	{
 		get
 		{
-			this._siteInspections = _siteInspections ?? new RelatedList<Site,SiteInspection>(this);
+			this._siteInspections = _siteInspections ?? new RelatedList<Site,SiteInspection>(this, nameof(SiteInspections));
 			return _siteInspections;
 		}
 		set
@@ -1043,7 +1043,7 @@ public class Site : SiteBase, IEntity {
 	{
 		get
 		{
-			this._users = _users ?? new RelatedList<Site,UserSite>(this);
+			this._users = _users ?? new RelatedList<Site,UserSite>(this, nameof(Users));
 			return _users;
 		}
 		set
@@ -1174,7 +1174,7 @@ public class ScaffoldType : ScaffoldTypeBase, IEntity {
 	{
 		get
 		{
-			this._scaffolds = _scaffolds ?? new RelatedList<ScaffoldType,Scaffold>(this);
+			this._scaffolds = _scaffolds ?? new RelatedList<ScaffoldType,Scaffold>(this, nameof(Scaffolds));
 			return _scaffolds;
 		}
 		set
@@ -1305,7 +1305,7 @@ public class ScaffoldLoading : ScaffoldLoadingBase, IEntity {
 	{
 		get
 		{
-			this._scaffolds = _scaffolds ?? new RelatedList<ScaffoldLoading,Scaffold>(this);
+			this._scaffolds = _scaffolds ?? new RelatedList<ScaffoldLoading,Scaffold>(this, nameof(Scaffolds));
 			return _scaffolds;
 		}
 		set
@@ -1730,7 +1730,7 @@ public class Scaffold : ScaffoldBase, IEntity {
 	{
 		get
 		{
-			this._faultReports = _faultReports ?? new RelatedList<Scaffold,FaultReport>(this);
+			this._faultReports = _faultReports ?? new RelatedList<Scaffold,FaultReport>(this, nameof(FaultReports));
 			return _faultReports;
 		}
 		set
@@ -1919,7 +1919,7 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 	{
 		get
 		{
-			this._answers = _answers ?? new RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer>(this);
+			this._answers = _answers ?? new RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer>(this, nameof(Answers));
 			return _answers;
 		}
 		set
@@ -2116,19 +2116,6 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		}
 	}
 
-	private int _id;
-	public int Id
-	{
-		get => _id;
-		set
-		{
-			var oldValue = _id;
-			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
-			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
-		}
-	}
-
 	private string _createdByUserId;
 	public string CreatedByUserId
 	{
@@ -2152,6 +2139,19 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
 			_guid = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
+		}
+	}
+
+	private int _id;
+	public int Id
+	{
+		get => _id;
+		set
+		{
+			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
+			_id = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2550,7 +2550,7 @@ public class FaultType : FaultTypeBase, IEntity {
 	{
 		get
 		{
-			this._faultReports = _faultReports ?? new RelatedList<FaultType,FaultReport>(this);
+			this._faultReports = _faultReports ?? new RelatedList<FaultType,FaultReport>(this, nameof(FaultReports));
 			return _faultReports;
 		}
 		set
@@ -2729,7 +2729,7 @@ public class FaultReport : FaultReportBase, IEntity {
 	{
 		get
 		{
-			this._actionsTaken = _actionsTaken ?? new RelatedList<FaultReport,FaultActionsTaken>(this);
+			this._actionsTaken = _actionsTaken ?? new RelatedList<FaultReport,FaultActionsTaken>(this, nameof(ActionsTaken));
 			return _actionsTaken;
 		}
 		set
@@ -2748,7 +2748,7 @@ public class FaultReport : FaultReportBase, IEntity {
 	{
 		get
 		{
-			this._recommendations = _recommendations ?? new RelatedList<FaultReport,FaultRecommendation>(this);
+			this._recommendations = _recommendations ?? new RelatedList<FaultReport,FaultRecommendation>(this, nameof(Recommendations));
 			return _recommendations;
 		}
 		set
@@ -3095,7 +3095,7 @@ public class FaultDefaultRecommendation : FaultDefaultRecommendationBase, IEntit
 	{
 		get
 		{
-			this._recommendations = _recommendations ?? new RelatedList<FaultDefaultRecommendation,FaultRecommendation>(this);
+			this._recommendations = _recommendations ?? new RelatedList<FaultDefaultRecommendation,FaultRecommendation>(this, nameof(Recommendations));
 			return _recommendations;
 		}
 		set
@@ -3226,7 +3226,7 @@ public class FaultCategory : FaultCategoryBase, IEntity {
 	{
 		get
 		{
-			this._faultTypes = _faultTypes ?? new RelatedList<FaultCategory,FaultType>(this);
+			this._faultTypes = _faultTypes ?? new RelatedList<FaultCategory,FaultType>(this, nameof(FaultTypes));
 			return _faultTypes;
 		}
 		set
@@ -3659,7 +3659,7 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 	{
 		get
 		{
-			this._documents = _documents ?? new RelatedList<DocumentCategory,SiteDocument>(this);
+			this._documents = _documents ?? new RelatedList<DocumentCategory,SiteDocument>(this, nameof(Documents));
 			return _documents;
 		}
 		set
@@ -3712,7 +3712,7 @@ public class ClientType : ClientTypeBase, IEntity {
 	{
 		get
 		{
-			this._clients = _clients ?? new RelatedList<ClientType,Client>(this);
+			this._clients = _clients ?? new RelatedList<ClientType,Client>(this, nameof(Clients));
 			return _clients;
 		}
 		set
@@ -3856,7 +3856,7 @@ public class Client : ClientBase, IEntity {
 	{
 		get
 		{
-			this._users = _users ?? new RelatedList<Client,ApplicationUser>(this);
+			this._users = _users ?? new RelatedList<Client,ApplicationUser>(this, nameof(Users));
 			return _users;
 		}
 		set
@@ -3901,7 +3901,7 @@ public class Client : ClientBase, IEntity {
 	{
 		get
 		{
-			this._scaffolds = _scaffolds ?? new RelatedList<Client,Scaffold>(this);
+			this._scaffolds = _scaffolds ?? new RelatedList<Client,Scaffold>(this, nameof(Scaffolds));
 			return _scaffolds;
 		}
 		set
@@ -3920,7 +3920,7 @@ public class Client : ClientBase, IEntity {
 	{
 		get
 		{
-			this._sites = _sites ?? new RelatedList<Client,Site>(this);
+			this._sites = _sites ?? new RelatedList<Client,Site>(this, nameof(Sites));
 			return _sites;
 		}
 		set
@@ -4051,7 +4051,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._clientsCreated = _clientsCreated ?? new RelatedList<ApplicationUser,Client>(this);
+			this._clientsCreated = _clientsCreated ?? new RelatedList<ApplicationUser,Client>(this, nameof(ClientsCreated));
 			return _clientsCreated;
 		}
 		set
@@ -4070,7 +4070,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._documentCategoriesCreated = _documentCategoriesCreated ?? new RelatedList<ApplicationUser,DocumentCategory>(this);
+			this._documentCategoriesCreated = _documentCategoriesCreated ?? new RelatedList<ApplicationUser,DocumentCategory>(this, nameof(DocumentCategoriesCreated));
 			return _documentCategoriesCreated;
 		}
 		set
@@ -4089,7 +4089,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._siteDocumentsCreated = _siteDocumentsCreated ?? new RelatedList<ApplicationUser,SiteDocument>(this);
+			this._siteDocumentsCreated = _siteDocumentsCreated ?? new RelatedList<ApplicationUser,SiteDocument>(this, nameof(SiteDocumentsCreated));
 			return _siteDocumentsCreated;
 		}
 		set
@@ -4108,7 +4108,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._faultActionsTakenCreated = _faultActionsTakenCreated ?? new RelatedList<ApplicationUser,FaultActionsTaken>(this);
+			this._faultActionsTakenCreated = _faultActionsTakenCreated ?? new RelatedList<ApplicationUser,FaultActionsTaken>(this, nameof(FaultActionsTakenCreated));
 			return _faultActionsTakenCreated;
 		}
 		set
@@ -4127,7 +4127,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._faultCategoriesCreated = _faultCategoriesCreated ?? new RelatedList<ApplicationUser,FaultCategory>(this);
+			this._faultCategoriesCreated = _faultCategoriesCreated ?? new RelatedList<ApplicationUser,FaultCategory>(this, nameof(FaultCategoriesCreated));
 			return _faultCategoriesCreated;
 		}
 		set
@@ -4146,7 +4146,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._faultDefaultRecommendationsCreated = _faultDefaultRecommendationsCreated ?? new RelatedList<ApplicationUser,FaultDefaultRecommendation>(this);
+			this._faultDefaultRecommendationsCreated = _faultDefaultRecommendationsCreated ?? new RelatedList<ApplicationUser,FaultDefaultRecommendation>(this, nameof(FaultDefaultRecommendationsCreated));
 			return _faultDefaultRecommendationsCreated;
 		}
 		set
@@ -4165,7 +4165,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._faultRecommendationsCreated = _faultRecommendationsCreated ?? new RelatedList<ApplicationUser,FaultRecommendation>(this);
+			this._faultRecommendationsCreated = _faultRecommendationsCreated ?? new RelatedList<ApplicationUser,FaultRecommendation>(this, nameof(FaultRecommendationsCreated));
 			return _faultRecommendationsCreated;
 		}
 		set
@@ -4184,7 +4184,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._faultReportsCreated = _faultReportsCreated ?? new RelatedList<ApplicationUser,FaultReport>(this);
+			this._faultReportsCreated = _faultReportsCreated ?? new RelatedList<ApplicationUser,FaultReport>(this, nameof(FaultReportsCreated));
 			return _faultReportsCreated;
 		}
 		set
@@ -4203,7 +4203,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._faultTypesCreated = _faultTypesCreated ?? new RelatedList<ApplicationUser,FaultType>(this);
+			this._faultTypesCreated = _faultTypesCreated ?? new RelatedList<ApplicationUser,FaultType>(this, nameof(FaultTypesCreated));
 			return _faultTypesCreated;
 		}
 		set
@@ -4222,7 +4222,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._projectCreated = _projectCreated ?? new RelatedList<ApplicationUser,Project>(this);
+			this._projectCreated = _projectCreated ?? new RelatedList<ApplicationUser,Project>(this, nameof(ProjectCreated));
 			return _projectCreated;
 		}
 		set
@@ -4241,7 +4241,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._reportReceiverEmailAddressesCreated = _reportReceiverEmailAddressesCreated ?? new RelatedList<ApplicationUser,ReportReceiverEmailAddress>(this);
+			this._reportReceiverEmailAddressesCreated = _reportReceiverEmailAddressesCreated ?? new RelatedList<ApplicationUser,ReportReceiverEmailAddress>(this, nameof(ReportReceiverEmailAddressesCreated));
 			return _reportReceiverEmailAddressesCreated;
 		}
 		set
@@ -4260,7 +4260,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._riskAssessmentsCreated = _riskAssessmentsCreated ?? new RelatedList<ApplicationUser,RiskAssessment>(this);
+			this._riskAssessmentsCreated = _riskAssessmentsCreated ?? new RelatedList<ApplicationUser,RiskAssessment>(this, nameof(RiskAssessmentsCreated));
 			return _riskAssessmentsCreated;
 		}
 		set
@@ -4279,7 +4279,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._riskAssessmentAnswersCreated = _riskAssessmentAnswersCreated ?? new RelatedList<ApplicationUser,RiskAssessmentAnswer>(this);
+			this._riskAssessmentAnswersCreated = _riskAssessmentAnswersCreated ?? new RelatedList<ApplicationUser,RiskAssessmentAnswer>(this, nameof(RiskAssessmentAnswersCreated));
 			return _riskAssessmentAnswersCreated;
 		}
 		set
@@ -4298,7 +4298,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._riskAssessmentQuestionsCreated = _riskAssessmentQuestionsCreated ?? new RelatedList<ApplicationUser,RiskAssessmentQuestion>(this);
+			this._riskAssessmentQuestionsCreated = _riskAssessmentQuestionsCreated ?? new RelatedList<ApplicationUser,RiskAssessmentQuestion>(this, nameof(RiskAssessmentQuestionsCreated));
 			return _riskAssessmentQuestionsCreated;
 		}
 		set
@@ -4317,7 +4317,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._scaffoldsCreated = _scaffoldsCreated ?? new RelatedList<ApplicationUser,Scaffold>(this);
+			this._scaffoldsCreated = _scaffoldsCreated ?? new RelatedList<ApplicationUser,Scaffold>(this, nameof(ScaffoldsCreated));
 			return _scaffoldsCreated;
 		}
 		set
@@ -4336,7 +4336,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._scaffoldInspectionsCreated = _scaffoldInspectionsCreated ?? new RelatedList<ApplicationUser,ScaffoldInspection>(this);
+			this._scaffoldInspectionsCreated = _scaffoldInspectionsCreated ?? new RelatedList<ApplicationUser,ScaffoldInspection>(this, nameof(ScaffoldInspectionsCreated));
 			return _scaffoldInspectionsCreated;
 		}
 		set
@@ -4355,7 +4355,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._scaffoldLoadingsCreated = _scaffoldLoadingsCreated ?? new RelatedList<ApplicationUser,ScaffoldLoading>(this);
+			this._scaffoldLoadingsCreated = _scaffoldLoadingsCreated ?? new RelatedList<ApplicationUser,ScaffoldLoading>(this, nameof(ScaffoldLoadingsCreated));
 			return _scaffoldLoadingsCreated;
 		}
 		set
@@ -4374,7 +4374,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._scaffoldTypesCreated = _scaffoldTypesCreated ?? new RelatedList<ApplicationUser,ScaffoldType>(this);
+			this._scaffoldTypesCreated = _scaffoldTypesCreated ?? new RelatedList<ApplicationUser,ScaffoldType>(this, nameof(ScaffoldTypesCreated));
 			return _scaffoldTypesCreated;
 		}
 		set
@@ -4393,7 +4393,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._sitesCreated = _sitesCreated ?? new RelatedList<ApplicationUser,Site>(this);
+			this._sitesCreated = _sitesCreated ?? new RelatedList<ApplicationUser,Site>(this, nameof(SitesCreated));
 			return _sitesCreated;
 		}
 		set
@@ -4412,7 +4412,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._siteInspectionsCreated = _siteInspectionsCreated ?? new RelatedList<ApplicationUser,SiteInspection>(this);
+			this._siteInspectionsCreated = _siteInspectionsCreated ?? new RelatedList<ApplicationUser,SiteInspection>(this, nameof(SiteInspectionsCreated));
 			return _siteInspectionsCreated;
 		}
 		set
@@ -4431,7 +4431,7 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 	{
 		get
 		{
-			this._sites = _sites ?? new RelatedList<ApplicationUser,UserSite>(this);
+			this._sites = _sites ?? new RelatedList<ApplicationUser,UserSite>(this, nameof(Sites));
 			return _sites;
 		}
 		set

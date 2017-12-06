@@ -104,6 +104,8 @@ namespace Iql.Queryable.Data.Tracking
             TrackInternal(entity, false);
         }
 
+        private Dictionary<IRelatedList, int> _collectionChangeSubscriptions =
+            new Dictionary<IRelatedList, int>();
         private void TrackInternal(T entity, bool allowMerge)
         {
             var existingEntity = FindTrackedEntity(entity);
@@ -149,63 +151,63 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         throw new NullNotAllowedException(typeof(T), property.Name);
                     }
-                    switch (property.Kind)
-                    {
-                        case PropertyKind.Relationship:
-                        case PropertyKind.RelationshipKey:
-                            if (!Equals(pc.OldValue, pc.NewValue))
-                            {
-                                switch (property.Relationship.ThisEnd.Relationship.Type)
-                                {
-                                    case RelationshipType.ManyToMany:
-                                    case RelationshipType.OneToMany:
-                                        var entityState = GetEntityState(entity);
-                                        var oldState = entityState.GetPropertyState(pc.PropertyName);
-                                        var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
-                                        var relatedTrackingSet = TrackingSetCollection.TrackingSet(property.Relationship.OtherEnd.Type);
-                                        if (property.Relationship.OtherEnd.IsCollection)
-                                        {
-                                            var relatedEntity =
-                                                entity.GetPropertyValue(property.Relationship.ThisEnd.Property.PropertyName);
-                                            CompositeKey compositeKeyForNewRelationship;
-                                            CompositeKey compositeKeyForOldRelationship;
-                                            if (property.Kind == PropertyKind.RelationshipKey)
-                                            {
-                                                compositeKeyForNewRelationship =
-                                                    property.Relationship.ThisEnd.GetCompositeKey(entity);
-                                                compositeKeyForNewRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.NewValue;
-                                                compositeKeyForNewRelationship =
-                                                    property.Relationship.ThisEnd.GetCompositeKey(
-                                                        compositeKeyForNewRelationship, true);
+                    //switch (property.Kind)
+                    //{
+                    //    case PropertyKind.Relationship:
+                    //    case PropertyKind.RelationshipKey:
+                    //        if (!Equals(pc.OldValue, pc.NewValue))
+                    //        {
+                    //            switch (property.Relationship.ThisEnd.Relationship.Type)
+                    //            {
+                    //                case RelationshipType.ManyToMany:
+                    //                case RelationshipType.OneToMany:
+                    //                    var entityState = GetEntityState(entity);
+                    //                    var oldState = entityState.GetPropertyState(pc.PropertyName);
+                    //                    var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
+                    //                    var relatedTrackingSet = TrackingSetCollection.TrackingSet(property.Relationship.OtherEnd.Type);
+                    //                    if (property.Relationship.OtherEnd.IsCollection)
+                    //                    {
+                    //                        var relatedEntity =
+                    //                            entity.GetPropertyValue(property.Relationship.ThisEnd.Property.PropertyName);
+                    //                        CompositeKey compositeKeyForNewRelationship;
+                    //                        CompositeKey compositeKeyForOldRelationship;
+                    //                        if (property.Kind == PropertyKind.RelationshipKey)
+                    //                        {
+                    //                            compositeKeyForNewRelationship =
+                    //                                property.Relationship.ThisEnd.GetCompositeKey(entity);
+                    //                            compositeKeyForNewRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.NewValue;
+                    //                            compositeKeyForNewRelationship =
+                    //                                property.Relationship.ThisEnd.GetCompositeKey(
+                    //                                    compositeKeyForNewRelationship, true);
 
-                                                compositeKeyForOldRelationship =
-                                                    property.Relationship.ThisEnd.GetCompositeKey(entity);
-                                                compositeKeyForOldRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.OldValue;
-                                                compositeKeyForOldRelationship =
-                                                    property.Relationship.ThisEnd.GetCompositeKey(
-                                                        compositeKeyForOldRelationship, true);
-                                            }
-                                            else
-                                            {
-                                                compositeKeyForNewRelationship =
-                                                    pc.NewValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(pc.NewValue);
-                                                compositeKeyForOldRelationship =
-                                                    oldValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(oldValue);
-                                            }
-                                            //relatedList.AssignRelationshipByKey(compositeKey);
-                                            var trackedEntity = relatedTrackingSet.FindTrackedEntityByKey(compositeKeyForNewRelationship);
-                                            if (trackedEntity != null)
-                                            {
-                                                var relatedList = trackedEntity.Entity.GetPropertyValue(property.Relationship.OtherEnd.Property
-                                                    .PropertyName) as IRelatedList;
-                                                relatedList.AssignRelationship(entity);
-                                            }
-                                        }
-                                        break;
-                                }
-                            }
-                            break;
-                    }
+                    //                            compositeKeyForOldRelationship =
+                    //                                property.Relationship.ThisEnd.GetCompositeKey(entity);
+                    //                            compositeKeyForOldRelationship.Keys.Single(k => k.Name == pc.PropertyName).Value = pc.OldValue;
+                    //                            compositeKeyForOldRelationship =
+                    //                                property.Relationship.ThisEnd.GetCompositeKey(
+                    //                                    compositeKeyForOldRelationship, true);
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            compositeKeyForNewRelationship =
+                    //                                pc.NewValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(pc.NewValue);
+                    //                            compositeKeyForOldRelationship =
+                    //                                oldValue == null ? null : property.Relationship.OtherEnd.GetCompositeKey(oldValue);
+                    //                        }
+                    //                        //relatedList.AssignRelationshipByKey(compositeKey);
+                    //                        var trackedEntity = relatedTrackingSet.FindTrackedEntityByKey(compositeKeyForNewRelationship);
+                    //                        if (trackedEntity != null)
+                    //                        {
+                    //                            var relatedList = trackedEntity.Entity.GetPropertyValue(property.Relationship.OtherEnd.Property
+                    //                                .PropertyName) as IRelatedList;
+                    //                            relatedList.AssignRelationship(entity);
+                    //                        }
+                    //                    }
+                    //                    break;
+                    //            }
+                    //        }
+                    //        break;
+                    //}
                 });
                 (entity as IEntity)?.PropertyChanged?.Subscribe(pc =>
                 {
@@ -218,7 +220,66 @@ namespace Iql.Queryable.Data.Tracking
                         property.Relationship.Relationship.Type == RelationshipType.OneToOne &&
                         !Equals(pc.OldValue, pc.NewValue))
                     {
-                        new RelationshipManager(DataContext).PersistRelationships(pc.Entity, pc.EntityType);
+                        var isRemove = Equals(pc.NewValue, null);
+                        var relationshipManager = GetRelationshipManager(property.Relationship.Relationship);
+                        switch (property.Relationship.Relationship.Type)
+                        {
+                            case RelationshipType.OneToOne:
+                                if (property.Relationship.ThisIsTarget)
+                                {
+                                    switch (property.Kind)
+                                    {
+                                        case PropertyKind.RelationshipKey:
+                                            relationshipManager.ProcessOneToOneKeyChange(entity);
+                                            break;
+                                        case PropertyKind.Relationship:
+                                            relationshipManager.ProcessOneToOneReferenceChange(entity);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    switch (property.Kind)
+                                    {
+                                        case PropertyKind.RelationshipKey:
+                                            throw new Exception(
+                                                "Relationship key on target of one-to-one relationship shouldn't exist.");
+                                            break;
+                                        case PropertyKind.Relationship:
+                                            relationshipManager.ProcessOneToOneInverseReferenceChange(entity);
+                                            break;
+                                    }
+                                }
+                                break;
+                            case RelationshipType.OneToMany:
+                                if (property.Relationship.ThisEnd.IsCollection)
+                                {
+                                    // We have reassigned a whole new collection;
+                                    // unsubscribe from the pervious collection and 
+                                    // subscribe to the new one
+                                    var oldList = pc.OldValue as IRelatedList;
+                                    if (_collectionChangeSubscriptions.ContainsKey(oldList))
+                                    {
+                                        oldList.Changed.Unsubscribe(_collectionChangeSubscriptions[oldList]);
+                                        _collectionChangeSubscriptions.Remove(oldList);
+                                    }
+                                    var newList = pc.NewValue as IRelatedList;
+                                    _collectionChangeSubscriptions.Add(newList, newList.Changed.Subscribe(RelatedListChanged));
+                                }
+                                else
+                                {
+                                    switch (property.Kind)
+                                    {
+                                        case PropertyKind.RelationshipKey:
+                                            relationshipManager.ProcessOneToManyKeyChange(entity);
+                                            break;
+                                        case PropertyKind.Relationship:
+                                            relationshipManager.ProcessOneToManyReferenceChange(entity);
+                                            break;
+                                    }
+                                }
+                                break;
+                        }
                     }
                 });
                 foreach (var relationship in EntityConfiguration.AllRelationships())
@@ -227,23 +288,32 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
                             as IRelatedList;
-                        relatedList.Changed.Subscribe(ev =>
-                        {
-                            var method = this.GetType().GetMethod(nameof(ProcessOneToManyCollectionChange),
-                                BindingFlags.NonPublic | BindingFlags.Instance)
-                                .MakeGenericMethod(relationship.OtherEnd.Type);
-                            method.Invoke(this, new[]
-                            {
-                                ev,
-                                relationship,
-#if TypeScript
-                                relationship.OtherEnd.Type
-#endif
-                            });
-                            // Do something
-                        });
+                        _collectionChangeSubscriptions.Add(relatedList, relatedList.Changed.Subscribe(RelatedListChanged));
                     }
                 }
+                //                foreach (var relationship in EntityConfiguration.AllRelationships())
+                //                {
+                //                    if (relationship.ThisEnd.IsCollection)
+                //                    {
+                //                        var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                //                            as IRelatedList;
+                //                        relatedList.Changed.Subscribe(ev =>
+                //                        {
+                //                            var method = this.GetType().GetMethod(nameof(ProcessOneToManyCollectionChange),
+                //                                BindingFlags.NonPublic | BindingFlags.Instance)
+                //                                .MakeGenericMethod(relationship.OtherEnd.Type);
+                //                            method.Invoke(this, new[]
+                //                            {
+                //                                ev,
+                //                                relationship,
+                //#if TypeScript
+                //                                relationship.OtherEnd.Type
+                //#endif
+                //                            });
+                //                            // Do something
+                //                        });
+                //                    }
+                //                }
                 Clone.Add(clone);
                 _trackedEntityClones.Add(entity, clone);
             }
@@ -287,7 +357,59 @@ namespace Iql.Queryable.Data.Tracking
             //}
         }
 
+        private void RelatedListChanged(IRelatedListChangedEvent ev)
+        {
+            var relationship = DataContext.EntityConfigurationContext.GetEntityByType(ev.OwnerType)
+                .FindRelationship(ev.List.Property);
+            var method = this.GetType().GetMethod(nameof(ProcessOneToManyCollectionChange),
+                    BindingFlags.NonPublic | BindingFlags.Instance)
+                .MakeGenericMethod(relationship.OtherEnd.Type);
+            method.Invoke(this, new object[]
+            {
+                ev,
+                relationship,
+#if TypeScript
+                relationship.OtherEnd.Type
+#endif
+            });
+        }
+
+        private IRelationshipManager GetRelationshipManager(IRelationship relationship)
+        {
+            var getRelationshipManagerMethod =
+                this.GetType().GetMethod(nameof(GetRelatioshipManagerGeneric),
+                        BindingFlags.NonPublic | BindingFlags.Instance)
+                    .MakeGenericMethod(relationship.Source.Type, relationship.Target.Type);
+            return (IRelationshipManager)getRelationshipManagerMethod.Invoke(this,
+                new object[] { relationship });
+        }
+        private RelationshipManager<TSource, TTarget> GetRelatioshipManagerGeneric<TSource, TTarget>(IRelationship relationship)
+        {
+            return new RelationshipManager<TSource, TTarget>(relationship, DataContext);
+        }
+
+        /// <summary>
+        /// Customer.Orders.Add([new])
+        /// </summary>
+        /// <typeparam name="TRelationship"></typeparam>
         private void ProcessOneToManyCollectionChange<TRelationship>(
+            RelatedListChangeEvent<T, TRelationship> change,
+            RelationshipMatch relationship)
+            where TRelationship : class
+        {
+            var relationshipManager = GetRelationshipManager(relationship.Relationship);
+            switch (change.Kind)
+            {
+                case RelatedListChangeKind.Assign:
+                    relationshipManager.ProcessOneToManyCollectionAdd(change.Owner, change.Item, change.ItemKey);
+                    break;
+                case RelatedListChangeKind.Remove:
+                    relationshipManager.ProcessOneToManyCollectionRemove(change.Owner, change.Item, change.ItemKey);
+                    break;
+            }
+        }
+
+        private void ProcessOneToManyCollectionChangeOld<TRelationship>(
             RelatedListChangeEvent<T, TRelationship> change,
             RelationshipMatch relationship)
             where TRelationship : class

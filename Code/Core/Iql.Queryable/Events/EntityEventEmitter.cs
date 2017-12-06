@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Iql.Queryable.Events
 {
-    public class EventEmitter<TEvent> : IEventEmitter<TEvent>
+    public class EventEmitter<TEvent> : IEventManager<TEvent>
     {
         private int _subscriptionId;
         private Dictionary<int, Action<TEvent>> Subscriptions { get; }
@@ -13,12 +13,7 @@ namespace Iql.Queryable.Events
             Subscriptions = new Dictionary<int, Action<TEvent>>();
         }
 
-        void IEventEmitterBase.Emit(object propertyChangeEvent)
-        {
-            Emit((TEvent) propertyChangeEvent);
-        }
-
-        int IEventEmitterBase.Subscribe(Action<object> propertyChangeEvent)
+        int IEventSubscriberBase.Subscribe(Action<object> propertyChangeEvent)
         {
             return Subscribe(e =>
             {

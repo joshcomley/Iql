@@ -11,6 +11,5 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         RelationshipType Type { get; }
         IRelationshipDetail Source { get; }
         IRelationshipDetail Target { get; }
-        IRelationship InverseRelationship { get; set; }
     }
 }

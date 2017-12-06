@@ -5,15 +5,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
     public class RelationshipMatch
     {
         public IRelationship Relationship { get; }
-        public bool PartnerIsSource { get; }
+        public bool ThisIsTarget { get; }
         public IRelationshipDetail ThisEnd { get; }
         public IRelationshipDetail OtherEnd { get; }
-        public RelationshipMatch(IRelationship relationship, bool partnerIsSource)
+        public RelationshipMatch(IRelationship relationship, bool thisIsTarget)
         {
             Relationship = relationship;
-            PartnerIsSource = partnerIsSource;
-            ThisEnd = partnerIsSource ? relationship.Source : relationship.Target;
-            OtherEnd = partnerIsSource ? relationship.Target : relationship.Source;
+            ThisIsTarget = thisIsTarget;
+            ThisEnd = thisIsTarget ? relationship.Source : relationship.Target;
+            OtherEnd = thisIsTarget ? relationship.Target : relationship.Source;
         }
     }
 }

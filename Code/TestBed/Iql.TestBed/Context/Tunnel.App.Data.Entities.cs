@@ -1,13 +1,14 @@
 using Iql.Queryable;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Events;
-using System.Collections.ObjectModel;
 using System;
 
 
 public class UserSiteBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -26,6 +27,8 @@ public class UserSiteBase : IEntity {
 public class SiteInspectionBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -44,6 +47,8 @@ public class SiteInspectionBase : IEntity {
 public class SiteBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -62,6 +67,8 @@ public class SiteBase : IEntity {
 public class PersonReportBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -80,6 +87,8 @@ public class PersonReportBase : IEntity {
 public class PersonTypeMapBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -98,6 +107,8 @@ public class PersonTypeMapBase : IEntity {
 public class PersonTypeBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -116,6 +127,8 @@ public class PersonTypeBase : IEntity {
 public class PersonLoadingBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -134,6 +147,8 @@ public class PersonLoadingBase : IEntity {
 public class PersonInspectionBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -152,6 +167,8 @@ public class PersonInspectionBase : IEntity {
 public class PersonBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -170,6 +187,8 @@ public class PersonBase : IEntity {
 public class RiskAssessmentQuestionBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -188,6 +207,8 @@ public class RiskAssessmentQuestionBase : IEntity {
 public class RiskAssessmentAnswerBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -206,6 +227,8 @@ public class RiskAssessmentAnswerBase : IEntity {
 public class RiskAssessmentBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -224,6 +247,8 @@ public class RiskAssessmentBase : IEntity {
 public class ReportReceiverEmailAddressBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -242,6 +267,8 @@ public class ReportReceiverEmailAddressBase : IEntity {
 public class ProjectBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -260,6 +287,8 @@ public class ProjectBase : IEntity {
 public class ReportTypeBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -278,6 +307,8 @@ public class ReportTypeBase : IEntity {
 public class ReportRecommendationBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -296,6 +327,8 @@ public class ReportRecommendationBase : IEntity {
 public class ReportDefaultRecommendationBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -314,6 +347,8 @@ public class ReportDefaultRecommendationBase : IEntity {
 public class ReportCategoryBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -332,6 +367,8 @@ public class ReportCategoryBase : IEntity {
 public class ReportActionsTakenBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -350,6 +387,8 @@ public class ReportActionsTakenBase : IEntity {
 public class SiteDocumentBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -368,6 +407,8 @@ public class SiteDocumentBase : IEntity {
 public class DocumentCategoryBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -386,6 +427,8 @@ public class DocumentCategoryBase : IEntity {
 public class ClientTypeBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -404,6 +447,8 @@ public class ClientTypeBase : IEntity {
 public class ClientBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -422,6 +467,8 @@ public class ClientBase : IEntity {
 public class ApplicationUserBase : IEntity {
 	
 	public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
+	
+	public EventEmitter<IPropertyChangeEvent> PropertyChanging { get; set; } = new EventEmitter<IPropertyChangeEvent>();
 	public virtual bool OnSaving() {
 		return true;
 	}
@@ -476,8 +523,9 @@ public class UserSite : UserSiteBase, IEntity {
 		set
 		{
 			var oldValue = _siteId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
 			_siteId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>("SiteId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
 		}
 	}
 
@@ -488,8 +536,9 @@ public class UserSite : UserSiteBase, IEntity {
 		set
 		{
 			var oldValue = _userId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
 			_userId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>("UserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
 		}
 	}
 
@@ -500,8 +549,9 @@ public class UserSite : UserSiteBase, IEntity {
 		set
 		{
 			var oldValue = _user;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
 			_user = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>("User", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
 		}
 	}
 
@@ -512,8 +562,9 @@ public class UserSite : UserSiteBase, IEntity {
 		set
 		{
 			var oldValue = _site;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
 			_site = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>("Site", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
 		}
 	}
 
@@ -532,8 +583,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -544,8 +596,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _riskAssessmentId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessmentId), this, oldValue, value));
 			_riskAssessmentId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("RiskAssessmentId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessmentId), this, oldValue, value));
 		}
 	}
 
@@ -556,8 +609,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _siteId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
 			_siteId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("SiteId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
 		}
 	}
 
@@ -568,8 +622,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -580,8 +635,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _startTime;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
 			_startTime = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("StartTime", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
 		}
 	}
 
@@ -592,8 +648,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _endTime;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
 			_endTime = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("EndTime", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
 		}
 	}
 
@@ -604,8 +661,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -616,8 +674,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -628,8 +687,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -640,25 +700,31 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("PersistenceKey", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<PersonInspection> _personInspections;
-	public ObservableCollection<PersonInspection> PersonInspections
-	{
-		get => _personInspections;
-		set
-		{
-			var oldValue = _personInspections;
-			_personInspections = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("PersonInspections", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PersonInspectionsCount { get; set; }
+	public Int64 PersonInspectionsCount { get; set; }
+	private RelatedList<SiteInspection,PersonInspection> _personInspections;
+	public RelatedList<SiteInspection,PersonInspection> PersonInspections
+	{
+		get
+		{
+			this._personInspections = _personInspections ?? new RelatedList<SiteInspection,PersonInspection>(this, nameof(PersonInspections));
+			return _personInspections;
+		}
+		set
+		{
+			var oldValue = _personInspections;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
+			_personInspections = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
+		}
+	}
+
 	private RiskAssessment _riskAssessment;
 	public RiskAssessment RiskAssessment
 	{
@@ -666,8 +732,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _riskAssessment;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
 			_riskAssessment = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("RiskAssessment", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
 		}
 	}
 
@@ -678,8 +745,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _site;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
 			_site = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("Site", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
 		}
 	}
 
@@ -690,8 +758,9 @@ public class SiteInspection : SiteInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -710,8 +779,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -722,8 +792,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _parentId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
 			_parentId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("ParentId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
 		}
 	}
 
@@ -734,8 +805,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -746,8 +818,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _address;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
 			_address = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Address", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
 		}
 	}
 
@@ -758,8 +831,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _postCode;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
 			_postCode = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("PostCode", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
 		}
 	}
 
@@ -770,8 +844,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _clientId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
 			_clientId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("ClientId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
 		}
 	}
 
@@ -782,8 +857,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -794,8 +870,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _left;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
 			_left = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Left", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
 		}
 	}
 
@@ -806,8 +883,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _right;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
 			_right = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Right", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
 		}
 	}
 
@@ -818,8 +896,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -830,8 +909,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -842,8 +922,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -854,39 +935,50 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
-	private ObservableCollection<SiteDocument> _documents;
-	public ObservableCollection<SiteDocument> Documents
+	
+	public Int64 DocumentsCount { get; set; }
+	private RelatedList<Site,SiteDocument> _documents;
+	public RelatedList<Site,SiteDocument> Documents
 	{
-		get => _documents;
+		get
+		{
+			this._documents = _documents ?? new RelatedList<Site,SiteDocument>(this, nameof(Documents));
+			return _documents;
+		}
 		set
 		{
 			var oldValue = _documents;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
 			_documents = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Documents", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
 		}
 	}
 
 	
-	public long? DocumentsCount { get; set; }
-	private ObservableCollection<ReportReceiverEmailAddress> _additionalSendReportsTo;
-	public ObservableCollection<ReportReceiverEmailAddress> AdditionalSendReportsTo
+	public Int64 AdditionalSendReportsToCount { get; set; }
+	private RelatedList<Site,ReportReceiverEmailAddress> _additionalSendReportsTo;
+	public RelatedList<Site,ReportReceiverEmailAddress> AdditionalSendReportsTo
 	{
-		get => _additionalSendReportsTo;
+		get
+		{
+			this._additionalSendReportsTo = _additionalSendReportsTo ?? new RelatedList<Site,ReportReceiverEmailAddress>(this, nameof(AdditionalSendReportsTo));
+			return _additionalSendReportsTo;
+		}
 		set
 		{
 			var oldValue = _additionalSendReportsTo;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
 			_additionalSendReportsTo = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("AdditionalSendReportsTo", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
 		}
 	}
 
-	
-	public long? AdditionalSendReportsToCount { get; set; }
 	private Site _parent;
 	public Site Parent
 	{
@@ -894,25 +986,31 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _parent;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
 			_parent = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Parent", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<Site> _children;
-	public ObservableCollection<Site> Children
-	{
-		get => _children;
-		set
-		{
-			var oldValue = _children;
-			_children = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Children", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ChildrenCount { get; set; }
+	public Int64 ChildrenCount { get; set; }
+	private RelatedList<Site,Site> _children;
+	public RelatedList<Site,Site> Children
+	{
+		get
+		{
+			this._children = _children ?? new RelatedList<Site,Site>(this, nameof(Children));
+			return _children;
+		}
+		set
+		{
+			var oldValue = _children;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
+			_children = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
+		}
+	}
+
 	private ApplicationUser _createdByUser;
 	public ApplicationUser CreatedByUser
 	{
@@ -920,8 +1018,9 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -932,39 +1031,50 @@ public class Site : SiteBase, IEntity {
 		set
 		{
 			var oldValue = _client;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
 			_client = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Client", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
 		}
 	}
 
-	private ObservableCollection<SiteInspection> _siteInspections;
-	public ObservableCollection<SiteInspection> SiteInspections
+	
+	public Int64 SiteInspectionsCount { get; set; }
+	private RelatedList<Site,SiteInspection> _siteInspections;
+	public RelatedList<Site,SiteInspection> SiteInspections
 	{
-		get => _siteInspections;
+		get
+		{
+			this._siteInspections = _siteInspections ?? new RelatedList<Site,SiteInspection>(this, nameof(SiteInspections));
+			return _siteInspections;
+		}
 		set
 		{
 			var oldValue = _siteInspections;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
 			_siteInspections = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("SiteInspections", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
 		}
 	}
 
 	
-	public long? SiteInspectionsCount { get; set; }
-	private ObservableCollection<UserSite> _users;
-	public ObservableCollection<UserSite> Users
+	public Int64 UsersCount { get; set; }
+	private RelatedList<Site,UserSite> _users;
+	public RelatedList<Site,UserSite> Users
 	{
-		get => _users;
+		get
+		{
+			this._users = _users ?? new RelatedList<Site,UserSite>(this, nameof(Users));
+			return _users;
+		}
 		set
 		{
 			var oldValue = _users;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
 			_users = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>("Users", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
 		}
 	}
 
-	
-	public long? UsersCount { get; set; }
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -980,8 +1090,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _personId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
 			_personId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("PersonId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
 		}
 	}
 
@@ -992,8 +1103,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _typeId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
 			_typeId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("TypeId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
 		}
 	}
 
@@ -1004,8 +1116,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -1016,8 +1129,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -1028,8 +1142,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _title;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
 			_title = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Title", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
 		}
 	}
 
@@ -1040,8 +1155,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _status;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
 			_status = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Status", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
 		}
 	}
 
@@ -1052,8 +1168,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -1064,8 +1181,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -1076,8 +1194,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -1088,39 +1207,50 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
-	private ObservableCollection<ReportActionsTaken> _actionsTaken;
-	public ObservableCollection<ReportActionsTaken> ActionsTaken
+	
+	public Int64 ActionsTakenCount { get; set; }
+	private RelatedList<PersonReport,ReportActionsTaken> _actionsTaken;
+	public RelatedList<PersonReport,ReportActionsTaken> ActionsTaken
 	{
-		get => _actionsTaken;
+		get
+		{
+			this._actionsTaken = _actionsTaken ?? new RelatedList<PersonReport,ReportActionsTaken>(this, nameof(ActionsTaken));
+			return _actionsTaken;
+		}
 		set
 		{
 			var oldValue = _actionsTaken;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
 			_actionsTaken = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("ActionsTaken", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ActionsTakenCount { get; set; }
-	private ObservableCollection<ReportRecommendation> _recommendations;
-	public ObservableCollection<ReportRecommendation> Recommendations
+	public Int64 RecommendationsCount { get; set; }
+	private RelatedList<PersonReport,ReportRecommendation> _recommendations;
+	public RelatedList<PersonReport,ReportRecommendation> Recommendations
 	{
-		get => _recommendations;
+		get
+		{
+			this._recommendations = _recommendations ?? new RelatedList<PersonReport,ReportRecommendation>(this, nameof(Recommendations));
+			return _recommendations;
+		}
 		set
 		{
 			var oldValue = _recommendations;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
 			_recommendations = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Recommendations", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
 		}
 	}
 
-	
-	public long? RecommendationsCount { get; set; }
 	private Person _person;
 	public Person Person
 	{
@@ -1128,8 +1258,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _person;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
 			_person = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Person", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
 		}
 	}
 
@@ -1140,8 +1271,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _type;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
 			_type = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("Type", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
 		}
 	}
 
@@ -1152,8 +1284,9 @@ public class PersonReport : PersonReportBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -1172,8 +1305,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _personId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
 			_personId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("PersonId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
 		}
 	}
 
@@ -1184,8 +1318,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _typeId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
 			_typeId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("TypeId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
 		}
 	}
 
@@ -1196,8 +1331,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _notes;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
 			_notes = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("Notes", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
 		}
 	}
 
@@ -1208,8 +1344,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _description;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
 			_description = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("Description", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
 		}
 	}
 
@@ -1220,8 +1357,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -1232,8 +1370,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -1244,8 +1383,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _person;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
 			_person = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("Person", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
 		}
 	}
 
@@ -1256,8 +1396,9 @@ public class PersonTypeMap : PersonTypeMapBase, IEntity {
 		set
 		{
 			var oldValue = _type;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
 			_type = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>("Type", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
 		}
 	}
 
@@ -1276,8 +1417,9 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -1288,8 +1430,9 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -1300,8 +1443,9 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _title;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
 			_title = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("Title", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
 		}
 	}
 
@@ -1312,8 +1456,9 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -1324,8 +1469,9 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -1336,8 +1482,9 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -1348,25 +1495,31 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("PersistenceKey", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<Person> _people;
-	public ObservableCollection<Person> People
-	{
-		get => _people;
-		set
-		{
-			var oldValue = _people;
-			_people = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("People", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PeopleCount { get; set; }
+	public Int64 PeopleCount { get; set; }
+	private RelatedList<PersonType,Person> _people;
+	public RelatedList<PersonType,Person> People
+	{
+		get
+		{
+			this._people = _people ?? new RelatedList<PersonType,Person>(this, nameof(People));
+			return _people;
+		}
+		set
+		{
+			var oldValue = _people;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
+			_people = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
+		}
+	}
+
 	private ApplicationUser _createdByUser;
 	public ApplicationUser CreatedByUser
 	{
@@ -1374,25 +1527,31 @@ public class PersonType : PersonTypeBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("CreatedByUser", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<PersonTypeMap> _peopleMap;
-	public ObservableCollection<PersonTypeMap> PeopleMap
-	{
-		get => _peopleMap;
-		set
-		{
-			var oldValue = _peopleMap;
-			_peopleMap = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>("PeopleMap", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PeopleMapCount { get; set; }
+	public Int64 PeopleMapCount { get; set; }
+	private RelatedList<PersonType,PersonTypeMap> _peopleMap;
+	public RelatedList<PersonType,PersonTypeMap> PeopleMap
+	{
+		get
+		{
+			this._peopleMap = _peopleMap ?? new RelatedList<PersonType,PersonTypeMap>(this, nameof(PeopleMap));
+			return _peopleMap;
+		}
+		set
+		{
+			var oldValue = _peopleMap;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
+			_peopleMap = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -1408,8 +1567,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -1420,8 +1580,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -1432,8 +1593,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -1444,8 +1606,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -1456,8 +1619,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -1468,8 +1632,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -1480,25 +1645,31 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("PersistenceKey", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<Person> _people;
-	public ObservableCollection<Person> People
-	{
-		get => _people;
-		set
-		{
-			var oldValue = _people;
-			_people = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("People", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PeopleCount { get; set; }
+	public Int64 PeopleCount { get; set; }
+	private RelatedList<PersonLoading,Person> _people;
+	public RelatedList<PersonLoading,Person> People
+	{
+		get
+		{
+			this._people = _people ?? new RelatedList<PersonLoading,Person>(this, nameof(People));
+			return _people;
+		}
+		set
+		{
+			var oldValue = _people;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
+			_people = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
+		}
+	}
+
 	private ApplicationUser _createdByUser;
 	public ApplicationUser CreatedByUser
 	{
@@ -1506,8 +1677,9 @@ public class PersonLoading : PersonLoadingBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -1535,8 +1707,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _siteInspectionId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
 			_siteInspectionId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("SiteInspectionId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
 		}
 	}
 
@@ -1547,8 +1720,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -1559,8 +1733,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _personId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
 			_personId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("PersonId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
 		}
 	}
 
@@ -1571,8 +1746,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _inspectionStatus;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
 			_inspectionStatus = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("InspectionStatus", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
 		}
 	}
 
@@ -1583,8 +1759,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _startTime;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
 			_startTime = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("StartTime", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
 		}
 	}
 
@@ -1595,8 +1772,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _endTime;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
 			_endTime = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("EndTime", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
 		}
 	}
 
@@ -1607,8 +1785,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _reasonForFailure;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
 			_reasonForFailure = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("ReasonForFailure", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
 		}
 	}
 
@@ -1619,8 +1798,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _isDesignRequired;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
 			_isDesignRequired = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("IsDesignRequired", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
 		}
 	}
 
@@ -1631,8 +1811,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _drawingNumber;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
 			_drawingNumber = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("DrawingNumber", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
 		}
 	}
 
@@ -1643,8 +1824,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -1655,8 +1837,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -1667,8 +1850,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -1679,8 +1863,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -1691,8 +1876,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -1703,8 +1889,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _siteInspection;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
 			_siteInspection = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("SiteInspection", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
 		}
 	}
 
@@ -1715,8 +1902,9 @@ public class PersonInspection : PersonInspectionBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -1735,8 +1923,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _typeId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
 			_typeId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("TypeId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
 		}
 	}
 
@@ -1747,8 +1936,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _loadingId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
 			_loadingId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("LoadingId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
 		}
 	}
 
@@ -1759,8 +1949,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -1771,8 +1962,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -1783,8 +1975,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _key;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
 			_key = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Key", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
 		}
 	}
 
@@ -1795,8 +1988,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _title;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
 			_title = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Title", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
 		}
 	}
 
@@ -1807,8 +2001,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _description;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
 			_description = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Description", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
 		}
 	}
 
@@ -1819,8 +2014,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _category;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
 			_category = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Category", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
 		}
 	}
 
@@ -1831,8 +2027,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _clientId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
 			_clientId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("ClientId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
 		}
 	}
 
@@ -1843,8 +2040,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -1855,8 +2053,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -1867,8 +2066,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -1879,8 +2079,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -1891,8 +2092,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _client;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
 			_client = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Client", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
 		}
 	}
 
@@ -1903,8 +2105,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _type;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
 			_type = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Type", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
 		}
 	}
 
@@ -1915,8 +2118,9 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _loading;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
 			_loading = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Loading", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
 		}
 	}
 
@@ -1927,39 +2131,50 @@ public class Person : PersonBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
-	private ObservableCollection<PersonTypeMap> _types;
-	public ObservableCollection<PersonTypeMap> Types
+	
+	public Int64 TypesCount { get; set; }
+	private RelatedList<Person,PersonTypeMap> _types;
+	public RelatedList<Person,PersonTypeMap> Types
 	{
-		get => _types;
+		get
+		{
+			this._types = _types ?? new RelatedList<Person,PersonTypeMap>(this, nameof(Types));
+			return _types;
+		}
 		set
 		{
 			var oldValue = _types;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
 			_types = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Types", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
 		}
 	}
 
 	
-	public long? TypesCount { get; set; }
-	private ObservableCollection<PersonReport> _reports;
-	public ObservableCollection<PersonReport> Reports
+	public Int64 ReportsCount { get; set; }
+	private RelatedList<Person,PersonReport> _reports;
+	public RelatedList<Person,PersonReport> Reports
 	{
-		get => _reports;
+		get
+		{
+			this._reports = _reports ?? new RelatedList<Person,PersonReport>(this, nameof(Reports));
+			return _reports;
+		}
 		set
 		{
 			var oldValue = _reports;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
 			_reports = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>("Reports", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
 		}
 	}
 
-	
-	public long? ReportsCount { get; set; }
 	
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
@@ -2012,8 +2227,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2024,8 +2240,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2036,8 +2253,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -2048,8 +2266,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2060,8 +2279,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2072,8 +2292,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2084,25 +2305,31 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("PersistenceKey", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<RiskAssessmentAnswer> _answers;
-	public ObservableCollection<RiskAssessmentAnswer> Answers
-	{
-		get => _answers;
-		set
-		{
-			var oldValue = _answers;
-			_answers = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("Answers", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
 	
-	public long? AnswersCount { get; set; }
+	public Int64 AnswersCount { get; set; }
+	private RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer> _answers;
+	public RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer> Answers
+	{
+		get
+		{
+			this._answers = _answers ?? new RelatedList<RiskAssessmentQuestion,RiskAssessmentAnswer>(this, nameof(Answers));
+			return _answers;
+		}
+		set
+		{
+			var oldValue = _answers;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
+			_answers = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
+		}
+	}
+
 	private ApplicationUser _createdByUser;
 	public ApplicationUser CreatedByUser
 	{
@@ -2110,8 +2337,9 @@ public class RiskAssessmentQuestion : RiskAssessmentQuestionBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -2130,8 +2358,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _questionId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
 			_questionId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("QuestionId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
 		}
 	}
 
@@ -2142,8 +2371,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2154,8 +2384,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _specificHazard;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
 			_specificHazard = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("SpecificHazard", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
 		}
 	}
 
@@ -2166,8 +2397,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _precautionsToControlHazard;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
 			_precautionsToControlHazard = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("PrecautionsToControlHazard", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
 		}
 	}
 
@@ -2178,8 +2410,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2190,8 +2423,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2202,8 +2436,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2214,8 +2449,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2226,8 +2462,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -2238,8 +2475,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _question;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
 			_question = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("Question", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
 		}
 	}
 
@@ -2250,8 +2488,9 @@ public class RiskAssessmentAnswer : RiskAssessmentAnswerBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -2270,8 +2509,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _siteInspectionId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
 			_siteInspectionId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("SiteInspectionId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
 		}
 	}
 
@@ -2282,8 +2522,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2294,8 +2535,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2306,8 +2548,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2318,8 +2561,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2330,8 +2574,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2342,8 +2587,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -2354,8 +2600,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -2366,8 +2613,9 @@ public class RiskAssessment : RiskAssessmentBase, IEntity {
 		set
 		{
 			var oldValue = _siteInspection;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
 			_siteInspection = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>("SiteInspection", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
 		}
 	}
 
@@ -2386,8 +2634,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2398,8 +2647,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _siteId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
 			_siteId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("SiteId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
 		}
 	}
 
@@ -2410,8 +2660,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _emailAddress;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
 			_emailAddress = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("EmailAddress", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
 		}
 	}
 
@@ -2422,8 +2673,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2434,8 +2686,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2446,8 +2699,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2458,8 +2712,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2470,8 +2725,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -2482,8 +2738,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _site;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
 			_site = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("Site", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
 		}
 	}
 
@@ -2494,8 +2751,9 @@ public class ReportReceiverEmailAddress : ReportReceiverEmailAddressBase, IEntit
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -2514,8 +2772,9 @@ public class Project : ProjectBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2526,8 +2785,9 @@ public class Project : ProjectBase, IEntity {
 		set
 		{
 			var oldValue = _title;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
 			_title = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>("Title", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
 		}
 	}
 
@@ -2538,8 +2798,9 @@ public class Project : ProjectBase, IEntity {
 		set
 		{
 			var oldValue = _description;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
 			_description = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>("Description", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
 		}
 	}
 
@@ -2550,8 +2811,9 @@ public class Project : ProjectBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2562,8 +2824,9 @@ public class Project : ProjectBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -2582,8 +2845,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2594,8 +2858,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _categoryId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
 			_categoryId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("CategoryId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
 		}
 	}
 
@@ -2606,8 +2871,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2618,8 +2884,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -2630,8 +2897,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -2642,8 +2910,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2654,8 +2923,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2666,8 +2936,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2678,8 +2949,9 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _category;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
 			_category = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("Category", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
 		}
 	}
 
@@ -2690,25 +2962,31 @@ public class ReportType : ReportTypeBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("CreatedByUser", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<PersonReport> _faultReports;
-	public ObservableCollection<PersonReport> FaultReports
-	{
-		get => _faultReports;
-		set
-		{
-			var oldValue = _faultReports;
-			_faultReports = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>("FaultReports", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultReportsCount { get; set; }
+	public Int64 FaultReportsCount { get; set; }
+	private RelatedList<ReportType,PersonReport> _faultReports;
+	public RelatedList<ReportType,PersonReport> FaultReports
+	{
+		get
+		{
+			this._faultReports = _faultReports ?? new RelatedList<ReportType,PersonReport>(this, nameof(FaultReports));
+			return _faultReports;
+		}
+		set
+		{
+			var oldValue = _faultReports;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
+			_faultReports = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -2724,8 +3002,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _reportId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
 			_reportId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("ReportId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
 		}
 	}
 
@@ -2736,8 +3015,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _recommendationId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
 			_recommendationId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("RecommendationId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
 		}
 	}
 
@@ -2748,8 +3028,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2760,8 +3041,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _notes;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
 			_notes = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("Notes", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
 		}
 	}
 
@@ -2772,8 +3054,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2784,8 +3067,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2796,8 +3080,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2808,8 +3093,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2820,8 +3106,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -2832,8 +3119,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _personReport;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
 			_personReport = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("PersonReport", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
 		}
 	}
 
@@ -2844,8 +3132,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _recommendation;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
 			_recommendation = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("Recommendation", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
 		}
 	}
 
@@ -2856,8 +3145,9 @@ public class ReportRecommendation : ReportRecommendationBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -2876,8 +3166,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -2888,8 +3179,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -2900,8 +3192,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -2912,8 +3205,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _text;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
 			_text = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("Text", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
 		}
 	}
 
@@ -2924,8 +3218,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -2936,8 +3231,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -2948,8 +3244,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -2960,8 +3257,9 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -2972,25 +3270,31 @@ public class ReportDefaultRecommendation : ReportDefaultRecommendationBase, IEnt
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("CreatedByUser", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<ReportRecommendation> _recommendations;
-	public ObservableCollection<ReportRecommendation> Recommendations
-	{
-		get => _recommendations;
-		set
-		{
-			var oldValue = _recommendations;
-			_recommendations = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>("Recommendations", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
 	
-	public long? RecommendationsCount { get; set; }
+	public Int64 RecommendationsCount { get; set; }
+	private RelatedList<ReportDefaultRecommendation,ReportRecommendation> _recommendations;
+	public RelatedList<ReportDefaultRecommendation,ReportRecommendation> Recommendations
+	{
+		get
+		{
+			this._recommendations = _recommendations ?? new RelatedList<ReportDefaultRecommendation,ReportRecommendation>(this, nameof(Recommendations));
+			return _recommendations;
+		}
+		set
+		{
+			var oldValue = _recommendations;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
+			_recommendations = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -3006,8 +3310,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3018,8 +3323,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -3030,8 +3336,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -3042,8 +3349,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -3054,8 +3362,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -3066,8 +3375,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -3078,8 +3388,9 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -3090,25 +3401,31 @@ public class ReportCategory : ReportCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("CreatedByUser", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<ReportType> _reportTypes;
-	public ObservableCollection<ReportType> ReportTypes
-	{
-		get => _reportTypes;
-		set
-		{
-			var oldValue = _reportTypes;
-			_reportTypes = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>("ReportTypes", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ReportTypesCount { get; set; }
+	public Int64 ReportTypesCount { get; set; }
+	private RelatedList<ReportCategory,ReportType> _reportTypes;
+	public RelatedList<ReportCategory,ReportType> ReportTypes
+	{
+		get
+		{
+			this._reportTypes = _reportTypes ?? new RelatedList<ReportCategory,ReportType>(this, nameof(ReportTypes));
+			return _reportTypes;
+		}
+		set
+		{
+			var oldValue = _reportTypes;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
+			_reportTypes = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -3124,8 +3441,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _faultReportId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
 			_faultReportId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("FaultReportId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
 		}
 	}
 
@@ -3136,8 +3454,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -3148,8 +3467,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _notes;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
 			_notes = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("Notes", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
 		}
 	}
 
@@ -3160,8 +3480,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -3172,8 +3493,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3184,8 +3506,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -3196,8 +3519,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -3208,8 +3532,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -3220,8 +3545,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _personReport;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
 			_personReport = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("PersonReport", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
 		}
 	}
 
@@ -3232,8 +3558,9 @@ public class ReportActionsTaken : ReportActionsTakenBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -3264,8 +3591,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _categoryId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
 			_categoryId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("CategoryId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
 		}
 	}
 
@@ -3276,8 +3604,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _siteId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
 			_siteId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("SiteId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
 		}
 	}
 
@@ -3288,8 +3617,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -3300,8 +3630,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _title;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
 			_title = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("Title", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
 		}
 	}
 
@@ -3312,8 +3643,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -3324,8 +3656,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3336,8 +3669,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -3348,8 +3682,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -3360,8 +3695,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -3372,8 +3708,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _category;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
 			_category = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("Category", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
 		}
 	}
 
@@ -3384,8 +3721,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _site;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
 			_site = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("Site", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
 		}
 	}
 
@@ -3396,8 +3734,9 @@ public class SiteDocument : SiteDocumentBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>("CreatedByUser", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
@@ -3416,8 +3755,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3428,8 +3768,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -3440,8 +3781,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -3452,8 +3794,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -3464,8 +3807,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -3476,8 +3820,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -3488,8 +3833,9 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("PersistenceKey", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
@@ -3500,25 +3846,31 @@ public class DocumentCategory : DocumentCategoryBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("CreatedByUser", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<SiteDocument> _documents;
-	public ObservableCollection<SiteDocument> Documents
-	{
-		get => _documents;
-		set
-		{
-			var oldValue = _documents;
-			_documents = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>("Documents", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
 	
-	public long? DocumentsCount { get; set; }
+	public Int64 DocumentsCount { get; set; }
+	private RelatedList<DocumentCategory,SiteDocument> _documents;
+	public RelatedList<DocumentCategory,SiteDocument> Documents
+	{
+		get
+		{
+			this._documents = _documents ?? new RelatedList<DocumentCategory,SiteDocument>(this, nameof(Documents));
+			return _documents;
+		}
+		set
+		{
+			var oldValue = _documents;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
+			_documents = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -3534,8 +3886,9 @@ public class ClientType : ClientTypeBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3546,25 +3899,31 @@ public class ClientType : ClientTypeBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>("Name", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<Client> _clients;
-	public ObservableCollection<Client> Clients
-	{
-		get => _clients;
-		set
-		{
-			var oldValue = _clients;
-			_clients = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>("Clients", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ClientsCount { get; set; }
+	public Int64 ClientsCount { get; set; }
+	private RelatedList<ClientType,Client> _clients;
+	public RelatedList<ClientType,Client> Clients
+	{
+		get
+		{
+			this._clients = _clients ?? new RelatedList<ClientType,Client>(this, nameof(Clients));
+			return _clients;
+		}
+		set
+		{
+			var oldValue = _clients;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
+			_clients = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -3580,8 +3939,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _typeId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
 			_typeId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("TypeId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
 		}
 	}
 
@@ -3592,8 +3952,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUserId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
 			_createdByUserId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("CreatedByUserId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
 		}
 	}
 
@@ -3604,8 +3965,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _name;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
 			_name = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Name", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
 		}
 	}
 
@@ -3616,8 +3978,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _description;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
 			_description = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Description", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
 		}
 	}
 
@@ -3628,8 +3991,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _guid;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
 			_guid = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Guid", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
 		}
 	}
 
@@ -3640,8 +4004,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3652,8 +4017,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _createdDate;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
 			_createdDate = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("CreatedDate", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
 		}
 	}
 
@@ -3664,8 +4030,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _version;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
 			_version = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Version", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
 		}
 	}
 
@@ -3676,25 +4043,31 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _persistenceKey;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
 			_persistenceKey = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("PersistenceKey", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<ApplicationUser> _users;
-	public ObservableCollection<ApplicationUser> Users
-	{
-		get => _users;
-		set
-		{
-			var oldValue = _users;
-			_users = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Users", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
 		}
 	}
 
 	
-	public long? UsersCount { get; set; }
+	public Int64 UsersCount { get; set; }
+	private RelatedList<Client,ApplicationUser> _users;
+	public RelatedList<Client,ApplicationUser> Users
+	{
+		get
+		{
+			this._users = _users ?? new RelatedList<Client,ApplicationUser>(this, nameof(Users));
+			return _users;
+		}
+		set
+		{
+			var oldValue = _users;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
+			_users = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
+		}
+	}
+
 	private ClientType _type;
 	public ClientType Type
 	{
@@ -3702,8 +4075,9 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _type;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
 			_type = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("Type", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
 		}
 	}
 
@@ -3714,25 +4088,31 @@ public class Client : ClientBase, IEntity {
 		set
 		{
 			var oldValue = _createdByUser;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
 			_createdByUser = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("CreatedByUser", this, oldValue, value));
-		}
-	}
-
-	private ObservableCollection<Person> _people;
-	public ObservableCollection<Person> People
-	{
-		get => _people;
-		set
-		{
-			var oldValue = _people;
-			_people = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>("People", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PeopleCount { get; set; }
+	public Int64 PeopleCount { get; set; }
+	private RelatedList<Client,Person> _people;
+	public RelatedList<Client,Person> People
+	{
+		get
+		{
+			this._people = _people ?? new RelatedList<Client,Person>(this, nameof(People));
+			return _people;
+		}
+		set
+		{
+			var oldValue = _people;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
+			_people = value;
+			this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
+		}
+	}
+
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;
 		var validationResult = new EntityValidationResult(this.GetType());
@@ -3748,8 +4128,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _id;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
 			_id = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("Id", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
 		}
 	}
 
@@ -3760,8 +4141,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _clientId;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
 			_clientId = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("ClientId", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
 		}
 	}
 
@@ -3772,8 +4154,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _email;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
 			_email = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("Email", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
 		}
 	}
 
@@ -3784,8 +4167,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _fullName;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
 			_fullName = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FullName", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
 		}
 	}
 
@@ -3796,8 +4180,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _emailConfirmed;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 			_emailConfirmed = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("EmailConfirmed", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 		}
 	}
 
@@ -3808,8 +4193,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _userType;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
 			_userType = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("UserType", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
 		}
 	}
 
@@ -3820,8 +4206,9 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _isLockedOut;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 			_isLockedOut = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("IsLockedOut", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 		}
 	}
 
@@ -3832,305 +4219,411 @@ public class ApplicationUser : ApplicationUserBase, IEntity {
 		set
 		{
 			var oldValue = _client;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
 			_client = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("Client", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
 		}
 	}
 
-	private ObservableCollection<Client> _clientsCreated;
-	public ObservableCollection<Client> ClientsCreated
+	
+	public Int64 ClientsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Client> _clientsCreated;
+	public RelatedList<ApplicationUser,Client> ClientsCreated
 	{
-		get => _clientsCreated;
+		get
+		{
+			this._clientsCreated = _clientsCreated ?? new RelatedList<ApplicationUser,Client>(this, nameof(ClientsCreated));
+			return _clientsCreated;
+		}
 		set
 		{
 			var oldValue = _clientsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 			_clientsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("ClientsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ClientsCreatedCount { get; set; }
-	private ObservableCollection<DocumentCategory> _documentCategoriesCreated;
-	public ObservableCollection<DocumentCategory> DocumentCategoriesCreated
+	public Int64 DocumentCategoriesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,DocumentCategory> _documentCategoriesCreated;
+	public RelatedList<ApplicationUser,DocumentCategory> DocumentCategoriesCreated
 	{
-		get => _documentCategoriesCreated;
+		get
+		{
+			this._documentCategoriesCreated = _documentCategoriesCreated ?? new RelatedList<ApplicationUser,DocumentCategory>(this, nameof(DocumentCategoriesCreated));
+			return _documentCategoriesCreated;
+		}
 		set
 		{
 			var oldValue = _documentCategoriesCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
 			_documentCategoriesCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("DocumentCategoriesCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? DocumentCategoriesCreatedCount { get; set; }
-	private ObservableCollection<SiteDocument> _siteDocumentsCreated;
-	public ObservableCollection<SiteDocument> SiteDocumentsCreated
+	public Int64 SiteDocumentsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,SiteDocument> _siteDocumentsCreated;
+	public RelatedList<ApplicationUser,SiteDocument> SiteDocumentsCreated
 	{
-		get => _siteDocumentsCreated;
+		get
+		{
+			this._siteDocumentsCreated = _siteDocumentsCreated ?? new RelatedList<ApplicationUser,SiteDocument>(this, nameof(SiteDocumentsCreated));
+			return _siteDocumentsCreated;
+		}
 		set
 		{
 			var oldValue = _siteDocumentsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
 			_siteDocumentsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("SiteDocumentsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? SiteDocumentsCreatedCount { get; set; }
-	private ObservableCollection<ReportActionsTaken> _faultActionsTakenCreated;
-	public ObservableCollection<ReportActionsTaken> FaultActionsTakenCreated
+	public Int64 FaultActionsTakenCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportActionsTaken> _faultActionsTakenCreated;
+	public RelatedList<ApplicationUser,ReportActionsTaken> FaultActionsTakenCreated
 	{
-		get => _faultActionsTakenCreated;
+		get
+		{
+			this._faultActionsTakenCreated = _faultActionsTakenCreated ?? new RelatedList<ApplicationUser,ReportActionsTaken>(this, nameof(FaultActionsTakenCreated));
+			return _faultActionsTakenCreated;
+		}
 		set
 		{
 			var oldValue = _faultActionsTakenCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
 			_faultActionsTakenCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FaultActionsTakenCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultActionsTakenCreatedCount { get; set; }
-	private ObservableCollection<ReportCategory> _faultCategoriesCreated;
-	public ObservableCollection<ReportCategory> FaultCategoriesCreated
+	public Int64 FaultCategoriesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportCategory> _faultCategoriesCreated;
+	public RelatedList<ApplicationUser,ReportCategory> FaultCategoriesCreated
 	{
-		get => _faultCategoriesCreated;
+		get
+		{
+			this._faultCategoriesCreated = _faultCategoriesCreated ?? new RelatedList<ApplicationUser,ReportCategory>(this, nameof(FaultCategoriesCreated));
+			return _faultCategoriesCreated;
+		}
 		set
 		{
 			var oldValue = _faultCategoriesCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
 			_faultCategoriesCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FaultCategoriesCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultCategoriesCreatedCount { get; set; }
-	private ObservableCollection<ReportDefaultRecommendation> _faultDefaultRecommendationsCreated;
-	public ObservableCollection<ReportDefaultRecommendation> FaultDefaultRecommendationsCreated
+	public Int64 FaultDefaultRecommendationsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportDefaultRecommendation> _faultDefaultRecommendationsCreated;
+	public RelatedList<ApplicationUser,ReportDefaultRecommendation> FaultDefaultRecommendationsCreated
 	{
-		get => _faultDefaultRecommendationsCreated;
+		get
+		{
+			this._faultDefaultRecommendationsCreated = _faultDefaultRecommendationsCreated ?? new RelatedList<ApplicationUser,ReportDefaultRecommendation>(this, nameof(FaultDefaultRecommendationsCreated));
+			return _faultDefaultRecommendationsCreated;
+		}
 		set
 		{
 			var oldValue = _faultDefaultRecommendationsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
 			_faultDefaultRecommendationsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FaultDefaultRecommendationsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultDefaultRecommendationsCreatedCount { get; set; }
-	private ObservableCollection<ReportRecommendation> _faultRecommendationsCreated;
-	public ObservableCollection<ReportRecommendation> FaultRecommendationsCreated
+	public Int64 FaultRecommendationsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportRecommendation> _faultRecommendationsCreated;
+	public RelatedList<ApplicationUser,ReportRecommendation> FaultRecommendationsCreated
 	{
-		get => _faultRecommendationsCreated;
+		get
+		{
+			this._faultRecommendationsCreated = _faultRecommendationsCreated ?? new RelatedList<ApplicationUser,ReportRecommendation>(this, nameof(FaultRecommendationsCreated));
+			return _faultRecommendationsCreated;
+		}
 		set
 		{
 			var oldValue = _faultRecommendationsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
 			_faultRecommendationsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FaultRecommendationsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultRecommendationsCreatedCount { get; set; }
-	private ObservableCollection<ReportType> _faultTypesCreated;
-	public ObservableCollection<ReportType> FaultTypesCreated
+	public Int64 FaultTypesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportType> _faultTypesCreated;
+	public RelatedList<ApplicationUser,ReportType> FaultTypesCreated
 	{
-		get => _faultTypesCreated;
+		get
+		{
+			this._faultTypesCreated = _faultTypesCreated ?? new RelatedList<ApplicationUser,ReportType>(this, nameof(FaultTypesCreated));
+			return _faultTypesCreated;
+		}
 		set
 		{
 			var oldValue = _faultTypesCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
 			_faultTypesCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FaultTypesCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultTypesCreatedCount { get; set; }
-	private ObservableCollection<Project> _projectCreated;
-	public ObservableCollection<Project> ProjectCreated
+	public Int64 ProjectCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Project> _projectCreated;
+	public RelatedList<ApplicationUser,Project> ProjectCreated
 	{
-		get => _projectCreated;
+		get
+		{
+			this._projectCreated = _projectCreated ?? new RelatedList<ApplicationUser,Project>(this, nameof(ProjectCreated));
+			return _projectCreated;
+		}
 		set
 		{
 			var oldValue = _projectCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
 			_projectCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("ProjectCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ProjectCreatedCount { get; set; }
-	private ObservableCollection<ReportReceiverEmailAddress> _reportReceiverEmailAddressesCreated;
-	public ObservableCollection<ReportReceiverEmailAddress> ReportReceiverEmailAddressesCreated
+	public Int64 ReportReceiverEmailAddressesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,ReportReceiverEmailAddress> _reportReceiverEmailAddressesCreated;
+	public RelatedList<ApplicationUser,ReportReceiverEmailAddress> ReportReceiverEmailAddressesCreated
 	{
-		get => _reportReceiverEmailAddressesCreated;
+		get
+		{
+			this._reportReceiverEmailAddressesCreated = _reportReceiverEmailAddressesCreated ?? new RelatedList<ApplicationUser,ReportReceiverEmailAddress>(this, nameof(ReportReceiverEmailAddressesCreated));
+			return _reportReceiverEmailAddressesCreated;
+		}
 		set
 		{
 			var oldValue = _reportReceiverEmailAddressesCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
 			_reportReceiverEmailAddressesCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("ReportReceiverEmailAddressesCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? ReportReceiverEmailAddressesCreatedCount { get; set; }
-	private ObservableCollection<RiskAssessment> _riskAssessmentsCreated;
-	public ObservableCollection<RiskAssessment> RiskAssessmentsCreated
+	public Int64 RiskAssessmentsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,RiskAssessment> _riskAssessmentsCreated;
+	public RelatedList<ApplicationUser,RiskAssessment> RiskAssessmentsCreated
 	{
-		get => _riskAssessmentsCreated;
+		get
+		{
+			this._riskAssessmentsCreated = _riskAssessmentsCreated ?? new RelatedList<ApplicationUser,RiskAssessment>(this, nameof(RiskAssessmentsCreated));
+			return _riskAssessmentsCreated;
+		}
 		set
 		{
 			var oldValue = _riskAssessmentsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
 			_riskAssessmentsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("RiskAssessmentsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? RiskAssessmentsCreatedCount { get; set; }
-	private ObservableCollection<RiskAssessmentAnswer> _riskAssessmentAnswersCreated;
-	public ObservableCollection<RiskAssessmentAnswer> RiskAssessmentAnswersCreated
+	public Int64 RiskAssessmentAnswersCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,RiskAssessmentAnswer> _riskAssessmentAnswersCreated;
+	public RelatedList<ApplicationUser,RiskAssessmentAnswer> RiskAssessmentAnswersCreated
 	{
-		get => _riskAssessmentAnswersCreated;
+		get
+		{
+			this._riskAssessmentAnswersCreated = _riskAssessmentAnswersCreated ?? new RelatedList<ApplicationUser,RiskAssessmentAnswer>(this, nameof(RiskAssessmentAnswersCreated));
+			return _riskAssessmentAnswersCreated;
+		}
 		set
 		{
 			var oldValue = _riskAssessmentAnswersCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
 			_riskAssessmentAnswersCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("RiskAssessmentAnswersCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? RiskAssessmentAnswersCreatedCount { get; set; }
-	private ObservableCollection<RiskAssessmentQuestion> _riskAssessmentQuestionsCreated;
-	public ObservableCollection<RiskAssessmentQuestion> RiskAssessmentQuestionsCreated
+	public Int64 RiskAssessmentQuestionsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,RiskAssessmentQuestion> _riskAssessmentQuestionsCreated;
+	public RelatedList<ApplicationUser,RiskAssessmentQuestion> RiskAssessmentQuestionsCreated
 	{
-		get => _riskAssessmentQuestionsCreated;
+		get
+		{
+			this._riskAssessmentQuestionsCreated = _riskAssessmentQuestionsCreated ?? new RelatedList<ApplicationUser,RiskAssessmentQuestion>(this, nameof(RiskAssessmentQuestionsCreated));
+			return _riskAssessmentQuestionsCreated;
+		}
 		set
 		{
 			var oldValue = _riskAssessmentQuestionsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
 			_riskAssessmentQuestionsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("RiskAssessmentQuestionsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? RiskAssessmentQuestionsCreatedCount { get; set; }
-	private ObservableCollection<Person> _peopleCreated;
-	public ObservableCollection<Person> PeopleCreated
+	public Int64 PeopleCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Person> _peopleCreated;
+	public RelatedList<ApplicationUser,Person> PeopleCreated
 	{
-		get => _peopleCreated;
+		get
+		{
+			this._peopleCreated = _peopleCreated ?? new RelatedList<ApplicationUser,Person>(this, nameof(PeopleCreated));
+			return _peopleCreated;
+		}
 		set
 		{
 			var oldValue = _peopleCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
 			_peopleCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("PeopleCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PeopleCreatedCount { get; set; }
-	private ObservableCollection<PersonInspection> _personInspectionsCreated;
-	public ObservableCollection<PersonInspection> PersonInspectionsCreated
+	public Int64 PersonInspectionsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,PersonInspection> _personInspectionsCreated;
+	public RelatedList<ApplicationUser,PersonInspection> PersonInspectionsCreated
 	{
-		get => _personInspectionsCreated;
+		get
+		{
+			this._personInspectionsCreated = _personInspectionsCreated ?? new RelatedList<ApplicationUser,PersonInspection>(this, nameof(PersonInspectionsCreated));
+			return _personInspectionsCreated;
+		}
 		set
 		{
 			var oldValue = _personInspectionsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
 			_personInspectionsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("PersonInspectionsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PersonInspectionsCreatedCount { get; set; }
-	private ObservableCollection<PersonLoading> _personLoadingsCreated;
-	public ObservableCollection<PersonLoading> PersonLoadingsCreated
+	public Int64 PersonLoadingsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,PersonLoading> _personLoadingsCreated;
+	public RelatedList<ApplicationUser,PersonLoading> PersonLoadingsCreated
 	{
-		get => _personLoadingsCreated;
+		get
+		{
+			this._personLoadingsCreated = _personLoadingsCreated ?? new RelatedList<ApplicationUser,PersonLoading>(this, nameof(PersonLoadingsCreated));
+			return _personLoadingsCreated;
+		}
 		set
 		{
 			var oldValue = _personLoadingsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
 			_personLoadingsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("PersonLoadingsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PersonLoadingsCreatedCount { get; set; }
-	private ObservableCollection<PersonType> _personTypesCreated;
-	public ObservableCollection<PersonType> PersonTypesCreated
+	public Int64 PersonTypesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,PersonType> _personTypesCreated;
+	public RelatedList<ApplicationUser,PersonType> PersonTypesCreated
 	{
-		get => _personTypesCreated;
+		get
+		{
+			this._personTypesCreated = _personTypesCreated ?? new RelatedList<ApplicationUser,PersonType>(this, nameof(PersonTypesCreated));
+			return _personTypesCreated;
+		}
 		set
 		{
 			var oldValue = _personTypesCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
 			_personTypesCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("PersonTypesCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? PersonTypesCreatedCount { get; set; }
-	private ObservableCollection<PersonReport> _faultReportsCreated;
-	public ObservableCollection<PersonReport> FaultReportsCreated
+	public Int64 FaultReportsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,PersonReport> _faultReportsCreated;
+	public RelatedList<ApplicationUser,PersonReport> FaultReportsCreated
 	{
-		get => _faultReportsCreated;
+		get
+		{
+			this._faultReportsCreated = _faultReportsCreated ?? new RelatedList<ApplicationUser,PersonReport>(this, nameof(FaultReportsCreated));
+			return _faultReportsCreated;
+		}
 		set
 		{
 			var oldValue = _faultReportsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
 			_faultReportsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("FaultReportsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? FaultReportsCreatedCount { get; set; }
-	private ObservableCollection<Site> _sitesCreated;
-	public ObservableCollection<Site> SitesCreated
+	public Int64 SitesCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,Site> _sitesCreated;
+	public RelatedList<ApplicationUser,Site> SitesCreated
 	{
-		get => _sitesCreated;
+		get
+		{
+			this._sitesCreated = _sitesCreated ?? new RelatedList<ApplicationUser,Site>(this, nameof(SitesCreated));
+			return _sitesCreated;
+		}
 		set
 		{
 			var oldValue = _sitesCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
 			_sitesCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("SitesCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? SitesCreatedCount { get; set; }
-	private ObservableCollection<SiteInspection> _siteInspectionsCreated;
-	public ObservableCollection<SiteInspection> SiteInspectionsCreated
+	public Int64 SiteInspectionsCreatedCount { get; set; }
+	private RelatedList<ApplicationUser,SiteInspection> _siteInspectionsCreated;
+	public RelatedList<ApplicationUser,SiteInspection> SiteInspectionsCreated
 	{
-		get => _siteInspectionsCreated;
+		get
+		{
+			this._siteInspectionsCreated = _siteInspectionsCreated ?? new RelatedList<ApplicationUser,SiteInspection>(this, nameof(SiteInspectionsCreated));
+			return _siteInspectionsCreated;
+		}
 		set
 		{
 			var oldValue = _siteInspectionsCreated;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
 			_siteInspectionsCreated = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("SiteInspectionsCreated", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
 		}
 	}
 
 	
-	public long? SiteInspectionsCreatedCount { get; set; }
-	private ObservableCollection<UserSite> _sites;
-	public ObservableCollection<UserSite> Sites
+	public Int64 SitesCount { get; set; }
+	private RelatedList<ApplicationUser,UserSite> _sites;
+	public RelatedList<ApplicationUser,UserSite> Sites
 	{
-		get => _sites;
+		get
+		{
+			this._sites = _sites ?? new RelatedList<ApplicationUser,UserSite>(this, nameof(Sites));
+			return _sites;
+		}
 		set
 		{
 			var oldValue = _sites;
+			this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
 			_sites = value;
-			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>("Sites", this, oldValue, value));
+			this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
 		}
 	}
 
-	
-	public long? SitesCount { get; set; }
 	
 	public override EntityValidationResult ValidateEntity() {
 		var entity = this;

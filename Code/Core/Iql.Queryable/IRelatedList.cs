@@ -7,11 +7,12 @@ namespace Iql.Queryable
 {
     public interface IRelatedList : IList
     {
+        string Property { get; }
         IEnumerable<IRelatedListChange> GetChanges();
         void AddChange(IRelatedListChange change);
         void RemoveChange(IRelatedListChange change);
-        IEventEmitterBase Changed { get; }
-        IEventEmitterBase Changing { get; }
+        IEventSubscriber<IRelatedListChangedEvent> Changed { get; }
+        IEventSubscriber<IRelatedListChangedEvent> Changing { get; }
         object Owner { get; }
         void AssignRelationship(object item);
         void RemoveRelationship(object item);

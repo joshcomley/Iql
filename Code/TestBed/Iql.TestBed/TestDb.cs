@@ -198,7 +198,6 @@ namespace Iql.TestBed
             reportType2.Name = "Report type 2";
             var paulina1 = new ReportCategory();
             paulina1.Name = "Some category";
-            paulina1.ReportTypes = paulina1.ReportTypes ?? new ObservableCollection<ReportType>();
             paulina1.ReportTypes.Add(reportType1);
             paulina1.ReportTypes.Add(reportType2);
             db.ReportCategories.Add(paulina1);
@@ -215,7 +214,6 @@ namespace Iql.TestBed
         {
             var db = new AppDbContext();
             var person = new Person();
-            person.Types = person.Types ?? new ObservableCollection<PersonTypeMap>();
             person.Types.Add(new PersonTypeMap());
             person.Loading = new PersonLoading();
             db.People.Add(person);
@@ -232,7 +230,6 @@ namespace Iql.TestBed
             marta.TypeId = 1;
             marta.Title = "Marta 1";
             marta.Description = "Test";
-            marta.Types = marta.Types ?? new ObservableCollection<PersonTypeMap>();
             var personTypeMap = new PersonTypeMap
             {
                 TypeId = polish.Id,
@@ -243,7 +240,6 @@ namespace Iql.TestBed
             marta2.TypeId = 1;
             marta2.Title = "Marta 2";
             marta2.Description = "Test";
-            marta2.Types = marta2.Types ?? new ObservableCollection<PersonTypeMap>();
             var personTypeMap2 = new PersonTypeMap
             {
                 TypeId = polish.Id,
