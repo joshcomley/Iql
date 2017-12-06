@@ -60,6 +60,9 @@ namespace Iql.Queryable.Data.Tracking
 
     public interface ITrackingSet
     {
+        void Watch(object entity);
+        void Unwatch(object entity);
+        void SilentlyChangeEntity(object entity, Action action);
         EntityState GetEntityState(object entity);
         void EnsureIntegrity();
         IEnumerable<object> TrackedEntites();

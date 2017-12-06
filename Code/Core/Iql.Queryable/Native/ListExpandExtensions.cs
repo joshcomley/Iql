@@ -90,6 +90,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                             Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(targetType, sourceType), new object[]
                             {
                                 targetEntity,
+                                targetProperty,
                                 null
 #if TypeScript
                                 ,

@@ -737,6 +737,7 @@ namespace Iql.Tests.Tests
                 Id = 42,
                 SiteInspectionId = siteInspection1.Id
             };
+
             Db.RiskAssessments.Add(riskAssessment);
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
             Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);

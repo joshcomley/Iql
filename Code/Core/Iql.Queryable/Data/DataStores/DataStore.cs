@@ -28,20 +28,14 @@ namespace Iql.Queryable.Data.DataStores
         {
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, operation.EntityType);
-            //var relationshipManager = new RelationshipManager(DataContext);
-            //foreach (var entity in flattened)
-            //{
-            //    if (!GetTracking().IsTracked(entity.Entity, entity.EntityType))
-            //    {
-            //        relationshipManager.TrackRelationships(entity.Entity, entity.EntityType);
-            //    }
-            //}
+            var nonTracked = new List<FlattenedEntity>();
             AddEntityResult<TEntity> result = null;
             foreach (var entity in flattened)
             {
                 var alreadyTracked = DataContext.DataStore.GetTracking().IsTracked(entity.Entity, entity.EntityType);
                 if (!alreadyTracked)
                 {
+                    nonTracked.Add(entity);
                     var trackingSetCollection = GetTracking();
                     trackingSetCollection.Track(entity.Entity, entity.EntityType);
                     var isRootEntity = entity.Entity == operation.Entity;
@@ -66,6 +60,20 @@ namespace Iql.Queryable.Data.DataStores
                     }
                 }
             }
+            //foreach (var entity in nonTracked)
+            //{
+            //    Tracking.TrackingSet(entity.EntityType)
+            //        .Unwatch(entity.Entity);
+            //}
+            foreach (var entity in nonTracked)
+            {
+                RelationshipManagerBase.TrackRelationships(entity.Entity, entity.EntityType, DataContext);
+            }
+            //foreach (var entity in nonTracked)
+            //{
+            //    Tracking.TrackingSet(entity.EntityType)
+            //        .Watch(entity.Entity);
+            //}
             return result;
         }
 
@@ -85,7 +93,7 @@ namespace Iql.Queryable.Data.DataStores
             DeleteEntityOperation<TEntity> operation)
             where TEntity : class
         {
-//            new RelationshipManager(DataContext).DeleteRelationships(operation.Entity, operation.EntityType);
+            //            new RelationshipManager(DataContext).DeleteRelationships(operation.Entity, operation.EntityType);
             var result = new DeleteEntityResult<TEntity>(true, operation);
             Queue.Add(
                 new QueuedDeleteEntityOperation<TEntity>(

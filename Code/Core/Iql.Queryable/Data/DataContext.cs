@@ -141,13 +141,18 @@ namespace Iql.Queryable.Data
         public async Task<T> RefreshEntity<T>(T entity)
             where T : class
         {
-            if (this.IsEntityNew(entity, typeof(T)))
+            var entityType = typeof(T);
+            if (entityType == typeof(object))
+            {
+                entityType = entity.GetType();
+            }
+            if (this.IsEntityNew(entity, entityType))
             {
                 return null;
             }
             var identityWhereOperation =
                 this.ResolveWithKeyOperationFromEntity(entity);
-            var queryable = AsDbSetByType(typeof(T));
+            var queryable = AsDbSetByType(entityType);
             //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
             //if (refreshConfiguration != null)
             //{

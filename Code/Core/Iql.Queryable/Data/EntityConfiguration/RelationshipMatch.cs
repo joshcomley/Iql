@@ -12,8 +12,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             Relationship = relationship;
             ThisIsTarget = thisIsTarget;
-            ThisEnd = thisIsTarget ? relationship.Source : relationship.Target;
-            OtherEnd = thisIsTarget ? relationship.Target : relationship.Source;
+            ThisEnd = thisIsTarget ? relationship.Target : relationship.Source;
+            OtherEnd = thisIsTarget ? relationship.Source : relationship.Target;
         }
     }
 }
