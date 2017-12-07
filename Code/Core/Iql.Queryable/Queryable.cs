@@ -25,6 +25,7 @@ namespace Iql.Queryable
         public List<IQueryOperation> Operations { get; }
 
         public abstract void AddEntity(object entity);
+        public abstract void DeleteEntity(object entity);
         public abstract Task<object> WithKey(object key);
 
         public TQueryable Reverse()

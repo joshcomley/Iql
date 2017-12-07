@@ -82,6 +82,25 @@ namespace Iql.Queryable.Data.Tracking
 
         public void Merge(List<T> data)
         {
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(T), 
+                data.ToArray());
+            foreach (var entity in flattened)
+            {
+                if (entity.EntityType == typeof(T))
+                {
+                    MergeEntity((T) entity.Entity);
+                    var index = data.IndexOf((T) entity.Entity);
+                    if (index != -1)
+                    {
+                        data[index] = FindTrackedEntity(data[index]).Entity;
+                    }
+                }
+                else
+                {
+                    TrackingSetCollection.TrackingSet(entity.EntityType)
+                        .MergeEntity(entity.Entity);
+                }
+            }
             for (var i = 0; i < data.Count; i++)
             {
                 var element = data[i];
@@ -97,6 +116,19 @@ namespace Iql.Queryable.Data.Tracking
         public void MergeEntity(T element)
         {
             TrackInternal(element, true);
+            //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(element, typeof(T));
+            //foreach (var entity in flattened)
+            //{
+            //    if (entity.EntityType == typeof(T))
+            //    {
+            //        TrackInternal((T)entity.Entity, true);
+            //    }
+            //    else
+            //    {
+            //        TrackingSetCollection.TrackingSet(entity.EntityType)
+            //            .MergeEntity(entity.Entity);
+            //    }
+            //}
         }
 
         public void Track(T entity)
@@ -327,7 +359,7 @@ namespace Iql.Queryable.Data.Tracking
                     var property = EntityConfiguration.FindProperty(pc.PropertyName);
                     var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
                     entityState.SetPropertyState(pc.PropertyName, oldValue, pc.NewValue);
-                    if (property.Kind == PropertyKind.RelationshipKey &&
+                    if ((property.Kind == PropertyKind.RelationshipKey || property.Kind == PropertyKind.Relationship) &&
                         property.Relationship.Relationship.Type == RelationshipType.OneToOne &&
                         !Equals(pc.OldValue, pc.NewValue))
                     {
@@ -1192,7 +1224,7 @@ namespace Iql.Queryable.Data.Tracking
 
         void ITrackingSet.SilentlyChangeEntity(object entity, Action action)
         {
-            SilentlyChangeEntity((T) entity, action);
+            SilentlyChangeEntity((T)entity, action);
         }
 
         void ITrackingSet.Watch(object entity)

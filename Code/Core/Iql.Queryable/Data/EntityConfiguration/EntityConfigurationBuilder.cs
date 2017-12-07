@@ -45,6 +45,16 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return _entities[type];
         }
 
+        public List<FlattenedEntity> FlattenObjectGraphs(Type entityType, params object[] entities)
+        {
+            var flattened = new List<FlattenedEntity>();
+            foreach (var entity in entities)
+            {
+                flattened.AddRange(FlattenObjectGraph(entity, entityType));
+            }
+            return flattened.Distinct().ToList();
+        }
+
         /// <summary>
         /// Flattens an object graph, producing a list of distinctive entities contained within
         /// </summary>

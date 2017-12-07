@@ -225,6 +225,11 @@ namespace Iql.Queryable.Data.DataStores
             {
                 trackingSet.Merge(response.Data);
             }
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), response.Data.ToArray());
+            foreach (var entity in flattened)
+            {
+                await RelationshipManagerBase.TrackAndRefreshRelationships(entity.Entity, entity.EntityType, DataContext);
+            }
             return result;
         }
 
@@ -343,7 +348,7 @@ namespace Iql.Queryable.Data.DataStores
                             localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
                         }
                     }
-                    await DataContext.RefreshEntity(localEntity);
+                    await DataContext.RefreshEntity(localEntity, typeof(TEntity));
                     GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity));
                     break;
                 case OperationType.Update:
@@ -361,7 +366,7 @@ namespace Iql.Queryable.Data.DataStores
                         result = await PerformUpdate(updateEntityOperation);
                         var operationEntity = updateEntityOperation.Operation
                             .Entity;
-                        await DataContext.RefreshEntity(operationEntity);
+                        await DataContext.RefreshEntity(operationEntity, typeof(TEntity));
                         GetTracking().GetSet<TEntity>().Track(operationEntity);
                     }
                     break;

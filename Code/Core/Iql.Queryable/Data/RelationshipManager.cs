@@ -38,7 +38,16 @@ namespace Iql.Queryable.Data
         /// <typeparam name="TTarget"></typeparam>
         public void ProcessOneToOneReferenceChange(TTarget entity)
         {
-
+            var referenceValue = entity.GetPropertyValue(
+                Relationship.Target.Property.PropertyName);
+            foreach (var constraint in Relationship.Constraints)
+            {
+                entity.SetPropertyValue(constraint.TargetKeyProperty.PropertyName,
+                    referenceValue.GetPropertyValue(constraint.SourceKeyProperty.PropertyName));
+            }
+            referenceValue.SetPropertyValue(
+                Relationship.Source.Property.PropertyName,
+                entity);
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace Iql.Queryable.Data
         /// Customer.Orders.Remove([order])
         /// </summary>
         /// <typeparam name="TTarget"></typeparam>
-        public void ProcessOneToManyCollectionRemove(TSource entity, TTarget toRemove, CompositeKey toRemoveKey)
+        public void ProcessOneToManyCollectionRemove(TTarget entity, TSource toRemove, CompositeKey toRemoveKey)
         {
 
         }
@@ -95,7 +104,7 @@ namespace Iql.Queryable.Data
         /// Customer.Orders.Add([order])
         /// </summary>
         /// <typeparam name="TTarget"></typeparam>
-        public void ProcessOneToManyCollectionAdd(TSource entity, TTarget toAdd, CompositeKey toAddKey)
+        public void ProcessOneToManyCollectionAdd(TTarget entity, TSource toAdd, CompositeKey toAddKey)
         {
 
         }
@@ -125,12 +134,12 @@ namespace Iql.Queryable.Data
         //}
         void IRelationshipManager.ProcessOneToManyCollectionAdd(object entity, object toAdd, CompositeKey toAddKey)
         {
-            ProcessOneToManyCollectionAdd((TSource) entity, (TTarget) toAdd, toAddKey);
+            ProcessOneToManyCollectionAdd((TTarget) entity, (TSource) toAdd, toAddKey);
         }
 
         void IRelationshipManager.ProcessOneToManyCollectionRemove(object entity, object toRemove, CompositeKey toRemoveKey)
         {
-            ProcessOneToManyCollectionRemove((TSource) entity, (TTarget) toRemove, toRemoveKey);
+            ProcessOneToManyCollectionRemove((TTarget) entity, (TSource) toRemove, toRemoveKey);
         }
 
         void IRelationshipManager.ProcessOneToManyKeyChange(object entity)

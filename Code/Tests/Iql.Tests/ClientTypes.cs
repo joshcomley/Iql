@@ -1,6 +1,6 @@
 namespace Iql.Tests
 {
-    class ClientTypes
+    public class ClientTypes
     {
         public ClientType ClientType1 { get; }
         public ClientType ClientType2 { get; }

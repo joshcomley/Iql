@@ -26,7 +26,17 @@ namespace Iql.Queryable.Data
         bool IsIdMatch(object left, object right, Type type);
         bool EntityPropertiesMatch(object entity, CompositeKey key);
         bool EntityHasKey(object left, Type type, CompositeKey key);
-        Task<T> RefreshEntity<T>(T entity)
+        void DeleteEntity(object entity
+#if TypeScript
+            , Type entityType
+#endif
+        );
+        void AddEntity(object entity
+#if TypeScript
+            , Type entityType
+#endif
+        );
+        Task<T> RefreshEntity<T>(T entity, Type entityType)
             where T : class
             ;
 

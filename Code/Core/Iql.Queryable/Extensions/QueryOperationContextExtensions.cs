@@ -21,9 +21,16 @@ namespace Iql.Queryable.Extensions
         }
 
         public static WithKeyOperation ResolveWithKeyOperationFromEntity<TEntity>(this IDataContext dataContext,
-            TEntity entity) where TEntity : class
+            TEntity entity
+#if TypeScript
+            , Type entityType
+#endif
+            ) where TEntity : class
         {
-            var configuration = dataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity));
+#if !TypeScript
+            var entityType = entity.GetType();
+#endif
+            var configuration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             var keyDefinition = configuration.Key;
             var compositeKey = new CompositeKey();
             compositeKey.Keys

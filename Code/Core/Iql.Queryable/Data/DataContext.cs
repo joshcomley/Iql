@@ -138,10 +138,33 @@ namespace Iql.Queryable.Data
             return EntityConfigurationContext.GetEntityByType(type).EntityHasKey(left, key);
         }
 
-        public async Task<T> RefreshEntity<T>(T entity)
+        public void DeleteEntity(object entity
+#if TypeScript
+            Type entityType
+#endif
+        )
+        {
+#if !TypeScript
+            var entityType = entity.GetType();
+#endif
+            AsDbSetByType(entityType).DeleteEntity(entity);
+        }
+
+        public void AddEntity(object entity
+#if TypeScript
+            Type entityType
+#endif
+        )
+        {
+#if !TypeScript
+            var entityType = entity.GetType();
+#endif
+            AsDbSetByType(entityType).AddEntity(entity);
+        }
+        
+        public async Task<T> RefreshEntity<T>(T entity, Type entityType)
             where T : class
         {
-            var entityType = typeof(T);
             if (entityType == typeof(object))
             {
                 entityType = entity.GetType();
@@ -151,7 +174,11 @@ namespace Iql.Queryable.Data
                 return null;
             }
             var identityWhereOperation =
-                this.ResolveWithKeyOperationFromEntity(entity);
+                this.ResolveWithKeyOperationFromEntity(entity
+#if TypeScript
+                , entityType
+#endif
+                );
             var queryable = AsDbSetByType(entityType);
             //var refreshConfiguration = DataContext.GetConfiguration<EntityDefaultQueryConfiguration>();
             //if (refreshConfiguration != null)

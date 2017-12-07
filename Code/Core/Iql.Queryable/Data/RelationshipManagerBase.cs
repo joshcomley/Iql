@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
+using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Exceptions;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data
 {
@@ -23,13 +26,11 @@ namespace Iql.Queryable.Data
             return new RelationshipManager<TSource, TTarget>(relationship, dataContext);
         }
 
-        public static void TrackRelationships(object entity, Type entityType, IDataContext dataContext)
+        public static void DeleteRelationships(object entity, Type entityType, IDataContext dataContext)
         {
-            var tracking = dataContext.DataStore.GetTracking();
-            foreach (var relationship in dataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
+            foreach (var relationship in dataContext.EntityConfigurationContext.GetEntityByType(entityType)
+                .AllRelationships())
             {
-                var sourceTrackingSet = tracking.TrackingSet(relationship.Relationship.Source.Type);
-                var targetTrackingSet = tracking.TrackingSet(relationship.Relationship.Target.Type);
                 var relationshipManager = GetRelationshipManager(relationship.Relationship, dataContext);
                 switch (relationship.Relationship.Type)
                 {
@@ -40,7 +41,146 @@ namespace Iql.Queryable.Data
                         }
                         else
                         {
-                            
+
+                        }
+                        break;
+                    case RelationshipType.OneToOne:
+                        if (relationship.ThisIsTarget)
+                        {
+                            var referenceValue =
+                                entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName);
+                            if (referenceValue != null)
+                            {
+                                referenceValue.SetPropertyValue(
+                                    relationship.Relationship.Source.Property.PropertyName,
+                                    null);
+                            }
+                        }
+                        else
+                        {
+                            var referenceValue =
+                                entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                            if (referenceValue != null)
+                            {
+                                var constraints = relationship.Relationship.Target.Constraints();
+                                var isNullable = true;
+                                foreach (var constraint in constraints)
+                                {
+                                    var constraintProperty =
+                                        relationship.Relationship.Target.Configuration.FindProperty(constraint
+                                            .PropertyName);
+                                    if (!constraintProperty.Nullable)
+                                    {
+                                        isNullable = false;
+                                        break;
+                                    }
+                                }
+                                if (!isNullable)
+                                {
+                                    relationshipManager.TargetTrackingSet.SilentlyChangeEntity(entity, () =>
+                                    {
+                                        entity.SetPropertyValue(
+                                            relationship.Relationship.Source.Property.PropertyName,
+                                            null);
+                                    });
+                                    RemoveEntity(referenceValue, dataContext
+#if TypeScript
+                                        , relationship.Relationship.Source.Type
+#endif
+                                        );
+                                }
+                                else
+                                {
+                                    relationshipManager.TargetTrackingSet.SilentlyChangeEntity(entity, () =>
+                                    {
+                                        foreach (var constraint in constraints)
+                                        {
+                                            entity.SetPropertyValue(
+                                                constraint.PropertyName,
+                                                null);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        private static void RemoveEntity(object referenceValue, IDataContext dataContext
+#if TypeScript
+            , Type entityType
+#endif
+            )
+        {
+            dataContext.DeleteEntity(referenceValue
+#if TypeScript
+                                        , entityType
+#endif
+            );
+            // We don't want to actually perform this delete
+            // as we trust the backing data provider to correcly
+            // cascade the delete itself
+            dataContext.DataStore.Queue.RemoveAll(r =>
+                r.Type == QueuedOperationType.Delete &&
+                (r.Operation as IEntityCrudOperationBase).Entity == referenceValue);
+        }
+
+        public static void TrackRelationships(object entity, Type entityType, IDataContext dataContext)
+        {
+#pragma warning disable 4014
+            TrackRelationshipsInternal(entity, entityType, dataContext, false);
+#pragma warning restore 4014
+        }
+        public static async Task TrackAndRefreshRelationships(object entity, Type entityType, IDataContext dataContext)
+        {
+            await TrackRelationshipsInternal(entity, entityType, dataContext, true);
+        }
+        private static List<object> _refreshQueue = new List<object>();
+        private static async Task TrackRelationshipsInternal(object entity, Type entityType, IDataContext dataContext, bool allowRefresh)
+        {
+            foreach (var relationship in dataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
+            {
+                var relationshipManager = GetRelationshipManager(relationship.Relationship, dataContext);
+                switch (relationship.Relationship.Type)
+                {
+                    case RelationshipType.OneToMany:
+                        if (relationship.ThisIsTarget)
+                        {
+                            // e.g.
+                            // We are ClientType
+                            // With a list of Clients
+                            // And each client has a TypeId
+                            // 
+                            // Iterate through each entity in the clients list and
+                            // set the TypeId appropriately
+
+                            var relatedList = entity.GetPropertyValue(
+                                    relationship.Relationship.Target.Property.PropertyName)
+                                as IRelatedList;
+                            if (relatedList == null)
+                            {
+                                throw new RelatedListHasNoValueException();
+                            }
+                            foreach (var item in relatedList)
+                            {
+                                foreach (var constraint in relationship.Relationship.Constraints)
+                                {
+                                    item.SetPropertyValue(constraint.SourceKeyProperty.PropertyName,
+                                        entity.GetPropertyValue(constraint.TargetKeyProperty.PropertyName));
+                                }
+                                item.SetPropertyValue(relationship.Relationship.Source.Property.PropertyName,
+                                    entity);
+                            }
+                        }
+                        else
+                        {
+                            // e.g.
+                            // We are Client
+                            // With a Type and TypeId
+                            // Make sure we exist in the Type's list of Clients
+                            // And ensure the key and value match
                         }
                         break;
                     case RelationshipType.OneToOne:
@@ -57,7 +197,7 @@ namespace Iql.Queryable.Data
                             // make sure the key from the reference value matches the key
                             // from the reference key value
                             var keyIsSet = !keyValueInverse.HasDefaultValue();
-                            if (referenceValue != null && 
+                            if (referenceValue != null &&
                                 keyIsSet &&
                                 !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
                             {
@@ -67,12 +207,45 @@ namespace Iql.Queryable.Data
                             {
                                 relationshipManager.ProcessOneToOneKeyChange(entity);
                             }
+                            else if (referenceValue != null)
+                            {
+                                relationshipManager.ProcessOneToOneReferenceChange(entity);
+                            }
                         }
                         else
                         {
-                            var referenceValue =
-                                entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
-
+                            // Find all target relationships that have the same key value
+                            if (!dataContext.IsEntityNew(entity, relationship.Relationship.Target.Type))
+                            {
+                                var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
+                                var ourTarget =
+                                    entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                                foreach (var target in relationshipManager.TargetTrackingSet.TrackedEntites())
+                                {
+                                    if (dataContext.EntityPropertiesMatch(target, key))
+                                    {
+                                        if (ourTarget != null && ourTarget != target)
+                                        {
+                                            // We need to refresh this entity...
+                                            if (allowRefresh && !_refreshQueue.Contains(target))
+                                            {
+                                                _refreshQueue.Add(target);
+                                                await dataContext.RefreshEntity(target, relationship.Relationship.Target.Type);
+                                                _refreshQueue.Remove(target);
+                                                if (!dataContext.EntityPropertiesMatch(target, key))
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                        entity.SetPropertyValue(
+                                            relationship.Relationship.Source.Property.PropertyName,
+                                            target);
+                                        target.SetPropertyValue(relationship.Relationship.Target.Property.PropertyName,
+                                            entity);
+                                    }
+                                }
+                            }
                         }
                         break;
                 }

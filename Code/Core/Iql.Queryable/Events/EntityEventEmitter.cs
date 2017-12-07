@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql.Queryable.Events
 {
@@ -35,7 +36,8 @@ namespace Iql.Queryable.Events
 
         public void Emit(TEvent propertyChangeEvent)
         {
-            foreach (var subscription in Subscriptions.Keys)
+            var subscriptions = Subscriptions.Keys.ToList();
+            foreach (var subscription in subscriptions)
             {
                 Subscriptions[subscription](propertyChangeEvent);
             }
