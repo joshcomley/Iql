@@ -26,6 +26,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Clear();
             AppDbContext.InMemoryDb.SiteInspections.Clear();
             AppDbContext.InMemoryDb.RiskAssessments.Clear();
+            AppDbContext.InMemoryDb.RiskAssessmentSolutions.Clear();
             Db = new AppDbContext();
         }
 

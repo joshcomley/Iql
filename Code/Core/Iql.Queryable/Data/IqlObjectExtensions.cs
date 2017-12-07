@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
 {
@@ -20,6 +21,14 @@ namespace Iql.Queryable.Data
         public static void SetPropertyValue<T>(this T obj, string propertyName, object value)
         {
             obj.GetType().GetRuntimeProperty(propertyName).SetValue(obj, value);
+        }
+
+        public static void SetPropertyValues<T>(this T obj, CompositeKey compositeKey)
+        {
+            foreach (var key in compositeKey.Keys)
+            {
+                obj.GetType().GetRuntimeProperty(key.Name).SetValue(obj, key.Value);
+            }
         }
 
 #if !TypeScript

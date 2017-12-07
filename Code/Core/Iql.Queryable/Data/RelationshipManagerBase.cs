@@ -38,11 +38,32 @@ namespace Iql.Queryable.Data
                     case RelationshipType.OneToMany:
                         if (relationship.ThisIsTarget)
                         {
-
+                            // Not sure we have to do anything here
+                            //var referenceList =
+                            //    entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName)
+                            //    as IRelatedList;
                         }
                         else
                         {
-
+                            var referenceValue =
+                                entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                            if (referenceValue == null)
+                            {
+                                var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
+                                var trackedReferenceValue =
+                                    relationshipManager.TargetTrackingSet.FindEntityByKey(key);
+                                if (trackedReferenceValue != null)
+                                {
+                                    referenceValue = trackedReferenceValue.Entity;
+                                }
+                            }
+                            if (referenceValue != null)
+                            {
+                                var referenceList =
+                                    referenceValue.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName)
+                                        as IRelatedList;
+                                referenceList.Remove(entity);
+                            }
                         }
                         break;
                     case RelationshipType.OneToOne:
@@ -191,6 +212,26 @@ namespace Iql.Queryable.Data
                             // With a Type and TypeId
                             // Make sure we exist in the Type's list of Clients
                             // And ensure the key and value match
+                            var referenceValue =
+                                entity.GetPropertyValue(relationshipManager.Relationship.Source.Property.PropertyName);
+                            var keyValueInverse =
+                                relationship.ThisEnd.GetCompositeKey(entity, true);
+                            var keyIsSet = !keyValueInverse.HasDefaultValue();
+                            if (referenceValue != null &&
+                                keyIsSet &&
+                                !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
+                            {
+                                throw new InconsistentRelationshipAssignmentException();
+                            }
+                            if (referenceValue != null)
+                            {
+                                relationshipManager.ProcessOneToManyReferenceChange(entity);
+                            }
+                            else if (keyIsSet)
+                            {
+                                relationshipManager.ProcessOneToManyKeyChange(entity);
+                            }
+                            //var reference
                         }
                         break;
                     case RelationshipType.OneToOne:

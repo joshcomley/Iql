@@ -688,14 +688,34 @@ namespace Iql.Queryable.Data.Tracking
             return null;
         }
 
-        public virtual TrackedEntity<T> FindTrackedEntityByKey(CompositeKey key)
+        private T FindEntityByKeyInternal(CompositeKey key)
         {
             foreach (var entity in Set)
             {
                 if (DataContext.EntityHasKey(entity, typeof(T), key))
                 {
-                    return FindTrackedEntity(entity);
+                    return entity;
                 }
+            }
+            return null;
+        }
+
+        public virtual TrackedEntity<T> FindTrackedEntityByKey(CompositeKey key)
+        {
+            var entity = FindEntityByKeyInternal(key);
+            if (entity != null)
+            {
+                return FindTrackedEntity(entity);
+            }
+            return null;
+        }
+
+        public virtual TrackedEntity<T> FindEntityByKey(CompositeKey key)
+        {
+            var entity = FindEntityByKeyInternal(key);
+            if (entity != null)
+            {
+                return FindEntity(entity);
             }
             return null;
         }
@@ -912,14 +932,19 @@ namespace Iql.Queryable.Data.Tracking
             return FindTrackedEntity((T)entity);
         }
 
+        ITrackedEntity ITrackingSet.FindTrackedEntityByKey(CompositeKey key)
+        {
+            return FindTrackedEntityByKey(key);
+        }
+
         ITrackedEntity ITrackingSet.FindEntity(object entity)
         {
             return FindEntity((T)entity);
         }
 
-        ITrackedEntity ITrackingSet.FindTrackedEntityByKey(CompositeKey key)
+        ITrackedEntity ITrackingSet.FindEntityByKey(CompositeKey key)
         {
-            return FindTrackedEntityByKey(key);
+            return FindEntityByKey(key);
         }
 
         public List<UpdateEntityOperation<T>> GetChangesInternal(List<IQueuedOperation> queue, bool reset = false)

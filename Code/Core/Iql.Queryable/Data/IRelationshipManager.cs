@@ -1,10 +1,12 @@
-﻿using Iql.Queryable.Data.Tracking;
+﻿using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
 {
     public interface IRelationshipManager
     {
+        IRelationship Relationship { get; }
         ITrackingSet SourceTrackingSet { get; }
         ITrackingSet TargetTrackingSet { get; }
         void ProcessOneToManyCollectionAdd(object entity, object toAdd, CompositeKey toAddKey);

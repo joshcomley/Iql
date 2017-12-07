@@ -40,6 +40,10 @@ namespace Iql.Queryable.Data
         {
             var referenceValue = entity.GetPropertyValue(
                 Relationship.Target.Property.PropertyName);
+
+            EnsureTracked(entity, typeof(TTarget));
+            EnsureTracked(referenceValue, typeof(TSource));
+
             TargetTrackingSet.SilentlyChangeEntity(entity, () =>
             {
                 foreach (var constraint in Relationship.Constraints)
@@ -54,6 +58,21 @@ namespace Iql.Queryable.Data
                     Relationship.Source.Property.PropertyName,
                     entity);
             });
+        }
+
+        private void EnsureTracked(object entity, Type type)
+        {
+            if (entity == null)
+            {
+                return;
+            }
+            var tracking = DataContext.DataStore.GetTracking();
+            if (!tracking.IsTracked(entity, type))
+            {
+                var isTracked = tracking.IsTracked(entity, type);
+                tracking.TrackingSet(type)
+                    .Track(entity);
+            }
         }
 
         /// <summary>
@@ -85,7 +104,12 @@ namespace Iql.Queryable.Data
         /// <typeparam name="TTarget"></typeparam>
         public void ProcessOneToManyReferenceChange(TSource entity)
         {
-
+            var referenceValue = entity.GetPropertyValue(Relationship.Source.Property.PropertyName);
+            EnsureTracked(entity, typeof(TSource));
+            EnsureTracked(referenceValue, typeof(TTarget));
+            var key = Relationship.Target.GetCompositeKey(referenceValue, true);
+            entity.SetPropertyValues(key);
+            ProcessOneToManyKeyChange(entity);
         }
 
         /// <summary>
@@ -96,6 +120,7 @@ namespace Iql.Queryable.Data
         public void ProcessOneToManyKeyChange(TSource entity)
         {
             var trackedEntity = SourceTrackingSet.FindEntity(entity);
+            EnsureTracked(entity, typeof(TSource));
             if (trackedEntity != null)
             {
                 foreach (var relationship in trackedEntity.TrackedRelationships)
@@ -109,9 +134,19 @@ namespace Iql.Queryable.Data
                 }
             }
             var compositeKey = Relationship.Source.GetCompositeKey(entity, true);
-            var newOwner = TargetTrackingSet.FindTrackedEntityByKey(
-                compositeKey);
-            if (newOwner != null)
+            ITrackedEntity newOwner;
+            if (compositeKey.HasDefaultValue())
+            {
+                var referenceValue = entity.GetPropertyValue(Relationship.Source.Property.PropertyName);
+                newOwner = TargetTrackingSet.FindTrackedEntity(
+                    referenceValue);
+            }
+            else
+            {
+                newOwner = TargetTrackingSet.FindTrackedEntityByKey(
+                    compositeKey);
+            }
+            if (newOwner != null && trackedEntity != null)
             {
                 var newList = newOwner.Entity.GetPropertyValue(Relationship.Target.Property.PropertyName)
                     as IRelatedList;
@@ -137,7 +172,17 @@ namespace Iql.Queryable.Data
         /// <typeparam name="TTarget"></typeparam>
         public void ProcessOneToManyCollectionAdd(TTarget entity, TSource toAdd, CompositeKey toAddKey)
         {
-
+            EnsureTracked(entity, typeof(TTarget));
+            EnsureTracked(toAdd, typeof(TSource));
+            var key = Relationship.Target.GetCompositeKey(entity, true);
+            toAdd.SetPropertyValue(Relationship.Source.Property.PropertyName, entity);
+            toAdd.SetPropertyValues(key);
+            ProcessOneToManyKeyChange(toAdd);
+            //var list = entity.GetPropertyValue(Relationship.Source.Property.PropertyName) as IRelatedList;
+            //if (!list.Contains(toAdd))
+            //{
+            //    list.Add(toAdd);
+            //}
         }
 
         //public static void PersistRelationship(IRelationshipDetail relationshipSide, IRelationshipDetail otherSide, object entity, object relatedEntity)
@@ -165,37 +210,37 @@ namespace Iql.Queryable.Data
         //}
         void IRelationshipManager.ProcessOneToManyCollectionAdd(object entity, object toAdd, CompositeKey toAddKey)
         {
-            ProcessOneToManyCollectionAdd((TTarget) entity, (TSource) toAdd, toAddKey);
+            ProcessOneToManyCollectionAdd((TTarget)entity, (TSource)toAdd, toAddKey);
         }
 
         void IRelationshipManager.ProcessOneToManyCollectionRemove(object entity, object toRemove, CompositeKey toRemoveKey)
         {
-            ProcessOneToManyCollectionRemove((TTarget) entity, (TSource) toRemove, toRemoveKey);
+            ProcessOneToManyCollectionRemove((TTarget)entity, (TSource)toRemove, toRemoveKey);
         }
 
         void IRelationshipManager.ProcessOneToManyKeyChange(object entity)
         {
-            ProcessOneToManyKeyChange((TSource) entity);
+            ProcessOneToManyKeyChange((TSource)entity);
         }
 
         void IRelationshipManager.ProcessOneToManyReferenceChange(object entity)
         {
-            ProcessOneToManyReferenceChange((TSource) entity);
+            ProcessOneToManyReferenceChange((TSource)entity);
         }
 
         void IRelationshipManager.ProcessOneToOneInverseReferenceChange(object entity)
         {
-            ProcessOneToOneInverseReferenceChange((TSource) entity);
+            ProcessOneToOneInverseReferenceChange((TSource)entity);
         }
 
         void IRelationshipManager.ProcessOneToOneKeyChange(object entity)
         {
-            ProcessOneToOneKeyChange((TTarget) entity);
+            ProcessOneToOneKeyChange((TTarget)entity);
         }
 
         void IRelationshipManager.ProcessOneToOneReferenceChange(object entity)
         {
-            ProcessOneToOneReferenceChange((TTarget) entity);
+            ProcessOneToOneReferenceChange((TTarget)entity);
         }
     }
 }

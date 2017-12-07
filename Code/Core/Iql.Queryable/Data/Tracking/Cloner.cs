@@ -82,7 +82,7 @@ namespace Iql.Queryable.Data.Tracking
                                     IList newValue;
                                     if (value is IRelatedList)
                                     {
-                                        newValue = Activator.CreateInstance(value.GetType(), new object[] { value.GetPropertyValue(nameof(IRelatedList.Owner)), property.Name, null }) as IList;
+                                        newValue = Activator.CreateInstance(value.GetType(), new object[] { clone, property.Name, null }) as IList;
                                     }
                                     else
                                     {
