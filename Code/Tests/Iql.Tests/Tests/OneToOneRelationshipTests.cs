@@ -52,6 +52,8 @@ namespace Iql.Tests.Tests
             await Db.SaveChanges();
             Assert.IsNull(riskAssessment1.SiteInspection);
             Assert.IsNull(riskAssessment2.SiteInspection);
+            var changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
 
             // Externally modify the database
             var dbRiskAssessment = AppDbContext.InMemoryDb.RiskAssessments.Single(r => r.SiteInspectionId == 62);
@@ -68,7 +70,12 @@ namespace Iql.Tests.Tests
                     Id = 62
                 });
 
+            changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
             var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).WithKey(62);
+            changes = Db.DataStore.GetChanges().ToList();
+            Assert.AreEqual(0, changes.Count);
+            Assert.AreEqual(0, Db.DataStore.Queue.Count);
             Assert.AreEqual(siteInspection.RiskAssessment.Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspectionId, siteInspection.Id);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspection, siteInspection);

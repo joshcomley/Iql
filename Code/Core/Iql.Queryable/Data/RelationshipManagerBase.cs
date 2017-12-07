@@ -51,9 +51,12 @@ namespace Iql.Queryable.Data
                                 entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName);
                             if (referenceValue != null)
                             {
-                                referenceValue.SetPropertyValue(
-                                    relationship.Relationship.Source.Property.PropertyName,
-                                    null);
+                                relationshipManager.SourceTrackingSet.SilentlyChangeEntity(referenceValue, () =>
+                                {
+                                    referenceValue.SetPropertyValue(
+                                        relationship.Relationship.Source.Property.PropertyName,
+                                        null);
+                                });
                             }
                         }
                         else
@@ -165,13 +168,16 @@ namespace Iql.Queryable.Data
                             }
                             foreach (var item in relatedList)
                             {
-                                foreach (var constraint in relationship.Relationship.Constraints)
+                                relationshipManager.SourceTrackingSet.SilentlyChangeEntity(item, () =>
                                 {
-                                    item.SetPropertyValue(constraint.SourceKeyProperty.PropertyName,
-                                        entity.GetPropertyValue(constraint.TargetKeyProperty.PropertyName));
-                                }
-                                item.SetPropertyValue(relationship.Relationship.Source.Property.PropertyName,
-                                    entity);
+                                    foreach (var constraint in relationship.Relationship.Constraints)
+                                    {
+                                        item.SetPropertyValue(constraint.SourceKeyProperty.PropertyName,
+                                            entity.GetPropertyValue(constraint.TargetKeyProperty.PropertyName));
+                                    }
+                                    item.SetPropertyValue(relationship.Relationship.Source.Property.PropertyName,
+                                        entity);
+                                });
                             }
                         }
                         else
@@ -238,11 +244,17 @@ namespace Iql.Queryable.Data
                                                 }
                                             }
                                         }
-                                        entity.SetPropertyValue(
-                                            relationship.Relationship.Source.Property.PropertyName,
-                                            target);
-                                        target.SetPropertyValue(relationship.Relationship.Target.Property.PropertyName,
-                                            entity);
+                                        relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
+                                        {
+                                            entity.SetPropertyValue(
+                                                relationship.Relationship.Source.Property.PropertyName,
+                                                target);
+                                        });
+                                        relationshipManager.TargetTrackingSet.SilentlyChangeEntity(target, () =>
+                                        {
+                                            target.SetPropertyValue(relationship.Relationship.Target.Property.PropertyName,
+                                                entity);
+                                        });
                                     }
                                 }
                             }

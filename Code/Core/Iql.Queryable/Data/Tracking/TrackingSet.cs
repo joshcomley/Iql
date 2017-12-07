@@ -82,14 +82,14 @@ namespace Iql.Queryable.Data.Tracking
 
         public void Merge(List<T> data)
         {
-            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(T), 
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(T),
                 data.ToArray());
             foreach (var entity in flattened)
             {
                 if (entity.EntityType == typeof(T))
                 {
-                    MergeEntity((T) entity.Entity);
-                    var index = data.IndexOf((T) entity.Entity);
+                    MergeEntity((T)entity.Entity);
+                    var index = data.IndexOf((T)entity.Entity);
                     if (index != -1)
                     {
                         data[index] = FindTrackedEntity(data[index]).Entity;
@@ -203,7 +203,10 @@ namespace Iql.Queryable.Data.Tracking
             {
                 if (existingEntity.Entity != entity)
                 {
-                    ObjectMerger.Merge(DataContext, TrackingSetCollection, entity, typeof(T));
+                    SilentlyChangeEntity(entity, () =>
+                    {
+                        ObjectMerger.Merge(DataContext, TrackingSetCollection, entity, typeof(T));
+                    });
                 }
                 _trackedEntityClones[existingEntity.Entity] = clone;
             }
@@ -358,71 +361,78 @@ namespace Iql.Queryable.Data.Tracking
                     var oldState = entityState.GetPropertyState(pc.PropertyName);
                     var property = EntityConfiguration.FindProperty(pc.PropertyName);
                     var oldValue = oldState == null ? pc.OldValue : oldState.OldValue;
-                    entityState.SetPropertyState(pc.PropertyName, oldValue, pc.NewValue);
-                    if ((property.Kind == PropertyKind.RelationshipKey || property.Kind == PropertyKind.Relationship) &&
-                        property.Relationship.Relationship.Type == RelationshipType.OneToOne &&
-                        !Equals(pc.OldValue, pc.NewValue))
+                    if (_silentEntities.Contains(entity))
                     {
-                        var isRemove = Equals(pc.NewValue, null);
-                        var relationshipManager =
-                            RelationshipManagerBase.GetRelationshipManager(property.Relationship.Relationship, DataContext);
-                        switch (property.Relationship.Relationship.Type)
+                        entityState.SetPropertyState(pc.PropertyName, pc.NewValue, pc.NewValue);
+                    }
+                    else
+                    {
+                        entityState.SetPropertyState(pc.PropertyName, oldValue, pc.NewValue);
+                        if ((property.Kind == PropertyKind.RelationshipKey || property.Kind == PropertyKind.Relationship) &&
+                            property.Relationship.Relationship.Type == RelationshipType.OneToOne &&
+                            !Equals(pc.OldValue, pc.NewValue))
                         {
-                            case RelationshipType.OneToOne:
-                                if (property.Relationship.ThisIsTarget)
-                                {
-                                    switch (property.Kind)
+                            var isRemove = Equals(pc.NewValue, null);
+                            var relationshipManager =
+                                RelationshipManagerBase.GetRelationshipManager(property.Relationship.Relationship, DataContext);
+                            switch (property.Relationship.Relationship.Type)
+                            {
+                                case RelationshipType.OneToOne:
+                                    if (property.Relationship.ThisIsTarget)
                                     {
-                                        case PropertyKind.RelationshipKey:
-                                            relationshipManager.ProcessOneToOneKeyChange(entity);
-                                            break;
-                                        case PropertyKind.Relationship:
-                                            relationshipManager.ProcessOneToOneReferenceChange(entity);
-                                            break;
+                                        switch (property.Kind)
+                                        {
+                                            case PropertyKind.RelationshipKey:
+                                                relationshipManager.ProcessOneToOneKeyChange(entity);
+                                                break;
+                                            case PropertyKind.Relationship:
+                                                relationshipManager.ProcessOneToOneReferenceChange(entity);
+                                                break;
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    switch (property.Kind)
+                                    else
                                     {
-                                        case PropertyKind.RelationshipKey:
-                                            throw new Exception(
-                                                "Relationship key on target of one-to-one relationship shouldn't exist.");
-                                            break;
-                                        case PropertyKind.Relationship:
-                                            relationshipManager.ProcessOneToOneInverseReferenceChange(entity);
-                                            break;
+                                        switch (property.Kind)
+                                        {
+                                            case PropertyKind.RelationshipKey:
+                                                throw new Exception(
+                                                    "Relationship key on target of one-to-one relationship shouldn't exist.");
+                                                break;
+                                            case PropertyKind.Relationship:
+                                                relationshipManager.ProcessOneToOneInverseReferenceChange(entity);
+                                                break;
+                                        }
                                     }
-                                }
-                                break;
-                            case RelationshipType.OneToMany:
-                                if (property.Relationship.ThisEnd.IsCollection)
-                                {
-                                    // We have reassigned a whole new collection;
-                                    // unsubscribe from the pervious collection and 
-                                    // subscribe to the new one
-                                    var oldList = pc.OldValue as IRelatedList;
-                                    if (_collectionChangeSubscriptions.ContainsKey(oldList))
+                                    break;
+                                case RelationshipType.OneToMany:
+                                    if (property.Relationship.ThisEnd.IsCollection)
                                     {
-                                        oldList.Changed.Unsubscribe(_collectionChangeSubscriptions[oldList]);
-                                        _collectionChangeSubscriptions.Remove(oldList);
+                                        // We have reassigned a whole new collection;
+                                        // unsubscribe from the pervious collection and 
+                                        // subscribe to the new one
+                                        var oldList = pc.OldValue as IRelatedList;
+                                        if (_collectionChangeSubscriptions.ContainsKey(oldList))
+                                        {
+                                            oldList.Changed.Unsubscribe(_collectionChangeSubscriptions[oldList]);
+                                            _collectionChangeSubscriptions.Remove(oldList);
+                                        }
+                                        var newList = pc.NewValue as IRelatedList;
+                                        _collectionChangeSubscriptions.Add(newList, newList.Changed.Subscribe(RelatedListChanged));
                                     }
-                                    var newList = pc.NewValue as IRelatedList;
-                                    _collectionChangeSubscriptions.Add(newList, newList.Changed.Subscribe(RelatedListChanged));
-                                }
-                                else
-                                {
-                                    switch (property.Kind)
+                                    else
                                     {
-                                        case PropertyKind.RelationshipKey:
-                                            relationshipManager.ProcessOneToManyKeyChange(entity);
-                                            break;
-                                        case PropertyKind.Relationship:
-                                            relationshipManager.ProcessOneToManyReferenceChange(entity);
-                                            break;
+                                        switch (property.Kind)
+                                        {
+                                            case PropertyKind.RelationshipKey:
+                                                relationshipManager.ProcessOneToManyKeyChange(entity);
+                                                break;
+                                            case PropertyKind.Relationship:
+                                                relationshipManager.ProcessOneToManyReferenceChange(entity);
+                                                break;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                            }
                         }
                     }
                 });
@@ -1215,11 +1225,28 @@ namespace Iql.Queryable.Data.Tracking
             return true;
         }
 
+        private List<T> _silentEntities = new List<T>();
         public void SilentlyChangeEntity(T entity, Action action)
         {
-            Unwatch(entity);
-            action();
-            Watch(entity);
+            // Instead of unwatching, we can check if an entity is being
+            // silently changed, in which case we reset the property state
+            // for any updates
+            if (_silentEntities.Contains(entity))
+            {
+                action();
+            }
+            else
+            {
+                _silentEntities.Add(entity);
+                action();
+                _silentEntities.Remove(entity);
+            }
+            //Unwatch(entity);
+            //foreach (var property in EntityConfiguration.Properties)
+            //{
+            //    var entityState = GetEntityState(entity);
+            //}
+            //Watch(entity);
         }
 
         void ITrackingSet.SilentlyChangeEntity(object entity, Action action)

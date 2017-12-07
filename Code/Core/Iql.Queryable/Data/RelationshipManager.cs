@@ -40,14 +40,20 @@ namespace Iql.Queryable.Data
         {
             var referenceValue = entity.GetPropertyValue(
                 Relationship.Target.Property.PropertyName);
-            foreach (var constraint in Relationship.Constraints)
+            TargetTrackingSet.SilentlyChangeEntity(entity, () =>
             {
-                entity.SetPropertyValue(constraint.TargetKeyProperty.PropertyName,
-                    referenceValue.GetPropertyValue(constraint.SourceKeyProperty.PropertyName));
-            }
-            referenceValue.SetPropertyValue(
-                Relationship.Source.Property.PropertyName,
-                entity);
+                foreach (var constraint in Relationship.Constraints)
+                {
+                    entity.SetPropertyValue(constraint.TargetKeyProperty.PropertyName,
+                        referenceValue.GetPropertyValue(constraint.SourceKeyProperty.PropertyName));
+                }
+            });
+            SourceTrackingSet.SilentlyChangeEntity(referenceValue, () =>
+            {
+                referenceValue.SetPropertyValue(
+                    Relationship.Source.Property.PropertyName,
+                    entity);
+            });
         }
 
         /// <summary>
