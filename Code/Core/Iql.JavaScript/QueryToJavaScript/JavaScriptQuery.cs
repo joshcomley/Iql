@@ -113,7 +113,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             {
                 if (configuration.Type.Name == name)
                 {
-                    var cloneSet = sourceSet.CloneAs(Context, configuration.Type);
+                    var cloneSet = sourceSet.CloneAs(Context, configuration.Type, RelationshipCloneMode.Full);
                     return cloneSet;
                 }
             }

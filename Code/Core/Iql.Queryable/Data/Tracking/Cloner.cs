@@ -9,31 +9,49 @@ using Iql.Queryable.Data.Tracking.Cloning;
 
 namespace Iql.Queryable.Data.Tracking
 {
+    public enum RelationshipCloneMode
+    {
+        DoNotClone,
+        KeysOnly,
+        Full
+    }
     public static class Cloner
     {
-        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, bool cloneRelationships = true)
+        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships)
             where T : class
         {
             return (T)obj.Clone(dataContext, entityType, cloneRelationships);
         }
 
-        public static object Clone(this object obj, IDataContext dataContext, Type entityType, bool cloneRelationships = true)
+        public static object Clone(this object obj, IDataContext dataContext, Type entityType,
+            RelationshipCloneMode cloneRelationships)
+        {
+            return obj.CloneInternal(dataContext, entityType, cloneRelationships, new Dictionary<object, object>());
+        }
+
+        private static object CloneInternal(this object obj, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> clonedObjects)
         {
             if (obj == null)
             {
                 return null;
             }
+            if (clonedObjects.ContainsKey(obj))
+            {
+                return clonedObjects[obj];
+            }
             if (obj.IsArray())
             {
                 var collection = Activator.CreateInstance(obj.GetType()) as IList;
+                clonedObjects.Add(obj, collection);
                 var oldCollection = obj as IEnumerable;
                 foreach (var item in oldCollection)
                 {
-                    collection.Add(item.Clone(dataContext, entityType));
+                    collection.Add(item.CloneInternal(dataContext, entityType, cloneRelationships, clonedObjects));
                 }
                 return collection;
             }
             var clone = Activator.CreateInstance(entityType);
+            clonedObjects.Add(obj, clone);
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var property in entityConfiguration.Properties)
             {
@@ -45,7 +63,7 @@ namespace Iql.Queryable.Data.Tracking
                         clone.SetPropertyValue(property.Name, obj.GetPropertyValue(property.Name));
                         break;
                     case PropertyKind.Relationship:
-                        if (cloneRelationships)
+                        if (cloneRelationships != RelationshipCloneMode.DoNotClone)
                         {
                             var value = obj.GetPropertyValue(property.Name);
                             if (value != null)
@@ -54,7 +72,9 @@ namespace Iql.Queryable.Data.Tracking
                                 {
                                     clone.SetPropertyValue(
                                         property.Name,
-                                        CloneKeysOnly(dataContext, property, value)
+                                        cloneRelationships == RelationshipCloneMode.KeysOnly
+                                        ? CloneKeysOnly(dataContext, property, value)
+                                        : value.CloneInternal(dataContext, property.Type, cloneRelationships, clonedObjects)
                                     );
                                 }
                                 else

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
@@ -166,7 +167,8 @@ namespace Iql.Queryable.Data
                             {
                                 throw new RelatedListHasNoValueException();
                             }
-                            foreach (var item in relatedList)
+                            var items = relatedList.Cast<object>().ToArray();
+                            foreach (var item in items)
                             {
                                 relationshipManager.SourceTrackingSet.SilentlyChangeEntity(item, () =>
                                 {

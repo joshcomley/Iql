@@ -160,7 +160,7 @@ namespace Iql.Queryable.Data.Tracking
             return trackedEntity != null && trackedEntity.Entity == entity;
         }
 
-        public void Track(object entity, Type entityType)
+        public void TrackGraph(object entity, Type entityType)
         {
             var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
             foreach (var obj in flattenObjectGraph)
@@ -168,6 +168,12 @@ namespace Iql.Queryable.Data.Tracking
                 var set = TrackingSet(obj.EntityType);
                 set.Track(obj.Entity);
             }
+        }
+
+        public void TrackEntity(object entity, Type entityType)
+        {
+            var set = TrackingSet(entityType);
+            set.Track(entity);
         }
 
         public void Merge(object entity, Type entityType)

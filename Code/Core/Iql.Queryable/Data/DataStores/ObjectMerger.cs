@@ -37,7 +37,7 @@ namespace Iql.Queryable.Data.DataStores
             {
                 return;
             }
-            trackingSetCollection.TrackingSet(entityType).SilentlyChangeEntity(trackedEntity, () =>
+            trackingSetCollection.TrackingSet(entityType).ChangeEntity(trackedEntity, () =>
             {
                 var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(trackedEntity.GetType());
                 // Keep track of properties already merged because first we will merge the relationships
@@ -137,7 +137,7 @@ namespace Iql.Queryable.Data.DataStores
                                         if (existingItem != null)
                                         {
                                             // Although we have this entity already, ensure the entity is definitely tracked
-                                            trackingSetCollection.Track(existingItem, targetRelationship.Type);
+                                            trackingSetCollection.TrackEntity(existingItem, targetRelationship.Type);
                                         }
                                         else
                                         {
@@ -151,7 +151,7 @@ namespace Iql.Queryable.Data.DataStores
                             else
                             {
                                 // Although we have this entity already, ensure the entity is definitely tracked
-                                trackingSetCollection.Track(trackedRelationshipValue, targetRelationship.Type);
+                                trackingSetCollection.TrackEntity(trackedRelationshipValue, targetRelationship.Type);
                                 MergeWithExistingTrackedEntity(alreadyMerged, dataContext, trackingSetCollection, targetRelationship.Type, newRelationshipValue, trackedRelationshipValue);
                             }
                         }
@@ -166,7 +166,7 @@ namespace Iql.Queryable.Data.DataStores
                     }
                     MergeSimpleProperty(trackedEntity, newEntity, property.Name, entityType, dataContext);
                 }
-            });
+            }, ChangeEntityMode.Normal);
         }
 
         private static object MergeWithExistingTrackedEntity(
@@ -189,13 +189,13 @@ namespace Iql.Queryable.Data.DataStores
                 MergeInternal(alreadyMerged, dataContext, trackingSetCollection, newEntity, entityType);
                 return trackedEntity;
             }
-            trackingSetCollection.Track(newEntity, entityType);
+            trackingSetCollection.TrackEntity(newEntity, entityType);
             return newEntity;
         }
 
         private static void MergeSimpleProperty(object localEntity, object remoteEntity, string propertyName, Type entityType, IDataContext dataContext)
         {
-            dataContext.DataStore.GetTracking().TrackingSet(entityType).SilentlyChangeEntity(localEntity, () =>
+            dataContext.DataStore.GetTracking().TrackingSet(entityType).ChangeEntity(localEntity, () =>
             {
                 var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType).FindProperty(propertyName);
                 var localValue = localEntity.GetPropertyValue(propertyName);
@@ -230,7 +230,7 @@ namespace Iql.Queryable.Data.DataStores
                         localCollection.Add(value);
                     }
                 }
-            });
+            }, ChangeEntityMode.Silent);
         }
     }
 }

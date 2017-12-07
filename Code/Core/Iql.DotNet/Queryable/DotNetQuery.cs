@@ -33,8 +33,8 @@ namespace Iql.DotNet.Queryable
         {
             var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByType(type);
-            //var cloneSet = sourceSet.CloneAs(DataContext, type);
-            return sourceSet;
+            var cloneSet = sourceSet.CloneAs(DataContext, type, RelationshipCloneMode.DoNotClone);
+            return cloneSet;
         }
 
         public override List<T> ToList()
@@ -44,7 +44,8 @@ namespace Iql.DotNet.Queryable
             {
                 list = (IEnumerable<T>) action(list);
             }
-            return new DbList<T>(list.ToList());
+            var clone = list.ToList().CloneAs<IEnumerable<T>>(DataContext, typeof(T), RelationshipCloneMode.Full);
+            return new DbList<T>(clone);
         }
     }
 }

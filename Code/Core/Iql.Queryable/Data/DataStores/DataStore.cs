@@ -37,7 +37,7 @@ namespace Iql.Queryable.Data.DataStores
                 {
                     nonTracked.Add(entity);
                     var trackingSetCollection = GetTracking();
-                    trackingSetCollection.Track(entity.Entity, entity.EntityType);
+                    trackingSetCollection.TrackGraph(entity.Entity, entity.EntityType);
                     var isRootEntity = entity.Entity == operation.Entity;
                     var entityOperation =
                         isRootEntity
@@ -221,14 +221,23 @@ namespace Iql.Queryable.Data.DataStores
                 }
                 response.Data.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
             }
+            // Flatten before we merge because the merge will update the result data set with
+            // tracked data
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), response.Data.ToArray());
             if (response.Data.SourceQueryable.TrackEntities)
             {
-                trackingSet.Merge(response.Data);
+                foreach (var entity in flattened)
+                {
+                    GetTracking().TrackingSet(entity.EntityType).MergeEntity(entity.Entity);
+                }
             }
-            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), response.Data.ToArray());
             foreach (var entity in flattened)
             {
                 await RelationshipManagerBase.TrackAndRefreshRelationships(entity.Entity, entity.EntityType, DataContext);
+            }
+            for (var i = 0; i < response.Data.Count; i++)
+            {
+                response.Data[i] = trackingSet.FindTrackedEntity(response.Data[i]).Entity;
             }
             return result;
         }
@@ -443,7 +452,7 @@ namespace Iql.Queryable.Data.DataStores
                     var trackedEntity = tracking.FindEntity(entity.Entity);
                     if (trackedEntity == null)
                     {
-                        tracking.Track(entity.Entity, entityType);
+                        tracking.TrackGraph(entity.Entity, entityType);
                     }
                 }
             }

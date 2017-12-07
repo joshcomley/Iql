@@ -58,11 +58,18 @@ namespace Iql.Queryable.Data.Tracking
         List<ITrackedRelationship> TrackedRelationships { get; }
     }
 
+    public enum ChangeEntityMode
+    {
+        Normal,
+        Silent,
+        NoNullChecks
+    }
     public interface ITrackingSet
     {
         void Watch(object entity);
         void Unwatch(object entity);
         void SilentlyChangeEntity(object entity, Action action);
+        void ChangeEntity(object entity, Action action, ChangeEntityMode silently);
         EntityState GetEntityState(object entity);
         void EnsureIntegrity();
         IEnumerable<object> TrackedEntites();
@@ -74,6 +81,7 @@ namespace Iql.Queryable.Data.Tracking
         void Reset();
         object FindClone(object entity);
         ITrackedEntity FindTrackedEntity(object entity);
+        ITrackedEntity FindEntity(object entity);
         ITrackedEntity FindTrackedEntityByKey(CompositeKey key);
         IEnumerable<ITrackedRelationship> FindRelationships(object entity, CompositeKey key);
     }

@@ -83,18 +83,43 @@ namespace Iql.Queryable.Data
         /// Order.Customer = [new]
         /// </summary>
         /// <typeparam name="TTarget"></typeparam>
-        public void ProcessOneToManyReferenceChange(TTarget entity)
+        public void ProcessOneToManyReferenceChange(TSource entity)
         {
 
         }
 
         /// <summary>
-        /// Order.CustomerId = [new]
+        /// [this]Order.CustomerId = [new]
+        /// [new]Customer.Orders.Add([this])
         /// </summary>
         /// <typeparam name="TTarget"></typeparam>
-        public void ProcessOneToManyKeyChange(TTarget entity)
+        public void ProcessOneToManyKeyChange(TSource entity)
         {
-
+            var trackedEntity = SourceTrackingSet.FindEntity(entity);
+            if (trackedEntity != null)
+            {
+                foreach (var relationship in trackedEntity.TrackedRelationships)
+                {
+                    if (relationship.Relationship == Relationship)
+                    {
+                        var list = relationship.Owner.GetPropertyValue(Relationship.Target.Property.PropertyName)
+                            as IRelatedList;
+                        list.Remove(trackedEntity.Entity);
+                    }
+                }
+            }
+            var compositeKey = Relationship.Source.GetCompositeKey(entity, true);
+            var newOwner = TargetTrackingSet.FindTrackedEntityByKey(
+                compositeKey);
+            if (newOwner != null)
+            {
+                var newList = newOwner.Entity.GetPropertyValue(Relationship.Target.Property.PropertyName)
+                    as IRelatedList;
+                if (!newList.Contains(trackedEntity.Entity))
+                {
+                    newList.Add(trackedEntity.Entity);
+                }
+            }
         }
 
         /// <summary>
@@ -150,12 +175,12 @@ namespace Iql.Queryable.Data
 
         void IRelationshipManager.ProcessOneToManyKeyChange(object entity)
         {
-            ProcessOneToManyKeyChange((TTarget) entity);
+            ProcessOneToManyKeyChange((TSource) entity);
         }
 
         void IRelationshipManager.ProcessOneToManyReferenceChange(object entity)
         {
-            ProcessOneToManyReferenceChange((TTarget) entity);
+            ProcessOneToManyReferenceChange((TSource) entity);
         }
 
         void IRelationshipManager.ProcessOneToOneInverseReferenceChange(object entity)
