@@ -40,7 +40,40 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task OneToOneShouldPersistRelationshipDeletionsWhenTracked()
+        public async Task DeletingSourceOfOneToOneShouldPersistRelationshipDeletionsWhenTracked()
+        {
+            AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 62 });
+            AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 63 });
+            AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 3, SiteInspectionId = 62 });
+            AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
+            var siteInspections = await Db.SiteInspections.Expand(s => s.RiskAssessment).ToList();
+            Db.DeleteEntity(siteInspections[0].RiskAssessment);
+            Assert.IsNull(siteInspections[0].RiskAssessment);
+            Assert.IsNotNull(siteInspections[1].RiskAssessment);
+        }
+
+        [TestMethod]
+        public async Task DeletingTargetOfOneToOneShouldPersistRelationshipDeletionsWhenTracked()
+        {
+            AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 62 });
+            AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 63 });
+            AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 3, SiteInspectionId = 62 });
+            AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
+            AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 26, RiskAssessmentId = 3 });
+            AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 27, RiskAssessmentId = 4 });
+            var siteInspections = await Db.SiteInspections.ExpandSingle(s => s.RiskAssessment, q => q.Expand(r => r.RiskAssessmentSolution)).ToList();
+            var riskAssessment = siteInspections[0].RiskAssessment;
+            var tracking = Db.DataStore.GetTracking();
+            Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
+            var solution = riskAssessment.RiskAssessmentSolution;
+            Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
+            Db.DeleteEntity(siteInspections[0]);
+            Assert.IsFalse(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
+            Assert.IsFalse(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
+        }
+
+        [TestMethod]
+        public async Task OneToOneShouldPersistRelationshipChangesWhenTracked()
         {
             var riskAssessment1 = new RiskAssessment();
             var riskAssessment2 = new RiskAssessment();

@@ -75,6 +75,7 @@ namespace Iql.Queryable.Data.Tracking
         IEnumerable<object> TrackedEntites();
         Type EntityType { get; }
         void Track(object entity);
+        void Untrack(object entity);
         void Merge(IList data);
         void MergeEntity(object entity);
         List<IUpdateEntityOperation> GetChangesInternal(List<IQueuedOperation> queue, bool reset = false);

@@ -99,6 +99,7 @@ namespace Iql.Queryable.Data.DataStores
                 new QueuedDeleteEntityOperation<TEntity>(
                     operation,
                     result));
+            Tracking.TrackingSet(typeof(TEntity)).Untrack(operation.Entity);
             return result;
         }
 

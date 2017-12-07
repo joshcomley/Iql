@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -169,6 +170,12 @@ namespace Iql.Queryable
 
         public Type ItemType { get; }
 
+        public abstract Task<DbList<T>> ToList();
+
+        async Task<IList> IQueryableBase.ToList()
+        {
+            return await ToList();
+        }
         public abstract TQueryable New();
         public bool HasDefaults { get; set; }
 

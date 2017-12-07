@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -290,7 +291,7 @@ namespace Iql.Queryable
             return ResolveLastOrDefault(result);
         }
 
-        public async Task<DbList<T>> ToList()
+        public override async Task<DbList<T>> ToList()
         {
             var result = await ToListWithResponse();
             return result?.Data;
@@ -303,6 +304,10 @@ namespace Iql.Queryable
 
         public AddEntityResult<T> Add(T entity)
         {
+            if (DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
+            {
+                return null;
+            }
             return DataContext.DataStore.Add(
                 new AddEntityOperation<T>(entity, DataContext));
         }
@@ -315,6 +320,10 @@ namespace Iql.Queryable
 
         public DeleteEntityResult<T> Delete(T entity)
         {
+            if (!DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
+            {
+                return null;
+            }
             RelationshipManagerBase.DeleteRelationships(entity, typeof(T), DataContext);
             //var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
             //foreach (var configuration in DataContext.EntityConfigurationContext.AllConfigurations())

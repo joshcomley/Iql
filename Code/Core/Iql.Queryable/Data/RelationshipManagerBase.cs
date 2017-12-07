@@ -81,7 +81,7 @@ namespace Iql.Queryable.Data
                                 }
                                 if (!isNullable)
                                 {
-                                    relationshipManager.TargetTrackingSet.SilentlyChangeEntity(entity, () =>
+                                    relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
                                     {
                                         entity.SetPropertyValue(
                                             relationship.Relationship.Source.Property.PropertyName,
@@ -92,6 +92,8 @@ namespace Iql.Queryable.Data
                                         , relationship.Relationship.Source.Type
 #endif
                                         );
+                                    dataContext.RemoveEntity(referenceValue);
+                                    //relationshipManager.TargetTrackingSet.Untrack(referenceValue);
                                 }
                                 else
                                 {

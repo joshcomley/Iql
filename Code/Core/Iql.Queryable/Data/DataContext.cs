@@ -150,6 +150,23 @@ namespace Iql.Queryable.Data
             AsDbSetByType(entityType).DeleteEntity(entity);
         }
 
+        public void RemoveEntity(object entity
+#if TypeScript
+            Type entityType
+#endif
+        )
+        {
+#if !TypeScript
+            var entityType = entity.GetType();
+#endif
+            DeleteEntity(entity
+#if TypeScript
+                , entityType
+#endif
+                );
+            DataStore.RemoveQueuedOperationsForEntity(entity, QueuedOperationType.Delete);
+        }
+
         public void AddEntity(object entity
 #if TypeScript
             Type entityType

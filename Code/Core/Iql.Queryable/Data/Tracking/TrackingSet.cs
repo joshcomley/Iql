@@ -54,6 +54,11 @@ namespace Iql.Queryable.Data.Tracking
             Track((T)entity);
         }
 
+        void ITrackingSet.Untrack(object entity)
+        {
+            Untrack((T)entity);
+        }
+
         void ITrackingSet.Merge(IList data)
         {
             Merge((List<T>)data);

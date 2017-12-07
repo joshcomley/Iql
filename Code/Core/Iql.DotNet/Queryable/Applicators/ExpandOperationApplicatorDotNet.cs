@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.JavaScript.QueryToJavaScript;
+using Iql.Queryable;
+using Iql.Queryable.Data;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
 
@@ -19,10 +22,13 @@ namespace Iql.DotNet.Queryable.Applicators
         {
             var expand = context.Operation;
             var dotNetQueryResult = context.Data;
-            return ApplyExpand(typedList, expand, dotNetQueryResult);
+            return ApplyExpand(context.DataContext, typedList, expand, dotNetQueryResult);
         }
 
-        internal static IEnumerable<TEntity> ApplyExpand<TEntity>(IEnumerable<TEntity> typedList, IExpandOperation expand,
+        internal static IEnumerable<TEntity> ApplyExpand<TEntity>(
+            IDataContext dataContext,
+            IEnumerable<TEntity> typedList, 
+            IExpandOperation expand,
             IDotNetQueryResult dotNetQueryResult)
         {
             for (var j = 0; j < expand.ExpandDetails.Count; j++)
@@ -36,7 +42,14 @@ namespace Iql.DotNet.Queryable.Applicators
                 var constraint = detail.Relationship.Constraints.First();
                 var thisConstraint = detail.IsTarget ? constraint.TargetKeyProperty : constraint.SourceKeyProperty;
                 var otherConstraint = detail.IsTarget ? constraint.SourceKeyProperty : constraint.TargetKeyProperty;
-                var targetList = dotNetQueryResult.DataSetByType(targetType);
+                //var targetData = dotNetQueryResult.DataSetByType(targetType);
+                var targetExpression = expand.GetExpression() as IExpandQueryExpression;
+                var targetQueryable = targetExpression.GetQueryable();
+                var target = targetQueryable(dataContext.AsDbSetByType(targetType));
+                var targetQuery = target.ToQueryWithAdapterBase(new DotNetQueryableAdapter(), dataContext);
+                //var targetQueryable = expand.ApplyQuery()
+                var targetData = targetQuery.ToList();
+                var targetList = targetData;
                 var sourceList = (IList) typedList;
                 if (detail.IsTarget)
                 {
@@ -48,7 +61,7 @@ namespace Iql.DotNet.Queryable.Applicators
                 {
                     case RelationshipType.OneToOne:
                         typedList.ExpandOneToOne(
-                            dotNetQueryResult.DataSetByType(targetType),
+                            targetList,
                             thisEnd.Property.PropertyName,
                             otherEnd.Property.PropertyName,
                             thisConstraint.PropertyName,
@@ -68,7 +81,7 @@ namespace Iql.DotNet.Queryable.Applicators
                         typedList.ExpandManyToMany(
                             sourceType,
                             targetType,
-                            dotNetQueryResult.DataSetByType(targetType),
+                            targetList,
                             dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
                             detail.IsTarget
                                 ? manyToMany.PivotTargetKeyProperty.PropertyName

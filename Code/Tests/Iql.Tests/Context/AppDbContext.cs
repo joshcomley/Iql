@@ -12,7 +12,7 @@ using Iql.Queryable.Data.DataStores.InMemory;
 
 namespace Iql.Tests.Context
 {
-    public class AppDbContext : ISiteDataContextBase
+    public class AppDbContext : TunnelDataContextBase
     {
         static AppDbContext()
         {
@@ -42,6 +42,7 @@ namespace Iql.Tests.Context
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteInspections);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessments);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentSolutions);
             var defaultQueries = new EntityDefaultQueryConfiguration();
             defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
             RegisterConfiguration(defaultQueries);

@@ -31,6 +31,11 @@ namespace Iql.Queryable.Data
             , Type entityType
 #endif
         );
+        void RemoveEntity(object entity
+#if TypeScript
+            , Type entityType
+#endif
+        );
         void AddEntity(object entity
 #if TypeScript
             , Type entityType
