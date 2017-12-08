@@ -469,15 +469,15 @@ namespace Iql.Tests.Tests
             await Db.SaveChanges();
             Assert.AreEqual(clientType1Clients, clientType1.Clients);
             var clientType1NewClient = new Client();
+            clientType1NewClient.Name = "abc";
             Assert.AreEqual(0, Db.DataStore.Queue.Count);
             Assert.AreEqual(1, clientType1.Clients.Count);
 
             void AssertCheck()
             {
-                Assert.AreEqual(1, clientType1.Clients.GetChanges().Count);
+                Assert.AreEqual(2, clientType1.Clients.Count);
                 Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
                 Assert.AreEqual(clientType1, clientType1NewClient.Type);
-                Assert.AreEqual(2, clientType1.Clients.Count);
                 Assert.AreEqual(1, Db.DataStore.Queue.Count);
                 var addOperation = Db.DataStore.Queue[0] as QueuedAddEntityOperation<Client>;
                 Assert.IsNotNull(addOperation);
@@ -494,7 +494,6 @@ namespace Iql.Tests.Tests
             // in the queue
             clientType1.Clients.RemoveRelationship(clientType1NewClient);
             Assert.AreEqual(1, clientType1.Clients.Count);
-            Assert.AreEqual(0, clientType1.Clients.GetChanges().Count);
             Assert.AreEqual(0, Db.DataStore.Queue.Count);
         }
 

@@ -221,7 +221,12 @@ namespace Iql.Queryable.Data
                                 keyIsSet &&
                                 !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
                             {
-                                throw new InconsistentRelationshipAssignmentException();
+                                // We only end up here if the data has come from a database,
+                                // a new key has been provided for a relationship and the old
+                                // expand is still in place and was not refreshed with the latest
+                                // entity refresh
+                                relationshipManager.ProcessOneToManyKeyChange(entity);
+                                //throw new InconsistentRelationshipAssignmentException();
                             }
                             if (referenceValue != null)
                             {

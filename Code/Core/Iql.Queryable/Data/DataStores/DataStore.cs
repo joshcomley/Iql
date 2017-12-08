@@ -229,11 +229,26 @@ namespace Iql.Queryable.Data.DataStores
             {
                 foreach (var entity in flattened)
                 {
-                    GetTracking().TrackingSet(entity.EntityType).MergeEntity(entity.Entity);
+                    var entityTrackingSet = GetTracking().TrackingSet(entity.EntityType);
+                    var mergedEntity = entityTrackingSet.MergeEntity(entity.Entity);
+                    if (mergedEntity != entity.Entity)
+                    {
+                        if (entity.EntityType == typeof(TEntity))
+                        {
+                            var index = response.Data.IndexOf((TEntity)entity.Entity);
+                            if (index != -1)
+                            {
+                                response.Data[index] = (TEntity)mergedEntity;
+                            }
+                        }
+                        var flattenedIndex = flattened.IndexOf(entity);
+                        flattened[flattenedIndex].Entity = mergedEntity;
+                    }
                 }
             }
             foreach (var entity in flattened)
             {
+                //var trackedEntity = GetTracking().TrackingSet(entity.EntityType).FindTrackedEntity(entity)
                 await RelationshipManagerBase.TrackAndRefreshRelationships(entity.Entity, entity.EntityType, DataContext);
             }
             for (var i = 0; i < response.Data.Count; i++)

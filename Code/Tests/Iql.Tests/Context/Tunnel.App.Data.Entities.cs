@@ -4063,6 +4063,10 @@ public class ClientType : ClientTypeBase, IEntity {
 		set
 		{
 			var oldValue = _clients;
+		    if (value.Owner != this)
+		    {
+		        throw new Exception("Bad owner");
+		    }
 			this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
 			_clients = value;
 			this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));

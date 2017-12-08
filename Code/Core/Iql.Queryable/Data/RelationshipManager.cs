@@ -155,6 +155,11 @@ namespace Iql.Queryable.Data
                     newList.Add(trackedEntity.Entity);
                 }
             }
+            if (trackedEntity != null)
+            {
+                trackedEntity.Entity.SetPropertyValue(Relationship.Source.Property.PropertyName,
+                    newOwner?.Entity);
+            }
         }
 
         /// <summary>

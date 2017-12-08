@@ -49,9 +49,9 @@ namespace Iql.Queryable.Data.Tracking
 
         public Type EntityType => typeof(T);
 
-        void ITrackingSet.Track(object entity)
+        object ITrackingSet.Track(object entity)
         {
-            Track((T)entity);
+            return Track((T)entity);
         }
 
         void ITrackingSet.Untrack(object entity)
@@ -64,9 +64,9 @@ namespace Iql.Queryable.Data.Tracking
             Merge((List<T>)data);
         }
 
-        void ITrackingSet.MergeEntity(object entity)
+        object ITrackingSet.MergeEntity(object entity)
         {
-            MergeEntity((T)entity);
+            return MergeEntity((T)entity);
         }
         private readonly Dictionary<T, T> _trackedEntityClones = new Dictionary<T, T>();
 
@@ -108,9 +108,9 @@ namespace Iql.Queryable.Data.Tracking
             }
         }
 
-        public void MergeEntity(T element)
+        public T MergeEntity(T element)
         {
-            TrackInternal(element, true);
+            return TrackInternal(element, true);
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(element, typeof(T));
             //foreach (var entity in flattened)
             //{
@@ -126,9 +126,9 @@ namespace Iql.Queryable.Data.Tracking
             //}
         }
 
-        public void Track(T entity)
+        public T Track(T entity)
         {
-            TrackInternal(entity, false);
+            return TrackInternal(entity, false);
         }
 
         private Dictionary<IRelatedList, int> _collectionChangeSubscriptions =
@@ -137,7 +137,7 @@ namespace Iql.Queryable.Data.Tracking
             new Dictionary<T, int>();
         private Dictionary<T, int> _propertyChangedSubscriptions =
             new Dictionary<T, int>();
-        private void TrackInternal(T entity, bool allowMerge)
+        private T TrackInternal(T entity, bool allowMerge)
         {
             var existingEntity = FindTrackedEntity(entity);
             var found = existingEntity != null;
@@ -161,7 +161,7 @@ namespace Iql.Queryable.Data.Tracking
             }
             if (!allowMerge && found)
             {
-                return;
+                return existingEntity.Entity;
             }
             if (existingEntity == null)
             {
@@ -197,18 +197,17 @@ namespace Iql.Queryable.Data.Tracking
                 //                }
                 Clone.Add(clone);
                 _trackedEntityClones.Add(entity, clone);
+                return entity;
             }
-            else
+
+            if (existingEntity.Entity != entity)
             {
-                if (existingEntity.Entity != entity)
-                {
-                    ObjectMerger.Merge(DataContext, TrackingSetCollection, entity, typeof(T));
-                    //SilentlyChangeEntity(existingEntity.Entity, () =>
-                    //{
-                    //});
-                }
-                _trackedEntityClones[existingEntity.Entity] = clone;
+                ObjectMerger.Merge(DataContext, TrackingSetCollection, entity, typeof(T));
+                //SilentlyChangeEntity(existingEntity.Entity, () =>
+                //{
+                //});
             }
+            _trackedEntityClones[existingEntity.Entity] = clone;
             //var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             //var relationships = entityConfiguration.Relationships;
             //foreach (var relationship in relationships)
@@ -239,6 +238,7 @@ namespace Iql.Queryable.Data.Tracking
             //            clone.GetPropertyValue(end.Property.PropertyName));
             //    }
             //}
+            return existingEntity.Entity;
         }
 
         internal void Unwatch(T entity)
