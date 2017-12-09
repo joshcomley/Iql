@@ -9,8 +9,7 @@ namespace Iql.Queryable.Data.DataStores
 {
     public interface IDataStore
     {
-        List<IQueuedOperation> Queue { get; set; }
-
+        IEnumerable<IQueuedOperation> GetQueue();
         void RemoveQueuedOperationsForEntity(
             object changeItem,
             QueuedOperationType queuedOperationType);

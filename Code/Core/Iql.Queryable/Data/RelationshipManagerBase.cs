@@ -149,9 +149,9 @@ namespace Iql.Queryable.Data
             // We don't want to actually perform this delete
             // as we trust the backing data provider to correcly
             // cascade the delete itself
-            dataContext.DataStore.Queue.RemoveAll(r =>
-                r.Type == QueuedOperationType.Delete &&
-                (r.Operation as IEntityCrudOperationBase).Entity == referenceValue);
+            //dataContext.DataStore.GetQueue().RemoveAll(r =>
+            //    r.Type == QueuedOperationType.Delete &&
+            //    (r.Operation as IEntityCrudOperationBase).Entity == referenceValue);
         }
 
         public static void TrackRelationships(object entity, Type entityType, IDataContext dataContext)

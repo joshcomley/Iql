@@ -112,9 +112,9 @@ namespace Iql.Tests.Tests
         {
             Assert.AreEqual(0, AppDbContext.InMemoryDb.ClientTypes.Count);
             Db.ClientTypes.Add(new ClientType() { Id = 1 });
-            Assert.AreEqual(1, Db.DataStore.Queue.Count);
+            Assert.AreEqual(1, Db.DataStore.GetQueue().Count());
             await Db.SaveChanges();
-            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
             Assert.AreEqual(1, AppDbContext.InMemoryDb.ClientTypes.Count);
         }
 
@@ -409,7 +409,7 @@ namespace Iql.Tests.Tests
             var clientTypes = AddClientTypes();
             var clientType1 = clientTypes.ClientType1;
             var clientType1Client = clientType1.Clients[0];
-            var operations = Db.DataStore.Queue.ToList();
+            var operations = Db.DataStore.GetQueue().ToList();
             ExpectException<NullNotAllowedException>(() =>
             {
                 clientType1.Clients.RemoveRelationship(clientType1Client);
@@ -470,7 +470,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(clientType1Clients, clientType1.Clients);
             var clientType1NewClient = new Client();
             clientType1NewClient.Name = "abc";
-            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
             Assert.AreEqual(1, clientType1.Clients.Count);
 
             void AssertCheck()
@@ -478,8 +478,8 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(2, clientType1.Clients.Count);
                 Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
                 Assert.AreEqual(clientType1, clientType1NewClient.Type);
-                Assert.AreEqual(1, Db.DataStore.Queue.Count);
-                var addOperation = Db.DataStore.Queue[0] as QueuedAddEntityOperation<Client>;
+                Assert.AreEqual(1, Db.DataStore.GetQueue().Count());
+                var addOperation = Db.DataStore.GetQueue().First() as QueuedAddEntityOperation<Client>;
                 Assert.IsNotNull(addOperation);
                 Assert.AreEqual(clientType1NewClient, addOperation.Operation.Entity);
             }
@@ -494,7 +494,7 @@ namespace Iql.Tests.Tests
             // in the queue
             clientType1.Clients.RemoveRelationship(clientType1NewClient);
             Assert.AreEqual(1, clientType1.Clients.Count);
-            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
         }
 
         [TestMethod]
@@ -612,8 +612,8 @@ namespace Iql.Tests.Tests
             var clientToDelete = clients.ClientType1.Clients[0];
             Db.Clients.Delete(clientToDelete);
             Assert.AreEqual(0, clients.ClientType1.Clients.Count);
-            Assert.AreEqual(1, Db.DataStore.Queue.Count);
-            var deleteOperation = Db.DataStore.Queue[0] as QueuedDeleteEntityOperation<Client>;
+            Assert.AreEqual(1, Db.DataStore.GetQueue().Count());
+            var deleteOperation = Db.DataStore.GetQueue().First() as QueuedDeleteEntityOperation<Client>;
             Assert.IsNotNull(deleteOperation);
             Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
 
@@ -629,14 +629,14 @@ namespace Iql.Tests.Tests
             await Db.SaveChanges();
             var clientToDelete = clients.ClientType1.Clients[0];
             Db.Clients.Delete(clientToDelete);
-            var deleteOperation = Db.DataStore.Queue[0] as QueuedDeleteEntityOperation<Client>;
+            var deleteOperation = Db.DataStore.GetQueue().First() as QueuedDeleteEntityOperation<Client>;
             Assert.IsNotNull(deleteOperation);
             Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
 
             // Reinstate the deleted entity
             clients.ClientType2.Clients.AssignRelationship(deleteOperation.Operation.Entity);
 
-            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
         }
 
         [TestMethod]

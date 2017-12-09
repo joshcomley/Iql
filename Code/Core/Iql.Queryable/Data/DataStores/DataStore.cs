@@ -21,7 +21,13 @@ namespace Iql.Queryable.Data.DataStores
         public TrackingSetCollection Tracking { get; private set; }
 
         public IDataContext DataContext { get; set; }
-        public List<IQueuedOperation> Queue { get; set; } = new List<IQueuedOperation>();
+
+        private List<IQueuedOperation> _queue = new List<IQueuedOperation>();
+
+        public IEnumerable<IQueuedOperation> GetQueue()
+        {
+            return _queue;
+        }
 
         public virtual AddEntityResult<TEntity> Add<TEntity>(AddEntityOperation<TEntity> operation)
             where TEntity : class
@@ -53,7 +59,7 @@ namespace Iql.Queryable.Data.DataStores
                     var queuedOperation =
                         (IQueuedOperation)Activator.CreateInstance(typeof(QueuedAddEntityOperation<>).MakeGenericType(entity.EntityType),
                             new object[] { operation, entityResult });
-                    Queue.Add(queuedOperation);
+                    Enqueue(queuedOperation);
                     if (isRootEntity)
                     {
                         result = (AddEntityResult<TEntity>)entityResult;
@@ -77,12 +83,32 @@ namespace Iql.Queryable.Data.DataStores
             return result;
         }
 
+        private void Enqueue(IQueuedOperation queuedOperation)
+        {
+            _queue.Add(queuedOperation);
+        }
+        private void Dequeue(IQueuedOperation queuedOperation)
+        {
+            _queue.Add(queuedOperation);
+        }
+        private void EnqueueRange(IEnumerable<IQueuedOperation> queuedOperations)
+        {
+            _queue.AddRange(queuedOperations);
+        }
+        private void DequeueRange(IEnumerable<IQueuedOperation> queuedOperations)
+        {
+            foreach (var queuedOperation in queuedOperations)
+            {
+                _queue.Remove(queuedOperation);
+            }
+        }
+
         public virtual UpdateEntityResult<TEntity> Update<TEntity>(
             UpdateEntityOperation<TEntity> operation)
             where TEntity : class
         {
             var result = new UpdateEntityResult<TEntity>(true, operation);
-            Queue.Add(
+            Enqueue(
                 new QueuedUpdateEntityOperation<TEntity>(
                     operation,
                     result));
@@ -95,7 +121,7 @@ namespace Iql.Queryable.Data.DataStores
         {
             //            new RelationshipManager(DataContext).DeleteRelationships(operation.Entity, operation.EntityType);
             var result = new DeleteEntityResult<TEntity>(true, operation);
-            Queue.Add(
+            Enqueue(
                 new QueuedDeleteEntityOperation<TEntity>(
                     operation,
                     result));
@@ -269,11 +295,11 @@ namespace Iql.Queryable.Data.DataStores
         {
             // Sets could be added to whilst detecting changes
             // so get a copy now
-            Queue.AddRange(GetChanges(true));
+            EnqueueRange(GetChanges(true));
             //var observable = this.Observable<SaveChangesResult>();
             var saveChangesResult = new SaveChangesResult(false);
-            var queue = Queue;
-            Queue = new List<IQueuedOperation>();
+            var queue = GetQueue();
+            ResetQueue();
             foreach (var queuedOperation in queue)
             {
                 var task = GetType()
@@ -291,21 +317,26 @@ namespace Iql.Queryable.Data.DataStores
             return saveChangesResult;
         }
 
+        private void ResetQueue()
+        {
+            _queue = new List<IQueuedOperation>();
+        }
+
         public IEnumerable<IQueuedOperation> GetChanges(bool reset = false)
         {
             var changes = new List<IQueuedOperation>();
-            GetTracking().GetChanges(this.Queue, reset).ForEach(update =>
+            GetTracking().GetChanges(_queue, reset).ForEach(update =>
             {
                 // If we are adding an entity in the same save changes operation
                 // then we don't need to do any scheduled updates on it because
                 // they will be negated by the add operation
-                if (Queue.Any(q => q.Operation.Type == OperationType.Add
+                if (GetQueue().Any(q => q.Operation.Type == OperationType.Add
                                    && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
                 {
                     return;
                 }
                 var alreadyBeingUpdatedByAnotherOperation = false;
-                foreach (var queuedOperation in Queue)
+                foreach (var queuedOperation in GetQueue())
                 {
                     if (queuedOperation.Type == QueuedOperationType.Update)
                     {
@@ -477,13 +508,13 @@ namespace Iql.Queryable.Data.DataStores
             object changeItem,
             QueuedOperationType queuedOperationType)
         {
-            var addOperationsToRemove = DataContext.DataStore.Queue
+            var addOperationsToRemove = DataContext.DataStore.GetQueue()
                 .Where(q => q.Type == queuedOperationType)
                 .Where(q => ((IEntityCrudOperationBase)q.Operation).Entity == changeItem)
                 .ToList();
             foreach (var item in addOperationsToRemove)
             {
-                DataContext.DataStore.Queue.Remove(item);
+                Dequeue(item);
             }
         }
     }

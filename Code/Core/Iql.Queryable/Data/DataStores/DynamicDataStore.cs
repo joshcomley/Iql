@@ -50,8 +50,8 @@ namespace Iql.Queryable.Data.DataStores
 
         public override async Task<SaveChangesResult> SaveChanges(SaveChangesOperation operation)
         {
-            InternalDataStore.Queue = Queue;
-            Queue = new List<IQueuedOperation>();
+            //InternalDataStore.SetQueue(GetQueue());
+            //SetQueue(new List<IQueuedOperation>());
             return await GetDataStore().SaveChanges(operation);
         }
     }

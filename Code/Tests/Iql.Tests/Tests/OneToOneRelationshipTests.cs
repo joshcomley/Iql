@@ -108,7 +108,7 @@ namespace Iql.Tests.Tests
             var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).WithKey(62);
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
-            Assert.AreEqual(0, Db.DataStore.Queue.Count);
+            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
             Assert.AreEqual(siteInspection.RiskAssessment.Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspectionId, siteInspection.Id);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspection, siteInspection);
