@@ -93,7 +93,10 @@ namespace Iql.Queryable.Data.Tracking
                                     {
                                         foreach (var item in oldValue)
                                         {
-                                            newValue.Add(CloneKeysOnly(dataContext, property, item));
+                                            newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
+                                                ? CloneKeysOnly(dataContext, property, item)
+                                                : item.CloneInternal(dataContext, property.Type, cloneRelationships,
+                                                    clonedObjects));
                                         }
                                     }
                                     clone.SetPropertyValue(

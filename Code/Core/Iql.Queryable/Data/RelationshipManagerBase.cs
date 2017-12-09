@@ -38,10 +38,34 @@ namespace Iql.Queryable.Data
                     case RelationshipType.OneToMany:
                         if (relationship.ThisIsTarget)
                         {
+                            // All items in the list must be deleted or nulled
+
                             // Not sure we have to do anything here
-                            //var referenceList =
-                            //    entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName)
-                            //    as IRelatedList;
+                            var referenceList =
+                                entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName)
+                                as IRelatedList;
+                            var sourceConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
+                                relationship.OtherEnd.Type);
+                            var nullable = relationship.Relationship.Constraints.All(c => 
+                                sourceConfiguration.FindProperty(c.SourceKeyProperty.PropertyName).Nullable
+                            );
+                            // The source collection will be modified, so make
+                            // a copy to work with
+                            var copy = referenceList.Cast<object>().ToList();
+                            foreach (var child in copy)
+                            {
+                                if (nullable)
+                                {
+                                    foreach (var constraint in relationship.Relationship.Constraints)
+                                    {
+                                        child.SetPropertyValue(constraint.SourceKeyProperty.PropertyName, null);
+                                    }
+                                }
+                                else
+                                {
+                                    dataContext.CascadeDeleteEntity(child, entity, relationship.Relationship);
+                                }
+                            }
                         }
                         else
                         {
@@ -102,18 +126,26 @@ namespace Iql.Queryable.Data
                                 }
                                 if (!isNullable)
                                 {
+                                    // Cascade deletion
                                     relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
                                     {
                                         entity.SetPropertyValue(
                                             relationship.Relationship.Source.Property.PropertyName,
                                             null);
                                     });
-                                    RemoveEntity(referenceValue, dataContext
+//                                    RemoveEntity(referenceValue, dataContext
+//#if TypeScript
+//                                        , relationship.Relationship.Source.Type
+//#endif
+//                                        );
+                                    dataContext.CascadeDeleteEntity(referenceValue,
+                                        entity,
+                                        relationship.Relationship
 #if TypeScript
                                         , relationship.Relationship.Source.Type
+                                        , relationship.Relationship.Target.Type
 #endif
                                         );
-                                    dataContext.RemoveEntity(referenceValue);
                                     //relationshipManager.TargetTrackingSet.Untrack(referenceValue);
                                 }
                                 else
@@ -257,9 +289,10 @@ namespace Iql.Queryable.Data
                                 keyIsSet &&
                                 !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
                             {
-                                throw new InconsistentRelationshipAssignmentException();
+                                int a = 0;
+                                //throw new InconsistentRelationshipAssignmentException();
                             }
-                            if (keyIsSet && referenceValue == null)
+                            if (keyIsSet)
                             {
                                 relationshipManager.ProcessOneToOneKeyChange(entity);
                             }

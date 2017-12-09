@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking

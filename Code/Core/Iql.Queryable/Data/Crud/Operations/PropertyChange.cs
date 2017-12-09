@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Crud.Operations

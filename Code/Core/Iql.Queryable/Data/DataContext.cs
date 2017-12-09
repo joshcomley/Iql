@@ -140,7 +140,7 @@ namespace Iql.Queryable.Data
 
         public void DeleteEntity(object entity
 #if TypeScript
-            Type entityType
+            , Type entityType
 #endif
         )
         {
@@ -150,26 +150,32 @@ namespace Iql.Queryable.Data
             AsDbSetByType(entityType).DeleteEntity(entity);
         }
 
-        public void RemoveEntity(object entity
+        public void CascadeDeleteEntity(object entity,
+            object cascadedFromEntity,
+            IRelationship cascadedFromRelationship
 #if TypeScript
-            Type entityType
+            , Type entityType
+            , Type cascadedFromEntityType
 #endif
         )
         {
 #if !TypeScript
             var entityType = entity.GetType();
+            var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
+            var entityState = DataStore.GetTracking().TrackingSet(entityType)
+                .GetEntityState(entity);
+            entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
             DeleteEntity(entity
 #if TypeScript
                 , entityType
 #endif
                 );
-            DataStore.RemoveQueuedOperationsForEntity(entity, QueuedOperationType.Delete);
         }
 
         public void AddEntity(object entity
 #if TypeScript
-            Type entityType
+            , Type entityType
 #endif
         )
         {

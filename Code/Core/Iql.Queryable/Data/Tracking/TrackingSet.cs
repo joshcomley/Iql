@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -163,14 +164,12 @@ namespace Iql.Queryable.Data.Tracking
             {
                 return existingEntity.Entity;
             }
-            if (existingEntity == null)
-            {
-                int a = 0;
-            }
             var clone = entity.CloneAs(DataContext, typeof(T), RelationshipCloneMode.DoNotClone);
             if (!found)
             {
                 Set.Add(entity);
+                var entityState = GetEntityState(entity);
+                entityState.IsNew = DataContext.IsEntityNew(entity, typeof(T));
                 Watch(entity);
                 //                foreach (var relationship in EntityConfiguration.AllRelationships())
                 //                {
@@ -197,6 +196,7 @@ namespace Iql.Queryable.Data.Tracking
                 //                }
                 Clone.Add(clone);
                 _trackedEntityClones.Add(entity, clone);
+                AssignToMatchingRelationships(entity);
                 return entity;
             }
 
@@ -239,6 +239,70 @@ namespace Iql.Queryable.Data.Tracking
             //    }
             //}
             return existingEntity.Entity;
+        }
+
+        private void AssignToMatchingRelationships(T entity)
+        {
+            foreach (var relationship in EntityConfiguration.AllRelationships())
+            {
+                // Find entities with reference keys that match this entity
+                if (!DataContext.IsEntityNew(entity, typeof(T)))
+                {
+                    if (!relationship.OtherEnd.IsCollection)
+                    {
+                        var trackingSet = TrackingSetCollection.TrackingSet(relationship.OtherEnd.Type);
+                        foreach (var trackedEntity in trackingSet.TrackedEntites())
+                        {
+                            var compositeKey = relationship.ThisEnd.GetCompositeKey(entity, true);
+                            if (!compositeKey.HasDefaultValue())
+                            {
+                                if (DataContext.EntityPropertiesMatch(
+                                    trackedEntity,
+                                    compositeKey))
+                                {
+                                    trackedEntity.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
+                                        entity);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!relationship.ThisEnd.IsCollection)
+                {
+                    var trackingSet = TrackingSetCollection.TrackingSet(relationship.OtherEnd.Type);
+                    var compositeKey = relationship.ThisEnd.GetCompositeKey(entity, true);
+                    if (!compositeKey.HasDefaultValue())
+                    {
+                        var matchedEntity = trackingSet.FindTrackedEntityByKey(compositeKey);
+                        if (matchedEntity != null)
+                        {
+                            entity.SetPropertyValue(relationship.ThisEnd.Property.PropertyName, matchedEntity.Entity);
+                        }
+                    }
+                }
+            }
+            //foreach (var config in DataContext.EntityConfigurationContext.AllConfigurations())
+            //{
+            //    foreach (var relationship in config.Relationships)
+            //    {
+            //        IRelationshipDetail otherEnd = null;
+            //        IRelationshipDetail thisEnd = null;
+            //        if (relationship.Source.Type == typeof(T) && !relationship.Target.IsCollection)
+            //        {
+            //            var trackingSet = TrackingSetCollection.TrackingSet(relationship.Target.Type);
+            //            foreach (var trackedEntity in trackingSet.TrackedEntites())
+            //            {
+            //                if (DataContext.EntityPropertiesMatch(
+            //                    trackedEntity,
+            //                    relationship.Source.GetCompositeKey(entity, true)))
+            //                {
+            //                    trackedEntity.SetPropertyValue(relationship.Target.Property.PropertyName,
+            //                        entity);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         internal void Unwatch(T entity)
@@ -285,7 +349,7 @@ namespace Iql.Queryable.Data.Tracking
                         return;
                     }
                     var property = EntityConfiguration.FindProperty(pc.PropertyName);
-                    if (pc.NewValue == null && !property.Nullable
+                    if (pc.NewValue == null && !property.Nullable && !Equals(pc.OldValue, pc.NewValue)
 #if TypeScript
                     && property.ConvertedFromType != "Guid"
 #endif
@@ -628,7 +692,7 @@ namespace Iql.Queryable.Data.Tracking
                             var tracked = relatedTrackingSet.FindTrackedEntity(change.Item);
                             if (tracked != null && tracked.TrackedRelationships.Count == 0)
                             {
-                                DataContext.DataStore.RemoveQueuedOperationsForEntity(change.Item, QueuedOperationType.Add);
+                                DataContext.DataStore.RemoveQueuedOperationsOfTypeForEntity(change.Item, QueuedOperationType.Add);
                             }
                             else if (!nullable)
                             {
@@ -637,7 +701,7 @@ namespace Iql.Queryable.Data.Tracking
                         }
                         break;
                     case RelatedListChangeKind.Assign:
-                        DataContext.DataStore.RemoveQueuedOperationsForEntity(change.Item, QueuedOperationType.Delete);
+                        DataContext.DataStore.RemoveQueuedOperationsOfTypeForEntity(change.Item, QueuedOperationType.Delete);
                         break;
                 }
             }
@@ -999,6 +1063,10 @@ namespace Iql.Queryable.Data.Tracking
 
         public EntityState GetEntityState(T entity)
         {
+            if (!Set.Contains(entity))
+            {
+                return null;
+            }
             if (!EntityStates.ContainsKey(entity))
             {
                 EntityStates.Add(entity, new EntityState(entity, typeof(T), EntityConfiguration));

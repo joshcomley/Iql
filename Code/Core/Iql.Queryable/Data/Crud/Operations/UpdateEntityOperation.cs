@@ -1,3 +1,5 @@
+using Iql.Queryable.Data.Crud.State;
+
 namespace Iql.Queryable.Data.Crud.Operations
 {
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation

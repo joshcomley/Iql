@@ -42,22 +42,25 @@ namespace Iql.Queryable.Data
                 Relationship.Target.Property.PropertyName);
 
             EnsureTracked(entity, typeof(TTarget));
-            EnsureTracked(referenceValue, typeof(TSource));
+            if (referenceValue != null)
+            {
+                EnsureTracked(referenceValue, typeof(TSource));
 
-            TargetTrackingSet.SilentlyChangeEntity(entity, () =>
-            {
-                foreach (var constraint in Relationship.Constraints)
+                TargetTrackingSet.SilentlyChangeEntity(entity, () =>
                 {
-                    entity.SetPropertyValue(constraint.TargetKeyProperty.PropertyName,
-                        referenceValue.GetPropertyValue(constraint.SourceKeyProperty.PropertyName));
-                }
-            });
-            SourceTrackingSet.SilentlyChangeEntity(referenceValue, () =>
-            {
-                referenceValue.SetPropertyValue(
-                    Relationship.Source.Property.PropertyName,
-                    entity);
-            });
+                    foreach (var constraint in Relationship.Constraints)
+                    {
+                        entity.SetPropertyValue(constraint.TargetKeyProperty.PropertyName,
+                            referenceValue.GetPropertyValue(constraint.SourceKeyProperty.PropertyName));
+                    }
+                });
+                SourceTrackingSet.SilentlyChangeEntity(referenceValue, () =>
+                {
+                    referenceValue.SetPropertyValue(
+                        Relationship.Source.Property.PropertyName,
+                        entity);
+                });
+            }
         }
 
         private void EnsureTracked(object entity, Type type)
@@ -94,6 +97,13 @@ namespace Iql.Queryable.Data
                 {
                     trackedEntity.Entity.SetPropertyValue(
                         Relationship.Source.Property.PropertyName, entity);
+                });
+            }
+            else
+            {
+                TargetTrackingSet.SilentlyChangeEntity(entity, () =>
+                {
+                    entity.SetPropertyValue(Relationship.Target.Property.PropertyName, null);
                 });
             }
         }

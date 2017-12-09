@@ -24,6 +24,9 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.ClientTypes.Clear();
             AppDbContext.InMemoryDb.Clients.Clear();
             AppDbContext.InMemoryDb.Sites.Clear();
+            AppDbContext.InMemoryDb.People.Clear();
+            AppDbContext.InMemoryDb.PeopleTypes.Clear();
+            AppDbContext.InMemoryDb.PeopleTypeMap.Clear();
             AppDbContext.InMemoryDb.SiteInspections.Clear();
             AppDbContext.InMemoryDb.RiskAssessments.Clear();
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Clear();

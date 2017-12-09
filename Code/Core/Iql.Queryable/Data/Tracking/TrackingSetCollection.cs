@@ -160,6 +160,18 @@ namespace Iql.Queryable.Data.Tracking
             return trackedEntity != null && trackedEntity.Entity == entity;
         }
 
+        public bool IsMarkedForDeletion(object entity, Type entityType)
+        {
+            var set = TrackingSet(entityType);
+            return set.GetEntityState(entity).MarkedForDeletion;
+        }
+
+        public bool IsMarkedForCascadeDeletion(object entity, Type entityType)
+        {
+            var set = TrackingSet(entityType);
+            return set.GetEntityState(entity).MarkedForCascadeDeletion;
+        }
+
         public void TrackGraph(object entity, Type entityType)
         {
             var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
@@ -31,9 +32,9 @@ namespace Iql.Queryable.Data
             , Type entityType
 #endif
         );
-        void RemoveEntity(object entity
+        void CascadeDeleteEntity(object entity, object cascadedFromEntity, IRelationship relationship
 #if TypeScript
-            , Type entityType
+            , Type entityType, Type cascadedFromEntityType
 #endif
         );
         void AddEntity(object entity

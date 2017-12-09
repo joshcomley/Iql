@@ -2,13 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Queryable.Data.Crud.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
     public class EntityState
     {
+        public bool IsNew { get; set; }
+        public bool MarkedForDeletion { get; set; }
+        public bool MarkedForCascadeDeletion { get; private set; }
+
+        public void MarkForCascadeDeletion(object from, IRelationship relationship)
+        {
+            MarkedForCascadeDeletion = true;
+            CascadeDeletedBy.Add(new CascadeDeletion(relationship, from));
+        }
+
+        public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
         public object Entity { get; }
         public Type EntityType { get; }
         public IEntityConfiguration EntityConfiguration { get; }

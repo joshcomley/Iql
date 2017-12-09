@@ -53,7 +53,7 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task DeletingTargetOfOneToOneShouldPersistRelationshipDeletionsWhenTracked()
+        public async Task DeletingTargetOfOneToOneShouldCascadeRelationshipDeletions()
         {
             AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 62 });
             AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 63 });
@@ -67,9 +67,45 @@ namespace Iql.Tests.Tests
             Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
             Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
+            var riskAssessmentState = tracking.TrackingSet(typeof(RiskAssessment)).GetEntityState(riskAssessment);
+            var riskAssessmentSolutionState = tracking.TrackingSet(typeof(RiskAssessmentSolution)).GetEntityState(solution);
+
+            Assert.IsFalse(riskAssessmentState.MarkedForDeletion);
+            Assert.IsFalse(riskAssessmentState.MarkedForCascadeDeletion);
+            Assert.IsFalse(riskAssessmentState.CascadeDeletedBy.Any(cd => cd.Source == siteInspections[0]));
+            Assert.IsFalse(riskAssessmentSolutionState.MarkedForDeletion);
+            Assert.IsFalse(riskAssessmentSolutionState.MarkedForCascadeDeletion);
+            Assert.IsFalse(riskAssessmentSolutionState.CascadeDeletedBy.Any(cd => cd.Source == riskAssessment));
+
             Db.DeleteEntity(siteInspections[0]);
-            Assert.IsFalse(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
-            Assert.IsFalse(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
+
+            Assert.IsFalse(riskAssessmentState.MarkedForDeletion);
+            Assert.IsTrue(riskAssessmentState.MarkedForCascadeDeletion);
+            Assert.IsTrue(riskAssessmentState.CascadeDeletedBy.Count(cd => cd.Source == siteInspections[0]) == 1);
+            Assert.IsFalse(riskAssessmentSolutionState.MarkedForDeletion);
+            Assert.IsTrue(riskAssessmentSolutionState.MarkedForCascadeDeletion);
+            Assert.IsTrue(riskAssessmentSolutionState.CascadeDeletedBy.Count(cd => cd.Source == riskAssessment) == 1);
+        }
+
+        [TestMethod]
+        public async Task DeletingTargetOfOneToOneShouldCascadeRelationshipDeletions2()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52});
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 63 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 53 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 52 });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId =  53});
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId =  52});
+
+            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToList();
+            Assert.IsNotNull(people[0].Types[0].Type);
+            Assert.AreEqual(people.Single(p => p.TypeId == 52), people.Single(p => p.Types[0].TypeId == 52).Types[0].Type.People[0]);
+
+            var personTypeMap = await Db.PersonTypesMap.Where(p => p.PersonId == 62 && p.TypeId == 53).Single();
+            var person = people.Single(p => p.Id == 62);
+            Db.People.Delete(person);
+            Assert.IsTrue(Db.DataStore.GetTracking().IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
+            Assert.AreEqual(0, person.Types.Count);
         }
 
         [TestMethod]
