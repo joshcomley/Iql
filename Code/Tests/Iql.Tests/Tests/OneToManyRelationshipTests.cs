@@ -158,5 +158,25 @@ namespace Iql.Tests.Tests
                     Id = 73,
                 });
         }
+
+        [TestMethod]
+        public async Task RelationshipsShouldBeMatchedEvenWithUnrelatedQueries()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52 });
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 63 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 53 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 52 });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId = 53 });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId = 52 });
+
+            var people = await Db.People.ToList();
+            var person = people.Single(p => p.Id == 62);
+
+            Assert.IsNull(person.Type);
+            var personType = await Db.PersonTypes.Where(pt => pt.Id == 52).Single();
+            Assert.AreEqual(52, person.Type.Id);
+            Assert.AreEqual(personType, person.Type);
+            Assert.IsTrue(personType.People.Contains(person));
+        }
     }
 }

@@ -232,5 +232,46 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment1);
             Assert.AreEqual(siteInspection2.RiskAssessment, riskAssessment2);
         }
+
+        [TestMethod]
+        public async Task RelationshipsShouldBeMatchedWhenSourceIsLoadedAfterTarget()
+        {
+            AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection{Id = 17});
+            AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection{Id = 18 });
+            AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 28, SiteInspectionId = 17 });
+            AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 29, SiteInspectionId = 18 });
+            AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 39, RiskAssessmentId = 28 });
+            AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 40, RiskAssessmentId = 29 });
+
+            var siteInspections = await Db.SiteInspections.ToList();
+            foreach (var inspection in siteInspections)
+            {
+                Assert.IsNull(inspection.RiskAssessment);
+            }
+
+            var riskAssessments = await Db.RiskAssessments.ToList();
+            foreach (var inspection in siteInspections)
+            {
+                Assert.AreEqual(inspection.RiskAssessment.SiteInspectionId, inspection.RiskAssessment.SiteInspection.Id);
+                Assert.AreEqual(inspection.RiskAssessment.SiteInspectionId, inspection.Id);
+            }
+
+            foreach (var riskAssessment in riskAssessments)
+            {
+                Assert.IsNull(riskAssessment.RiskAssessmentSolution);
+            }
+
+            var riskAssessmentSolutions = await Db.RiskAssessmentSolutions.ToList();
+            foreach (var riskAssessment in riskAssessments)
+            {
+                Assert.IsNotNull(riskAssessment.RiskAssessmentSolution);
+                Assert.AreEqual(riskAssessment.Id, riskAssessment.RiskAssessmentSolution.RiskAssessmentId);
+            }
+
+            foreach (var riskAssessmentSolution in riskAssessmentSolutions)
+            {
+                Assert.AreEqual(riskAssessmentSolution.RiskAssessmentId, riskAssessmentSolution.RiskAssessment.Id);
+            }
+        }
     }
 }
