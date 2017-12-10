@@ -106,8 +106,8 @@ namespace Iql.Tests.Tests
 
         public void ApplyToLocalObjects()
         {
-            var client1 = new Client();
-            var client2 = new Client();
+            var client1 = new Client { Name = "abc" };
+            var client2 = new Client { Name = "def" };
             var clientType1 = new ClientType();
             var clientType2 = new ClientType();
             client1.Type = clientType1;

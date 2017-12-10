@@ -23,96 +23,68 @@ namespace Iql.Queryable.Data.DataStores
 
         public IDataContext DataContext { get; set; }
 
-        private List<IQueuedOperation> _queue = new List<IQueuedOperation>();
 
         public IEnumerable<IQueuedOperation> GetQueue()
         {
-            var queue = new List<IQueuedOperation>();
-            foreach (var operation in _queue)
-            {
-                var filteredOperation = GetType()
-                    .GetMethod(nameof(Filter))
-                    .MakeGenericMethod(operation.Operation.EntityType)
-                    .Invoke(this, new object[]
-                    {
-                        operation
-#if TypeScript // The type info
-                        ,queuedOperation.Operation.EntityType
-#endif
-                    }) as IQueuedOperation;
-                if (filteredOperation != null)
-                {
-                    queue.Add(filteredOperation);
-                }
-            }
-            return _queue;
+            return GetTracking().GetQueue();
         }
 
-        private void Enqueue(IQueuedOperation queuedOperation)
+        public IEnumerable<IQueuedOperation> GetChanges()
         {
-            _queue.Add(queuedOperation);
-        }
-        private void Dequeue(IQueuedOperation queuedOperation)
-        {
-            _queue.Add(queuedOperation);
-        }
-        private void EnqueueRange(IEnumerable<IQueuedOperation> queuedOperations)
-        {
-            _queue.AddRange(queuedOperations);
-        }
-        private void DequeueRange(IEnumerable<IQueuedOperation> queuedOperations)
-        {
-            foreach (var queuedOperation in queuedOperations)
-            {
-                _queue.Remove(queuedOperation);
-            }
+            return GetTracking().GetQueue().Where(op => op.Type == QueuedOperationType.Update);
         }
 
-        public virtual AddEntityResult<TEntity> Add<TEntity>(AddEntityOperation<TEntity> operation)
+        public virtual EntityState<TEntity> Add<TEntity>(TEntity entity)
             where TEntity : class
         {
             var trackingSet = Tracking.TrackingSet(typeof(TEntity));
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
-            var existingState = trackingSet.GetEntityState(operation.Entity);
+            var existingState = (EntityState<TEntity>)trackingSet.GetEntityState(entity);
             if (existingState != null)
             {
                 if (existingState.MarkedForDeletion)
                 {
                     existingState.MarkedForDeletion = false;
                 }
-                RemoveQueuedOperationsOfTypeForEntity(operation.Entity, QueuedOperationType.Delete);
             }
-            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, operation.EntityType);
+            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, typeof(TEntity));
             var nonTracked = new List<FlattenedEntity>();
             AddEntityResult<TEntity> result = null;
-            foreach (var entity in flattened)
+            var tracking = DataContext.DataStore.GetTracking();
+            foreach (var flattenedEntity in flattened)
             {
-                var alreadyTracked = DataContext.DataStore.GetTracking().IsTracked(entity.Entity, entity.EntityType);
+                var alreadyTracked = tracking.IsTracked(flattenedEntity.Entity, flattenedEntity.EntityType);
                 if (!alreadyTracked)
                 {
-                    nonTracked.Add(entity);
-                    var trackingSetCollection = GetTracking();
-                    trackingSetCollection.TrackGraph(entity.Entity, entity.EntityType);
-                    var isRootEntity = entity.Entity == operation.Entity;
-                    var entityOperation =
-                        isRootEntity
-                            ? operation
-                            : Activator.CreateInstance(typeof(AddEntityOperation<>).MakeGenericType(entity.EntityType),
-                                new object[] { entity.Entity, operation.DataContext });
-                    var entityResult = Activator.CreateInstance(typeof(AddEntityResult<>).MakeGenericType(entity.EntityType),
-                        new object[]
-                        {
-                            true,
-                            entityOperation
-                        });
-                    var queuedOperation =
-                        (IQueuedOperation)Activator.CreateInstance(typeof(QueuedAddEntityOperation<>).MakeGenericType(entity.EntityType),
-                            new object[] { operation, entityResult });
-                    Enqueue(queuedOperation);
-                    if (isRootEntity)
-                    {
-                        result = (AddEntityResult<TEntity>)entityResult;
-                    }
+                    nonTracked.Add(flattenedEntity);
+                    tracking.TrackEntity(flattenedEntity.Entity, flattenedEntity.EntityType, true);
+                    var flattenedEntityState = DataContext.GetEntityState(flattenedEntity.Entity
+#if TypeScript
+                        , flattenedEntity.EntityType
+#endif
+                    );
+                    flattenedEntityState.IsNew = true;
+                    var isRootEntity = flattenedEntity.Entity == entity;
+
+                    //var entityOperation =
+                    //    isRootEntity
+                    //        ? operation
+                    //        : Activator.CreateInstance(typeof(AddEntityOperation<>).MakeGenericType(flattenedEntity.EntityType),
+                    //            new object[] { flattenedEntity.Entity, DataContext });
+                    //var entityResult = Activator.CreateInstance(typeof(AddEntityResult<>).MakeGenericType(flattenedEntity.EntityType),
+                    //    new object[]
+                    //    {
+                    //        true,
+                    //        entityOperation
+                    //    });
+                    //var queuedOperation =
+                    //    (IQueuedOperation)Activator.CreateInstance(typeof(QueuedAddEntityOperation<>).MakeGenericType(flattenedEntity.EntityType),
+                    //        new object[] { operation, entityResult });
+                    //Enqueue(queuedOperation);
+                    //if (isRootEntity)
+                    //{
+                    //    result = (AddEntityResult<TEntity>)entityResult;
+                    //}
                 }
             }
             //foreach (var entity in nonTracked)
@@ -120,48 +92,46 @@ namespace Iql.Queryable.Data.DataStores
             //    Tracking.TrackingSet(entity.EntityType)
             //        .Unwatch(entity.Entity);
             //}
-            foreach (var entity in nonTracked)
+            foreach (var nonTrackedEntity in nonTracked)
             {
-                RelationshipManagerBase.TrackRelationships(entity.Entity, entity.EntityType, DataContext);
+                RelationshipManagerBase.TrackRelationships(nonTrackedEntity.Entity, nonTrackedEntity.EntityType, DataContext);
             }
             //foreach (var entity in nonTracked)
             //{
             //    Tracking.TrackingSet(entity.EntityType)
             //        .Watch(entity.Entity);
             //}
-            return result;
+            return existingState;
         }
 
-        public virtual UpdateEntityResult<TEntity> Update<TEntity>(
-            UpdateEntityOperation<TEntity> operation)
+        //public virtual EntityState<TEntity> Update<TEntity>(
+        //    TEntity entity)
+        //    where TEntity : class
+        //{
+        //    var trackingSet = Tracking.TrackingSet(typeof(TEntity));
+        //    var entityState = trackingSet.GetEntityState(operation.Entity);
+        //    if (entityState.MarkedForDeletion)
+        //    {
+        //        throw new Exception("You cannot update an entity that has been deleted.");
+        //    }
+        //    if (entityState.IsNew)
+        //    {
+        //        return null;
+        //    }
+        //    var result = new UpdateEntityResult<TEntity>(true, operation);
+        //    Enqueue(
+        //        new QueuedUpdateEntityOperation<TEntity>(
+        //            operation,
+        //            result));
+        //    return result;
+        //}
+
+        public virtual EntityState<TEntity> Delete<TEntity>(TEntity entity)
             where TEntity : class
         {
             var trackingSet = Tracking.TrackingSet(typeof(TEntity));
-            var entityState = trackingSet.GetEntityState(operation.Entity);
-            if (entityState.MarkedForDeletion)
-            {
-                throw new Exception("You cannot update an entity that has been deleted.");
-            }
-            if (entityState.IsNew)
-            {
-                return null;
-            }
-            var result = new UpdateEntityResult<TEntity>(true, operation);
-            Enqueue(
-                new QueuedUpdateEntityOperation<TEntity>(
-                    operation,
-                    result));
-            return result;
-        }
+            var entityState = (EntityState<TEntity>)trackingSet.GetEntityState(entity);
 
-        public virtual DeleteEntityResult<TEntity> Delete<TEntity>(
-            DeleteEntityOperation<TEntity> operation)
-            where TEntity : class
-        {
-            var trackingSet = Tracking.TrackingSet(typeof(TEntity));
-            var entityState = trackingSet.GetEntityState(operation.Entity);
-
-            RelationshipManagerBase.DeleteRelationships(operation.Entity, operation.EntityType, DataContext);
 
             if (entityState.MarkedForDeletion || entityState.MarkedForCascadeDeletion || entityState.IsNew)
             {
@@ -169,17 +139,14 @@ namespace Iql.Queryable.Data.DataStores
                 {
                     entityState.MarkedForDeletion = true;
                 }
-                return null;
+            }
+            else
+            {
+                entityState.MarkedForDeletion = true;
             }
             //            new RelationshipManager(DataContext).DeleteRelationships(operation.Entity, operation.EntityType);
-            var result = new DeleteEntityResult<TEntity>(true, operation);
-            Enqueue(
-                new QueuedDeleteEntityOperation<TEntity>(
-                    operation,
-                    result));
-            trackingSet.GetEntityState(operation.Entity).MarkedForDeletion = true;
             //trackingSet.Untrack(operation.Entity);
-            return result;
+            return entityState;
         }
 
         public virtual async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
@@ -298,7 +265,7 @@ namespace Iql.Queryable.Data.DataStores
                 foreach (var entity in flattened)
                 {
                     var entityTrackingSet = GetTracking().TrackingSet(entity.EntityType);
-                    var mergedEntity = entityTrackingSet.MergeEntity(entity.Entity);
+                    var mergedEntity = entityTrackingSet.MergeEntity(entity.Entity, false);
                     if (mergedEntity != entity.Entity)
                     {
                         if (entity.EntityType == typeof(TEntity))
@@ -319,7 +286,8 @@ namespace Iql.Queryable.Data.DataStores
                 //var trackedEntity = GetTracking().TrackingSet(entity.EntityType).FindTrackedEntity(entity)
                 await RelationshipManagerBase.TrackAndRefreshRelationships(entity.Entity, entity.EntityType, DataContext);
                 var entityState = GetTracking().TrackingSet(entity.EntityType).GetEntityState(entity.Entity);
-                entityState.IsNew = DataContext.IsEntityNew(entity.Entity, entity.EntityType);
+                entityState.IsNew = false;
+                //entityState.IsNew = DataContext.IsEntityNew(entity.Entity, entity.EntityType);
             }
             for (var i = 0; i < response.Data.Count; i++)
             {
@@ -339,11 +307,9 @@ namespace Iql.Queryable.Data.DataStores
         {
             // Sets could be added to whilst detecting changes
             // so get a copy now
-            EnqueueRange(GetChanges(true));
             //var observable = this.Observable<SaveChangesResult>();
             var saveChangesResult = new SaveChangesResult(false);
             var queue = GetQueue();
-            ResetQueue();
             foreach (var queuedOperation in queue)
             {
                 var task = GetType()
@@ -361,60 +327,6 @@ namespace Iql.Queryable.Data.DataStores
             return saveChangesResult;
         }
 
-        private void ResetQueue()
-        {
-            _queue = new List<IQueuedOperation>();
-        }
-
-        public IEnumerable<IQueuedOperation> GetChanges(bool reset = false)
-        {
-            var changes = new List<IQueuedOperation>();
-            GetTracking().GetChanges(_queue, reset).ForEach(update =>
-            {
-                // If we are adding an entity in the same save changes operation
-                // then we don't need to do any scheduled updates on it because
-                // they will be negated by the add operation
-                if (GetQueue().Any(q => q.Operation.Type == OperationType.Add
-                                   && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
-                {
-                    return;
-                }
-                var alreadyBeingUpdatedByAnotherOperation = false;
-                foreach (var queuedOperation in GetQueue())
-                {
-                    if (queuedOperation.Type == QueuedOperationType.Update)
-                    {
-                        var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
-                        var entitiesInObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                            entityOperation.Entity,
-                            queuedOperation.Operation.EntityType);
-                        foreach (var flattenedEntity in entitiesInObjectGraph)
-                        {
-                            if (flattenedEntity.Entity == update.Entity)
-                            {
-                                alreadyBeingUpdatedByAnotherOperation = true;
-                                break;
-                            }
-                        }
-                        if (alreadyBeingUpdatedByAnotherOperation)
-                        {
-                            break;
-                        }
-                    }
-                }
-                if (!alreadyBeingUpdatedByAnotherOperation)
-                {
-                    var updateOperation =
-                        Activator.CreateInstance(
-                            typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                    changes.Add((IQueuedOperation)updateOperation);
-                }
-                //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
-                //Apply(update);
-            });
-            return changes;
-        }
-
         protected int FindEntityIndex<TEntity>(
             Type entityType,
             TEntity clone,
@@ -426,22 +338,6 @@ namespace Iql.Queryable.Data.DataStores
                 data
             );
         }
-
-        public virtual void Filter<TEntity>(
-            IQueuedOperation operation) where TEntity : class
-        {
-
-            switch (operation.Operation.Type)
-            {
-                case OperationType.Add:
-                    break;
-                case OperationType.Delete:
-                    break;
-                case OperationType.Update:
-                    break;
-            }
-        }
-
 
         public virtual async Task Perform<TEntity>(
             IQueuedOperation operation,
@@ -463,39 +359,42 @@ namespace Iql.Queryable.Data.DataStores
                         {
                             localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
                         }
+                        GetTracking().TrackingSet(typeof(TEntity)).GetEntityState(localEntity).IsNew = false;
                     }
                     await DataContext.RefreshEntity(localEntity, typeof(TEntity));
-                    GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity));
+                    GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity), true);
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
-                    if (DataContext.IsEntityNew(updateEntityOperation.Operation.Entity, typeof(TEntity)))
+                    var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity, typeof(TEntity));
+                    if (isEntityNew == true)
                     {
                         operation.Result.Success = false;
                         var failure = new EntityValidationResult(updateEntityOperation.Operation.EntityType);
                         failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
                         updateEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else
+                    else if(isEntityNew != null)
                     {
                         EnsurePersistenceKeyInNewEntities(updateEntityOperation.Operation.Entity, typeof(TEntity));
                         result = await PerformUpdate(updateEntityOperation);
                         var operationEntity = updateEntityOperation.Operation
                             .Entity;
                         await DataContext.RefreshEntity(operationEntity, typeof(TEntity));
-                        GetTracking().GetSet<TEntity>().Track(operationEntity);
+                        GetTracking().GetSet<TEntity>().Track(operationEntity, false);
                     }
                     break;
                 case OperationType.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
-                    if (DataContext.IsEntityNew(deleteEntityOperation.Operation.Entity, typeof(TEntity)))
+                    var entityNew = DataContext.IsEntityNew(deleteEntityOperation.Operation.Entity, typeof(TEntity));
+                    if (entityNew == true)
                     {
                         operation.Result.Success = false;
                         var failure = new EntityValidationResult(deleteEntityOperation.Operation.EntityType);
                         failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
                         deleteEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else
+                    else if(entityNew != null)
                     {
                         result = await PerformDelete(deleteEntityOperation);
                         GetTracking().GetSet<TEntity>().Untrack(deleteEntityOperation.Operation.Entity);
@@ -547,7 +446,8 @@ namespace Iql.Queryable.Data.DataStores
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(localEntity, entityType);
             foreach (var entity in flattened)
             {
-                if (DataContext.IsEntityNew(entity.Entity, entity.EntityType))
+                var isEntityNew = DataContext.IsEntityNew(entity.Entity, entity.EntityType);
+                if (isEntityNew == true)
                 {
                     var persistenceKey = DataContext.EntityConfigurationContext.GetEntityByType(entity.EntityType).Properties
                         .FirstOrDefault(p => p.Name == "PersistenceKey");
@@ -564,18 +464,19 @@ namespace Iql.Queryable.Data.DataStores
                 }
             }
         }
+
         public void RemoveQueuedOperationsOfTypeForEntity(
             object changeItem,
             QueuedOperationType queuedOperationType)
         {
-            var addOperationsToRemove = DataContext.DataStore.GetQueue()
-                .Where(q => q.Type == queuedOperationType)
-                .Where(q => ((IEntityCrudOperationBase)q.Operation).Entity == changeItem)
-                .ToList();
-            foreach (var item in addOperationsToRemove)
-            {
-                Dequeue(item);
-            }
+            //var addOperationsToRemove = DataContext.DataStore.GetQueue()
+            //    .Where(q => q.Type == queuedOperationType)
+            //    .Where(q => ((IEntityCrudOperationBase)q.Operation).Entity == changeItem)
+            //    .ToList();
+            //foreach (var item in addOperationsToRemove)
+            //{
+            //    Dequeue(item);
+            //}
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Iql.Queryable.Data.Crud.Operations
     [DebuggerDisplay("{Property.Name}")]
     public class PropertyChange
     {
-        public PropertyChange(IProperty property, object oldValue, object newValue, EntityState entityState)
+        public PropertyChange(IProperty property, object oldValue, object newValue, IEntityStateBase entityState)
         {
             Property = property;
             OldValue = oldValue;
@@ -18,7 +18,7 @@ namespace Iql.Queryable.Data.Crud.Operations
 
         public object OldValue { get; set; }
         public object NewValue { get; set; }
-        public EntityState EntityState { get; }
+        public IEntityStateBase EntityState { get; }
 
         public IProperty Property { get; }
         public List<PropertyChange> ChildChangedProperties { get; } = new List<PropertyChange>();

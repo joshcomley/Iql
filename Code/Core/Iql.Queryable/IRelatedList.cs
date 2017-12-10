@@ -8,9 +8,9 @@ namespace Iql.Queryable
     public interface IRelatedList : IList
     {
         string Property { get; }
-        IEnumerable<IRelatedListChange> GetChanges();
-        void AddChange(IRelatedListChange change);
-        void RemoveChange(IRelatedListChange change);
+        //IEnumerable<IRelatedListChange> GetChanges();
+        //void AddChange(IRelatedListChange change);
+        //void RemoveChange(IRelatedListChange change);
         IEventSubscriber<IRelatedListChangedEvent> Changed { get; }
         IEventSubscriber<IRelatedListChangedEvent> Changing { get; }
         object Owner { get; }

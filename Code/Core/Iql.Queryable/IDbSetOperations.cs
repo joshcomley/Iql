@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Expressions.QueryExpressions;
 #if TypeScript
 using Iql.Parsing;
@@ -11,8 +12,8 @@ namespace Iql.Queryable
 {
     public interface IDbSetOperations<T, in TKey> where T : class
     {
-        AddEntityResult<T> Add(T entity);
-        DeleteEntityResult<T> Delete(T entity);
+        EntityState<T> Add(T entity);
+        EntityState<T> Delete(T entity);
 
         Task<T> First(Expression<Func<T, bool>> expression = null
 #if TypeScript
@@ -125,7 +126,7 @@ namespace Iql.Queryable
         Task<SaveChangesResult> SaveChanges(T entity);
         Task<DbList<T>> ToList();
         Task<GetDataResult<T>> ToListWithResponse();
-        UpdateEntityResult<T> Update(T entity);
+        //UpdateEntityResult<T> Update(T entity);
         Task<T> WithKey(TKey key);
         Task<GetSingleResult<T>> WithKeyWithResponse(TKey key);
     }

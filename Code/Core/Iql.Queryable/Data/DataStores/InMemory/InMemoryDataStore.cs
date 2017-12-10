@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Tracking;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
@@ -19,17 +22,83 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            var flattened =
-                operation.Operation.DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                    operation.Operation.Entity, typeof(TEntity));
-            foreach (var entity in flattened)
+            //var flattened =
+            //    operation.Operation.DataContext.EntityConfigurationContext.FlattenObjectGraph(
+            //        operation.Operation.Entity, typeof(TEntity));
+            //object rootClone = null;
+            //foreach (var entity in flattened)
+            //{
+            //    var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
+            //        .GetSourceByType(entity.EntityType);
+            //    var clone = entity.Entity.CloneAs(DataContext, entity.EntityType, RelationshipCloneMode.DoNotClone);
+            //    var configuration = operation.Operation.DataContext.EntityConfigurationContext.GetEntityByType(
+            //        entity.EntityType);
+            //    foreach (var key in configuration.Key.Properties)
+            //    {
+            //        var property = configuration.FindProperty(key.PropertyName);
+            //        if (property.Kind == PropertyKind.Key)
+            //        {
+            //            if (property.Type == typeof(int))
+            //            {
+            //                clone.SetPropertyValue(key.PropertyName, NextIdInteger(data, property));
+            //            }
+            //            else if (property.Type == typeof(string))
+            //            {
+            //                clone.SetPropertyValue(key.PropertyName, NextIdString(data, property));
+            //            }
+            //        }
+            //    }
+            //    data.Add(clone);
+            //    if (entity.Entity == operation.Operation.Entity)
+            //    {
+            //        rootClone = clone;
+            //    }
+            //}
+
+
+            var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
+                .GetSourceByType(operation.Operation.EntityType);
+            var clone = operation.Operation.Entity.CloneAs(DataContext, operation.Operation.EntityType, RelationshipCloneMode.DoNotClone);
+            var configuration = operation.Operation.DataContext.EntityConfigurationContext.GetEntityByType(
+                operation.Operation.EntityType);
+            foreach (var key in configuration.Key.Properties)
             {
-                var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-                    .GetSourceByType(entity.EntityType);
-                data.Add(entity.Entity.CloneAs(DataContext, entity.EntityType, RelationshipCloneMode.DoNotClone));
+                var property = configuration.FindProperty(key.PropertyName);
+                if (property.Kind == PropertyKind.Key)
+                {
+                    if (property.Type == typeof(int))
+                    {
+                        clone.SetPropertyValue(key.PropertyName, NextIdInteger(data, property));
+                    }
+                    else if (property.Type == typeof(string))
+                    {
+                        clone.SetPropertyValue(key.PropertyName, NextIdString(data, property));
+                    }
+                }
             }
+            data.Add(clone);
             operation.Result.Success = true;
+            operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);
+        }
+
+        public int NextIdInteger(IList data, IProperty property)
+        {
+            int max = 0;
+            foreach (var existingEntity in data)
+            {
+                var value = (int)existingEntity.GetPropertyValue(property.Name);
+                if(value > max)
+                {
+                    max = value;
+                }
+            }
+            return ++max;
+        }
+
+        public string NextIdString(IList data, IProperty property)
+        {
+            return Guid.NewGuid().ToString();
         }
 
         private static IList<TEntity> DataSet<TEntity>(ICrudOperation operation)

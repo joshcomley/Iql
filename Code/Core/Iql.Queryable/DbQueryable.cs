@@ -8,6 +8,7 @@ using Iql.Parsing;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -302,23 +303,22 @@ namespace Iql.Queryable
             return await DataContext.DataStore.Get(new GetDataOperation<T>(this, DataContext));
         }
 
-        public AddEntityResult<T> Add(T entity)
+        public EntityState<T> Add(T entity)
         {
             if (DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
             {
                 return null;
             }
-            return DataContext.DataStore.Add(
-                new AddEntityOperation<T>(entity, DataContext));
+            return DataContext.DataStore.Add(entity);
         }
 
-        public UpdateEntityResult<T> Update(T entity)
-        {
-            return DataContext.DataStore.Update(
-                new UpdateEntityOperation<T>(entity, DataContext));
-        }
+        //public UpdateEntityResult<T> Update(T entity)
+        //{
+        //    return DataContext.DataStore.Update(
+        //        new UpdateEntityOperation<T>(entity, DataContext));
+        //}
 
-        public DeleteEntityResult<T> Delete(T entity)
+        public EntityState<T> Delete(T entity)
         {
             if (!DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
             {
@@ -379,8 +379,7 @@ namespace Iql.Queryable
             //    }
             //}
 
-            return DataContext.DataStore.Delete(
-                new DeleteEntityOperation<T>(entity, DataContext));
+            return DataContext.DataStore.Delete(entity);
         }
 
         public async Task<SaveChangesResult> SaveChanges(T entity)

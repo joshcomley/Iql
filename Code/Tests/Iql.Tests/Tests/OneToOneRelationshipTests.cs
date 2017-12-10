@@ -26,6 +26,7 @@ namespace Iql.Tests.Tests
 
                 OneToOneShouldPersistRelationshipsWhenTracked(true, false, false, order, oneToOneTestType);
                 TestCleanUp();
+                //
                 OneToOneShouldPersistRelationshipsWhenTracked(true, false, true, order, oneToOneTestType);
                 TestCleanUp();
                 OneToOneShouldPersistRelationshipsWhenTracked(true, true, false, order, oneToOneTestType);
@@ -113,12 +114,14 @@ namespace Iql.Tests.Tests
         {
             var riskAssessment1 = new RiskAssessment();
             var riskAssessment2 = new RiskAssessment();
-            riskAssessment1.Id = 7;
-            riskAssessment2.Id = 8;
+            //riskAssessment1.Id = 7;
+            //riskAssessment2.Id = 8;
             riskAssessment1.SiteInspectionId = 62;
             Db.RiskAssessments.Add(riskAssessment1);
             Db.RiskAssessments.Add(riskAssessment2);
             await Db.SaveChanges();
+            var queuedOperations = Db.DataStore.GetQueue().ToList();
+            Assert.AreEqual(0, queuedOperations.Count);
             Assert.IsNull(riskAssessment1.SiteInspection);
             Assert.IsNull(riskAssessment2.SiteInspection);
             var changes = Db.DataStore.GetChanges().ToList();
@@ -144,7 +147,8 @@ namespace Iql.Tests.Tests
             var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).WithKey(62);
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
-            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
+            queuedOperations = Db.DataStore.GetQueue().ToList();
+            Assert.AreEqual(0, queuedOperations.Count);
             Assert.AreEqual(siteInspection.RiskAssessment.Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspectionId, siteInspection.Id);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspection, siteInspection);

@@ -59,7 +59,7 @@ namespace Iql.Queryable.Data
             _configurations.Add(ConfigurationNameByType(configuration.GetType()), configuration);
         }
 
-        public EntityState GetEntityState(object entity
+        public IEntityStateBase GetEntityState(object entity
 #if TypeScript
             , Type entityType
 #endif
@@ -205,7 +205,8 @@ namespace Iql.Queryable.Data
             {
                 entityType = entity.GetType();
             }
-            if (this.IsEntityNew(entity, entityType))
+            var isEntityNew = this.IsEntityNew(entity, entityType);
+            if (isEntityNew == null || isEntityNew == true)
             {
                 return null;
             }

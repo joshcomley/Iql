@@ -20,7 +20,7 @@ namespace Iql.Queryable.Data
         void RegisterConfiguration<T>(T configuration)
             where T : class;
 
-        EntityState GetEntityState(object entity
+        IEntityStateBase GetEntityState(object entity
 #if TypeScript
             , Type entityType
 #endif

@@ -7,7 +7,17 @@ namespace Iql.Queryable.Extensions
 {
     public static class DataContextExtensions
     {
-        public static bool IsEntityNew(this IDataContext dataContext, object entity, Type entityType)
+        public static bool? IsEntityNew(this IDataContext dataContext, object entity, Type entityType)
+        {
+            var entityState = dataContext.GetEntityState(entity
+#if TypeScript
+                , entityType
+#endif
+                );
+            return entityState?.IsNew;
+        }
+
+        public static bool EntityHasKey(this IDataContext dataContext, object entity, Type entityType)
         {
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var keyProperty in entityConfiguration.Key.Properties)
@@ -18,10 +28,10 @@ namespace Iql.Queryable.Extensions
                     Equals(value, "") ||
                     Equals(value, new DateTime()))
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
         //public static List<PropertyChange> ChangedProperties<T>(this IDataContext dataContext, T entity) where T : class
         //{
@@ -32,7 +42,7 @@ namespace Iql.Queryable.Extensions
         //    var entityConfiguration = dataContext.EntityConfigurationContext.GetEntity<T>();
         //    foreach (var property in entityConfiguration.Properties)
         //    {
-                
+
         //    }
         //}
 

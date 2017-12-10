@@ -6,14 +6,21 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Events;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.Crud.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
-    public class EntityState
+    public class EntityState<T> : IEntityState<T>
     {
         private bool _markedForDeletion;
-        public bool IsNew { get; set; }
+        private bool _isNew;
+
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set { _isNew = value; }
+        }
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
 
@@ -51,17 +58,27 @@ namespace Iql.Queryable.Data.Crud.State
         }
 
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
-        public object Entity { get; }
+        public T Entity { get; }
+        object IEntityStateBase.Entity => Entity;
         public Type EntityType { get; }
+        public IDataContext DataContext { get; }
         public IEntityConfiguration EntityConfiguration { get; }
 
-        public EntityState(object entity, Type entityType, IEntityConfiguration entityConfiguration)
+        public EntityState(T entity, Type entityType, IDataContext dataContext, IEntityConfiguration entityConfiguration)
         {
             Entity = entity;
             EntityType = entityType;
+            DataContext = dataContext;
             EntityConfiguration = entityConfiguration;
             ChangedProperties = new List<PropertyChange>();
             Properties = new List<PropertyChange>();
+        }
+
+        public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
+        {
+            return (IEntityStateBase)
+                Activator.CreateInstance(typeof(EntityState<>).MakeGenericType(entityType),
+                new object[]{entity, entityType, entityConfiguration});
         }
 
         public List<PropertyChange> ChangedProperties { get; }

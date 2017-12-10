@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Exceptions;
 
@@ -23,122 +24,148 @@ namespace Iql.Queryable.Data.Tracking
         public List<ITrackingSet> Sets { get; set; }
         private IDataContext DataContext { get; }
 
-        public List<IUpdateEntityOperation> GetChanges(List<IQueuedOperation> queue, bool reset = false)
+        public List<IEntityCrudOperationBase> GetInserts()
         {
-            ClearParents();
-            var changes = new Dictionary<Type, List<IUpdateEntityOperation>>();
-            var setsChecked = new List<ITrackingSet>();
+            var inserts = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                inserts.AddRange(set.GetInserts());
+            }
+            return inserts;
+        }
 
-            while (true)
+        public List<IEntityCrudOperationBase> GetDeletions()
+        {
+            var deletions = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
             {
-                var sets = Sets.ToList();
-                foreach (var set in sets)
-                {
-                    if (!setsChecked.Contains(set))
-                    {
-                        if (!changes.ContainsKey(set.EntityType))
-                        {
-                            changes.Add(set.EntityType, new List<IUpdateEntityOperation>());
-                        }
-                        var updateEntityOperations = set.GetChangesInternal(queue);                        
-                        changes[set.EntityType].AddRange(updateEntityOperations);
-                        setsChecked.Add(set);
-                    }
-                }
-                if (Sets.Count == sets.Count)
-                {
-                    break;
-                }
+                deletions.AddRange(set.GetDeletions());
             }
-            ClearParents();
-            foreach (var set in Sets.ToList())
-            {
-                set.EnsureIntegrity();
-                foreach (var entity in set.TrackedEntites())
-                {
-                    var relationships = set.FindTrackedEntity(entity).TrackedRelationships;
-                    foreach (var relationship in relationships)
-                    {
-                        var compositeKey = relationship.OwnerDetail.GetCompositeKey(relationship.Owner, true);
-                        // Sanitize the relationship
-                        if (!DataContext.EntityPropertiesMatch(
-                            relationship.Entity,
-                            compositeKey))
-                        {
-                            var entityKey = relationship.EntityDetail.GetCompositeKey(relationship.Entity);
-                            //var properties = new List<string>();
-                            //foreach (var constraint in relationship.OwnerDetail.Constraints())
-                            //{
-                            //    properties.Add(constraint.PropertyName);
-                            //}
-                            //properties.Add(relationship.OwnerDetail.Property.PropertyName);
-                            if (changes.ContainsKey(relationship.OwnerDetail.Type))
-                            {
-                                if (changes[relationship.OwnerDetail.Type].Any(c =>
-                                    c.EntityState.Entity == relationship.Entity &&
-                                    c.EntityState.ChangedProperties.Any(cp =>
-                                        cp.Property.Name == relationship.OwnerDetail.Property.PropertyName)))
-                                {
-                                    // This is a deliberate change
-                                    // Throw some error
-                                }
-                                else if (entityKey.Keys.All(k => !Equals(k.Value, Activator.CreateInstance(k.ValueType))))
-                                {
-                                    var value = relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property
-                                        .PropertyName);
-                                    ClearParent(value, relationship.OwnerDetail.Property
-                                        .PropertyName);
-                                    if (relationship.OwnerDetail.IsCollection)
-                                    {
-                                        var collection = value as IList;
-                                        collection.Remove(relationship.Entity);
-                                    }
-                                    else
-                                    {
-                                        relationship.Owner.SetPropertyValue(relationship.OwnerDetail.Property
-                                            .PropertyName, null);
-                                    }
-                                }
-                            }
-                        }
-                        //var ownerProperty =
-                        //    relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property.PropertyName);
-                        //if (relationship.OwnerDetail.IsCollection)
-                        //{
-                        //    var collection = ownerProperty as IList;
+            return deletions;
+        }
 
-                        //}
-                    }
-                    /* - Run through each relationship
-                     * - Check integrity
-                     * - If OK
-                     *   - Do nothing
-                     * - Else
-                     *   - Check if this is a deliberate change from the user (i.e. we have a record of it in the changes above)
-                     *     - If it is deliberate
-                     *       - Throw integrity check error
-                     *     - If not
-                     *       - Correct integrity
-                     */
-                }
-            }
-            var allChanges = new List<IUpdateEntityOperation>();
-            // At this point we must sanitise the changes
-            foreach (var type in changes)
+        public List<IUpdateEntityOperation> GetUpdates()
+        {
+            var updates = new List<IUpdateEntityOperation>();
+            foreach (var set in Sets)
             {
-                allChanges.AddRange(changes[type.Key]);
-                foreach (var change in type.Value)
-                {
-                    var relationshipChanges =
-                        change.EntityState.ChangedProperties.Where(p => p.Property.Kind == PropertyKind.Relationship)
-                            .ToList();
-                    var relationshipKeyChanges =
-                        change.EntityState.ChangedProperties.Where(p => p.Property.Kind == PropertyKind.RelationshipKey)
-                            .ToList();
-                    int a = 0;
-                }
+                updates.AddRange(set.GetUpdates());
             }
-            return allChanges;
+            return updates;
+            //ClearParents();
+            //var changes = new Dictionary<Type, List<IUpdateEntityOperation>>();
+            //var setsChecked = new List<ITrackingSet>();
+
+            //while (true)
+            //{
+            //    var sets = Sets.ToList();
+            //    foreach (var set in sets)
+            //    {
+            //        if (!setsChecked.Contains(set))
+            //        {
+            //            if (!changes.ContainsKey(set.EntityType))
+            //            {
+            //                changes.Add(set.EntityType, new List<IUpdateEntityOperation>());
+            //            }
+            //            var updateEntityOperations = set.GetChangesInternal();                        
+            //            changes[set.EntityType].AddRange(updateEntityOperations);
+            //            setsChecked.Add(set);
+            //        }
+            //    }
+            //    if (Sets.Count == sets.Count)
+            //    {
+            //        break;
+            //    }
+            //}
+            //ClearParents();
+            //foreach (var set in Sets.ToList())
+            //{
+            //    set.EnsureIntegrity();
+            //    foreach (var entity in set.TrackedEntites())
+            //    {
+            //        var relationships = set.FindTrackedEntity(entity).TrackedRelationships;
+            //        foreach (var relationship in relationships)
+            //        {
+            //            var compositeKey = relationship.OwnerDetail.GetCompositeKey(relationship.Owner, true);
+            //            // Sanitize the relationship
+            //            if (!DataContext.EntityPropertiesMatch(
+            //                relationship.Entity,
+            //                compositeKey))
+            //            {
+            //                var entityKey = relationship.EntityDetail.GetCompositeKey(relationship.Entity);
+            //                //var properties = new List<string>();
+            //                //foreach (var constraint in relationship.OwnerDetail.Constraints())
+            //                //{
+            //                //    properties.Add(constraint.PropertyName);
+            //                //}
+            //                //properties.Add(relationship.OwnerDetail.Property.PropertyName);
+            //                if (changes.ContainsKey(relationship.OwnerDetail.Type))
+            //                {
+            //                    if (changes[relationship.OwnerDetail.Type].Any(c =>
+            //                        c.EntityState.Entity == relationship.Entity &&
+            //                        c.EntityState.ChangedProperties.Any(cp =>
+            //                            cp.Property.Name == relationship.OwnerDetail.Property.PropertyName)))
+            //                    {
+            //                        // This is a deliberate change
+            //                        // Throw some error
+            //                    }
+            //                    else if (entityKey.Keys.All(k => !Equals(k.Value, Activator.CreateInstance(k.ValueType))))
+            //                    {
+            //                        var value = relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property
+            //                            .PropertyName);
+            //                        ClearParent(value, relationship.OwnerDetail.Property
+            //                            .PropertyName);
+            //                        if (relationship.OwnerDetail.IsCollection)
+            //                        {
+            //                            var collection = value as IList;
+            //                            collection.Remove(relationship.Entity);
+            //                        }
+            //                        else
+            //                        {
+            //                            relationship.Owner.SetPropertyValue(relationship.OwnerDetail.Property
+            //                                .PropertyName, null);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            //var ownerProperty =
+            //            //    relationship.Owner.GetPropertyValue(relationship.OwnerDetail.Property.PropertyName);
+            //            //if (relationship.OwnerDetail.IsCollection)
+            //            //{
+            //            //    var collection = ownerProperty as IList;
+
+            //            //}
+            //        }
+            //        /* - Run through each relationship
+            //         * - Check integrity
+            //         * - If OK
+            //         *   - Do nothing
+            //         * - Else
+            //         *   - Check if this is a deliberate change from the user (i.e. we have a record of it in the changes above)
+            //         *     - If it is deliberate
+            //         *       - Throw integrity check error
+            //         *     - If not
+            //         *       - Correct integrity
+            //         */
+            //    }
+            //}
+            //var allChanges = new List<IUpdateEntityOperation>();
+            //// At this point we must sanitise the changes
+            //foreach (var type in changes)
+            //{
+            //    allChanges.AddRange(changes[type.Key]);
+            //    foreach (var change in type.Value)
+            //    {
+            //        var relationshipChanges =
+            //            change.EntityState.ChangedProperties.Where(p => p.Property.Kind == PropertyKind.Relationship)
+            //                .ToList();
+            //        var relationshipKeyChanges =
+            //            change.EntityState.ChangedProperties.Where(p => p.Property.Kind == PropertyKind.RelationshipKey)
+            //                .ToList();
+            //        int a = 0;
+            //    }
+            //}
+            //return allChanges;
         }
 
         public TrackingSet<T> GetSet<T>() where T : class
@@ -178,23 +205,23 @@ namespace Iql.Queryable.Data.Tracking
             foreach (var obj in flattenObjectGraph)
             {
                 var set = TrackingSet(obj.EntityType);
-                set.Track(obj.Entity);
+                set.Track(obj.Entity, false);
             }
         }
 
-        public void TrackEntity(object entity, Type entityType)
+        public void TrackEntity(object entity, Type entityType, bool isNew)
         {
             var set = TrackingSet(entityType);
-            set.Track(entity);
+            set.Track(entity, isNew);
         }
 
-        public void Merge(object entity, Type entityType)
+        public void Merge(object entity, Type entityType, bool isNew)
         {
             var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
             foreach (var obj in flattenObjectGraph)
             {
                 var set = TrackingSet(obj.EntityType);
-                set.MergeEntity(obj.Entity);
+                set.MergeEntity(obj.Entity, isNew);
             }
         }
 
@@ -286,6 +313,112 @@ namespace Iql.Queryable.Data.Tracking
             //{
             //    _parents[entity].Remove(property);
             //}
+        }
+
+        private IEnumerable<IQueuedOperation> GetQueuedUpdates()
+        {
+            var changes = new List<IQueuedOperation>();
+            GetUpdates().ForEach(update =>
+            {
+                //// If we are adding an entity in the same save changes operation
+                //// then we don't need to do any scheduled updates on it because
+                //// they will be negated by the add operation
+                //if (GetQueue().Any(q => q.Operation.Type == OperationType.Add
+                //                   && (q.Operation as IEntityCrudOperationBase).Entity == update.Entity))
+                //{
+                //    return;
+                //}
+                //var alreadyBeingUpdatedByAnotherOperation = false;
+                //foreach (var queuedOperation in GetQueue())
+                //{
+                //    if (queuedOperation.Type == QueuedOperationType.Update)
+                //    {
+                //        var entityOperation = queuedOperation.Operation as IEntityCrudOperationBase;
+                //        var entitiesInObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                //            entityOperation.Entity,
+                //            queuedOperation.Operation.EntityType);
+                //        foreach (var flattenedEntity in entitiesInObjectGraph)
+                //        {
+                //            if (flattenedEntity.Entity == update.Entity)
+                //            {
+                //                alreadyBeingUpdatedByAnotherOperation = true;
+                //                break;
+                //            }
+                //        }
+                //        if (alreadyBeingUpdatedByAnotherOperation)
+                //        {
+                //            break;
+                //        }
+                //    }
+                //}
+                //if (!alreadyBeingUpdatedByAnotherOperation)
+                //{
+                //    var updateOperation =
+                //        Activator.CreateInstance(
+                //            typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                //    changes.Add((IQueuedOperation)updateOperation);
+                //}
+                //this.Queue.Add(new QueuedUpdateEntityOperation<object>(update, new UpdateEntityResult<object>(true, update)));
+                //Apply(update);
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            GetInserts().ForEach(insert =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            GetDeletions().ForEach(deletion =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            return changes;
+        }
+
+        public IEnumerable<IQueuedOperation> GetQueue()
+        {
+            var queue = new List<IQueuedOperation>();
+            foreach (var operation in GetQueuedUpdates())
+            {
+                var filteredOperation = GetType()
+                    .GetMethod(nameof(Filter))
+                    .MakeGenericMethod(operation.Operation.EntityType)
+                    .Invoke(this, new object[]
+                    {
+                        operation
+#if TypeScript // The type info
+                        ,queuedOperation.Operation.EntityType
+#endif
+                    }) as IQueuedOperation;
+                if (filteredOperation != null)
+                {
+                    queue.Add(filteredOperation);
+                }
+            }
+            return queue;
+        }
+
+        public virtual IQueuedOperation Filter<TEntity>(
+            IQueuedOperation operation) where TEntity : class
+        {
+
+            switch (operation.Operation.Type)
+            {
+                case OperationType.Add:
+                    break;
+                case OperationType.Delete:
+                    break;
+                case OperationType.Update:
+                    break;
+            }
+            return operation;
         }
     }
 }

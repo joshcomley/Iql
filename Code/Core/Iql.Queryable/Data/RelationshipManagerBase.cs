@@ -304,7 +304,8 @@ namespace Iql.Queryable.Data
                         else
                         {
                             // Find all target relationships that have the same key value
-                            if (!dataContext.IsEntityNew(entity, relationship.Relationship.Target.Type))
+                            var isEntityNew = dataContext.IsEntityNew(entity, relationship.Relationship.Target.Type);
+                            if (isEntityNew != null && isEntityNew.Value == false)
                             {
                                 var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
                                 var ourTarget =

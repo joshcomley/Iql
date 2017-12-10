@@ -4,9 +4,9 @@ namespace Iql.Queryable.Data.Crud.State
 {
     public class MarkedForDeletionChangeEvent
     {
-        public EntityState EntityState { get; }
+        public IEntityStateBase EntityState { get; }
         public bool NewValue { get; }
-        public MarkedForDeletionChangeEvent(EntityState entityState, bool newValue)
+        public MarkedForDeletionChangeEvent(IEntityStateBase entityState, bool newValue)
         {
             EntityState = entityState;
             NewValue = newValue;
