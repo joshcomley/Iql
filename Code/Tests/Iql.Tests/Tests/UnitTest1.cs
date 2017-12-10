@@ -628,15 +628,31 @@ namespace Iql.Tests.Tests
             var clients = AddClientTypes();
             await Db.SaveChanges();
             var clientToDelete = clients.ClientType1.Clients[0];
+
+            var entityState = Db.DataStore.GetTracking().TrackingSet(typeof(Client))
+                .GetEntityState(clientToDelete);
+
+            Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
+            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");
+
             Db.Clients.Delete(clientToDelete);
+
+            Assert.AreEqual(true, entityState.MarkedForDeletion, "Entity should be marked for deletion.");
+            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");
+
             var deleteOperation = Db.DataStore.GetQueue().First() as QueuedDeleteEntityOperation<Client>;
+
             Assert.IsNotNull(deleteOperation);
             Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
+
 
             // Reinstate the deleted entity
             clients.ClientType2.Clients.AssignRelationship(deleteOperation.Operation.Entity);
 
-            Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
+            Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
+            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");
+
+            //Assert.AreEqual(0, Db.DataStore.GetQueue().Count());
         }
 
         [TestMethod]
