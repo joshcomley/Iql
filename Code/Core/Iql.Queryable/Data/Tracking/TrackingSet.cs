@@ -134,6 +134,8 @@ namespace Iql.Queryable.Data.Tracking
 
         private Dictionary<IRelatedList, int> _collectionChangeSubscriptions =
             new Dictionary<IRelatedList, int>();
+        private Dictionary<T, int> _entityStateChangedSubscriptions =
+            new Dictionary<T, int>();
         private Dictionary<T, int> _propertyChangingSubscriptions =
             new Dictionary<T, int>();
         private Dictionary<T, int> _propertyChangedSubscriptions =
@@ -336,6 +338,10 @@ namespace Iql.Queryable.Data.Tracking
 
         internal void Watch(T entity)
         {
+            if (!_entityStateChangedSubscriptions.ContainsKey(entity))
+            {
+                GetEntityState(entity).MarkedForDeletionChanged.Subscribe(MarkedForDeletionChanged);
+            }
             if (!_propertyChangingSubscriptions.ContainsKey(entity))
             {
                 var propertyChangingSubscriptionId = (entity as IEntity)?.PropertyChanging?.Subscribe(pc =>
@@ -518,6 +524,23 @@ namespace Iql.Queryable.Data.Tracking
                         _collectionChangeSubscriptions.Add(relatedList, relatedList.Changed.Subscribe(RelatedListChanged));
                     }
                 }
+            }
+        }
+
+        private void MarkedForDeletionChanged(MarkedForDeletionChangeEvent markedForDeletionChangeEvent)
+        {
+            if (markedForDeletionChangeEvent.NewValue)
+            {
+                DataContext.DataStore.Delete(new DeleteEntityOperation<T>(
+                    (T) markedForDeletionChangeEvent.EntityState.Entity,
+                    DataContext));
+                DataContext.AsDbSetByType(markedForDeletionChangeEvent.EntityState.EntityType);
+            }
+            else
+            {
+                DataContext.DataStore.RemoveQueuedOperationsOfTypeForEntity(
+                    markedForDeletionChangeEvent.EntityState.Entity,
+                    QueuedOperationType.Delete);
             }
         }
 

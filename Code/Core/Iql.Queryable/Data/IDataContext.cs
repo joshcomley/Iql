@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Parsing;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -19,6 +20,11 @@ namespace Iql.Queryable.Data
         void RegisterConfiguration<T>(T configuration)
             where T : class;
 
+        EntityState GetEntityState(object entity
+#if TypeScript
+            , Type entityType
+#endif
+        );
         T GetConfiguration<T>()
             where T : class;
 

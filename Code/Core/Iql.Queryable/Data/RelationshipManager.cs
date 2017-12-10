@@ -189,15 +189,46 @@ namespace Iql.Queryable.Data
         {
             EnsureTracked(entity, typeof(TTarget));
             EnsureTracked(toAdd, typeof(TSource));
+            var entityState = DataContext.GetEntityState(entity
+#if TypeScript
+                , typeof(TTarget)
+#endif
+            );
             var key = Relationship.Target.GetCompositeKey(entity, true);
             toAdd.SetPropertyValue(Relationship.Source.Property.PropertyName, entity);
             toAdd.SetPropertyValues(key);
             ProcessOneToManyKeyChange(toAdd);
+            if (!entityState.MarkedForAnyDeletion)
+            {
+                EnsureGraphInstated(entity, typeof(TTarget));
+            }
             //var list = entity.GetPropertyValue(Relationship.Source.Property.PropertyName) as IRelatedList;
             //if (!list.Contains(toAdd))
             //{
             //    list.Add(toAdd);
             //}
+        }
+
+        private void EnsureGraphInstated(object entity, Type type)
+        {
+            var entityState = DataContext.GetEntityState(entity
+#if TypeScript
+            , type
+#endif
+                );
+            if (!entityState.MarkedForAnyDeletion)
+            {
+                var flattenedObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, type);
+                foreach (var flattened in flattenedObjectGraph)
+                {
+                    var flattenedEntityState = DataContext.GetEntityState(flattened.Entity
+#if TypeScript
+            , flattened.EntityType
+#endif
+                    );
+                    flattenedEntityState.UnmarkForDeletion();
+                }
+            }
         }
 
         //public static void PersistRelationship(IRelationshipDetail relationshipSide, IRelationshipDetail otherSide, object entity, object relatedEntity)

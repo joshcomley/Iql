@@ -5,15 +5,44 @@ using System.Linq;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Events;
 
 namespace Iql.Queryable.Data.Crud.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
     public class EntityState
     {
+        private bool _markedForDeletion;
         public bool IsNew { get; set; }
-        public bool MarkedForDeletion { get; set; }
+
+        public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
+
+        public bool MarkedForDeletion
+        {
+            get { return _markedForDeletion; }
+            set
+            {
+                var changed = _markedForDeletion != value;
+                _markedForDeletion = value;
+                if (changed)
+                {
+                    MarkedForDeletionChanged.Emit(new MarkedForDeletionChangeEvent(this, value));
+                }
+            }
+        }
+
         public bool MarkedForCascadeDeletion { get; private set; }
+
+        public bool MarkedForAnyDeletion
+        {
+            get { return MarkedForDeletion || MarkedForCascadeDeletion; }
+        }
+
+        public void UnmarkForDeletion()
+        {
+            MarkedForDeletion = false;
+            MarkedForCascadeDeletion = false;
+        }
 
         public void MarkForCascadeDeletion(object from, IRelationship relationship)
         {

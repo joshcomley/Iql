@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -56,6 +57,18 @@ namespace Iql.Queryable.Data
             where T : class
         {
             _configurations.Add(ConfigurationNameByType(configuration.GetType()), configuration);
+        }
+
+        public EntityState GetEntityState(object entity
+#if TypeScript
+            , Type entityType
+#endif
+            )
+        {
+#if !TypeScript
+            var entityType = entity.GetType();
+#endif
+            return DataStore.GetTracking().TrackingSet(entityType).GetEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -184,7 +197,7 @@ namespace Iql.Queryable.Data
 #endif
             AsDbSetByType(entityType).AddEntity(entity);
         }
-        
+
         public async Task<T> RefreshEntity<T>(T entity, Type entityType)
             where T : class
         {
@@ -277,9 +290,9 @@ namespace Iql.Queryable.Data
                             case RelationshipType.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
                                     EnsureTypedListByType(
-                                        (IEnumerable)entity.GetPropertyValue(propertyName), 
-                                        relationship.Target.Type, 
-                                        entity, 
+                                        (IEnumerable)entity.GetPropertyValue(propertyName),
+                                        relationship.Target.Type,
+                                        entity,
                                         relationship.Source.Type));
                                 break;
                         }
@@ -307,7 +320,7 @@ namespace Iql.Queryable.Data
                 }
                 else
                 {
-                    list = (IList)Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(childType, type), new object[]{ owner });
+                    list = (IList)Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(childType, type), new object[] { owner });
                 }
             }
             if (responseData != null)
