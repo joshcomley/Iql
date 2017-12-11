@@ -48,7 +48,11 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 3, SiteInspectionId = 62 });
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
             var siteInspections = await Db.SiteInspections.Expand(s => s.RiskAssessment).ToList();
-            Db.DeleteEntity(siteInspections[0].RiskAssessment);
+            Db.DeleteEntity(siteInspections[0].RiskAssessment
+#if TypeScript
+                , typeof(RiskAssessment)
+#endif
+                );
             Assert.IsNull(siteInspections[0].RiskAssessment);
             Assert.IsNotNull(siteInspections[1].RiskAssessment);
         }
@@ -78,7 +82,11 @@ namespace Iql.Tests.Tests
             Assert.IsFalse(riskAssessmentSolutionState.MarkedForCascadeDeletion);
             Assert.IsFalse(riskAssessmentSolutionState.CascadeDeletedBy.Any(cd => cd.Source == riskAssessment));
 
-            Db.DeleteEntity(siteInspections[0]);
+            Db.DeleteEntity(siteInspections[0]
+#if TypeScript
+            , typeof(SiteInspection)
+#endif
+                );
 
             Assert.IsFalse(riskAssessmentState.MarkedForDeletion);
             Assert.IsTrue(riskAssessmentState.MarkedForCascadeDeletion);

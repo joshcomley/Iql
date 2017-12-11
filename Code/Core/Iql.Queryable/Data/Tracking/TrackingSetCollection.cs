@@ -394,7 +394,7 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         operation
 #if TypeScript // The type info
-                        ,queuedOperation.Operation.EntityType
+                        , operation.Operation.EntityType
 #endif
                     }) as IQueuedOperation;
                 if (filteredOperation != null)

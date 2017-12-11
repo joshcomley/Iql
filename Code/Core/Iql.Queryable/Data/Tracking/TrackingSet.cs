@@ -487,7 +487,6 @@ namespace Iql.Queryable.Data.Tracking
                                         break;
                                     case RelationshipType.ManyToMany:
                                         throw new NotImplementedException();
-                                        break;
                                 }
                             }
                         }
@@ -518,7 +517,6 @@ namespace Iql.Queryable.Data.Tracking
                                             case PropertyKind.RelationshipKey:
                                                 throw new Exception(
                                                     "Relationship key on target of one-to-one relationship shouldn't exist.");
-                                                break;
                                             case PropertyKind.Relationship:
                                                 relationshipManager.ProcessOneToOneInverseReferenceChange(entity);
                                                 break;

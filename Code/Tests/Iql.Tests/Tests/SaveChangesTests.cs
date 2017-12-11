@@ -196,5 +196,76 @@ namespace Iql.Tests.Tests
             Assert.AreEqual("Site 1 - changed", AppDbContext.InMemoryDb.Sites.Single(s => s.Id == site1.Id).Name);
             Assert.AreEqual("Client 1 - changed", AppDbContext.InMemoryDb.Clients.Single(s => s.Id == client1.Id).Name);
         }
+
+
+        [TestMethod]
+        public async Task ChangeExpandedEntityShouldOnlyProduceUpdateForThatEntity()
+        {
+            // Set up
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Client 1" });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Client 2" });
+            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
+            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
+
+            var site = await Db.Sites.Expand(s => s.Client).WithKey(1);
+
+            site.Client.Name = "Client 1 - changed";
+
+            void AssertNameOnlyQueued(string newDescription)
+            {
+                var queue = Db.DataStore.GetQueue().ToList();
+                Assert.AreEqual(1, queue.Count);
+                var update = queue[0] as QueuedUpdateEntityOperation<Client>;
+                Assert.IsNotNull(update);
+                Assert.AreEqual(site.Client, update.Operation.Entity);
+                var propertyChanges = update.Operation.EntityState.ChangedProperties;
+                Assert.AreEqual(1, propertyChanges.Count);
+                var propertyChange = propertyChanges[0];
+                Assert.AreEqual(nameof(Client.Name), propertyChange.Property.Name);
+                Assert.AreEqual("Client 1", propertyChange.OldValue);
+                Assert.AreEqual(newDescription, propertyChange.NewValue);
+            }
+
+            AssertNameOnlyQueued("Client 1 - changed");
+        }
+
+
+        [TestMethod]
+        public async Task ChangeRelationship()
+        {
+            // Set up
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Client 1" });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Client 2" });
+            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
+            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
+
+            var site = await Db.Sites.Expand(s => s.Client).WithKey(1);
+            var client1 = site.Client;
+            var client2 = await Db.Clients.WithKey(2);
+
+            site.Client = client2;
+
+            void AssertQueue()
+            {
+                var queue = Db.DataStore.GetQueue().ToList();
+                Assert.AreEqual(1, queue.Count);
+                var update = queue[0] as QueuedUpdateEntityOperation<Site>;
+                Assert.IsNotNull(update);
+                Assert.AreEqual(site, update.Operation.Entity);
+
+                var propertyChanges = update.Operation.EntityState.ChangedProperties;
+                Assert.AreEqual(2, propertyChanges.Count);
+                var propertyChange = propertyChanges.Single(p => p.Property.Name == nameof(Site.ClientId));
+
+                Assert.AreEqual(nameof(Site.ClientId), propertyChange.Property.Name);
+                Assert.AreEqual(client1.Id, propertyChange.OldValue);
+                Assert.AreEqual(client2.Id, propertyChange.NewValue);
+            }
+
+            AssertQueue();
+        }
+        // Test inserts
+        // Test direct deletions
+        // Test floating entities are not inserted
     }
 }

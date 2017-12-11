@@ -21,7 +21,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public void TestDetectedPropertyChanges()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             var client = clientTypes.ClientType1.Clients[0];
             var state = Db.DataStore.GetTracking().TrackingSet(typeof(Client))
                 .GetEntityState(client);
@@ -113,7 +113,11 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, AppDbContext.InMemoryDb.ClientTypes.Count);
             var clientType = new ClientType() { Id = 1 };
             Db.ClientTypes.Add(clientType);
-            var entityState = Db.GetEntityState(clientType);
+            var entityState = Db.GetEntityState(clientType
+#if TypeScript
+                , typeof(ClientType)
+#endif
+                );
             Assert.IsTrue(entityState.IsNew);
             Assert.AreEqual(1, Db.DataStore.GetQueue().Count());
             await Db.SaveChanges();
@@ -206,9 +210,9 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task FetchingEntitiesWithANewDataContextShouldReturnDifferentObjectsThanWereInserted()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChanges();
-            Db = new AppDbContext();
+            TestsBlock.Db = new AppDbContext();
             var entity1 = await Db.ClientTypes.WithKey(2);
             var entity2 = await Db.ClientTypes.WithKey(3);
             Assert.AreNotEqual(entity1, clientTypes.ClientType1);
@@ -218,7 +222,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task FetchingEntitiesWithTheSameDataContextShouldReturnTheSameObjectsThatWereInserted()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var entity1 = await Db.ClientTypes.WithKey(clientTypes.ClientType1.Id);
             var entity2 = await Db.ClientTypes.WithKey(clientTypes.ClientType2.Id);
@@ -229,7 +233,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task AttemptingToAddAnEntityThatAlreadyExistsShouldNotThrowAnException()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var addEntityResult = Db.ClientTypes.Add(clientTypes.ClientType2);
             await Db.SaveChanges();
@@ -239,7 +243,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task AddingAnEntityWithAnAttachedEntityWithWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
         {
-            AddClientTypes();
+            TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var clients = AppDbContext.InMemoryDb.Clients.ToList();
             var exceptionThrown = false;
@@ -257,7 +261,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task AddingAnEntityWithAnAttachedEntityWithANewKeyShouldNotThrowException()
         {
-            AddClientTypes();
+            TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var exceptionThrown = false;
             try
@@ -274,7 +278,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task AddingAnEntityWithAnAttachedEntityWithWithNoKeyKeyShouldNotThrowException()
         {
-            AddClientTypes();
+            TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var exceptionThrown = false;
             try
@@ -291,7 +295,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public void PropertyChangeEventShouldFireWhenAPropertyIsChanged()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             IPropertyChangeEvent propertyChangeEvent = null;
             clientTypes.ClientType1.PropertyChanged.Subscribe(pc =>
             {
@@ -306,7 +310,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestReassigningRelationshipEvents()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             var eventFiredCount = 0;
             var assignEventFiredCount = 0;
             var removeEventFiredCount = 0;
@@ -361,7 +365,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestAssignNewEntityToRelatedListSetsRelationshipKeyValues()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             var clientType = clientTypes.ClientType1;
             var newClient = new Client { Name = "My new client" };
             clientType.Clients.AssignRelationship(newClient);
@@ -411,7 +415,7 @@ namespace Iql.Tests.Tests
         //[TestMethod]
         //public async Task AttemptingToSetNullValueToNonNullablePropertyShouldProduceNullNotAllowedException()
         //{
-        //    var clientTypes = AddClientTypes();
+        //    var clientTypes = TestsBlock.AddClientTypes();
         //    var clientType1 = clientTypes.ClientType1;
         //    var clientType1Client = clientType1.Clients[0];
         //    ExpectException<NullNotAllowedException>(() =>
@@ -467,7 +471,7 @@ namespace Iql.Tests.Tests
 
         private static async Task AssigningAnAssociationWithANewEntity(int assignCount)
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             var clientType1 = clientTypes.ClientType1;
             var clientType1Clients = clientType1.Clients;
             await Db.SaveChanges();
@@ -519,7 +523,7 @@ namespace Iql.Tests.Tests
 
         public async Task TestReassign(ReassignType type1 , ReassignType type2)
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var clientType1 = clientTypes.ClientType1;
             var clientType2 = clientTypes.ClientType2;
@@ -611,7 +615,7 @@ namespace Iql.Tests.Tests
         public async Task
             DeletingAnEntityThatIsInAChildCollectionOfAnotherEntityShouldRemoveTheEntityFromTheChildCollection()
         {
-            var clientTypes = AddClientTypes();
+            var clientTypes = TestsBlock.AddClientTypes();
             Assert.AreEqual(1, clientTypes.ClientType1.Clients.Count);
             await Db.SaveChanges();
             var clients = await Db.Clients.ToList();
@@ -635,7 +639,7 @@ namespace Iql.Tests.Tests
         public async Task
             PuttingADeletedEntityBackShouldRemoveTheDeleteEntityOperation()
         {
-            var clients = AddClientTypes();
+            var clients = TestsBlock.AddClientTypes();
             await Db.SaveChanges();
             var clientToDelete = clients.ClientType1.Clients[0];
 
@@ -856,7 +860,7 @@ namespace Iql.Tests.Tests
         //[TestMethod]
         //public async Task ChangingAChildObjectsParentIdForOneToManyShouldSanitiseTheParentObjectsCollection1()
         //{
-        //    var clientTypes = AddClientTypes();
+        //    var clientTypes = TestsBlock.AddClientTypes();
         //    await Db.SaveChanges();
         //    var type1Client = clientTypes.ClientType1.Clients[0];
         //    type1Client.TypeId = clientTypes.ClientType2.Id;
@@ -871,7 +875,7 @@ namespace Iql.Tests.Tests
         //[TestMethod]
         //public async Task ChangingAChildObjectsParentIdForOneToManyShouldSanitiseTheParentObjectsCollection2()
         //{
-        //    var clientTypes = AddClientTypes();
+        //    var clientTypes = TestsBlock.AddClientTypes();
         //    await Db.SaveChanges();
         //    var type1Client = clientTypes.ClientType1.Clients[0];
         //    type1Client.TypeId = clientTypes.ClientType2.Id;
@@ -938,7 +942,7 @@ namespace Iql.Tests.Tests
         //[ExpectedException(typeof(InconsistentRelationshipAssignmentException))]
         //public async Task TwoInconsistentChangesToChildCollectionsShouldThrowInconsistentChangeException()
         //{
-        //    var clientTypes = AddClientTypes();
+        //    var clientTypes = TestsBlock.AddClientTypes();
         //    await Db.SaveChanges();
         //    var type1Client = clientTypes.ClientType1.Clients[0];
         //    type1Client.TypeId = clientTypes.ClientType2.Id;
@@ -950,7 +954,7 @@ namespace Iql.Tests.Tests
         //[TestMethod]
         //public async Task AddingAnEntityToAChildCollectionShouldPersistRelationship()
         //{
-        //    var clientTypes = AddClientTypes();
+        //    var clientTypes = TestsBlock.AddClientTypes();
         //    await Db.SaveChanges();
         //    var type1Client = clientTypes.ClientType1.Clients[0];
         //    clientTypes.ClientType3.Clients.Add(type1Client);
@@ -963,7 +967,7 @@ namespace Iql.Tests.Tests
         //[ExpectedException(typeof(InconsistentRelationshipAssignmentException))]
         //public async Task ChangingBothARelationshipAndARelationshipKeyShouldThrowAnErrorIfNotConsistent()
         //{
-        //    var clientTypes = AddClientTypes();
+        //    var clientTypes = TestsBlock.AddClientTypes();
         //    await Db.SaveChanges();
         //    var item1Client = clientTypes.ClientType1.Clients[0];
         //    item1Client.TypeId = clientTypes.ClientType2.Id;

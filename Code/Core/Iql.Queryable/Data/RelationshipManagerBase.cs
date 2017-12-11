@@ -19,7 +19,13 @@ namespace Iql.Queryable.Data
                         BindingFlags.NonPublic | BindingFlags.Static)
                     .MakeGenericMethod(relationship.Source.Type, relationship.Target.Type);
             return (IRelationshipManager)getRelationshipManagerMethod.Invoke(null,
-                new object[] { relationship, dataContext });
+                new object[]
+                {
+                    relationship, dataContext
+#if TypeScript
+                    , relationship.Source.Type, relationship.Target.Type
+#endif
+                });
         }
 
         private static RelationshipManager<TSource, TTarget> GetRelatioshipManagerGeneric<TSource, TTarget>(IRelationship relationship, IDataContext dataContext)
@@ -46,7 +52,7 @@ namespace Iql.Queryable.Data
                                 as IRelatedList;
                             var sourceConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
                                 relationship.OtherEnd.Type);
-                            var nullable = relationship.Relationship.Constraints.All(c => 
+                            var nullable = relationship.Relationship.Constraints.All(c =>
                                 sourceConfiguration.FindProperty(c.SourceKeyProperty.PropertyName).Nullable
                             );
                             // The source collection will be modified, so make
@@ -63,7 +69,12 @@ namespace Iql.Queryable.Data
                                 }
                                 else
                                 {
-                                    dataContext.CascadeDeleteEntity(child, entity, relationship.Relationship);
+                                    dataContext.CascadeDeleteEntity(child, entity, relationship.Relationship
+#if TypeScript
+                                    , relationship.Relationship.Source.Type
+                                    , relationship.Relationship.Target.Type
+#endif
+                                        );
                                 }
                             }
                         }
@@ -133,11 +144,11 @@ namespace Iql.Queryable.Data
                                             relationship.Relationship.Source.Property.PropertyName,
                                             null);
                                     });
-//                                    RemoveEntity(referenceValue, dataContext
-//#if TypeScript
-//                                        , relationship.Relationship.Source.Type
-//#endif
-//                                        );
+                                    //                                    RemoveEntity(referenceValue, dataContext
+                                    //#if TypeScript
+                                    //                                        , relationship.Relationship.Source.Type
+                                    //#endif
+                                    //                                        );
                                     dataContext.CascadeDeleteEntity(referenceValue,
                                         entity,
                                         relationship.Relationship
