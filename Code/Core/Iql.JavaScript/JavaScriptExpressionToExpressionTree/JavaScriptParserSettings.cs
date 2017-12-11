@@ -11,6 +11,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         public const int PeriodCode = 46; // '.'
         public const int CommaCode = 44; // ','
         public const int SquoteCode = 39; // single quote
+        public const int XquoteCode = 96; // ` quote
         public const int DquoteCode = 34; // double quotes
         public const int OparenCode = 40; // (
         public const int CparenCode = 41; // )

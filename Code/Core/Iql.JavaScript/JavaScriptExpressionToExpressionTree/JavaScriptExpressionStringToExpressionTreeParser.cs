@@ -239,7 +239,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 // Char code 46 is a dot `.` which can start off a numeric literal
                 return GobbleNumericLiteral();
             }
-            if (ch == JavaScriptParserSettings.SquoteCode || ch == JavaScriptParserSettings.DquoteCode)
+            if (ch == JavaScriptParserSettings.SquoteCode || ch == JavaScriptParserSettings.DquoteCode || ch == JavaScriptParserSettings.XquoteCode)
             {
                 // Single or double quotes
                 return GobbleStringLiteral();
