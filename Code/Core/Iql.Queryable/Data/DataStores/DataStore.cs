@@ -265,6 +265,7 @@ namespace Iql.Queryable.Data.DataStores
                 foreach (var entity in flattened)
                 {
                     var entityTrackingSet = GetTracking().TrackingSet(entity.EntityType);
+                    var state = DataContext.GetEntityState(entity.Entity);
                     var mergedEntity = entityTrackingSet.MergeEntity(entity.Entity, false);
                     if (mergedEntity != entity.Entity)
                     {

@@ -36,6 +36,17 @@ namespace Iql.JavaScript.QueryToJavaScript
             source.ExpandOneToMany(typeof(T), target, sourceProperty, targetProperty, sourceTargetKeyProperty, targetKeyProperty);
         }
 
+        public void ExpandOneToOne(
+            IEnumerable source,
+            IEnumerable target,
+            string sourceProperty,
+            string targetProperty,
+            string sourceTargetKeyProperty,
+            string targetKeyProperty)
+        {
+            source.ExpandOneToOne(target, sourceProperty, targetProperty, sourceTargetKeyProperty, targetKeyProperty);
+        }
+
         private IQueryable<T> Queryable { get; }
         public IDataContext Context { get; }
 

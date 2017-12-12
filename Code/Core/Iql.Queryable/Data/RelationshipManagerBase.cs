@@ -71,8 +71,8 @@ namespace Iql.Queryable.Data
                                 {
                                     dataContext.CascadeDeleteEntity(child, entity, relationship.Relationship
 #if TypeScript
-                                    , relationship.Relationship.Source.Type
                                     , relationship.Relationship.Target.Type
+                                    , relationship.Relationship.Source.Type
 #endif
                                         );
                                 }
