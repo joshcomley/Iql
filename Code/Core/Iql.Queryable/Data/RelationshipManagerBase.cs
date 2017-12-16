@@ -71,8 +71,8 @@ namespace Iql.Queryable.Data
                                 {
                                     dataContext.CascadeDeleteEntity(child, entity, relationship.Relationship
 #if TypeScript
-                                    , relationship.Relationship.Target.Type
                                     , relationship.Relationship.Source.Type
+                                    , relationship.Relationship.Target.Type
 #endif
                                         );
                                 }
@@ -153,8 +153,8 @@ namespace Iql.Queryable.Data
                                         entity,
                                         relationship.Relationship
 #if TypeScript
-                                        , relationship.Relationship.Source.Type
                                         , relationship.Relationship.Target.Type
+                                        , relationship.Relationship.Source.Type
 #endif
                                         );
                                     //relationshipManager.TargetTrackingSet.Untrack(referenceValue);
@@ -315,7 +315,7 @@ namespace Iql.Queryable.Data
                         else
                         {
                             // Find all target relationships that have the same key value
-                            var isEntityNew = dataContext.IsEntityNew(entity, relationship.Relationship.Target.Type);
+                            var isEntityNew = dataContext.IsEntityNew(entity, relationship.Relationship.Source.Type);
                             if (isEntityNew != null && isEntityNew.Value == false)
                             {
                                 var key = relationship.Relationship.Source.GetCompositeKey(entity, true);

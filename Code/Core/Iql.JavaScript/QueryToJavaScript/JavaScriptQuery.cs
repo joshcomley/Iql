@@ -14,10 +14,10 @@ namespace Iql.JavaScript.QueryToJavaScript
         where T : class
     {
         public JavaScriptQuery(IQueryable<T> queryable,
-            IDataContext context)
+            IDataContext dataContext)
         {
             Queryable = queryable;
-            Context = context;
+            DataContext = dataContext;
         }
         public StringBuilder Query { get; set; } = new StringBuilder();
         public string GetDataSetObjectName(Type type)
@@ -48,7 +48,7 @@ namespace Iql.JavaScript.QueryToJavaScript
         }
 
         private IQueryable<T> Queryable { get; }
-        public IDataContext Context { get; }
+        public IDataContext DataContext { get; }
 
         public bool HasKey { get; set; }
         public object Key { get; set; }
@@ -81,7 +81,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                 var queryable = Types[i].Queryable;
                 if (queryable != null)
                 {
-                    var js = queryable.ToQueryWithAdapter(new JavaScriptQueryableAdapter(), Context)
+                    var js = queryable.ToQueryWithAdapter(new JavaScriptQueryableAdapter(), DataContext)
                         .ToJavaScriptQuery(false);
                     typeDefs += js.Trim() + "\n\n";
                 }
@@ -113,18 +113,20 @@ namespace Iql.JavaScript.QueryToJavaScript
             // JavaScript implementation
             var str = ToJavaScriptQuery();
             //return eval(this.toJavaScriptQuery());
-            return (List<T>) JavaScript.Eval(str);
+            var list = (List<T>) JavaScript.Eval(str);
+            var clone = list.CloneAs(DataContext, typeof(T), RelationshipCloneMode.Full);
+            return clone;
         }
 
         public object DataSet(string name)
         {
-            var sourceSet = Context.GetConfiguration<InMemoryDataStoreConfiguration>()
+            var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByTypeName(name);
-            foreach (var configuration in Context.EntityConfigurationContext.AllConfigurations())
+            foreach (var configuration in DataContext.EntityConfigurationContext.AllConfigurations())
             {
                 if (configuration.Type.Name == name)
                 {
-                    var cloneSet = sourceSet.CloneAs(Context, configuration.Type, RelationshipCloneMode.Full);
+                    var cloneSet = sourceSet.CloneAs(DataContext, configuration.Type, RelationshipCloneMode.Full);
                     return cloneSet;
                 }
             }

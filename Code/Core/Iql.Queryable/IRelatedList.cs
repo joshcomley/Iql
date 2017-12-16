@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Queryable.Events;
@@ -14,6 +15,8 @@ namespace Iql.Queryable
         IEventSubscriber<IRelatedListChangedEvent> Changed { get; }
         IEventSubscriber<IRelatedListChangedEvent> Changing { get; }
         object Owner { get; }
+        Type OwnerType { get; }
+        Type TargetType { get; }
         void AssignRelationship(object item);
         void RemoveRelationship(object item);
         void AssignRelationshipByKey(CompositeKey item);

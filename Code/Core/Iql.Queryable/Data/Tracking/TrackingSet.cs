@@ -436,6 +436,10 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var propertyChangedSubscriptionId = (entity as IEntity)?.PropertyChanged?.Subscribe(pc =>
                 {
+                    if (pc.PropertyName == "SiteInspectionId" && Equals(entity.GetPropertyValue("Id"), 1))
+                    {
+                        int a = 0;
+                    }
                     var entityState = GetEntityState(entity);
                     var oldState = entityState.GetPropertyState(pc.PropertyName);
                     var property = EntityConfiguration.FindProperty(pc.PropertyName);

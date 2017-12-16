@@ -1,29 +1,34 @@
+using System;
 using System.Collections.Generic;
+using Iql.Queryable.Data.Crud.State;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Events;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class RelatedList<TSource, T> : List<T>, IRelatedList
-        where T : class
+    public class RelatedList<TSource, TTarget> : List<TTarget>, IRelatedList
+        where TTarget : class
     {
         //private readonly IList<RelatedListChange<TSource, T>> _changes = new List<RelatedListChange<TSource, T>>();
 
-        public RelatedList(TSource owner, string property, IEnumerable<T> source = null)
+        public RelatedList(TSource owner, string property, IEnumerable<TTarget> source = null)
         {
             Owner = owner;
             Property = property;
             this.Initialize(source);
         }
 
-        public EventEmitter<RelatedListChangeEvent<TSource, T>> Changed { get; }
-            = new EventEmitter<RelatedListChangeEvent<TSource, T>>();
+        public EventEmitter<RelatedListChangeEvent<TSource, TTarget>> Changed { get; }
+            = new EventEmitter<RelatedListChangeEvent<TSource, TTarget>>();
 
-        public EventEmitter<RelatedListChangeEvent<TSource, T>> Changing { get; }
-            = new EventEmitter<RelatedListChangeEvent<TSource, T>>();
+        public EventEmitter<RelatedListChangeEvent<TSource, TTarget>> Changing { get; }
+            = new EventEmitter<RelatedListChangeEvent<TSource, TTarget>>();
 
         public TSource Owner { get; }
+        public Type OwnerType => typeof(TSource);
+        public Type TargetType => typeof(TTarget);
         public string Property { get; }
 
         //void IRelatedList.AddChange(IRelatedListChange change)
@@ -48,12 +53,12 @@ namespace Iql.Queryable
 
         void IRelatedList.AssignRelationship(object item)
         {
-            AssignRelationship((T) item);
+            AssignRelationship((TTarget)item);
         }
 
         void IRelatedList.RemoveRelationship(object item)
         {
-            RemoveRelationship((T) item);
+            RemoveRelationship((TTarget)item);
         }
 
         public void AssignRelationshipByKey(CompositeKey key)
@@ -96,17 +101,17 @@ namespace Iql.Queryable
         //    }
         //}
 
-        public void AssignRelationship(T item)
+        public void AssignRelationship(TTarget item)
         {
             Emit(item, null, RelatedListChangeKind.Assign);
         }
 
-        private void Emit(T item, CompositeKey itemKey, RelatedListChangeKind kind)
+        private void Emit(TTarget item, CompositeKey itemKey, RelatedListChangeKind kind)
         {
-            Changed.Emit(new RelatedListChangeEvent<TSource, T>(Owner, item, itemKey, kind, this));
+            Changed.Emit(new RelatedListChangeEvent<TSource, TTarget>(Owner, item, itemKey, kind, this));
         }
 
-        public void RemoveRelationship(T item)
+        public void RemoveRelationship(TTarget item)
         {
             Emit(item, null, RelatedListChangeKind.Remove);
         }
