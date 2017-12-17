@@ -6,13 +6,13 @@ namespace Iql.JavaScript
 {
     public static class JavaScriptCodeExtractor
     {
+        private static readonly char[] Quotes = { '\'', '`', '"' };
         public static string RemoveComments(string code)
         {
             if (code == null)
             {
                 throw new ArgumentException("\"code\" cannot be null.");
             }
-            var quotes = new[] { '\'', '`', '"' };
             var inQuote = false;
             var inComment = false;
             var startIndex = 0;
@@ -20,7 +20,7 @@ namespace Iql.JavaScript
             var lastChar = '_';
             for (var i = 0; i < code.Length; i++)
             {
-                var startQuote = !inQuote && quotes.Contains(code[i]);
+                var startQuote = !inQuote && Quotes.Contains(code[i]);
                 var endQuote = inQuote && code[i] == quoteChar;
                 if (!inComment && (startQuote || endQuote))
                 {
@@ -38,7 +38,7 @@ namespace Iql.JavaScript
                 if (!inQuote)
                 {
                     int endIndex;
-                    if (code.StartsWithAt(i, "//"))
+                    if (!inComment && code.StartsWithAt(i, "//"))
                     {
                         startIndex = i;
                         while (i < code.Length && code[i] != '\n')
@@ -84,7 +84,15 @@ namespace Iql.JavaScript
             return source.Substring(index, str.Length) == str;
         }
 
-        public static JavaScriptFunctionBody ExtractBody(string code)
+        private static readonly string[] ValidStarts = { "function ", "function(", "function\t" };
+        private static readonly char[] Alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_".ToCharArray();
+        private static readonly char[] Numeric = "01234567890".ToCharArray();
+        private static readonly char[] AlphaNumeric = Alpha.Concat(Numeric).ToArray();
+        private static readonly char[] Syntax = "(),".ToCharArray();
+        private static readonly char[] Whitespace = " \t".ToCharArray();
+        private static readonly char[] AllSyntax = Syntax.Concat(Whitespace).ToArray();
+
+        public static JavaScriptFunctionBody ExtractBody(string code, bool isLambda = true)
         {
             if (code == null)
             {
@@ -92,29 +100,23 @@ namespace Iql.JavaScript
             }
             var copy = code;
             var commentsRemoved = RemoveComments(copy);
+            return null;
             copy = commentsRemoved;
             // Remove whitespace
             copy = copy.Trim();
-            var validStarts = new[] { "function ", "function(", "function\t" };
             var isWrapped = false;
-            for (var k = 0; k < validStarts.Length; k++)
+            for (var k = 0; k < ValidStarts.Length; k++)
             {
-                isWrapped = copy.StartsWith(validStarts[k]);
+                isWrapped = copy.StartsWith(ValidStarts[k]);
                 if (isWrapped)
                 {
                     break;
                 }
             }
-            var alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_".ToCharArray();
-            var numeric = "01234567890".ToCharArray();
-            var alphaNumeric = alpha.Concat(numeric).ToArray();
-            var syntax = "(),".ToCharArray();
-            var whitespace = " \t".ToCharArray();
-            var allSyntax = syntax.Concat(whitespace).ToArray();
-            var valid = alpha;
+            var valid = Alpha;
             if (!isWrapped)
             {
-                valid = alpha.Concat(syntax).ToArray();
+                valid = Alpha.Concat(Syntax).ToArray();
                 var j = 0;
                 var variableBegun = false;
                 var hasOpenBracket = false;
@@ -122,7 +124,7 @@ namespace Iql.JavaScript
                 {
                     if (j == 0)
                     {
-                        valid = syntax.Concat(whitespace).Concat(alphaNumeric).ToArray();
+                        valid = Syntax.Concat(Whitespace).Concat(AlphaNumeric).ToArray();
                         if (copy[j] == '(')
                         {
                             hasOpenBracket = true;
@@ -130,16 +132,16 @@ namespace Iql.JavaScript
                     }
                     if (!variableBegun)
                     {
-                        if (alpha.Contains(copy[j]))
+                        if (Alpha.Contains(copy[j]))
                         {
                             variableBegun = true;
                         }
-                        else if (!allSyntax.Contains(copy[j]))
+                        else if (!AllSyntax.Contains(copy[j]))
                         {
                             return null;
                         }
                     }
-                    else if (!alphaNumeric.Contains(copy[j]))
+                    else if (!AlphaNumeric.Contains(copy[j]))
                     {
                         variableBegun = false;
                     }
@@ -173,10 +175,10 @@ namespace Iql.JavaScript
                 {
                     if (variableBegun)
                     {
-                        if (!alphaNumeric.Contains(copy[j]))
+                        if (!AlphaNumeric.Contains(copy[j]))
                         {
                             var whitespaceCount = 0;
-                            while (whitespace.Contains(copy[j]))
+                            while (Whitespace.Contains(copy[j]))
                             {
                                 whitespaceCount++;
                                 j++;
@@ -189,7 +191,7 @@ namespace Iql.JavaScript
                             break;
                         }
                     }
-                    else if (alpha.Contains(copy[j]))
+                    else if (Alpha.Contains(copy[j]))
                     {
                         variableBegun = true;
                     }
@@ -216,9 +218,9 @@ namespace Iql.JavaScript
             }
 
             var i = 0;
-            valid = alpha;
+            valid = Alpha;
             var parameterNames = new List<string>();
-            var validParameterSyntax = whitespace.Concat(new[] { ',' }).ToArray();
+            var validParameterSyntax = Whitespace.Concat(new[] { ',' }).ToArray();
             var signature = "";
             while (true)
             {
@@ -227,7 +229,7 @@ namespace Iql.JavaScript
                 {
                     if (i == 0)
                     {
-                        valid = alpha.Concat(numeric).ToArray();
+                        valid = Alpha.Concat(Numeric).ToArray();
                     }
                     parameterName += copy[i];
                     signature += copy[i];
@@ -276,13 +278,13 @@ namespace Iql.JavaScript
             // Remove whitespace
             copy = copy.Trim();
             // Remove "return" (shouldn't be there in ES6 syntax but we'll allow it)
-            if (copy.StartsWith("return"))
+            if (isLambda && copy.StartsWith("return"))
             {
                 copy = copy.Substring("return".Length);
             }
             // Remove whitespace
             copy = copy.Trim();
-            if (copy.EndsWith(";"))
+            if (isLambda && copy.EndsWith(";"))
             {
                 // Remove ;
                 copy = copy.Substring(0, copy.Length - 1);
@@ -299,7 +301,7 @@ namespace Iql.JavaScript
                 copy,
                 signature,
                 code.Trim(),
-                "function (" + signature + ") { return " + copy + "; }"
+                $"function ({signature}) {{ {(isLambda ? "return " : "")}{copy}{(copy.EndsWith(";") ? "" : ";")} }}"
             );
         }
     }
