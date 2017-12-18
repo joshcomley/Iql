@@ -37,12 +37,25 @@ var myNameIs = ""Paulina"";";
         public void TestEs6Speed()
         {
             var start = DateTime.Now;
-            for (var i = 0; i < 500000; i++)
+            var count = 500000;
+#if TypeScript
+            count = 50000;
+#endif
+            for (var i = 0; i < count; i++)
             {
-                var actualResult = JavaScriptCodeExtractor.ExtractBody("p => p.FullName");
+//                var actualResult = JavaScriptCodeExtractor.ExtractBody(@"function(p) { 
+//    // Some comment
+//    var quote = 'Some quote with a /* comment */';
+//    return /* some other comment */ p.FullName; 
+//}");
+                var actualResult = JavaScriptCodeExtractor.ExtractBody(@"p => p.FullName");
             }
             var time = DateTime.Now - start;
-            Assert.IsTrue(time.TotalMilliseconds < 1000);
+#if TypeScript
+            Assert.IsTrue(time.TotalMilliseconds < 1600);
+#else
+            Assert.IsTrue(time.TotalMilliseconds < 4000);
+#endif
         }
 
         [TestMethod]

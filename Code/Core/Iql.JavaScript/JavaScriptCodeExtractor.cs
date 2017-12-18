@@ -6,39 +6,50 @@ namespace Iql.JavaScript
 {
     public static class JavaScriptCodeExtractor
     {
-        private static readonly char[] Quotes = { '\'', '`', '"' };
-        public static string RemoveComments(string code)
+        private const char SingleQuote = '\'';
+        private const char TildeQuote = '`';
+        private const char DoubleQuote = '"';
+        public static string RemoveComments(string codeStr)
         {
-            if (code == null)
+            if (codeStr == null)
             {
                 throw new ArgumentException("\"code\" cannot be null.");
             }
+            if (codeStr.IndexOf(@"//") == -1 && codeStr.IndexOf(@"/*") == -1)
+            {
+                return codeStr;
+            }
+            var code = codeStr.ToCharArray();
             var inQuote = false;
             var inComment = false;
             var startIndex = 0;
-            var quoteChar = '_';
+            var lastStartIndex = 0;
+            var currentQuoteChar = '_';
             var lastChar = '_';
+            var codeChunks = new List<int[]>();
             for (var i = 0; i < code.Length; i++)
             {
-                var startQuote = !inQuote && Quotes.Contains(code[i]);
-                var endQuote = inQuote && code[i] == quoteChar;
+                var ch = code[i];
+                var startQuote = !inQuote &&
+                                 (ch == SingleQuote || ch == DoubleQuote || ch == TildeQuote);// && Quotes.Contains(code[i]);
+                var endQuote = inQuote && ch == currentQuoteChar;
                 if (!inComment && (startQuote || endQuote))
                 {
                     if (endQuote && lastChar != '\\')
                     {
                         inQuote = false;
-                        quoteChar = '_';
+                        currentQuoteChar = '_';
                     }
                     else if (startQuote)
                     {
                         inQuote = true;
-                        quoteChar = code[i];
+                        currentQuoteChar = ch;
                     }
                 }
                 if (!inQuote)
                 {
                     int endIndex;
-                    if (!inComment && code.StartsWithAt(i, "//"))
+                    if (!inComment && ch == '/' && i < code.Length - 1 && code[i + 1] == '/')
                     {
                         startIndex = i;
                         while (i < code.Length && code[i] != '\n')
@@ -46,51 +57,47 @@ namespace Iql.JavaScript
                             i++;
                         }
                         endIndex = i;
-                        i = 0;
-                        code = code.Substring(0, startIndex) + code.Substring(endIndex, code.Length - endIndex);
+                        //i = 0;
+                        codeChunks.Add(new[] { lastStartIndex, startIndex - lastStartIndex });
+                        lastStartIndex = endIndex;
+                        //code = 
+                        //    (codeStr.Substring(0, startIndex) + codeStr.Substring(endIndex, code.Length - endIndex)).ToCharArray();
                     }
-                    if (!inComment && code.StartsWithAt(i, "/*"))
+                    if (!inComment && ch == '/' && i < code.Length - 1 && code[i + 1] == '*')
                     {
                         startIndex = i;
                         inComment = true;
                     }
-                    if (inComment && code.StartsWithAt(i, "*/"))
+                    if (inComment && ch == '*' && i < code.Length - 1 && code[i + 1] == '/')
                     {
                         endIndex = i + 2;
                         inComment = false;
-                        i = 0;
-                        code = code.Substring(0, startIndex) + code.Substring(endIndex, code.Length - endIndex);
+                        //i = 0;
+                        //code = (codeStr.Substring(0, startIndex) + codeStr.Substring(endIndex, code.Length - endIndex)).ToCharArray();
+                        codeChunks.Add(new[] { lastStartIndex, startIndex - lastStartIndex });
+                        lastStartIndex = endIndex;
                     }
                 }
-                lastChar = code[i];
+                lastChar = ch;
             }
-            return code;
+
+            var result = "";
+            foreach (var chunk in codeChunks)
+            {
+                result += codeStr.Substring(chunk[0], chunk[1]);
+            }
+            return result;
         }
 
-        private static bool StartsWithAt(this string source, int index, string str)
-        {
-            if (source == null)
-            {
-                return false;
-            }
-            if (str == null)
-            {
-                throw new ArgumentException("Value cannot be null.");
-            }
-            if (index + str.Length > source.Length)
-            {
-                return false;
-            }
-            return source.Substring(index, str.Length) == str;
-        }
-
-        private static readonly string[] ValidStarts = { "function ", "function(", "function\t" };
+        //private static readonly string[] ValidStarts = { "function ", "function(", "function\t" };
         private static readonly char[] Alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_".ToCharArray();
         private static readonly char[] Numeric = "01234567890".ToCharArray();
         private static readonly char[] AlphaNumeric = Alpha.Concat(Numeric).ToArray();
         private static readonly char[] Syntax = "(),".ToCharArray();
         private static readonly char[] Whitespace = " \t".ToCharArray();
         private static readonly char[] AllSyntax = Syntax.Concat(Whitespace).ToArray();
+        private static readonly char[] AlphaAndSyntax = Alpha.Concat(Syntax).ToArray();
+        private static readonly char[] SyntaxAndWhitespaceAndAlphaNumeric = Syntax.Concat(Whitespace).Concat(AlphaNumeric).ToArray();
 
         public static JavaScriptFunctionBody ExtractBody(string code, bool isLambda = true)
         {
@@ -98,54 +105,50 @@ namespace Iql.JavaScript
             {
                 throw new ArgumentNullException(nameof(code));
             }
-            var copy = code;
-            var commentsRemoved = RemoveComments(copy);
-            return null;
-            copy = commentsRemoved;
+            var copy = RemoveComments(code);
             // Remove whitespace
             copy = copy.Trim();
-            var isWrapped = false;
-            for (var k = 0; k < ValidStarts.Length; k++)
-            {
-                isWrapped = copy.StartsWith(ValidStarts[k]);
-                if (isWrapped)
-                {
-                    break;
-                }
-            }
-            var valid = Alpha;
+            var isWrapped = 
+                copy.StartsWith("function ")
+                ||
+                copy.StartsWith("function(")
+                ||
+                copy.StartsWith("function\t");
+
+            char[] valid;
             if (!isWrapped)
             {
-                valid = Alpha.Concat(Syntax).ToArray();
+                valid = AlphaAndSyntax;
                 var j = 0;
+                var ch = copy[j];
                 var variableBegun = false;
                 var hasOpenBracket = false;
-                while (valid.Contains(copy[j]))
+                while (valid.Contains(ch))
                 {
                     if (j == 0)
                     {
-                        valid = Syntax.Concat(Whitespace).Concat(AlphaNumeric).ToArray();
-                        if (copy[j] == '(')
+                        valid = SyntaxAndWhitespaceAndAlphaNumeric;
+                        if (ch == '(')
                         {
                             hasOpenBracket = true;
                         }
                     }
                     if (!variableBegun)
                     {
-                        if (Alpha.Contains(copy[j]))
+                        if (Alpha.Contains(ch))
                         {
                             variableBegun = true;
                         }
-                        else if (!AllSyntax.Contains(copy[j]))
+                        else if (!AllSyntax.Contains(ch))
                         {
                             return null;
                         }
                     }
-                    else if (!AlphaNumeric.Contains(copy[j]))
+                    else if (!AlphaNumeric.Contains(ch))
                     {
                         variableBegun = false;
                     }
-                    if (hasOpenBracket && copy[j] == ')')
+                    if (hasOpenBracket && ch == ')')
                     {
                         var copyOfCopy = copy.Substring(j + 1).Trim();
                         if (!copyOfCopy.StartsWith("=>"))
@@ -157,33 +160,39 @@ namespace Iql.JavaScript
                     }
                     if (!variableBegun)
                     {
-                        if (copy.StartsWithAt(j, "=>"))
+                        if (ch == '=' && j < copy.Length - 1 && copy[j + 1] == '>')
                         {
                             isWrapped = true;
                             break;
                         }
                     }
                     j++;
+                    ch = copy[j];
                 }
             }
             if (!isWrapped)
             {
                 var j = 0;
+                var ch = copy[j];
                 var variableBegun = false;
                 var isValidEs6 = false;
                 while (j < copy.Length - 1)
                 {
                     if (variableBegun)
                     {
-                        if (!AlphaNumeric.Contains(copy[j]))
+                        if (!AlphaNumeric.Contains(ch))
                         {
                             var whitespaceCount = 0;
-                            while (Whitespace.Contains(copy[j]))
+                            while (Whitespace.Contains(ch))
                             {
                                 whitespaceCount++;
                                 j++;
+                                ch = copy[j];
                             }
-                            if (whitespaceCount == 0 || !copy.StartsWithAt(j, "=>"))
+                            if (whitespaceCount == 0 ||
+                                ch != '=' || j >= copy.Length - 1
+                                || copy[j + 1] != '>'
+                                )
                             {
                                 return null;
                             }
@@ -191,11 +200,12 @@ namespace Iql.JavaScript
                             break;
                         }
                     }
-                    else if (Alpha.Contains(copy[j]))
+                    else if (Alpha.Contains(ch))
                     {
                         variableBegun = true;
                     }
                     j++;
+                    ch = copy[j];
                 }
                 if (!isValidEs6)
                 {
@@ -225,27 +235,32 @@ namespace Iql.JavaScript
             while (true)
             {
                 var parameterName = "";
-                while (valid.Contains(copy[i]))
+                var ch = copy[i];
+                while (valid.Contains(ch))
                 {
                     if (i == 0)
                     {
                         valid = Alpha.Concat(Numeric).ToArray();
                     }
-                    parameterName += copy[i];
-                    signature += copy[i];
+                    parameterName += ch;
+                    signature += ch;
                     i++;
+                    ch = copy[i];
                 }
                 parameterNames.Add(parameterName);
-                if (copy.StartsWithAt(i, ")") || copy.StartsWithAt(i, "=>"))
+                if (ch == ')' ||
+                    (ch == '=' && i < copy.Length - 1 && copy[i + 1] == '>'))
                 {
                     break;
                 }
                 var finished = false;
-                while (validParameterSyntax.Contains(copy[i]))
+                while (validParameterSyntax.Contains(ch))
                 {
-                    signature += copy[i];
+                    signature += ch;
                     i++;
-                    if (copy.StartsWithAt(i, ")") || copy.StartsWithAt(i, "=>"))
+                    ch = copy[i];
+                    if (ch == ')' ||
+                        (ch == '=' && i < copy.Length - 1 && copy[i + 1] == '>'))
                     {
                         finished = true;
                         break;
