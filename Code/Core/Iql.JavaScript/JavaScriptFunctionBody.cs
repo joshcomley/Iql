@@ -12,6 +12,10 @@ namespace Iql.JavaScript
             string cleanedCode)
         {
             ParameterNames = parameterNames;
+            for (var i = 0; i < parameterNames.Length; i++)
+            {
+                parameterNames[i] = parameterNames[i].Trim();
+            }
             Body = body;
             Signature = signature;
             OriginalCode = originalCode;

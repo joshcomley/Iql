@@ -11,12 +11,12 @@ namespace Iql.Tests.Tests
         public void TestEs2015()
         {
             var body = @"var yourNameIs = ""Marta"";
-var myNameIs = ""Paulina"";";
+var myNameIs = ""Paulina""";
             var code = $@"function(a, b, c) {{
-    {body}
+    {body};
 }}";
             var expectedResult = new JavaScriptFunctionBody(
-                new[] { "a", "b", "c" }, body, "a, b, c", code, $@"function (a, b, c) {{ {body} }}");
+                new[] { "a", "b", "c" }, body, "a, b, c", code, $@"function (a, b, c) {{ {body}; }}");
             var actualResult = JavaScriptCodeExtractor.ExtractBody(code, false);
             AssertResult(expectedResult, actualResult);
 

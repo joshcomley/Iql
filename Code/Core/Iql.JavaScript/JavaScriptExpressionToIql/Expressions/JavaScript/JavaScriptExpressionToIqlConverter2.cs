@@ -6,20 +6,17 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
 {
-    public class JavaScriptExpressionToIqlConverter : IExpressionToIqlConverter
+    public class JavaScriptExpressionToIqlConverter2 : JavaScriptExpressionToIqlConverter
     {
-        public JavaScriptExpressionToIqlConverter(Func<string, object> evaluate = null)
+        public JavaScriptExpressionToIqlConverter2(Func<string, object> evaluate = null)
         {
             Evaluate = evaluate;
         }
 
-        public virtual Func<string, object> Evaluate { get; set; }
-
-        public virtual ExpressionResult<IqlExpression> Parse<TEntity>
+        public override ExpressionResult<IqlExpression> Parse<TEntity>
         (
             QueryExpression filter
         )
-            where TEntity : class
         {
             var ctx = this;
             //if()
@@ -59,7 +56,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
             return expressionResult;
         }
 
-        public virtual IExpressionParseResultBase ParseJavaScriptExpressionTree(
+        public override IExpressionParseResultBase ParseJavaScriptExpressionTree(
             JavaScriptExpressionNode expression,
             IExpressionParserInstance instance)
         {

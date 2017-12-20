@@ -4,6 +4,7 @@ namespace Iql.Parsing.Reduction
 {
     public class IqlReducer
     {
+        private static IqlReducerRegistryBase _registryCore;
         private readonly IqlReducerRegistryBase _registry;
 
         public IqlReducer(
@@ -15,7 +16,18 @@ namespace Iql.Parsing.Reduction
 #if TypeScript
             EvaluateContext = evaluateContext;
 #endif
-            _registry = registry ?? new IqlReducerRegistry();
+            if (registry == null)
+            {
+                if (_registryCore == null)
+                {
+                    _registryCore = new IqlReducerRegistry();
+                }
+                _registry = _registryCore;
+            }
+            else
+            {
+                _registry = registry;
+            }
         }
 
 #if TypeScript
@@ -24,7 +36,7 @@ namespace Iql.Parsing.Reduction
 
         public T EvaluateAs<T>(IqlExpression expression)
         {
-            return (T) Evaluate(expression)?.Value;
+            return (T)Evaluate(expression)?.Value;
         }
 
         public IqlLiteralExpression Evaluate(IqlExpression expression)

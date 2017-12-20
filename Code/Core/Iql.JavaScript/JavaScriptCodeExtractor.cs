@@ -99,7 +99,7 @@ namespace Iql.JavaScript
         private static readonly char[] AlphaAndSyntax = Alpha.Concat(Syntax).ToArray();
         private static readonly char[] SyntaxAndWhitespaceAndAlphaNumeric = Syntax.Concat(Whitespace).Concat(AlphaNumeric).ToArray();
 
-        public static JavaScriptFunctionBody ExtractBody(string code, bool isLambda = true)
+        public static JavaScriptFunctionBody ExtractBodyOld(string code, bool isLambda = true)
         {
             if (code == null)
             {
@@ -108,7 +108,7 @@ namespace Iql.JavaScript
             var copy = RemoveComments(code);
             // Remove whitespace
             copy = copy.Trim();
-            var isWrapped = 
+            var isWrapped =
                 copy.StartsWith("function ")
                 ||
                 copy.StartsWith("function(")
@@ -318,6 +318,76 @@ namespace Iql.JavaScript
                 code.Trim(),
                 $"function ({signature}) {{ {(isLambda ? "return " : "")}{copy}{(copy.EndsWith(";") ? "" : ";")} }}"
             );
+        }
+
+        public static JavaScriptFunctionBody ExtractBody(string code, bool isLambda = true)
+        {
+            if (code == null)
+            {
+                throw new ArgumentNullException(nameof(code));
+            }
+            var copy = RemoveComments(code);
+            // Remove whitespace
+            copy = copy.Trim();
+            var isEs5 =
+                copy.StartsWith("function ")
+                ||
+                copy.StartsWith("function(")
+                ||
+                copy.StartsWith("function\t");
+
+            if (isEs5)
+            {
+                return ExtractEs5Body(code);
+            }
+            return ExtractEs6Body(code);
+        }
+
+        private static JavaScriptFunctionBody ExtractEs6Body(string code)
+        {
+            var original = code;
+            var lambdaIndex = code.IndexOf("=>");
+            var signature = code.Substring(0, lambdaIndex);
+            if (signature.StartsWith("("))
+            {
+                signature = signature.Substring(1, signature.Length - 2);
+            }
+            signature = signature.Trim();
+            var parameterNames = signature.Split(',').ToArray();
+            code = code.Substring(lambdaIndex + 2).Trim();
+            return new JavaScriptFunctionBody(
+                parameterNames,
+                code.Trim(';'),
+                signature,
+                original,
+                $"function ({signature}) {{ return {code}; }}");
+        }
+
+        private static JavaScriptFunctionBody ExtractEs5Body(string code)
+        {
+            var original = code;
+            code = code.Substring("function".Length);
+            code = code.Trim();
+            code = code.Substring(1);
+            var closeBracket = code.IndexOf(')');
+            var signature = code.Substring(0, closeBracket);
+            var parameterNames = signature.Split(',').ToArray();
+            code = code.Substring(closeBracket + 1);
+            code = code.Trim();
+            code = code.Substring(1, code.Length - 2).Trim();
+            var returnRemoved = false;
+            if (code.StartsWith("return ")
+                || code.StartsWith("return\t")
+                || code.StartsWith("return("))
+            {
+                code = code.Substring(6).Trim();
+                returnRemoved = true;
+            }
+            if (code.EndsWith(";"))
+            {
+                code = code.Substring(0, code.Length - 1).Trim();
+            }
+            return new JavaScriptFunctionBody(parameterNames, code, signature, original, $"function ({signature}) {{ {(returnRemoved ? "return " : "")}{code}; }}");
         }
     }
 }

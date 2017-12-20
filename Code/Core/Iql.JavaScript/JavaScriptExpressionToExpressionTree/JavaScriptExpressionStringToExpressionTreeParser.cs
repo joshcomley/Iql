@@ -5,9 +5,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
     //     JavaScript Expression Parser (JSEP) <%= version %>
     //     JSEP may be freely distributed under the MIT License
     //     http://jsep.from.so/
-
-    /*global module: true, publics: true, console: true */
-
     public class JavaScriptExpressionStringToExpressionTreeParser
     {
         private readonly string _expr;
@@ -40,14 +37,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         public JavaScriptExpressionNode Parse()
         {
             // `index` stores the character number we are currently at while `length` is a constant
-            // All of the gobbles below will modify `index` as we move along
+            // All of the reads below will modify `index` as we move along
             var nodes = new List<JavaScriptExpressionNode>();
-            int chI;
-            JavaScriptExpressionNode node;
 
             while (_index < _length)
             {
-                chI = ExprICode(_index);
+                var chI = ExprICode(_index);
 
                 // Expressions can be separated by semicolons, commas, or just inferred without object
                 // separators
@@ -57,8 +52,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 }
                 else
                 {
-                    // Try to gobble each expression individually
-                    if ((node = GobbleExpression()) != null)
+                    // Try to read each expression individually
+                    JavaScriptExpressionNode node;
+                    if ((node = ReadExpression()) != null)
                     {
                         nodes.Add(node);
                         // If we weren't able to find a binary expression and are out of room, then
@@ -72,15 +68,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             }
 
             // If there's only one expression just try returning the expression
-            if (nodes.Count == 1)
-            {
-                return nodes[0];
-            }
-            return new CompoundJavaScriptExpressionNode(nodes);
+            return nodes.Count == 1 ? nodes[0] : new CompoundJavaScriptExpressionNode(nodes);
         }
 
         // Push `this.index` up to the next non-space character
-        public void GobbleSpaces()
+        public void ReadSpaces()
         {
             var ch = ExprICode(_index);
             // space or tab
@@ -91,26 +83,24 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         }
 
         // The main parsing function. Much of this code is dedicated to ternary expressions
-        public JavaScriptExpressionNode GobbleExpression()
+        public JavaScriptExpressionNode ReadExpression()
         {
-            var test = GobbleBinaryExpression();
-            JavaScriptExpressionNode consequent;
-            JavaScriptExpressionNode alternate;
-            GobbleSpaces();
+            var test = ReadBinaryExpression();
+            ReadSpaces();
             if (ExprICode(_index) == JavaScriptParserSettings.QumarkCode)
             {
                 // Ternary expression: test ? consequent : alternate
                 _index++;
-                consequent = GobbleExpression();
+                var consequent = ReadExpression();
                 if (consequent == null)
                 {
                     JavaScriptParserSettings.ThrowError("Expected expression", _index);
                 }
-                GobbleSpaces();
+                ReadSpaces();
                 if (ExprICode(_index) == JavaScriptParserSettings.ColonCode)
                 {
                     _index++;
-                    alternate = GobbleExpression();
+                    var alternate = ReadExpression();
                     if (alternate == null)
                     {
                         JavaScriptParserSettings.ThrowError("Expected expression", _index);
@@ -130,9 +120,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         // Start by taking the longest possible binary operations (3 characters: `==`, `!==`, `>>>`)
         // and move down from 3 to 2 to 1 character until a matching binary operation is found
         // then, return that binary operation
-        public string GobbleBinaryOp()
+        public string ReadBinaryOp()
         {
-            GobbleSpaces();
+            ReadSpaces();
             var toCheck = _expr.SubstringSafe(_index, _settings.MaxBinopLen);
             var tcLen = toCheck.Length;
             while (tcLen > 0)
@@ -149,18 +139,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
         // This function is responsible for gobbling an individual expression,
         // e.g. `1`, `1+2`, `a+(b*2)-Math.sqrt(2)`
-        public JavaScriptExpressionNode GobbleBinaryExpression()
+        public JavaScriptExpressionNode ReadBinaryExpression()
         {
-            int chI, i, prec;
-            JavaScriptExpressionNode node, left, right;
-            BinaryOperationInfo biopInfo;
-            string biop;
-            List<object> stack;
+            JavaScriptExpressionNode node;
 
             // First, try to get the leftmost thing
             // Then, check to see if there's a binary operator operating on that leftmost thing
-            left = GobbleToken();
-            biop = GobbleBinaryOp();
+            var left = ReadToken();
+            var biop = ReadBinaryOp();
 
             // If there wasn't a binary _operator, just return the leftmost node
             if (biop == null)
@@ -170,19 +156,19 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
             // Otherwise, we need to start a stack to properly place the binary operations in their
             // precedence structure
-            biopInfo = new BinaryOperationInfo {Value = biop, Prec = _settings.BinaryPrecedence(biop)};
+            var biopInfo = new BinaryOperationInfo {Value = biop, Prec = _settings.BinaryPrecedence(biop)};
 
-            right = GobbleToken();
+            var right = ReadToken();
             if (right == null)
             {
                 JavaScriptParserSettings.ThrowError("Expected expression after " + biop, _index);
             }
-            stack = new List<object>(new object[] {left, biopInfo, right});
+            var stack = new List<object>(new object[] {left, biopInfo, right});
 
             // Properly deal with precedence using [recursive descent](http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm)
-            while ((biop = GobbleBinaryOp()) != null)
+            while ((biop = ReadBinaryOp()) != null)
             {
-                prec = _settings.BinaryPrecedence(biop);
+                var prec = _settings.BinaryPrecedence(biop);
 
                 if (prec == 0)
                 {
@@ -201,7 +187,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                     stack.Add(node);
                 }
 
-                node = GobbleToken();
+                node = ReadToken();
                 if (node == null)
                 {
                     JavaScriptParserSettings.ThrowError("Expected expression after " + biop, _index);
@@ -210,7 +196,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 stack.Add(node);
             }
 
-            i = stack.Count - 1;
+            var i = stack.Count - 1;
             node = stack[i] as JavaScriptExpressionNode;
             while (i > 1)
             {
@@ -225,36 +211,35 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
         // An individual part of a binary expression:
         // e.g. `foo.bar(baz)`, `1`, `"abc"`, `(a % 2)` (because it's in parenthesis)
-        public JavaScriptExpressionNode GobbleToken()
+        public JavaScriptExpressionNode ReadToken()
         {
             int ch;
-            string toCheck;
             int tcLen;
 
-            GobbleSpaces();
+            ReadSpaces();
             ch = ExprICode(_index);
 
             if (_settings.IsDecimalDigit(ch) || ch == JavaScriptParserSettings.PeriodCode)
             {
                 // Char code 46 is a dot `.` which can start off a numeric literal
-                return GobbleNumericLiteral();
+                return ReadNumericLiteral();
             }
             if (ch == JavaScriptParserSettings.SquoteCode || ch == JavaScriptParserSettings.DquoteCode || ch == JavaScriptParserSettings.XquoteCode)
             {
                 // Single or double quotes
-                return GobbleStringLiteral();
+                return ReadStringLiteral();
             }
             if (_settings.IsIdentifierStart(ch) || ch == JavaScriptParserSettings.OparenCode)
             {
                 // open parenthesis
                 // `foo`, `bar.baz`
-                return GobbleVariable();
+                return ReadVariable();
             }
             if (ch == JavaScriptParserSettings.ObrackCode)
             {
-                return GobbleArray();
+                return ReadArray();
             }
-            toCheck = _expr.Substring(_index, _settings.MaxUnopLen);
+            var toCheck = _expr.Substring(_index, _settings.MaxUnopLen);
             tcLen = toCheck.Length;
             while (tcLen > 0)
             {
@@ -262,7 +247,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 {
                     _index += tcLen;
                     return new UnaryJavaScriptExpressionNode(OperatorMap.OperatorTypes.ResolveValue(toCheck),
-                        GobbleToken(), true);
+                        ReadToken(), true);
                 }
                 toCheck = toCheck.Substring(0, --tcLen);
             }
@@ -272,7 +257,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
         // Parse simple numeric literals: `12`, `3.4`, `.5`. Do this by using a string to
         // keep track of everything in the numeric literal and then calling `parseFloat` on that string
-        public JavaScriptExpressionNode GobbleNumericLiteral()
+        public JavaScriptExpressionNode ReadNumericLiteral()
         {
             var number = "";
             int ch;
@@ -333,16 +318,15 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
         // Parses a string literal, staring with single or double quotes with basic support for escape codes
         // e.g. `"hello world"`, `'this is\nJSEP'`
-        public JavaScriptExpressionNode GobbleStringLiteral()
+        public JavaScriptExpressionNode ReadStringLiteral()
         {
             var str = "";
             var quote = ExprI(_index++);
             var closed = false;
-            char ch;
 
             while (_index < _length)
             {
-                ch = ExprI(_index++);
+                var ch = ExprI(_index++);
                 if (ch == quote)
                 {
                     closed = true;
@@ -388,19 +372,18 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 JavaScriptParserSettings.ThrowError("Unclosed quote after \"" + str + "\"", _index);
             }
             var node = new LiteralJavaScriptExpressionNode(str, quote + str + quote);
-            GobbleSpaces();
-            return GobbleSubCalls(node);
+            ReadSpaces();
+            return ReadSubCalls(node);
         }
 
-        // Gobbles only identifiers
+        // Reads only identifiers
         // e.g.: `foo`, `_value`, `$x1`
         // Also, this function checks if that identifier is a literal:
         // (e.g. `true`, `false`, `null`) or `this`
-        public JavaScriptExpressionNode GobbleIdentifier()
+        public JavaScriptExpressionNode ReadIdentifier()
         {
             var ch = ExprICode(_index);
             var start = _index;
-            string identifier;
 
             if (_settings.IsIdentifierStart(ch))
             {
@@ -423,7 +406,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                     break;
                 }
             }
-            identifier = _expr.Substring(start, _index - start);
+            var identifier = _expr.Substring(start, _index - start);
 
             if (_settings.Literals.ContainsKey(identifier))
             {
@@ -436,21 +419,19 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             return new PropertyIdentifierJavaScriptExpressionNode(identifier);
         }
 
-        // Gobbles a list of arguments within the context of a function call
+        // Reads a list of arguments within the context of a function call
         // or array literal. This function also assumes that the opening character
-        // `(` or `[` has already been gobbled, and gobbles expressions and commas
+        // `(` or `[` has already been readd, and reads expressions and commas
         // until the terminator character `)` or `]` is encountered.
         // e.g. `foo(bar, baz)`, `my_func()`, or `[bar, baz]`
-        public List<JavaScriptExpressionNode> GobbleArguments(int termination)
+        public List<JavaScriptExpressionNode> ReadArguments(int termination)
         {
             var args = new List<JavaScriptExpressionNode>();
-            int chI;
-            JavaScriptExpressionNode node;
             var closed = false;
             while (_index < _length)
             {
-                GobbleSpaces();
-                chI = ExprICode(_index);
+                ReadSpaces();
+                var chI = ExprICode(_index);
                 if (chI == termination)
                 {
                     // done parsing
@@ -465,7 +446,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 }
                 else
                 {
-                    node = GobbleExpression();
+                    var node = ReadExpression();
                     if (node == null || node.Type == ExpressionType.Compound)
                     {
                         JavaScriptParserSettings.ThrowError("Expected comma", _index);
@@ -480,82 +461,74 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             return args;
         }
 
-        // Gobble a non-literal variable name. This variable name may include properties
+        // Read a non-literal variable name. This variable name may include properties
         // e.g. `foo`, `bar.baz`, `foo['bar'].baz`
-        // It also gobbles function calls:
+        // It also reads function calls:
         // e.g. `Math.acos(obj.angle)`
-        public JavaScriptExpressionNode GobbleVariable()
+        public JavaScriptExpressionNode ReadVariable()
         {
             int chI;
-            JavaScriptExpressionNode node;
             chI = ExprICode(_index);
 
-            if (chI == JavaScriptParserSettings.OparenCode)
-            {
-                node = GobbleGroup();
-            }
-            else
-            {
-                node = GobbleIdentifier();
-            }
-            GobbleSpaces();
-            return GobbleSubCalls(node);
+            var node = chI == JavaScriptParserSettings.OparenCode ? ReadGroup() : ReadIdentifier();
+            ReadSpaces();
+            return ReadSubCalls(node);
         }
 
-        public JavaScriptExpressionNode GobbleSubCalls(JavaScriptExpressionNode node)
+        public JavaScriptExpressionNode ReadSubCalls(JavaScriptExpressionNode node)
         {
             var chI = ExprICode(_index);
             while (chI == JavaScriptParserSettings.PeriodCode || chI == JavaScriptParserSettings.ObrackCode ||
                    chI == JavaScriptParserSettings.OparenCode)
             {
                 _index++;
-                if (chI == JavaScriptParserSettings.PeriodCode)
+                switch (chI)
                 {
-                    GobbleSpaces();
-                    node = new MemberJavaScriptExpressionNode(
-                        false,
-                        node,
-                        GobbleIdentifier()
-                    );
+                    case JavaScriptParserSettings.PeriodCode:
+                        ReadSpaces();
+                        node = new MemberJavaScriptExpressionNode(
+                            false,
+                            node,
+                            ReadIdentifier()
+                        );
+                        break;
+                    case JavaScriptParserSettings.ObrackCode:
+                        node = new MemberJavaScriptExpressionNode(
+                            true,
+                            node,
+                            ReadExpression()
+                        );
+                        ReadSpaces();
+                        chI = ExprICode(_index);
+                        if (chI != JavaScriptParserSettings.CbrackCode)
+                        {
+                            JavaScriptParserSettings.ThrowError("Unclosed [", _index);
+                        }
+                        _index++;
+                        break;
+                    case JavaScriptParserSettings.OparenCode:
+                        // A function call is being made; read all the arguments
+                        node = new CallJavaScriptExpressionNode(
+                            ReadArguments(JavaScriptParserSettings.CparenCode),
+                            node);
+                        break;
                 }
-                else if (chI == JavaScriptParserSettings.ObrackCode)
-                {
-                    node = new MemberJavaScriptExpressionNode(
-                        true,
-                        node,
-                        GobbleExpression()
-                    );
-                    GobbleSpaces();
-                    chI = ExprICode(_index);
-                    if (chI != JavaScriptParserSettings.CbrackCode)
-                    {
-                        JavaScriptParserSettings.ThrowError("Unclosed [", _index);
-                    }
-                    _index++;
-                }
-                else if (chI == JavaScriptParserSettings.OparenCode)
-                {
-                    // A function call is being made; gobble all the arguments
-                    node = new CallJavaScriptExpressionNode(
-                        GobbleArguments(JavaScriptParserSettings.CparenCode),
-                        node);
-                }
-                GobbleSpaces();
+                ReadSpaces();
                 chI = ExprICode(_index);
             }
             return node;
         }
 
         // Responsible for parsing a group of things within parentheses `()`
-        // This function assumes that it needs to gobble the opening parenthesis
-        // and then tries to gobble everything within that parenthesis, assuming
+        // This function assumes that it needs to read the opening parenthesis
+        // and then tries to read everything within that parenthesis, assuming
         // that the next thing it should see is the close parenthesis. If not,
         // then the expression probably doesn't have a `)`
-        public JavaScriptExpressionNode GobbleGroup()
+        public JavaScriptExpressionNode ReadGroup()
         {
             _index++;
-            var node = GobbleExpression();
-            GobbleSpaces();
+            var node = ReadExpression();
+            ReadSpaces();
             if (ExprICode(_index) == JavaScriptParserSettings.CparenCode)
             {
                 _index++;
@@ -566,12 +539,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         }
 
         // Responsible for parsing Array literals `[1, 2, 3]`
-        // This function assumes that it needs to gobble the opening bracket
-        // and then tries to gobble the expressions as arguments.
-        public JavaScriptExpressionNode GobbleArray()
+        // This function assumes that it needs to read the opening bracket
+        // and then tries to read the expressions as arguments.
+        public JavaScriptExpressionNode ReadArray()
         {
             _index++;
-            return new ArrayJavaScriptExpressionNode(GobbleArguments(JavaScriptParserSettings.CbrackCode));
+            return new ArrayJavaScriptExpressionNode(ReadArguments(JavaScriptParserSettings.CbrackCode));
         }
 
         private class BinaryOperationInfo
