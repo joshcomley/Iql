@@ -49,7 +49,6 @@ namespace Iql.Queryable.Data.DataStores
             }
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, typeof(TEntity));
             var nonTracked = new List<FlattenedEntity>();
-            AddEntityResult<TEntity> result = null;
             var tracking = DataContext.DataStore.GetTracking();
             foreach (var flattenedEntity in flattened)
             {
@@ -64,43 +63,12 @@ namespace Iql.Queryable.Data.DataStores
 #endif
                     );
                     flattenedEntityState.IsNew = true;
-                    var isRootEntity = flattenedEntity.Entity == entity;
-
-                    //var entityOperation =
-                    //    isRootEntity
-                    //        ? operation
-                    //        : Activator.CreateInstance(typeof(AddEntityOperation<>).MakeGenericType(flattenedEntity.EntityType),
-                    //            new object[] { flattenedEntity.Entity, DataContext });
-                    //var entityResult = Activator.CreateInstance(typeof(AddEntityResult<>).MakeGenericType(flattenedEntity.EntityType),
-                    //    new object[]
-                    //    {
-                    //        true,
-                    //        entityOperation
-                    //    });
-                    //var queuedOperation =
-                    //    (IQueuedOperation)Activator.CreateInstance(typeof(QueuedAddEntityOperation<>).MakeGenericType(flattenedEntity.EntityType),
-                    //        new object[] { operation, entityResult });
-                    //Enqueue(queuedOperation);
-                    //if (isRootEntity)
-                    //{
-                    //    result = (AddEntityResult<TEntity>)entityResult;
-                    //}
                 }
             }
-            //foreach (var entity in nonTracked)
-            //{
-            //    Tracking.TrackingSet(entity.EntityType)
-            //        .Unwatch(entity.Entity);
-            //}
             foreach (var nonTrackedEntity in nonTracked)
             {
                 RelationshipManagerBase.TrackRelationships(nonTrackedEntity.Entity, nonTrackedEntity.EntityType, DataContext);
             }
-            //foreach (var entity in nonTracked)
-            //{
-            //    Tracking.TrackingSet(entity.EntityType)
-            //        .Watch(entity.Entity);
-            //}
             return existingState;
         }
 
