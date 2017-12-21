@@ -182,9 +182,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public bool IsTracked(object entity, Type entityType)
         {
-            var set = TrackingSet(entityType);
-            var trackedEntity = set.FindTrackedEntity(entity);
-            return trackedEntity != null && trackedEntity.Entity == entity;
+            return TrackingSet(entityType).IsTracked(entity);
         }
 
         public bool IsMarkedForDeletion(object entity, Type entityType)

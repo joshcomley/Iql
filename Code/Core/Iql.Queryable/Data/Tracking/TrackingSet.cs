@@ -687,13 +687,11 @@ namespace Iql.Queryable.Data.Tracking
 
         public virtual TrackedEntity<T> FindEntityInternal(T localEntity, bool searchRelationships)
         {
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
-            var key = entityConfiguration.Key;
+            var key = EntityConfiguration.Key;
             T matchedEntity = null;
             var relationships = new List<ITrackedRelationship>();
             var isNewEntity = DataContext.IsEntityNew(localEntity, typeof(T));
-            var compositeKey = entityConfiguration.GetCompositeKey(localEntity);
-            var persistenceKeyProperty = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T)).Properties
+            var persistenceKeyProperty = EntityConfiguration.Properties
                 .FirstOrDefault(p => p.Name == "PersistenceKey");
             object persistenceKey = null;
             if (persistenceKeyProperty != null)
@@ -740,12 +738,12 @@ namespace Iql.Queryable.Data.Tracking
                 }
                 if (searchRelationships)
                 {
-                    foreach (var relationship in entityConfiguration.Relationships)
+                    foreach (var relationship in EntityConfiguration.Relationships)
                     {
-                        var isSource = relationship.Source.Configuration == entityConfiguration;
+                        var isSource = relationship.Source.Configuration == EntityConfiguration;
                         var sourceRelationship = isSource ? relationship.Source : relationship.Target;
                         var targetRelationship = isSource ? relationship.Target : relationship.Source;
-                        var sourcePropertyName = sourceRelationship.Property.PropertyName;
+                        //var sourcePropertyName = sourceRelationship.Property.PropertyName;
                         var targetPropertyName = targetRelationship.Property.PropertyName;
                         foreach (var owner in TrackingSetCollection.TrackingSet(targetRelationship.Type).TrackedEntites())
                         {
@@ -1025,7 +1023,9 @@ namespace Iql.Queryable.Data.Tracking
             }
             if (!EntityStates.ContainsKey(entity))
             {
-                EntityStates.Add(entity, new EntityState<T>(entity, typeof(T), DataContext, EntityConfiguration));
+                var entityState = new EntityState<T>(entity, typeof(T), DataContext, EntityConfiguration);
+                EntityStates.Add(entity, entityState);
+                return entityState;
             }
             return EntityStates[entity];
         }
@@ -1353,6 +1353,12 @@ namespace Iql.Queryable.Data.Tracking
         void ITrackingSet.ChangeEntity(object entity, Action action, ChangeEntityMode mode)
         {
             ChangeEntity((T)entity, action, mode);
+        }
+
+        public bool IsTracked(object entity)
+        {
+            var trackedEntity = FindTrackedEntity((T)entity);
+            return trackedEntity != null && trackedEntity.Entity == entity;
         }
 
         void ITrackingSet.Watch(object entity)
