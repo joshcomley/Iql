@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Iql.JavaScript
 {
@@ -86,6 +87,7 @@ namespace Iql.JavaScript
             {
                 result += codeStr.Substring(chunk[0], chunk[1]);
             }
+            result += codeStr.Substring(lastStartIndex);
             return result;
         }
 
@@ -312,39 +314,207 @@ namespace Iql.JavaScript
             }
             signature = signature.Trim();
             return new JavaScriptFunctionBody(
-                parameterNames.ToArray(),
                 copy,
                 signature,
                 code.Trim(),
                 $"function ({signature}) {{ {(isLambda ? "return " : "")}{copy}{(copy.EndsWith(";") ? "" : ";")} }}"
             );
         }
-
+        static Dictionary<string, JavaScriptFunctionBody> _results = new Dictionary<string, JavaScriptFunctionBody>();
         public static JavaScriptFunctionBody ExtractBody(string code, bool isLambda = true)
         {
             if (code == null)
             {
                 throw new ArgumentNullException(nameof(code));
             }
+            if (_results.ContainsKey(code))
+            {
+                return _results[code];
+            }
             var copy = RemoveComments(code);
             // Remove whitespace
             copy = copy.Trim();
             var isEs5 =
-                copy.StartsWith("function ")
-                ||
-                copy.StartsWith("function(")
-                ||
-                copy.StartsWith("function\t");
+                IsEs5Test.IsMatch(copy);
 
+            JavaScriptFunctionBody functionBody;
             if (isEs5)
             {
-                return ExtractEs5Body(code);
+                functionBody = ExtractEs5Body(copy);
             }
-            return ExtractEs6Body(code);
+            else
+            {
+                functionBody = ExtractEs6Body(copy);
+            }
+            _results.Add(code, functionBody);
+            return functionBody;
         }
+
+        private static readonly Regex IsEs5Test = new Regex(@"^function[\(\s]");
+        private static readonly Regex Regex = new Regex(@"\({0,1}\s*([A-Za-z_][A-Za-z0-9_,\s]*)\s*\){0,1}\s*\=\>\s*(.*)", RegexOptions.Compiled);
 
         private static JavaScriptFunctionBody ExtractEs6Body(string code)
         {
+            var arr = code.ToCharArray();
+            var parser = new TextParser(arr);
+            parser.SkipWhitespace();
+            var hasOpenBracket = parser.Skip('(');
+            string signature;
+            if (hasOpenBracket)
+            {
+                signature = parser.ReadUntil(')');
+            }
+            else
+            {
+                signature = parser.ReadUntil('=', '>');
+            }
+            signature = signature.Trim();
+            if (hasOpenBracket)
+            {
+                parser.ReadUntil('=', '>');
+            }
+            string body = parser.ReadUntilEnd().Trim();
+            return new JavaScriptFunctionBody(
+                body, signature, code,
+                $"function ({signature}) {{ return {body}; }}");
+        }
+
+        class TextParser
+        {
+            public char[] Chars { get; set; }
+            private int Index { get; set; }
+            private int Length { get; }
+
+            public TextParser(char[] chars)
+            {
+                Chars = chars;
+                Length = chars.Length;
+            }
+
+            public void SkipWhitespace()
+            {
+                while (Index < Length)
+                {
+                    if (Chars[Index] == ' ' || Chars[Index] == '\t')
+                    {
+                        Index++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            public bool Skip(params char[] chars)
+            {
+                var anyFound = false;
+                while (Index < Length)
+                {
+                    var found = false;
+                    foreach (char ch in chars)
+                    {
+                        if (Chars[Index] == ch)
+                        {
+                            anyFound = true;
+                            found = true;
+                            Index++;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        break;
+                    }
+                }
+                return anyFound;
+            }
+
+            public string ReadUntilEnd()
+            {
+                var result = "";
+                while (Index < Length)
+                {
+                    result += Chars[Index];
+                    Index++;
+                }
+                return result;
+            }
+
+            public string ReadUntil(params char[] chars)
+            {
+                var index = 0;
+                var result = "";
+                while (Index < Length)
+                {
+                    if (Chars[Index] == chars[index])
+                    {
+                        index++;
+                    }
+                    else if (index > 0)
+                    {
+                        index = 0;
+                    }
+                    result += Chars[Index];
+                    Index++;
+                    if (index == chars.Length)
+                    {
+                        break;
+                    }
+                }
+                return result.Substring(0, result.Length - chars.Length);
+            }
+        }
+        private static JavaScriptFunctionBody ExtractEs6BodyMixed(string code)
+        {
+            //let r = /\({0,1}\s*([A-Za-z_][A-Za-z0-9_,\s]*)\s*\){0,1}\s*\=\>\s*(.*)/;
+            var m = Regex.Match(code);
+            if (m.Success)
+            {
+                var signature = m.Groups[1].Value.Trim();
+                var body = m.Groups[2].Value.Trim();
+                return new JavaScriptFunctionBody(
+                    body,
+                    signature,
+                    code,
+                    $"function ({signature}) {{ return {body}; }}");
+            }
+            else
+            {
+                var original = code;
+                var lambdaIndex = code.IndexOf("=>");
+                var signature = code.Substring(0, lambdaIndex);
+                if (signature.StartsWith("("))
+                {
+                    signature = signature.Substring(1, signature.Length - 2);
+                }
+                signature = signature.Trim();
+                code = code.Substring(lambdaIndex + 2).Trim();
+                return new JavaScriptFunctionBody(
+                    code.Trim(';'),
+                    signature,
+                    original,
+                    $"function ({signature}) {{ return {code}; }}");
+            }
+            //var original = code;
+            //var lambdaIndex = code.IndexOf("=>");
+            //var signature = code.Substring(0, lambdaIndex);
+            //if (signature.StartsWith("("))
+            //{
+            //    signature = signature.Substring(1, signature.Length - 2);
+            //}
+            //signature = signature.Trim();
+            //code = code.Substring(lambdaIndex + 2).Trim();
+            //return new JavaScriptFunctionBody(
+            //    code.Trim(';'),
+            //    signature,
+            //    original,
+            //    $"function ({signature}) {{ return {code}; }}");
+        }
+
+        private static JavaScriptFunctionBody ExtractEs6BodySimple(string code)
+        {
+            //let r = /\({0,1}\s*([A-Za-z_][A-Za-z0-9_,\s]*)\s*\){0,1}\s*\=\>\s*(.*)/;
             var original = code;
             var lambdaIndex = code.IndexOf("=>");
             var signature = code.Substring(0, lambdaIndex);
@@ -353,14 +523,26 @@ namespace Iql.JavaScript
                 signature = signature.Substring(1, signature.Length - 2);
             }
             signature = signature.Trim();
-            var parameterNames = signature.Split(',').ToArray();
             code = code.Substring(lambdaIndex + 2).Trim();
             return new JavaScriptFunctionBody(
-                parameterNames,
                 code.Trim(';'),
                 signature,
                 original,
                 $"function ({signature}) {{ return {code}; }}");
+            //var original = code;
+            //var lambdaIndex = code.IndexOf("=>");
+            //var signature = code.Substring(0, lambdaIndex);
+            //if (signature.StartsWith("("))
+            //{
+            //    signature = signature.Substring(1, signature.Length - 2);
+            //}
+            //signature = signature.Trim();
+            //code = code.Substring(lambdaIndex + 2).Trim();
+            //return new JavaScriptFunctionBody(
+            //    code.Trim(';'),
+            //    signature,
+            //    original,
+            //    $"function ({signature}) {{ return {code}; }}");
         }
 
         private static JavaScriptFunctionBody ExtractEs5Body(string code)
@@ -371,7 +553,6 @@ namespace Iql.JavaScript
             code = code.Substring(1);
             var closeBracket = code.IndexOf(')');
             var signature = code.Substring(0, closeBracket);
-            var parameterNames = signature.Split(',').ToArray();
             code = code.Substring(closeBracket + 1);
             code = code.Trim();
             code = code.Substring(1, code.Length - 2).Trim();
@@ -387,7 +568,7 @@ namespace Iql.JavaScript
             {
                 code = code.Substring(0, code.Length - 1).Trim();
             }
-            return new JavaScriptFunctionBody(parameterNames, code, signature, original, $"function ({signature}) {{ {(returnRemoved ? "return " : "")}{code}; }}");
+            return new JavaScriptFunctionBody(code, signature, original, $"function ({signature}) {{ {(returnRemoved ? "return " : "")}{code}; }}");
         }
     }
 }

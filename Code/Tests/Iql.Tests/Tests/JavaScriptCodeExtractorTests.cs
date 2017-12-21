@@ -16,7 +16,7 @@ var myNameIs = ""Paulina""";
     {body};
 }}";
             var expectedResult = new JavaScriptFunctionBody(
-                new[] { "a", "b", "c" }, body, "a, b, c", code, $@"function (a, b, c) {{ {body}; }}");
+                body, "a, b, c", code, $@"function (a, b, c) {{ {body}; }}");
             var actualResult = JavaScriptCodeExtractor.ExtractBody(code, false);
             AssertResult(expectedResult, actualResult);
 
@@ -28,7 +28,7 @@ var myNameIs = ""Paulina""";
             var body = "p.FullName";
             var code = $"p => {body}";
             var expectedResult = new JavaScriptFunctionBody(
-                new[] { "p" }, body, "p", code, "function (p) { return p.FullName; }");
+                body, "p", code, "function (p) { return p.FullName; }");
             var actualResult = JavaScriptCodeExtractor.ExtractBody(code);
             AssertResult(expectedResult, actualResult);
         }
@@ -102,6 +102,15 @@ export var  balanceAnimationKeyframes = r.balanceAnimationKeyframes;
 export var  clearStyles = r.clearStyles;
 export var  collectAndResolveStyles = r.collectAndResolveStyles;
 ";
+            Assert.AreEqual(expected.Replace("\r", ""), cleaned);
+        }
+
+        [TestMethod]
+        public void TestRemoveComments2()
+        {
+            var code = @"function (p, x) { /*some comment*/ return p.FullName; }";
+            var cleaned = JavaScriptCodeExtractor.RemoveComments(code);
+            var expected = @"function (p, x) {  return p.FullName; }";
             Assert.AreEqual(expected.Replace("\r", ""), cleaned);
         }
 

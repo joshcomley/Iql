@@ -19,7 +19,8 @@ namespace Iql.Queryable.Data
     {
         private readonly Dictionary<string, object> _configurations =
             new Dictionary<string, object>();
-
+        private static readonly Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders
+            = new Dictionary<Type, EntityConfigurationBuilder>();
         public DataContext(
             IDataStore dataStore,
             EvaluateContext evaluateContext = null
@@ -28,8 +29,18 @@ namespace Iql.Queryable.Data
             DataStore = dataStore;
             EvaluateContext = evaluateContext;
             DataStore.DataContext = this;
-            EntityConfigurationContext = new EntityConfigurationBuilder();
-            Initialize();
+            var thisType = GetType();
+            if (!EntityConfigurationsBuilders.ContainsKey(thisType))
+            {
+                EntityConfigurationContext = new EntityConfigurationBuilder();
+                Initialize();
+                EntityConfigurationsBuilders.Add(thisType, EntityConfigurationContext);
+            }
+            else
+            {
+                EntityConfigurationContext = EntityConfigurationsBuilders[thisType];
+                _initialized = true;
+            }
         }
 
         private void Initialize()

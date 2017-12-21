@@ -5,19 +5,18 @@ namespace Iql.JavaScript
     public class JavaScriptFunctionBody
     {
         public JavaScriptFunctionBody(
-            string[] parameterNames,
             string body,
             string signature,
             string originalCode,
             string cleanedCode)
         {
-            ParameterNames = parameterNames;
-            for (var i = 0; i < parameterNames.Length; i++)
+            ParameterNames = signature.Split(',');
+            for (var i = 0; i < ParameterNames.Length; i++)
             {
-                parameterNames[i] = parameterNames[i].Trim();
+                ParameterNames[i] = ParameterNames[i].Trim();
             }
-            Body = body;
-            Signature = signature;
+            Body = body.Trim();
+            Signature = signature.Trim();
             OriginalCode = originalCode;
             CleanedCode = cleanedCode;
         }

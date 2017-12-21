@@ -7,6 +7,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
     //     http://jsep.from.so/
     public class JavaScriptExpressionStringToExpressionTreeParser
     {
+        private static Dictionary<string, JavaScriptExpressionNode> _parsed = new Dictionary<string, JavaScriptExpressionNode>();
         private readonly string _expr;
         private int _index;
 
@@ -36,6 +37,10 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         // `expr` is a string with the passed in expression
         public JavaScriptExpressionNode Parse()
         {
+            if (_parsed.ContainsKey(_expr))
+            {
+                return _parsed[_expr];
+            }
             // `index` stores the character number we are currently at while `length` is a constant
             // All of the reads below will modify `index` as we move along
             var nodes = new List<JavaScriptExpressionNode>();
@@ -68,7 +73,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             }
 
             // If there's only one expression just try returning the expression
-            return nodes.Count == 1 ? nodes[0] : new CompoundJavaScriptExpressionNode(nodes);
+            var result = nodes.Count == 1 ? nodes[0] : new CompoundJavaScriptExpressionNode(nodes);
+            _parsed.Add(_expr, result);
+            return result;
         }
 
         // Push `this.index` up to the next non-space character
