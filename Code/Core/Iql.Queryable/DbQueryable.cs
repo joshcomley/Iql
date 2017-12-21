@@ -315,7 +315,6 @@ namespace Iql.Queryable
             {
                 return null;
             }
-            return null;
             return DataContext.DataStore.Add(entity);
         }
 
