@@ -12,6 +12,7 @@ using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
@@ -26,9 +27,14 @@ namespace Iql.Queryable
             Configuration = configuration;
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
+            TrackingSetCollection = dataContext.DataStore.GetTracking();
+            TrackingSet = TrackingSetCollection.TrackingSet(typeof(T));
         }
 
+        public ITrackingSet TrackingSet { get; set; }
+
         public Func<IDataStore> DataStoreGetter { get; set; }
+        public TrackingSetCollection TrackingSetCollection { get; private set; }
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder Configuration { get; set; }
 
@@ -305,10 +311,11 @@ namespace Iql.Queryable
 
         public EntityState<T> Add(T entity)
         {
-            if (DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
+            if (TrackingSet.IsTracked(entity))
             {
                 return null;
             }
+            return null;
             return DataContext.DataStore.Add(entity);
         }
 
