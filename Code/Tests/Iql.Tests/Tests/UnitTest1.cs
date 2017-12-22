@@ -613,6 +613,36 @@ namespace Iql.Tests.Tests
 
         [TestMethod]
         public async Task
+            TestAddingEntity()
+        {
+            // Create two new client types
+            var clientType1 = new ClientType
+            {
+                Id = 2,
+                Name = "Something else",
+            };
+            clientType1.Clients.AddRange(new[]
+            {
+                new Client {Id = 1, Name = "Client 1"}
+            });
+            Db.ClientTypes.Add(clientType1);
+
+            await Db.SaveChanges();
+            Assert.AreEqual(1, clientType1.Clients.Count);
+
+            var clientType2 = new ClientType
+            {
+                Id = 3,
+                Name = "Another",
+            };
+            Db.ClientTypes.Add(clientType2);
+
+            await Db.SaveChanges();
+            Assert.AreEqual(1, clientType1.Clients.Count);
+        }
+
+        [TestMethod]
+        public async Task
             DeletingAnEntityThatIsInAChildCollectionOfAnotherEntityShouldRemoveTheEntityFromTheChildCollection()
         {
             var clientTypes = TestsBlock.AddClientTypes();

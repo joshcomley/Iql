@@ -33,13 +33,14 @@ namespace Iql.Queryable.Data
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
             {
                 EntityConfigurationContext = new EntityConfigurationBuilder();
-                Initialize();
                 EntityConfigurationsBuilders.Add(thisType, EntityConfigurationContext);
+                Initialize();
             }
             else
             {
                 EntityConfigurationContext = EntityConfigurationsBuilders[thisType];
                 _initialized = true;
+                InitializeProperties();
             }
         }
 
@@ -49,14 +50,19 @@ namespace Iql.Queryable.Data
             {
                 _initialized = true;
                 Configure(EntityConfigurationContext);
-                var properties = GetType().GetProperties()
-                    .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
-                    .ToList();
-                foreach (var property in properties)
-                {
-                    var asDbSetByType = AsDbSetByType(property.PropertyType.GenericTypeArguments[0]);
-                    property.SetValue(this, asDbSetByType);
-                }
+                InitializeProperties();
+            }
+        }
+
+        private void InitializeProperties()
+        {
+            var properties = GetType().GetProperties()
+                .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
+                .ToList();
+            foreach (var property in properties)
+            {
+                var asDbSetByType = AsDbSetByType(property.PropertyType.GenericTypeArguments[0]);
+                property.SetValue(this, asDbSetByType);
             }
         }
 
