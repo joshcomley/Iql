@@ -15,7 +15,6 @@ namespace Iql.Queryable.Data.Tracking
         void SilentlyChangeEntity(object entity, Action action);
         void ChangeEntity(object entity, Action action, ChangeEntityMode silently);
         IEntityStateBase GetEntityState(object entity);
-        void EnsureIntegrity();
         IEnumerable<object> TrackedEntites();
         Type EntityType { get; }
         object Track(object entity, bool isNew);
@@ -25,11 +24,8 @@ namespace Iql.Queryable.Data.Tracking
         List<IUpdateEntityOperation> GetChangesInternal(bool reset = false);
         void Reset();
         object FindClone(object entity);
-        ITrackedEntity FindTrackedEntity(object entity);
-        ITrackedEntity FindTrackedEntityByKey(CompositeKey key);
-        ITrackedEntity FindEntity(object entity);
-        ITrackedEntity FindEntityByKey(CompositeKey entity);
-        IEnumerable<ITrackedRelationship> FindRelationships(object entity, CompositeKey key);
+        object FindTrackedEntity(object entity);
+        object FindTrackedEntityByKey(CompositeKey key);
         IEnumerable<IEntityCrudOperationBase> GetInserts();
         IEnumerable<IEntityCrudOperationBase> GetDeletions();
         IEnumerable<IUpdateEntityOperation> GetUpdates();

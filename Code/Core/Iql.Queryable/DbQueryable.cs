@@ -28,8 +28,7 @@ namespace Iql.Queryable
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
             TrackingSetCollection = dataContext.DataStore.GetTracking();
-            TrackingSetCollection.GetSet<T>();
-            //TrackingSet = TrackingSetCollection.TrackingSet(typeof(T));
+            TrackingSet = TrackingSetCollection.GetSet<T>();
         }
 
         public ITrackingSet TrackingSet { get; set; }
@@ -312,7 +311,7 @@ namespace Iql.Queryable
 
         public EntityState<T> Add(T entity)
         {
-            if (TrackingSetCollection.GetSet<T>().IsTracked(entity))
+            if (TrackingSet.IsTracked(entity))
             {
                 return null;
             }

@@ -86,10 +86,10 @@ namespace Iql.Queryable.Data
                             {
                                 var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
                                 var trackedReferenceValue =
-                                    relationshipManager.TargetTrackingSet.FindEntityByKey(key);
+                                    relationshipManager.TargetTrackingSet.FindTrackedEntityByKey(key);
                                 if (trackedReferenceValue != null)
                                 {
-                                    referenceValue = trackedReferenceValue.Entity;
+                                    referenceValue = trackedReferenceValue;
                                 }
                             }
                             if (referenceValue != null)
@@ -207,7 +207,7 @@ namespace Iql.Queryable.Data
         {
             await TrackRelationshipsInternal(entity, entityType, dataContext, true);
         }
-        private static List<object> _refreshQueue = new List<object>();
+        private static readonly List<object> RefreshQueue = new List<object>();
         private static async Task TrackRelationshipsInternal(object entity, Type entityType, IDataContext dataContext, bool allowRefresh)
         {
             foreach (var relationship in dataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
@@ -328,11 +328,11 @@ namespace Iql.Queryable.Data
                                         if (ourTarget != null && ourTarget != target)
                                         {
                                             // We need to refresh this entity...
-                                            if (allowRefresh && !_refreshQueue.Contains(target))
+                                            if (allowRefresh && !RefreshQueue.Contains(target))
                                             {
-                                                _refreshQueue.Add(target);
+                                                RefreshQueue.Add(target);
                                                 await dataContext.RefreshEntity(target, relationship.Relationship.Target.Type);
-                                                _refreshQueue.Remove(target);
+                                                RefreshQueue.Remove(target);
                                                 if (!dataContext.EntityPropertiesMatch(target, key))
                                                 {
                                                     continue;

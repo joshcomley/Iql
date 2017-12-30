@@ -7,6 +7,7 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Events;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Crud.State
 {
@@ -57,6 +58,8 @@ namespace Iql.Queryable.Data.Crud.State
             CascadeDeletedBy.Add(new CascadeDeletion(relationship, from));
         }
 
+        public CompositeKey Key { get; set; }
+        public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;

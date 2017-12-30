@@ -642,6 +642,34 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task SimpleAddEntityWithNestedEntity()
+        {
+            var clientType1 = new ClientType
+            {
+                Id = 2,
+                Name = "Something else",
+            };
+            clientType1.Clients.AddRange(new[]
+            {
+                new Client {Id = 1, Name = "Client 1"}
+            });
+            Db.ClientTypes.Add(clientType1);
+            var clientType2 = new ClientType
+            {
+                Id = 3,
+                Name = "Another",
+            };
+            clientType2.Clients.AddRange(new[]
+            {
+                new Client {Id = 2, Name = "Client 2"}
+            });
+            Db.ClientTypes.Add(clientType2);
+            var clients = AppDbContext.InMemoryDb.Clients;
+            var clientTypes = AppDbContext.InMemoryDb.ClientTypes;
+            await Db.SaveChanges();
+            Assert.AreEqual(1, clientType1.Clients.Count);
+        }
+        [TestMethod]
         public async Task
             DeletingAnEntityThatIsInAChildCollectionOfAnotherEntityShouldRemoveTheEntityFromTheChildCollection()
         {

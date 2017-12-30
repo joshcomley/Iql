@@ -6,7 +6,9 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
 {
@@ -66,6 +68,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                 var property = configuration.FindProperty(key.PropertyName);
                 if (property.Kind == PropertyKind.Key)
                 {
+                    var oldId = clone.GetPropertyValue(key.PropertyName);
                     if (property.Type == typeof(int))
                     {
                         clone.SetPropertyValue(key.PropertyName, NextIdInteger(data, property));
@@ -73,6 +76,20 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                     else if (property.Type == typeof(string))
                     {
                         clone.SetPropertyValue(key.PropertyName, NextIdString(data, property));
+                    }
+                    if (!oldId.IsDefaultValue())
+                    {
+                        var newId = clone.GetPropertyValue(key.PropertyName);
+                        foreach (var relationship in configuration.Relationships)
+                        {
+                            switch (relationship.Type)
+                            {
+                                case RelationshipType.OneToOne:
+                                    break;
+                                case RelationshipType.OneToMany:
+                                    break;
+                            }
+                        }
                     }
                 }
             }

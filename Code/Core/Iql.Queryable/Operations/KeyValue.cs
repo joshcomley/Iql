@@ -16,7 +16,7 @@ namespace Iql.Queryable.Operations
 
         public bool IsDefaultValue()
         {
-            return Equals(Value, null) || Equals(Value, Activator.CreateInstance(ValueType));
+            return Equals(Value, null) || Equals(Value, Activator.CreateInstance(ValueType ?? Value.GetType()));
         }
     }
 }

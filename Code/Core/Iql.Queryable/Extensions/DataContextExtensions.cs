@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Extensions
 {
@@ -17,16 +18,21 @@ namespace Iql.Queryable.Extensions
             return entityState?.IsNew;
         }
 
+        public static CompositeKey EntityKey(this IDataContext dataContext, object entity, Type entityType)
+        {
+            return dataContext.GetEntityState(entity
+#if TypeScript
+                , entityType
+#endif
+            ).Key;
+        }
+
         public static bool EntityHasKey(this IDataContext dataContext, object entity, Type entityType)
         {
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var keyProperty in entityConfiguration.Key.Properties)
             {
-                var value = entity.GetPropertyValue(keyProperty.PropertyName);
-                if (Equals(value, null) ||
-                    Equals(value, 0) ||
-                    Equals(value, "") ||
-                    Equals(value, new DateTime()))
+                if (entity.GetPropertyValue(keyProperty.PropertyName).IsDefaultValue())
                 {
                     return false;
                 }

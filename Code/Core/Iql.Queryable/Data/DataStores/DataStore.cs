@@ -37,8 +37,9 @@ namespace Iql.Queryable.Data.DataStores
         public virtual EntityState<TEntity> Add<TEntity>(TEntity entity)
             where TEntity : class
         {
-            var trackingSet = Tracking.TrackingSet(typeof(TEntity));
+            var trackingSet = Tracking.GetSet<TEntity>();
             //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(operation.Entity, typeof(TEntity));
+            
             var existingState = (EntityState<TEntity>)trackingSet.GetEntityState(entity);
             if (existingState != null)
             {
@@ -52,17 +53,10 @@ namespace Iql.Queryable.Data.DataStores
             var tracking = DataContext.DataStore.GetTracking();
             foreach (var flattenedEntity in flattened)
             {
-                var alreadyTracked = tracking.IsTracked(flattenedEntity.Entity, flattenedEntity.EntityType);
-                if (!alreadyTracked)
+                if (!tracking.IsTracked(flattenedEntity.Entity, flattenedEntity.EntityType))
                 {
                     nonTracked.Add(flattenedEntity);
                     tracking.TrackEntity(flattenedEntity.Entity, flattenedEntity.EntityType, true);
-                    var flattenedEntityState = DataContext.GetEntityState(flattenedEntity.Entity
-#if TypeScript
-                        , flattenedEntity.EntityType
-#endif
-                    );
-                    flattenedEntityState.IsNew = true;
                 }
             }
             foreach (var nonTrackedEntity in nonTracked)
@@ -260,7 +254,7 @@ namespace Iql.Queryable.Data.DataStores
             }
             for (var i = 0; i < response.Data.Count; i++)
             {
-                response.Data[i] = trackingSet.FindTrackedEntity(response.Data[i]).Entity;
+                response.Data[i] = trackingSet.FindTrackedEntity(response.Data[i]);
             }
             return result;
         }

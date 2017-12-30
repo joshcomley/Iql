@@ -93,11 +93,11 @@ namespace Iql.Queryable.Data
             {
                 TargetTrackingSet.SilentlyChangeEntity(entity, () =>
                 {
-                    entity.SetPropertyValue(Relationship.Target.Property.PropertyName, trackedEntity.Entity);
+                    entity.SetPropertyValue(Relationship.Target.Property.PropertyName, trackedEntity);
                 });
-                SourceTrackingSet.SilentlyChangeEntity(trackedEntity.Entity, () =>
+                SourceTrackingSet.SilentlyChangeEntity(trackedEntity, () =>
                 {
-                    trackedEntity.Entity.SetPropertyValue(
+                    trackedEntity.SetPropertyValue(
                         Relationship.Source.Property.PropertyName, entity);
                 });
             }
@@ -151,32 +151,19 @@ namespace Iql.Queryable.Data
         /// <typeparam name="TTarget"></typeparam>
         public void ProcessOneToManyKeyChange(TSource entity, CompositeKey sourceCompositeKey = null, CompositeKey targetCompositeKey = null)
         {
-            ITrackedEntity trackedEntity = null;
+            object trackedEntity;
             if (entity != null)
             {
                 EnsureTracked(entity, typeof(TSource));
-                trackedEntity = SourceTrackingSet.FindEntity(entity);
+                trackedEntity = SourceTrackingSet.FindTrackedEntity(entity);
             }
             else
             {
-                trackedEntity = SourceTrackingSet.FindEntityByKey(sourceCompositeKey);
-            }
-
-            if (trackedEntity != null)
-            {
-                foreach (var relationship in trackedEntity.TrackedRelationships)
-                {
-                    if (relationship.Relationship == Relationship)
-                    {
-                        var list = relationship.Owner.GetPropertyValue(Relationship.Target.Property.PropertyName)
-                            as IRelatedList;
-                        list.Remove(trackedEntity.Entity);
-                    }
-                }
+                trackedEntity = SourceTrackingSet.FindTrackedEntityByKey(sourceCompositeKey);
             }
 
             targetCompositeKey = targetCompositeKey ?? Relationship.Source.GetCompositeKey(entity, true);
-            ITrackedEntity newOwner;
+            object newOwner;
             if (targetCompositeKey.HasDefaultValue())
             {
                 var referenceValue = entity.GetPropertyValue(Relationship.Source.Property.PropertyName);
@@ -188,21 +175,41 @@ namespace Iql.Queryable.Data
                 newOwner = TargetTrackingSet.FindTrackedEntityByKey(
                     targetCompositeKey);
             }
-            IRelatedList newList = null;
+            // TODO: Get tracked relationships
+            foreach (var target in TargetTrackingSet.TrackedEntites())
+            {
+                if (Equals(target, newOwner))
+                {
+                    continue;
+                }
+                var list = target.GetPropertyValue(Relationship.Target.Property.PropertyName)
+                    as IRelatedList;
+                list.Remove(trackedEntity);
+            }
+            //if (trackedEntity != null)
+            //{
+            //    foreach (var relationship in trackedEntity.TrackedRelationships)
+            //    {
+            //        if (relationship.Relationship == Relationship)
+            //        {
+            //            var list = relationship.Owner.GetPropertyValue(Relationship.Target.Property.PropertyName)
+            //                as IRelatedList;
+            //            list.Remove(trackedEntity.Entity);
+            //        }
+            //    }
+            //}
+
             if (newOwner != null && trackedEntity != null)
             {
-                newList = newOwner.Entity.GetPropertyValue(Relationship.Target.Property.PropertyName)
+                var newList = newOwner.GetPropertyValue(Relationship.Target.Property.PropertyName)
                     as IRelatedList;
-                if (!newList.Contains(trackedEntity.Entity))
+                if (!newList.Contains(trackedEntity))
                 {
-                    newList.Add(trackedEntity.Entity);
+                    newList.Add(trackedEntity);
                 }
             }
-            if (trackedEntity != null)
-            {
-                trackedEntity.Entity.SetPropertyValue(Relationship.Source.Property.PropertyName,
-                    newOwner?.Entity);
-            }
+            trackedEntity?.SetPropertyValue(Relationship.Source.Property.PropertyName,
+                newOwner);
         }
 
         /// <summary>

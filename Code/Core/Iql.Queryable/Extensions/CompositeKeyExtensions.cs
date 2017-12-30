@@ -5,6 +5,16 @@ namespace Iql.Queryable.Extensions
 {
     public static class CompositeKeyExtensions
     {
+        public static string AsKeyString(this CompositeKey compositeKey)
+        {
+            var str = "";
+            foreach (var key in compositeKey.Keys)
+            {
+                str += key.Name + ":" + key.Value;
+            }
+            return str;
+        }
+
         public static bool MatchesEntity(this CompositeKey compositeKey, object entity)
         {
             var isMatch = true;

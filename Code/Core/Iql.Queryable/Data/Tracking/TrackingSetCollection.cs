@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
-using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Exceptions;
 
 namespace Iql.Queryable.Data.Tracking
@@ -254,7 +252,7 @@ namespace Iql.Queryable.Data.Tracking
             return null;
         }
 
-        public ITrackedEntity FindEntity(object entity)
+        public object FindEntity(object entity)
         {
             if (entity == null)
             {

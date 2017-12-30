@@ -12,7 +12,7 @@ namespace Iql.Queryable.Data.DataStores
             object newEntity, Type entityType)
         {
             var configuration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
-            var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity)?.Entity;
+            var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity);
             if (trackedEntity == newEntity || trackedEntity == null)
             {
                 return;
