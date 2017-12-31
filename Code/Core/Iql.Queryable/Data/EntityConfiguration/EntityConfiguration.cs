@@ -142,6 +142,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return Key;
         }
 
+        public EntityConfiguration<T> PrimaryKeyIsGeneratedRemotely(
+            bool isTrue = true
+        )
+        {
+            Key.IsGeneratedRemotely = isTrue;
+            return this;
+        }
+
         public EntityConfiguration<T> HasKey<TKey>(
             Expression<Func<T, TKey>> property
         )
@@ -261,7 +269,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return new OneToRelationshipMap<T, TTarget>(
                 _builder,
                 this,
-                _builder.DefineEntity<TTarget>(),
+                _builder.EntityType<TTarget>(),
                 RelationshipMapType.One,
                 property);
         }
@@ -272,7 +280,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return new ManyToRelationshipMap<T, TTarget>(
                 _builder,
                 this,
-                _builder.DefineEntity<TTarget>(),
+                _builder.EntityType<TTarget>(),
                 RelationshipMapType.Many,
                 property);
         }

@@ -1,4 +1,5 @@
-﻿using Iql.Tests.Context;
+﻿using System;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests
@@ -22,6 +23,21 @@ namespace Iql.Tests.Tests
         public void TestCleanUp()
         {
             TestsBlock.TestCleanUp();
+        }
+
+        public virtual void ShouldThrowException<TException>(Action action)
+        {
+            var exceptionCount = 0;
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                exceptionCount++;
+                Assert.IsTrue(e is TException);
+            }
+            Assert.AreEqual(exceptionCount, 1);
         }
     }
 }

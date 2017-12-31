@@ -122,7 +122,10 @@ namespace Iql.Queryable.Data
             {
                 EnsureTracked(referenceValue, typeof(TTarget));
                 var key = Relationship.Target.GetCompositeKey(referenceValue, true);
-                entity.SetPropertyValues(key);
+                SourceTrackingSet.ChangeEntity(entity, () =>
+                {
+                    entity.SetPropertyValues(key);
+                }, ChangeEntityMode.NoKeyChecks);
             }
             else
             {

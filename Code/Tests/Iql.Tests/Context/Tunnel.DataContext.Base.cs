@@ -63,7 +63,7 @@ public class TunnelDataContextBase : DataContext {
 	public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration();
 	
 	public override void Configure(EntityConfigurationBuilder builder) {
-		builder.DefineEntity<ApplicationUser>()
+		builder.EntityType<ApplicationUser>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.ClientId)
@@ -95,12 +95,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineCollectionProperty(p => p.SiteInspectionsCreated, p => p.SiteInspectionsCreatedCount)
 			.DefineCollectionProperty(p => p.Sites, p => p.SitesCount);
 		
-		builder.DefineEntity<ApplicationUser>()
+		builder.EntityType<ApplicationUser>()
 			.HasOne(p => p.Client)
 			.WithMany(p => p.Users)
 			.WithConstraint(p => p.ClientId, p => p.Id);
 		
-		builder.DefineEntity<Client>()
+		builder.EntityType<Client>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.TypeId, false)
 			.DefineProperty(p => p.Id, false)
@@ -117,23 +117,23 @@ public class TunnelDataContextBase : DataContext {
 			.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 			.DefineCollectionProperty(p => p.Sites, p => p.SitesCount);
 		
-		builder.DefineEntity<Client>()
+		builder.EntityType<Client>()
 			.HasOne(p => p.Type)
 			.WithMany(p => p.Clients)
 			.WithConstraint(p => p.TypeId, p => p.Id);
 		
-		builder.DefineEntity<Client>()
+		builder.EntityType<Client>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.ClientsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ClientType>()
+		builder.EntityType<ClientType>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.Name)
 			.DefineCollectionProperty(p => p.Clients, p => p.ClientsCount);
 		
-		builder.DefineEntity<DocumentCategory>()
+		builder.EntityType<DocumentCategory>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -145,12 +145,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUser)
 			.DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount);
 		
-		builder.DefineEntity<DocumentCategory>()
+		builder.EntityType<DocumentCategory>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.DocumentCategoriesCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<SiteDocument>()
+		builder.EntityType<SiteDocument>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.CategoryId, false)
 			.DefineProperty(p => p.SiteId, false)
@@ -165,22 +165,22 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Site, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<SiteDocument>()
+		builder.EntityType<SiteDocument>()
 			.HasOne(p => p.Category)
 			.WithMany(p => p.Documents)
 			.WithConstraint(p => p.CategoryId, p => p.Id);
 		
-		builder.DefineEntity<SiteDocument>()
+		builder.EntityType<SiteDocument>()
 			.HasOne(p => p.Site)
 			.WithMany(p => p.Documents)
 			.WithConstraint(p => p.SiteId, p => p.Id);
 		
-		builder.DefineEntity<SiteDocument>()
+		builder.EntityType<SiteDocument>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.SiteDocumentsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ReportActionsTaken>()
+		builder.EntityType<ReportActionsTaken>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.FaultReportId, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -193,17 +193,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.PersonReport, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<ReportActionsTaken>()
+		builder.EntityType<ReportActionsTaken>()
 			.HasOne(p => p.PersonReport)
 			.WithMany(p => p.ActionsTaken)
 			.WithConstraint(p => p.FaultReportId, p => p.Id);
 		
-		builder.DefineEntity<ReportActionsTaken>()
+		builder.EntityType<ReportActionsTaken>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.FaultActionsTakenCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ReportCategory>()
+		builder.EntityType<ReportCategory>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -215,12 +215,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUser)
 			.DefineCollectionProperty(p => p.ReportTypes, p => p.ReportTypesCount);
 		
-		builder.DefineEntity<ReportCategory>()
+		builder.EntityType<ReportCategory>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.FaultCategoriesCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ReportDefaultRecommendation>()
+		builder.EntityType<ReportDefaultRecommendation>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -233,12 +233,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUser)
 			.DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount);
 		
-		builder.DefineEntity<ReportDefaultRecommendation>()
+		builder.EntityType<ReportDefaultRecommendation>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.FaultDefaultRecommendationsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ReportRecommendation>()
+		builder.EntityType<ReportRecommendation>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.ReportId, false)
 			.DefineProperty(p => p.RecommendationId, false)
@@ -253,22 +253,22 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Recommendation, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<ReportRecommendation>()
+		builder.EntityType<ReportRecommendation>()
 			.HasOne(p => p.PersonReport)
 			.WithMany(p => p.Recommendations)
 			.WithConstraint(p => p.ReportId, p => p.Id);
 		
-		builder.DefineEntity<ReportRecommendation>()
+		builder.EntityType<ReportRecommendation>()
 			.HasOne(p => p.Recommendation)
 			.WithMany(p => p.Recommendations)
 			.WithConstraint(p => p.RecommendationId, p => p.Id);
 		
-		builder.DefineEntity<ReportRecommendation>()
+		builder.EntityType<ReportRecommendation>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.FaultRecommendationsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ReportType>()
+		builder.EntityType<ReportType>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CategoryId, false)
@@ -282,17 +282,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUser)
 			.DefineCollectionProperty(p => p.FaultReports, p => p.FaultReportsCount);
 		
-		builder.DefineEntity<ReportType>()
+		builder.EntityType<ReportType>()
 			.HasOne(p => p.Category)
 			.WithMany(p => p.ReportTypes)
 			.WithConstraint(p => p.CategoryId, p => p.Id);
 		
-		builder.DefineEntity<ReportType>()
+		builder.EntityType<ReportType>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.FaultTypesCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<Project>()
+		builder.EntityType<Project>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.Title, false)
@@ -300,12 +300,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUserId)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<Project>()
+		builder.EntityType<Project>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.ProjectCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<ReportReceiverEmailAddress>()
+		builder.EntityType<ReportReceiverEmailAddress>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.CreatedByUserId)
 			.DefineProperty(p => p.SiteId, false)
@@ -318,17 +318,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Site, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<ReportReceiverEmailAddress>()
+		builder.EntityType<ReportReceiverEmailAddress>()
 			.HasOne(p => p.Site)
 			.WithMany(p => p.AdditionalSendReportsTo)
 			.WithConstraint(p => p.SiteId, p => p.Id);
 		
-		builder.DefineEntity<ReportReceiverEmailAddress>()
+		builder.EntityType<ReportReceiverEmailAddress>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.ReportReceiverEmailAddressesCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<RiskAssessment>()
+		builder.EntityType<RiskAssessment>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.SiteInspectionId, false)
@@ -341,17 +341,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUser)
 			.DefineProperty(p => p.SiteInspection, false);
 		
-		builder.DefineEntity<RiskAssessment>()
+		builder.EntityType<RiskAssessment>()
 			.HasOne(p => p.RiskAssessmentSolution)
 			.WithOne(p => p.RiskAssessment)
 			.WithConstraint(p => p.Id, p => p.RiskAssessmentId);
 		
-		builder.DefineEntity<RiskAssessment>()
+		builder.EntityType<RiskAssessment>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.RiskAssessmentsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<RiskAssessmentSolution>()
+		builder.EntityType<RiskAssessmentSolution>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.RiskAssessmentId, false)
 			.DefineConvertedProperty(p => p.Guid, "Guid", false)
@@ -363,7 +363,7 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.RiskAssessment, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<RiskAssessmentAnswer>()
+		builder.EntityType<RiskAssessmentAnswer>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.QuestionId, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -377,17 +377,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Question, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<RiskAssessmentAnswer>()
+		builder.EntityType<RiskAssessmentAnswer>()
 			.HasOne(p => p.Question)
 			.WithMany(p => p.Answers)
 			.WithConstraint(p => p.QuestionId, p => p.Id);
 		
-		builder.DefineEntity<RiskAssessmentAnswer>()
+		builder.EntityType<RiskAssessmentAnswer>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.RiskAssessmentAnswersCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<RiskAssessmentQuestion>()
+		builder.EntityType<RiskAssessmentQuestion>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -399,12 +399,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineCollectionProperty(p => p.Answers, p => p.AnswersCount)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<RiskAssessmentQuestion>()
+		builder.EntityType<RiskAssessmentQuestion>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.RiskAssessmentQuestionsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<Person>()
+		builder.EntityType<Person>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.TypeId)
 			.DefineProperty(p => p.LoadingId)
@@ -426,27 +426,27 @@ public class TunnelDataContextBase : DataContext {
 			.DefineCollectionProperty(p => p.Types, p => p.TypesCount)
 			.DefineCollectionProperty(p => p.Reports, p => p.ReportsCount);
 		
-		builder.DefineEntity<Person>()
+		builder.EntityType<Person>()
 			.HasOne(p => p.Client)
 			.WithMany(p => p.People)
 			.WithConstraint(p => p.ClientId, p => p.Id);
 		
-		builder.DefineEntity<Person>()
+		builder.EntityType<Person>()
 			.HasOne(p => p.Type)
 			.WithMany(p => p.People)
 			.WithConstraint(p => p.TypeId, p => p.Id);
 		
-		builder.DefineEntity<Person>()
+		builder.EntityType<Person>()
 			.HasOne(p => p.Loading)
 			.WithMany(p => p.People)
 			.WithConstraint(p => p.LoadingId, p => p.Id);
 		
-		builder.DefineEntity<Person>()
+		builder.EntityType<Person>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.PeopleCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<PersonInspection>()
+		builder.EntityType<PersonInspection>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.SiteInspectionId, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -465,17 +465,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.SiteInspection, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<PersonInspection>()
+		builder.EntityType<PersonInspection>()
 			.HasOne(p => p.SiteInspection)
 			.WithMany(p => p.PersonInspections)
 			.WithConstraint(p => p.SiteInspectionId, p => p.Id);
 		
-		builder.DefineEntity<PersonInspection>()
+		builder.EntityType<PersonInspection>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.PersonInspectionsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<PersonLoading>()
+		builder.EntityType<PersonLoading>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -487,12 +487,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<PersonLoading>()
+		builder.EntityType<PersonLoading>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.PersonLoadingsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<PersonType>()
+		builder.EntityType<PersonType>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.CreatedByUserId)
@@ -505,12 +505,12 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.CreatedByUser)
 			.DefineCollectionProperty(p => p.PeopleMap, p => p.PeopleMapCount);
 		
-		builder.DefineEntity<PersonType>()
+		builder.EntityType<PersonType>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.PersonTypesCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<PersonTypeMap>()
+		builder.EntityType<PersonTypeMap>()
 			.HasCompositeKey(p => p.PersonId, p => p.TypeId)
 			.DefineProperty(p => p.PersonId, false)
 			.DefineProperty(p => p.TypeId, false)
@@ -521,17 +521,17 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Person, false)
 			.DefineProperty(p => p.Type, false);
 		
-		builder.DefineEntity<PersonTypeMap>()
+		builder.EntityType<PersonTypeMap>()
 			.HasOne(p => p.Person)
 			.WithMany(p => p.Types)
 			.WithConstraint(p => p.PersonId, p => p.Id);
 		
-		builder.DefineEntity<PersonTypeMap>()
+		builder.EntityType<PersonTypeMap>()
 			.HasOne(p => p.Type)
 			.WithMany(p => p.PeopleMap)
 			.WithConstraint(p => p.TypeId, p => p.Id);
 		
-		builder.DefineEntity<PersonReport>()
+		builder.EntityType<PersonReport>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.PersonId, false)
 			.DefineProperty(p => p.TypeId, false)
@@ -549,22 +549,22 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Type, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<PersonReport>()
+		builder.EntityType<PersonReport>()
 			.HasOne(p => p.Person)
 			.WithMany(p => p.Reports)
 			.WithConstraint(p => p.PersonId, p => p.Id);
 		
-		builder.DefineEntity<PersonReport>()
+		builder.EntityType<PersonReport>()
 			.HasOne(p => p.Type)
 			.WithMany(p => p.FaultReports)
 			.WithConstraint(p => p.TypeId, p => p.Id);
 		
-		builder.DefineEntity<PersonReport>()
+		builder.EntityType<PersonReport>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.FaultReportsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<Site>()
+		builder.EntityType<Site>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.ParentId)
@@ -588,22 +588,22 @@ public class TunnelDataContextBase : DataContext {
 			.DefineCollectionProperty(p => p.SiteInspections, p => p.SiteInspectionsCount)
 			.DefineCollectionProperty(p => p.Users, p => p.UsersCount);
 		
-		builder.DefineEntity<Site>()
+		builder.EntityType<Site>()
 			.HasOne(p => p.Parent)
 			.WithMany(p => p.Children)
 			.WithConstraint(p => p.ParentId, p => p.Id);
 		
-		builder.DefineEntity<Site>()
+		builder.EntityType<Site>()
 			.HasOne(p => p.Client)
 			.WithMany(p => p.Sites)
 			.WithConstraint(p => p.ClientId, p => p.Id);
 		
-		builder.DefineEntity<Site>()
+		builder.EntityType<Site>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.SitesCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<SiteInspection>()
+		builder.EntityType<SiteInspection>()
 			.HasKey(p => p.Id)
 			.DefineProperty(p => p.Id, false)
 			.DefineProperty(p => p.SiteId, false)
@@ -619,34 +619,34 @@ public class TunnelDataContextBase : DataContext {
 			.DefineProperty(p => p.Site, false)
 			.DefineProperty(p => p.CreatedByUser);
 		
-		builder.DefineEntity<SiteInspection>()
+		builder.EntityType<SiteInspection>()
 			.HasOne(p => p.RiskAssessment)
 			.WithOne(p => p.SiteInspection)
 			.WithConstraint(p => p.Id, p => p.SiteInspectionId);
 		
-		builder.DefineEntity<SiteInspection>()
+		builder.EntityType<SiteInspection>()
 			.HasOne(p => p.Site)
 			.WithMany(p => p.SiteInspections)
 			.WithConstraint(p => p.SiteId, p => p.Id);
 		
-		builder.DefineEntity<SiteInspection>()
+		builder.EntityType<SiteInspection>()
 			.HasOne(p => p.CreatedByUser)
 			.WithMany(p => p.SiteInspectionsCreated)
 			.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 		
-		builder.DefineEntity<UserSite>()
+		builder.EntityType<UserSite>()
 			.HasCompositeKey(p => p.SiteId, p => p.UserId)
 			.DefineProperty(p => p.SiteId, false)
 			.DefineProperty(p => p.UserId)
 			.DefineProperty(p => p.User, false)
 			.DefineProperty(p => p.Site, false);
 		
-		builder.DefineEntity<UserSite>()
+		builder.EntityType<UserSite>()
 			.HasOne(p => p.User)
 			.WithMany(p => p.Sites)
 			.WithConstraint(p => p.UserId, p => p.Id);
 		
-		builder.DefineEntity<UserSite>()
+		builder.EntityType<UserSite>()
 			.HasOne(p => p.Site)
 			.WithMany(p => p.Users)
 			.WithConstraint(p => p.SiteId, p => p.Id);

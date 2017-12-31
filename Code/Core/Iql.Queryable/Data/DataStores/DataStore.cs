@@ -318,14 +318,18 @@ namespace Iql.Queryable.Data.DataStores
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
                     if (remoteEntity != null)
                     {
-                        foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+                        var trackingSet = GetTracking().TrackingSet(typeof(TEntity));
+                        trackingSet.ChangeEntity(localEntity, () =>
                         {
-                            localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
-                        }
-                        GetTracking().TrackingSet(typeof(TEntity)).GetEntityState(localEntity).IsNew = false;
+                            foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+                            {
+                                localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
+                            }
+                        }, ChangeEntityMode.NoKeyChecks);
+                        trackingSet.GetEntityState(localEntity).IsNew = false;
                     }
                     await DataContext.RefreshEntity(localEntity, typeof(TEntity));
-                    GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity), true);
+                    GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity), false);
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;

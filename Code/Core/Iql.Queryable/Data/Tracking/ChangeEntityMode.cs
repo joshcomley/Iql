@@ -4,6 +4,7 @@ namespace Iql.Queryable.Data.Tracking
     {
         Normal,
         Silent,
-        NoNullChecks
+        NoNullChecks,
+        NoKeyChecks
     }
 }

@@ -15,29 +15,29 @@ namespace Iql.Tests.Tests
             void Perform(OneToOneTestType oneToOneTestType,
                 OneToOneTestOrder order)
             {
-                OneToOneShouldPersistRelationshipsWhenTracked(false, false, false, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
                 TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(false, false, true, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
                 TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(false, true, false, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
                 TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(false, true, true, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
                 TestCleanUp();
 
-                OneToOneShouldPersistRelationshipsWhenTracked(true, false, false, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
                 TestCleanUp();
                 //
-                OneToOneShouldPersistRelationshipsWhenTracked(true, false, true, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
                 TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(true, true, false, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
                 TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(true, true, true, order, oneToOneTestType);
+                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
                 TestCleanUp();
             }
             Perform(OneToOneTestType.Reference, OneToOneTestOrder.BeforeAdd);
             Perform(OneToOneTestType.Reference, OneToOneTestOrder.AfterAdd);
-            Perform(OneToOneTestType.Key, OneToOneTestOrder.BeforeAdd);
-            Perform(OneToOneTestType.Key, OneToOneTestOrder.AfterAdd);
+            //Perform(OneToOneTestType.Key, OneToOneTestOrder.BeforeAdd);
+            //Perform(OneToOneTestType.Key, OneToOneTestOrder.AfterAdd);
         }
 
         [TestMethod]
@@ -174,29 +174,13 @@ namespace Iql.Tests.Tests
         }
         public void OneToOneShouldPersistRelationshipsWhenTracked(
             bool reverseAddOrder,
-            bool setSourceIds,
-            bool setTargetIds,
             OneToOneTestOrder order,
             OneToOneTestType type)
         {
-            if (!setTargetIds && type == OneToOneTestType.Key)
-            {
-                return;
-            }
             var riskAssessment1 = new RiskAssessment();
             var riskAssessment2 = new RiskAssessment();
-            if (setSourceIds)
-            {
-                riskAssessment1.Id = 7;
-                riskAssessment2.Id = 8;
-            }
             var siteInspection1 = new SiteInspection();
             var siteInspection2 = new SiteInspection();
-            if (setTargetIds)
-            {
-                siteInspection1.Id = 62;
-                siteInspection2.Id = 63;
-            }
 
             void SetRelationships()
             {

@@ -10,7 +10,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();
 
-        public EntityConfiguration<T> DefineEntity<T>() where T : class
+        public EntityConfiguration<T> EntityType<T>() where T : class
         {
             var entityType = typeof(T);
             EntityConfiguration<T> entityConfiguration;
