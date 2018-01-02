@@ -14,11 +14,11 @@ namespace Iql.Tests.Tests
             {
                 var clientType = new ClientType
                 {
-                    Name = "Client type " + (i + 1),
+                    Name = $"Client type {i + 1}",
                 };
                 clientType.Clients.AddRange(new[]
                 {
-                    new Client {Name = "Client " + (i + 1)}
+                    new Client {Name = $"Client {i + 1}"}
                 });
                 Db.ClientTypes.Add(clientType);
             }
