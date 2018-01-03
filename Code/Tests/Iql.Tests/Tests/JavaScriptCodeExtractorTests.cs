@@ -102,7 +102,7 @@ export var  balanceAnimationKeyframes = r.balanceAnimationKeyframes;
 export var  clearStyles = r.clearStyles;
 export var  collectAndResolveStyles = r.collectAndResolveStyles;
 ";
-            Assert.AreEqual(expected.Replace("\r", ""), cleaned);
+            Assert.AreEqual(expected.Replace("\r", ""), cleaned.Replace("\r", ""));
         }
 
         [TestMethod]

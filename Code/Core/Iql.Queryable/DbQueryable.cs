@@ -20,6 +20,7 @@ namespace Iql.Queryable
 {
     public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
     {
+        private ITrackingSet _trackingSet;
         public bool TrackEntities { get; set; } = true;
         public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)
@@ -28,10 +29,13 @@ namespace Iql.Queryable
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
             TrackingSetCollection = dataContext.DataStore.GetTracking();
-            TrackingSet = TrackingSetCollection.GetSet<T>();
+            //TrackingSet = TrackingSetCollection.GetSet<T>();
         }
 
-        public ITrackingSet TrackingSet { get; set; }
+        public ITrackingSet TrackingSet
+        {
+            get { return _trackingSet = _trackingSet?? TrackingSetCollection.GetSet<T>(); }
+        }
 
         public Func<IDataStore> DataStoreGetter { get; set; }
         public TrackingSetCollection TrackingSetCollection { get; private set; }
