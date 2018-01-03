@@ -14,7 +14,7 @@ namespace Iql.Tests.Tests
             {
                 var clientType = new ClientType
                 {
-                    Name = $"Client type {i + 1}",
+                    Name = $"Client type {i + 1}"
                 };
                 clientType.Clients.AddRange(new[]
                 {

@@ -204,8 +204,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, false, typeof(T), convertedFromType, false, null);
+            var definition = FindProperty(name) as Property<T, TProperty, TProperty> ?? new Property<T, TProperty, TProperty>(name, false, typeof(T), convertedFromType, false, null, property);
             definition.Nullable = nullable;
+            //definition.PropertyGetter = property.Compile();
+            //definition.PropertyGetterExpression = property;
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);
@@ -244,7 +246,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        private Property<TProperty> MapProperty<TProperty, TValueType>(
+        private Property<T, TProperty, TValueType> MapProperty<TProperty, TValueType>(
             Expression<Func<T, TValueType>> property,
             bool isCollection,
             bool readOnly,
@@ -253,7 +255,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<TProperty> ?? new Property<TProperty>(name, isCollection, typeof(T), null, readOnly, countRelationship);
+            var definition = FindProperty(name) as Property<T, TProperty, TValueType> ?? new Property<T, TProperty, TValueType>(name, isCollection, typeof(T), null, readOnly, countRelationship, property);
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);

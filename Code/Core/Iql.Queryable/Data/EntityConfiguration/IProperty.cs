@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -14,5 +15,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
         bool IsCollection { get; }
         Type DeclaringType { get; }
         string ConvertedFromType { get; }
+        Func<object, object> PropertyGetter { get; }
     }
 }
