@@ -540,13 +540,13 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandAllCollectionCounts()
         {
             return AllCollectionRelationships(
-                (queryable, relationship, detail) => queryable.ExpandCollectionCountRelationship(detail.Property.PropertyName));
+                (queryable, relationship, detail) => queryable.ExpandCollectionCountRelationship(detail.Property.Name));
         }
 
         public DbQueryable<T> ExpandAllSingleRelationships()
         {
             return AllSingleRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
         }
 
         public DbQueryable<T> Expand<TTarget>(
@@ -571,7 +571,7 @@ namespace Iql.Queryable
                     var thisEnd = r.Source.Configuration == entityConfiguration
                         ? r.Source
                         : r.Target;
-                    if (thisEnd.Property.PropertyName == propertyName)
+                    if (thisEnd.Property.Name == propertyName)
                     {
                         return true;
                     }
@@ -583,11 +583,11 @@ namespace Iql.Queryable
             var target = relationship.Source.Configuration == entityConfiguration
                 ? relationship.Target
                 : relationship.Source;
-            var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.PropertyName);
+            var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.Name);
             var propertyExpression = PropertyExpression(propertyName);
             var expandOperationType = type.MakeGenericType(
                 typeof(T),
-                property.Type,
+                property.ElementType,
                 target.Type);
             var expandOperation =
                 (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
@@ -607,7 +607,7 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandAll()
         {
             return AllRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
         }
 
         public DbQueryable<T> ExpandQuery<TTarget>(
@@ -662,7 +662,7 @@ namespace Iql.Queryable
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (entityConfig.FindProperty(detail.Property.PropertyName).IsCollection)
+                    if (entityConfig.FindProperty(detail.Property.Name).IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -677,7 +677,7 @@ namespace Iql.Queryable
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (!entityConfig.FindProperty(detail.Property.PropertyName).IsCollection)
+                    if (!entityConfig.FindProperty(detail.Property.Name).IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -722,11 +722,11 @@ namespace Iql.Queryable
                 return key as CompositeKey;
             }
             var compositeKey = new CompositeKey();
-            var propertyName = DataContext.EntityConfigurationContext.GetEntity<T>().Key.Properties.First().PropertyName;
+            var propertyName = DataContext.EntityConfigurationContext.GetEntity<T>().Key.Properties.First().Name;
             compositeKey.Keys.Add(new KeyValue(
                 propertyName,
                 key,
-                DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).Type
+                DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).ElementType
             ));
             return compositeKey;
         }

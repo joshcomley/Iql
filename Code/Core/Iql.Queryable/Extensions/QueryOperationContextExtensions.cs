@@ -36,9 +36,9 @@ namespace Iql.Queryable.Extensions
             compositeKey.Keys
                 .AddRange(
                     keyDefinition.Properties.Select(kp => new KeyValue(
-                        kp.PropertyName, 
-                        entity.GetPropertyValue(kp.PropertyName),
-                        configuration.FindProperty(kp.PropertyName).Type))
+                        kp.Name, 
+                        entity.GetPropertyValue(kp),
+                        kp.ElementType))
                 );
             var withKeyOperation = new WithKeyOperation(compositeKey);
             return withKeyOperation;
@@ -53,9 +53,9 @@ namespace Iql.Queryable.Extensions
             var checks = new List<IqlExpression>();
             keyDefinition.Properties.ForEach(property =>
             {
-                var keyValue = key.Keys.Single(k => k.Name == property.PropertyName);
+                var keyValue = key.Keys.Single(k => k.Name == property.Name);
                 var propertyExpression = new IqlPropertyExpression(
-                    property.PropertyName,
+                    property.Name,
                     itemType.Name,
                     keyValue.Value.GetType().ToIqlType());
                 propertyExpression.Parent = root;

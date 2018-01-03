@@ -25,7 +25,7 @@ namespace Iql.OData.Queryable.Applicators
                 return "";
             }
             var detail = expand.ExpandDetails[index];
-            var expandProperty = detail.GetExpandProperty().PropertyName;
+            var expandProperty = detail.GetExpandProperty().Name;
             var expandOperations = "";
             var nested = ToExpandQuery(context, expand, index + 1);
             if (!string.IsNullOrWhiteSpace(nested))

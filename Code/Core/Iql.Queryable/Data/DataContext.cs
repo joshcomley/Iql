@@ -263,18 +263,18 @@ namespace Iql.Queryable.Data
                 foreach (var property in entityConfiguration.Properties)
                 {
                     //var instanceValue = typedEntity.GetPropertyValue(property.Name);
-                    var remoteValue = entity.GetPropertyValue(property.Name);
+                    var remoteValue = entity.GetPropertyValue(property);
                     if (remoteValue != null)
                     {
-                        typedEntity.SetPropertyValue(property.Name, remoteValue);
+                        typedEntity.SetPropertyValue(property, remoteValue);
                     }
                 }
                 foreach (var relationship in entityConfiguration.Relationships)
                 {
                     var isSource = relationship.Source.Configuration == entityConfiguration;
                     var propertyName = isSource
-                        ? relationship.Source.Property.PropertyName
-                        : relationship.Target.Property.PropertyName;
+                        ? relationship.Source.Property
+                        : relationship.Target.Property;
                     if (isSource)
                     {
                         switch (relationship.Type)

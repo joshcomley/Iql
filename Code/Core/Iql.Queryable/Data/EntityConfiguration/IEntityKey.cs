@@ -7,7 +7,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
     {
         Type KeyType { get; set; }
         Type Type { get; set; }
-        List<IqlPropertyExpression> Properties { get; set; }
+        List<IProperty> Properties { get; set; }
         bool IsGeneratedRemotely { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 
 namespace Iql.Queryable.Operations
@@ -23,7 +24,7 @@ namespace Iql.Queryable.Operations
         public IRelationship Relationship { get; }
         public bool IsTarget { get; }
 
-        public IqlPropertyExpression GetExpandProperty()
+        public IProperty GetExpandProperty()
         {
             return IsTarget ? Relationship.Target.Property : Relationship.Source.Property;
         }

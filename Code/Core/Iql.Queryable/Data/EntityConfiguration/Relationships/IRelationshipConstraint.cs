@@ -2,7 +2,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
     public interface IRelationshipConstraint
     {
-        IqlPropertyExpression SourceKeyProperty { get; set; }
-        IqlPropertyExpression TargetKeyProperty { get; set; }
+        IProperty SourceKeyProperty { get; set; }
+        IProperty TargetKeyProperty { get; set; }
     }
 }

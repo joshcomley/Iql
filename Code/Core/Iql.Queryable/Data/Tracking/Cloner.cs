@@ -60,21 +60,21 @@ namespace Iql.Queryable.Data.Tracking
                     case PropertyKind.Key:
                     case PropertyKind.Primitive:
                     case PropertyKind.RelationshipKey:
-                        clone.SetPropertyValue(property.Name, obj.GetPropertyValue(property.Name));
+                        clone.SetPropertyValue(property, obj.GetPropertyValue(property));
                         break;
                     case PropertyKind.Relationship:
                         if (cloneRelationships != RelationshipCloneMode.DoNotClone)
                         {
-                            var value = obj.GetPropertyValue(property.Name);
+                            var value = obj.GetPropertyValue(property);
                             if (value != null)
                             {
                                 if (!property.IsCollection)
                                 {
                                     clone.SetPropertyValue(
-                                        property.Name,
+                                        property,
                                         cloneRelationships == RelationshipCloneMode.KeysOnly
                                         ? CloneKeysOnly(dataContext, property, value)
-                                        : value.CloneInternal(dataContext, property.Type, cloneRelationships, clonedObjects)
+                                        : value.CloneInternal(dataContext, property.ElementType, cloneRelationships, clonedObjects)
                                     );
                                 }
                                 else
@@ -95,12 +95,12 @@ namespace Iql.Queryable.Data.Tracking
                                         {
                                             newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
                                                 ? CloneKeysOnly(dataContext, property, item)
-                                                : item.CloneInternal(dataContext, property.Type, cloneRelationships,
+                                                : item.CloneInternal(dataContext, property.ElementType, cloneRelationships,
                                                     clonedObjects));
                                         }
                                     }
                                     clone.SetPropertyValue(
-                                        property.Name,
+                                        property,
                                         newValue
                                     );
                                 }
@@ -127,8 +127,8 @@ namespace Iql.Queryable.Data.Tracking
             {
                 if (relationshipProperty.Kind == PropertyKind.Key)
                 {
-                    newValue.SetPropertyValue(relationshipProperty.Name,
-                        value.GetPropertyValue(relationshipProperty.Name));
+                    newValue.SetPropertyValue(relationshipProperty,
+                        value.GetPropertyValue(relationshipProperty));
                 }
             }
             return newValue;

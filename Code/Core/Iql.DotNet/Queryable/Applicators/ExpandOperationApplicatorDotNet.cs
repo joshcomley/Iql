@@ -62,19 +62,19 @@ namespace Iql.DotNet.Queryable.Applicators
                     case RelationshipType.OneToOne:
                         typedList.ExpandOneToOne(
                             targetList,
-                            thisEnd.Property.PropertyName,
-                            otherEnd.Property.PropertyName,
-                            thisConstraint.PropertyName,
-                            otherConstraint.PropertyName);
+                            thisEnd.Property.Name,
+                            otherEnd.Property.Name,
+                            thisConstraint.Name,
+                            otherConstraint.Name);
                         break;
                     case RelationshipType.OneToMany:
                         sourceList.ExpandOneToMany(
                             detail.Relationship.Source.Type,
                             targetList,
-                            detail.Relationship.Source.Property.PropertyName,
-                            detail.Relationship.Target.Property.PropertyName,
-                            constraint.SourceKeyProperty.PropertyName,
-                            constraint.TargetKeyProperty.PropertyName);
+                            detail.Relationship.Source.Property.Name,
+                            detail.Relationship.Target.Property.Name,
+                            constraint.SourceKeyProperty.Name,
+                            constraint.TargetKeyProperty.Name);
                         break;
                     case RelationshipType.ManyToMany:
                         var manyToMany = detail.Relationship as IManyToManyRelationship;
@@ -89,10 +89,10 @@ namespace Iql.DotNet.Queryable.Applicators
                             detail.IsTarget
                                 ? manyToMany.PivotSourceKeyProperty.PropertyName
                                 : manyToMany.PivotTargetKeyProperty.PropertyName,
-                            thisEnd.Property.PropertyName,
-                            otherEnd.Property.PropertyName,
-                            thisConstraint.PropertyName,
-                            otherConstraint.PropertyName);
+                            thisEnd.Property.Name,
+                            otherEnd.Property.Name,
+                            thisConstraint.Name,
+                            otherConstraint.Name);
                         break;
                 }
             }

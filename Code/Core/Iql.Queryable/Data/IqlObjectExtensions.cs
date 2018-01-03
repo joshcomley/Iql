@@ -1,24 +1,39 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data
 {
     public static class IqlObjectExtensions
     {
-        public static object GetPropertyValue<T>(this T obj, string propertyName)
+        public static object GetPropertyValue<T>(this T obj, IProperty property)
+        {
+            return property.PropertyGetter(obj);
+        }
+
+        public static T GetPropertyValueAs<T>(this object obj, IProperty property)
+        {
+            return (T)property.PropertyGetter(obj);
+        }
+
+        public static object GetPropertyValueByName<T>(this T obj, string propertyName)
         {
             return obj.GetType().GetRuntimeProperty(propertyName).GetValue(obj);
         }
 
-        public static T GetPropertyValueAs<T>(this object obj, string propertyName)
+        public static T GetPropertyValueByNameAs<T>(this object obj, string propertyName)
         {
-            return (T) obj.GetType().GetRuntimeProperty(propertyName).GetValue(obj);
+            return (T)obj.GetType().GetRuntimeProperty(propertyName).GetValue(obj);
         }
 
-        public static void SetPropertyValue<T>(this T obj, string propertyName, object value)
+        public static void SetPropertyValue<T>(this T obj, IProperty property, object value)
+        {
+            property.PropertySetter(obj, value);
+        }
+
+        public static void SetPropertyValueByName<T>(this T obj, string propertyName, object value)
         {
             obj.GetType().GetRuntimeProperty(propertyName).SetValue(obj, value);
         }

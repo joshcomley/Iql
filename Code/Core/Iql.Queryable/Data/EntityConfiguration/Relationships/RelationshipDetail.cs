@@ -16,9 +16,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             Relationship = relationship;
             RelationshipSide = relationshipSide;
             Configuration = configuration.GetEntity<T>();
-            Property =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
-                    IqlPropertyExpression;
+            //var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
+            //    IqlPropertyExpression;
+            Property = Configuration.FindOrDefineProperty<TProperty>(expression);
             switch (relationship.Type)
             {
                 case RelationshipType.ManyToMany:
@@ -34,11 +34,11 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public IRelationship Relationship { get; }
         public Type Type => typeof(T);
         public bool IsCollection { get; }
-        public IqlPropertyExpression Property { get; set; }
-        public IqlPropertyExpression KeyProperty { get; set; }
+        public IProperty Property { get; set; }
+        public IProperty KeyProperty { get; set; }
         public IEntityConfiguration Configuration { get; set; }
 
-        public IqlPropertyExpression[] Constraints(bool inverse = false)
+        public IProperty[] Constraints(bool inverse = false)
         {
             switch (RelationshipSide)
             {
@@ -64,18 +64,18 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 object value;
                 if (entityOrCompositeKey is CompositeKey)
                 {
-                    value = (entityOrCompositeKey as CompositeKey).Keys.Single(k => k.Name == constraint.PropertyName).Value;
+                    value = (entityOrCompositeKey as CompositeKey).Keys.Single(k => k.Name == constraint.Name).Value;
                 }
                 else
                 {
-                    value = entityOrCompositeKey.GetPropertyValue(constraint.PropertyName);
+                    value = entityOrCompositeKey.GetPropertyValue(constraint);
                 }
                 compositeKey.Keys.Add(new KeyValue(
                     inverse
-                        ? inverseConstraints[i].PropertyName
-                        : constraint.PropertyName,
+                        ? inverseConstraints[i].Name
+                        : constraint.Name,
                     value,
-                    Configuration.FindProperty(constraint.PropertyName).Type));
+                    constraint.ElementType));
             }
             return compositeKey;
         }

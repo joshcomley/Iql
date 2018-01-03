@@ -51,14 +51,14 @@ namespace Iql.JavaScript.QueryToJavaScript
             for (var i = 0; i < source.Count(); i++)
             {
                 var sourceEntity = source.ItemAt(i);
-                var targetKey = sourceEntity.GetPropertyValue(sourceTargetKeyProperty);
+                var targetKey = sourceEntity.GetPropertyValueByName(sourceTargetKeyProperty);
                 for (var j = 0; j < target.Count(); j++)
                 {
                     var targetEntity = target.ItemAt(j);
-                    if (Equals(targetEntity.GetPropertyValue(targetKeyProperty), targetKey))
+                    if (Equals(targetEntity.GetPropertyValueByName(targetKeyProperty), targetKey))
                     {
-                        sourceEntity.SetPropertyValue(sourceProperty, targetEntity);
-                        targetEntity.SetPropertyValue(targetProperty, sourceEntity);
+                        sourceEntity.SetPropertyValueByName(sourceProperty, targetEntity);
+                        targetEntity.SetPropertyValueByName(targetProperty, sourceEntity);
                         break;
                     }
                 }
@@ -78,7 +78,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             for (var i = 0; i < source.Count(); i++)
             {
                 var sourceEntity = source.ItemAt(i);
-                var targetKey = sourceEntity.GetPropertyValue(sourceTargetKeyProperty);
+                var targetKey = sourceEntity.GetPropertyValueByName(sourceTargetKeyProperty);
                 for (var j = 0; j < target.Count(); j++)
                 {
                     var targetEntity = target.ItemAt(j);
@@ -86,7 +86,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                     {
                         targetsRefreshed.Add(targetEntity, true);
                         var targetType = targetEntity.GetType();
-                        targetEntity.SetPropertyValue(targetProperty,
+                        targetEntity.SetPropertyValueByName(targetProperty,
                             Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(targetType, sourceType), new object[]
                             {
                                 targetEntity,
@@ -102,17 +102,17 @@ namespace Iql.JavaScript.QueryToJavaScript
                     //if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
                     //{
                     //}
-                    if (Equals(targetEntity.GetPropertyValue(targetKeyProperty), targetKey))
+                    if (Equals(targetEntity.GetPropertyValueByName(targetKeyProperty), targetKey))
                     {
-                        sourceEntity.SetPropertyValue(sourceProperty, targetEntity);
-                        targetEntity.GetPropertyValueAs<IList>(targetProperty).Add(sourceEntity);
+                        sourceEntity.SetPropertyValueByName(sourceProperty, targetEntity);
+                        targetEntity.GetPropertyValueByNameAs<IList>(targetProperty).Add(sourceEntity);
                     }
                 }
             }
             foreach (var targetEntity in targetsRefreshed.Keys)
             {
-                targetEntity.SetPropertyValue($"{targetProperty}Count",
-                    targetEntity.GetPropertyValueAs<IList>(targetProperty).Count);
+                targetEntity.SetPropertyValueByName($"{targetProperty}Count",
+                    targetEntity.GetPropertyValueByNameAs<IList>(targetProperty).Count);
             }
         }
 
@@ -132,29 +132,29 @@ namespace Iql.JavaScript.QueryToJavaScript
             for (var i = 0; i < source.Count(); i++)
             {
                 var sourceEntity = source.ItemAt(i);
-                if (Equals(sourceEntity.GetPropertyValue(sourceProperty), null))
+                if (Equals(sourceEntity.GetPropertyValueByName(sourceProperty), null))
                 {
-                    sourceEntity.SetPropertyValue(sourceProperty,
+                    sourceEntity.SetPropertyValueByName(sourceProperty,
                         Activator.CreateInstance(typeof(List<>).MakeGenericType(targetType)));
                 }
                 for (var j = 0; j < target.Count(); j++)
                 {
                     var targetEntity = target.ItemAt(j);
-                    if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
+                    if (Equals(targetEntity.GetPropertyValueByName(targetProperty), null))
                     {
-                        targetEntity.SetPropertyValue(targetProperty,
+                        targetEntity.SetPropertyValueByName(targetProperty,
                             Activator.CreateInstance(typeof(List<>).MakeGenericType(sourceType)));
                     }
                     for (var k = 0; k < pivot.Count(); k++)
                     {
                         var pivotEntity = pivot.ItemAt(k);
-                        if (Equals(pivotEntity.GetPropertyValue(pivotSourceKeyProperty),
-                                sourceEntity.GetPropertyValue(sourceKeyProperty)) &&
-                            Equals(pivotEntity.GetPropertyValue(pivotTargetKeyPropery),
-                                targetEntity.GetPropertyValue(targetKeyProperty)))
+                        if (Equals(pivotEntity.GetPropertyValueByName(pivotSourceKeyProperty),
+                                sourceEntity.GetPropertyValueByName(sourceKeyProperty)) &&
+                            Equals(pivotEntity.GetPropertyValueByName(pivotTargetKeyPropery),
+                                targetEntity.GetPropertyValueByName(targetKeyProperty)))
                         {
-                            targetEntity.GetPropertyValueAs<IList>(targetProperty).Add(sourceEntity);
-                            sourceEntity.GetPropertyValueAs<IList>(sourceProperty).Add(targetEntity);
+                            targetEntity.GetPropertyValueByNameAs<IList>(targetProperty).Add(sourceEntity);
+                            sourceEntity.GetPropertyValueByNameAs<IList>(sourceProperty).Add(targetEntity);
                         }
                     }
                 }

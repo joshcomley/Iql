@@ -20,7 +20,7 @@ namespace Iql.Queryable.Extensions
             var isMatch = true;
             foreach (var key in compositeKey.Keys)
             {
-                if (!Equals(entity.GetPropertyValue(key.Name), key.Value))
+                if (!Equals(entity.GetPropertyValueByName(key.Name), key.Value))
                 {
                     isMatch = false;
                     break;

@@ -38,13 +38,13 @@ namespace Iql.OData.Data
             }
             foreach (var property in propertyChanges)
             {
-                if (property.ChildChangedProperties.Any() || property.Property.Type.IsClass &&
-                    !typeof(string).IsAssignableFrom(property.Property.Type))
+                if (property.ChildChangedProperties.Any() || property.Property.ElementType.IsClass &&
+                    !typeof(string).IsAssignableFrom(property.Property.ElementType))
                 {
-                    var memberType = entity.GetPropertyValue(property.Property.Name).GetType();
+                    var memberType = entity.GetPropertyValue(property.Property).GetType();
                     if (typeof(IEnumerable).IsAssignableFrom(memberType))
                     {
-                        var enumerable = (IEnumerable)entity.GetPropertyValue(property.Property.Name);
+                        var enumerable = (IEnumerable)entity.GetPropertyValue(property.Property);
                         var array = new JArray();
                         var i = 0;
                         foreach (var item in enumerable)
@@ -63,22 +63,22 @@ namespace Iql.OData.Data
                     }
                     else
                     {
-                        obj[property.Property.Name] = SerializeInternal(dataContext, entity.GetPropertyValue(property.Property.Name), property.ChildChangedProperties);
+                        obj[property.Property.Name] = SerializeInternal(dataContext, entity.GetPropertyValue(property.Property), property.ChildChangedProperties);
                     }
                 }
                 else
                 {
-                    obj[property.Property.Name] = new JValue(entity.GetPropertyValue(property.Property.Name));
+                    obj[property.Property.Name] = new JValue(entity.GetPropertyValue(property.Property));
                 }
             }
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             foreach (var key in entityConfiguration.Key.Properties)
             {
-                if (propertyChanges.Any(p => p.Property.Name == key.PropertyName))
+                if (propertyChanges.Any(p => p.Property.Name == key.Name))
                 {
                     continue;
                 }
-                obj[key.PropertyName] = new JValue(entity.GetPropertyValue(key.PropertyName));
+                obj[key.Name] = new JValue(entity.GetPropertyValueByName(key.Name));
             }
             return obj;
         }

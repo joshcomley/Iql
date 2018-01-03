@@ -39,16 +39,16 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 sourceKeyProperty,
                 targetKeyProperty
             );
-            if (_sourceEntityConfiguration.FindRelationship(relationship.Source.Property.PropertyName) == null)
+            if (_sourceEntityConfiguration.FindRelationship(relationship.Source.Property.Name) == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
-                _targetEntityConfiguration.FindRelationship(relationship.Target.Property.PropertyName) == null)
+                _targetEntityConfiguration.FindRelationship(relationship.Target.Property.Name) == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
-            _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.PropertyName);
+            _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.Name);
             //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.PropertyName);
             return relationship;
         }

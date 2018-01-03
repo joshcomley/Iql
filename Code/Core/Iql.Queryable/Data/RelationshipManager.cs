@@ -41,7 +41,7 @@ namespace Iql.Queryable.Data
         public void ProcessOneToOneReferenceChange(TTarget entity)
         {
             var referenceValue = entity.GetPropertyValue(
-                Relationship.Target.Property.PropertyName);
+                Relationship.Target.Property);
 
             EnsureTracked(entity, typeof(TTarget));
             if (referenceValue != null)
@@ -52,14 +52,14 @@ namespace Iql.Queryable.Data
                 {
                     foreach (var constraint in Relationship.Constraints)
                     {
-                        entity.SetPropertyValue(constraint.TargetKeyProperty.PropertyName,
-                            referenceValue.GetPropertyValue(constraint.SourceKeyProperty.PropertyName));
+                        entity.SetPropertyValue(constraint.TargetKeyProperty,
+                            referenceValue.GetPropertyValue(constraint.SourceKeyProperty));
                     }
                 });
                 SourceTrackingSet.SilentlyChangeEntity(referenceValue, () =>
                 {
                     referenceValue.SetPropertyValue(
-                        Relationship.Source.Property.PropertyName,
+                        Relationship.Source.Property,
                         entity);
                 });
             }
@@ -93,19 +93,19 @@ namespace Iql.Queryable.Data
             {
                 TargetTrackingSet.SilentlyChangeEntity(entity, () =>
                 {
-                    entity.SetPropertyValue(Relationship.Target.Property.PropertyName, trackedEntity);
+                    entity.SetPropertyValue(Relationship.Target.Property, trackedEntity);
                 });
                 SourceTrackingSet.SilentlyChangeEntity(trackedEntity, () =>
                 {
                     trackedEntity.SetPropertyValue(
-                        Relationship.Source.Property.PropertyName, entity);
+                        Relationship.Source.Property, entity);
                 });
             }
             else
             {
                 TargetTrackingSet.SilentlyChangeEntity(entity, () =>
                 {
-                    entity.SetPropertyValue(Relationship.Target.Property.PropertyName, null);
+                    entity.SetPropertyValue(Relationship.Target.Property, null);
                 });
             }
         }
@@ -116,7 +116,7 @@ namespace Iql.Queryable.Data
         /// <typeparam name="TTarget"></typeparam>
         public void ProcessOneToManyReferenceChange(TSource entity)
         {
-            var referenceValue = entity.GetPropertyValue(Relationship.Source.Property.PropertyName);
+            var referenceValue = entity.GetPropertyValue(Relationship.Source.Property);
             EnsureTracked(entity, typeof(TSource));
             if (referenceValue != null)
             {
@@ -133,14 +133,14 @@ namespace Iql.Queryable.Data
                     Relationship.Source.Type);
                 foreach (var key in Relationship.Constraints)
                 {
-                    var property = sourceConfiguration.FindProperty(key.SourceKeyProperty.PropertyName);
+                    var property = key.SourceKeyProperty;
                     if (property.Nullable)
                     {
-                        entity.SetPropertyValue(property.Name, null);
+                        entity.SetPropertyValue(property, null);
                     }
                     else
                     {
-                        entity.SetPropertyValue(property.Name, property.Type.DefaultValue());
+                        entity.SetPropertyValue(property, property.ElementType.DefaultValue());
                     }
                 }
             }
@@ -169,7 +169,7 @@ namespace Iql.Queryable.Data
             object newOwner;
             if (targetCompositeKey.HasDefaultValue())
             {
-                var referenceValue = entity.GetPropertyValue(Relationship.Source.Property.PropertyName);
+                var referenceValue = entity.GetPropertyValue(Relationship.Source.Property);
                 newOwner = referenceValue == null ? null : TargetTrackingSet.FindTrackedEntity(
                     referenceValue);
             }
@@ -185,7 +185,7 @@ namespace Iql.Queryable.Data
                 {
                     continue;
                 }
-                var list = target.GetPropertyValue(Relationship.Target.Property.PropertyName)
+                var list = target.GetPropertyValue(Relationship.Target.Property)
                     as IRelatedList;
                 list.Remove(trackedEntity);
             }
@@ -204,14 +204,14 @@ namespace Iql.Queryable.Data
 
             if (newOwner != null && trackedEntity != null)
             {
-                var newList = newOwner.GetPropertyValue(Relationship.Target.Property.PropertyName)
+                var newList = newOwner.GetPropertyValue(Relationship.Target.Property)
                     as IRelatedList;
                 if (!newList.Contains(trackedEntity))
                 {
                     newList.Add(trackedEntity);
                 }
             }
-            trackedEntity?.SetPropertyValue(Relationship.Source.Property.PropertyName,
+            trackedEntity?.SetPropertyValue(Relationship.Source.Property,
                 newOwner);
         }
 
@@ -245,7 +245,7 @@ namespace Iql.Queryable.Data
                     );
                     break;
                 }
-                toRemove.SetPropertyValue(key.Name, null);
+                toRemove.SetPropertyValueByName(key.Name, null);
             }
             if (nullable)
             {
@@ -253,7 +253,7 @@ namespace Iql.Queryable.Data
                         Relationship.Source.Type)
                     .ChangeEntity(toRemove, () =>
                     {
-                        toRemove.SetPropertyValue(Relationship.Source.Property.PropertyName, null);
+                        toRemove.SetPropertyValue(Relationship.Source.Property, null);
                     }, ChangeEntityMode.NoNullChecks);
                 ProcessOneToManyKeyChange(toRemove);
             }
@@ -279,7 +279,7 @@ namespace Iql.Queryable.Data
             var key = Relationship.Target.GetCompositeKey(entity, true);
             if (toAdd != null)
             {
-                toAdd.SetPropertyValue(Relationship.Source.Property.PropertyName, entity);
+                toAdd.SetPropertyValue(Relationship.Source.Property, entity);
                 toAdd.SetPropertyValues(key);
             }
             ProcessOneToManyKeyChange(toAdd, toAddKey, Relationship.Target.GetCompositeKey(entity));

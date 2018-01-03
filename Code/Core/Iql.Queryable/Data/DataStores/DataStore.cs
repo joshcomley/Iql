@@ -323,7 +323,7 @@ namespace Iql.Queryable.Data.DataStores
                         {
                             foreach (var keyProperty in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
                             {
-                                localEntity.SetPropertyValue(keyProperty.PropertyName, remoteEntity.GetPropertyValue(keyProperty.PropertyName));
+                                localEntity.SetPropertyValue(keyProperty, remoteEntity.GetPropertyValue(keyProperty));
                             }
                         }, ChangeEntityMode.NoKeyChecks);
                         trackingSet.GetEntityState(localEntity).IsNew = false;
@@ -397,13 +397,13 @@ namespace Iql.Queryable.Data.DataStores
                 {
                     var index = validationResult.Key;
                     var collectionEntity =
-                        ((IList)entity.GetPropertyValue(validationResult.Value.PropertyName))[index];
+                        ((IList)entity.GetPropertyValueByName(validationResult.Value.PropertyName))[index];
                     ParseEntityResult(resultsDictionary, collectionEntity, validationResult.Value.EntityValidationResult);
                 }
             }
             foreach (var relationshipResult in entityValidationResult.RelationshipValidationResults)
             {
-                var relationshipEntity = entity.GetPropertyValue(relationshipResult.PropertyName);
+                var relationshipEntity = entity.GetPropertyValueByName(relationshipResult.PropertyName);
                 ParseEntityResult(resultsDictionary, relationshipEntity, relationshipResult.EntityValidationResult);
             }
         }
@@ -420,7 +420,7 @@ namespace Iql.Queryable.Data.DataStores
                         .FirstOrDefault(p => p.Name == "PersistenceKey");
                     if (persistenceKey != null)
                     {
-                        entity.Entity.SetPropertyValue("PersistenceKey", Guid.NewGuid());
+                        entity.Entity.SetPropertyValueByName("PersistenceKey", Guid.NewGuid());
                     }
                     var tracking = GetTracking();
                     var trackedEntity = tracking.FindEntity(entity.Entity);

@@ -11,10 +11,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IProperty CountRelationship { get; }
         bool ReadOnly { get; }
         string Name { get; }
+        Type ElementType { get; }
         Type Type { get; }
         bool IsCollection { get; }
         Type DeclaringType { get; }
         string ConvertedFromType { get; }
         Func<object, object> PropertyGetter { get; }
+        Func<object, object, object> PropertySetter { get; }
     }
 }

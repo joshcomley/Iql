@@ -9,12 +9,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             Type = typeof(T);
             KeyType = typeof(TKey);
-            Properties = new List<IqlPropertyExpression>();
+            Properties = new List<IProperty>();
         }
 
         public bool IsGeneratedRemotely { get; set; }
         public Type Type { get; set; }
         public Type KeyType { get; set; }
-        public List<IqlPropertyExpression> Properties { get; set; }
+        public List<IProperty> Properties { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace Iql.Queryable.Extensions
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var keyProperty in entityConfiguration.Key.Properties)
             {
-                if (entity.GetPropertyValue(keyProperty.PropertyName).IsDefaultValue())
+                if (entity.GetPropertyValue(keyProperty).IsDefaultValue())
                 {
                     return false;
                 }
@@ -58,7 +58,7 @@ namespace Iql.Queryable.Extensions
             var properties = new List<PropertyChange>();
             foreach (var property in entityConfiguration.Properties)
             {
-                var propertyValue = entity.GetPropertyValue(property.Name);
+                var propertyValue = entity.GetPropertyValue(property);
                 if (propertyValue != null)
                 {
                     properties.Add(new PropertyChange(property, null, propertyValue, null));

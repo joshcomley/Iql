@@ -9,9 +9,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         IRelationship Relationship { get; }
         Type Type { get; }
         bool IsCollection { get; }
-        IqlPropertyExpression Property { get; set; }
+        IProperty Property { get; set; }
         IEntityConfiguration Configuration { get; set; }
         CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false);
-        IqlPropertyExpression[] Constraints(bool inverse = false);
+        IProperty[] Constraints(bool inverse = false);
     }
 }

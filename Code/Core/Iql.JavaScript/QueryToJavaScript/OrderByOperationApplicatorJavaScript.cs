@@ -59,10 +59,10 @@ namespace Iql.JavaScript.QueryToJavaScript
                     var len = pathParts.Length - 1;
                     for (var i = 0; i < len; i++)
                     {
-                        obj = obj.GetPropertyValue(pathParts[i]);
+                        obj = obj.GetPropertyValueByName(pathParts[i]);
                     }
                     ;
-                    return obj.GetPropertyValue(pathParts[len]);
+                    return obj.GetPropertyValueByName(pathParts[len]);
                 }
                 return obj;
             };

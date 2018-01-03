@@ -159,7 +159,7 @@ namespace Iql.Queryable
             var sourceEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
                 typeConstructor
             );
-            var relationshipEntityType = sourceEntityConfiguration.FindProperty(propertyToExpand.PropertyName).Type;
+            var relationshipEntityType = sourceEntityConfiguration.FindProperty(propertyToExpand.PropertyName).ElementType;
             var relatedEntityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
                 relationshipEntityType
             );
@@ -176,7 +176,7 @@ namespace Iql.Queryable
                 var relationshipTarget = relationship.Target;
                 var targetExpand = false;
                 var selfTargetingRelationship = sourceEntityConfiguration == relatedEntityConfiguration;
-                if ((selfTargetingRelationship && relationshipSource.Property.PropertyName != propertyToExpand.PropertyName) ||
+                if ((selfTargetingRelationship && relationshipSource.Property.Name != propertyToExpand.PropertyName) ||
                     (!selfTargetingRelationship && relationshipTarget.Configuration == sourceEntityConfiguration))
                 {
                     targetExpand = true;
@@ -184,7 +184,7 @@ namespace Iql.Queryable
                     relationshipSource = relationshipTarget;
                     relationshipTarget = temp;
                 }
-                if (relationshipSource.Property.PropertyName != propertyToExpand.PropertyName)
+                if (relationshipSource.Property.Name != propertyToExpand.PropertyName)
                 {
                     continue;
                 }

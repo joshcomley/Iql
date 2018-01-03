@@ -61,25 +61,27 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByType(operation.Operation.EntityType);
             var clone = operation.Operation.Entity.CloneAs(DataContext, operation.Operation.EntityType, RelationshipCloneMode.DoNotClone);
-            var configuration = operation.Operation.DataContext.EntityConfigurationContext.GetEntityByType(
-                operation.Operation.EntityType);
-            foreach (var key in configuration.Key.Properties)
+            var configuration = operation
+                .Operation
+                .DataContext
+                .EntityConfigurationContext
+                .GetEntityByType(operation.Operation.EntityType);
+            foreach (var property in configuration.Key.Properties)
             {
-                var property = configuration.FindProperty(key.PropertyName);
                 if (property.Kind == PropertyKind.Key)
                 {
-                    var oldId = clone.GetPropertyValue(key.PropertyName);
-                    if (property.Type == typeof(int))
+                    var oldId = clone.GetPropertyValue(property);
+                    if (property.ElementType == typeof(int))
                     {
-                        clone.SetPropertyValue(key.PropertyName, NextIdInteger(data, property));
+                        clone.SetPropertyValue(property, NextIdInteger(data, property));
                     }
-                    else if (property.Type == typeof(string))
+                    else if (property.ElementType == typeof(string))
                     {
-                        clone.SetPropertyValue(key.PropertyName, NextIdString(data, property));
+                        clone.SetPropertyValue(property, NextIdString(data, property));
                     }
                     if (!oldId.IsDefaultValue())
                     {
-                        var newId = clone.GetPropertyValue(key.PropertyName);
+                        var newId = clone.GetPropertyValue(property);
                         foreach (var relationship in configuration.Relationships)
                         {
                             switch (relationship.Type)
@@ -104,7 +106,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             int max = 0;
             foreach (var existingEntity in data)
             {
-                var value = (int)existingEntity.GetPropertyValue(property.Name);
+                var value = (int)existingEntity.GetPropertyValue(property);
                 if(value > max)
                 {
                     max = value;

@@ -27,52 +27,52 @@ namespace Iql.Queryable.Data.DataStores
                         case PropertyKind.Key:
                         case PropertyKind.RelationshipKey:
                         case PropertyKind.Primitive:
-                            trackedEntity.SetPropertyValue(property.Name,
-                                newEntity.GetPropertyValue(property.Name));
+                            trackedEntity.SetPropertyValue(property,
+                                newEntity.GetPropertyValue(property));
                             break;
                     }
                 }
             }, ChangeEntityMode.Silent);
         }
 
-        private static void MergeSimpleProperty(object localEntity, object remoteEntity, string propertyName, Type entityType, IDataContext dataContext)
-        {
-            dataContext.DataStore.GetTracking().TrackingSet(entityType).ChangeEntity(localEntity, () =>
-            {
-                var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType).FindProperty(propertyName);
-                var localValue = localEntity.GetPropertyValue(propertyName);
-                var remoteValue = remoteEntity.GetPropertyValue(propertyName);
-                var isCollection = remoteValue is IEnumerable && !(remoteValue is string);
-                // Local value or remote value is a primitive value or null, so just reassign
-                if (!isCollection || localValue == null || remoteValue == null)
-                {
-                    if (!property.Nullable)
-                    {
-                        if (Platform.Name == "JavaScript")
-                        {
-                            if (property.Type == typeof(DateTime))
-                            {
-                                remoteValue = 0;
-                            }
-                            else if (property.ConvertedFromType == "Guid")
-                            {
-                                remoteValue = Guid.Empty;
-                            }
-                        }
-                    }
-                    localEntity.SetPropertyValue(propertyName, remoteValue);
-                }
-                else
-                {
-                    var localCollection = (IList)localValue;
-                    var remoteCollection = (IList)remoteValue;
-                    localCollection.Clear();
-                    foreach (var value in remoteCollection)
-                    {
-                        localCollection.Add(value);
-                    }
-                }
-            }, ChangeEntityMode.Silent);
-        }
+        //private static void MergeSimpleProperty(object localEntity, object remoteEntity, string propertyName, Type entityType, IDataContext dataContext)
+        //{
+        //    dataContext.DataStore.GetTracking().TrackingSet(entityType).ChangeEntity(localEntity, () =>
+        //    {
+        //        var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType).FindProperty(propertyName);
+        //        var localValue = localEntity.GetPropertyValue(propertyName);
+        //        var remoteValue = remoteEntity.GetPropertyValue(propertyName);
+        //        var isCollection = remoteValue is IEnumerable && !(remoteValue is string);
+        //        // Local value or remote value is a primitive value or null, so just reassign
+        //        if (!isCollection || localValue == null || remoteValue == null)
+        //        {
+        //            if (!property.Nullable)
+        //            {
+        //                if (Platform.Name == "JavaScript")
+        //                {
+        //                    if (property.Type == typeof(DateTime))
+        //                    {
+        //                        remoteValue = 0;
+        //                    }
+        //                    else if (property.ConvertedFromType == "Guid")
+        //                    {
+        //                        remoteValue = Guid.Empty;
+        //                    }
+        //                }
+        //            }
+        //            localEntity.SetPropertyValue(propertyName, remoteValue);
+        //        }
+        //        else
+        //        {
+        //            var localCollection = (IList)localValue;
+        //            var remoteCollection = (IList)remoteValue;
+        //            localCollection.Clear();
+        //            foreach (var value in remoteCollection)
+        //            {
+        //                localCollection.Add(value);
+        //            }
+        //        }
+        //    }, ChangeEntityMode.Silent);
+        //}
     }
 }

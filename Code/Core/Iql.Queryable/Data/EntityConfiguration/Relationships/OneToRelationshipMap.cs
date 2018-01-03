@@ -36,39 +36,40 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 property
             );
             //relationship.Type == RelationshipType.OneToOne
-            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationship(relationship.Source.Property.PropertyName);
+            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationship(relationship.Source.Property.Name);
             if (sourceRelationshipMatch == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
-            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationship(relationship.Target.Property.PropertyName);
+            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationship(relationship.Target.Property.Name);
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
                 targetRelationshipMatch == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
-            _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.PropertyName);
+            _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.Name);
             return relationship;
         }
 
-        public OneToManyRelationship<TSource, TTarget> WithMany(
-            Expression<Func<TTarget, IEnumerable<TSource>>> property)
+        public OneToManyRelationship<TSource, TTarget, TCollection> WithMany<TCollection>(
+            Expression<Func<TTarget, TCollection>> property) 
+            where TCollection : IEnumerable<TSource>
         {
-            var relationship = new OneToManyRelationship<TSource, TTarget>(
+            var relationship = new OneToManyRelationship<TSource, TTarget, TCollection>(
                 _configuration,
                 _property,
                 property
             );
-            if (_sourceEntityConfiguration.FindRelationship(relationship.Source.Property.PropertyName) == null)
+            if (_sourceEntityConfiguration.FindRelationship(relationship.Source.Property.Name) == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
-                _targetEntityConfiguration.FindRelationship(relationship.Target.Property.PropertyName) == null)
+                _targetEntityConfiguration.FindRelationship(relationship.Target.Property.Name) == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
-            _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.PropertyName);
+            _sourceEntityConfiguration.TryAssignRelationshipToProperty(relationship.Source.Property.Name);
             //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.PropertyName);
             return relationship;
         }

@@ -53,12 +53,12 @@ namespace Iql.JavaScript.QueryToJavaScript
                     query += "'" + manyToMany.PivotSourceKeyProperty.PropertyName + "',";
                     query += "'" + manyToMany.PivotTargetKeyProperty.PropertyName + "',";
                 }
-                query += "'" + detail.Relationship.Source.Property.PropertyName + "',";
-                query += "'" + detail.Relationship.Target.Property.PropertyName + "',";
+                query += "'" + detail.Relationship.Source.Property.Name + "',";
+                query += "'" + detail.Relationship.Target.Property.Name + "',";
                 // TODO: Support multiple constraints
                 var constraint = detail.Relationship.Constraints.First();
-                query += "'" + constraint.SourceKeyProperty.PropertyName + "',";
-                query += "'" + constraint.TargetKeyProperty.PropertyName + "'";
+                query += "'" + constraint.SourceKeyProperty.Name + "',";
+                query += "'" + constraint.TargetKeyProperty.Name + "'";
                 query += ");\n";
             }
             foreach (var type in types)

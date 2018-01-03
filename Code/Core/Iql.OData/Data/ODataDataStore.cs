@@ -168,7 +168,7 @@ namespace Iql.OData.Data
             }
             foreach (var key in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
             {
-                properties.Add(key.PropertyName);
+                properties.Add(key.Name);
             }
             var json = JsonSerializer.Serialize(
                 operation.Operation.Entity,
@@ -217,7 +217,7 @@ namespace Iql.OData.Data
             }
             var key = DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
             var compositeKeyProperties =
-                key.Properties.Select(p => new KeyValue(p.PropertyName, entity.GetPropertyValue(p.PropertyName), null));
+                key.Properties.Select(p => new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null));
             var compositeKey = new CompositeKey();
             compositeKey.Keys.AddRange(compositeKeyProperties);
             var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";
@@ -362,7 +362,7 @@ namespace Iql.OData.Data
                 var end = relationship.Source.Configuration == entityConfiguration
                     ? relationship.Source
                     : relationship.Target;
-                if (end.Property.PropertyName == property)
+                if (end.Property.Name == property)
                 {
                     return end;
                 }

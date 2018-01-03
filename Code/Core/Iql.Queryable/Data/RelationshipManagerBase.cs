@@ -50,12 +50,12 @@ namespace Iql.Queryable.Data
 
                             // Not sure we have to do anything here
                             var referenceList =
-                                entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName)
+                                entity.GetPropertyValue(relationship.Relationship.Target.Property)
                                 as IRelatedList;
                             var sourceConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(
                                 relationship.OtherEnd.Type);
                             var nullable = relationship.Relationship.Constraints.All(c =>
-                                sourceConfiguration.FindProperty(c.SourceKeyProperty.PropertyName).Nullable
+                                c.SourceKeyProperty.Nullable
                             );
                             // The source collection will be modified, so make
                             // a copy to work with
@@ -66,7 +66,7 @@ namespace Iql.Queryable.Data
                                 {
                                     foreach (var constraint in relationship.Relationship.Constraints)
                                     {
-                                        child.SetPropertyValue(constraint.SourceKeyProperty.PropertyName, null);
+                                        child.SetPropertyValue(constraint.SourceKeyProperty, null);
                                     }
                                 }
                                 else
@@ -83,7 +83,7 @@ namespace Iql.Queryable.Data
                         else
                         {
                             var referenceValue =
-                                entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                                entity.GetPropertyValue(relationship.Relationship.Source.Property);
                             if (referenceValue == null)
                             {
                                 var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
@@ -97,7 +97,7 @@ namespace Iql.Queryable.Data
                             if (referenceValue != null)
                             {
                                 var referenceList =
-                                    referenceValue.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName)
+                                    referenceValue.GetPropertyValue(relationship.Relationship.Target.Property)
                                         as IRelatedList;
                                 referenceList.Remove(entity);
                             }
@@ -107,13 +107,13 @@ namespace Iql.Queryable.Data
                         if (relationship.ThisIsTarget)
                         {
                             var referenceValue =
-                                entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName);
+                                entity.GetPropertyValue(relationship.Relationship.Target.Property);
                             if (referenceValue != null)
                             {
                                 relationshipManager.SourceTrackingSet.SilentlyChangeEntity(referenceValue, () =>
                                 {
                                     referenceValue.SetPropertyValue(
-                                        relationship.Relationship.Source.Property.PropertyName,
+                                        relationship.Relationship.Source.Property,
                                         null);
                                 });
                             }
@@ -121,17 +121,14 @@ namespace Iql.Queryable.Data
                         else
                         {
                             var referenceValue =
-                                entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                                entity.GetPropertyValue(relationship.Relationship.Source.Property);
                             if (referenceValue != null)
                             {
                                 var constraints = relationship.Relationship.Target.Constraints();
                                 var isNullable = true;
                                 foreach (var constraint in constraints)
                                 {
-                                    var constraintProperty =
-                                        relationship.Relationship.Target.Configuration.FindProperty(constraint
-                                            .PropertyName);
-                                    if (!constraintProperty.Nullable)
+                                    if (!constraint.Nullable)
                                     {
                                         isNullable = false;
                                         break;
@@ -143,7 +140,7 @@ namespace Iql.Queryable.Data
                                     relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
                                     {
                                         entity.SetPropertyValue(
-                                            relationship.Relationship.Source.Property.PropertyName,
+                                            relationship.Relationship.Source.Property,
                                             null);
                                     });
                                     //                                    RemoveEntity(referenceValue, dataContext
@@ -168,7 +165,7 @@ namespace Iql.Queryable.Data
                                         foreach (var constraint in constraints)
                                         {
                                             entity.SetPropertyValue(
-                                                constraint.PropertyName,
+                                                constraint,
                                                 null);
                                         }
                                     });
@@ -233,7 +230,7 @@ namespace Iql.Queryable.Data
                                 // set the TypeId appropriately
 
                                 var relatedList = entity.GetPropertyValue(
-                                        relationship.Relationship.Target.Property.PropertyName)
+                                        relationship.Relationship.Target.Property)
                                     as IRelatedList;
                                 if (relatedList == null)
                                 {
@@ -246,10 +243,10 @@ namespace Iql.Queryable.Data
                                     {
                                         foreach (var constraint in relationship.Relationship.Constraints)
                                         {
-                                            item.SetPropertyValue(constraint.SourceKeyProperty.PropertyName,
-                                                entity.GetPropertyValue(constraint.TargetKeyProperty.PropertyName));
+                                            item.SetPropertyValue(constraint.SourceKeyProperty,
+                                                entity.GetPropertyValue(constraint.TargetKeyProperty));
                                         }
-                                        item.SetPropertyValue(relationship.Relationship.Source.Property.PropertyName,
+                                        item.SetPropertyValue(relationship.Relationship.Source.Property,
                                             entity);
                                     });
                                 }
@@ -262,7 +259,7 @@ namespace Iql.Queryable.Data
                                 // Make sure we exist in the Type's list of Clients
                                 // And ensure the key and value match
                                 var referenceValue =
-                                    entity.GetPropertyValue(relationshipManager.Relationship.Source.Property.PropertyName);
+                                    entity.GetPropertyValue(relationshipManager.Relationship.Source.Property);
                                 var keyValueInverse =
                                     relationship.ThisEnd.GetCompositeKey(entity, true);
                                 var keyIsSet = !keyValueInverse.HasDefaultValue();
@@ -292,7 +289,7 @@ namespace Iql.Queryable.Data
                             if (relationship.ThisIsTarget)
                             {
                                 var referenceValue =
-                                    entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName);
+                                    entity.GetPropertyValue(relationship.Relationship.Target.Property);
                                 var keyValue =
                                     relationship.ThisEnd.GetCompositeKey(entity);
                                 var keyValueInverse =
@@ -326,7 +323,7 @@ namespace Iql.Queryable.Data
                                 {
                                     var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
                                     var ourTarget =
-                                        entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                                        entity.GetPropertyValue(relationship.Relationship.Source.Property);
                                     foreach (var target in relationshipManager.TargetTrackingSet.TrackedEntites())
                                     {
                                         if (dataContext.EntityPropertiesMatch(target, key))
@@ -348,12 +345,12 @@ namespace Iql.Queryable.Data
                                             relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
                                             {
                                                 entity.SetPropertyValue(
-                                                    relationship.Relationship.Source.Property.PropertyName,
+                                                    relationship.Relationship.Source.Property,
                                                     target);
                                             });
                                             relationshipManager.TargetTrackingSet.SilentlyChangeEntity(target, () =>
                                             {
-                                                target.SetPropertyValue(relationship.Relationship.Target.Property.PropertyName,
+                                                target.SetPropertyValue(relationship.Relationship.Target.Property,
                                                     entity);
                                             });
                                         }

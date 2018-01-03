@@ -21,8 +21,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var match = true;
                 for (var j = 0; j < key.Properties.Count; j++)
                 {
-                    if (!Equals(source.GetPropertyValue(key.Properties[j].PropertyName),
-                        clone.GetPropertyValue(key.Properties[j].PropertyName)))
+                    if (!Equals(source.GetPropertyValue(key.Properties[j]),
+                        clone.GetPropertyValue(key.Properties[j])))
                     {
                         match = false;
                         break;

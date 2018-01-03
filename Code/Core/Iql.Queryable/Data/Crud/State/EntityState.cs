@@ -94,10 +94,6 @@ namespace Iql.Queryable.Data.Crud.State
 
         public void SetPropertyState(string name, object oldValue, object newValue)
         {
-            if (name == "SiteInspection" && Equals(1, Entity.GetPropertyValue("Id")))
-            {
-                int a = 0;
-            }
             var propertyState = GetPropertyState(name);
             if (propertyState == null)
             {

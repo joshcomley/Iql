@@ -81,8 +81,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
             {
                 var isSource = relationship.Source.Configuration == graphEntityConfiguration;
                 var propertyName = isSource
-                    ? relationship.Source.Property.PropertyName
-                    : relationship.Target.Property.PropertyName;
+                    ? relationship.Source.Property
+                    : relationship.Target.Property;
                 var relationshipValue = objectGraphRoot.GetPropertyValue(propertyName);
                 var childType = isSource
                     ? relationship.Target.Type

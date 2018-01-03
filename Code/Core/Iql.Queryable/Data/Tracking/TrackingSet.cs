@@ -230,7 +230,7 @@ namespace Iql.Queryable.Data.Tracking
                                     trackedEntity,
                                     compositeKey))
                                 {
-                                    trackedEntity.SetPropertyValue(relationship.OtherEnd.Property.PropertyName,
+                                    trackedEntity.SetPropertyValue(relationship.OtherEnd.Property,
                                         entity);
                                 }
                             }
@@ -246,7 +246,7 @@ namespace Iql.Queryable.Data.Tracking
                         var matchedEntity = trackingSet.FindTrackedEntityByKey(compositeKey);
                         if (matchedEntity != null)
                         {
-                            entity.SetPropertyValue(relationship.ThisEnd.Property.PropertyName, matchedEntity);
+                            entity.SetPropertyValue(relationship.ThisEnd.Property, matchedEntity);
                         }
                     }
                 }
@@ -279,7 +279,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 if (relationship.ThisEnd.IsCollection)
                 {
-                    var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                    var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property)
                         as IRelatedList;
                     if (relatedList != null && !_collectionChangeSubscriptions.ContainsKey(relatedList))
                     {
@@ -402,12 +402,11 @@ namespace Iql.Queryable.Data.Tracking
                                                 }
                                             }
                                             if (Equals(entity,
-                                                    relatedEntity.GetPropertyValue(relationship.OtherEnd.Property
-                                                        .PropertyName)) ||
+                                                    relatedEntity.GetPropertyValue(relationship.OtherEnd.Property)) ||
                                                 DataContext.EntityPropertiesMatch(relatedEntity, oldCompositeKey))
                                             {
                                                 relatedEntity.SetPropertyValue(
-                                                    relationship.OtherEnd.Property.PropertyName,
+                                                    relationship.OtherEnd.Property,
                                                     entity);
                                                 relatedEntity.SetPropertyValues(newCompositeKey);
                                             }
@@ -504,7 +503,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 if (relationship.ThisEnd.IsCollection)
                 {
-                    var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property.PropertyName)
+                    var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property)
                         as IRelatedList;
                     if (relatedList != null && _collectionChangeSubscriptions.ContainsKey(relatedList))
                     {
@@ -694,7 +693,7 @@ namespace Iql.Queryable.Data.Tracking
                     persistenceKeyProperty = EntityConfiguration.Properties.SingleOrDefault(
                         p => p.Name == "PersistenceKey");
                 }
-                var persistenceKey = (Guid)entity.GetPropertyValue(persistenceKeyProperty.Name);
+                var persistenceKey = (Guid)entity.GetPropertyValue(persistenceKeyProperty);
                 if (persistenceKey != Guid.Empty)
                 {
                     return persistenceKey;
@@ -709,8 +708,8 @@ namespace Iql.Queryable.Data.Tracking
             foreach (var keyProperty in EntityConfiguration.Key.Properties)
             {
                 compositeKey.Keys.Add(new KeyValue(
-                    keyProperty.PropertyName,
-                    entity.GetPropertyValue(keyProperty.PropertyName),
+                    keyProperty.Name,
+                    entity.GetPropertyValue(keyProperty),
                     null));
             }
             return compositeKey;

@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -25,9 +26,42 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public List<IRelationship> Relationships { get; set; }
 
+        private IProperty FindOrDefinePropertyInternal(LambdaExpression lambda, Type propertyType)
+        {
+            return (IProperty)GetType().GetRuntimeMethods().First(m => m.Name == nameof(FindOrDefineProperty))
+                .MakeGenericMethod(propertyType).Invoke(this, new object[] {lambda});
+        }
+
+        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda)
+        {
+            var expression = (Expression<Func<T, TProperty>>) lambda;
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
+                IqlPropertyExpression;
+            var property = FindProperty(iql.PropertyName);
+            if (property == null)
+            {
+                if (TypeExtensions.IsEnumerable<TProperty>())
+                {
+                    InvokeDefineCollectionPropertyInternal<TProperty>(typeof(T).GetProperty(iql.PropertyName), lambda, null);
+                }
+                else
+                {
+                    DefineProperty(expression);
+                }
+                property = FindProperty(iql.PropertyName);
+            }
+            return property;
+        }
+
+        public IProperty FindOrDefinePropertyByName(string name)
+        {
+            var property = typeof(T).GetProperty(name);
+            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType);
+        }
+
         public RelationshipMatch FindRelationship(string propertyName)
         {
-            return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.PropertyName == propertyName);
+            return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
         }
 
         public List<RelationshipMatch> AllRelationships()
@@ -78,12 +112,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var isMatch = true;
             foreach (var id in Key.Properties)
             {
-                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.PropertyName);
+                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.Name);
                 if (compositeKeyValue == null)
                 {
                     return false;
                 }
-                if (!Equals(entity.GetPropertyValue(id.PropertyName), compositeKeyValue.Value))
+                if (!Equals(entity.GetPropertyValue(id), compositeKeyValue.Value))
                 {
                     isMatch = false;
                     break;
@@ -109,7 +143,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var isMatch = true;
             foreach (var id in Key.Properties)
             {
-                if (!Equals(left.GetPropertyValue(id.PropertyName), right.GetPropertyValue(id.PropertyName)))
+                if (!Equals(left.GetPropertyValue(id), right.GetPropertyValue(id)))
                 {
                     isMatch = false;
                     break;
@@ -123,7 +157,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var key = new CompositeKey();
             foreach (var property in Key.Properties)
             {
-                key.Keys.Add(new KeyValue(property.PropertyName, entity.GetPropertyValue(property.PropertyName), FindProperty(property.PropertyName).Type));
+                key.Keys.Add(new KeyValue(property.Name, entity.GetPropertyValue(property), property.ElementType));
             }
             return key;
         }
@@ -154,17 +188,18 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, TKey>> property
         )
         {
+            DefineProperty(property);
             Key = new EntityKey<T, TKey>();
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             iql.ReturnType = typeof(TKey).ToIqlType();
-            Key.Properties.Add(iql);
+            Key.Properties.Add(FindOrDefineProperty<TKey>(property));
             TrySetKey(iql.PropertyName);
             return this;
         }
 
         private void TrySetKey(string propertyName)
         {
-            if (Key.Properties.Any(p => p.PropertyName == propertyName))
+            if (Key != null && Key.Properties.Any(p => p.Name == propertyName))
             {
                 var property = FindProperty(propertyName);
                 if (property != null)
@@ -183,8 +218,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
             foreach (var property in properties)
             {
                 var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+                var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
-                Key.Properties.Add(iql);
+                Key.Properties.Add(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType));
             }
             return this;
         }
@@ -196,8 +232,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         )
         {
 #if !TypeScript
-            if (typeof(IEnumerable).IsAssignableFrom(typeof(TProperty)) && !
-                    typeof(string).IsAssignableFrom(typeof(TProperty)))
+            if (TypeExtensions.IsEnumerable<TProperty>())
             {
                 throw new Exception($"Please use {nameof(DefineCollectionProperty)} to define collection properties.");
             }
@@ -206,6 +241,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<T, TProperty, TProperty> ?? new Property<T, TProperty, TProperty>(name, false, typeof(T), convertedFromType, false, null, property);
             definition.Nullable = nullable;
+
             //definition.PropertyGetter = property.Compile();
             //definition.PropertyGetterExpression = property;
             if (!Properties.Contains(definition))
@@ -236,11 +272,66 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, long?>> countProperty = null
             )
         {
-            var collection = MapProperty<TProperty, IEnumerable<TProperty>>(property, true, false, null);
+            var iql =
+                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+            var propertyType = typeof(T).GetProperty(iql.PropertyName);
+            var propertyName = iql.PropertyName;
+            var lambda = GetLambdaExpression<T>(propertyName);
+            InvokeDefineCollectionPropertyInternal<TProperty>(propertyType, lambda, countProperty);
+            return this;
+        }
+
+        private void InvokeDefineCollectionPropertyInternal<TProperty>(
+            PropertyInfo property,
+            LambdaExpression lambda,
+            Expression<Func<T, long?>> countProperty = null)
+        {
+            var propertyType = typeof(TProperty);
+            if (TypeExtensions.IsEnumerableType(propertyType))
+            {
+                while (propertyType.GenericTypeArguments.Length > 1)
+                {
+                    propertyType = propertyType.BaseType;
+                }
+                propertyType = propertyType.GenericTypeArguments[0];
+            }
+            var method = GetType()
+                    .GetRuntimeMethods()
+                    .First(m => m.Name == nameof(DefineCollectionPropertyInternal))
+                    .MakeGenericMethod(property.PropertyType, propertyType)
+                ;
+            method.Invoke(this, new object[] {lambda, countProperty});
+        }
+
+        private static LambdaExpression GetLambdaExpression<TOwner>(string propertyName)
+        {
+            var param = Expression.Parameter(typeof(TOwner), "o");
+            var lambda = Expression.Lambda(Expression.Property(param, propertyName), param);
+            return lambda;
+        }
+
+        private EntityConfiguration<T> DefineCollectionPropertyInternal<TValueType, TElementType>(
+            Expression<Func<T, TValueType>> property,
+            Expression<Func<T, long?>> countProperty = null
+        )
+        {
+            var collection = MapProperty<TElementType, TValueType>(property, true, false, null);
             if (countProperty != null)
             {
-                var countDefinition = MapProperty<long?, long?>(countProperty, false, true, collection);
-                countDefinition.Kind = PropertyKind.Count;
+                var countPropertyIql =
+                    IqlQueryableAdapter.ExpressionToIqlExpressionTree(countProperty) as IqlPropertyExpression;
+                var countPropertyDefinition = typeof(T).GetProperty(countPropertyIql.PropertyName);
+                if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
+                {
+                    var countDefinition = MapProperty<long?, long?>(countProperty, false, true, collection);
+                    countDefinition.Kind = PropertyKind.Count;
+                }
+                else
+                {
+                    var lambda = (Expression<Func<T, long>>)GetLambdaExpression<T>(countPropertyIql.PropertyName);
+                    var countDefinition = MapProperty<long, long>(lambda, false, true, collection);
+                    countDefinition.Kind = PropertyKind.Count;
+                }
             }
             TryAssignRelationshipToPropertyDefinition(collection);
             return this;
@@ -306,17 +397,17 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var otherEndConfiguration = _builder.GetEntityByType(relationship.OtherEnd.Type);
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
-                    var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.PropertyName);
+                    var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
                     if (constraintProperty != null && constraintProperty.Kind != PropertyKind.RelationshipKey && constraintProperty.Kind != PropertyKind.Key)
                     {
                         constraintProperty.Kind = PropertyKind.RelationshipKey;
-                        constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.PropertyName);
+                        constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.Name);
                     }
                 }
                 if (tryAssignOtherEnd)
                 {
                     (otherEndConfiguration as EntityConfigurationBase)
-                        .TryAssignRelationshipToProperty(relationship.OtherEnd.Property.PropertyName, false);
+                        .TryAssignRelationshipToProperty(relationship.OtherEnd.Property.Name, false);
                 }
             }
             else
@@ -325,7 +416,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 {
                     foreach (var constraint in relationshipMatch.Relationship.Constraints)
                     {
-                        if (constraint.SourceKeyProperty.PropertyName == definition.Name && definition.Kind != PropertyKind.RelationshipKey && definition.Kind != PropertyKind.Key)
+                        if (constraint.SourceKeyProperty.Name == definition.Name && definition.Kind != PropertyKind.RelationshipKey && definition.Kind != PropertyKind.Key)
                         {
                             definition.Kind = PropertyKind.RelationshipKey;
                             definition.Relationship = relationshipMatch;

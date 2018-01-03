@@ -25,7 +25,7 @@ namespace Iql.OData.Queryable.Applicators
                 return "";
             }
             var detail = expand.ExpandDetails[index];
-            var expandProperty = detail.GetExpandProperty().PropertyName + "/$count";
+            var expandProperty = detail.GetExpandProperty().Name + "/$count";
             var expandOperations = "";
             expandOperations +=
                 detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true);
