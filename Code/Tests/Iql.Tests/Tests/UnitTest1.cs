@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Iql.Tests.Tests
 {
     [TestClass]
-    public class UnitTest1:TestsBase
+    public class UnitTest1 : TestsBase
     {
         [TestMethod]
         public void TestDetectedPropertyChanges()
@@ -111,7 +111,10 @@ namespace Iql.Tests.Tests
         public async Task AddingAnEntityPersistsToDb()
         {
             Assert.AreEqual(0, AppDbContext.InMemoryDb.ClientTypes.Count);
-            var clientType = new ClientType() { Id = 1 };
+            var clientType = new ClientType()
+            {
+                //Id = 1
+            };
             Db.ClientTypes.Add(clientType);
             var entityState = Db.GetEntityState(clientType
 #if TypeScript
@@ -130,9 +133,8 @@ namespace Iql.Tests.Tests
         public async Task TestWithKey()
         {
             var id = 1;
-            Db.ClientTypes.Add(new ClientType { Id = id });
-            Db.ClientTypes.Add(new ClientType { Id = id + 1 });
-            await Db.SaveChanges();
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = id });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = id + 1 });
             var clientType = await Db.ClientTypes.WithKey(id);
             Assert.IsNotNull(clientType);
             Assert.AreEqual(clientType.Id, id);
@@ -141,33 +143,29 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestWhere()
         {
-            var id = 1;
-            Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
-            var id2 = id + 1;
-            Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
+            Db.ClientTypes.Add(new ClientType { Name = "First" });
+            Db.ClientTypes.Add(new ClientType { Name = "Second" });
             await Db.SaveChanges();
             var clientType = await Db.ClientTypes.Where(ct => ct.Name == "Second").Single();
             Assert.IsNotNull(clientType);
-            Assert.AreEqual(clientType.Id, id2);
+            Assert.AreEqual(clientType.Name, "Second");
         }
 
         [TestMethod]
         public async Task TestWhereDifferentCase()
         {
-            var id = 1;
-            Db.ClientTypes.Add(new ClientType { Id = id, Name = "First" });
-            var id2 = id + 1;
-            Db.ClientTypes.Add(new ClientType { Id = id2, Name = "Second" });
+            Db.ClientTypes.Add(new ClientType { Name = "First" });
+            Db.ClientTypes.Add(new ClientType { Name = "Second" });
             await Db.SaveChanges();
             var clientType = await Db.ClientTypes.Where(ct => ct.Name == "SECOND").Single();
             Assert.IsNotNull(clientType);
-            Assert.AreEqual(clientType.Id, id2);
+            Assert.AreEqual(clientType.Name, "Second");
         }
 
         [TestMethod]
         public async Task ChangingAnEntity()
         {
-            var entity = new ClientType { Id = 2 };
+            var entity = new ClientType { };
             Db.ClientTypes.Add(entity);
             await Db.SaveChanges();
             Db.EvaluateContext = new EvaluateContext();
@@ -193,7 +191,7 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task ChangingAnEntityWithTheSameValueShouldResultInNoUpdates()
         {
-            var entity = new ClientType { Id = 2, Name = "Something else" };
+            var entity = new ClientType { Name = "Something else" };
             Db.ClientTypes.Add(entity);
             await Db.SaveChanges();
             Db.EvaluateContext = new EvaluateContext();
@@ -240,23 +238,30 @@ namespace Iql.Tests.Tests
             Assert.IsNull(addEntityResult);
         }
 
-        [TestMethod]
-        public async Task AddingAnEntityWithAnAttachedEntityWithWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
-        {
-            TestsBlock.AddClientTypes();
-            await Db.SaveChanges();
-            var clients = AppDbContext.InMemoryDb.Clients.ToList();
-            var exceptionThrown = false;
-            try
-            {
-                Db.Clients.Add(new Client { Id = 3, Name = "Client 1 b", Type = new ClientType { Id = 2, Name = "This should cause an error" } });
-            }
-            catch (EntityAlreadyTrackedException)
-            {
-                exceptionThrown = true;
-            }
-            Assert.IsTrue(exceptionThrown);
-        }
+        //[TestMethod]
+        //public async Task AddingAnEntityWithAnAttachedEntityWithWithTheSameKeyAsAnExistingTrackedEntityShouldThrowException()
+        //{
+        //    TestsBlock.AddClientTypes();
+        //    await Db.SaveChanges();
+        //    var clients = AppDbContext.InMemoryDb.Clients.ToList();
+        //    var exceptionThrown = false;
+        //    try
+        //    {
+        //        Db.Clients.Add(new Client
+        //        {
+        //            Name = "Client 1 b",
+        //            Type = new ClientType
+        //            {
+        //                Name = "This should cause an error"
+        //            }
+        //        });
+        //    }
+        //    catch (EntityAlreadyTrackedException)
+        //    {
+        //        exceptionThrown = true;
+        //    }
+        //    Assert.IsTrue(exceptionThrown);
+        //}
 
         [TestMethod]
         public async Task AddingAnEntityWithAnAttachedEntityWithANewKeyShouldNotThrowException()
@@ -266,7 +271,14 @@ namespace Iql.Tests.Tests
             var exceptionThrown = false;
             try
             {
-                Db.Clients.Add(new Client { Id = 301, Name = "Client 1 b", Type = new ClientType { Id = 401, Name = "This should not cause an error" } });
+                Db.Clients.Add(new Client
+                {
+                    Name = "Client 1 b",
+                    Type = new ClientType
+                    {
+                        Name = "This should not cause an error"
+                    }
+                });
             }
             catch (EntityAlreadyTrackedException)
             {
@@ -311,6 +323,7 @@ namespace Iql.Tests.Tests
         public async Task TestReassigningRelationshipEvents()
         {
             var clientTypes = TestsBlock.AddClientTypes();
+            await Db.SaveChanges();
             var eventFiredCount = 0;
             var assignEventFiredCount = 0;
             var removeEventFiredCount = 0;
@@ -331,19 +344,17 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.AssignRelationshipByKey(new CompositeKey());
+            clientTypes.ClientType1.Clients.AssignRelationshipByKey(
+                Db.EntityConfigurationContext.EntityType<Client>()
+                .GetCompositeKey(clientTypes.ClientType2.Clients[0])
+                );
             Assert.AreEqual(1, eventFiredCount);
             Assert.AreEqual(1, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.AssignRelationshipByKey(new CompositeKey());
+            clientTypes.ClientType1.Clients.AssignRelationship(new Client());
             Assert.AreEqual(2, eventFiredCount);
             Assert.AreEqual(2, assignEventFiredCount);
-            Assert.AreEqual(0, removeEventFiredCount);
-
-            clientTypes.ClientType1.Clients.AssignRelationship(new Client());
-            Assert.AreEqual(3, eventFiredCount);
-            Assert.AreEqual(3, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
             //clientTypes.ClientType1.Clients.RemoveRelationshipByKey(new CompositeKey());
@@ -453,7 +464,6 @@ namespace Iql.Tests.Tests
             };
             var client = new Client
             {
-                Id = 12,
                 Name = "My client"
             };
             client.Sites.Add(site);
@@ -521,7 +531,7 @@ namespace Iql.Tests.Tests
             AssignByKeyMethod
         }
 
-        public async Task TestReassign(ReassignType type1 , ReassignType type2)
+        public async Task TestReassign(ReassignType type1, ReassignType type2)
         {
             var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChanges();
@@ -618,12 +628,11 @@ namespace Iql.Tests.Tests
             // Create two new client types
             var clientType1 = new ClientType
             {
-                Id = 2,
                 Name = "Something else",
             };
             clientType1.Clients.AddRange(new[]
             {
-                new Client {Id = 1, Name = "Client 1"}
+                new Client {Name = "Client 1"}
             });
             Db.ClientTypes.Add(clientType1);
 
@@ -632,7 +641,6 @@ namespace Iql.Tests.Tests
 
             var clientType2 = new ClientType
             {
-                Id = 3,
                 Name = "Another",
             };
             Db.ClientTypes.Add(clientType2);
@@ -646,22 +654,20 @@ namespace Iql.Tests.Tests
         {
             var clientType1 = new ClientType
             {
-                Id = 2,
                 Name = "Something else",
             };
             clientType1.Clients.AddRange(new[]
             {
-                new Client {Id = 1, Name = "Client 1"}
+                new Client {Name = "Client 1"}
             });
             Db.ClientTypes.Add(clientType1);
             var clientType2 = new ClientType
             {
-                Id = 3,
                 Name = "Another",
             };
             clientType2.Clients.AddRange(new[]
             {
-                new Client {Id = 2, Name = "Client 2"}
+                new Client {Name = "Client 2"}
             });
             Db.ClientTypes.Add(clientType2);
             var clients = AppDbContext.InMemoryDb.Clients;
@@ -676,7 +682,9 @@ namespace Iql.Tests.Tests
             var clientTypes = TestsBlock.AddClientTypes();
             Assert.AreEqual(1, clientTypes.ClientType1.Clients.Count);
             await Db.SaveChanges();
+            var queuedOperations = Db.DataStore.GetQueue().ToList();
             var clients = await Db.Clients.ToList();
+            queuedOperations = Db.DataStore.GetQueue().ToList();
             var dbClients = AppDbContext.InMemoryDb.Clients.ToList();
             Assert.AreEqual(dbClients.Count, clients.Count);
             Assert.AreEqual(1, clientTypes.ClientType1.Clients.Count);
@@ -684,8 +692,9 @@ namespace Iql.Tests.Tests
             var clientToDelete = clientTypes.ClientType1.Clients[0];
             Db.Clients.Delete(clientToDelete);
             Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
-            Assert.AreEqual(1, Db.DataStore.GetQueue().Count());
-            var deleteOperation = Db.DataStore.GetQueue().First() as QueuedDeleteEntityOperation<Client>;
+            queuedOperations = Db.DataStore.GetQueue().ToList();
+            Assert.AreEqual(1, queuedOperations.Count);
+            var deleteOperation = queuedOperations.First() as QueuedDeleteEntityOperation<Client>;
             Assert.IsNotNull(deleteOperation);
             Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
 
@@ -733,18 +742,18 @@ namespace Iql.Tests.Tests
         {
             var siteInspection1 = new SiteInspection
             {
-                Id = 7
+                //Id = 7
             };
             var siteInspection2 = new SiteInspection
             {
-                Id = 8
+                //Id = 8
             };
             Db.SiteInspections.Add(siteInspection1);
             Db.SiteInspections.Add(siteInspection2);
             await Db.SaveChanges();
             var riskAssessment = new RiskAssessment
             {
-                Id = 42,
+                //Id = 42,
                 SiteInspectionId = siteInspection1.Id
             };
 
@@ -760,18 +769,15 @@ namespace Iql.Tests.Tests
         {
             var siteInspection1 = new SiteInspection
             {
-                Id = 7
             };
             var siteInspection2 = new SiteInspection
             {
-                Id = 8
             };
             Db.SiteInspections.Add(siteInspection1);
             Db.SiteInspections.Add(siteInspection2);
             await Db.SaveChanges();
             var riskAssessment = new RiskAssessment
             {
-                Id = 42,
             };
             Db.RiskAssessments.Add(riskAssessment);
             riskAssessment.SiteInspectionId = siteInspection1.Id;
@@ -785,20 +791,13 @@ namespace Iql.Tests.Tests
         public async Task
             RemovingAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
         {
-            var siteInspection1 = new SiteInspection
-            {
-                Id = 7
-            };
-            var siteInspection2 = new SiteInspection
-            {
-                Id = 8
-            };
+            var siteInspection1 = new SiteInspection();
+            var siteInspection2 = new SiteInspection();
             Db.SiteInspections.Add(siteInspection1);
             Db.SiteInspections.Add(siteInspection2);
             await Db.SaveChanges();
             var riskAssessment = new RiskAssessment
             {
-                Id = 42,
                 SiteInspectionId = siteInspection1.Id
             };
             Db.RiskAssessments.Add(riskAssessment);

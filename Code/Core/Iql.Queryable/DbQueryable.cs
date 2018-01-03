@@ -35,10 +35,11 @@ namespace Iql.Queryable
         public ITrackingSet TrackingSet
         {
             get { return _trackingSet = _trackingSet?? TrackingSetCollection.GetSet<T>(); }
+            set { _trackingSet = value; }
         }
 
         public Func<IDataStore> DataStoreGetter { get; set; }
-        public TrackingSetCollection TrackingSetCollection { get; private set; }
+        public TrackingSetCollection TrackingSetCollection { get; }
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder Configuration { get; set; }
 

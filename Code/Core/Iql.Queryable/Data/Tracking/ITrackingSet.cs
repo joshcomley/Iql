@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Operations;
@@ -14,6 +15,7 @@ namespace Iql.Queryable.Data.Tracking
         void Unwatch(object entity);
         void SilentlyChangeEntity(object entity, Action action);
         void ChangeEntity(object entity, Action action, ChangeEntityMode silently);
+        Task ChangeEntityAsync(object entity, Func<Task> action, ChangeEntityMode silently);
         IEntityStateBase GetEntityState(object entity);
         IEnumerable<object> TrackedEntites();
         Type EntityType { get; }

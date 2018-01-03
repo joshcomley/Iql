@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Exceptions;
 using Iql.Queryable.Extensions;
 
@@ -210,153 +212,158 @@ namespace Iql.Queryable.Data
         private static readonly List<object> RefreshQueue = new List<object>();
         private static async Task TrackRelationshipsInternal(object entity, Type entityType, IDataContext dataContext, bool allowRefresh)
         {
-            foreach (var relationship in dataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
+            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
+            var trackingSet = dataContext.DataStore.GetTracking().TrackingSet(entityType);
+            await trackingSet.ChangeEntityAsync(entity, async () =>
             {
-                var relationshipManager = GetRelationshipManager(relationship.Relationship, dataContext);
-                switch (relationship.Relationship.Type)
+                foreach (var relationship in entityConfiguration.AllRelationships())
                 {
-                    case RelationshipType.OneToMany:
-                        if (relationship.ThisIsTarget)
-                        {
-                            // e.g.
-                            // We are ClientType
-                            // With a list of Clients
-                            // And each client has a TypeId
-                            // 
-                            // Iterate through each entity in the clients list and
-                            // set the TypeId appropriately
+                    var relationshipManager = GetRelationshipManager(relationship.Relationship, dataContext);
+                    switch (relationship.Relationship.Type)
+                    {
+                        case RelationshipType.OneToMany:
+                            if (relationship.ThisIsTarget)
+                            {
+                                // e.g.
+                                // We are ClientType
+                                // With a list of Clients
+                                // And each client has a TypeId
+                                // 
+                                // Iterate through each entity in the clients list and
+                                // set the TypeId appropriately
 
-                            var relatedList = entity.GetPropertyValue(
-                                    relationship.Relationship.Target.Property.PropertyName)
-                                as IRelatedList;
-                            if (relatedList == null)
-                            {
-                                throw new RelatedListHasNoValueException();
-                            }
-                            var items = relatedList.Cast<object>().ToArray();
-                            foreach (var item in items)
-                            {
-                                relationshipManager.SourceTrackingSet.SilentlyChangeEntity(item, () =>
+                                var relatedList = entity.GetPropertyValue(
+                                        relationship.Relationship.Target.Property.PropertyName)
+                                    as IRelatedList;
+                                if (relatedList == null)
                                 {
-                                    foreach (var constraint in relationship.Relationship.Constraints)
-                                    {
-                                        item.SetPropertyValue(constraint.SourceKeyProperty.PropertyName,
-                                            entity.GetPropertyValue(constraint.TargetKeyProperty.PropertyName));
-                                    }
-                                    item.SetPropertyValue(relationship.Relationship.Source.Property.PropertyName,
-                                        entity);
-                                });
-                            }
-                        }
-                        else
-                        {
-                            // e.g.
-                            // We are Client
-                            // With a Type and TypeId
-                            // Make sure we exist in the Type's list of Clients
-                            // And ensure the key and value match
-                            var referenceValue =
-                                entity.GetPropertyValue(relationshipManager.Relationship.Source.Property.PropertyName);
-                            var keyValueInverse =
-                                relationship.ThisEnd.GetCompositeKey(entity, true);
-                            var keyIsSet = !keyValueInverse.HasDefaultValue();
-                            if (referenceValue != null &&
-                                keyIsSet &&
-                                !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
-                            {
-                                // We only end up here if the data has come from a database,
-                                // a new key has been provided for a relationship and the old
-                                // expand is still in place and was not refreshed with the latest
-                                // entity refresh
-                                relationshipManager.ProcessOneToManyKeyChange(entity);
-                                //throw new InconsistentRelationshipAssignmentException();
-                            }
-                            if (referenceValue != null)
-                            {
-                                relationshipManager.ProcessOneToManyReferenceChange(entity);
-                            }
-                            else if (keyIsSet)
-                            {
-                                relationshipManager.ProcessOneToManyKeyChange(entity);
-                            }
-                            //var reference
-                        }
-                        break;
-                    case RelationshipType.OneToOne:
-                        if (relationship.ThisIsTarget)
-                        {
-                            var referenceValue =
-                                entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName);
-                            var keyValue =
-                                relationship.ThisEnd.GetCompositeKey(entity);
-                            var keyValueInverse =
-                                relationship.ThisEnd.GetCompositeKey(entity, true);
-
-                            // If the reference value is set, and the key value is set
-                            // make sure the key from the reference value matches the key
-                            // from the reference key value
-                            var keyIsSet = !keyValueInverse.HasDefaultValue();
-                            if (referenceValue != null &&
-                                keyIsSet &&
-                                !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
-                            {
-                                int a = 0;
-                                //throw new InconsistentRelationshipAssignmentException();
-                            }
-                            if (keyIsSet)
-                            {
-                                relationshipManager.ProcessOneToOneKeyChange(entity);
-                            }
-                            else if (referenceValue != null)
-                            {
-                                relationshipManager.ProcessOneToOneReferenceChange(entity);
-                            }
-                        }
-                        else
-                        {
-                            // Find all target relationships that have the same key value
-                            var isEntityNew = dataContext.IsEntityNew(entity, relationship.Relationship.Source.Type);
-                            if (isEntityNew != null && isEntityNew.Value == false)
-                            {
-                                var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
-                                var ourTarget =
-                                    entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
-                                foreach (var target in relationshipManager.TargetTrackingSet.TrackedEntites())
+                                    throw new RelatedListHasNoValueException();
+                                }
+                                var items = relatedList.Cast<object>().ToArray();
+                                foreach (var item in items)
                                 {
-                                    if (dataContext.EntityPropertiesMatch(target, key))
+                                    relationshipManager.SourceTrackingSet.SilentlyChangeEntity(item, () =>
                                     {
-                                        if (ourTarget != null && ourTarget != target)
+                                        foreach (var constraint in relationship.Relationship.Constraints)
                                         {
-                                            // We need to refresh this entity...
-                                            if (allowRefresh && !RefreshQueue.Contains(target))
+                                            item.SetPropertyValue(constraint.SourceKeyProperty.PropertyName,
+                                                entity.GetPropertyValue(constraint.TargetKeyProperty.PropertyName));
+                                        }
+                                        item.SetPropertyValue(relationship.Relationship.Source.Property.PropertyName,
+                                            entity);
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                // e.g.
+                                // We are Client
+                                // With a Type and TypeId
+                                // Make sure we exist in the Type's list of Clients
+                                // And ensure the key and value match
+                                var referenceValue =
+                                    entity.GetPropertyValue(relationshipManager.Relationship.Source.Property.PropertyName);
+                                var keyValueInverse =
+                                    relationship.ThisEnd.GetCompositeKey(entity, true);
+                                var keyIsSet = !keyValueInverse.HasDefaultValue();
+                                if (referenceValue != null &&
+                                    keyIsSet &&
+                                    !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
+                                {
+                                    // We only end up here if the data has come from a database,
+                                    // a new key has been provided for a relationship and the old
+                                    // expand is still in place and was not refreshed with the latest
+                                    // entity refresh
+                                    relationshipManager.ProcessOneToManyKeyChange(entity);
+                                    //throw new InconsistentRelationshipAssignmentException();
+                                }
+                                if (referenceValue != null)
+                                {
+                                    relationshipManager.ProcessOneToManyReferenceChange(entity);
+                                }
+                                else if (keyIsSet)
+                                {
+                                    relationshipManager.ProcessOneToManyKeyChange(entity);
+                                }
+                                //var reference
+                            }
+                            break;
+                        case RelationshipType.OneToOne:
+                            if (relationship.ThisIsTarget)
+                            {
+                                var referenceValue =
+                                    entity.GetPropertyValue(relationship.Relationship.Target.Property.PropertyName);
+                                var keyValue =
+                                    relationship.ThisEnd.GetCompositeKey(entity);
+                                var keyValueInverse =
+                                    relationship.ThisEnd.GetCompositeKey(entity, true);
+
+                                // If the reference value is set, and the key value is set
+                                // make sure the key from the reference value matches the key
+                                // from the reference key value
+                                var keyIsSet = !keyValueInverse.HasDefaultValue();
+                                if (referenceValue != null &&
+                                    keyIsSet &&
+                                    !dataContext.EntityPropertiesMatch(referenceValue, keyValueInverse))
+                                {
+                                    int a = 0;
+                                    //throw new InconsistentRelationshipAssignmentException();
+                                }
+                                if (keyIsSet)
+                                {
+                                    relationshipManager.ProcessOneToOneKeyChange(entity);
+                                }
+                                else if (referenceValue != null)
+                                {
+                                    relationshipManager.ProcessOneToOneReferenceChange(entity);
+                                }
+                            }
+                            else
+                            {
+                                // Find all target relationships that have the same key value
+                                var isEntityNew = dataContext.IsEntityNew(entity, relationship.Relationship.Source.Type);
+                                if (isEntityNew != null && isEntityNew.Value == false)
+                                {
+                                    var key = relationship.Relationship.Source.GetCompositeKey(entity, true);
+                                    var ourTarget =
+                                        entity.GetPropertyValue(relationship.Relationship.Source.Property.PropertyName);
+                                    foreach (var target in relationshipManager.TargetTrackingSet.TrackedEntites())
+                                    {
+                                        if (dataContext.EntityPropertiesMatch(target, key))
+                                        {
+                                            if (ourTarget != null && ourTarget != target)
                                             {
-                                                RefreshQueue.Add(target);
-                                                await dataContext.RefreshEntity(target, relationship.Relationship.Target.Type);
-                                                RefreshQueue.Remove(target);
-                                                if (!dataContext.EntityPropertiesMatch(target, key))
+                                                // We need to refresh this entity...
+                                                if (allowRefresh && !RefreshQueue.Contains(target))
                                                 {
-                                                    continue;
+                                                    RefreshQueue.Add(target);
+                                                    await dataContext.RefreshEntity(target, relationship.Relationship.Target.Type);
+                                                    RefreshQueue.Remove(target);
+                                                    if (!dataContext.EntityPropertiesMatch(target, key))
+                                                    {
+                                                        continue;
+                                                    }
                                                 }
                                             }
+                                            relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
+                                            {
+                                                entity.SetPropertyValue(
+                                                    relationship.Relationship.Source.Property.PropertyName,
+                                                    target);
+                                            });
+                                            relationshipManager.TargetTrackingSet.SilentlyChangeEntity(target, () =>
+                                            {
+                                                target.SetPropertyValue(relationship.Relationship.Target.Property.PropertyName,
+                                                    entity);
+                                            });
                                         }
-                                        relationshipManager.SourceTrackingSet.SilentlyChangeEntity(entity, () =>
-                                        {
-                                            entity.SetPropertyValue(
-                                                relationship.Relationship.Source.Property.PropertyName,
-                                                target);
-                                        });
-                                        relationshipManager.TargetTrackingSet.SilentlyChangeEntity(target, () =>
-                                        {
-                                            target.SetPropertyValue(relationship.Relationship.Target.Property.PropertyName,
-                                                entity);
-                                        });
                                     }
                                 }
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
-            }
+            }, ChangeEntityMode.Silent);
             // Here we need to fake the 
             //foreach (var relationship in DataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
             //{

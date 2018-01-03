@@ -12,6 +12,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Properties = new List<IqlPropertyExpression>();
         }
 
+        public bool IsGeneratedRemotely { get; set; }
         public Type Type { get; set; }
         public Type KeyType { get; set; }
         public List<IqlPropertyExpression> Properties { get; set; }

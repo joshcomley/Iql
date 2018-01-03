@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
@@ -19,6 +20,7 @@ namespace Iql.Queryable.Data.Tracking
     {
         private bool _hasPersistenceKeySet;
         private bool _hasPersistenceKey;
+        private List<T> _noKeyCheckEntities = new List<T>();
         private List<T> _preChangeCheckEntities = new List<T>();
         private List<T> _silentEntities = new List<T>();
         private Dictionary<T, T> _entitiesByEntityReference = new Dictionary<T, T>();
@@ -148,6 +150,10 @@ namespace Iql.Queryable.Data.Tracking
         private T TrackInternal(T entity, bool allowMerge, bool isNew)
         {
             var existingEntity = FindTrackedEntity(entity);
+            if (isNew && EntityConfiguration.Key.IsGeneratedRemotely && DataContext.EntityHasKey(entity, typeof(T)))
+            {
+                throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+            }
             var found = existingEntity != null;
             if (!allowMerge && found)
             {
@@ -285,23 +291,34 @@ namespace Iql.Queryable.Data.Tracking
 
         private void EntityPropertyChanging(IPropertyChangeEvent pc)
         {
-            var entity = (T) pc.Entity;
+            var entity = (T)pc.Entity;
             if (TrackingSetCollection.ProcessingRelationshipChange)
             {
                 return;
             }
-            if (_silentEntities.Contains(entity) || _preChangeCheckEntities.Contains(entity))
+            if (_silentEntities.Contains(entity))
             {
                 return;
             }
             var property = EntityConfiguration.FindProperty(pc.PropertyName);
-            if (pc.NewValue == null && !property.Nullable && !Equals(pc.OldValue, pc.NewValue)
+            if (!_noKeyCheckEntities.Contains(entity))
+            {
+                if (property.Kind == PropertyKind.Key && EntityConfiguration.Key.IsGeneratedRemotely
+                    && !pc.NewValue.IsDefaultValue())
+                {
+                    throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                }
+            }
+            if (!_preChangeCheckEntities.Contains(entity))
+            {
+                if (pc.NewValue == null && !property.Nullable && !Equals(pc.OldValue, pc.NewValue)
 #if TypeScript
                     && property.ConvertedFromType != "Guid"
 #endif
-            )
-            {
-                throw new NullNotAllowedException(typeof(T), property.Name);
+                )
+                {
+                    throw new NullNotAllowedException(typeof(T), property.Name);
+                }
             }
         }
 
@@ -704,7 +721,7 @@ namespace Iql.Queryable.Data.Tracking
             ChangeEntity(entity, action, ChangeEntityMode.Silent);
         }
 
-        public void ChangeEntity(T entity, Action action, ChangeEntityMode mode)
+        public async Task ChangeEntityAsync(T entity, Func<Task> action, ChangeEntityMode mode)
         {
             // Instead of unwatching, we can check if an entity is being
             // silently changed, in which case we reset the property state
@@ -712,7 +729,7 @@ namespace Iql.Queryable.Data.Tracking
             switch (mode)
             {
                 case ChangeEntityMode.Normal:
-                    action();
+                    await action();
                     break;
                 case ChangeEntityMode.Silent:
                     var hasSilent = _silentEntities.Contains(entity);
@@ -720,7 +737,7 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         _silentEntities.Add(entity);
                     }
-                    action();
+                    await action();
                     if (!hasSilent)
                     {
                         _silentEntities.Remove(entity);
@@ -732,13 +749,35 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         _preChangeCheckEntities.Add(entity);
                     }
-                    action();
+                    await action();
                     if (!hasPreCheck)
                     {
                         _preChangeCheckEntities.Remove(entity);
                     }
                     break;
+                case ChangeEntityMode.NoKeyChecks:
+                    var hasNoKeyCheck = _noKeyCheckEntities.Contains(entity);
+                    if (!hasNoKeyCheck)
+                    {
+                        _noKeyCheckEntities.Add(entity);
+                    }
+                    await action();
+                    if (!hasNoKeyCheck)
+                    {
+                        _noKeyCheckEntities.Remove(entity);
+                    }
+                    break;
             }
+        }
+
+        public void ChangeEntity(T entity, Action action, ChangeEntityMode mode)
+        {
+#pragma warning disable 4014
+            ChangeEntityAsync(entity, async () =>
+#pragma warning restore 4014
+            {
+                action();
+            }, mode);
         }
 
         void ITrackingSet.SilentlyChangeEntity(object entity, Action action)
@@ -749,6 +788,10 @@ namespace Iql.Queryable.Data.Tracking
         void ITrackingSet.ChangeEntity(object entity, Action action, ChangeEntityMode mode)
         {
             ChangeEntity((T)entity, action, mode);
+        }
+        async Task ITrackingSet.ChangeEntityAsync(object entity, Func<Task> action, ChangeEntityMode mode)
+        {
+            await ChangeEntityAsync((T)entity, action, mode);
         }
 
         public bool IsTracked(object entity)
@@ -811,7 +854,7 @@ namespace Iql.Queryable.Data.Tracking
 
         object ITrackingSet.FindTrackedEntity(object entity)
         {
-            return FindTrackedEntity((T) entity);
+            return FindTrackedEntity((T)entity);
         }
 
         object ITrackingSet.FindTrackedEntityByKey(CompositeKey key)
