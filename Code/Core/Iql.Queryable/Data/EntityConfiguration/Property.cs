@@ -38,12 +38,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public override Func<object, object> PropertyGetter { get; }
         public override Func<object, object, object> PropertySetter { get; }
 
-        private static Expression<Func<T, TProperty, TProperty>> GetAssignmentLambda<T, TProperty>(string name)
+        private static Expression<Func<T, TAssignmentProperty, TAssignmentProperty>> GetAssignmentLambda<T, TAssignmentProperty>(string name)
         {
             var p = Expression.Parameter(typeof(T), "o");
             var v = Expression.Parameter(typeof(T).GetProperty(name).PropertyType, "v");
             var l = Expression.Lambda(Expression.Assign(Expression.Property(p, name), v), p, v);
-            return (Expression<Func<T, TProperty, TProperty>>)l;
+            return (Expression<Func<T, TAssignmentProperty, TAssignmentProperty>>)l;
         }
     }
 }

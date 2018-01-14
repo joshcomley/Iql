@@ -287,6 +287,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, long?>> countProperty = null)
         {
             var propertyType = typeof(TProperty);
+#if !TypeScript
             if (TypeExtensions.IsEnumerableType(propertyType))
             {
                 while (propertyType.GenericTypeArguments.Length > 1)
@@ -295,6 +296,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 }
                 propertyType = propertyType.GenericTypeArguments[0];
             }
+#endif
             var method = GetType()
                     .GetRuntimeMethods()
                     .First(m => m.Name == nameof(DefineCollectionPropertyInternal))
