@@ -20,7 +20,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         ) : base(
             configuration,
             sourceProperty,
+            typeof(TSource),
             targetProperty,
+            typeof(TTarget),
             RelationshipType.ManyToMany)
         {
             PivotType = typeof(TPivot);

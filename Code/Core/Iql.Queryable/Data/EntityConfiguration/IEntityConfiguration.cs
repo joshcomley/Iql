@@ -13,8 +13,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IEntityKey Key { get; }
         Type Type { get; }
         IProperty FindProperty(string name);
-        IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression);
-        IProperty FindOrDefinePropertyByName(string name);
+        IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType);
+        IProperty FindOrDefinePropertyByName(string name, Type elementType);
         RelationshipMatch FindRelationship(string propertyName);
         List<RelationshipMatch> AllRelationships();
         bool EntityHasKey(object entity, CompositeKey key);

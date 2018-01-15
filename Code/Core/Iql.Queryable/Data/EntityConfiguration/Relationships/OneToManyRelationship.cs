@@ -14,7 +14,13 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             EntityConfigurationBuilder configuration, 
             Expression<Func<TSource, TTarget>> sourceProperty, 
             Expression<Func<TTarget, TCollection>> targetProperty)
-            : base(configuration, sourceProperty, targetProperty, RelationshipType.OneToMany)
+            : base(
+                  configuration, 
+                  sourceProperty,
+                  typeof(TSource),
+                  targetProperty, 
+                  typeof(TTarget),
+                  RelationshipType.OneToMany)
         {
         }
     }

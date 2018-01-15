@@ -11,12 +11,16 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public OneToRelationship(
             EntityConfigurationBuilder configuration,
             Expression<Func<TSource, TSourceProperty>> sourceProperty,
+            Type sourceElementType,
             Expression<Func<TTarget, TTargetProperty>> targetProperty,
+            Type targetElementType,
             RelationshipType type) :
             base(
                 configuration,
                 sourceProperty,
+                sourceElementType,
                 targetProperty,
+                targetElementType,
                 type)
         {
         }

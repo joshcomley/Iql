@@ -12,37 +12,45 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public Relationship(
             EntityConfigurationBuilder configuration,
             Expression<Func<TSource, TSourceProperty>> sourceProperty,
+            Type sourceElementType,
             Expression<Func<TTarget, TTargetProperty>> targetProperty,
+            Type targetElementType,
             RelationshipType type)
         {
             _configuration = configuration;
+            SourceElementType = sourceElementType;
+            TargetElementType = targetElementType;
             Type = type;
             Constraints = new List<IRelationshipConstraint>();
-            Source = new RelationshipDetail<TSource, TSourceProperty>(this, RelationshipSide.Source, configuration, sourceProperty);
-            Target = new RelationshipDetail<TTarget, TTargetProperty>(this, RelationshipSide.Target, configuration, targetProperty);
+            Source = new RelationshipDetail<TSource, TSourceProperty>(this, RelationshipSide.Source, configuration, sourceProperty, targetElementType);
+            Target = new RelationshipDetail<TTarget, TTargetProperty>(this, RelationshipSide.Target, configuration, targetProperty, sourceElementType);
         }
 
         public List<IRelationshipConstraint> Constraints { get; }
+        public Type SourceElementType { get; }
+        public Type TargetElementType { get; }
         public RelationshipType Type { get; set; }
         public IRelationshipDetail Source { get; }
         public IRelationshipDetail Target { get; }
 
-        public Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> WithConstraint(
-            Expression<Func<TSource, object>> sourceKeyProperty,
-            Expression<Func<TTarget, object>> targetKeyProperty)
+        public Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> WithConstraint<TKey>(
+            Expression<Func<TSource, TKey>> sourceKeyProperty,
+            Expression<Func<TTarget, TKey>> targetKeyProperty)
         {
             var sourceIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(sourceKeyProperty) as
                 IqlPropertyExpression;
             var targetIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetKeyProperty) as
                 IqlPropertyExpression;
             ;
-            var sourceProperty = Source.Configuration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName);
+            var sourceProperty = Source.Configuration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName, typeof(TKey));
             if (sourceProperty != null && sourceProperty.Kind == PropertyKind.Primitive)
             {
                 sourceProperty.Kind = PropertyKind.RelationshipKey;
                 sourceProperty.Relationship = Source.Configuration.FindRelationship(Source.Property.Name);
             }
-            var targetProperty = Target.Configuration.FindOrDefinePropertyByName(targetIqlProperty.PropertyName);
+            var targetProperty = Target.Configuration.FindOrDefinePropertyByName(
+                targetIqlProperty.PropertyName,
+                typeof(TKey));
             if (targetProperty != null && targetProperty.Kind == PropertyKind.Primitive)
             {
                 targetProperty.Kind = PropertyKind.RelationshipKey;

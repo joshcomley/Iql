@@ -26,13 +26,20 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public List<IRelationship> Relationships { get; set; }
 
-        private IProperty FindOrDefinePropertyInternal(LambdaExpression lambda, Type propertyType)
+        private IProperty FindOrDefinePropertyInternal(LambdaExpression lambda, Type propertyType, Type elementType)
         {
             return (IProperty)GetType().GetRuntimeMethods().First(m => m.Name == nameof(FindOrDefineProperty))
-                .MakeGenericMethod(propertyType).Invoke(this, new object[] {lambda});
+                .MakeGenericMethod(propertyType)
+                .Invoke(this, new object[]
+                {
+                    lambda, elementType
+#if TypeScript
+                    , elementType
+#endif
+                });
         }
 
-        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda)
+        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType)
         {
             var expression = (Expression<Func<T, TProperty>>) lambda;
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
@@ -42,7 +49,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
             {
                 if (TypeExtensions.IsEnumerable<TProperty>())
                 {
-                    InvokeDefineCollectionPropertyInternal<TProperty>(typeof(T).GetProperty(iql.PropertyName), lambda, null);
+                    InvokeDefineCollectionPropertyInternal<TProperty>(
+                        typeof(T).GetProperty(iql.PropertyName).PropertyType, elementType, lambda, null);
                 }
                 else
                 {
@@ -53,10 +61,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return property;
         }
 
-        public IProperty FindOrDefinePropertyByName(string name)
+        public IProperty FindOrDefinePropertyByName(string name, Type elementType)
         {
             var property = typeof(T).GetProperty(name);
-            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType);
+            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType, elementType);
         }
 
         public RelationshipMatch FindRelationship(string propertyName)
@@ -192,7 +200,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Key = new EntityKey<T, TKey>();
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             iql.ReturnType = typeof(TKey).ToIqlType();
-            Key.Properties.Add(FindOrDefineProperty<TKey>(property));
+            Key.Properties.Add(FindOrDefineProperty<TKey>(property, typeof(TKey)));
             TrySetKey(iql.PropertyName);
             return this;
         }
@@ -220,7 +228,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
                 var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
-                Key.Properties.Add(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType));
+                Key.Properties.Add(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType));
             }
             return this;
         }
@@ -274,15 +282,20 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
-            var propertyType = typeof(T).GetProperty(iql.PropertyName);
+            var propertyInfo = typeof(T).GetProperty(iql.PropertyName);
+            var propertyRuntimeType = propertyInfo.PropertyType;
             var propertyName = iql.PropertyName;
+#if TypeScript
+            propertyRuntimeType = typeof(TProperty);
+#endif
             var lambda = GetLambdaExpression<T>(propertyName);
-            InvokeDefineCollectionPropertyInternal<TProperty>(propertyType, lambda, countProperty);
+            InvokeDefineCollectionPropertyInternal<TProperty>(propertyRuntimeType, typeof(TProperty), lambda, countProperty);
             return this;
         }
 
         private void InvokeDefineCollectionPropertyInternal<TProperty>(
-            PropertyInfo property,
+            Type propertyRuntimeType,
+            Type elementType,
             LambdaExpression lambda,
             Expression<Func<T, long?>> countProperty = null)
         {
@@ -297,12 +310,22 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 propertyType = propertyType.GenericTypeArguments[0];
             }
 #endif
+            if (elementType != propertyType)
+            {
+                int a = 0;
+            }
             var method = GetType()
                     .GetRuntimeMethods()
                     .First(m => m.Name == nameof(DefineCollectionPropertyInternal))
-                    .MakeGenericMethod(property.PropertyType, propertyType)
+                    .MakeGenericMethod(propertyRuntimeType, propertyType)
                 ;
-            method.Invoke(this, new object[] {lambda, countProperty});
+            method.Invoke(this, new object[]
+            {
+                lambda, countProperty
+#if TypeScript
+                , propertyRuntimeType, elementType
+#endif
+            });
         }
 
         private static LambdaExpression GetLambdaExpression<TOwner>(string propertyName)

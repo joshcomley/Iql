@@ -11,14 +11,15 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             IRelationship relationship,
             RelationshipSide relationshipSide,
             EntityConfigurationBuilder configuration,
-            Expression<Func<T, TProperty>> expression)
+            Expression<Func<T, TProperty>> expression,
+            Type elementType)
         {
             Relationship = relationship;
             RelationshipSide = relationshipSide;
             Configuration = configuration.GetEntity<T>();
             //var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
             //    IqlPropertyExpression;
-            Property = Configuration.FindOrDefineProperty<TProperty>(expression);
+            Property = Configuration.FindOrDefineProperty<TProperty>(expression, elementType);
             switch (relationship.Type)
             {
                 case RelationshipType.ManyToMany:
