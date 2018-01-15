@@ -360,7 +360,9 @@ namespace Iql.Queryable.Data
                             break;
                     }
                 }
-            }, ChangeEntityMode.Silent);
+            }, 
+            ChangeEntityMode.Silent,
+            allowRefresh);
             // Here we need to fake the 
             //foreach (var relationship in DataContext.EntityConfigurationContext.GetEntityByType(entityType).AllRelationships())
             //{

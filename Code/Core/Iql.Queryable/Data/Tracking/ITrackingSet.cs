@@ -15,7 +15,7 @@ namespace Iql.Queryable.Data.Tracking
         void Unwatch(object entity);
         void SilentlyChangeEntity(object entity, Action action);
         void ChangeEntity(object entity, Action action, ChangeEntityMode silently);
-        Task ChangeEntityAsync(object entity, Func<Task> action, ChangeEntityMode silently);
+        Task ChangeEntityAsync(object entity, Func<Task> action, ChangeEntityMode silently, bool allowAsync = true);
         IEntityStateBase GetEntityState(object entity);
         IEnumerable<object> TrackedEntites();
         Type EntityType { get; }

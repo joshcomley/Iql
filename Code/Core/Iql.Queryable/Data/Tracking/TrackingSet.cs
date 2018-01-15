@@ -720,7 +720,7 @@ namespace Iql.Queryable.Data.Tracking
             ChangeEntity(entity, action, ChangeEntityMode.Silent);
         }
 
-        public async Task ChangeEntityAsync(T entity, Func<Task> action, ChangeEntityMode mode)
+        public async Task ChangeEntityAsync(T entity, Func<Task> action, ChangeEntityMode mode, bool allowAsync)
         {
             // Instead of unwatching, we can check if an entity is being
             // silently changed, in which case we reset the property state
@@ -728,7 +728,16 @@ namespace Iql.Queryable.Data.Tracking
             switch (mode)
             {
                 case ChangeEntityMode.Normal:
-                    await action();
+                    if (allowAsync)
+                    {
+                        await action();
+                    }
+                    else
+                    {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        action();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    }
                     break;
                 case ChangeEntityMode.Silent:
                     var hasSilent = _silentEntities.Contains(entity);
@@ -736,7 +745,16 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         _silentEntities.Add(entity);
                     }
-                    await action();
+                    if (allowAsync)
+                    {
+                        await action();
+                    }
+                    else
+                    {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        action();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    }
                     if (!hasSilent)
                     {
                         _silentEntities.Remove(entity);
@@ -748,7 +766,16 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         _preChangeCheckEntities.Add(entity);
                     }
-                    await action();
+                    if (allowAsync)
+                    {
+                        await action();
+                    }
+                    else
+                    {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        action();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    }
                     if (!hasPreCheck)
                     {
                         _preChangeCheckEntities.Remove(entity);
@@ -760,7 +787,16 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         _noKeyCheckEntities.Add(entity);
                     }
-                    await action();
+                    if (allowAsync)
+                    {
+                        await action();
+                    }
+                    else
+                    {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        action();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    }
                     if (!hasNoKeyCheck)
                     {
                         _noKeyCheckEntities.Remove(entity);
@@ -776,7 +812,7 @@ namespace Iql.Queryable.Data.Tracking
 #pragma warning restore 4014
             {
                 action();
-            }, mode);
+            }, mode, false);
         }
 
         void ITrackingSet.SilentlyChangeEntity(object entity, Action action)
@@ -788,9 +824,9 @@ namespace Iql.Queryable.Data.Tracking
         {
             ChangeEntity((T)entity, action, mode);
         }
-        async Task ITrackingSet.ChangeEntityAsync(object entity, Func<Task> action, ChangeEntityMode mode)
+        async Task ITrackingSet.ChangeEntityAsync(object entity, Func<Task> action, ChangeEntityMode mode, bool allowAsync)
         {
-            await ChangeEntityAsync((T)entity, action, mode);
+            await ChangeEntityAsync((T)entity, action, mode, allowAsync);
         }
 
         public bool IsTracked(object entity)
