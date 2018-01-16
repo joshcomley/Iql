@@ -14,15 +14,23 @@ namespace Iql.Queryable.Data.EntityConfiguration
             string convertedFromType,
             bool readOnly,
             IProperty countRelationship,
-            Expression<Func<TOwner, TValueType>> propertyGetterExpression) : base(
-                name, 
-                typeof(TProperty), 
-                isCollection, 
-                declaringType, 
-                convertedFromType, 
-                readOnly, 
-                countRelationship)
+            Expression<Func<TOwner, TValueType>> propertyGetterExpression)
         {
+            ConfigureProperty(name, isCollection, declaringType, convertedFromType, readOnly, countRelationship, propertyGetterExpression);
+        }
+
+        internal void ConfigureProperty(string name, bool isCollection, Type declaringType, string convertedFromType,
+            bool readOnly, IProperty countRelationship, Expression<Func<TOwner, TValueType>> propertyGetterExpression)
+        {
+            Configure(
+                name,
+                typeof(TProperty),
+                isCollection,
+                declaringType,
+                convertedFromType,
+                readOnly,
+                countRelationship);
+
             PropertyGetterExpressionTyped = propertyGetterExpression;
             PropertyGetterTyped = propertyGetterExpression.Compile();
             PropertyGetter = o => PropertyGetterTyped((TOwner) o);
@@ -31,12 +39,13 @@ namespace Iql.Queryable.Data.EntityConfiguration
             PropertySetterTyped = PropertySetterExpressionTyped.Compile();
             PropertySetter = (o, v) => PropertySetterTyped((TOwner) o, (TValueType) v);
         }
+
         public Expression<Func<TOwner, TValueType>> PropertyGetterExpressionTyped { get; set; }
         public Expression<Func<TOwner, TValueType, TValueType>> PropertySetterExpressionTyped { get; set; }
         public Func<TOwner, TValueType> PropertyGetterTyped { get; set; }
         public Func<TOwner, TValueType, TValueType> PropertySetterTyped { get; set; }
-        public override Func<object, object> PropertyGetter { get; }
-        public override Func<object, object, object> PropertySetter { get; }
+        public override Func<object, object> PropertyGetter { get; set; }
+        public override Func<object, object, object> PropertySetter { get; set; }
 
         private static Expression<Func<T, TAssignmentProperty, TAssignmentProperty>> GetAssignmentLambda<T, TAssignmentProperty>(string name)
         {

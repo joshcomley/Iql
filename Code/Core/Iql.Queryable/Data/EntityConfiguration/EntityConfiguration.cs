@@ -371,7 +371,19 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<T, TProperty, TValueType> ?? new Property<T, TProperty, TValueType>(name, isCollection, typeof(T), null, readOnly, countRelationship, property);
+            var definition = FindProperty(name) as Property<T, TProperty, TValueType>;
+            if (definition == null)
+            {
+                definition = new Property<T, TProperty, TValueType>(name, isCollection, typeof(T), null, readOnly,
+                    countRelationship, property);
+            }
+            else
+            {
+                definition.ConfigureProperty(name, isCollection, typeof(T), null, readOnly,
+                    countRelationship, property);
+                definition.Type = typeof(TProperty);
+                definition.ElementType = typeof(TValueType);
+            }
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);
