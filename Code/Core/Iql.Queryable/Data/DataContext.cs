@@ -215,9 +215,16 @@ namespace Iql.Queryable.Data
             AsDbSetByType(entityType).AddEntity(entity);
         }
 
-        public async Task<T> RefreshEntity<T>(T entity, Type entityType)
+        public async Task<T> RefreshEntity<T>(T entity
+#if TypeScript
+            , Type entityType
+#endif
+            )
             where T : class
         {
+#if !TypeScript
+            var entityType = typeof(T);
+#endif
             if (entityType == typeof(object))
             {
                 entityType = entity.GetType();
@@ -226,6 +233,26 @@ namespace Iql.Queryable.Data
             if (isEntityNew == null || isEntityNew == true)
             {
                 return null;
+            }
+            return await GetEntityByMockEntity(entity
+#if TypeScript
+, entityType
+#endif
+                );
+        }
+
+        public async Task<T> GetEntityByMockEntity<T>(T entity
+#if TypeScript
+            , Type entityType
+#endif
+            ) where T : class
+        {
+#if !TypeScript
+            var entityType = typeof(T);
+#endif
+            if (entityType == typeof(object))
+            {
+                entityType = entity.GetType();
             }
             var identityWhereOperation =
                 this.ResolveWithKeyOperationFromEntity(entity

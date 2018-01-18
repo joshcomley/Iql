@@ -7,6 +7,7 @@ namespace Iql
         String,
         Integer,
         Decimal,
-        Boolean
+        Boolean,
+        Date
     }
 }

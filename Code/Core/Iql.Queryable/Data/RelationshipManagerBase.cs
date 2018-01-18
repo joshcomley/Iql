@@ -334,7 +334,11 @@ namespace Iql.Queryable.Data
                                                 if (allowRefresh && !RefreshQueue.Contains(target))
                                                 {
                                                     RefreshQueue.Add(target);
-                                                    await dataContext.RefreshEntity(target, relationship.Relationship.Target.Type);
+                                                    await dataContext.RefreshEntity(target
+#if TypeScript
+, relationship.Relationship.Target.Type
+#endif
+                                                        );
                                                     RefreshQueue.Remove(target);
                                                     if (!dataContext.EntityPropertiesMatch(target, key))
                                                     {
@@ -360,7 +364,7 @@ namespace Iql.Queryable.Data
                             break;
                     }
                 }
-            }, 
+            },
             ChangeEntityMode.Silent,
             allowRefresh);
             // Here we need to fake the 

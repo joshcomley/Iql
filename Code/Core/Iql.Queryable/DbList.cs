@@ -2,18 +2,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Queryable.Data;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbList<T> : List<T> where T : class
+    public class DbList<T> : List<T>, IDbList where T : class
     {
-        public DbQueryable<T> SourceQueryable { get; set; }
-        public PagingInfo PagingInfo { get; set; }
-
         public DbList(IEnumerable<T> source = null)
         {
             this.Initialize(source);
+        }
+
+        public DbQueryable<T> SourceQueryable { get; set; }
+        public PagingInfo PagingInfo { get; set; }
+
+        PagingInfo IDbList.PagingInfo
+        {
+            get => PagingInfo;
+            set => PagingInfo = value;
+        }
+
+        IDbSet IDbList.SourceQueryable
+        {
+            get => SourceQueryable;
+            set => SourceQueryable = (DbQueryable<T>) value;
+        }
+
+        async Task IDbList.LoadNextPage()
+        {
+            await LoadNextPage();
+        }
+
+        async Task IDbList.LoadPreviousPage()
+        {
+            await LoadPreviousPage();
+        }
+
+        IDbSet IDbList.NewNextPageQuery()
+        {
+            return NewNextPageQuery();
+        }
+
+        IDbSet IDbList.NewPreviousPageQuery()
+        {
+            return NewPreviousPageQuery();
+        }
+
+        async Task<IDbList> IDbList.NextPage()
+        {
+            return await NextPage();
+        }
+
+        async Task<IDbList> IDbList.Page(int page, int pageSize)
+        {
+            return await Page(page, pageSize);
+        }
+
+        async Task<IDbList> IDbList.PreviousPage()
+        {
+            return await PreviousPage();
         }
 
 

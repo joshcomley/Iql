@@ -328,7 +328,11 @@ namespace Iql.Queryable.Data.DataStores
                         }, ChangeEntityMode.NoKeyChecks);
                         trackingSet.GetEntityState(localEntity).IsNew = false;
                     }
-                    await DataContext.RefreshEntity(localEntity, typeof(TEntity));
+                    await DataContext.RefreshEntity(localEntity
+#if TypeScript
+                        , typeof(TEntity)
+#endif
+                        );
                     GetTracking().Merge(addEntityOperation.Operation.Entity, typeof(TEntity), false);
                     break;
                 case OperationType.Update:
@@ -347,7 +351,11 @@ namespace Iql.Queryable.Data.DataStores
                         result = await PerformUpdate(updateEntityOperation);
                         var operationEntity = updateEntityOperation.Operation
                             .Entity;
-                        await DataContext.RefreshEntity(operationEntity, typeof(TEntity));
+                        await DataContext.RefreshEntity(operationEntity
+#if TypeScript
+                        , typeof(TEntity)
+#endif
+                            );
                         GetTracking().GetSet<TEntity>().Track(operationEntity, false);
                     }
                     break;

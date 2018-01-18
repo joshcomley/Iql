@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Iql.Queryable;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,7 +36,11 @@ namespace Iql.Tests.Tests
             // Modify DB
             AppDbContext.InMemoryDb.Clients.Single(c => c.Id == 7).TypeId = clientType2.Id;
 
-            await Db.RefreshEntity(client, typeof(Client));
+            await Db.RefreshEntity(client
+#if TypeScript
+                , typeof(Client)
+#endif
+                );
 
             Assert.AreEqual(clientType2.Id, client.TypeId);
             Assert.AreEqual(1, clientType1.Clients.Count);

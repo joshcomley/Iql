@@ -362,8 +362,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        private Property<T, TProperty, TValueType> MapProperty<TProperty, TValueType>(
-            Expression<Func<T, TValueType>> property,
+        private Property<T, TPropertyType, TElementType> MapProperty<TElementType, TPropertyType>(
+            Expression<Func<T, TPropertyType>> property,
             bool isCollection,
             bool readOnly,
             IProperty countRelationship)
@@ -371,18 +371,30 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var iql =
                 IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<T, TProperty, TValueType>;
+            var definition = FindProperty(name) as Property<T, TPropertyType, TElementType>;
             if (definition == null)
             {
-                definition = new Property<T, TProperty, TValueType>(name, isCollection, typeof(T), null, readOnly,
-                    countRelationship, property);
+                definition = new Property<T, TPropertyType, TElementType>(
+                    name, 
+                    isCollection, 
+                    typeof(T), 
+                    null, 
+                    readOnly,
+                    countRelationship, 
+                    property);
             }
             else
             {
-                definition.ConfigureProperty(name, isCollection, typeof(T), null, readOnly,
-                    countRelationship, property);
-                definition.Type = typeof(TProperty);
-                definition.ElementType = typeof(TValueType);
+                definition.ConfigureProperty(
+                    name, 
+                    isCollection, 
+                    typeof(T),
+                    typeof(TPropertyType),
+                    typeof(TElementType), 
+                    null,
+                    readOnly,
+                    countRelationship, 
+                    property);
             }
             if (!Properties.Contains(definition))
             {

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Iql.Queryable.Data.EntityConfiguration
 {
     [DebuggerDisplay("{Name} - {Kind}")]
-    public class Property<TOwner, TProperty, TValueType> : PropertyBase
+    public class Property<TOwner, TProperty, TElementType> : PropertyBase
     {
         public Property(
             string name, 
@@ -14,20 +14,38 @@ namespace Iql.Queryable.Data.EntityConfiguration
             string convertedFromType,
             bool readOnly,
             IProperty countRelationship,
-            Expression<Func<TOwner, TValueType>> propertyGetterExpression)
+            Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
-            ConfigureProperty(name, isCollection, declaringType, convertedFromType, readOnly, countRelationship, propertyGetterExpression);
+            ConfigureProperty(
+                name, 
+                isCollection, 
+                declaringType, 
+                typeof(TProperty),
+                typeof(TElementType),
+                convertedFromType, 
+                readOnly, 
+                countRelationship, 
+                propertyGetterExpression);
         }
 
-        internal void ConfigureProperty(string name, bool isCollection, Type declaringType, string convertedFromType,
-            bool readOnly, IProperty countRelationship, Expression<Func<TOwner, TValueType>> propertyGetterExpression)
+        internal void ConfigureProperty(
+            string name, 
+            bool isCollection, 
+            Type declaringType,
+            Type propertyType,
+            Type valueType,
+            string convertedFromType,
+            bool readOnly, 
+            IProperty countRelationship, 
+            Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
             Configure(
                 name,
-                typeof(TProperty),
-                isCollection,
                 declaringType,
+                propertyType,
+                valueType,
                 convertedFromType,
+                isCollection,
                 readOnly,
                 countRelationship);
 
@@ -35,15 +53,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
             PropertyGetterTyped = propertyGetterExpression.Compile();
             PropertyGetter = o => PropertyGetterTyped((TOwner) o);
 
-            PropertySetterExpressionTyped = GetAssignmentLambda<TOwner, TValueType>(name);
+            PropertySetterExpressionTyped = GetAssignmentLambda<TOwner, TProperty>(name);
             PropertySetterTyped = PropertySetterExpressionTyped.Compile();
-            PropertySetter = (o, v) => PropertySetterTyped((TOwner) o, (TValueType) v);
+            PropertySetter = (o, v) => PropertySetterTyped((TOwner) o, (TProperty) v);
         }
 
-        public Expression<Func<TOwner, TValueType>> PropertyGetterExpressionTyped { get; set; }
-        public Expression<Func<TOwner, TValueType, TValueType>> PropertySetterExpressionTyped { get; set; }
-        public Func<TOwner, TValueType> PropertyGetterTyped { get; set; }
-        public Func<TOwner, TValueType, TValueType> PropertySetterTyped { get; set; }
+        public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
+        public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }
+        public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
+        public Func<TOwner, TProperty, TProperty> PropertySetterTyped { get; set; }
         public override Func<object, object> PropertyGetter { get; set; }
         public override Func<object, object, object> PropertySetter { get; set; }
 

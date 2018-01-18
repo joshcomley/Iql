@@ -18,7 +18,8 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>> where T : class
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbQueryable
+        where T : class
     {
         private ITrackingSet _trackingSet;
         public bool TrackEntities { get; set; } = true;
@@ -42,6 +43,14 @@ namespace Iql.Queryable
         public TrackingSetCollection TrackingSetCollection { get; }
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder Configuration { get; set; }
+
+        TrackingSetCollection IDbQueryable.TrackingSetCollection => throw new NotImplementedException();
+
+        Func<IDataStore> IDbQueryable.DataStoreGetter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        IDataContext IDbQueryable.DataContext { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        EntityConfigurationBuilder IDbQueryable.Configuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        ITrackingSet IDbQueryable.TrackingSet { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        bool IDbQueryable.TrackEntities { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public async Task<T> Single(Expression<Func<T, bool>> expression = null
 #if TypeScript
@@ -751,5 +760,71 @@ namespace Iql.Queryable
                 DataContext);
             return dbQueryable;
         }
+
+        IDbQueryable IDbQueryable.SetTracking(bool enabled)
+        {
+            SetTracking(enabled);
+            return this;
+        }
+
+        IDbQueryable IDbQueryable.IncludeCount()
+        {
+            return IncludeCount();
+        }
+
+        IDbQueryable IDbQueryable.ExpandAll()
+        {
+            return ExpandAll();
+        }
+
+        IDbQueryable IDbQueryable.ExpandRelationship(string name)
+        {
+            return ExpandRelationship(name);
+        }
+
+        IDbQueryable IDbQueryable.ExpandAllSingleRelationships()
+        {
+            return ExpandAllSingleRelationships();
+        }
+
+        IDbQueryable IDbQueryable.ExpandAllCollectionCounts()
+        {
+            return ExpandAllCollectionCounts();
+        }
+
+        IDbQueryable IDbQueryable.ExpandCollectionCountRelationship(string name)
+        {
+            return ExpandCollectionCountRelationship(name);
+        }
+
+        //IDbQueryable IDbQueryable.Copy()
+        //{
+        //    return Copy();
+        //}
+
+        //IDbQueryable IDbQueryable.New()
+        //{
+        //    return New();
+        //}
+
+        //IDbQueryable IDbQueryable.Skip(int skip)
+        //{
+        //    return Skip(skip);
+        //}
+
+        //IDbQueryable IDbQueryable.Take(int take)
+        //{
+        //    return Take(take);
+        //}
+
+        //IDbQueryable IDbQueryable.Reverse()
+        //{
+        //    return Reverse();
+        //}
+
+        //IDbQueryable IDbQueryable.Then(IQueryOperation queryOperation)
+        //{
+        //    return Then(queryOperation);
+        //}
     }
 }

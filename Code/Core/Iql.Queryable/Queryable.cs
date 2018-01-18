@@ -195,7 +195,22 @@ namespace Iql.Queryable
         {
             return Copy();
         }
-
+        IQueryableBase IQueryableBase.Skip(int skip)
+        {
+            return Skip(skip);
+        }
+        IQueryableBase IQueryableBase.Take(int take)
+        {
+            return Take(take);
+        }
+        IQueryableBase IQueryableBase.Reverse()
+        {
+            return Reverse();
+        }
+        IQueryableBase IQueryableBase.Then(IQueryOperation operation)
+        {
+            return Then(operation);
+        }
         public virtual IqlPropertyExpression PropertyExpression(string propertyName)
         {
             //var property = this.Configuration.GetEntityByType(typeof(T)).Properties.Single(p => p.Name == propertyName);
@@ -203,6 +218,58 @@ namespace Iql.Queryable
             var propertyExpression = new IqlPropertyExpression(propertyName, typeof(T).Name, IqlType.Unknown);
             propertyExpression.Parent = rootReferenceExpression;
             return propertyExpression;
+        }
+
+        IQueryableBase IQueryableBase.WherePropertyEquals(string propertyName, object value
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return WherePropertyEquals(propertyName, value
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+        }
+
+        IQueryableBase IQueryableBase.WhereEquals(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return WhereEquals(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+        }
+
+        IQueryableBase IQueryableBase.WhereQuery(QueryExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return WhereQuery(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+        }
+
+        IQueryableBase IQueryableBase.OrderByProperty(string propetyName, bool descending = false
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return OrderByProperty(propetyName, descending
+#if TypeScript
+                , evaluateContext
+#endif
+            );
         }
     }
 }

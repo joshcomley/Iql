@@ -21,23 +21,21 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public abstract Func<object, object, object> PropertySetter { get; set; }
 
         internal void Configure(
-            string name, 
-            Type elementType, 
+            string name,
+            Type declaringType,
+            Type propertyType,
+            Type elementType,
+            string convertedFromType,
             bool isCollection,
-            Type declaringType, 
-            string convertedFromType, 
             bool readOnly, 
             IProperty countRelationship
             )
         {
             Name = name;
-            ElementType = elementType;
-            if (TypeExtensions.IsEnumerableType(elementType))
-            {
-                var a = 0;
-            }
-            IsCollection = isCollection;
             DeclaringType = declaringType;
+            ElementType = elementType;
+            Type = propertyType;
+            IsCollection = isCollection;
             ConvertedFromType = convertedFromType;
             ReadOnly = readOnly;
             CountRelationship = countRelationship;

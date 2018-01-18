@@ -48,9 +48,22 @@ namespace Iql.Queryable.Data
             , Type entityType
 #endif
         );
-        Task<T> RefreshEntity<T>(T entity, Type entityType)
+        Task<T> RefreshEntity<T>(T entity
+#if TypeScript
+            , Type entityType
+#endif
+            )
             where T : class
-            ;
+        ;
+
+        Task<T> GetEntityByMockEntity<T>(
+            T entity
+#if TypeScript
+            , Type entityType
+#endif
+            )
+            where T : class
+        ;
 
         T EnsureTypedEntity<T>(object entity) where T : class;
         object EnsureTypedEntityByType(object entity, Type type);
