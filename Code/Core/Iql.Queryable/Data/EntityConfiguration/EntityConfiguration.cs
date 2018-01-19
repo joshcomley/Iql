@@ -310,10 +310,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 propertyType = propertyType.GenericTypeArguments[0];
             }
 #endif
-            if (elementType != propertyType)
-            {
-                int a = 0;
-            }
             var method = GetType()
                     .GetRuntimeMethods()
                     .First(m => m.Name == nameof(DefineCollectionPropertyInternal))
@@ -326,13 +322,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 , propertyRuntimeType, elementType
 #endif
             });
-        }
-
-        private static LambdaExpression GetLambdaExpression<TOwner>(string propertyName)
-        {
-            var param = Expression.Parameter(typeof(TOwner), "o");
-            var lambda = Expression.Lambda(Expression.Property(param, propertyName), param);
-            return lambda;
         }
 
         private EntityConfiguration<T> DefineCollectionPropertyInternal<TValueType, TElementType>(
@@ -350,16 +339,27 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 {
                     var countDefinition = MapProperty<long?, long?>(countProperty, false, true, collection);
                     countDefinition.Kind = PropertyKind.Count;
+                    countDefinition.Nullable = true;
                 }
                 else
                 {
                     var lambda = (Expression<Func<T, long>>)GetLambdaExpression<T>(countPropertyIql.PropertyName);
                     var countDefinition = MapProperty<long, long>(lambda, false, true, collection);
                     countDefinition.Kind = PropertyKind.Count;
+#if TypeScript
+                    countDefinition.Nullable = true;
+#endif
                 }
             }
             TryAssignRelationshipToPropertyDefinition(collection);
             return this;
+        }
+
+        private static LambdaExpression GetLambdaExpression<TOwner>(string propertyName)
+        {
+            var param = Expression.Parameter(typeof(TOwner), "o");
+            var lambda = Expression.Lambda(Expression.Property(param, propertyName), param);
+            return lambda;
         }
 
         private Property<T, TPropertyType, TElementType> MapProperty<TElementType, TPropertyType>(

@@ -290,7 +290,8 @@ namespace Iql.Queryable.Data
                 foreach (var property in entityConfiguration.Properties)
                 {
                     //var instanceValue = typedEntity.GetPropertyValue(property.Name);
-                    var remoteValue = entity.GetPropertyValue(property);
+                    var remoteValue = EnsureTypedValue(entity.GetPropertyValue(property), property);
+
                     if (remoteValue != null)
                     {
                         typedEntity.SetPropertyValue(property, remoteValue);
@@ -346,6 +347,35 @@ namespace Iql.Queryable.Data
                 entity = typedEntity;
             }
             return entity;
+        }
+
+        private static object EnsureTypedValue(object value, IProperty property)
+        {
+            if (property.Nullable && Equals(value, null))
+            {
+                return null;
+            }
+            if (property.Type == typeof(String) && !(value is String))
+            {
+                return value.ToString();
+            }
+            if (property.Type == typeof(Int32) && !(value is Int32) && !(value is Double))
+            {
+                return Convert.ToDouble(value.ToString());
+            }
+            if (property.Type == typeof(DateTime) && !(value is DateTime))
+            {
+                if (value is Int64)
+                {
+                    return new DateTime((long)value);
+                }
+                return DateTime.Parse(value.ToString());
+            }
+            if (property.Type == typeof(Boolean) && !(value is Boolean))
+            {
+                return Boolean.Parse(value.ToString());
+            }
+            return value;
         }
 
         public IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false)
