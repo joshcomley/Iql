@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Context
 {

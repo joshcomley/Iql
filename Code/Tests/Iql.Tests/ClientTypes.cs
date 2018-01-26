@@ -1,3 +1,5 @@
+using Tunnel.App.Data.Entities;
+
 namespace Iql.Tests
 {
     public class ClientTypes

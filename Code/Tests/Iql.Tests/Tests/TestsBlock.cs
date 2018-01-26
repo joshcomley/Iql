@@ -1,4 +1,5 @@
 ﻿using Iql.Tests.Context;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests
 {

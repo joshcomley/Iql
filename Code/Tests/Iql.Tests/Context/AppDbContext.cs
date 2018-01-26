@@ -10,6 +10,8 @@ using Iql.DotNet;
 #endif
 using Iql.Queryable.Data.DataStores.InMemory;
 using Iql.Queryable.Data.EntityConfiguration;
+using Tunnel.ApiContext.Base;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Context
 {
@@ -17,11 +19,6 @@ namespace Iql.Tests.Context
     {
         static AppDbContext()
         {
-#if TypeScript
-            IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
-#else
-            IqlQueryableAdapter.ExpressionConverter = () => new ExpressionToIqlConverter();
-#endif
             InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();
             var inMemoryDb = new InMemoryDataBase();
             InMemoryDb = inMemoryDb;

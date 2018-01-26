@@ -12,6 +12,7 @@ using Iql.Queryable.Exceptions;
 using Iql.Queryable.Operations;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests
 {

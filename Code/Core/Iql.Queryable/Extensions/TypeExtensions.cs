@@ -18,7 +18,20 @@ namespace Iql.Queryable.Extensions
 
         public static object DefaultValue(this Type type)
         {
+#if TypeScript
             return Activator.CreateInstance(type);
+#else
+            return typeof(TypeExtensions).GetMethod(nameof(GetDefaultValue))
+                .MakeGenericMethod(type)
+                .Invoke(null, null);
+#endif
         }
+
+#if !TypeScript
+        public static object GetDefaultValue<T>()
+        {
+            return default(T);
+        }
+#endif
     }
 }

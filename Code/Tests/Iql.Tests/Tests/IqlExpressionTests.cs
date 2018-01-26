@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests {
     [TestClass]

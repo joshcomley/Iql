@@ -343,12 +343,25 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 }
                 else
                 {
-                    var lambda = (Expression<Func<T, long>>)GetLambdaExpression<T>(countPropertyIql.PropertyName);
-                    var countDefinition = MapProperty<long, long>(lambda, false, true, collection);
-                    countDefinition.Kind = PropertyKind.Count;
+                    var lambdaExpression = GetLambdaExpression<T>(countPropertyIql.PropertyName);
+                    if (countPropertyDefinition.PropertyType == typeof(Int32))
+                    {
+                        var lambda = (Expression<Func<T, int>>) lambdaExpression;
+                        var countDefinition = MapProperty<int, int>(lambda, false, true, collection);
+                        countDefinition.Kind = PropertyKind.Count;
 #if TypeScript
-                    countDefinition.Nullable = true;
+                        countDefinition.Nullable = true;
 #endif
+                    }
+                    else
+                    {
+                        var lambda = (Expression<Func<T, long>>)lambdaExpression;
+                        var countDefinition = MapProperty<long, long>(lambda, false, true, collection);
+                        countDefinition.Kind = PropertyKind.Count;
+#if TypeScript
+                        countDefinition.Nullable = true;
+#endif
+                    }
                 }
             }
             TryAssignRelationshipToPropertyDefinition(collection);

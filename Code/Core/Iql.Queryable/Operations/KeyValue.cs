@@ -1,4 +1,5 @@
 using System;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Operations
 {
@@ -16,7 +17,16 @@ namespace Iql.Queryable.Operations
 
         public bool IsDefaultValue()
         {
-            return Equals(Value, null) || Equals(Value, Activator.CreateInstance(ValueType ?? Value.GetType()));
+            var type = ValueType ?? Value?.GetType();
+#if !TypeScript
+            if (type == null)
+            {
+                return Equals(Value, null);
+            }
+            return Equals(Value, type.DefaultValue());
+#else
+            return Equals(Value, null) || Equals(Value, Activator.CreateInstance(type));
+#endif
         }
     }
 }

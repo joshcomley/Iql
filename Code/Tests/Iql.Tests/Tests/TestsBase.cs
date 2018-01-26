@@ -1,4 +1,6 @@
 ﻿using System;
+using Iql.DotNet;
+using Iql.Queryable;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -6,6 +8,14 @@ namespace Iql.Tests.Tests
 {
     public class TestsBase
     {
+        static TestsBase()
+        {
+#if TypeScript
+            IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
+#else
+            IqlQueryableAdapter.ExpressionConverter = () => new ExpressionToIqlConverter();
+#endif
+        }
         protected static AppDbContext Db => TestsBlock.Db;
 
         [ClassInitialize]
