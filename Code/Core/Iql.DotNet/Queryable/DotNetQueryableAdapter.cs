@@ -16,6 +16,7 @@ namespace Iql.DotNet.Queryable
             RegisterApplicator(() => new WithKeyOperationApplicatorDotNet());
             RegisterApplicator(() => new IncludeCountOperationApplicatorDotNet());
             RegisterApplicator(() => new WhereOperationApplicatorDotNet());
+            RegisterApplicator(() => new TakeOperationApplicatorDotNet());
             //this.RegisterApplicator(() => new ReverseOperationApplicatorJavaScript());
             //this.RegisterApplicator(() => new WhereOperationApplicatorJavaScript());
             RegisterApplicator(() => new ExpandOperationApplicatorDotNet());

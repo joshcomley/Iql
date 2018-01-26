@@ -21,7 +21,7 @@ namespace Iql.Tests.Tests
             var examCandidateResults =
                 await db
                 .ExamCandidateResults
-                .Take(10)
+                .Take(20)
                 .Expand(e => e.Client)
                 .Expand(e => e.Candidate)
                 .Expand(e => e.CreatedByUser)
