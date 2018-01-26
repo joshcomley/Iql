@@ -12,7 +12,10 @@ namespace Iql.Queryable
         where TTarget : class
     {
         //private readonly IList<RelatedListChange<TSource, T>> _changes = new List<RelatedListChange<TSource, T>>();
-
+        public RelatedList()
+        {
+            
+        }
         public RelatedList(TSource owner, string property, IEnumerable<TTarget> source = null)
         {
             Owner = owner;
