@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -47,10 +48,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public List<FlattenedEntity> FlattenObjectGraphs(Type entityType, params object[] entities)
         {
+            var dictionary = new Dictionary<Type, Dictionary<string, FlattenedEntity>>();
             var flattened = new List<FlattenedEntity>();
             foreach (var entity in entities)
             {
-                flattened.AddRange(FlattenObjectGraph(entity, entityType));
+                flattened.AddRange(FlattenObjectGraph(entity, entityType, dictionary));
             }
             return flattened.Distinct().ToList();
         }
@@ -63,20 +65,60 @@ namespace Iql.Queryable.Data.EntityConfiguration
         /// <returns></returns>
         public List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType)
         {
-            return FlattenObjectGraphInternal(entity, entityType, new List<FlattenedEntity>());
+            return FlattenObjectGraph(entity, entityType, new Dictionary<Type, Dictionary<string, FlattenedEntity>>());
         }
 
-        private List<FlattenedEntity> FlattenObjectGraphInternal(object objectGraphRoot, Type entityType, List<FlattenedEntity> objects)
+        private List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType, Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
         {
+            var result = FlattenObjectGraphInternal(
+                entity,
+                entityType,
+                dictionary);
+            var list = new List<FlattenedEntity>();
+            foreach (var typeGroup in result)
+            {
+                foreach (var entry in typeGroup.Value)
+                {
+                    list.Add(entry.Value);
+                }
+            }
+
+            return list;
+        }
+
+        private Dictionary<Type, Dictionary<string, FlattenedEntity>> FlattenObjectGraphInternal(
+            object objectGraphRoot, 
+            Type entityType, 
+            Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
+        {
+            if (!dictionary.ContainsKey(entityType))
+            {
+                dictionary.Add(entityType, new Dictionary<string, FlattenedEntity>());
+            }
+
+            var typeGroup = dictionary[entityType];
+            var objects = typeGroup.Values;
             if (objects.Any(o => o.Entity == objectGraphRoot))
             {
                 // Prevent infinite recursion
-                return objects;
+                return dictionary;
             }
             var flattenedEntity = new FlattenedEntity(objectGraphRoot, entityType);
-            objects.Add(flattenedEntity);
-            var graphEntityConfiguration =
-                GetEntityByType(entityType);
+            var graphEntityConfiguration = GetEntityByType(entityType);
+            var compositeKey = graphEntityConfiguration.GetCompositeKey(objectGraphRoot);
+            var keyString = compositeKey.AsKeyString();
+            if (compositeKey.HasDefaultValue())
+            {
+                keyString += Guid.NewGuid().ToString();
+            }
+
+            if (typeGroup.ContainsKey(keyString))
+            {
+                return dictionary;
+            }
+            typeGroup.Add(
+                keyString,
+                flattenedEntity);
             foreach (var relationship in graphEntityConfiguration.Relationships)
             {
                 var isSource = relationship.Source.Configuration == graphEntityConfiguration;
@@ -95,16 +137,16 @@ namespace Iql.Queryable.Data.EntityConfiguration
                         var list = (IList)relationshipValue;
                         foreach (var item in list)
                         {
-                            FlattenObjectGraphInternal(item, childType, objects);
+                            FlattenObjectGraphInternal(item, childType, dictionary);
                         }
                     }
                     else
                     {
-                        FlattenObjectGraphInternal(relationshipValue, childType, objects);
+                        FlattenObjectGraphInternal(relationshipValue, childType, dictionary);
                     }
                 }
             }
-            return objects;
+            return dictionary;
         }
     }
 }
