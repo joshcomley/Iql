@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Hazception.ApiContext.Base;
+#if TypeScript
+using Iql.JavaScript.QueryToJavaScript;
+using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
+#else
 using Iql.DotNet.Queryable;
+using Iql.DotNet;
+using System.Net.Http;
+#endif
 using Iql.OData.Data;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.DataStores.InMemory;
@@ -28,16 +34,19 @@ namespace Iql.Tests.Context
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamCandidates);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamCandidateResults);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamResults);
-            var inMemoryDb = new MyClass().GetData();
+            var inMemoryDb = new HazceptionDataStore().GetData();
             InMemoryDb = inMemoryDb;
         }
 
         public static HazceptionInMemoryDataBase InMemoryDb { get; set; }
 
-        public HazceptionDataContext() : base(
-            new InMemoryDataStore(new DotNetQueryableAdapter())
-            //new ODataDataStore()
-            )
+        public HazceptionDataContext() :
+#if TypeScript
+            base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
+#else
+            //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
+            base(new InMemoryDataStore(new DotNetQueryableAdapter()))
+#endif
         {
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
@@ -49,8 +58,12 @@ namespace Iql.Tests.Context
     {
         public async Task<IHttpResult> Get(string uri, IHttpRequest payload = null)
         {
-            var result= await new HttpClient().GetAsync(uri);
+#if TypeScript
+            throw new NotImplementedException();
+#else
+            var result = await new HttpClient().GetAsync(uri);
             return new HttpResult(await result.Content.ReadAsStringAsync(), result.IsSuccessStatusCode);
+#endif
         }
 
         public Task<IHttpResult> Post(string uri, IHttpRequest payload = null)

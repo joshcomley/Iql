@@ -5,9 +5,9 @@ namespace Iql.Tests.Context
 {
     public class HazceptionInMemoryDataBase
     {
-        public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
-        public IList<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
-        public IList<Client> Clients { get; set; } = new List<Client>();
+        public IList<HazClientType> ClientTypes { get; set; } = new List<HazClientType>();
+        public IList<HazApplicationUser> Users { get; set; } = new List<HazApplicationUser>();
+        public IList<HazClient> Clients { get; set; } = new List<HazClient>();
         public IList<Video> Videos { get; set; } = new List<Video>();
         public IList<Exam> Exams { get; set; } = new List<Exam>();
         public IList<ExamManager> ExamManagers { get; set; } = new List<ExamManager>();

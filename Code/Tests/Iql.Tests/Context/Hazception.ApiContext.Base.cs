@@ -12,9 +12,9 @@ namespace Hazception.ApiContext.Base
 	{
 		public HazceptionDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
-			this.ClientTypes = (DbSet<ClientType,int>)this.AsDbSet<ClientType, int>();
-			this.Users = (DbSet<ApplicationUser,string>)this.AsDbSet<ApplicationUser, string>();
-			this.Clients = (DbSet<Client,int>)this.AsDbSet<Client, int>();
+			this.ClientTypes = (DbSet<HazClientType,int>)this.AsDbSet<HazClientType, int>();
+			this.Users = (DbSet<HazApplicationUser,string>)this.AsDbSet<HazApplicationUser, string>();
+			this.Clients = (DbSet<HazClient,int>)this.AsDbSet<HazClient, int>();
 			this.Videos = (DbSet<Video,int>)this.AsDbSet<Video, int>();
 			this.Exams = (DbSet<Exam,int>)this.AsDbSet<Exam, int>();
 			this.ExamManagers = (DbSet<ExamManager,int>)this.AsDbSet<ExamManager, int>();
@@ -23,9 +23,9 @@ namespace Hazception.ApiContext.Base
 			this.ExamCandidates = (DbSet<ExamCandidate,int>)this.AsDbSet<ExamCandidate, int>();
 			this.Hazards = (DbSet<Hazard,int>)this.AsDbSet<Hazard, int>();
 			this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
-			this.ODataConfiguration.RegisterEntitySet<ClientType>(nameof(ClientTypes));
-			this.ODataConfiguration.RegisterEntitySet<ApplicationUser>(nameof(Users));
-			this.ODataConfiguration.RegisterEntitySet<Client>(nameof(Clients));
+			this.ODataConfiguration.RegisterEntitySet<HazClientType>(nameof(ClientTypes));
+			this.ODataConfiguration.RegisterEntitySet<HazApplicationUser>(nameof(Users));
+			this.ODataConfiguration.RegisterEntitySet<HazClient>(nameof(Clients));
 			this.ODataConfiguration.RegisterEntitySet<Video>(nameof(Videos));
 			this.ODataConfiguration.RegisterEntitySet<Exam>(nameof(Exams));
 			this.ODataConfiguration.RegisterEntitySet<ExamManager>(nameof(ExamManagers));
@@ -39,13 +39,13 @@ namespace Hazception.ApiContext.Base
 		
 		public override void Configure(EntityConfigurationBuilder builder)
 		{
-			builder.EntityType<ClientType>()
+			builder.EntityType<HazClientType>()
 				.HasKey(p => p.Id)
 				.DefineProperty(p => p.Id, false)
 				.DefineProperty(p => p.Name, true)
 				.DefineCollectionProperty(p => p.Client, p => p.ClientCount);
 			
-			builder.EntityType<ApplicationUser>()
+			builder.EntityType<HazApplicationUser>()
 				.HasKey(p => p.Id)
 				.DefineProperty(p => p.Id, false)
 				.DefineConvertedProperty(p => p.ClientGuid, "Guid", true)
@@ -83,17 +83,17 @@ namespace Hazception.ApiContext.Base
 				.DefineCollectionProperty(p => p.ExamCandidatesCreated, p => p.ExamCandidatesCreatedCount)
 				.DefineCollectionProperty(p => p.HazardsCreated, p => p.HazardsCreatedCount);
 			
-			builder.EntityType<ApplicationUser>()
+			builder.EntityType<HazApplicationUser>()
 				.HasOne(p => p.Client)
 				.WithMany(p => p.Users)
 				.WithConstraint(p => p.ClientId, p => p.Id);
 			
-			builder.EntityType<ApplicationUser>()
+			builder.EntityType<HazApplicationUser>()
 				.HasOne(p => p.CreatedByUser)
 				.WithMany(p => p.UsersCreated)
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
-			builder.EntityType<Client>()
+			builder.EntityType<HazClient>()
 				.HasKey(p => p.Id)
 				.DefineProperty(p => p.TypeId, false)
 				.DefineProperty(p => p.Id, false)
@@ -115,12 +115,12 @@ namespace Hazception.ApiContext.Base
 				.DefineCollectionProperty(p => p.ExamCandidates, p => p.ExamCandidatesCount)
 				.DefineCollectionProperty(p => p.Hazards, p => p.HazardsCount);
 			
-			builder.EntityType<Client>()
+			builder.EntityType<HazClient>()
 				.HasOne(p => p.Type)
 				.WithMany(p => p.Client)
 				.WithConstraint(p => p.TypeId, p => p.Id);
 			
-			builder.EntityType<Client>()
+			builder.EntityType<HazClient>()
 				.HasOne(p => p.CreatedByUser)
 				.WithMany(p => p.ClientsCreated)
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -464,11 +464,11 @@ namespace Hazception.ApiContext.Base
 		}
 		
 		
-		public DbSet<ClientType, int> ClientTypes { get; set; }
+		public DbSet<HazClientType, int> ClientTypes { get; set; }
 		
-		public DbSet<ApplicationUser, string> Users { get; set; }
+		public DbSet<HazApplicationUser, string> Users { get; set; }
 		
-		public DbSet<Client, int> Clients { get; set; }
+		public DbSet<HazClient, int> Clients { get; set; }
 		
 		public DbSet<Video, int> Videos { get; set; }
 		

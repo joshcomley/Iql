@@ -1,5 +1,9 @@
 ﻿using System;
+#if TypeScript
+using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
+#else
 using Iql.DotNet;
+#endif
 using Iql.Queryable;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

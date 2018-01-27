@@ -204,7 +204,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public class ClientBase : IEntity
+	public class HazClientBase : IEntity
 	{
 		
 		public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
@@ -232,7 +232,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public class ApplicationUserBase : IEntity
+	public class HazApplicationUserBase : IEntity
 	{
 		
 		public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
@@ -260,7 +260,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public class ClientTypeBase : IEntity
+	public class HazClientTypeBase : IEntity
 	{
 		
 		public EventEmitter<IPropertyChangeEvent> PropertyChanged { get; set; } = new EventEmitter<IPropertyChangeEvent>();
@@ -308,7 +308,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public enum UserType
+	public enum HazUserType
 	{
 		Super = 1,
 		Client = 2,
@@ -612,8 +612,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -625,8 +625,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -885,8 +885,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _candidate;
-		public ApplicationUser Candidate
+		private HazApplicationUser _candidate;
+		public HazApplicationUser Candidate
 		{
 			get => _candidate;
 			set
@@ -898,8 +898,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -911,8 +911,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -1230,8 +1230,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -1256,8 +1256,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _candidate;
-		public ApplicationUser Candidate
+		private HazApplicationUser _candidate;
+		public HazApplicationUser Candidate
 		{
 			get => _candidate;
 			set
@@ -1269,8 +1269,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -1555,8 +1555,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -1568,8 +1568,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _candidate;
-		public ApplicationUser Candidate
+		private HazApplicationUser _candidate;
+		public HazApplicationUser Candidate
 		{
 			get => _candidate;
 			set
@@ -1620,8 +1620,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -1789,8 +1789,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -1802,8 +1802,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -1815,8 +1815,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _manager;
-		public ApplicationUser Manager
+		private HazApplicationUser _manager;
+		public HazApplicationUser Manager
 		{
 			get => _manager;
 			set
@@ -2153,8 +2153,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -2166,8 +2166,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -2516,8 +2516,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
@@ -2529,8 +2529,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
@@ -2643,7 +2643,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public class Client : ClientBase, IEntity
+	public class HazClient : HazClientBase, IEntity
 	{
 		private int _typeId;
 		public int TypeId
@@ -2652,9 +2652,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._typeId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(TypeId), this, oldValue, value));
 				_typeId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(TypeId), this, oldValue, value));
 			}
 		}
 
@@ -2665,9 +2665,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2678,9 +2678,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2691,9 +2691,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -2704,9 +2704,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -2717,9 +2717,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2730,9 +2730,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2743,9 +2743,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2756,187 +2756,187 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 UsersCount { get; set; }
-		private RelatedList<Client,ApplicationUser> _users;
-		public RelatedList<Client,ApplicationUser> Users
+		private RelatedList<HazClient,HazApplicationUser> _users;
+		public RelatedList<HazClient,HazApplicationUser> Users
 		{
 			get
 			{
-				this._users = this._users ?? new RelatedList<Client,ApplicationUser>(this, nameof(Users));
+				this._users = this._users ?? new RelatedList<HazClient,HazApplicationUser>(this, nameof(Users));
 				return _users;
 			}
 			set
 			{
 				var oldValue = this._users;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Users), this, oldValue, value));
 				_users = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Users), this, oldValue, value));
 			}
 		}
 
-		private ClientType _type;
-		public ClientType Type
+		private HazClientType _type;
+		public HazClientType Type
 		{
 			get => _type;
 			set
 			{
 				var oldValue = this._type;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Type), this, oldValue, value));
 				_type = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Type), this, oldValue, value));
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 VideosCount { get; set; }
-		private RelatedList<Client,Video> _videos;
-		public RelatedList<Client,Video> Videos
+		private RelatedList<HazClient,Video> _videos;
+		public RelatedList<HazClient,Video> Videos
 		{
 			get
 			{
-				this._videos = this._videos ?? new RelatedList<Client,Video>(this, nameof(Videos));
+				this._videos = this._videos ?? new RelatedList<HazClient,Video>(this, nameof(Videos));
 				return _videos;
 			}
 			set
 			{
 				var oldValue = this._videos;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Videos), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Videos), this, oldValue, value));
 				_videos = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Videos), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Videos), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamsCount { get; set; }
-		private RelatedList<Client,Exam> _exams;
-		public RelatedList<Client,Exam> Exams
+		private RelatedList<HazClient,Exam> _exams;
+		public RelatedList<HazClient,Exam> Exams
 		{
 			get
 			{
-				this._exams = this._exams ?? new RelatedList<Client,Exam>(this, nameof(Exams));
+				this._exams = this._exams ?? new RelatedList<HazClient,Exam>(this, nameof(Exams));
 				return _exams;
 			}
 			set
 			{
 				var oldValue = this._exams;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Exams), this, oldValue, value));
 				_exams = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Exams), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamManagersCount { get; set; }
-		private RelatedList<Client,ExamManager> _examManagers;
-		public RelatedList<Client,ExamManager> ExamManagers
+		private RelatedList<HazClient,ExamManager> _examManagers;
+		public RelatedList<HazClient,ExamManager> ExamManagers
 		{
 			get
 			{
-				this._examManagers = this._examManagers ?? new RelatedList<Client,ExamManager>(this, nameof(ExamManagers));
+				this._examManagers = this._examManagers ?? new RelatedList<HazClient,ExamManager>(this, nameof(ExamManagers));
 				return _examManagers;
 			}
 			set
 			{
 				var oldValue = this._examManagers;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(ExamManagers), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamManagers), this, oldValue, value));
 				_examManagers = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(ExamManagers), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamManagers), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamResultsCount { get; set; }
-		private RelatedList<Client,ExamResult> _examResults;
-		public RelatedList<Client,ExamResult> ExamResults
+		private RelatedList<HazClient,ExamResult> _examResults;
+		public RelatedList<HazClient,ExamResult> ExamResults
 		{
 			get
 			{
-				this._examResults = this._examResults ?? new RelatedList<Client,ExamResult>(this, nameof(ExamResults));
+				this._examResults = this._examResults ?? new RelatedList<HazClient,ExamResult>(this, nameof(ExamResults));
 				return _examResults;
 			}
 			set
 			{
 				var oldValue = this._examResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamResults), this, oldValue, value));
 				_examResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamResults), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamCandidateResultsCount { get; set; }
-		private RelatedList<Client,ExamCandidateResult> _examCandidateResults;
-		public RelatedList<Client,ExamCandidateResult> ExamCandidateResults
+		private RelatedList<HazClient,ExamCandidateResult> _examCandidateResults;
+		public RelatedList<HazClient,ExamCandidateResult> ExamCandidateResults
 		{
 			get
 			{
-				this._examCandidateResults = this._examCandidateResults ?? new RelatedList<Client,ExamCandidateResult>(this, nameof(ExamCandidateResults));
+				this._examCandidateResults = this._examCandidateResults ?? new RelatedList<HazClient,ExamCandidateResult>(this, nameof(ExamCandidateResults));
 				return _examCandidateResults;
 			}
 			set
 			{
 				var oldValue = this._examCandidateResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(ExamCandidateResults), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidateResults), this, oldValue, value));
 				_examCandidateResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(ExamCandidateResults), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidateResults), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamCandidatesCount { get; set; }
-		private RelatedList<Client,ExamCandidate> _examCandidates;
-		public RelatedList<Client,ExamCandidate> ExamCandidates
+		private RelatedList<HazClient,ExamCandidate> _examCandidates;
+		public RelatedList<HazClient,ExamCandidate> ExamCandidates
 		{
 			get
 			{
-				this._examCandidates = this._examCandidates ?? new RelatedList<Client,ExamCandidate>(this, nameof(ExamCandidates));
+				this._examCandidates = this._examCandidates ?? new RelatedList<HazClient,ExamCandidate>(this, nameof(ExamCandidates));
 				return _examCandidates;
 			}
 			set
 			{
 				var oldValue = this._examCandidates;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(ExamCandidates), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidates), this, oldValue, value));
 				_examCandidates = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(ExamCandidates), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidates), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 HazardsCount { get; set; }
-		private RelatedList<Client,Hazard> _hazards;
-		public RelatedList<Client,Hazard> Hazards
+		private RelatedList<HazClient,Hazard> _hazards;
+		public RelatedList<HazClient,Hazard> Hazards
 		{
 			get
 			{
-				this._hazards = this._hazards ?? new RelatedList<Client,Hazard>(this, nameof(Hazards));
+				this._hazards = this._hazards ?? new RelatedList<HazClient,Hazard>(this, nameof(Hazards));
 				return _hazards;
 			}
 			set
 			{
 				var oldValue = this._hazards;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Hazards), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Hazards), this, oldValue, value));
 				_hazards = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Hazards), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Hazards), this, oldValue, value));
 			}
 		}
 
@@ -2951,7 +2951,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public class ApplicationUser : ApplicationUserBase, IEntity
+	public class HazApplicationUser : HazApplicationUserBase, IEntity
 	{
 		private string _id;
 		public string Id
@@ -2960,9 +2960,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2973,9 +2973,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -2986,9 +2986,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -2999,9 +2999,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3012,22 +3012,22 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._email;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Email), this, oldValue, value));
 				_email = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Email), this, oldValue, value));
 			}
 		}
 
-		private UserType _userType;
-		public UserType UserType
+		private HazUserType _userType;
+		public HazUserType UserType
 		{
 			get => _userType;
 			set
 			{
 				var oldValue = this._userType;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserType), this, oldValue, value));
 				_userType = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserType), this, oldValue, value));
 			}
 		}
 
@@ -3038,9 +3038,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._fullName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
 				_fullName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
 			}
 		}
 
@@ -3051,9 +3051,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._isLockedOut;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 				_isLockedOut = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 			}
 		}
 
@@ -3064,9 +3064,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._userName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserName), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserName), this, oldValue, value));
 				_userName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserName), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserName), this, oldValue, value));
 			}
 		}
 
@@ -3077,9 +3077,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._normalizedUserName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
 				_normalizedUserName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
 			}
 		}
 
@@ -3090,9 +3090,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._normalizedEmail;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
 				_normalizedEmail = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
 			}
 		}
 
@@ -3103,9 +3103,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._emailConfirmed;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 				_emailConfirmed = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 			}
 		}
 
@@ -3116,9 +3116,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._passwordHash;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PasswordHash), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
 				_passwordHash = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PasswordHash), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
 			}
 		}
 
@@ -3129,9 +3129,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._securityStamp;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
 				_securityStamp = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
 			}
 		}
 
@@ -3142,9 +3142,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._concurrencyStamp;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
 				_concurrencyStamp = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
 			}
 		}
 
@@ -3155,9 +3155,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._phoneNumber;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
 				_phoneNumber = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
 			}
 		}
 
@@ -3168,9 +3168,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._phoneNumberConfirmed;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
 				_phoneNumberConfirmed = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
 			}
 		}
 
@@ -3181,9 +3181,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._twoFactorEnabled;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
 				_twoFactorEnabled = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
 			}
 		}
 
@@ -3194,9 +3194,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._lockoutEnd;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
 				_lockoutEnd = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
 			}
 		}
 
@@ -3207,9 +3207,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._lockoutEnabled;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
 				_lockoutEnabled = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
 			}
 		}
 
@@ -3220,263 +3220,263 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._accessFailedCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
 				_accessFailedCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
 			}
 		}
 
-		private Client _client;
-		public Client Client
+		private HazClient _client;
+		public HazClient Client
 		{
 			get => _client;
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
 			}
 		}
 
-		private ApplicationUser _createdByUser;
-		public ApplicationUser CreatedByUser
+		private HazApplicationUser _createdByUser;
+		public HazApplicationUser CreatedByUser
 		{
 			get => _createdByUser;
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 UsersCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,ApplicationUser> _usersCreated;
-		public RelatedList<ApplicationUser,ApplicationUser> UsersCreated
+		private RelatedList<HazApplicationUser,HazApplicationUser> _usersCreated;
+		public RelatedList<HazApplicationUser,HazApplicationUser> UsersCreated
 		{
 			get
 			{
-				this._usersCreated = this._usersCreated ?? new RelatedList<ApplicationUser,ApplicationUser>(this, nameof(UsersCreated));
+				this._usersCreated = this._usersCreated ?? new RelatedList<HazApplicationUser,HazApplicationUser>(this, nameof(UsersCreated));
 				return _usersCreated;
 			}
 			set
 			{
 				var oldValue = this._usersCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UsersCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
 				_usersCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UsersCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ClientsCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,Client> _clientsCreated;
-		public RelatedList<ApplicationUser,Client> ClientsCreated
+		private RelatedList<HazApplicationUser,HazClient> _clientsCreated;
+		public RelatedList<HazApplicationUser,HazClient> ClientsCreated
 		{
 			get
 			{
-				this._clientsCreated = this._clientsCreated ?? new RelatedList<ApplicationUser,Client>(this, nameof(ClientsCreated));
+				this._clientsCreated = this._clientsCreated ?? new RelatedList<HazApplicationUser,HazClient>(this, nameof(ClientsCreated));
 				return _clientsCreated;
 			}
 			set
 			{
 				var oldValue = this._clientsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 				_clientsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 VideosCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,Video> _videosCreated;
-		public RelatedList<ApplicationUser,Video> VideosCreated
+		private RelatedList<HazApplicationUser,Video> _videosCreated;
+		public RelatedList<HazApplicationUser,Video> VideosCreated
 		{
 			get
 			{
-				this._videosCreated = this._videosCreated ?? new RelatedList<ApplicationUser,Video>(this, nameof(VideosCreated));
+				this._videosCreated = this._videosCreated ?? new RelatedList<HazApplicationUser,Video>(this, nameof(VideosCreated));
 				return _videosCreated;
 			}
 			set
 			{
 				var oldValue = this._videosCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(VideosCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(VideosCreated), this, oldValue, value));
 				_videosCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(VideosCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(VideosCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamsCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,Exam> _examsCreated;
-		public RelatedList<ApplicationUser,Exam> ExamsCreated
+		private RelatedList<HazApplicationUser,Exam> _examsCreated;
+		public RelatedList<HazApplicationUser,Exam> ExamsCreated
 		{
 			get
 			{
-				this._examsCreated = this._examsCreated ?? new RelatedList<ApplicationUser,Exam>(this, nameof(ExamsCreated));
+				this._examsCreated = this._examsCreated ?? new RelatedList<HazApplicationUser,Exam>(this, nameof(ExamsCreated));
 				return _examsCreated;
 			}
 			set
 			{
 				var oldValue = this._examsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
 				_examsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamManagersCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,ExamManager> _examManagersCreated;
-		public RelatedList<ApplicationUser,ExamManager> ExamManagersCreated
+		private RelatedList<HazApplicationUser,ExamManager> _examManagersCreated;
+		public RelatedList<HazApplicationUser,ExamManager> ExamManagersCreated
 		{
 			get
 			{
-				this._examManagersCreated = this._examManagersCreated ?? new RelatedList<ApplicationUser,ExamManager>(this, nameof(ExamManagersCreated));
+				this._examManagersCreated = this._examManagersCreated ?? new RelatedList<HazApplicationUser,ExamManager>(this, nameof(ExamManagersCreated));
 				return _examManagersCreated;
 			}
 			set
 			{
 				var oldValue = this._examManagersCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
 				_examManagersCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ResultsCount { get; set; }
-		private RelatedList<ApplicationUser,ExamResult> _results;
-		public RelatedList<ApplicationUser,ExamResult> Results
+		private RelatedList<HazApplicationUser,ExamResult> _results;
+		public RelatedList<HazApplicationUser,ExamResult> Results
 		{
 			get
 			{
-				this._results = this._results ?? new RelatedList<ApplicationUser,ExamResult>(this, nameof(Results));
+				this._results = this._results ?? new RelatedList<HazApplicationUser,ExamResult>(this, nameof(Results));
 				return _results;
 			}
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Results), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamResultsCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,ExamResult> _examResultsCreated;
-		public RelatedList<ApplicationUser,ExamResult> ExamResultsCreated
+		private RelatedList<HazApplicationUser,ExamResult> _examResultsCreated;
+		public RelatedList<HazApplicationUser,ExamResult> ExamResultsCreated
 		{
 			get
 			{
-				this._examResultsCreated = this._examResultsCreated ?? new RelatedList<ApplicationUser,ExamResult>(this, nameof(ExamResultsCreated));
+				this._examResultsCreated = this._examResultsCreated ?? new RelatedList<HazApplicationUser,ExamResult>(this, nameof(ExamResultsCreated));
 				return _examResultsCreated;
 			}
 			set
 			{
 				var oldValue = this._examResultsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
 				_examResultsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamResultsCount { get; set; }
-		private RelatedList<ApplicationUser,ExamCandidateResult> _examResults;
-		public RelatedList<ApplicationUser,ExamCandidateResult> ExamResults
+		private RelatedList<HazApplicationUser,ExamCandidateResult> _examResults;
+		public RelatedList<HazApplicationUser,ExamCandidateResult> ExamResults
 		{
 			get
 			{
-				this._examResults = this._examResults ?? new RelatedList<ApplicationUser,ExamCandidateResult>(this, nameof(ExamResults));
+				this._examResults = this._examResults ?? new RelatedList<HazApplicationUser,ExamCandidateResult>(this, nameof(ExamResults));
 				return _examResults;
 			}
 			set
 			{
 				var oldValue = this._examResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResults), this, oldValue, value));
 				_examResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResults), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamCandidateResultsCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,ExamCandidateResult> _examCandidateResultsCreated;
-		public RelatedList<ApplicationUser,ExamCandidateResult> ExamCandidateResultsCreated
+		private RelatedList<HazApplicationUser,ExamCandidateResult> _examCandidateResultsCreated;
+		public RelatedList<HazApplicationUser,ExamCandidateResult> ExamCandidateResultsCreated
 		{
 			get
 			{
-				this._examCandidateResultsCreated = this._examCandidateResultsCreated ?? new RelatedList<ApplicationUser,ExamCandidateResult>(this, nameof(ExamCandidateResultsCreated));
+				this._examCandidateResultsCreated = this._examCandidateResultsCreated ?? new RelatedList<HazApplicationUser,ExamCandidateResult>(this, nameof(ExamCandidateResultsCreated));
 				return _examCandidateResultsCreated;
 			}
 			set
 			{
 				var oldValue = this._examCandidateResultsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
 				_examCandidateResultsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamsCount { get; set; }
-		private RelatedList<ApplicationUser,ExamCandidate> _exams;
-		public RelatedList<ApplicationUser,ExamCandidate> Exams
+		private RelatedList<HazApplicationUser,ExamCandidate> _exams;
+		public RelatedList<HazApplicationUser,ExamCandidate> Exams
 		{
 			get
 			{
-				this._exams = this._exams ?? new RelatedList<ApplicationUser,ExamCandidate>(this, nameof(Exams));
+				this._exams = this._exams ?? new RelatedList<HazApplicationUser,ExamCandidate>(this, nameof(Exams));
 				return _exams;
 			}
 			set
 			{
 				var oldValue = this._exams;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Exams), this, oldValue, value));
 				_exams = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Exams), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ExamCandidatesCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,ExamCandidate> _examCandidatesCreated;
-		public RelatedList<ApplicationUser,ExamCandidate> ExamCandidatesCreated
+		private RelatedList<HazApplicationUser,ExamCandidate> _examCandidatesCreated;
+		public RelatedList<HazApplicationUser,ExamCandidate> ExamCandidatesCreated
 		{
 			get
 			{
-				this._examCandidatesCreated = this._examCandidatesCreated ?? new RelatedList<ApplicationUser,ExamCandidate>(this, nameof(ExamCandidatesCreated));
+				this._examCandidatesCreated = this._examCandidatesCreated ?? new RelatedList<HazApplicationUser,ExamCandidate>(this, nameof(ExamCandidatesCreated));
 				return _examCandidatesCreated;
 			}
 			set
 			{
 				var oldValue = this._examCandidatesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
 				_examCandidatesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 HazardsCreatedCount { get; set; }
-		private RelatedList<ApplicationUser,Hazard> _hazardsCreated;
-		public RelatedList<ApplicationUser,Hazard> HazardsCreated
+		private RelatedList<HazApplicationUser,Hazard> _hazardsCreated;
+		public RelatedList<HazApplicationUser,Hazard> HazardsCreated
 		{
 			get
 			{
-				this._hazardsCreated = this._hazardsCreated ?? new RelatedList<ApplicationUser,Hazard>(this, nameof(HazardsCreated));
+				this._hazardsCreated = this._hazardsCreated ?? new RelatedList<HazApplicationUser,Hazard>(this, nameof(HazardsCreated));
 				return _hazardsCreated;
 			}
 			set
 			{
 				var oldValue = this._hazardsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
 				_hazardsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
 			}
 		}
 
@@ -3492,7 +3492,7 @@ namespace Haz.App.Data.Entities
 
 namespace Haz.App.Data.Entities
 {
-	public class ClientType : ClientTypeBase, IEntity
+	public class HazClientType : HazClientTypeBase, IEntity
 	{
 		private int _id;
 		public int Id
@@ -3501,9 +3501,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClientType>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClientType>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3514,28 +3514,28 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClientType>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClientType>(nameof(Name), this, oldValue, value));
 			}
 		}
 
 		
 		public Int64 ClientCount { get; set; }
-		private RelatedList<ClientType,Client> _client;
-		public RelatedList<ClientType,Client> Client
+		private RelatedList<HazClientType,HazClient> _client;
+		public RelatedList<HazClientType,HazClient> Client
 		{
 			get
 			{
-				this._client = this._client ?? new RelatedList<ClientType,Client>(this, nameof(Client));
+				this._client = this._client ?? new RelatedList<HazClientType,HazClient>(this, nameof(Client));
 				return _client;
 			}
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClientType>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClientType>(nameof(Client), this, oldValue, value));
 			}
 		}
 

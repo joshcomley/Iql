@@ -2,7 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+#if !TypeScript
 using Brandless.ObjectSerializer;
+#endif
 using Hazception.ApiContext.Base;
 using Iql.OData.Data;
 using Iql.Tests.Context;
@@ -32,6 +34,7 @@ namespace Iql.Tests.Tests
                 //.ExpandAll()
                 .ToList();
         }
+#if !TypeScript
         //[TestMethod]
         public async Task GetHazception()
         {
@@ -65,6 +68,7 @@ namespace Iql.Tests.Tests
             var code = serializer.Serialize(inMemoryDb);
             File.WriteAllText(@"D:\Code\Iql\Code\Tests\Iql.Tests\Utility\Class1.cs", code);
         }
+#endif
 
         [TestMethod]
         public void TestTrackingSpeed()

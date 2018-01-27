@@ -52,7 +52,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var flattened = new List<FlattenedEntity>();
             foreach (var entity in entities)
             {
-                flattened.AddRange(FlattenObjectGraph(entity, entityType, dictionary));
+                flattened.AddRange(FlattenObjectGraphInternal(entity, entityType, dictionary));
             }
             return flattened.Distinct().ToList();
         }
@@ -65,12 +65,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         /// <returns></returns>
         public List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType)
         {
-            return FlattenObjectGraph(entity, entityType, new Dictionary<Type, Dictionary<string, FlattenedEntity>>());
+            return FlattenObjectGraphInternal(entity, entityType, new Dictionary<Type, Dictionary<string, FlattenedEntity>>());
         }
 
-        private List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType, Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
+        private List<FlattenedEntity> FlattenObjectGraphInternal(object entity, Type entityType, Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
         {
-            var result = FlattenObjectGraphInternal(
+            var result = FlattenObjectGraphRecursive(
                 entity,
                 entityType,
                 dictionary);
@@ -86,7 +86,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return list;
         }
 
-        private Dictionary<Type, Dictionary<string, FlattenedEntity>> FlattenObjectGraphInternal(
+        private Dictionary<Type, Dictionary<string, FlattenedEntity>> FlattenObjectGraphRecursive(
             object objectGraphRoot, 
             Type entityType, 
             Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
