@@ -1,4 +1,5 @@
-﻿using Iql.JavaScript.QueryToJavaScript;
+﻿using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
+using Iql.JavaScript.QueryToJavaScript;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 #if TypeScript
@@ -22,6 +23,10 @@ namespace Iql.Tests.Context
             InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();
             var inMemoryDb = new InMemoryDataBase();
             InMemoryDb = inMemoryDb;
+            if (IqlQueryableAdapter.ExpressionConverter == null)
+            {
+                IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
+            }
         }
 
         public static InMemoryDataStoreConfiguration InMemoryDataStoreConfiguration { get; set; }

@@ -4,7 +4,8 @@ using Iql.Queryable.Operations;
 namespace Iql.Queryable
 {
     public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangedEvent
-        where TRelated : class
+        where TRelated : class 
+        where TSource : class
     {
         public Type ItemType => typeof(TRelated);
         public Type OwnerType => typeof(TSource);

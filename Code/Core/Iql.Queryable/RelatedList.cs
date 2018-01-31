@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Crud.State;
-using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Events;
-using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
     public class RelatedList<TSource, TTarget> : List<TTarget>, IRelatedList
         where TTarget : class
+        where TSource : class
     {
         //private readonly IList<RelatedListChange<TSource, T>> _changes = new List<RelatedListChange<TSource, T>>();
-        public RelatedList()
-        {
-            
-        }
-        public RelatedList(TSource owner, string property, IEnumerable<TTarget> source = null)
+        //public RelatedList()
+        //{
+
+        //}
+        public RelatedList(TSource owner = null, string property = null, IEnumerable<TTarget> source = null)
         {
             Owner = owner;
             Property = property;

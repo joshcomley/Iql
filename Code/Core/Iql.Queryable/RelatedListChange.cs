@@ -1,12 +1,12 @@
 using System;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
     public class RelatedListChange<TSource, TRelation> : IRelatedListChange
-        where TRelation : class
+        where TRelation : class 
+        where TSource : class
     {
         public RelationshipMatch Relationship { get; }
         public CompositeKey ItemKey { get; }

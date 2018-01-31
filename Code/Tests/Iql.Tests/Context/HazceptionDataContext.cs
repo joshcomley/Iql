@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Hazception.ApiContext.Base;
+using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
 #if TypeScript
 using Iql.JavaScript.QueryToJavaScript;
 using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
@@ -12,6 +13,7 @@ using Iql.DotNet;
 using System.Net.Http;
 #endif
 using Iql.OData.Data;
+using Iql.Queryable;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.DataStores.InMemory;
 using Iql.Queryable.Data.Http;
@@ -51,6 +53,10 @@ namespace Iql.Tests.Context
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             this.ODataConfiguration.HttpProvider = new ODataHttpProvider();
+            if (IqlQueryableAdapter.ExpressionConverter == null)
+            {
+                IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
+            }
         }
     }
 
