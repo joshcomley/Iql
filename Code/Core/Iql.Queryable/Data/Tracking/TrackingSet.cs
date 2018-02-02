@@ -24,6 +24,7 @@ namespace Iql.Queryable.Data.Tracking
         private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey {get; set; }
         private Dictionary<object, IEntityStateBase> EntitiesByObject { get; set; }
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; set; }
+        private List<TrackedRelationship> TrackedRelationships { get; set; }
 
         public TrackingSet(IDataContext dataContext, TrackingSetCollection trackingSetCollection)
         {
@@ -35,6 +36,14 @@ namespace Iql.Queryable.Data.Tracking
             EntitiesByObject = new Dictionary<object, IEntityStateBase>();
             EntitiesByKey = new Dictionary<string, IEntityStateBase>();
             PersistenceKey = EntityConfiguration.Properties.SingleOrDefault(p => p.Name == "PersistenceKey");
+            TrackedRelationships = new List<TrackedRelationship>();
+            foreach (var relationship in EntityConfiguration.AllRelationships())
+            {
+                if (!relationship.ThisIsTarget)
+                {
+                    TrackedRelationships.Add(new TrackedRelationship(relationship.Relationship));
+                }
+            }
         }
 
         protected IProperty PersistenceKey { get; set; }
