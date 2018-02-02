@@ -33,6 +33,7 @@ namespace Hazception.ApiContext.Base
 			this.ODataConfiguration.RegisterEntitySet<ExamCandidateResult>(nameof(ExamCandidateResults));
 			this.ODataConfiguration.RegisterEntitySet<ExamCandidate>(nameof(ExamCandidates));
 			this.ODataConfiguration.RegisterEntitySet<Hazard>(nameof(Hazards));
+		
 		}
 		
 		public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration();
@@ -478,6 +479,7 @@ namespace Hazception.ApiContext.Base
 				.HasOne(p => p.CreatedByUser)
 				.WithMany(p => p.HazardsCreated)
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
+		
 		}
 		
 		
@@ -500,6 +502,7 @@ namespace Hazception.ApiContext.Base
 		public DbSet<ExamCandidate, int> ExamCandidates { get; set; }
 		
 		public DbSet<Hazard, int> Hazards { get; set; }
+	
 	}
 }
 
