@@ -7,6 +7,7 @@ using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores.InMemory;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Native;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
@@ -26,14 +27,18 @@ namespace Iql.JavaScript.QueryToJavaScript
         }
 
         public void ExpandOneToMany(
-            IEnumerable source,
-            IEnumerable target,
+            IList source,
+            IList target,
             string sourceProperty,
             string targetProperty,
             string sourceTargetKeyProperty,
             string targetKeyProperty)
         {
-            source.ExpandOneToMany(typeof(T), target, sourceProperty, targetProperty, sourceTargetKeyProperty, targetKeyProperty);
+            var property = DataContext.EntityConfigurationContext.EntityType<T>()
+                .FindProperty(sourceProperty);
+            var targetType = property
+                .ElementType;
+            source.ExpandOneToMany(typeof(T), target, targetType, property.Relationship.Relationship);
         }
 
         public void ExpandOneToOne(

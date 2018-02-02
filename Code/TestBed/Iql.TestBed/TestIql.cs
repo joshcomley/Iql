@@ -14,7 +14,7 @@ namespace Iql.TestBed
     {
         public async Task Run()
         {
-            IqlQueryableAdapter.ExpressionConverter = () => new ExpressionToIqlConverter();
+            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionToIqlConverter();
             //TestExpressionToQueryString();
             await TestDb.Run();
         }

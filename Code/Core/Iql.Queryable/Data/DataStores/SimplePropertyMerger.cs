@@ -1,38 +1,36 @@
 using System;
-using System.Collections;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Tracking;
-using TypeSharp.Extensions;
 
 namespace Iql.Queryable.Data.DataStores
 {
     public class SimplePropertyMerger
     {
-        public static void Merge(IDataContext dataContext, TrackingSetCollection trackingSetCollection,
-            object newEntity, Type entityType)
+        public IEntityConfiguration EntityConfiguration { get; }
+
+        public SimplePropertyMerger(IEntityConfiguration entityConfiguration)
         {
-            var configuration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
-            var trackedEntity = trackingSetCollection.TrackingSet(newEntity.GetType()).FindTrackedEntity(newEntity);
-            if (trackedEntity == newEntity || trackedEntity == null)
+            EntityConfiguration = entityConfiguration;
+        }
+
+        public void Merge(
+            object entity,
+            object mergeWith
+            )
+        {
+            foreach (var property in EntityConfiguration.Properties)
             {
-                return;
-            }
-            trackingSetCollection.TrackingSet(entityType).ChangeEntity(trackedEntity, () =>
-            {
-                foreach (var property in configuration.Properties)
+                switch (property.Kind)
                 {
-                    switch (property.Kind)
-                    {
-                        case PropertyKind.Count:
-                        case PropertyKind.Key:
-                        case PropertyKind.RelationshipKey:
-                        case PropertyKind.Primitive:
-                            trackedEntity.SetPropertyValue(property,
-                                newEntity.GetPropertyValue(property));
-                            break;
-                    }
+                    case PropertyKind.Count:
+                    case PropertyKind.Key:
+                    case PropertyKind.RelationshipKey:
+                    case PropertyKind.Primitive:
+                        entity.SetPropertyValue(property,
+                            mergeWith.GetPropertyValue(property));
+                        break;
                 }
-            }, ChangeEntityMode.Silent);
+            }
         }
 
         //private static void MergeSimpleProperty(object localEntity, object remoteEntity, string propertyName, Type entityType, IDataContext dataContext)

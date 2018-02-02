@@ -5,12 +5,16 @@ namespace Iql.Queryable.Extensions
 {
     public static class CompositeKeyExtensions
     {
-        public static string AsKeyString(this CompositeKey compositeKey)
+        public static string AsKeyString(this CompositeKey compositeKey, bool includeName = true)
         {
             var str = "";
             foreach (var key in compositeKey.Keys)
             {
-                str += key.Name + ":" + key.Value;
+                if (includeName)
+                {
+                    str += key.Name + ":";
+                }
+                str += key.Value + ";";
             }
             return str;
         }

@@ -24,7 +24,7 @@ namespace Iql.Tests.Tests
         {
             var clientTypes = TestsBlock.AddClientTypes();
             var client = clientTypes.ClientType1.Clients[0];
-            var state = Db.DataStore.GetTracking().TrackingSet(typeof(Client))
+            var state = Db.DataStore.GetTracking().TrackingSetByType(typeof(Client))
                 .GetEntityState(client);
             var entityConfiguration = Db.EntityConfigurationContext.GetEntityByType(typeof(Client));
             var nameProperty = entityConfiguration
@@ -35,7 +35,7 @@ namespace Iql.Tests.Tests
 
             // Change name once
             client.Name = "Me";
-            state = Db.DataStore.GetTracking().TrackingSet(typeof(Client))
+            state = Db.DataStore.GetTracking().TrackingSetByType(typeof(Client))
                 .GetEntityState(client);
             Assert.AreEqual(1, state.ChangedProperties.Count);
             var change = state.ChangedProperties[0];
@@ -711,7 +711,7 @@ namespace Iql.Tests.Tests
             await Db.SaveChanges();
             var clientToDelete = clients.ClientType1.Clients[0];
 
-            var entityState = Db.DataStore.GetTracking().TrackingSet(typeof(Client))
+            var entityState = Db.DataStore.GetTracking().TrackingSetByType(typeof(Client))
                 .GetEntityState(clientToDelete);
 
             Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");

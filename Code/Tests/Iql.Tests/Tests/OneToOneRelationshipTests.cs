@@ -70,11 +70,11 @@ namespace Iql.Tests.Tests
             var siteInspections = await Db.SiteInspections.ExpandSingle(s => s.RiskAssessment, q => q.Expand(r => r.RiskAssessmentSolution)).ToList();
             var riskAssessment = siteInspections[0].RiskAssessment;
             var tracking = Db.DataStore.GetTracking();
-            Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
+            //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
-            Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
-            var riskAssessmentState = tracking.TrackingSet(typeof(RiskAssessment)).GetEntityState(riskAssessment);
-            var riskAssessmentSolutionState = tracking.TrackingSet(typeof(RiskAssessmentSolution)).GetEntityState(solution);
+            //Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
+            var riskAssessmentState = tracking.TrackingSetByType(typeof(RiskAssessment)).GetEntityState(riskAssessment);
+            var riskAssessmentSolutionState = tracking.TrackingSetByType(typeof(RiskAssessmentSolution)).GetEntityState(solution);
 
             Assert.IsFalse(riskAssessmentState.MarkedForDeletion);
             Assert.IsFalse(riskAssessmentState.MarkedForCascadeDeletion);

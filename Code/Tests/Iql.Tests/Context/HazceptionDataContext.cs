@@ -25,6 +25,14 @@ namespace Iql.Tests.Context
         public static InMemoryDataStoreConfiguration InMemoryDataStoreConfiguration { get; set; }
         static HazceptionDataContext()
         {
+            if (IqlQueryableAdapter.ExpressionConverter == null)
+            {
+#if TypeScript
+                IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
+#else
+                IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionToIqlConverter();
+#endif
+            }
             InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
@@ -53,10 +61,6 @@ namespace Iql.Tests.Context
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             this.ODataConfiguration.HttpProvider = new ODataHttpProvider();
-            if (IqlQueryableAdapter.ExpressionConverter == null)
-            {
-                IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
-            }
         }
     }
 

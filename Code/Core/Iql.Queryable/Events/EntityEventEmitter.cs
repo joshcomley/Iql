@@ -25,21 +25,31 @@ namespace Iql.Queryable.Events
         public void Unsubscribe(int subscription)
         {
             Subscriptions.Remove(subscription);
+            if (Subscriptions.Count == 0)
+            {
+                SubscriptionActions = null;
+            }
         }
 
         public int Subscribe(Action<TEvent> propertyChangeEvent)
         {
             var id = ++_subscriptionId;
             Subscriptions.Add(id, propertyChangeEvent);
+            this.SubscriptionActions = Subscriptions.Values.ToList();
             return id;
         }
 
-        public void Emit(TEvent propertyChangeEvent)
+        private List<Action<TEvent>> SubscriptionActions { get; set; }
+
+        public void Emit(Func<TEvent> propertyChangeEvent)
         {
-            var subscriptions = Subscriptions.Keys.ToList();
-            foreach (var subscription in subscriptions)
+            if (SubscriptionActions != null && SubscriptionActions.Count > 0)
             {
-                Subscriptions[subscription](propertyChangeEvent);
+                var ev = propertyChangeEvent();
+                for (var i = 0; i < SubscriptionActions.Count; i++)
+                {
+                    SubscriptionActions[i](ev);
+                }
             }
         }
     }

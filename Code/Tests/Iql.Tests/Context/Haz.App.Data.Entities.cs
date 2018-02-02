@@ -220,7 +220,7 @@ namespace Haz.App.Data.Entities
 		}
 		public static string ClassName()
 		{
-			return "Client";
+			return "HazClient";
 		}
 		public virtual EntityValidationResult ValidateEntity()
 		{
@@ -248,7 +248,7 @@ namespace Haz.App.Data.Entities
 		}
 		public static string ClassName()
 		{
-			return "ApplicationUser";
+			return "HazApplicationUser";
 		}
 		public virtual EntityValidationResult ValidateEntity()
 		{
@@ -276,7 +276,7 @@ namespace Haz.App.Data.Entities
 		}
 		public static string ClassName()
 		{
-			return "ClientType";
+			return "HazClientType";
 		}
 		public virtual EntityValidationResult ValidateEntity()
 		{
@@ -327,9 +327,22 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Id), this, oldValue, value));
+			}
+		}
+
+		private int? _clonedFromId;
+		public int? ClonedFromId
+		{
+			get => _clonedFromId;
+			set
+			{
+				var oldValue = this._clonedFromId;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClonedFromId), this, oldValue, value));
+				_clonedFromId = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClonedFromId), this, oldValue, value));
 			}
 		}
 
@@ -340,9 +353,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(VideoId), this, oldValue, value));
 				_videoId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(VideoId), this, oldValue, value));
 			}
 		}
 
@@ -353,9 +366,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -366,9 +379,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -379,9 +392,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -392,9 +405,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(VideoGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(VideoGuid), this, oldValue, value));
 				_videoGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(VideoGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(VideoGuid), this, oldValue, value));
 			}
 		}
 
@@ -405,9 +418,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -418,9 +431,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -431,9 +444,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._timeFrom;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(TimeFrom), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(TimeFrom), this, oldValue, value));
 				_timeFrom = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(TimeFrom), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(TimeFrom), this, oldValue, value));
 			}
 		}
 
@@ -444,9 +457,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._duration;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Duration), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Duration), this, oldValue, value));
 				_duration = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Duration), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Duration), this, oldValue, value));
 			}
 		}
 
@@ -457,9 +470,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._left;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Left), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Left), this, oldValue, value));
 				_left = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Left), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Left), this, oldValue, value));
 			}
 		}
 
@@ -470,9 +483,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._top;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Top), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Top), this, oldValue, value));
 				_top = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Top), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Top), this, oldValue, value));
 			}
 		}
 
@@ -483,9 +496,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._width;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Width), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Width), this, oldValue, value));
 				_width = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Width), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Width), this, oldValue, value));
 			}
 		}
 
@@ -496,9 +509,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._height;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Height), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Height), this, oldValue, value));
 				_height = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Height), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Height), this, oldValue, value));
 			}
 		}
 
@@ -509,9 +522,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._revisionKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(RevisionKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(RevisionKey), this, oldValue, value));
 				_revisionKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(RevisionKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(RevisionKey), this, oldValue, value));
 			}
 		}
 
@@ -522,9 +535,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._imageUrl;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(ImageUrl), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ImageUrl), this, oldValue, value));
 				_imageUrl = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(ImageUrl), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ImageUrl), this, oldValue, value));
 			}
 		}
 
@@ -535,9 +548,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -548,9 +561,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -561,9 +574,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -574,9 +587,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -593,9 +606,41 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Results), this, oldValue, value));
+			}
+		}
+
+		private Hazard _clonedFrom;
+		public Hazard ClonedFrom
+		{
+			get => _clonedFrom;
+			set
+			{
+				var oldValue = this._clonedFrom;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClonedFrom), this, oldValue, value));
+				_clonedFrom = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClonedFrom), this, oldValue, value));
+			}
+		}
+
+		
+		public Int64 ClonedToCount { get; set; }
+		private RelatedList<Hazard,Hazard> _clonedTo;
+		public RelatedList<Hazard,Hazard> ClonedTo
+		{
+			get
+			{
+				this._clonedTo = this._clonedTo ?? new RelatedList<Hazard,Hazard>(this, nameof(ClonedTo));
+				return _clonedTo;
+			}
+			set
+			{
+				var oldValue = this._clonedTo;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClonedTo), this, oldValue, value));
+				_clonedTo = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(ClonedTo), this, oldValue, value));
 			}
 		}
 
@@ -606,9 +651,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._video;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Video), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Video), this, oldValue, value));
 				_video = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Video), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Video), this, oldValue, value));
 			}
 		}
 
@@ -619,9 +664,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -632,9 +677,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Hazard>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Hazard>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Hazard>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Hazard>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -659,9 +704,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(ExamId), this, oldValue, value));
 				_examId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(ExamId), this, oldValue, value));
 			}
 		}
 
@@ -672,9 +717,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(VideoId), this, oldValue, value));
 				_videoId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(VideoId), this, oldValue, value));
 			}
 		}
 
@@ -685,9 +730,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CandidateId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CandidateId), this, oldValue, value));
 				_candidateId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CandidateId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CandidateId), this, oldValue, value));
 			}
 		}
 
@@ -698,9 +743,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -711,9 +756,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -724,9 +769,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -737,9 +782,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._lastTime;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(LastTime), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(LastTime), this, oldValue, value));
 				_lastTime = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(LastTime), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(LastTime), this, oldValue, value));
 			}
 		}
 
@@ -750,9 +795,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -763,9 +808,22 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._status;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Status), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Status), this, oldValue, value));
 				_status = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Status), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Status), this, oldValue, value));
+			}
+		}
+
+		private DateTimeOffset? _dateLastTaken;
+		public DateTimeOffset? DateLastTaken
+		{
+			get => _dateLastTaken;
+			set
+			{
+				var oldValue = this._dateLastTaken;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(DateLastTaken), this, oldValue, value));
+				_dateLastTaken = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(DateLastTaken), this, oldValue, value));
 			}
 		}
 
@@ -776,9 +834,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -789,9 +847,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -802,9 +860,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -815,9 +873,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -834,9 +892,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Results), this, oldValue, value));
 			}
 		}
 
@@ -853,9 +911,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CandidateResults), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CandidateResults), this, oldValue, value));
 				_candidateResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CandidateResults), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CandidateResults), this, oldValue, value));
 			}
 		}
 
@@ -866,9 +924,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exam;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Exam), this, oldValue, value));
 				_exam = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Exam), this, oldValue, value));
 			}
 		}
 
@@ -879,9 +937,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._video;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Video), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Video), this, oldValue, value));
 				_video = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Video), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Video), this, oldValue, value));
 			}
 		}
 
@@ -892,9 +950,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Candidate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Candidate), this, oldValue, value));
 				_candidate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Candidate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Candidate), this, oldValue, value));
 			}
 		}
 
@@ -905,9 +963,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -918,9 +976,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidate>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -945,9 +1003,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(VideoId), this, oldValue, value));
 				_videoId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(VideoId), this, oldValue, value));
 			}
 		}
 
@@ -958,9 +1016,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamId), this, oldValue, value));
 				_examId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamId), this, oldValue, value));
 			}
 		}
 
@@ -971,9 +1029,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -984,9 +1042,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidateId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidateId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidateId), this, oldValue, value));
 				_examCandidateId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidateId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidateId), this, oldValue, value));
 			}
 		}
 
@@ -997,9 +1055,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CandidateId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CandidateId), this, oldValue, value));
 				_candidateId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CandidateId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CandidateId), this, oldValue, value));
 			}
 		}
 
@@ -1010,9 +1068,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1023,9 +1081,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1036,9 +1094,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -1049,9 +1107,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._score;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Score), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Score), this, oldValue, value));
 				_score = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Score), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Score), this, oldValue, value));
 			}
 		}
 
@@ -1062,9 +1120,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._pass;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Pass), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Pass), this, oldValue, value));
 				_pass = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Pass), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Pass), this, oldValue, value));
 			}
 		}
 
@@ -1075,9 +1133,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clickData;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickData), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickData), this, oldValue, value));
 				_clickData = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickData), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickData), this, oldValue, value));
 			}
 		}
 
@@ -1088,9 +1146,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clickCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickCount), this, oldValue, value));
 				_clickCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ClickCount), this, oldValue, value));
 			}
 		}
 
@@ -1101,9 +1159,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazardCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(HazardCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(HazardCount), this, oldValue, value));
 				_hazardCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(HazardCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(HazardCount), this, oldValue, value));
 			}
 		}
 
@@ -1114,9 +1172,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._successCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(SuccessCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(SuccessCount), this, oldValue, value));
 				_successCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(SuccessCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(SuccessCount), this, oldValue, value));
 			}
 		}
 
@@ -1127,9 +1185,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._date;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Date), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Date), this, oldValue, value));
 				_date = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Date), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Date), this, oldValue, value));
 			}
 		}
 
@@ -1140,9 +1198,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1153,9 +1211,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1166,9 +1224,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1179,9 +1237,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1198,9 +1256,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Results), this, oldValue, value));
 			}
 		}
 
@@ -1211,9 +1269,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._video;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Video), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Video), this, oldValue, value));
 				_video = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Video), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Video), this, oldValue, value));
 			}
 		}
 
@@ -1224,9 +1282,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exam;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Exam), this, oldValue, value));
 				_exam = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Exam), this, oldValue, value));
 			}
 		}
 
@@ -1237,9 +1295,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -1250,9 +1308,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidate), this, oldValue, value));
 				_examCandidate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(ExamCandidate), this, oldValue, value));
 			}
 		}
 
@@ -1263,9 +1321,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Candidate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Candidate), this, oldValue, value));
 				_candidate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(Candidate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(Candidate), this, oldValue, value));
 			}
 		}
 
@@ -1276,9 +1334,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamCandidateResult>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1302,9 +1360,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ExamId), this, oldValue, value));
 				_examId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ExamId), this, oldValue, value));
 			}
 		}
 
@@ -1315,9 +1373,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(VideoId), this, oldValue, value));
 				_videoId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(VideoId), this, oldValue, value));
 			}
 		}
 
@@ -1328,9 +1386,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -1341,9 +1399,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(CandidateId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CandidateId), this, oldValue, value));
 				_candidateId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(CandidateId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CandidateId), this, oldValue, value));
 			}
 		}
 
@@ -1354,9 +1412,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateResultId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(CandidateResultId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CandidateResultId), this, oldValue, value));
 				_candidateResultId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(CandidateResultId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CandidateResultId), this, oldValue, value));
 			}
 		}
 
@@ -1367,9 +1425,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazardId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(HazardId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(HazardId), this, oldValue, value));
 				_hazardId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(HazardId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(HazardId), this, oldValue, value));
 			}
 		}
 
@@ -1380,9 +1438,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidateId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(ExamCandidateId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ExamCandidateId), this, oldValue, value));
 				_examCandidateId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(ExamCandidateId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ExamCandidateId), this, oldValue, value));
 			}
 		}
 
@@ -1393,9 +1451,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1406,9 +1464,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._success;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Success), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Success), this, oldValue, value));
 				_success = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Success), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Success), this, oldValue, value));
 			}
 		}
 
@@ -1419,9 +1477,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -1432,9 +1490,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._x;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(X), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(X), this, oldValue, value));
 				_x = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(X), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(X), this, oldValue, value));
 			}
 		}
 
@@ -1445,9 +1503,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._y;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Y), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Y), this, oldValue, value));
 				_y = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Y), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Y), this, oldValue, value));
 			}
 		}
 
@@ -1458,9 +1516,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._time;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Time), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Time), this, oldValue, value));
 				_time = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Time), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Time), this, oldValue, value));
 			}
 		}
 
@@ -1471,9 +1529,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1484,9 +1542,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1497,9 +1555,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1510,9 +1568,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1523,9 +1581,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1536,9 +1594,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exam;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Exam), this, oldValue, value));
 				_exam = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Exam), this, oldValue, value));
 			}
 		}
 
@@ -1549,9 +1607,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._video;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Video), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Video), this, oldValue, value));
 				_video = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Video), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Video), this, oldValue, value));
 			}
 		}
 
@@ -1562,9 +1620,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -1575,9 +1633,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Candidate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Candidate), this, oldValue, value));
 				_candidate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Candidate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Candidate), this, oldValue, value));
 			}
 		}
 
@@ -1588,9 +1646,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateResult;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(CandidateResult), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CandidateResult), this, oldValue, value));
 				_candidateResult = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(CandidateResult), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CandidateResult), this, oldValue, value));
 			}
 		}
 
@@ -1601,9 +1659,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazard;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(Hazard), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Hazard), this, oldValue, value));
 				_hazard = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(Hazard), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(Hazard), this, oldValue, value));
 			}
 		}
 
@@ -1614,9 +1672,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(ExamCandidate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ExamCandidate), this, oldValue, value));
 				_examCandidate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(ExamCandidate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(ExamCandidate), this, oldValue, value));
 			}
 		}
 
@@ -1627,9 +1685,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamResult>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamResult>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamResult>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1653,9 +1711,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ExamId), this, oldValue, value));
 				_examId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(ExamId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ExamId), this, oldValue, value));
 			}
 		}
 
@@ -1666,9 +1724,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -1679,9 +1737,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1692,9 +1750,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -1705,9 +1763,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._managerId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(ManagerId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ManagerId), this, oldValue, value));
 				_managerId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(ManagerId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(ManagerId), this, oldValue, value));
 			}
 		}
 
@@ -1718,9 +1776,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1731,9 +1789,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1744,9 +1802,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1757,9 +1815,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1770,9 +1828,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1783,9 +1841,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exam;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Exam), this, oldValue, value));
 				_exam = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(Exam), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Exam), this, oldValue, value));
 			}
 		}
 
@@ -1796,9 +1854,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -1809,9 +1867,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1822,9 +1880,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._manager;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ExamManager>(nameof(Manager), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Manager), this, oldValue, value));
 				_manager = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ExamManager>(nameof(Manager), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ExamManager>(nameof(Manager), this, oldValue, value));
 			}
 		}
 
@@ -1848,9 +1906,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1861,9 +1919,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(VideoId), this, oldValue, value));
 				_videoId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(VideoId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(VideoId), this, oldValue, value));
 			}
 		}
 
@@ -1874,9 +1932,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -1887,9 +1945,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1900,9 +1958,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videoGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(VideoGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(VideoGuid), this, oldValue, value));
 				_videoGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(VideoGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(VideoGuid), this, oldValue, value));
 			}
 		}
 
@@ -1913,9 +1971,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -1926,9 +1984,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._isTraining;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(IsTraining), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(IsTraining), this, oldValue, value));
 				_isTraining = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(IsTraining), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(IsTraining), this, oldValue, value));
 			}
 		}
 
@@ -1939,9 +1997,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._availableToAllUsers;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(AvailableToAllUsers), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(AvailableToAllUsers), this, oldValue, value));
 				_availableToAllUsers = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(AvailableToAllUsers), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(AvailableToAllUsers), this, oldValue, value));
 			}
 		}
 
@@ -1952,9 +2010,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._scheduledDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(ScheduledDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(ScheduledDate), this, oldValue, value));
 				_scheduledDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(ScheduledDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(ScheduledDate), this, oldValue, value));
 			}
 		}
 
@@ -1965,9 +2023,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._passMark;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(PassMark), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(PassMark), this, oldValue, value));
 				_passMark = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(PassMark), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(PassMark), this, oldValue, value));
 			}
 		}
 
@@ -1978,9 +2036,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -1991,9 +2049,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._allowAnyArea;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(AllowAnyArea), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(AllowAnyArea), this, oldValue, value));
 				_allowAnyArea = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(AllowAnyArea), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(AllowAnyArea), this, oldValue, value));
 			}
 		}
 
@@ -2004,9 +2062,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -2017,9 +2075,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._status;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Status), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Status), this, oldValue, value));
 				_status = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Status), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Status), this, oldValue, value));
 			}
 		}
 
@@ -2030,9 +2088,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._notStarted;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(NotStarted), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(NotStarted), this, oldValue, value));
 				_notStarted = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(NotStarted), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(NotStarted), this, oldValue, value));
 			}
 		}
 
@@ -2043,9 +2101,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._complete;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Complete), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Complete), this, oldValue, value));
 				_complete = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Complete), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Complete), this, oldValue, value));
 			}
 		}
 
@@ -2056,9 +2114,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._inProgress;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(InProgress), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(InProgress), this, oldValue, value));
 				_inProgress = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(InProgress), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(InProgress), this, oldValue, value));
 			}
 		}
 
@@ -2069,9 +2127,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(CandidateCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(CandidateCount), this, oldValue, value));
 				_candidateCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(CandidateCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(CandidateCount), this, oldValue, value));
 			}
 		}
 
@@ -2082,9 +2140,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._imageUrl;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(ImageUrl), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(ImageUrl), this, oldValue, value));
 				_imageUrl = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(ImageUrl), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(ImageUrl), this, oldValue, value));
 			}
 		}
 
@@ -2095,9 +2153,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2108,9 +2166,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2121,9 +2179,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2134,9 +2192,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2147,9 +2205,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._video;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Video), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Video), this, oldValue, value));
 				_video = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Video), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Video), this, oldValue, value));
 			}
 		}
 
@@ -2160,9 +2218,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -2173,9 +2231,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2192,9 +2250,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._managers;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Managers), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Managers), this, oldValue, value));
 				_managers = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Managers), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Managers), this, oldValue, value));
 			}
 		}
 
@@ -2211,9 +2269,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Results), this, oldValue, value));
 			}
 		}
 
@@ -2230,9 +2288,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(CandidateResults), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(CandidateResults), this, oldValue, value));
 				_candidateResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(CandidateResults), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(CandidateResults), this, oldValue, value));
 			}
 		}
 
@@ -2249,9 +2307,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidates;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Exam>(nameof(Candidates), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Exam>(nameof(Candidates), this, oldValue, value));
 				_candidates = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Exam>(nameof(Candidates), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Exam>(nameof(Candidates), this, oldValue, value));
 			}
 		}
 
@@ -2276,9 +2334,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2289,9 +2347,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2302,9 +2360,22 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ClientId), this, oldValue, value));
+			}
+		}
+
+		private int? _clonedFromId;
+		public int? ClonedFromId
+		{
+			get => _clonedFromId;
+			set
+			{
+				var oldValue = this._clonedFromId;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ClonedFromId), this, oldValue, value));
+				_clonedFromId = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ClonedFromId), this, oldValue, value));
 			}
 		}
 
@@ -2315,9 +2386,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -2328,9 +2399,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -2341,9 +2412,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -2354,9 +2425,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._duration;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Duration), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Duration), this, oldValue, value));
 				_duration = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Duration), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Duration), this, oldValue, value));
 			}
 		}
 
@@ -2367,9 +2438,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._resultsCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(ResultsCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ResultsCount), this, oldValue, value));
 				_resultsCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(ResultsCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ResultsCount), this, oldValue, value));
 			}
 		}
 
@@ -2380,9 +2451,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateResultsCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(CandidateResultsCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(CandidateResultsCount), this, oldValue, value));
 				_candidateResultsCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(CandidateResultsCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(CandidateResultsCount), this, oldValue, value));
 			}
 		}
 
@@ -2393,9 +2464,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidatesCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(CandidatesCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(CandidatesCount), this, oldValue, value));
 				_candidatesCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(CandidatesCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(CandidatesCount), this, oldValue, value));
 			}
 		}
 
@@ -2406,9 +2477,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(ExamCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ExamCount), this, oldValue, value));
 				_examCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(ExamCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ExamCount), this, oldValue, value));
 			}
 		}
 
@@ -2419,9 +2490,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazardCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(HazardCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(HazardCount), this, oldValue, value));
 				_hazardCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(HazardCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(HazardCount), this, oldValue, value));
 			}
 		}
 
@@ -2432,9 +2503,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._revisionKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(RevisionKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(RevisionKey), this, oldValue, value));
 				_revisionKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(RevisionKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(RevisionKey), this, oldValue, value));
 			}
 		}
 
@@ -2445,9 +2516,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._screenshotUrl;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(ScreenshotUrl), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ScreenshotUrl), this, oldValue, value));
 				_screenshotUrl = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(ScreenshotUrl), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ScreenshotUrl), this, oldValue, value));
 			}
 		}
 
@@ -2458,9 +2529,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._screenshotMiniUrl;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(ScreenshotMiniUrl), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ScreenshotMiniUrl), this, oldValue, value));
 				_screenshotMiniUrl = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(ScreenshotMiniUrl), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ScreenshotMiniUrl), this, oldValue, value));
 			}
 		}
 
@@ -2471,9 +2542,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2484,9 +2555,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2497,9 +2568,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2510,9 +2581,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2523,9 +2594,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2536,9 +2607,41 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Client), this, oldValue, value));
+			}
+		}
+
+		private Video _clonedFrom;
+		public Video ClonedFrom
+		{
+			get => _clonedFrom;
+			set
+			{
+				var oldValue = this._clonedFrom;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ClonedFrom), this, oldValue, value));
+				_clonedFrom = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ClonedFrom), this, oldValue, value));
+			}
+		}
+
+		
+		public Int64 ClonedToCount { get; set; }
+		private RelatedList<Video,Video> _clonedTo;
+		public RelatedList<Video,Video> ClonedTo
+		{
+			get
+			{
+				this._clonedTo = this._clonedTo ?? new RelatedList<Video,Video>(this, nameof(ClonedTo));
+				return _clonedTo;
+			}
+			set
+			{
+				var oldValue = this._clonedTo;
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(ClonedTo), this, oldValue, value));
+				_clonedTo = value;
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(ClonedTo), this, oldValue, value));
 			}
 		}
 
@@ -2555,9 +2658,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exams;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Exams), this, oldValue, value));
 				_exams = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Exams), this, oldValue, value));
 			}
 		}
 
@@ -2572,9 +2675,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Results), this, oldValue, value));
 			}
 		}
 
@@ -2589,9 +2692,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidateResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(CandidateResults), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(CandidateResults), this, oldValue, value));
 				_candidateResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(CandidateResults), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(CandidateResults), this, oldValue, value));
 			}
 		}
 
@@ -2606,9 +2709,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._candidates;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Candidates), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Candidates), this, oldValue, value));
 				_candidates = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Candidates), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Candidates), this, oldValue, value));
 			}
 		}
 
@@ -2625,9 +2728,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazards;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Video>(nameof(Hazards), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Video>(nameof(Hazards), this, oldValue, value));
 				_hazards = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Video>(nameof(Hazards), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Video>(nameof(Hazards), this, oldValue, value));
 			}
 		}
 
@@ -2652,9 +2755,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._typeId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(TypeId), this, oldValue, value));
 				_typeId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(TypeId), this, oldValue, value));
 			}
 		}
 
@@ -2665,9 +2768,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2678,9 +2781,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2691,9 +2794,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -2704,9 +2807,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -2717,9 +2820,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2730,9 +2833,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2743,9 +2846,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2756,9 +2859,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2775,9 +2878,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._users;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Users), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Users), this, oldValue, value));
 				_users = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Users), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Users), this, oldValue, value));
 			}
 		}
 
@@ -2788,9 +2891,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._type;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Type), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Type), this, oldValue, value));
 				_type = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Type), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Type), this, oldValue, value));
 			}
 		}
 
@@ -2801,9 +2904,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2820,9 +2923,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videos;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Videos), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Videos), this, oldValue, value));
 				_videos = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Videos), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Videos), this, oldValue, value));
 			}
 		}
 
@@ -2839,9 +2942,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exams;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Exams), this, oldValue, value));
 				_exams = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Exams), this, oldValue, value));
 			}
 		}
 
@@ -2858,9 +2961,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examManagers;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamManagers), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamManagers), this, oldValue, value));
 				_examManagers = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamManagers), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamManagers), this, oldValue, value));
 			}
 		}
 
@@ -2877,9 +2980,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamResults), this, oldValue, value));
 				_examResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamResults), this, oldValue, value));
 			}
 		}
 
@@ -2896,9 +2999,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidateResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidateResults), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamCandidateResults), this, oldValue, value));
 				_examCandidateResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidateResults), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamCandidateResults), this, oldValue, value));
 			}
 		}
 
@@ -2915,9 +3018,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidates;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidates), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamCandidates), this, oldValue, value));
 				_examCandidates = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(ExamCandidates), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(ExamCandidates), this, oldValue, value));
 			}
 		}
 
@@ -2934,12 +3037,13 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazards;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClient>(nameof(Hazards), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Hazards), this, oldValue, value));
 				_hazards = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClient>(nameof(Hazards), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClient>(nameof(Hazards), this, oldValue, value));
 			}
 		}
 
+		
 		public override EntityValidationResult ValidateEntity()
 		{
 			var entity = this;
@@ -2960,9 +3064,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2973,9 +3077,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientGuid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ClientGuid), this, oldValue, value));
 				_clientGuid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientGuid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ClientGuid), this, oldValue, value));
 			}
 		}
 
@@ -2986,9 +3090,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -2999,9 +3103,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3012,9 +3116,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._email;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Email), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Email), this, oldValue, value));
 				_email = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Email), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Email), this, oldValue, value));
 			}
 		}
 
@@ -3025,9 +3129,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._userType;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserType), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UserType), this, oldValue, value));
 				_userType = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserType), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UserType), this, oldValue, value));
 			}
 		}
 
@@ -3038,9 +3142,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._fullName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
 				_fullName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
 			}
 		}
 
@@ -3051,9 +3155,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._isLockedOut;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 				_isLockedOut = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 			}
 		}
 
@@ -3064,9 +3168,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._userName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserName), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UserName), this, oldValue, value));
 				_userName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UserName), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UserName), this, oldValue, value));
 			}
 		}
 
@@ -3077,9 +3181,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._normalizedUserName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
 				_normalizedUserName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedUserName), this, oldValue, value));
 			}
 		}
 
@@ -3090,9 +3194,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._normalizedEmail;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
 				_normalizedEmail = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(NormalizedEmail), this, oldValue, value));
 			}
 		}
 
@@ -3103,9 +3207,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._emailConfirmed;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 				_emailConfirmed = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 			}
 		}
 
@@ -3116,9 +3220,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._passwordHash;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
 				_passwordHash = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
 			}
 		}
 
@@ -3129,9 +3233,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._securityStamp;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
 				_securityStamp = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
 			}
 		}
 
@@ -3142,9 +3246,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._concurrencyStamp;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
 				_concurrencyStamp = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
 			}
 		}
 
@@ -3155,9 +3259,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._phoneNumber;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
 				_phoneNumber = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
 			}
 		}
 
@@ -3168,9 +3272,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._phoneNumberConfirmed;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
 				_phoneNumberConfirmed = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
 			}
 		}
 
@@ -3181,9 +3285,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._twoFactorEnabled;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
 				_twoFactorEnabled = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
 			}
 		}
 
@@ -3194,9 +3298,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._lockoutEnd;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
 				_lockoutEnd = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
 			}
 		}
 
@@ -3207,9 +3311,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._lockoutEnabled;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
 				_lockoutEnabled = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
 			}
 		}
 
@@ -3220,9 +3324,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._accessFailedCount;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
 				_accessFailedCount = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
 			}
 		}
 
@@ -3233,9 +3337,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -3246,9 +3350,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3265,9 +3369,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._usersCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
 				_usersCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
 			}
 		}
 
@@ -3284,9 +3388,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 				_clientsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 			}
 		}
 
@@ -3303,9 +3407,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._videosCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(VideosCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(VideosCreated), this, oldValue, value));
 				_videosCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(VideosCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(VideosCreated), this, oldValue, value));
 			}
 		}
 
@@ -3322,9 +3426,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
 				_examsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamsCreated), this, oldValue, value));
 			}
 		}
 
@@ -3341,9 +3445,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examManagersCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
 				_examManagersCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamManagersCreated), this, oldValue, value));
 			}
 		}
 
@@ -3360,9 +3464,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._results;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Results), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Results), this, oldValue, value));
 				_results = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Results), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Results), this, oldValue, value));
 			}
 		}
 
@@ -3379,9 +3483,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examResultsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
 				_examResultsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResultsCreated), this, oldValue, value));
 			}
 		}
 
@@ -3398,9 +3502,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examResults;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResults), this, oldValue, value));
 				_examResults = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResults), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamResults), this, oldValue, value));
 			}
 		}
 
@@ -3417,9 +3521,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidateResultsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
 				_examCandidateResultsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidateResultsCreated), this, oldValue, value));
 			}
 		}
 
@@ -3436,9 +3540,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._exams;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Exams), this, oldValue, value));
 				_exams = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(Exams), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Exams), this, oldValue, value));
 			}
 		}
 
@@ -3455,9 +3559,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._examCandidatesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
 				_examCandidatesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ExamCandidatesCreated), this, oldValue, value));
 			}
 		}
 
@@ -3474,9 +3578,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._hazardsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
 				_hazardsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(HazardsCreated), this, oldValue, value));
 			}
 		}
 
@@ -3501,9 +3605,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClientType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClientType>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClientType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClientType>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3514,9 +3618,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClientType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClientType>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClientType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClientType>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -3533,9 +3637,9 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<HazClientType>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazClientType>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<HazClientType>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazClientType>(nameof(Client), this, oldValue, value));
 			}
 		}
 

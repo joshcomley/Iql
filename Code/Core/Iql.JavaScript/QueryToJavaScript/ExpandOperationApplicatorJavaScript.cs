@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Native;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
 

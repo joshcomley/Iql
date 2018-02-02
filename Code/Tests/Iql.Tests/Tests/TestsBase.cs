@@ -17,7 +17,7 @@ namespace Iql.Tests.Tests
 #if TypeScript
             IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
 #else
-            IqlQueryableAdapter.ExpressionConverter = () => new ExpressionToIqlConverter();
+            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionToIqlConverter();
 #endif
         }
         protected static AppDbContext Db => TestsBlock.Db;

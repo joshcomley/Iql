@@ -39,12 +39,12 @@ namespace Iql.DotNet.Queryable
 
         public override List<T> ToList()
         {
-            var list = (IEnumerable<T>)DataSetByType(typeof(T));
+            var list = (IEnumerable)DataSetByType(typeof(T));
             foreach (var action in Actions)
             {
-                list = (IEnumerable<T>) action(list);
+                list = action(list);
             }
-            var clone = list.ToList().CloneAs<IEnumerable<T>>(DataContext, typeof(T), RelationshipCloneMode.Full);
+            var clone = ((IEnumerable<T>)list).ToList().CloneAs<IEnumerable<T>>(DataContext, typeof(T), RelationshipCloneMode.Full);
             return new DbList<T>(clone);
         }
     }

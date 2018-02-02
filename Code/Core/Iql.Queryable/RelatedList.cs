@@ -109,7 +109,7 @@ namespace Iql.Queryable
 
         private void Emit(TTarget item, CompositeKey itemKey, RelatedListChangeKind kind)
         {
-            Changed.Emit(new RelatedListChangeEvent<TSource, TTarget>(Owner, item, itemKey, kind, this));
+            Changed.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(Owner, item, itemKey, kind, this));
         }
 
         public void RemoveRelationship(TTarget item)

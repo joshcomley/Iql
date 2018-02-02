@@ -46,13 +46,26 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return _entities[type];
         }
 
-        public List<FlattenedEntity> FlattenObjectGraphs(Type entityType, params object[] entities)
+        public List<FlattenedEntity> FlattenObjectGraphs(Type entityType, IEnumerable entities)
         {
             var dictionary = new Dictionary<Type, Dictionary<string, FlattenedEntity>>();
+            var recursionLookup = new Dictionary<object, object>();
             var flattened = new List<FlattenedEntity>();
             foreach (var entity in entities)
             {
-                flattened.AddRange(FlattenObjectGraphInternal(entity, entityType, dictionary));
+                FlattenObjectGraphRecursive(
+                    entity, 
+                    entityType, 
+                    dictionary,
+                    recursionLookup);
+            }
+            var list = new List<FlattenedEntity>();
+            foreach (var typeGroup in dictionary)
+            {
+                foreach (var entry in typeGroup.Value)
+                {
+                    list.Add(entry.Value);
+                }
             }
             return flattened.Distinct().ToList();
         }
@@ -65,15 +78,21 @@ namespace Iql.Queryable.Data.EntityConfiguration
         /// <returns></returns>
         public List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType)
         {
-            return FlattenObjectGraphInternal(entity, entityType, new Dictionary<Type, Dictionary<string, FlattenedEntity>>());
+            return FlattenObjectGraphInternal(entity, entityType,
+                new Dictionary<Type, Dictionary<string, FlattenedEntity>>(),
+                new Dictionary<object, object>());
         }
 
-        private List<FlattenedEntity> FlattenObjectGraphInternal(object entity, Type entityType, Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
+        private List<FlattenedEntity> FlattenObjectGraphInternal(object entity, Type entityType,
+            Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary,
+         Dictionary<object, object> recursionLookup)
         {
             var result = FlattenObjectGraphRecursive(
                 entity,
                 entityType,
-                dictionary);
+                dictionary,
+                recursionLookup
+                );
             var list = new List<FlattenedEntity>();
             foreach (var typeGroup in result)
             {
@@ -87,9 +106,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         private Dictionary<Type, Dictionary<string, FlattenedEntity>> FlattenObjectGraphRecursive(
-            object objectGraphRoot, 
-            Type entityType, 
-            Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary)
+            object objectGraphRoot,
+            Type entityType,
+            Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary,
+            Dictionary<object, object> recursionLookup
+            )
         {
             if (!dictionary.ContainsKey(entityType))
             {
@@ -97,12 +118,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
             }
 
             var typeGroup = dictionary[entityType];
-            var objects = typeGroup.Values;
-            if (objects.Any(o => o.Entity == objectGraphRoot))
+            if (recursionLookup.ContainsKey(objectGraphRoot))
             {
                 // Prevent infinite recursion
                 return dictionary;
             }
+            recursionLookup.Add(objectGraphRoot, objectGraphRoot);
             var flattenedEntity = new FlattenedEntity(objectGraphRoot, entityType);
             var graphEntityConfiguration = GetEntityByType(entityType);
             var compositeKey = graphEntityConfiguration.GetCompositeKey(objectGraphRoot);
@@ -137,12 +158,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
                         var list = (IList)relationshipValue;
                         foreach (var item in list)
                         {
-                            FlattenObjectGraphInternal(item, childType, dictionary);
+                            FlattenObjectGraphRecursive(item, childType, dictionary, recursionLookup);
                         }
                     }
                     else
                     {
-                        FlattenObjectGraphInternal(relationshipValue, childType, dictionary);
+                        FlattenObjectGraphRecursive(relationshipValue, childType, dictionary, recursionLookup);
                     }
                 }
             }

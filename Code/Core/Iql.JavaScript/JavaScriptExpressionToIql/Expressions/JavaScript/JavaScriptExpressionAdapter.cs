@@ -33,8 +33,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
             {
                 return null;
             }
-            return fn() as IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData,
+
+            var expressionParserBase = fn();
+            var javaScriptExpressionParser = expressionParserBase as IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData,
                 TExpressionResult>;
+            return javaScriptExpressionParser;
         }
 
         public virtual void RegisterParser<TExpression>(

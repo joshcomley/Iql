@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.JavaScript.QueryToJavaScript;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Queryable.Native;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
 
@@ -71,10 +71,8 @@ namespace Iql.DotNet.Queryable.Applicators
                         sourceList.ExpandOneToMany(
                             detail.Relationship.Source.Type,
                             targetList,
-                            detail.Relationship.Source.Property.Name,
-                            detail.Relationship.Target.Property.Name,
-                            constraint.SourceKeyProperty.Name,
-                            constraint.TargetKeyProperty.Name);
+                            detail.Relationship.Target.Type,
+                            detail.Relationship);
                         break;
                     case RelationshipType.ManyToMany:
                         var manyToMany = detail.Relationship as IManyToManyRelationship;

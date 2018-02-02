@@ -1,26 +1,18 @@
+using System.Collections.Generic;
+using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 
 namespace Iql.Queryable.Data.Tracking
 {
-    public class TrackedRelationship<TOwner, TEntity> : ITrackedRelationship
+    public class TrackedRelationship : ITrackedRelationship
     {
-        public TrackedRelationship(TOwner owner, TEntity entity, IRelationship relationship)
+        public TrackedRelationship(IRelationship relationship)
         {
-            Owner = owner;
-            Entity = entity;
             Relationship = relationship;
-            OwnerDetail = relationship.Target.Type == typeof(TOwner) ? relationship.Target : relationship.Source;
-            EntityDetail = relationship.Target.Type == typeof(TEntity) ? relationship.Target : relationship.Source;
+            Mappings = new Dictionary<IEntityStateBase, IEntityStateBase>();
         }
 
-        public TOwner Owner { get;}
-        public TEntity Entity { get; }
-        public IRelationshipDetail OwnerDetail { get; }
-        public IRelationshipDetail EntityDetail { get; }
+        public Dictionary<IEntityStateBase, IEntityStateBase> Mappings { get; set; }
         public IRelationship Relationship { get; }
-
-        object ITrackedRelationship.Owner => Owner;
-
-        object ITrackedRelationship.Entity => Entity;
     }
 }

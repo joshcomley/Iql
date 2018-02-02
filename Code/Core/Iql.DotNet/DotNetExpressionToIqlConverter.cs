@@ -3,7 +3,7 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.DotNet
 {
-    public class ExpressionToIqlConverter : IExpressionToIqlConverter
+    public class DotNetExpressionToIqlConverter : IExpressionToIqlConverter
     {
         public ExpressionResult<IqlExpression> Parse<TEntity>(QueryExpression filter) where TEntity : class
         {

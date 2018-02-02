@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 #if !TypeScript
 using Brandless.ObjectSerializer;
 #endif
-using Hazception.ApiContext.Base;
-using Iql.OData.Data;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -17,9 +15,33 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
-        public async Task TestGetHazception()
+        public async Task TestGetHazceptionNoExpands()
         {
             var db = new HazceptionDataContext();
+            var examCandidateResults =
+                await db
+                    .ExamCandidateResults
+                    .ToList();
+        }
+
+        [TestMethod]
+        public async Task TestGetHazceptionOneExpand()
+        {
+            var db = new HazceptionDataContext();
+            var examCandidateResults =
+                await db
+                    .ExamCandidateResults
+                    .Expand(e => e.Client)
+                    .ToList();
+        }
+
+        [TestMethod]
+        public async Task TestGetHazceptionAllExpands()
+        {
+            var db = new HazceptionDataContext();
+#if TypeScript
+            if(false) {
+#endif
             var examCandidateResults =
                 await db
                 .ExamCandidateResults
@@ -33,6 +55,9 @@ namespace Iql.Tests.Tests
                 .Expand(e => e.Results)
                 //.ExpandAll()
                 .ToList();
+#if TypeScript
+            }
+#endif
         }
 #if !TypeScript
         //[TestMethod]

@@ -1,6 +1,6 @@
 namespace Iql.Queryable.Data.Tracking
 {
-    public enum ChangeEntityMode
+    internal enum ChangeEntityMode
     {
         Normal,
         Silent,

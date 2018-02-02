@@ -35,7 +35,7 @@ namespace Iql.Queryable
 
         public ITrackingSet TrackingSet
         {
-            get { return _trackingSet = _trackingSet?? TrackingSetCollection.GetSet<T>(); }
+            get { return _trackingSet = _trackingSet?? TrackingSetCollection.TrackingSet<T>(); }
             set { _trackingSet = value; }
         }
 
@@ -325,10 +325,6 @@ namespace Iql.Queryable
 
         public EntityState<T> Add(T entity)
         {
-            if (TrackingSet.IsTracked(entity))
-            {
-                return null;
-            }
             return DataContext.DataStore.Add(entity);
         }
 
@@ -340,65 +336,6 @@ namespace Iql.Queryable
 
         public EntityState<T> Delete(T entity)
         {
-            if (!DataContext.DataStore.GetTracking().IsTracked(entity, typeof(T)))
-            {
-                return null;
-            }
-            RelationshipManagerBase.DeleteRelationships(entity, typeof(T), DataContext);
-            //var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
-            //foreach (var configuration in DataContext.EntityConfigurationContext.AllConfigurations())
-            //{
-            //    foreach (var relationship in configuration.Relationships)
-            //    {
-            //        var isSource = relationship.Source.Configuration == entityConfiguration;
-            //        if (isSource ||
-            //            relationship.Target.Configuration == entityConfiguration)
-            //        {
-            //            var target = isSource
-            //                ? relationship.Target
-            //                : relationship.Source;
-            //            foreach (var relatedEntity in DataContext.DataStore.GetTracking().TrackingSet(target.Type)
-            //                .TrackedEntites())
-            //            {
-            //                var relatedItem = relatedEntity.GetPropertyValue(target.Property.PropertyName);
-            //                if (relatedItem.IsArray())
-            //                {
-            //                    var enumerable = relatedItem as IList;
-            //                    if (enumerable != null)
-            //                    {
-            //                        var toRemove = new List<object>();
-            //                        foreach (var relatedArrayItem in enumerable)
-            //                        {
-            //                            if (DataContext.IsIdMatch(entity, relatedArrayItem, typeof(T)))
-            //                            {
-            //                                toRemove.Add(relatedArrayItem);
-            //                            }
-            //                        }
-            //                        foreach (var toRemoveItem in toRemove)
-            //                        {
-            //                            enumerable.Remove(toRemoveItem);
-            //                        }
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    if (DataContext.IsIdMatch(entity, relatedItem, typeof(T)))
-            //                    {
-            //                        relatedEntity.SetPropertyValue(target.Property.PropertyName, null);
-            //                        foreach (var constraint in relationship.Constraints)
-            //                        {
-            //                            var property = isSource
-            //                                ? constraint.SourceKeyProperty
-            //                                : constraint.TargetKeyProperty;
-            //                            relatedEntity.SetPropertyValue(property.PropertyName, null);
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
             return DataContext.DataStore.Delete(entity);
         }
 

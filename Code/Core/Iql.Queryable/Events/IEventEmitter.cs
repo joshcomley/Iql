@@ -8,7 +8,7 @@ namespace Iql.Queryable.Events
     }
     public interface IEventEmitter<in TEvent>
     {
-        void Emit(TEvent propertyChangeEvent);
+        void Emit(Func<TEvent> propertyChangeEvent);
     }
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase

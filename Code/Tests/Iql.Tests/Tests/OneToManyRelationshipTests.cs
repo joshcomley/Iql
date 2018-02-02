@@ -80,7 +80,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(2, clientTypes.Count);
             Assert.AreEqual(2, clientType1.Clients.Count);
             Assert.AreEqual(0, clientType2.Clients.Count);
-            var isTracked = Db.DataStore.GetTracking().IsTracked(client, typeof(Client));
+            //var isTracked = Db.DataStore.GetTracking().IsTracked(client, typeof(Client));
             // Modify local
             switch (type)
             {

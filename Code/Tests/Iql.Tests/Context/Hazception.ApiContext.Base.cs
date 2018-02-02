@@ -53,7 +53,7 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.CreatedByUserId, true)
 				.DefineProperty(p => p.Email, true)
 				.DefineProperty(p => p.UserType, false)
-				.DefineProperty(p => p.FullName, true)
+				.DefineProperty(p => p.FullName, false)
 				.DefineProperty(p => p.IsLockedOut, false)
 				.DefineProperty(p => p.UserName, true)
 				.DefineProperty(p => p.NormalizedUserName, true)
@@ -130,6 +130,7 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.Id, false)
 				.DefineProperty(p => p.CreatedByUserId, true)
 				.DefineProperty(p => p.ClientId, false)
+				.DefineProperty(p => p.ClonedFromId, true)
 				.DefineConvertedProperty(p => p.ClientGuid, "Guid", false)
 				.DefineProperty(p => p.Title, false)
 				.DefineProperty(p => p.Description, true)
@@ -148,6 +149,8 @@ namespace Hazception.ApiContext.Base
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineProperty(p => p.CreatedByUser, true)
 				.DefineProperty(p => p.Client, false)
+				.DefineProperty(p => p.ClonedFrom, true)
+				.DefineCollectionProperty(p => p.ClonedTo, p => p.ClonedToCount)
 				.DefineCollectionProperty(p => p.Exams, p => p.ExamsCount)
 				.DefineCollectionProperty(p => p.Results, p => p.ResultsCount)
 				.DefineCollectionProperty(p => p.CandidateResults, p => p.CandidateResultsCount)
@@ -163,6 +166,11 @@ namespace Hazception.ApiContext.Base
 				.HasOne(p => p.Client)
 				.WithMany(p => p.Videos)
 				.WithConstraint(p => p.ClientId, p => p.Id);
+			
+			builder.EntityType<Video>()
+				.HasOne(p => p.ClonedFrom)
+				.WithMany(p => p.ClonedTo)
+				.WithConstraint(p => p.ClonedFromId, p => p.Id);
 			
 			builder.EntityType<Exam>()
 				.HasKey(p => p.Id)
@@ -383,6 +391,7 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.LastTime, false)
 				.DefineConvertedProperty(p => p.ClientGuid, "Guid", false)
 				.DefineProperty(p => p.Status, false)
+				.DefineProperty(p => p.DateLastTaken, true)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false)
 				.DefineProperty(p => p.CreatedDate, false)
 				.DefineProperty(p => p.Version, false)
@@ -423,6 +432,7 @@ namespace Hazception.ApiContext.Base
 			builder.EntityType<Hazard>()
 				.HasKey(p => p.Id)
 				.DefineProperty(p => p.Id, false)
+				.DefineProperty(p => p.ClonedFromId, true)
 				.DefineProperty(p => p.VideoId, false)
 				.DefineProperty(p => p.ClientId, false)
 				.DefineProperty(p => p.CreatedByUserId, true)
@@ -443,9 +453,16 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.Version, false)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineCollectionProperty(p => p.Results, p => p.ResultsCount)
+				.DefineProperty(p => p.ClonedFrom, true)
+				.DefineCollectionProperty(p => p.ClonedTo, p => p.ClonedToCount)
 				.DefineProperty(p => p.Video, false)
 				.DefineProperty(p => p.Client, false)
 				.DefineProperty(p => p.CreatedByUser, true);
+			
+			builder.EntityType<Hazard>()
+				.HasOne(p => p.ClonedFrom)
+				.WithMany(p => p.ClonedTo)
+				.WithConstraint(p => p.ClonedFromId, p => p.Id);
 			
 			builder.EntityType<Hazard>()
 				.HasOne(p => p.Video)

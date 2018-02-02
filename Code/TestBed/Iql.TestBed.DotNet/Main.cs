@@ -13,7 +13,7 @@ namespace Iql.TestBed.DotNet
     {
         public static async Task Run()
         {
-            IqlQueryableAdapter.ExpressionConverter = () => new ExpressionToIqlConverter();
+            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionToIqlConverter();
 
             var body = JavaScriptCodeExtractor.ExtractBody("function(p) { return p.Id; }");
             body = JavaScriptCodeExtractor.ExtractBody("p => p.Id");

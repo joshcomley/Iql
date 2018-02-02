@@ -768,9 +768,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
 				_siteId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
 			}
 		}
 
@@ -781,9 +781,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._userId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
 				_userId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
 			}
 		}
 
@@ -794,9 +794,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._user;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
 				_user = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
 			}
 		}
 
@@ -807,9 +807,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._site;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
 				_site = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
 			}
 		}
 
@@ -833,9 +833,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -846,9 +846,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
 				_siteId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
 			}
 		}
 
@@ -859,9 +859,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -872,9 +872,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._startTime;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
 				_startTime = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
 			}
 		}
 
@@ -885,9 +885,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._endTime;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
 				_endTime = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
 			}
 		}
 
@@ -898,9 +898,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -911,9 +911,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -924,9 +924,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -937,9 +937,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -956,9 +956,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personInspections;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
 				_personInspections = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
 			}
 		}
 
@@ -969,9 +969,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessment;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
 				_riskAssessment = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
 			}
 		}
 
@@ -982,9 +982,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._site;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
 				_site = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
 			}
 		}
 
@@ -995,9 +995,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1021,9 +1021,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1034,9 +1034,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._parentId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
 				_parentId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
 			}
 		}
 
@@ -1047,9 +1047,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -1060,9 +1060,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1073,9 +1073,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._address;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
 				_address = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
 			}
 		}
 
@@ -1086,9 +1086,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._postCode;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
 				_postCode = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
 			}
 		}
 
@@ -1099,9 +1099,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -1112,9 +1112,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._left;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
 				_left = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
 			}
 		}
 
@@ -1125,9 +1125,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._right;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
 				_right = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
 			}
 		}
 
@@ -1138,9 +1138,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1151,9 +1151,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1164,9 +1164,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1177,9 +1177,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1196,9 +1196,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._documents;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
 				_documents = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
 			}
 		}
 
@@ -1215,9 +1215,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._additionalSendReportsTo;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
 				_additionalSendReportsTo = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
 			}
 		}
 
@@ -1228,9 +1228,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._parent;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
 				_parent = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
 			}
 		}
 
@@ -1247,9 +1247,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._children;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
 				_children = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
 			}
 		}
 
@@ -1260,9 +1260,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -1273,9 +1273,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1292,9 +1292,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteInspections;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
 				_siteInspections = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
 			}
 		}
 
@@ -1311,9 +1311,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._users;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
 				_users = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
 			}
 		}
 
@@ -1337,9 +1337,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
 				_personId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
 			}
 		}
 
@@ -1350,9 +1350,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._typeId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
 				_typeId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
 			}
 		}
 
@@ -1363,9 +1363,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1376,9 +1376,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1389,9 +1389,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -1402,9 +1402,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._status;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
 				_status = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
 			}
 		}
 
@@ -1415,9 +1415,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1428,9 +1428,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1441,9 +1441,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1454,9 +1454,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1473,9 +1473,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._actionsTaken;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
 				_actionsTaken = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
 			}
 		}
 
@@ -1492,9 +1492,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._recommendations;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
 				_recommendations = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
 			}
 		}
 
@@ -1505,9 +1505,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._person;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
 				_person = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
 			}
 		}
 
@@ -1518,9 +1518,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._type;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
 				_type = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
 			}
 		}
 
@@ -1531,9 +1531,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1557,9 +1557,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
 				_personId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
 			}
 		}
 
@@ -1570,9 +1570,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._typeId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
 				_typeId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
 			}
 		}
 
@@ -1583,9 +1583,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._notes;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
 				_notes = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
 			}
 		}
 
@@ -1596,9 +1596,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -1609,9 +1609,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1622,9 +1622,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1635,9 +1635,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._person;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
 				_person = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
 			}
 		}
 
@@ -1648,9 +1648,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._type;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
 				_type = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
 			}
 		}
 
@@ -1674,9 +1674,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1687,9 +1687,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1700,9 +1700,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -1713,9 +1713,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1726,9 +1726,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1739,9 +1739,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1752,9 +1752,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1771,9 +1771,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._people;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
 				_people = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
 			}
 		}
 
@@ -1784,9 +1784,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1803,9 +1803,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._peopleMap;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
 				_peopleMap = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
 			}
 		}
 
@@ -1829,9 +1829,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -1842,9 +1842,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -1855,9 +1855,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -1868,9 +1868,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -1881,9 +1881,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -1894,9 +1894,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -1907,9 +1907,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -1926,9 +1926,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._people;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
 				_people = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
 			}
 		}
 
@@ -1939,9 +1939,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -1976,9 +1976,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteInspectionId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
 				_siteInspectionId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
 			}
 		}
 
@@ -1989,9 +1989,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2002,9 +2002,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
 				_personId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
 			}
 		}
 
@@ -2015,9 +2015,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._inspectionStatus;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
 				_inspectionStatus = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
 			}
 		}
 
@@ -2028,9 +2028,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._startTime;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
 				_startTime = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
 			}
 		}
 
@@ -2041,9 +2041,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._endTime;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
 				_endTime = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
 			}
 		}
 
@@ -2054,9 +2054,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._reasonForFailure;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
 				_reasonForFailure = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
 			}
 		}
 
@@ -2067,9 +2067,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._isDesignRequired;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
 				_isDesignRequired = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
 			}
 		}
 
@@ -2080,9 +2080,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._drawingNumber;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
 				_drawingNumber = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
 			}
 		}
 
@@ -2093,9 +2093,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2106,9 +2106,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2119,9 +2119,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2132,9 +2132,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2145,9 +2145,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2158,9 +2158,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteInspection;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
 				_siteInspection = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
 			}
 		}
 
@@ -2171,9 +2171,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2197,9 +2197,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._typeId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
 				_typeId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
 			}
 		}
 
@@ -2210,9 +2210,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._loadingId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
 				_loadingId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
 			}
 		}
 
@@ -2223,9 +2223,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2236,9 +2236,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2249,9 +2249,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._key;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
 				_key = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
 			}
 		}
 
@@ -2262,9 +2262,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -2275,9 +2275,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -2288,9 +2288,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._category;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
 				_category = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
 			}
 		}
 
@@ -2301,9 +2301,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -2314,9 +2314,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2327,9 +2327,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2340,9 +2340,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2353,9 +2353,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2366,9 +2366,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -2379,9 +2379,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._type;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
 				_type = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
 			}
 		}
 
@@ -2392,9 +2392,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._loading;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
 				_loading = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
 			}
 		}
 
@@ -2405,9 +2405,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2424,9 +2424,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._types;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
 				_types = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
 			}
 		}
 
@@ -2443,9 +2443,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._reports;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
 				_reports = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
 			}
 		}
 
@@ -2516,9 +2516,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2529,9 +2529,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2542,9 +2542,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -2555,9 +2555,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2568,9 +2568,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2581,9 +2581,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2594,9 +2594,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2613,9 +2613,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._answers;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
 				_answers = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
 			}
 		}
 
@@ -2626,9 +2626,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2652,9 +2652,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._questionId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
 				_questionId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
 			}
 		}
 
@@ -2665,9 +2665,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2678,9 +2678,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._specificHazard;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
 				_specificHazard = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
 			}
 		}
 
@@ -2691,9 +2691,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._precautionsToControlHazard;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
 				_precautionsToControlHazard = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
 			}
 		}
 
@@ -2704,9 +2704,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2717,9 +2717,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2730,9 +2730,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2743,9 +2743,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2756,9 +2756,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2769,9 +2769,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._question;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
 				_question = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
 			}
 		}
 
@@ -2782,9 +2782,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2808,9 +2808,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessmentId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
 				_riskAssessmentId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
 			}
 		}
 
@@ -2821,9 +2821,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2834,9 +2834,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2847,9 +2847,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2860,9 +2860,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -2873,9 +2873,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -2886,9 +2886,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -2899,9 +2899,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessment;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessment), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessment), this, oldValue, value));
 				_riskAssessment = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessment), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessment), this, oldValue, value));
 			}
 		}
 
@@ -2912,9 +2912,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -2938,9 +2938,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -2951,9 +2951,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteInspectionId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
 				_siteInspectionId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
 			}
 		}
 
@@ -2964,9 +2964,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -2977,9 +2977,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -2990,9 +2990,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3003,9 +3003,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -3016,9 +3016,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -3029,9 +3029,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessmentSolution;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(RiskAssessmentSolution), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(RiskAssessmentSolution), this, oldValue, value));
 				_riskAssessmentSolution = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(RiskAssessmentSolution), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(RiskAssessmentSolution), this, oldValue, value));
 			}
 		}
 
@@ -3042,9 +3042,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3055,9 +3055,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteInspection;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
 				_siteInspection = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
 			}
 		}
 
@@ -3081,9 +3081,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3094,9 +3094,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
 				_siteId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
 			}
 		}
 
@@ -3107,9 +3107,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._emailAddress;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
 				_emailAddress = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
 			}
 		}
 
@@ -3120,9 +3120,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -3133,9 +3133,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3146,9 +3146,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3159,9 +3159,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -3172,9 +3172,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -3185,9 +3185,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._site;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
 				_site = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
 			}
 		}
 
@@ -3198,9 +3198,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3224,9 +3224,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3237,9 +3237,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -3250,9 +3250,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -3263,9 +3263,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3276,9 +3276,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3302,9 +3302,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3315,9 +3315,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._categoryId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
 				_categoryId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
 			}
 		}
 
@@ -3328,9 +3328,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3341,9 +3341,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -3354,9 +3354,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -3367,9 +3367,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -3380,9 +3380,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3393,9 +3393,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -3406,9 +3406,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._category;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
 				_category = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
 			}
 		}
 
@@ -3419,9 +3419,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3438,9 +3438,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultReports;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
 				_faultReports = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
 			}
 		}
 
@@ -3464,9 +3464,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._reportId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
 				_reportId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
 			}
 		}
 
@@ -3477,9 +3477,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._recommendationId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
 				_recommendationId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
 			}
 		}
 
@@ -3490,9 +3490,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3503,9 +3503,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._notes;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
 				_notes = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
 			}
 		}
 
@@ -3516,9 +3516,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -3529,9 +3529,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3542,9 +3542,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3555,9 +3555,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -3568,9 +3568,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -3581,9 +3581,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personReport;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
 				_personReport = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
 			}
 		}
 
@@ -3594,9 +3594,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._recommendation;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
 				_recommendation = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
 			}
 		}
 
@@ -3607,9 +3607,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3633,9 +3633,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3646,9 +3646,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3659,9 +3659,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -3672,9 +3672,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._text;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
 				_text = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
 			}
 		}
 
@@ -3685,9 +3685,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -3698,9 +3698,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3711,9 +3711,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -3724,9 +3724,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -3737,9 +3737,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3756,9 +3756,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._recommendations;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
 				_recommendations = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
 			}
 		}
 
@@ -3782,9 +3782,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3795,9 +3795,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3808,9 +3808,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -3821,9 +3821,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -3834,9 +3834,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3847,9 +3847,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -3860,9 +3860,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -3873,9 +3873,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -3892,9 +3892,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._reportTypes;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
 				_reportTypes = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
 			}
 		}
 
@@ -3918,9 +3918,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultReportId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
 				_faultReportId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
 			}
 		}
 
@@ -3931,9 +3931,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -3944,9 +3944,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._notes;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
 				_notes = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
 			}
 		}
 
@@ -3957,9 +3957,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -3970,9 +3970,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -3983,9 +3983,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -3996,9 +3996,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -4009,9 +4009,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -4022,9 +4022,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personReport;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
 				_personReport = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
 			}
 		}
 
@@ -4035,9 +4035,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -4076,9 +4076,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._categoryId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
 				_categoryId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
 			}
 		}
 
@@ -4089,9 +4089,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
 				_siteId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
 			}
 		}
 
@@ -4102,9 +4102,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -4115,9 +4115,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._title;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
 				_title = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
 			}
 		}
 
@@ -4128,9 +4128,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -4141,9 +4141,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -4154,9 +4154,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -4167,9 +4167,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -4180,9 +4180,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -4193,9 +4193,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._category;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
 				_category = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
 			}
 		}
 
@@ -4206,9 +4206,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._site;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
 				_site = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
 			}
 		}
 
@@ -4219,9 +4219,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -4245,9 +4245,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -4258,9 +4258,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -4271,9 +4271,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -4284,9 +4284,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -4297,9 +4297,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -4310,9 +4310,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -4323,9 +4323,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -4336,9 +4336,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -4355,9 +4355,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._documents;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
 				_documents = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
 			}
 		}
 
@@ -4381,9 +4381,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -4394,9 +4394,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -4413,9 +4413,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._clients;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
 				_clients = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
 			}
 		}
 
@@ -4439,9 +4439,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._typeId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
 				_typeId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
 			}
 		}
 
@@ -4452,9 +4452,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -4465,9 +4465,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUserId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
 				_createdByUserId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
 			}
 		}
 
@@ -4478,9 +4478,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._name;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
 				_name = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
 			}
 		}
 
@@ -4491,9 +4491,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._description;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
 				_description = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
 			}
 		}
 
@@ -4504,9 +4504,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._guid;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
 				_guid = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
 			}
 		}
 
@@ -4517,9 +4517,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdDate;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
 				_createdDate = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
 			}
 		}
 
@@ -4530,9 +4530,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._version;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
 				_version = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Version), this, oldValue, value));
 			}
 		}
 
@@ -4543,9 +4543,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._persistenceKey;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
 				_persistenceKey = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
 			}
 		}
 
@@ -4562,9 +4562,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._users;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
 				_users = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
 			}
 		}
 
@@ -4575,9 +4575,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._type;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
 				_type = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
 			}
 		}
 
@@ -4588,9 +4588,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._createdByUser;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
 				_createdByUser = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
 			}
 		}
 
@@ -4607,9 +4607,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._people;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
 				_people = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
 			}
 		}
 
@@ -4626,9 +4626,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._sites;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
 				_sites = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
 			}
 		}
 
@@ -4652,9 +4652,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._id;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
 				_id = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
 			}
 		}
 
@@ -4665,9 +4665,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientId;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
 				_clientId = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
 			}
 		}
 
@@ -4678,9 +4678,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._email;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
 				_email = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
 			}
 		}
 
@@ -4691,9 +4691,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._fullName;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
 				_fullName = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
 			}
 		}
 
@@ -4704,9 +4704,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._emailConfirmed;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 				_emailConfirmed = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
 			}
 		}
 
@@ -4717,9 +4717,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._userType;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
 				_userType = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
 			}
 		}
 
@@ -4730,9 +4730,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._isLockedOut;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 				_isLockedOut = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
 			}
 		}
 
@@ -4743,9 +4743,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._client;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
 				_client = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
 			}
 		}
 
@@ -4762,9 +4762,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._clientsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 				_clientsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
 			}
 		}
 
@@ -4781,9 +4781,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._documentCategoriesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
 				_documentCategoriesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
 			}
 		}
 
@@ -4800,9 +4800,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteDocumentsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
 				_siteDocumentsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
 			}
 		}
 
@@ -4819,9 +4819,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultActionsTakenCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
 				_faultActionsTakenCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
 			}
 		}
 
@@ -4838,9 +4838,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultCategoriesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
 				_faultCategoriesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
 			}
 		}
 
@@ -4857,9 +4857,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultDefaultRecommendationsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
 				_faultDefaultRecommendationsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
 			}
 		}
 
@@ -4876,9 +4876,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultRecommendationsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
 				_faultRecommendationsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
 			}
 		}
 
@@ -4895,9 +4895,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultTypesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
 				_faultTypesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
 			}
 		}
 
@@ -4914,9 +4914,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._projectCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
 				_projectCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
 			}
 		}
 
@@ -4933,9 +4933,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._reportReceiverEmailAddressesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
 				_reportReceiverEmailAddressesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
 			}
 		}
 
@@ -4952,9 +4952,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessmentsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
 				_riskAssessmentsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
 			}
 		}
 
@@ -4971,9 +4971,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessmentAnswersCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
 				_riskAssessmentAnswersCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
 			}
 		}
 
@@ -4990,9 +4990,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._riskAssessmentQuestionsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
 				_riskAssessmentQuestionsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
 			}
 		}
 
@@ -5009,9 +5009,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._peopleCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
 				_peopleCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
 			}
 		}
 
@@ -5028,9 +5028,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personInspectionsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
 				_personInspectionsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
 			}
 		}
 
@@ -5047,9 +5047,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personLoadingsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
 				_personLoadingsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
 			}
 		}
 
@@ -5066,9 +5066,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._personTypesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
 				_personTypesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
 			}
 		}
 
@@ -5085,9 +5085,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._faultReportsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
 				_faultReportsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
 			}
 		}
 
@@ -5104,9 +5104,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._sitesCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
 				_sitesCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
 			}
 		}
 
@@ -5123,9 +5123,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._siteInspectionsCreated;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
 				_siteInspectionsCreated = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
 			}
 		}
 
@@ -5142,9 +5142,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var oldValue = this._sites;
-				this.PropertyChanging.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
+				this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
 				_sites = value;
-				this.PropertyChanged.Emit(new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
+				this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
 			}
 		}
 

@@ -85,7 +85,7 @@ namespace Iql.Queryable.Data
 #if !TypeScript
             var entityType = entity.GetType();
 #endif
-            return DataStore.GetTracking().TrackingSet(entityType).GetEntityState(entity);
+            return DataStore.GetTracking().TrackingSetByType(entityType).GetEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -193,7 +193,7 @@ namespace Iql.Queryable.Data
             var entityType = entity.GetType();
             var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
-            var entityState = DataStore.GetTracking().TrackingSet(entityType)
+            var entityState = DataStore.GetTracking().TrackingSetByType(entityType)
                 .GetEntityState(entity);
             entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
             DeleteEntity(entity

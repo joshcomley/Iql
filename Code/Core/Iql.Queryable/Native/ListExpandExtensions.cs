@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Iql.Queryable;
+using System.Linq;
 using Iql.Queryable.Data;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 
-namespace Iql.JavaScript.QueryToJavaScript
+namespace Iql.Queryable.Native
 {
     public static class ListExpandExtensions
     {
@@ -66,54 +70,147 @@ namespace Iql.JavaScript.QueryToJavaScript
         }
 
         public static void ExpandOneToMany(
-            this IEnumerable source,
+            this IList source,
             Type sourceType,
-            IEnumerable target,
-            string sourceProperty,
-            string targetProperty,
-            string sourceTargetKeyProperty,
-            string targetKeyProperty)
+            IList target,
+            Type targetType,
+            IRelationship relationship)
         {
-            var targetsRefreshed = new Dictionary<object, bool>();
-            for (var i = 0; i < source.Count(); i++)
-            {
-                var sourceEntity = source.ItemAt(i);
-                var targetKey = sourceEntity.GetPropertyValueByName(sourceTargetKeyProperty);
-                for (var j = 0; j < target.Count(); j++)
+            typeof(ListExpandExtensions)
+                .GetMethod(nameof(ExpandOneToManyTyped))
+                .MakeGenericMethod(sourceType, targetType)
+                .Invoke(null, new object[]
                 {
-                    var targetEntity = target.ItemAt(j);
-                    if (!targetsRefreshed.ContainsKey(targetEntity))
-                    {
-                        targetsRefreshed.Add(targetEntity, true);
-                        var targetType = targetEntity.GetType();
-                        targetEntity.SetPropertyValueByName(targetProperty,
-                            Activator.CreateInstance(typeof(RelatedList<,>).MakeGenericType(targetType, sourceType), new object[]
-                            {
-                                targetEntity,
-                                targetProperty,
-                                null
-#if TypeScript
-                                ,
-                                targetType,
-                                sourceType
+                    source,
+                    sourceType,
+                    target,
+                    targetType,
+                    relationship
+#if TypeScript // The type info
+                        ,sourceType,targetType
 #endif
-                            }));
-                    }
-                    //if (Equals(targetEntity.GetPropertyValue(targetProperty), null))
-                    //{
-                    //}
-                    if (Equals(targetEntity.GetPropertyValueByName(targetKeyProperty), targetKey))
+                });
+        }
+
+        public static void ExpandOneToManyTyped<TSource, TTarget>(
+            this List<TSource> source,
+            Type sourceType,
+            List<TTarget> target,
+            Type targetType,
+            IRelationship relationship) where TSource : class where TTarget : class
+        {
+            var targetProperty = relationship.Target.Property;
+            var sourceDictionary = ToListDictionary(
+                source,
+                relationship.Constraints.Select(c => c.SourceKeyProperty).ToArray());
+
+            var targetDictionary = ToDictionaryWithList<TTarget, TSource>(
+                target,
+                relationship.Constraints.Select(c => c.TargetKeyProperty).ToArray(),
+                relationship.Target.Property,
+                targetEntity =>
+                {
+                    targetEntity.SetPropertyValue(targetProperty,
+                        new RelatedList<TTarget, TSource>(targetEntity, targetProperty.Name));
+                });
+
+            foreach (var sourceEntry in sourceDictionary)
+            {
+                if (targetDictionary.ContainsKey(sourceEntry.Key))
+                {
+                    ItemAndList<TTarget, TSource> targetEntity = targetDictionary[sourceEntry.Key];
+                    foreach (var sourceEntity in sourceEntry.Value)
                     {
-                        sourceEntity.SetPropertyValueByName(sourceProperty, targetEntity);
-                        targetEntity.GetPropertyValueByNameAs<IList>(targetProperty).Add(sourceEntity);
+                        sourceEntity.SetPropertyValue(relationship.Source.Property, targetEntity.Item);
+                        targetEntity.List.Add(sourceEntity);
                     }
                 }
             }
-            foreach (var targetEntity in targetsRefreshed.Keys)
+
+            var targetCountProperty = relationship.Target.Configuration.FindProperty(
+                $"{relationship.Target.Property.Name}Count");
+            if (targetCountProperty != null && targetCountProperty.Kind == PropertyKind.Count)
             {
-                targetEntity.SetPropertyValueByName($"{targetProperty}Count",
-                    targetEntity.GetPropertyValueByNameAs<IList>(targetProperty).Count);
+                foreach (var targetEntity in targetDictionary)
+                {
+                    targetEntity.Value.Item.SetPropertyValueByName(targetCountProperty.Name,
+                        targetEntity.Value.List.Count);
+                }
             }
+        }
+
+        private class ItemAndList<T, TListItem>
+        {
+            public T Item { get; set; }
+            public List<TListItem> List { get; set; }
+
+            public ItemAndList(T item, List<TListItem> list)
+            {
+                Item = item;
+                List = list;
+            }
+        }
+        private static Dictionary<string, ItemAndList<T, TListItem>> ToDictionaryWithList<T, TListItem>(
+            List<T> dataSet,
+            IProperty[] properties,
+            IProperty listProperty,
+            Action<T> action = null)
+        {
+            var sourceDictionary = new Dictionary<string, ItemAndList<T, TListItem>>();
+            for (var i = 0; i < dataSet.Count; i++)
+            {
+                var entity = dataSet[i];
+                if (action != null)
+                {
+                    action(entity);
+                }
+                var compositeKey = new CompositeKey();
+                foreach (var property in properties)
+                {
+                    compositeKey.Keys.Add(new KeyValue(property.Name,
+                        entity.GetPropertyValue(property),
+                        property.ElementType));
+                }
+
+                sourceDictionary.Add(compositeKey.AsKeyString(false), 
+                    new ItemAndList<T, TListItem>(entity,
+                        entity.GetPropertyValueAs<List<TListItem>>(listProperty)));
+            }
+
+            return sourceDictionary;
+        }
+
+        private static Dictionary<string, List<T>> ToListDictionary<T>(
+            List<T> dataSet,
+            IProperty[] properties,
+            Action<T> action = null)
+        {
+            var sourceDictionary = new Dictionary<string, List<T>>();
+            for (var i = 0; i < dataSet.Count; i++)
+            {
+                var entity = dataSet[i];
+                if (action != null)
+                {
+                    action(entity);
+                }
+                var compositeKey = new CompositeKey();
+                foreach (var property in properties)
+                {
+                    compositeKey.Keys.Add(new KeyValue(property.Name,
+                        entity.GetPropertyValue(property),
+                        property.ElementType));
+                }
+
+                var key = compositeKey.AsKeyString(false);
+                if (!sourceDictionary.ContainsKey(key))
+                {
+                    var list = new List<T>();
+                    sourceDictionary.Add(key, list);
+                }
+                sourceDictionary[key].Add(entity);
+            }
+
+            return sourceDictionary;
         }
 
         public static void ExpandManyToMany(

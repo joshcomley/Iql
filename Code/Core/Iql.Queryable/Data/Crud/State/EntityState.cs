@@ -34,7 +34,7 @@ namespace Iql.Queryable.Data.Crud.State
                 _markedForDeletion = value;
                 if (changed)
                 {
-                    MarkedForDeletionChanged.Emit(new MarkedForDeletionChangeEvent(this, value));
+                    MarkedForDeletionChanged.Emit(() => new MarkedForDeletionChangeEvent(this, value));
                 }
             }
         }
