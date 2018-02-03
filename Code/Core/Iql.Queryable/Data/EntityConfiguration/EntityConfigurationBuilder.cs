@@ -59,12 +59,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     dictionary,
                     recursionLookup);
             }
-            var list = new List<FlattenedEntity>();
             foreach (var typeGroup in dictionary)
             {
                 foreach (var entry in typeGroup.Value)
                 {
-                    list.Add(entry.Value);
+                    flattened.Add(entry.Value);
                 }
             }
             return flattened.Distinct().ToList();

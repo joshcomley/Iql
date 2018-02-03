@@ -4,7 +4,7 @@ namespace Iql.Queryable
 {
     static class ExtendedListExtensions
     {
-        internal static void Initialize<T>(this IList<T> list, IEnumerable<T> source) where T : class
+        internal static void Initialize<T>(this List<T> list, IEnumerable<T> source) where T : class
         {
             if (source != null)
             {
@@ -20,10 +20,7 @@ namespace Iql.Queryable
                 else
                 {
 #endif
-                foreach (var item in source)
-                {
-                    list.Add(item);
-                }
+                list.AddRange(source);
 #if TypeScript
                 }
 #endif

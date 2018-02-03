@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Queryable.Data.EntityConfiguration;
@@ -8,6 +10,19 @@ namespace Iql.Queryable.Data
 {
     public static class IqlObjectExtensions
     {
+        public static object[] GetPropertyValues<T>(this T obj, IEnumerable<IProperty> properties)
+        {
+            var arr = new Object[properties.Count()];
+            var i = 0;
+            foreach (var property in properties)
+            {
+                arr[i] = property.PropertyGetter(obj);
+                i++;
+            }
+
+            return arr;
+        }
+
         public static object GetPropertyValue<T>(this T obj, IProperty property)
         {
             return property.PropertyGetter(obj);

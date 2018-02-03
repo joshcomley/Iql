@@ -7,11 +7,12 @@ namespace Iql.Queryable.Events
     public class EventEmitter<TEvent> : IEventManager<TEvent>
     {
         private int _subscriptionId;
-        private Dictionary<int, Action<TEvent>> Subscriptions { get; }
+
+        private Dictionary<int, Action<TEvent>> _subscriptions;
 
         public EventEmitter()
         {
-            Subscriptions = new Dictionary<int, Action<TEvent>>();
+            
         }
 
         int IEventSubscriberBase.Subscribe(Action<object> propertyChangeEvent)
@@ -24,8 +25,12 @@ namespace Iql.Queryable.Events
 
         public void Unsubscribe(int subscription)
         {
-            Subscriptions.Remove(subscription);
-            if (Subscriptions.Count == 0)
+            if (_subscriptions == null)
+            {
+                return;
+            }
+            _subscriptions.Remove(subscription);
+            if (_subscriptions.Count == 0)
             {
                 SubscriptionActions = null;
             }
@@ -33,9 +38,13 @@ namespace Iql.Queryable.Events
 
         public int Subscribe(Action<TEvent> propertyChangeEvent)
         {
+            if (_subscriptions == null)
+            {
+                _subscriptions = new Dictionary<int, Action<TEvent>>();
+            }
             var id = ++_subscriptionId;
-            Subscriptions.Add(id, propertyChangeEvent);
-            this.SubscriptionActions = Subscriptions.Values.ToList();
+            _subscriptions.Add(id, propertyChangeEvent);
+            SubscriptionActions = _subscriptions.Values.ToList();
             return id;
         }
 

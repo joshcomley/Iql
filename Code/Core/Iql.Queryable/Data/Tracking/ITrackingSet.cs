@@ -15,6 +15,8 @@ namespace Iql.Queryable.Data.Tracking
         //void Unwatch(object entity);
         //void SilentlyChangeEntity(object entity, Action action);
         IEntityStateBase GetEntityState(object entity);
+
+        IEntityStateBase GetEntityStateByKey(CompositeKey key);
         //IEnumerable<object> TrackedEntites();
         //Type EntityType { get; }
         //object Track(object entity, bool isNew);

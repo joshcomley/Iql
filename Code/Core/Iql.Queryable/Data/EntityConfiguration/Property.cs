@@ -51,7 +51,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
             PropertyGetterExpressionTyped = propertyGetterExpression;
             PropertyGetterTyped = propertyGetterExpression.Compile();
-            PropertyGetter = o => PropertyGetterTyped((TOwner) o);
+            PropertyGetter = o =>
+            {
+                var t = (TOwner) o;
+                var value = PropertyGetterTyped(t);
+                return value;
+            };
 
             PropertySetterExpressionTyped = GetAssignmentLambda<TOwner, TProperty>(name);
             PropertySetterTyped = PropertySetterExpressionTyped.Compile();

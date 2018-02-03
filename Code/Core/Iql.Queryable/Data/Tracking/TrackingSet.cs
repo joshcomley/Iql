@@ -2,14 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Events;
+using Iql.Queryable.Exceptions;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -21,7 +22,7 @@ namespace Iql.Queryable.Data.Tracking
         public EntityConfiguration<T> EntityConfiguration { get; }
         public SimplePropertyMerger SimplePropertyMerger { get; }
 
-        private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey {get; set; }
+        private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey { get; set; }
         private Dictionary<object, IEntityStateBase> EntitiesByObject { get; set; }
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; set; }
         private List<TrackedRelationship> TrackedRelationships { get; set; }
@@ -65,22 +66,35 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
 
-            var keyString = EntityConfiguration.GetCompositeKey(entity).AsKeyString();
-            if (EntitiesByKey.ContainsKey(keyString))
+            var key = EntityConfiguration.GetCompositeKey(entity);
+            var entityStateByKey = GetEntityStateByKey(key);
+            if (entityStateByKey != null)
             {
-                return EntitiesByKey[keyString];
+                return entityStateByKey;
             }
 
             var entityState = new EntityState<T>((T)entity, typeof(T), DataContext, EntityConfiguration);
             EntitiesByObject.Add(entity, entityState);
+            if (!key.HasDefaultValue())
+            {
+                EntitiesByKey.Add(key.AsKeyString(), entityState);
+            }
             if (PersistenceKey != null)
             {
                 persistenceKey = EnsurePersistenceKey(entity).Value;
                 EntitiesByPersistenceKey.Add(persistenceKey, entityState);
             }
 
-            Watch((T) entity);
+            Watch((T)entity);
             return entityState;
+        }
+
+        public IEntityStateBase GetEntityStateByKey(CompositeKey key)
+        {
+            var keyString = key.AsKeyString();
+            return EntitiesByKey.ContainsKey(keyString)
+                ? EntitiesByKey[keyString]
+                : null;
         }
 
         public void Delete(object entity)
@@ -104,12 +118,14 @@ namespace Iql.Queryable.Data.Tracking
         {
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
                 typeof(T), data);
+            var states = new List<IEntityStateBase>();
             foreach (var flattenedEntity in flattened)
             {
                 var trackingSet = TrackingSetCollection.TrackingSetByType(flattenedEntity.EntityType)
                     as TrackingSetBase;
-                trackingSet.TrackEntityInternal(flattenedEntity.Entity, null, isNew);
+                states.Add(trackingSet.TrackEntityInternal(flattenedEntity.Entity, null, isNew));
             }
+            TrackAllRelationships(states);
         }
 
         public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true)
@@ -117,18 +133,116 @@ namespace Iql.Queryable.Data.Tracking
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
                 entity, typeof(T));
             IEntityStateBase entityState = null;
+            var states = new List<IEntityStateBase>();
             foreach (var flattenedEntity in flattened)
             {
                 var trackingSet = TrackingSetCollection.TrackingSetByType(flattenedEntity.EntityType)
                     as TrackingSetBase;
                 var state = trackingSet.TrackEntityInternal(flattenedEntity.Entity, mergeWith, isNew);
+                states.Add(state);
                 if (flattenedEntity.Entity == entity)
                 {
                     entityState = state;
                 }
             }
 
+            TrackAllRelationships(states);
             return entityState;
+        }
+
+        internal void TrackAllRelationships(List<IEntityStateBase> states)
+        {
+            foreach (var state in states)
+            {
+                if (state.EntityType != typeof(T))
+                {
+                    var set = TrackingSetCollection.TrackingSetByType(state.EntityType)
+                        as TrackingSetBase;
+                    set.TrackRelationships(state);
+                }
+                else
+                {
+                    TrackRelationships(state);
+                }
+            }
+        }
+
+        internal override void TrackRelationships(IEntityStateBase entityState)
+        {
+            UpdateReferencesToThisEntity(entityState);
+            UpdateReferencesFromThisEntity(entityState);
+        }
+
+        private void UpdateReferencesFromThisEntity(IEntityStateBase entityState)
+        {
+            foreach (var relationship in TrackedRelationships)
+            {
+                var referenceValue = entityState.Entity.GetPropertyValue(relationship.Relationship.Source.Property);
+                var sourceKeyProperties = relationship.Relationship.Constraints.Select(c => c.SourceKeyProperty).ToArray();
+                var constraintsValues =
+                    entityState.Entity.GetPropertyValues(
+                        sourceKeyProperties);
+                var constraintValuesAreDefault = constraintsValues.All(c => c.IsDefaultValue());
+                if (referenceValue != null)
+                {
+                    var targetKeys = referenceValue.GetPropertyValues(
+                        relationship.Relationship.Constraints.Select(c => c.TargetKeyProperty));
+                    if (constraintValuesAreDefault)
+                    {
+                        var i = 0;
+                        foreach (var property in sourceKeyProperties)
+                        {
+                            entityState.Entity.SetPropertyValue(property, targetKeys[i]);
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        if (!ValuesMatch(constraintsValues, targetKeys))
+                        {
+                            throw new InconsistentRelationshipAssignmentException();
+                        }
+                    }
+                }
+                else if (!constraintValuesAreDefault)
+                {
+                    // Lookup this entity by the constraint key. Booooom.
+                    var set = TrackingSetCollection.TrackingSetByType(relationship.Relationship.Target.Type);
+                    var compositeKey = relationship.Relationship.Source.GetCompositeKey(
+                        entityState.Entity, true);
+                    var referenceEntity = set.GetEntityStateByKey(
+                        compositeKey);
+                    if (referenceEntity != null)
+                    {
+                        entityState.Entity
+                            .SetPropertyValue(relationship.Relationship.Source.Property,
+                                referenceEntity.Entity);
+                    }
+                }
+            }
+        }
+
+        private static bool ValuesMatch(IReadOnlyList<object> left, IReadOnlyList<object> right)
+        {
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < left.Count; i++)
+            {
+                if (!Equals(left[i], right[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void UpdateReferencesToThisEntity(IEntityStateBase entityState)
+        {
+
         }
 
         private readonly Dictionary<IRelatedList, int> _collectionChangeSubscriptions =
@@ -177,12 +291,12 @@ namespace Iql.Queryable.Data.Tracking
 
         private void EntityPropertyChanged(IPropertyChangeEvent obj)
         {
-            
+
         }
 
         private void EntityPropertyChanging(IPropertyChangeEvent obj)
         {
-            
+
         }
 
         internal void Unwatch(T entity)
@@ -226,19 +340,19 @@ namespace Iql.Queryable.Data.Tracking
 
         private void RelatedListChanged(IRelatedListChangedEvent ev)
         {
-//            var relationship = DataContext.EntityConfigurationContext.GetEntityByType(ev.OwnerType)
-//                .FindRelationship(ev.List.Property);
-//            var method = this.GetType().GetMethod(nameof(ProcessOneToManyCollectionChange),
-//                    BindingFlags.NonPublic | BindingFlags.Instance)
-//                .MakeGenericMethod(relationship.OtherEnd.Type);
-//            method.Invoke(this, new object[]
-//            {
-//                ev,
-//                relationship,
-//#if TypeScript
-//                relationship.OtherEnd.Type
-//#endif
-//            });
+            //            var relationship = DataContext.EntityConfigurationContext.GetEntityByType(ev.OwnerType)
+            //                .FindRelationship(ev.List.Property);
+            //            var method = this.GetType().GetMethod(nameof(ProcessOneToManyCollectionChange),
+            //                    BindingFlags.NonPublic | BindingFlags.Instance)
+            //                .MakeGenericMethod(relationship.OtherEnd.Type);
+            //            method.Invoke(this, new object[]
+            //            {
+            //                ev,
+            //                relationship,
+            //#if TypeScript
+            //                relationship.OtherEnd.Type
+            //#endif
+            //            });
         }
 
         internal override void ChangeEntity(object entity, Action action, ChangeEntityMode silently)
