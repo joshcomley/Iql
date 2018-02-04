@@ -10,13 +10,13 @@ namespace Iql.Queryable.Data
 {
     public static class IqlObjectExtensions
     {
-        public static object[] GetPropertyValues<T>(this T obj, IEnumerable<IProperty> properties)
+        public static object[] GetPropertyValues<T>(this T obj, IProperty[] properties)
         {
-            var arr = new Object[properties.Count()];
-            var i = 0;
-            foreach (var property in properties)
+            var arr = new object[properties.Length];
+            for(var i = 0; i < properties.Length; i++)
             {
-                arr[i] = property.PropertyGetter(obj);
+                //arr[i] = property.PropertyInfo.GetValue(obj);
+                arr[i] = properties[i].PropertyGetter(obj);
                 i++;
             }
 
@@ -25,12 +25,14 @@ namespace Iql.Queryable.Data
 
         public static object GetPropertyValue<T>(this T obj, IProperty property)
         {
+            //return property.PropertyInfo.GetValue(obj);
             return property.PropertyGetter(obj);
         }
 
         public static T GetPropertyValueAs<T>(this object obj, IProperty property)
         {
-            return (T)property.PropertyGetter(obj);
+            return (T) property.PropertyInfo.GetValue(obj);
+            //return (T)property.PropertyGetter(obj);
         }
 
         public static object GetPropertyValueByName<T>(this T obj, string propertyName)
@@ -45,6 +47,7 @@ namespace Iql.Queryable.Data
 
         public static void SetPropertyValue<T>(this T obj, IProperty property, object value)
         {
+            //property.PropertyInfo.SetValue(obj, value);
             property.PropertySetter(obj, value);
         }
 

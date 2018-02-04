@@ -1,10 +1,14 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IProperty
     {
+#if !TypeScript
+        PropertyInfo PropertyInfo { get; set; }
+#endif
         bool Nullable { get; set; }
         RelationshipMatch Relationship { get; set; }
         PropertyKind Kind { get; set; }

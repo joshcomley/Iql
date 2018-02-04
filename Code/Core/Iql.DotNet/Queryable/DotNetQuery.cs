@@ -16,7 +16,10 @@ namespace Iql.DotNet.Queryable
         public DotNetQuery(IDataContext dataContext)
         {
             DataContext = dataContext;
+            Configuration = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>();
         }
+
+        public InMemoryDataStoreConfiguration Configuration { get; set; }
 
         public IDataContext DataContext { get; }
 
@@ -29,23 +32,31 @@ namespace Iql.DotNet.Queryable
         public bool HasKey { get; set; }
         public CompositeKey Key { get; set; }
 
+        //private readonly Dictionary<Type, IList> _clonedSets = new Dictionary<Type, IList>();
         public IList DataSetByType(Type type)
         {
-            var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
+            return DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByType(type);
-            var cloneSet = sourceSet.CloneAs(DataContext, type, RelationshipCloneMode.DoNotClone);
-            return cloneSet;
+            //if (!_clonedSets.ContainsKey(type))
+            //{
+            //    var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
+            //        .GetSourceByType(type);
+            //    //var cloneSet = sourceSet.CloneAs(DataContext, type, RelationshipCloneMode.DoNotClone);
+            //    _clonedSets.Add(type, sourceSet);
+            //}
+            //return _clonedSets[type];
         }
 
         public override List<T> ToList()
         {
-            var list = (IEnumerable)DataSetByType(typeof(T));
-            foreach (var action in Actions)
+            var list = Configuration.GetSource<T>();//DataSetByType(typeof(T));
+            for (var i = 0; i < Actions.Count; i++)
             {
-                list = action(list);
+                var action = Actions[i];
+                list = (List<T>) action(list);
             }
-            var clone = ((IEnumerable<T>)list).ToList().CloneAs<IEnumerable<T>>(DataContext, typeof(T), RelationshipCloneMode.Full);
-            return new DbList<T>(clone);
+            //var clone = list.ToList().CloneAs(DataContext, typeof(T), RelationshipCloneMode.Full);
+            return list;//new DbList<T>(list);
         }
     }
 }

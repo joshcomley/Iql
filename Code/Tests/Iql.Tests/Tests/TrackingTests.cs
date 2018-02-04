@@ -2,9 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-#if !TypeScript
-using Brandless.ObjectSerializer;
-#endif
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

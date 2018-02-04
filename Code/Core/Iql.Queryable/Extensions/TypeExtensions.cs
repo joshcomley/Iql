@@ -5,6 +5,18 @@ namespace Iql.Queryable.Extensions
 {
     public static class TypeExtensions
     {
+#if !TypeScript
+        public static Type GetListType(this IList list)
+        {
+            var type = list.GetType();
+            while (type.Name != "List`1")
+            {
+                type = type.BaseType;
+            }
+            return type;
+        }
+#endif
+
         public static bool IsEnumerable<TProperty>()
         {
             return IsEnumerableType(typeof(TProperty));

@@ -1,11 +1,15 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
     public abstract class PropertyBase : IProperty
     {
+#if !TypeScript
+        public PropertyInfo PropertyInfo { get; set; }
+#endif
         public bool Nullable { get; set; }
         public RelationshipMatch Relationship { get; set; }
         public PropertyKind Kind { get; set; }

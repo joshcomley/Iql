@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -34,13 +35,13 @@ namespace Iql.JavaScript.QueryToJavaScript
                 switch (detail.Relationship.Type)
                 {
                     case RelationshipType.OneToOne:
-                        expandMethodName = nameof(ListExpandExtensions.ExpandOneToOne);
+                        expandMethodName = nameof(ListExtensions.ExpandOneToOne);
                         break;
                     case RelationshipType.OneToMany:
-                        expandMethodName = nameof(ListExpandExtensions.ExpandOneToMany);
+                        expandMethodName = nameof(ListExtensions.ExpandOneToMany);
                         break;
                     case RelationshipType.ManyToMany:
-                        expandMethodName = nameof(ListExpandExtensions.ExpandManyToMany);
+                        throw new NotSupportedException("Expanding many to many relationships are not yet supported.");
                         break;
                 }
                 query += "\nthis." + expandMethodName + "(";

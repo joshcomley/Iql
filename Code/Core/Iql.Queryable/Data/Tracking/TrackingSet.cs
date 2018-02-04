@@ -116,6 +116,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public void TrackEntities(IList data, bool isNew = true)
         {
+            return;
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
                 typeof(T), data);
             var states = new List<IEntityStateBase>();
@@ -125,7 +126,7 @@ namespace Iql.Queryable.Data.Tracking
                     as TrackingSetBase;
                 states.Add(trackingSet.TrackEntityInternal(flattenedEntity.Entity, null, isNew));
             }
-            TrackAllRelationships(states);
+            //TrackAllRelationships(states);
         }
 
         public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true)
@@ -146,7 +147,7 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
 
-            TrackAllRelationships(states);
+            //TrackAllRelationships(states);
             return entityState;
         }
 
@@ -186,7 +187,7 @@ namespace Iql.Queryable.Data.Tracking
                 if (referenceValue != null)
                 {
                     var targetKeys = referenceValue.GetPropertyValues(
-                        relationship.Relationship.Constraints.Select(c => c.TargetKeyProperty));
+                        relationship.Relationship.Constraints.Select(c => c.TargetKeyProperty).ToArray());
                     if (constraintValuesAreDefault)
                     {
                         var i = 0;

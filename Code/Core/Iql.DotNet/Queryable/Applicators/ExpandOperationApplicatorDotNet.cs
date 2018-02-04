@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using Iql.Queryable;
 using Iql.Queryable.Data;
@@ -31,17 +30,15 @@ namespace Iql.DotNet.Queryable.Applicators
             IExpandOperation expand,
             IDotNetQueryResult dotNetQueryResult)
         {
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (var j = 0; j < expand.ExpandDetails.Count; j++)
             {
                 var detail = expand.ExpandDetails[j];
-                var thisEnd = detail.IsTarget ? detail.Relationship.Target : detail.Relationship.Source;
-                var otherEnd = detail.IsTarget ? detail.Relationship.Source : detail.Relationship.Target;
-                var sourceType = thisEnd.Type;
+                var otherEnd = detail.IsTarget 
+                    ? detail.Relationship.Source 
+                    : detail.Relationship.Target;
                 var targetType = otherEnd.Type;
                 // TODO: Support multiple constraints
-                var constraint = detail.Relationship.Constraints.First();
-                var thisConstraint = detail.IsTarget ? constraint.TargetKeyProperty : constraint.SourceKeyProperty;
-                var otherConstraint = detail.IsTarget ? constraint.SourceKeyProperty : constraint.TargetKeyProperty;
                 //var targetData = dotNetQueryResult.DataSetByType(targetType);
                 var targetExpression = expand.GetExpression() as IExpandQueryExpression;
                 var targetQueryable = targetExpression.GetQueryable();
@@ -60,38 +57,33 @@ namespace Iql.DotNet.Queryable.Applicators
                 switch (detail.Relationship.Type)
                 {
                     case RelationshipType.OneToOne:
-                        typedList.ExpandOneToOne(
+                        sourceList.ExpandOneToOne(
                             targetList,
-                            thisEnd.Property.Name,
-                            otherEnd.Property.Name,
-                            thisConstraint.Name,
-                            otherConstraint.Name);
+                            detail.Relationship);
                         break;
                     case RelationshipType.OneToMany:
                         sourceList.ExpandOneToMany(
-                            detail.Relationship.Source.Type,
                             targetList,
-                            detail.Relationship.Target.Type,
                             detail.Relationship);
                         break;
-                    case RelationshipType.ManyToMany:
-                        var manyToMany = detail.Relationship as IManyToManyRelationship;
-                        typedList.ExpandManyToMany(
-                            sourceType,
-                            targetType,
-                            targetList,
-                            dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
-                            detail.IsTarget
-                                ? manyToMany.PivotTargetKeyProperty.PropertyName
-                                : manyToMany.PivotSourceKeyProperty.PropertyName,
-                            detail.IsTarget
-                                ? manyToMany.PivotSourceKeyProperty.PropertyName
-                                : manyToMany.PivotTargetKeyProperty.PropertyName,
-                            thisEnd.Property.Name,
-                            otherEnd.Property.Name,
-                            thisConstraint.Name,
-                            otherConstraint.Name);
-                        break;
+                    //case RelationshipType.ManyToMany:
+                    //    var manyToMany = detail.Relationship as IManyToManyRelationship;
+                    //    typedList.ExpandManyToMany(
+                    //        sourceType,
+                    //        targetType,
+                    //        targetList,
+                    //        dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
+                    //        detail.IsTarget
+                    //            ? manyToMany.PivotTargetKeyProperty.PropertyName
+                    //            : manyToMany.PivotSourceKeyProperty.PropertyName,
+                    //        detail.IsTarget
+                    //            ? manyToMany.PivotSourceKeyProperty.PropertyName
+                    //            : manyToMany.PivotTargetKeyProperty.PropertyName,
+                    //        thisEnd.Property.Name,
+                    //        otherEnd.Property.Name,
+                    //        thisConstraint.Name,
+                    //        otherConstraint.Name);
+                    //    break;
                 }
             }
             return typedList;

@@ -29,27 +29,21 @@ namespace Iql.JavaScript.QueryToJavaScript
         public void ExpandOneToMany(
             IList source,
             IList target,
-            string sourceProperty,
-            string targetProperty,
-            string sourceTargetKeyProperty,
-            string targetKeyProperty)
+            string sourceProperty)
         {
             var property = DataContext.EntityConfigurationContext.EntityType<T>()
                 .FindProperty(sourceProperty);
-            var targetType = property
-                .ElementType;
-            source.ExpandOneToMany(typeof(T), target, targetType, property.Relationship.Relationship);
+            source.ExpandOneToMany(target, property.Relationship.Relationship);
         }
 
         public void ExpandOneToOne(
-            IEnumerable source,
-            IEnumerable target,
-            string sourceProperty,
-            string targetProperty,
-            string sourceTargetKeyProperty,
-            string targetKeyProperty)
+            IList source,
+            IList target,
+            string sourceProperty)
         {
-            source.ExpandOneToOne(target, sourceProperty, targetProperty, sourceTargetKeyProperty, targetKeyProperty);
+            var property = DataContext.EntityConfigurationContext.EntityType<T>()
+                .FindProperty(sourceProperty);
+            source.ExpandOneToOne(target, property.Relationship.Relationship);
         }
 
         private IQueryable<T> Queryable { get; }

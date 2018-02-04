@@ -14,9 +14,9 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             _sources[typeof(T).Name] = getter;
         }
 
-        public IList<T> GetSource<T>()
+        public List<T> GetSource<T>()
         {
-            return GetSourceByType(typeof(T)) as IList<T>;
+            return GetSourceByType(typeof(T)) as List<T>;
         }
 
         public IList GetSourceByType(Type type)
