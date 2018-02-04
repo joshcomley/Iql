@@ -6,7 +6,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class IqlQueryableAdapter : QueryableAdapter<IqlQueryResult>
+    public class IqlQueryableAdapter : QueryableAdapter<IqlQueryResult, IqlQueryableAdapter>
     {
         public IqlQueryableAdapter()
         {

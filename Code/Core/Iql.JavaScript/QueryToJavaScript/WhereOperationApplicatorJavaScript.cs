@@ -3,10 +3,10 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class WhereOperationApplicatorJavaScript : QueryOperationApplicator<WhereOperation, IJavaScriptQueryResult>
+    public class WhereOperationApplicatorJavaScript : QueryOperationApplicator<WhereOperation, IJavaScriptQueryResult, JavaScriptQueryableAdapter>
     {
         public override void Apply<TEntity>(
-            IQueryOperationContext<WhereOperation, TEntity, IJavaScriptQueryResult> context)
+            IQueryOperationContext<WhereOperation, TEntity, IJavaScriptQueryResult, JavaScriptQueryableAdapter> context)
         {
             var dataSetObjectName = context.Data.GetDataSetObjectName(context.Queryable.ItemType);
             context.Data.Query.AppendLine();

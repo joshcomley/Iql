@@ -5,10 +5,10 @@ using Iql.Queryable.Operations.Applicators;
 namespace Iql.JavaScript.QueryToJavaScript
 {
     public class WithKeyOperationApplicatorJavaScript
-        : QueryOperationApplicator<WithKeyOperation, IJavaScriptQueryResult>
+        : QueryOperationApplicator<WithKeyOperation, IJavaScriptQueryResult, JavaScriptQueryableAdapter>
     {
         public override void Apply<TEntity>(
-            IQueryOperationContext<WithKeyOperation, TEntity, IJavaScriptQueryResult> context)
+            IQueryOperationContext<WithKeyOperation, TEntity, IJavaScriptQueryResult, JavaScriptQueryableAdapter> context)
         {
             var javaScriptExpression = JavaScriptQueryableAdapter.GetExpression(
                 context.ResolveWithKeyWhereOperation(),

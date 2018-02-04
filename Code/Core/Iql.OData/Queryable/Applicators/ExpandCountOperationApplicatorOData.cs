@@ -5,30 +5,36 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.OData.Queryable.Applicators
 {
-    public class ExpandCountOperationApplicatorOData : QueryOperationApplicator<IExpandCountOperation, IODataQuery>
+    public class ExpandCountOperationApplicatorOData : QueryOperationApplicator<IExpandCountOperation, IODataQuery, ODataQueryableAdapter>
     {
-        public override void Apply<TEntity>(IQueryOperationContext<IExpandCountOperation, TEntity, IODataQuery> context)
+        public override void Apply<TEntity>(
+            IQueryOperationContext<IExpandCountOperation, TEntity, IODataQuery, ODataQueryableAdapter> context)
         {
             context.Data.AddQueryPart(ODataQueryPart.Expand,
                 ToExpandQuery(
-                    context.DataContext,
-                    context.Operation,
+                    context,
                     0));
         }
 
-        private string ToExpandQuery(
-            IDataContext context,
-            IExpandOperation expand, int index)
+        private string ToExpandQuery<TEntity>(
+            IQueryOperationContext<IExpandCountOperation, TEntity, IODataQuery, ODataQueryableAdapter> context,
+            int index) 
+            where TEntity : class
         {
-            if (index >= expand.ExpandDetails.Count)
+            if (index >= context.Operation.ExpandDetails.Count)
             {
                 return "";
             }
-            var detail = expand.ExpandDetails[index];
-            var expandProperty = detail.GetExpandProperty().Name + "/$count";
+            var detail = context.Operation.ExpandDetails[index];
+            var expandProperty = $"{detail.GetExpandProperty().Name}/$count";
             var expandOperations = "";
             expandOperations +=
-                detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true);
+                detail.TargetQueryable.ToQueryWithAdapter<IODataQuery, ODataQueryableAdapter>(
+                    new ODataQueryableAdapter(), 
+                    context.DataContext,
+                    context,
+                    context.Data)
+                    .ToODataQuery(true);
             expandOperations = expandOperations.Trim();
             if (!string.IsNullOrWhiteSpace(expandOperations))
             {

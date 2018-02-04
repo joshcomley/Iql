@@ -7,10 +7,10 @@ using Iql.Queryable.Operations.Applicators;
 namespace Iql.JavaScript.QueryToJavaScript
 {
     public class OrderByOperationApplicatorJavaScript : QueryOperationApplicator<OrderByOperation,
-        IJavaScriptQueryResult>
+        IJavaScriptQueryResult, JavaScriptQueryableAdapter>
     {
         public override void Apply<TEntity>(
-            IQueryOperationContext<OrderByOperation, TEntity, IJavaScriptQueryResult> context)
+            IQueryOperationContext<OrderByOperation, TEntity, IJavaScriptQueryResult, JavaScriptQueryableAdapter> context)
         {
             //var orderBy = JavaScriptQueryableAdapter.GetExpression(
             //    context.Operation,

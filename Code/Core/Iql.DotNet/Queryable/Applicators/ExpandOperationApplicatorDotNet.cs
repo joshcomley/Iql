@@ -15,20 +15,21 @@ namespace Iql.DotNet.Queryable.Applicators
         : DotNetQueryOperationApplicator<IExpandOperation>
     {
         protected override IEnumerable<TEntity> ApplyTyped<TEntity>(
-            IQueryOperationContext<IExpandOperation, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<IExpandOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             ParameterExpression root,
             IEnumerable<TEntity> typedList)
         {
             var expand = context.Operation;
             var dotNetQueryResult = context.Data;
-            return ApplyExpand(context.DataContext, typedList, expand, dotNetQueryResult);
+            return ApplyExpand(context, typedList, expand, dotNetQueryResult);
         }
 
         internal static IEnumerable<TEntity> ApplyExpand<TEntity>(
-            IDataContext dataContext,
+            IQueryOperationContext<IExpandOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             IEnumerable<TEntity> typedList, 
             IExpandOperation expand,
             IDotNetQueryResult dotNetQueryResult)
+            where TEntity : class
         {
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var j = 0; j < expand.ExpandDetails.Count; j++)
@@ -42,8 +43,12 @@ namespace Iql.DotNet.Queryable.Applicators
                 //var targetData = dotNetQueryResult.DataSetByType(targetType);
                 var targetExpression = expand.GetExpression() as IExpandQueryExpression;
                 var targetQueryable = targetExpression.GetQueryable();
-                var target = targetQueryable(dataContext.AsDbSetByType(targetType));
-                var targetQuery = target.ToQueryWithAdapterBase(new DotNetQueryableAdapter(), dataContext);
+                var target = targetQueryable(context.DataContext.AsDbSetByType(targetType));
+                var targetQuery = target.ToQueryWithAdapterBase(
+                    new DotNetQueryableAdapter(), 
+                    context.DataContext,
+                    context,
+                    context.Data);
                 //var targetQueryable = expand.ApplyQuery()
                 var targetData = targetQuery.ToList();
                 var targetList = targetData;

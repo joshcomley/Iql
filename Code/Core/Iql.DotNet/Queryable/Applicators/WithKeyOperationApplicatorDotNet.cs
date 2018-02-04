@@ -10,7 +10,7 @@ namespace Iql.DotNet.Queryable.Applicators
     public class WithKeyOperationApplicatorDotNet : DotNetQueryOperationApplicator<WithKeyOperation>
     {
         protected override IEnumerable<TEntity> ApplyTyped<TEntity>(
-            IQueryOperationContext<WithKeyOperation, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<WithKeyOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             ParameterExpression root,
             IEnumerable<TEntity> typedList)
         {

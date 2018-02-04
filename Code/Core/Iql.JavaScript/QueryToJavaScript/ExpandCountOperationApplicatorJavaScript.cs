@@ -4,9 +4,9 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class ExpandCountOperationApplicatorJavaScript : QueryOperationApplicator<IExpandCountOperation, IJavaScriptQueryResult>
+    public class ExpandCountOperationApplicatorJavaScript : QueryOperationApplicator<IExpandCountOperation, IJavaScriptQueryResult, JavaScriptQueryableAdapter>
     {
-        public override void Apply<TEntity>(IQueryOperationContext<IExpandCountOperation, TEntity, IJavaScriptQueryResult> context)
+        public override void Apply<TEntity>(IQueryOperationContext<IExpandCountOperation, TEntity, IJavaScriptQueryResult, JavaScriptQueryableAdapter> context)
         {
             ExpandOperationApplicatorJavaScript.ApplyExpand<TEntity>(
                 context.Operation,

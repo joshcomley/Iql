@@ -7,7 +7,7 @@ namespace Iql.DotNet.Queryable.Applicators
 {
     public class IncludeCountOperationApplicatorDotNet : DotNetQueryOperationApplicator<IncludeCountOperation>
     {
-        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<IncludeCountOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
+        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<IncludeCountOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context, ParameterExpression root, IEnumerable<TEntity> typedList)
         {
             //return ExpandOperationApplicatorDotNet.ApplyExpand(
             //    typedList,

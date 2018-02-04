@@ -35,8 +35,8 @@ namespace Hazception.ApiContext.Base
 			this.ODataConfiguration.RegisterEntitySet<Hazard>(nameof(Hazards));
 		
 		}
-		
-		public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration();
+
+		public ODataConfiguration ODataConfiguration { get; set; }		 = new ODataConfiguration();
 		
 		public override void Configure(EntityConfigurationBuilder builder)
 		{

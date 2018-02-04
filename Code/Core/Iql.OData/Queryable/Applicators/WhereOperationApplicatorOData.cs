@@ -3,9 +3,9 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.OData.Queryable.Applicators
 {
-    public class WhereOperationApplicatorOData : QueryOperationApplicator<WhereOperation, IODataQuery>
+    public class WhereOperationApplicatorOData : QueryOperationApplicator<WhereOperation, IODataQuery, ODataQueryableAdapter>
     {
-        public override void Apply<TEntity>(IQueryOperationContext<WhereOperation, TEntity, IODataQuery> context)
+        public override void Apply<TEntity>(IQueryOperationContext<WhereOperation, TEntity, IODataQuery, ODataQueryableAdapter> context)
         {
             var expression = ODataQueryableAdapter.GetExpression(context.Operation,
                 context.DataContext.EntityConfigurationContext);

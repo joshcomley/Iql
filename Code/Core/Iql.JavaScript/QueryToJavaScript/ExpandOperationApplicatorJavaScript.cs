@@ -9,10 +9,10 @@ using Iql.Queryable.Operations.Applicators;
 namespace Iql.JavaScript.QueryToJavaScript
 {
     public class ExpandOperationApplicatorJavaScript
-        : QueryOperationApplicator<IExpandOperation, IJavaScriptQueryResult>
+        : QueryOperationApplicator<IExpandOperation, IJavaScriptQueryResult, JavaScriptQueryableAdapter>
     {
         public override void Apply<TEntity>(
-            IQueryOperationContext<IExpandOperation, TEntity, IJavaScriptQueryResult> context)
+            IQueryOperationContext<IExpandOperation, TEntity, IJavaScriptQueryResult, JavaScriptQueryableAdapter> context)
         {
             var expand = context.Operation;
             var javaScriptQueryResult = context.Data;

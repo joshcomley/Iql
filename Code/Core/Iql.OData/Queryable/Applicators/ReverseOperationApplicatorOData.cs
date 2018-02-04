@@ -4,9 +4,9 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.OData.Queryable.Applicators
 {
-    public class ReverseOperationApplicatorOData : QueryOperationApplicator<ReverseOperation, IODataQuery>
+    public class ReverseOperationApplicatorOData : QueryOperationApplicator<ReverseOperation, IODataQuery, ODataQueryableAdapter>
     {
-        public override void Apply<TEntity>(IQueryOperationContext<ReverseOperation, TEntity, IODataQuery> context)
+        public override void Apply<TEntity>(IQueryOperationContext<ReverseOperation, TEntity, IODataQuery, ODataQueryableAdapter> context)
         {
             throw new NotImplementedException("Reverse is not supported for OData.");
         }

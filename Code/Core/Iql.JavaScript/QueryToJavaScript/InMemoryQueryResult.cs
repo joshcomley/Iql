@@ -4,7 +4,7 @@ using Iql.Queryable;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class InMemoryQueryResult<T> : QueryResult<T>
+    public class InMemoryQueryResult<T> : QueryResult<T, IQueryResultBase>
     {
         public override List<T> ToList()
         {

@@ -1,9 +1,10 @@
 namespace Iql.Queryable.Operations.Applicators
 {
-    public abstract class QueryOperationApplicator<TOperation, TQueryResult>
-        : IQueryOperationApplicator<TOperation, TQueryResult>
+    public abstract class QueryOperationApplicator<TOperation, TQueryResult, TQueryAdapter>
+        : IQueryOperationApplicator<TOperation, TQueryResult, TQueryAdapter>
         where TOperation : IQueryOperation
         where TQueryResult : IQueryResultBase
+        where TQueryAdapter : IQueryableAdapterBase
     {
         //public void apply(QueryOperationContext<TEntity> context)
         //{
@@ -13,7 +14,7 @@ namespace Iql.Queryable.Operations.Applicators
         //     let result = new QueryParser().parseRoot<TEntity, ODataParseResult, TApplicator, TQueryResult>(operation.getFilter(), new QueryExpressionAdapterOData<T>());
         //     let filter = result.expression(<TEntity>{});
         // }
-        public abstract void Apply<TEntity>(IQueryOperationContext<TOperation, TEntity, TQueryResult> context)
+        public abstract void Apply<TEntity>(IQueryOperationContext<TOperation, TEntity, TQueryResult, TQueryAdapter> context)
             where TEntity : class;
     }
 }

@@ -24,40 +24,6 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            //var flattened =
-            //    operation.Operation.DataContext.EntityConfigurationContext.FlattenObjectGraph(
-            //        operation.Operation.Entity, typeof(TEntity));
-            //object rootClone = null;
-            //foreach (var entity in flattened)
-            //{
-            //    var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-            //        .GetSourceByType(entity.EntityType);
-            //    var clone = entity.Entity.CloneAs(DataContext, entity.EntityType, RelationshipCloneMode.DoNotClone);
-            //    var configuration = operation.Operation.DataContext.EntityConfigurationContext.GetEntityByType(
-            //        entity.EntityType);
-            //    foreach (var key in configuration.Key.Properties)
-            //    {
-            //        var property = configuration.FindProperty(key.PropertyName);
-            //        if (property.Kind == PropertyKind.Key)
-            //        {
-            //            if (property.Type == typeof(int))
-            //            {
-            //                clone.SetPropertyValue(key.PropertyName, NextIdInteger(data, property));
-            //            }
-            //            else if (property.Type == typeof(string))
-            //            {
-            //                clone.SetPropertyValue(key.PropertyName, NextIdString(data, property));
-            //            }
-            //        }
-            //    }
-            //    data.Add(clone);
-            //    if (entity.Entity == operation.Operation.Entity)
-            //    {
-            //        rootClone = clone;
-            //    }
-            //}
-
-
             var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByType(operation.Operation.EntityType);
             var clone = operation.Operation.Entity.CloneAs(DataContext, operation.Operation.EntityType, RelationshipCloneMode.DoNotClone);
@@ -158,15 +124,12 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public override Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
-            //var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-            //    .GetSource<TEntity>();
-            var q = operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext);
-            //var q = operation.Operation.Queryable.ToQueryWithAdapter(new JavaScriptQueryableAdapter());
+            var q = operation.Operation.Queryable.ToQueryWithAdapterBase(
+                QueryableAdapter, 
+                DataContext, 
+                null,
+                null);
             operation.Result.Data = new DbList<TEntity>((List<TEntity>) q.ToList());
-            //var localQuery = new JavaScriptQuery<TEntity>(
-            //    operation.Operation.Queryable,
-            //    operation.Operation.DataContext);
-            //operation.Result.Data = localQuery.ToList();
             return Task.FromResult(operation.Result);
         }
     }

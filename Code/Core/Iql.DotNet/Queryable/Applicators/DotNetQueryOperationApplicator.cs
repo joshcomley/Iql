@@ -8,9 +8,9 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.DotNet.Queryable.Applicators
 {
-    public abstract class DotNetQueryOperationApplicator<T> : QueryOperationApplicator<T, IDotNetQueryResult> where T : IQueryOperation
+    public abstract class DotNetQueryOperationApplicator<T> : QueryOperationApplicator<T, IDotNetQueryResult, DotNetQueryableAdapter> where T : IQueryOperation
     {
-        public override void Apply<TEntity>(IQueryOperationContext<T, TEntity, IDotNetQueryResult> context)
+        public override void Apply<TEntity>(IQueryOperationContext<T, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context)
         {
             context.Data.Actions.Add(list =>
             {
@@ -23,13 +23,13 @@ namespace Iql.DotNet.Queryable.Applicators
         }
 
         protected abstract IEnumerable<TEntity> ApplyTyped<TEntity>(
-            IQueryOperationContext<T, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<T, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             ParameterExpression root,
             IEnumerable<TEntity> typedList)
             where TEntity : class;
 
         public virtual IEnumerable<TEntity> ApplyPropertyAction<TEntity, TProperty>(
-            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             IEnumerable<TEntity> list,
             Func<TEntity, TProperty> propertySelector) where TEntity : class
         {
@@ -37,7 +37,7 @@ namespace Iql.DotNet.Queryable.Applicators
         }
 
         public virtual IEnumerable<TEntity> ApplyWhereAction<TEntity, TProperty>(
-            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             IEnumerable<TEntity> list,
             Func<TEntity, bool> where) where TEntity : class
         {

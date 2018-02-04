@@ -8,7 +8,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.DotNet.Queryable
 {
-    public class DotNetQueryableAdapter : QueryableAdapter<IDotNetQueryResult>
+    public class DotNetQueryableAdapter : QueryableAdapter<IDotNetQueryResult, DotNetQueryableAdapter>
     {
         public DotNetQueryableAdapter()
         {

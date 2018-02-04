@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Iql.OData.Queryable.Applicators
 {
-    public class WithKeyOperationApplicatorOData : QueryOperationApplicator<WithKeyOperation, IODataQuery>
+    public class WithKeyOperationApplicatorOData : QueryOperationApplicator<WithKeyOperation, IODataQuery, ODataQueryableAdapter>
     {
-        public override void Apply<TEntity>(IQueryOperationContext<WithKeyOperation, TEntity, IODataQuery> context)
+        public override void Apply<TEntity>(IQueryOperationContext<WithKeyOperation, TEntity, IODataQuery, ODataQueryableAdapter> context)
         {
             context.Data.Key = context.Operation.Key;
             context.Data.HasKey = true;

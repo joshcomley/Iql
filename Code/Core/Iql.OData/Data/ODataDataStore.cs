@@ -72,7 +72,11 @@ namespace Iql.OData.Data
             var entitySetUri = ResolveEntitySetUri<TEntity>();
 
             var oDataQuery =
-                operation.Operation.Queryable.ToQueryWithAdapterBase(QueryableAdapter, DataContext) as IODataQuery;
+                operation.Operation.Queryable.ToQueryWithAdapterBase(
+                    QueryableAdapter, 
+                    DataContext,
+                    null,
+                    null) as IODataQuery;
             var queryString = oDataQuery.ToODataQuery();
             var fullQueryUri = $"{entitySetUri}{queryString}";
 

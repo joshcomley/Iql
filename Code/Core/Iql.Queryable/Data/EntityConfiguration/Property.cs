@@ -55,7 +55,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
             PropertyGetter = o =>
             {
                 var t = (TOwner) o;
-                var value = PropertyGetterTyped(t);
+                var propertyGetterTyped = PropertyGetterTyped;
+                var value = propertyGetterTyped(t);
                 return value;
             };
 

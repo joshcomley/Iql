@@ -21,7 +21,8 @@ namespace Iql.OData.Queryable
             Value = value;
         }
     }
-    public class ODataQuery<T> : QueryResult<T>, IODataQuery
+
+    public class ODataQuery<T> : QueryResult<T, IODataQuery>, IODataQuery
     {
         private Dictionary<ODataQueryPart, List<string>> QueryParts { get; }
             = new Dictionary<ODataQueryPart, List<string>>();

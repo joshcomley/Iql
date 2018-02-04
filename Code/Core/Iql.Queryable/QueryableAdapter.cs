@@ -6,9 +6,10 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.Queryable
 {
-    public abstract class QueryableAdapter<TQueryResult>
-        : IQueryableAdapter<TQueryResult>
+    public abstract class QueryableAdapter<TQueryResult, TQueryAdapter>
+        : IQueryableAdapter<TQueryResult, TQueryAdapter>
         where TQueryResult : IQueryResultBase
+        where TQueryAdapter : IQueryableAdapter<TQueryResult, TQueryAdapter>
     {
         private readonly Dictionary<Type, Func<IQueryOperationApplicatorBase>> _applicators =
             new Dictionary<Type, Func<IQueryOperationApplicatorBase>>();
@@ -55,7 +56,7 @@ namespace Iql.Queryable
 
         //public void registerApplicator<TOperation>(Func<IQueryOperationApplicator<TOperation, TQueryResult>> resolve) where TOperation : IQueryOperationBase
         public virtual void RegisterApplicator<TOperation>(
-            Func<IQueryOperationApplicator<TOperation, TQueryResult>> resolve)
+            Func<IQueryOperationApplicator<TOperation, TQueryResult, TQueryAdapter>> resolve)
             where TOperation : IQueryOperation
         {
             _applicators[typeof(TOperation)] = resolve;

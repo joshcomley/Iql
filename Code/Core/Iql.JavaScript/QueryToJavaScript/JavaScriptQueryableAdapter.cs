@@ -6,7 +6,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class JavaScriptQueryableAdapter : QueryableAdapter<IJavaScriptQueryResult>
+    public class JavaScriptQueryableAdapter : QueryableAdapter<IJavaScriptQueryResult, JavaScriptQueryableAdapter>
     {
         public JavaScriptQueryableAdapter()
         {

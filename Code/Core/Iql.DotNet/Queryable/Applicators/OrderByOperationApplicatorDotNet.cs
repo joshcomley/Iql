@@ -10,7 +10,7 @@ namespace Iql.DotNet.Queryable.Applicators
 {
     public class OrderByOperationApplicatorDotNet : DotNetQueryOperationApplicator<OrderByOperation>
     {
-        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
+        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context, ParameterExpression root, IEnumerable<TEntity> typedList)
         {
             var property = Expression.Property(root,
                 (context.Operation.Expression as IqlPropertyExpression).PropertyName);
@@ -21,7 +21,7 @@ namespace Iql.DotNet.Queryable.Applicators
         }
 
         public override IEnumerable<TEntity> ApplyPropertyAction<TEntity, TProperty>(
-            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<OrderByOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             IEnumerable<TEntity> list,
             Func<TEntity, TProperty> propertySelector)
         {

@@ -68,8 +68,9 @@ namespace Iql.Queryable.Native
                 if (targetDictionary.ContainsKey(sourceEntry.Key))
                 {
                     ItemAndList<TTarget, TSource> targetEntity = targetDictionary[sourceEntry.Key];
-                    foreach (var sourceEntity in sourceEntry.Value)
+                    for (var index = 0; index < sourceEntry.Value.Count; index++)
                     {
+                        var sourceEntity = sourceEntry.Value[index];
                         sourceEntity.SetPropertyValue(relationship.Source.Property, targetEntity.Item);
                         targetEntity.List.Add(sourceEntity);
                     }
@@ -82,8 +83,16 @@ namespace Iql.Queryable.Native
             {
                 foreach (var targetEntity in targetDictionary)
                 {
-                    targetEntity.Value.Item.SetPropertyValueByName(targetCountProperty.Name,
-                        targetEntity.Value.List.Count);
+                    if (targetCountProperty.PropertyInfo.PropertyType == typeof(long))
+                    {
+                        targetEntity.Value.Item.SetPropertyValue(targetCountProperty,
+                            (long)targetEntity.Value.List.Count);
+                    }
+                    else
+                    {
+                        targetEntity.Value.Item.SetPropertyValue(targetCountProperty,
+                            targetEntity.Value.List.Count);
+                    }
                 }
             }
             return source;

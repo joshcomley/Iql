@@ -9,7 +9,7 @@ namespace Iql.DotNet.Queryable.Applicators
     public class TakeOperationApplicatorDotNet
         : DotNetQueryOperationApplicator<TakeOperation>
     {
-        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<TakeOperation, TEntity, IDotNetQueryResult> context, ParameterExpression root, IEnumerable<TEntity> typedList)
+        protected override IEnumerable<TEntity> ApplyTyped<TEntity>(IQueryOperationContext<TakeOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context, ParameterExpression root, IEnumerable<TEntity> typedList)
         {
             return typedList.Take(context.Operation.Take).ToList();
         }

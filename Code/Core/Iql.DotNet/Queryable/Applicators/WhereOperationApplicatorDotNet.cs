@@ -10,7 +10,7 @@ namespace Iql.DotNet.Queryable.Applicators
     public class WhereOperationApplicatorDotNet : DotNetQueryOperationApplicator<WhereOperation>
     {
         protected override IEnumerable<TEntity> ApplyTyped<TEntity>(
-            IQueryOperationContext<WhereOperation, TEntity, IDotNetQueryResult> context,
+            IQueryOperationContext<WhereOperation, TEntity, IDotNetQueryResult, DotNetQueryableAdapter> context,
             ParameterExpression root,
             IEnumerable<TEntity> typedList)
         {

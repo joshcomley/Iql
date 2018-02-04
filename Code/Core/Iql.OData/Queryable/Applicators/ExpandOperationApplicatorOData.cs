@@ -5,29 +5,28 @@ using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.OData.Queryable.Applicators
 {
-    public class ExpandOperationApplicatorOData : QueryOperationApplicator<IExpandOperation, IODataQuery>
+    public class ExpandOperationApplicatorOData : QueryOperationApplicator<IExpandOperation, IODataQuery, ODataQueryableAdapter>
     {
-        public override void Apply<TEntity>(IQueryOperationContext<IExpandOperation, TEntity, IODataQuery> context)
+        public override void Apply<TEntity>(IQueryOperationContext<IExpandOperation, TEntity, IODataQuery, ODataQueryableAdapter> context)
         {
             context.Data.AddQueryPart(ODataQueryPart.Expand,
                 ToExpandQuery(
-                    context.DataContext,
-                    context.Operation,
+                    context,
                     0));
         }
 
-        private string ToExpandQuery(
-            IDataContext context,
-            IExpandOperation expand, int index)
+        private string ToExpandQuery<TEntity>(
+            IQueryOperationContext<IExpandOperation, TEntity, IODataQuery, ODataQueryableAdapter> context, 
+            int index) where TEntity : class
         {
-            if (index >= expand.ExpandDetails.Count)
+            if (index >= context.Operation.ExpandDetails.Count)
             {
                 return "";
             }
-            var detail = expand.ExpandDetails[index];
+            var detail = context.Operation.ExpandDetails[index];
             var expandProperty = detail.GetExpandProperty().Name;
             var expandOperations = "";
-            var nested = ToExpandQuery(context, expand, index + 1);
+            var nested = ToExpandQuery(context, index + 1);
             if (!string.IsNullOrWhiteSpace(nested))
             {
                 expandOperations += "$expand=";
@@ -35,7 +34,12 @@ namespace Iql.OData.Queryable.Applicators
             }
             //        if (index === expand.ExpandDetails.Count - 1 && expand.queryExpression.queryable) {
             expandOperations +=
-                detail.TargetQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true);
+                detail.TargetQueryable.ToQueryWithAdapter<IODataQuery, ODataQueryableAdapter>(
+                        new ODataQueryableAdapter(),
+                        context.DataContext,
+                        context,
+                        context.Data)
+                    .ToODataQuery(true);
                 //detail.IsTarget
                 //    ? detail.SourceQueryable.ToQueryWithAdapter(new ODataQueryableAdapter(), context).ToODataQuery(true)
                 //    : ;

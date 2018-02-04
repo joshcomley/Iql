@@ -6,7 +6,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.OData.Queryable
 {
-    public class ODataQueryableAdapter : QueryableAdapter<IODataQuery>
+    public class ODataQueryableAdapter : QueryableAdapter<IODataQuery, ODataQueryableAdapter>
     {
         public ODataQueryableAdapter()
         {

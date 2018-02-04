@@ -92,8 +92,9 @@ namespace Iql.Queryable.Data.Tracking
             var clone = Activator.CreateInstance(entityType);
             clonedObjects.Add(obj, clone);
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
-            foreach (var property in entityConfiguration.Properties)
+            for (var i = 0; i < entityConfiguration.Properties.Count; i++)
             {
+                var property = entityConfiguration.Properties[i];
                 switch (property.Kind)
                 {
                     case PropertyKind.Key:
@@ -113,8 +114,9 @@ namespace Iql.Queryable.Data.Tracking
                                     clone.SetPropertyValue(
                                         property,
                                         cloneRelationships == RelationshipCloneMode.KeysOnly
-                                        ? CloneKeysOnly(dataContext, property, value)
-                                        : value.CloneInternal(dataContext, property.ElementType, cloneRelationships, clonedObjects)
+                                            ? CloneKeysOnly(dataContext, property, value)
+                                            : value.CloneInternal(dataContext, property.ElementType, cloneRelationships,
+                                                clonedObjects)
                                     );
                                 }
                                 else
@@ -128,17 +130,21 @@ namespace Iql.Queryable.Data.Tracking
                                     {
                                         newValue = Activator.CreateInstance(value.GetType()) as IList;
                                     }
+
                                     var oldValue = value as IList;
                                     if (oldValue != null && newValue != null)
                                     {
-                                        foreach (var item in oldValue)
+                                        for (var j = 0; j < oldValue.Count; j++)
                                         {
+                                            var item = oldValue[j];
                                             newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
                                                 ? CloneKeysOnly(dataContext, property, item)
-                                                : item.CloneInternal(dataContext, property.ElementType, cloneRelationships,
+                                                : item.CloneInternal(dataContext, property.ElementType,
+                                                    cloneRelationships,
                                                     clonedObjects));
                                         }
                                     }
+
                                     clone.SetPropertyValue(
                                         property,
                                         newValue
@@ -146,9 +152,11 @@ namespace Iql.Queryable.Data.Tracking
                                 }
                             }
                         }
+
                         break;
                 }
             }
+
             return clone;
             //#if TypeScript
             //            return obj;
@@ -163,14 +171,16 @@ namespace Iql.Queryable.Data.Tracking
             var relationshipTypeConfiguration =
                 dataContext.EntityConfigurationContext.GetEntityByType(property.Relationship
                     .OtherEnd.Type);
-            foreach (var relationshipProperty in relationshipTypeConfiguration.Properties)
+            for (var i = 0; i < relationshipTypeConfiguration.Properties.Count; i++)
             {
+                var relationshipProperty = relationshipTypeConfiguration.Properties[i];
                 if (relationshipProperty.Kind == PropertyKind.Key)
                 {
                     newValue.SetPropertyValue(relationshipProperty,
                         value.GetPropertyValue(relationshipProperty));
                 }
             }
+
             return newValue;
         }
     }

@@ -5,13 +5,12 @@ using System.Text;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Native;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class JavaScriptQuery<T> : QueryResult<T>, IJavaScriptQueryResult
+    public class JavaScriptQuery<T> : QueryResult<T, IJavaScriptQueryResult>, IJavaScriptQueryResult
         where T : class
     {
         public JavaScriptQuery(IQueryable<T> queryable,
@@ -80,7 +79,8 @@ namespace Iql.JavaScript.QueryToJavaScript
                 var queryable = Types[i].Queryable;
                 if (queryable != null)
                 {
-                    var js = queryable.ToQueryWithAdapter(new JavaScriptQueryableAdapter(), DataContext)
+                    var js = queryable.ToQueryWithAdapter<IJavaScriptQueryResult, JavaScriptQueryableAdapter>(
+                            new JavaScriptQueryableAdapter(), DataContext, null, null)
                         .ToJavaScriptQuery(false);
                     typeDefs += js.Trim() + "\n\n";
                 }

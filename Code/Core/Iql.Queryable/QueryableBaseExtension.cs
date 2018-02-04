@@ -23,7 +23,9 @@ namespace Iql.Queryable
         public IQueryResultBase ToQueryWithAdapterBase
         (
             IQueryableAdapterBase adapter,
-            IDataContext dataContext
+            IDataContext dataContext,
+            IQueryOperationContextBase parentContext,
+            IQueryResultBase parentResult
         )
         {
             // if (!adapter) {
@@ -35,7 +37,7 @@ namespace Iql.Queryable
             //var adapter = new adapterCtor();
             adapter.Context = dataContext;
             adapter.Begin(dataContext);
-            var data = NewQueryData(adapter);
+            var data = NewQueryData(adapter, parentResult);            
             Queryable.Operations.ForEach(operation =>
             {
                 var applicator = adapter.ResolveApplicator(operation);
@@ -59,10 +61,13 @@ namespace Iql.Queryable
                 {
                     throw new Exception("Operation not supported: " + operation.ToString());
                 }
-                ApplyOperation(operation,
+                ApplyOperation(
+                    adapter,
+                    operation,
                     dataContext,
                     data,
-                    applicator);
+                    applicator,
+                    parentContext);
             });
             return data;
         }
@@ -73,8 +78,8 @@ namespace Iql.Queryable
             var adapter = new IqlQueryableAdapter();
             var applicator = adapter
                 .ResolveApplicator(operation);
-            var newQueryData = NewQueryData(adapter);
-            ApplyOperation(operation, dataContext, newQueryData, applicator);
+            var newQueryData = NewQueryData(adapter, null);
+            ApplyOperation(adapter, operation, dataContext, newQueryData, applicator, null);
             return new IqlReducer(
 #if TypeScript
                     operation.EvaluateContext ?? Queryable.EvaluateContext ?? dataContext.EvaluateContext
@@ -86,7 +91,7 @@ namespace Iql.Queryable
                 .ReduceStaticContent(operation.Expression);
         }
 
-        private IQueryResultBase NewQueryData(IQueryableAdapterBase adapter)
+        private IQueryResultBase NewQueryData(IQueryableAdapterBase adapter, IQueryResultBase parentResult)
         {
             var newQueryData =
                 (IQueryResultBase)adapter.GetType().GetMethod(nameof(adapter.NewQueryData)).MakeGenericMethod(
@@ -98,11 +103,17 @@ namespace Iql.Queryable
                         ,Queryable.ItemType
 #endif
                     });
+            newQueryData.ParentResult = parentResult;
             return newQueryData;
         }
 
-        private void ApplyOperation(IQueryOperation operation, IDataContext dataContext,
-            IQueryResultBase newQueryData, IQueryOperationApplicatorBase applicator)
+        private void ApplyOperation(
+            IQueryableAdapterBase adapter, 
+            IQueryOperation operation, 
+            IDataContext dataContext,
+            IQueryResultBase queryResult, 
+            IQueryOperationApplicatorBase applicator,
+            IQueryOperationContextBase parentContext)
         {
 #if TypeScript
             operation.EvaluateContext = operation.EvaluateContext ?? dataContext.EvaluateContext;
@@ -110,20 +121,30 @@ namespace Iql.Queryable
             var contextArgs = new List<object>();
             contextArgs.Add(dataContext);
             contextArgs.Add(operation);
-            contextArgs.Add(newQueryData);
+            contextArgs.Add(queryResult);
             contextArgs.Add(Queryable);
+            contextArgs.Add(adapter);
+            contextArgs.Add(parentContext);
             if (Platform.Name == "JavaScript")
             {
                 contextArgs.Add(null);
                 contextArgs.Add(null);
                 contextArgs.Add(null);
+                contextArgs.Add(null);
             }
-            var context = Activator.CreateInstance(
-                typeof(QueryOperationContext<,,>)
-                    .MakeGenericType(Queryable.ItemType, operation.GetType(), newQueryData.GetType()),
+            var context =  (IQueryOperationContextBase)
+                Activator.CreateInstance(
+                typeof(QueryOperationContext<,,,>)
+                    .MakeGenericType(
+                        Queryable.ItemType, 
+                        operation.GetType(), 
+                        queryResult.GetType(),
+                        adapter.GetType()
+                        ),
                 contextArgs.ToArray()
             );
-            var name = nameof(IQueryOperationApplicator<IExpressionQueryOperation, IQueryResultBase>.Apply);
+            queryResult.Context = context;
+            var name = nameof(IQueryOperationApplicator<IExpressionQueryOperation, IQueryResultBase, IQueryableAdapterBase>.Apply);
             var method = applicator.GetType()
                 .GetRuntimeMethods()
                 .First(m => m.Name == name)
