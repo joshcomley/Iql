@@ -11,5 +11,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         RelationshipKind Kind { get; }
         IRelationshipDetail Source { get; }
         IRelationshipDetail Target { get; }
+        string ConstraintKey { get; }
+        string QualifiedConstraintKey { get; }
     }
 }

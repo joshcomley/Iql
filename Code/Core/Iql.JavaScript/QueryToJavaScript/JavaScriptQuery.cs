@@ -33,7 +33,7 @@ namespace Iql.JavaScript.QueryToJavaScript
             var property = DataContext.EntityConfigurationContext.EntityType<T>()
                 .FindProperty(sourceProperty);
             new RelationshipExpander()
-                .FindTargetEntities(
+                .FindMatches(
                     source, 
                     target, 
                     property.Relationship.Relationship,

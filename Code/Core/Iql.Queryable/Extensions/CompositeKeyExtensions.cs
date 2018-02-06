@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Iql.Queryable.Data;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Extensions

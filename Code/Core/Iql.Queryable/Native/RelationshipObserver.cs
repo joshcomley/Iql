@@ -164,9 +164,9 @@ namespace Iql.Queryable.Native
                     switch (relationship.Relationship.Kind)
                     {
                         case RelationshipKind.OneToMany:
-                            if (_oneToTargetRelationshipKeyMaps.ContainsKey(relationship.Relationship))
+                            if (_oneToTargetRelationshipKeyMaps.ContainsKey(relationship.Relationship.QualifiedConstraintKey))
                             {
-                                var oneToManyKeyMaps = _oneToTargetRelationshipKeyMaps[relationship.Relationship];
+                                var oneToManyKeyMaps = _oneToTargetRelationshipKeyMaps[relationship.Relationship.QualifiedConstraintKey];
                                 if (oneToManyKeyMaps.ContainsKey(keyString))
                                 {
                                     PairOneToMany(relationship, entity, oneToManyKeyMaps[keyString]);
@@ -225,8 +225,8 @@ namespace Iql.Queryable.Native
             }
         }
 
-        private readonly Dictionary<IRelationship, Dictionary<string, object>> _oneToTargetRelationshipKeyMaps
-            = new Dictionary<IRelationship, Dictionary<string, object>>();
+        private readonly Dictionary<string, Dictionary<string, object>> _oneToTargetRelationshipKeyMaps
+            = new Dictionary<string, Dictionary<string, object>>();
         private readonly Dictionary<IRelationship, Dictionary<string, object>> _oneToOneSourceRelationshipKeyMaps
             = new Dictionary<IRelationship, Dictionary<string, object>>();
         private readonly Dictionary<IRelationship, Dictionary<object, object>> _oneToOneRelationshipReferenceMaps
@@ -276,17 +276,29 @@ namespace Iql.Queryable.Native
                 var key = relationship.Relationship.Target.GetCompositeKey(entity);
                 var keyString = key.AsKeyString(false);
                 Dictionary<string, object> dictionary;
-                if (!_oneToTargetRelationshipKeyMaps.ContainsKey(relationship.Relationship))
+                if (!_oneToTargetRelationshipKeyMaps.ContainsKey(relationship.Relationship.QualifiedConstraintKey))
                 {
                     dictionary = new Dictionary<string, object>();
-                    _oneToTargetRelationshipKeyMaps.Add(relationship.Relationship,
+                    _oneToTargetRelationshipKeyMaps.Add(relationship.Relationship.QualifiedConstraintKey,
                         dictionary);
                 }
                 else
                 {
-                    dictionary = _oneToTargetRelationshipKeyMaps[relationship.Relationship];
+                    dictionary = _oneToTargetRelationshipKeyMaps[relationship.Relationship.QualifiedConstraintKey];
                 }
-                dictionary.Add(keyString, entity);
+
+                if (dictionary.ContainsKey(keyString))
+                {
+                    var existing = dictionary[keyString];
+                    if (existing != entity)
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    dictionary.Add(keyString, entity);
+                }
             }
         }
 

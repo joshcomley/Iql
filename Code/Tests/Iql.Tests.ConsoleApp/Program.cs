@@ -43,16 +43,35 @@ namespace Iql.Tests.ConsoleApp
                 await dataContext
                     .ExamCandidateResults
                     //.Take(50)
-                    .Expand(e => e.Client)
-                    .Expand(e => e.Candidate)
-                    .Expand(e => e.CreatedByUser)
-                    .Expand(e => e.ExamCandidate)
-                    .Expand(e => e.Video)
-                    .Expand(e => e.Exam)
-                    .Expand(e => e.Results)
+                    //.Expand(e => e.Client)
+                    //.Expand(e => e.Candidate)
+                    //.Expand(e => e.CreatedByUser)
+                    //.Expand(e => e.ExamCandidate)
+                    //.Expand(e => e.Video)
+                    //.Expand(e => e.Exam)
+                    //.Expand(e => e.Results)
                     //.ExpandAll()
                     .ToList();
-            //examCandidateResults[0].ClickCount = 7;
+            var clients =
+                await dataContext
+                    .Clients
+                    //.Take(50)
+                    //.Expand(e => e.Client)
+                    //.Expand(e => e.Candidate)
+                    //.Expand(e => e.CreatedByUser)
+                    //.Expand(e => e.ExamCandidate)
+                    //.Expand(e => e.Video)
+                    //.Expand(e => e.Exam)
+                    //.Expand(e => e.Results)
+                    //.ExpandAll()
+                    .ToList();
+            var results =
+                await dataContext
+                    .ExamResults
+                    .ToList();
+            examCandidateResults[0].ClientId = clients[3].Id;
+            var examCandidateResult1 = examCandidateResults[0];
+            var examCandidateResult2 = examCandidateResults[1];
             stopwatch.Stop();
             Console.WriteLine($"Fetch data: {stopwatch.Elapsed} - {examCandidateResults.Count} entit{(examCandidateResults.Count == 1 ? "y" : "ies")}");
             Elapseds.Add(stopwatch.Elapsed.Ticks);

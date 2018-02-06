@@ -55,19 +55,28 @@ namespace Iql.DotNet.Queryable.Applicators
                 //context.Data.GetRoot()
                 if (detail.IsTarget)
                 {
-                    var temp = targetList;
-                    targetList = sourceList;
-                    sourceList = temp;
+                    var matched = context.Data.GetRoot()
+                        .RelationshipExpander
+                        .FindMatches(
+                            targetList,
+                            sourceList,
+                            detail.Relationship,
+                            false);
+                    context.Data.GetRoot().AddMatches(detail.Relationship.Source.Type,
+                        matched.SourceMatches);
                 }
-                sourceList = context.Data.GetRoot()
-                    .RelationshipExpander
-                    .FindTargetEntities(
-                        sourceList,
-                        targetList,
-                        detail.Relationship,
-                        false);
-                context.Data.GetRoot().AddMatches(detail.Relationship.Target.Type,
-                    sourceList);
+                else
+                {
+                    var matched = context.Data.GetRoot()
+                        .RelationshipExpander
+                        .FindMatches(
+                            sourceList,
+                            targetList,
+                            detail.Relationship,
+                            false);
+                    context.Data.GetRoot().AddMatches(detail.Relationship.Target.Type,
+                        matched.TargetMatches);
+                }
                 //switch (detail.Relationship.Type)
                 //{
                 //    case RelationshipType.OneToOne:

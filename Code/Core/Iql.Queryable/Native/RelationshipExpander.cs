@@ -11,6 +11,17 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Native
 {
+    public class RelationshipMatches
+    {
+        public IList SourceMatches { get; set; }
+        public IList TargetMatches { get; set; }
+
+        public RelationshipMatches(IList sourceMatches, IList targetMatches)
+        {
+            SourceMatches = sourceMatches;
+            TargetMatches = targetMatches;
+        }
+    }
     public class RelationshipExpander
     {
         static RelationshipExpander()
@@ -34,14 +45,14 @@ namespace Iql.Queryable.Native
                 .GetMethod(methodName);
         }
 
-        public IList FindTargetEntities(
+        public RelationshipMatches FindMatches(
             IList source,
             IList target,
             IRelationship relationship,
             bool assignRelationships
         )
         {
-            source = InvokeFindTargetEntities(
+            var result = InvokeFindTargetEntities(
                 source,
                 target,
                 relationship,
@@ -49,17 +60,17 @@ namespace Iql.Queryable.Native
                     ? OneToOneMethod
                     : OneToManyMethod,
                 assignRelationships);
-            return source;
+            return result;
         }
 
-        private IList InvokeFindTargetEntities(
-            IList source, 
-            IList target, 
-            IRelationship relationship, 
+        private RelationshipMatches InvokeFindTargetEntities(
+            IList source,
+            IList target,
+            IRelationship relationship,
             MethodInfo method,
             bool assignRelationships)
         {
-            return (IList)
+            return (RelationshipMatches)
                 method.InvokeGeneric(
                         this,
                         new object[]
@@ -73,14 +84,15 @@ namespace Iql.Queryable.Native
                         relationship.Target.Type);
         }
 
-        public List<TTarget> FindOneToOneMatchesTyped<TSource, TTarget>(
+        public RelationshipMatches FindOneToOneMatchesTyped<TSource, TTarget>(
             List<TSource> source,
             List<TTarget> target,
             IRelationship relationship,
             bool assignRelationships
         )
         {
-            var matches = new List<TTarget>();
+            var targetMatches = new List<TTarget>();
+            var sourceMatches = new List<TSource>();
             var sourceProperty = relationship.Source.Property;
             var targetProperty = relationship.Target.Property;
             var sourceTargetKeyProperty = relationship.Constraints.Select(r => r.SourceKeyProperty).First();
@@ -96,7 +108,8 @@ namespace Iql.Queryable.Native
                     var targetEntity = target[j];
                     if (Equals(targetEntity.GetPropertyValue(targetKeyProperty), targetKey))
                     {
-                        matches.Add(targetEntity);
+                        sourceMatches.Add(sourceEntity);
+                        targetMatches.Add(targetEntity);
                         if (assignRelationships)
                         {
                             sourceEntity.SetPropertyValue(sourceProperty, targetEntity);
@@ -106,10 +119,10 @@ namespace Iql.Queryable.Native
                     }
                 }
             }
-            return matches;
+            return new RelationshipMatches(sourceMatches, targetMatches);
         }
 
-        public List<TTarget> FindOneToManyMatchesTyped<TSource, TTarget>(
+        public RelationshipMatches FindOneToManyMatchesTyped<TSource, TTarget>(
             List<TSource> source,
             List<TTarget> target,
             IRelationship relationship,
@@ -118,7 +131,8 @@ namespace Iql.Queryable.Native
             where TSource : class
             where TTarget : class
         {
-            var matches = new List<TTarget>();
+            var targetMatches = new List<TTarget>();
+            var sourceMatches = new List<TSource>();
             var sourceDictionary = GroupByRelationship(
                 source,
                 relationship.Source);
@@ -142,7 +156,8 @@ namespace Iql.Queryable.Native
                 if (targetDictionary.ContainsKey(sourceEntry.Key))
                 {
                     var targetEntity = targetDictionary[sourceEntry.Key];
-                    matches.Add(targetEntity.Item);
+                    targetMatches.Add(targetEntity.Item);
+                    sourceMatches.AddRange((List<TSource>)sourceEntry.Value);
                     if (assignRelationships)
                     {
                         for (var index = 0; index < sourceEntry.Value.Count; index++)
@@ -180,7 +195,7 @@ namespace Iql.Queryable.Native
                     }
                 }
             }
-            return matches;
+            return new RelationshipMatches(sourceMatches, targetMatches);
         }
 
         private class EntityRelationships<T>
