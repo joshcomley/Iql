@@ -15,12 +15,12 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             Type sourceElementType,
             Expression<Func<TTarget, TTargetProperty>> targetProperty,
             Type targetElementType,
-            RelationshipType type)
+            RelationshipKind kind)
         {
             _configuration = configuration;
             SourceElementType = sourceElementType;
             TargetElementType = targetElementType;
-            Type = type;
+            Kind = kind;
             Constraints = new List<IRelationshipConstraint>();
             Source = new RelationshipDetail<TSource, TSourceProperty>(this, RelationshipSide.Source, configuration, sourceProperty, targetElementType);
             Target = new RelationshipDetail<TTarget, TTargetProperty>(this, RelationshipSide.Target, configuration, targetProperty, sourceElementType);
@@ -29,7 +29,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public List<IRelationshipConstraint> Constraints { get; }
         public Type SourceElementType { get; }
         public Type TargetElementType { get; }
-        public RelationshipType Type { get; set; }
+        public RelationshipKind Kind { get; set; }
         public IRelationshipDetail Source { get; }
         public IRelationshipDetail Target { get; }
 

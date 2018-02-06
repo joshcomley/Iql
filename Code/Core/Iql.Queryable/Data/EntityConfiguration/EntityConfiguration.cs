@@ -84,7 +84,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     if (ends[i].Configuration == this)
                     {
                         var relationshipMatch = new RelationshipMatch(relationship, i == 1);
-                        if (relationship.Type == RelationshipType.OneToOne && nested)
+                        if (relationship.Kind == RelationshipKind.OneToOne && nested)
                         {
                             //var matches = (List<RelationshipMatch>)GetType().GetMethod(nameof(FindAllRelationships),
                             //    BindingFlags.Instance | BindingFlags.NonPublic)

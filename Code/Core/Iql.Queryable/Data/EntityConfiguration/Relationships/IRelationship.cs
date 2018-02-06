@@ -8,7 +8,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         //RelationshipMultiplicity SourceMultiplicity { get; }
         //RelationshipMultiplicity TargetMultiplicity { get; }
         List<IRelationshipConstraint> Constraints { get; }
-        RelationshipType Type { get; }
+        RelationshipKind Kind { get; }
         IRelationshipDetail Source { get; }
         IRelationshipDetail Target { get; }
     }

@@ -301,17 +301,17 @@ namespace Iql.Queryable.Data
                         : relationship.Target.Property;
                     if (isSource)
                     {
-                        switch (relationship.Type)
+                        switch (relationship.Kind)
                         {
-                            case RelationshipType.OneToMany:
-                            case RelationshipType.OneToOne:
+                            case RelationshipKind.OneToMany:
+                            case RelationshipKind.OneToOne:
                                 typedEntity.SetPropertyValue(propertyName,
                                     EnsureTypedEntityByType(
                                         entity.GetPropertyValue(propertyName),
                                         relationship.Target.Type
                                     ));
                                 break;
-                            case RelationshipType.ManyToMany:
+                            case RelationshipKind.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
                                     EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Source.Type, entity, relationship.Target.Type));
                                 break;
@@ -319,17 +319,17 @@ namespace Iql.Queryable.Data
                     }
                     else
                     {
-                        switch (relationship.Type)
+                        switch (relationship.Kind)
                         {
-                            case RelationshipType.OneToOne:
+                            case RelationshipKind.OneToOne:
                                 typedEntity.SetPropertyValue(propertyName,
                                     EnsureTypedEntityByType(
                                         entity.GetPropertyValue(propertyName),
                                         relationship.Source.Type)
                                 );
                                 break;
-                            case RelationshipType.OneToMany:
-                            case RelationshipType.ManyToMany:
+                            case RelationshipKind.OneToMany:
+                            case RelationshipKind.ManyToMany:
                                 typedEntity.SetPropertyValue(propertyName,
                                     EnsureTypedListByType(
                                         (IEnumerable)entity.GetPropertyValue(propertyName),

@@ -17,14 +17,18 @@ namespace Iql.Tests.ConsoleApp
 
             new HazceptionDataStore().GetData();
             //await Run();
-            for (var i = 0; i < 10; i++)
+            var runCount = 1;
+            for (var i = 0; i < runCount; i++)
             {
                 await Run();
             }
 
             Console.WriteLine();
             Console.WriteLine($"Average: {new TimeSpan((long)Elapseds.Average())}");
-            Console.WriteLine($"Average (normalised): {new TimeSpan((long)Elapseds.Skip(1).Average())}");
+            if (runCount > 1)
+            {
+                Console.WriteLine($"Average (normalised): {new TimeSpan((long)Elapseds.Skip(1).Average())}");
+            }
             Console.WriteLine($"Total: {new TimeSpan((long)Elapseds.Sum())}");
         }
 

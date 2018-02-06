@@ -14,14 +14,14 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             Type sourceElementType,
             Expression<Func<TTarget, TTargetProperty>> targetProperty,
             Type targetElementType,
-            RelationshipType type) :
+            RelationshipKind kind) :
             base(
                 configuration,
                 sourceProperty,
                 sourceElementType,
                 targetProperty,
                 targetElementType,
-                type)
+                kind)
         {
         }
     }

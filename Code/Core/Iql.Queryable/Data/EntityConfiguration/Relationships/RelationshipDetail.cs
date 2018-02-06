@@ -20,12 +20,12 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             //var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
             //    IqlPropertyExpression;
             Property = Configuration.FindOrDefineProperty<TProperty>(expression, elementType);
-            switch (relationship.Type)
+            switch (relationship.Kind)
             {
-                case RelationshipType.ManyToMany:
+                case RelationshipKind.ManyToMany:
                     IsCollection = true;
                     break;
-                case RelationshipType.OneToMany:
+                case RelationshipKind.OneToMany:
                     IsCollection = relationshipSide == RelationshipSide.Target;
                     break;
             }

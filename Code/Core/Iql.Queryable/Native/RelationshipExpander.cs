@@ -45,7 +45,7 @@ namespace Iql.Queryable.Native
                 source,
                 target,
                 relationship,
-                relationship.Type == RelationshipType.OneToOne
+                relationship.Kind == RelationshipKind.OneToOne
                     ? OneToOneMethod
                     : OneToManyMethod,
                 assignRelationships);

@@ -50,11 +50,11 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                         var newId = clone.GetPropertyValue(property);
                         foreach (var relationship in configuration.Relationships)
                         {
-                            switch (relationship.Type)
+                            switch (relationship.Kind)
                             {
-                                case RelationshipType.OneToOne:
+                                case RelationshipKind.OneToOne:
                                     break;
-                                case RelationshipType.OneToMany:
+                                case RelationshipKind.OneToMany:
                                     break;
                             }
                         }

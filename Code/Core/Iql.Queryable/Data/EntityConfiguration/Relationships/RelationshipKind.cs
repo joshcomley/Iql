@@ -1,6 +1,6 @@
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
-    public enum RelationshipType
+    public enum RelationshipKind
     {
         OneToOne,
         OneToMany,

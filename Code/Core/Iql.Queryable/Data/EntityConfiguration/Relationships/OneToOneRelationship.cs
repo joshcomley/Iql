@@ -16,7 +16,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             typeof(TSource),
             targetProperty,
             typeof(TTarget),
-            RelationshipType.OneToOne)
+            RelationshipKind.OneToOne)
         {
         }
     }

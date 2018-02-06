@@ -32,16 +32,16 @@ namespace Iql.JavaScript.QueryToJavaScript
                 types.Add(new ExpandEntityType(detail.Relationship.Source.Type, detail.SourceQueryable));
                 types.Add(new ExpandEntityType(detail.Relationship.Target.Type, detail.TargetQueryable));
                 var expandMethodName = nameof(JavaScriptQuery<object>.Expand);
-                switch (detail.Relationship.Type)
+                switch (detail.Relationship.Kind)
                 {
-                    case RelationshipType.ManyToMany:
+                    case RelationshipKind.ManyToMany:
                         throw new NotSupportedException("Expanding many to many relationships are not yet supported.");
                         break;
                 }
                 query += "\nthis." + expandMethodName + "(";
                 query += javaScriptQueryResult.GetDataSetObjectName(sourceType) + ",";
                 query += javaScriptQueryResult.GetDataSetObjectName(targetType) + ",";
-                if (detail.Relationship.Type == RelationshipType.ManyToMany)
+                if (detail.Relationship.Kind == RelationshipKind.ManyToMany)
                 {
                     var manyToMany = detail.Relationship as IManyToManyRelationship;
                     types.Add(new ExpandEntityType(manyToMany.PivotType));
