@@ -49,7 +49,7 @@ namespace Iql.Tests.ConsoleApp
                     //.ExpandAll()
                     .ToList();
             stopwatch.Stop();
-            Console.WriteLine($"Fetch data: {stopwatch.Elapsed}");
+            Console.WriteLine($"Fetch data: {stopwatch.Elapsed} - {examCandidateResults.Count} entit{(examCandidateResults.Count == 1 ? "y" : "ies")}");
             Elapseds.Add(stopwatch.Elapsed.Ticks);
         }
     }

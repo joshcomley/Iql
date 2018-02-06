@@ -31,15 +31,9 @@ namespace Iql.JavaScript.QueryToJavaScript
                 var targetType = detail.Relationship.Target.Type;
                 types.Add(new ExpandEntityType(detail.Relationship.Source.Type, detail.SourceQueryable));
                 types.Add(new ExpandEntityType(detail.Relationship.Target.Type, detail.TargetQueryable));
-                var expandMethodName = "";
+                var expandMethodName = nameof(JavaScriptQuery<object>.Expand);
                 switch (detail.Relationship.Type)
                 {
-                    case RelationshipType.OneToOne:
-                        expandMethodName = nameof(ListExtensions.ExpandOneToOne);
-                        break;
-                    case RelationshipType.OneToMany:
-                        expandMethodName = nameof(ListExtensions.ExpandOneToMany);
-                        break;
                     case RelationshipType.ManyToMany:
                         throw new NotSupportedException("Expanding many to many relationships are not yet supported.");
                         break;

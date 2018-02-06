@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
@@ -104,17 +105,12 @@ namespace Iql.Queryable.Data
             var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
             var keyType = entityKey.KeyType;
             return (IDbSet)GetType().GetMethod(nameof(AsDbSet))
-                .MakeGenericMethod(
+                .InvokeGeneric(
+                    this,
+                    new object[] {},
                     entityType,
                     keyType
-                    )
-                .Invoke(this, new object[]
-                {
-#if TypeScript
-                    entityType,
-                    keyType
-#endif
-                });
+                    );
         }
 
         private bool _initialized;

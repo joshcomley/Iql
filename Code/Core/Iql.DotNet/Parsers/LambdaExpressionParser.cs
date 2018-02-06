@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Extensions;
 
 namespace Iql.DotNet.Parsers
 {
@@ -16,8 +17,7 @@ namespace Iql.DotNet.Parsers
             return (IqlExpression) typeof(LambdaExpressionParser<T>)
                 .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
                 .Single(m => m.Name == nameof(VisitLambda) && m.ContainsGenericParameters)
-                .MakeGenericMethod(node.Type)
-                .Invoke(this, new object[] {node, context});
+                .InvokeGeneric(this, new object[] {node, context}, node.Type);
         }
 
         protected IqlExpression VisitLambda<TLambda>(Expression<TLambda> lambda, ExpressionParserContext context)

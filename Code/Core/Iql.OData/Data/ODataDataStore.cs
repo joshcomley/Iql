@@ -37,13 +37,13 @@ namespace Iql.OData.Data
     } // ReSharper disable once ClassNeverInstantiated.Local
 #pragma warning restore IDE1006 // Naming Styles
 
-    internal class ODataGetResult<T>
-    {
-        public int? Count { get; set; }
+    //internal class ODataGetResult<T>
+    //{
+    //    public int? Count { get; set; }
 
-        // ReSharper disable once InconsistentNaming
-        public T Value { get; set; }
-    }
+    //    // ReSharper disable once InconsistentNaming
+    //    public T Value { get; set; }
+    //}
 
     public class ODataDataStore : DataStore
     {
@@ -64,7 +64,7 @@ namespace Iql.OData.Data
             return GetConfiguration().HttpProvider;
         }
 
-        public override async Task<GetDataResult<TEntity>> PerformGet<TEntity>(
+        public override async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
             var configuration = GetConfiguration();
@@ -91,21 +91,22 @@ namespace Iql.OData.Data
                     odataResultRoot.ToObject<TEntity>();
                     //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
                 var enumerable = new[] {oDataGetResult};
-                operation.Result.Data =
-                    new DbList<TEntity>(enumerable);
+                operation.Result.AddDataArray(enumerable);
             }
             else
             {
                 var odataResultRoot = JObject.Parse(httpResult.ResponseData);
                 ParseObj(odataResultRoot);
-                var oDataGetResult = new ODataGetResult<DbList<TEntity>>();
                 var countToken = odataResultRoot["Count"];
-                oDataGetResult.Count = countToken?.ToObject<int?>();
+                var count = countToken?.ToObject<int?>();
                 var values = odataResultRoot["value"].ToObject<TEntity[]>();
-                oDataGetResult.Value = new DbList<TEntity>(values);
-                operation.Result.Data =
-                    oDataGetResult.Value;
-                operation.Result.TotalCount = oDataGetResult.Count;
+                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
+                    typeof(TEntity),
+                    values);
+                operation.Result.Data = flattened;
+                //operation.Result.Data =
+                //    oDataGetResult.Value;
+                operation.Result.TotalCount = count;
             }
             return operation.Result;
         }

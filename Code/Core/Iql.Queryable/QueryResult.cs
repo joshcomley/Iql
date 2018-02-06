@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using Iql.Queryable.Operations.Applicators;
 
 namespace Iql.Queryable
 {
-    public abstract class QueryResult<T, TQueryResult> : IQueryResult<T>
+    public abstract class QueryResult<TQueryResult> : IQueryResultBase
         where TQueryResult : IQueryResultBase
     {
         public TQueryResult ParentResult { get; set; }
@@ -15,11 +13,5 @@ namespace Iql.Queryable
         }
 
         public IQueryOperationContextBase Context { get; set; }
-        public abstract List<T> ToList();
-
-        IList IQueryResultBase.ToList()
-        {
-            return ToList();
-        }
     }
 }

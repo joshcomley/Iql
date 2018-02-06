@@ -14,11 +14,5 @@ namespace Iql.Queryable
 
         public IQueryResultBase ParentResult { get; set; }
         public IQueryOperationContextBase Context { get; set; }
-
-        IList IQueryResultBase.ToList()
-        {
-            throw new NotImplementedException();
-            //return ToList();
-        }
     }
 }

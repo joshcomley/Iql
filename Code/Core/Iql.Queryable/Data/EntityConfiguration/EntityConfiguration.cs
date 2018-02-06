@@ -29,14 +29,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private IProperty FindOrDefinePropertyInternal(LambdaExpression lambda, Type propertyType, Type elementType)
         {
             return (IProperty)GetType().GetRuntimeMethods().First(m => m.Name == nameof(FindOrDefineProperty))
-                .MakeGenericMethod(propertyType)
-                .Invoke(this, new object[]
+                .InvokeGeneric(this, new object[]
                 {
                     lambda, elementType
-#if TypeScript
-                    , elementType
-#endif
-                });
+                }, propertyType);
         }
 
         public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType)
@@ -310,18 +306,16 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 propertyType = propertyType.GenericTypeArguments[0];
             }
 #endif
-            var method = GetType()
-                    .GetRuntimeMethods()
-                    .First(m => m.Name == nameof(DefineCollectionPropertyInternal))
-                    .MakeGenericMethod(propertyRuntimeType, propertyType)
+            GetType()
+                .GetRuntimeMethods()
+                .First(m => m.Name == nameof(DefineCollectionPropertyInternal))
+                .InvokeGeneric(this,
+                    new object[]
+                    {
+                        lambda, countProperty
+                    },
+                    propertyRuntimeType, propertyType)
                 ;
-            method.Invoke(this, new object[]
-            {
-                lambda, countProperty
-#if TypeScript
-                , propertyRuntimeType, elementType
-#endif
-            });
         }
 
         private EntityConfiguration<T> DefineCollectionPropertyInternal<TValueType, TElementType>(

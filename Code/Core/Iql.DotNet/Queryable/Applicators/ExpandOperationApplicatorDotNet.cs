@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.Queryable;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Expressions.QueryExpressions;
-using Iql.Queryable.Native;
+using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
 
@@ -44,52 +43,60 @@ namespace Iql.DotNet.Queryable.Applicators
                 var targetExpression = expand.GetExpression() as IExpandQueryExpression;
                 var targetQueryable = targetExpression.GetQueryable();
                 var target = targetQueryable(context.DataContext.AsDbSetByType(targetType));
-                var targetQuery = target.ToQueryWithAdapterBase(
+                var targetQuery = (IDotNetQueryResult)target.ToQueryWithAdapterBase(
                     new DotNetQueryableAdapter(), 
                     context.DataContext,
                     context,
                     context.Data);
                 //var targetQueryable = expand.ApplyQuery()
-                var targetData = targetQuery.ToList();
+                var targetData = targetQuery.GetResults()[detail.TargetQueryable.ItemType];
                 var targetList = targetData;
                 var sourceList = (IList) typedList;
+                //context.Data.GetRoot()
                 if (detail.IsTarget)
                 {
                     var temp = targetList;
                     targetList = sourceList;
                     sourceList = temp;
                 }
-                switch (detail.Relationship.Type)
-                {
-                    case RelationshipType.OneToOne:
-                        sourceList.ExpandOneToOne(
-                            targetList,
-                            detail.Relationship);
-                        break;
-                    case RelationshipType.OneToMany:
-                        sourceList.ExpandOneToMany(
-                            targetList,
-                            detail.Relationship);
-                        break;
-                    //case RelationshipType.ManyToMany:
-                    //    var manyToMany = detail.Relationship as IManyToManyRelationship;
-                    //    typedList.ExpandManyToMany(
-                    //        sourceType,
-                    //        targetType,
-                    //        targetList,
-                    //        dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
-                    //        detail.IsTarget
-                    //            ? manyToMany.PivotTargetKeyProperty.PropertyName
-                    //            : manyToMany.PivotSourceKeyProperty.PropertyName,
-                    //        detail.IsTarget
-                    //            ? manyToMany.PivotSourceKeyProperty.PropertyName
-                    //            : manyToMany.PivotTargetKeyProperty.PropertyName,
-                    //        thisEnd.Property.Name,
-                    //        otherEnd.Property.Name,
-                    //        thisConstraint.Name,
-                    //        otherConstraint.Name);
-                    //    break;
-                }
+                sourceList = context.Data.GetRoot()
+                    .RelationshipExpander
+                    .FindTargetEntities(
+                        sourceList,
+                        targetList,
+                        detail.Relationship,
+                        false);
+                context.Data.GetRoot().AddMatches(detail.Relationship.Target.Type,
+                    sourceList);
+                //switch (detail.Relationship.Type)
+                //{
+                //    case RelationshipType.OneToOne:
+                //        .ExpandOneToOne(
+                //            sourceList,
+                //            targetList,
+                //            detail.Relationship);
+                //        break;
+                //    case RelationshipType.OneToMany:
+                //        break;
+                //    //case RelationshipType.ManyToMany:
+                //    //    var manyToMany = detail.Relationship as IManyToManyRelationship;
+                //    //    typedList.ExpandManyToMany(
+                //    //        sourceType,
+                //    //        targetType,
+                //    //        targetList,
+                //    //        dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
+                //    //        detail.IsTarget
+                //    //            ? manyToMany.PivotTargetKeyProperty.PropertyName
+                //    //            : manyToMany.PivotSourceKeyProperty.PropertyName,
+                //    //        detail.IsTarget
+                //    //            ? manyToMany.PivotSourceKeyProperty.PropertyName
+                //    //            : manyToMany.PivotTargetKeyProperty.PropertyName,
+                //    //        thisEnd.Property.Name,
+                //    //        otherEnd.Property.Name,
+                //    //        thisConstraint.Name,
+                //    //        otherConstraint.Name);
+                //    //    break;
+                //}
             }
             return typedList;
         }

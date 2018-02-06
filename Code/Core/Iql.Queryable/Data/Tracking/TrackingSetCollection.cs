@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Extensions;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Exceptions;
@@ -58,13 +59,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var set = (ITrackingSet)typeof(TrackingSetCollection).GetRuntimeMethods()
                     .First(m => m.Name == nameof(TrackingSet))
-                    .MakeGenericMethod(type)
-                    .Invoke(this, new object[]
-                    {
-#if TypeScript
-                    type
-#endif
-                    });
+                    .InvokeGeneric(this, new object[] { }, type);
                 return set;
             }
             return SetsMap[type.Name];
@@ -79,7 +74,7 @@ namespace Iql.Queryable.Data.Tracking
                 SetsMap[type.Name] = set;
                 Sets.Add(set);
             }
-            return (TrackingSet<T>) SetsMap[type.Name];
+            return (TrackingSet<T>)SetsMap[type.Name];
         }
 
         //public bool IsTracked(object entity, Type entityType)
@@ -143,14 +138,11 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var filteredOperation = GetType()
                     .GetMethod(nameof(Filter))
-                    .MakeGenericMethod(operation.Operation.EntityType)
-                    .Invoke(this, new object[]
+                    .InvokeGeneric(this, new object[]
                     {
                         operation
-#if TypeScript // The type info
-                        , operation.Operation.EntityType
-#endif
-                    }) as IQueuedOperation;
+                    }, operation.Operation.EntityType)
+                    as IQueuedOperation;
                 if (filteredOperation != null)
                 {
                     queue.Add(filteredOperation);

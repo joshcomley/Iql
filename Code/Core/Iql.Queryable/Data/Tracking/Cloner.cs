@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Extensions;
 using TypeSharp.Extensions;
@@ -69,15 +70,16 @@ namespace Iql.Queryable.Data.Tracking
                 var listType = (obj as IList).GetListType();
                 var listElementType = listType.GetGenericArguments().First();
                 var newList = CloneListMethod
-                    .MakeGenericMethod(listElementType)
-                    .Invoke(null, new object[]
-                    {
-                        obj,
-                        dataContext,
-                        entityType,
-                        cloneRelationships,
-                        clonedObjects
-                    });
+                        .InvokeGeneric(null,
+                        new []
+                        {
+                            obj,
+                            dataContext,
+                            entityType,
+                            cloneRelationships,
+                            clonedObjects
+                        },
+                        listElementType);
                 return newList;
                 //var collection = Activator.CreateInstance(obj.GetType()) as IList;
                 //clonedObjects.Add(obj, collection);

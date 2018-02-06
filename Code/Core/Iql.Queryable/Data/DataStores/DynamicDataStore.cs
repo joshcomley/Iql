@@ -42,7 +42,7 @@ namespace Iql.Queryable.Data.DataStores
             return await GetDataStore().PerformDelete(operation);
         }
 
-        public override async Task<GetDataResult<TEntity>> PerformGet<TEntity>(
+        public override async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
             return await GetDataStore().PerformGet(operation);

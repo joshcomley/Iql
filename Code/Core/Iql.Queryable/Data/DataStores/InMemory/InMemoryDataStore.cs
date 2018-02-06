@@ -122,14 +122,16 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             return Task.FromResult(operation.Result);
         }
 
-        public override Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        public override Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
-            var q = operation.Operation.Queryable.ToQueryWithAdapterBase(
+            var q = (IInMemoryResult)
+                operation.Operation.Queryable.ToQueryWithAdapterBase(
                 QueryableAdapter, 
                 DataContext, 
                 null,
                 null);
-            operation.Result.Data = new DbList<TEntity>((List<TEntity>) q.ToList());
+            var lists = q.GetResults();
+            operation.Result.Data = lists;
             return Task.FromResult(operation.Result);
         }
     }

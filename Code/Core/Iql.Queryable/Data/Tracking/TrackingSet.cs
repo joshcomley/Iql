@@ -116,39 +116,39 @@ namespace Iql.Queryable.Data.Tracking
 
         public void TrackEntities(IList data, bool isNew = true)
         {
-            return;
-            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
-                typeof(T), data);
-            var states = new List<IEntityStateBase>();
-            foreach (var flattenedEntity in flattened)
-            {
-                var trackingSet = TrackingSetCollection.TrackingSetByType(flattenedEntity.EntityType)
-                    as TrackingSetBase;
-                states.Add(trackingSet.TrackEntityInternal(flattenedEntity.Entity, null, isNew));
-            }
+            //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
+            //    typeof(T), data);
+            //var states = new List<IEntityStateBase>();
+            //foreach (var flattenedEntity in flattened)
+            //{
+            //    var trackingSet = TrackingSetCollection.TrackingSetByType(flattenedEntity.EntityType)
+            //        as TrackingSetBase;
+            //    states.Add(trackingSet.TrackEntityInternal(flattenedEntity.Entity, null, isNew));
+            //}
             //TrackAllRelationships(states);
         }
 
         public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true)
         {
-            var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                entity, typeof(T));
-            IEntityStateBase entityState = null;
-            var states = new List<IEntityStateBase>();
-            foreach (var flattenedEntity in flattened)
-            {
-                var trackingSet = TrackingSetCollection.TrackingSetByType(flattenedEntity.EntityType)
-                    as TrackingSetBase;
-                var state = trackingSet.TrackEntityInternal(flattenedEntity.Entity, mergeWith, isNew);
-                states.Add(state);
-                if (flattenedEntity.Entity == entity)
-                {
-                    entityState = state;
-                }
-            }
+            throw new NotImplementedException();
+            //var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+            //    entity, typeof(T));
+            //IEntityStateBase entityState = null;
+            //var states = new List<IEntityStateBase>();
+            //foreach (var flattenedEntity in flattened)
+            //{
+            //    var trackingSet = TrackingSetCollection.TrackingSetByType(flattenedEntity.EntityType)
+            //        as TrackingSetBase;
+            //    var state = trackingSet.TrackEntityInternal(flattenedEntity.Entity, mergeWith, isNew);
+            //    states.Add(state);
+            //    if (flattenedEntity.Entity == entity)
+            //    {
+            //        entityState = state;
+            //    }
+            //}
 
-            //TrackAllRelationships(states);
-            return entityState;
+            ////TrackAllRelationships(states);
+            //return entityState;
         }
 
         internal void TrackAllRelationships(List<IEntityStateBase> states)

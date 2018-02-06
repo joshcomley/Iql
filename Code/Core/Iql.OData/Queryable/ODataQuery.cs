@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Iql.OData.Queryable.Applicators;
 using Iql.Queryable;
 using Iql.Queryable.Data;
@@ -22,7 +20,7 @@ namespace Iql.OData.Queryable
         }
     }
 
-    public class ODataQuery<T> : QueryResult<T, IODataQuery>, IODataQuery
+    public class ODataQuery<T> : QueryResult<IODataQuery>, IODataQuery
     {
         private Dictionary<ODataQueryPart, List<string>> QueryParts { get; }
             = new Dictionary<ODataQueryPart, List<string>>();
@@ -114,18 +112,8 @@ namespace Iql.OData.Queryable
             return query;
         }
 
-        IList IQueryResultBase.ToList()
-        {
-            return ToList();
-        }
-
         public bool IncludeCount { get; set; }
         public bool HasKey { get; set; }
         public CompositeKey Key { get; set; }
-
-        public override List<T> ToList()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

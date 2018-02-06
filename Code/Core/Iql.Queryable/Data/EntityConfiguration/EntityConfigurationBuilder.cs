@@ -46,27 +46,23 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return _entities[type];
         }
 
-        public List<FlattenedEntity> FlattenObjectGraphs(Type entityType, IEnumerable entities)
+        public Dictionary<Type, IList> FlattenObjectGraphs(Type entityType, IEnumerable entities)
         {
-            var dictionary = new Dictionary<Type, Dictionary<string, FlattenedEntity>>();
+            var dictionary = new Dictionary<Type, Dictionary<string, object>>();
             var recursionLookup = new Dictionary<object, object>();
-            var flattened = new List<FlattenedEntity>();
+            var result = new Dictionary<Type, IList>();
+            var flattened = new List<object>();
             foreach (var entity in entities)
             {
                 FlattenObjectGraphRecursive(
                     entity, 
                     entityType, 
                     dictionary,
+                    result,
                     recursionLookup);
             }
-            foreach (var typeGroup in dictionary)
-            {
-                foreach (var entry in typeGroup.Value)
-                {
-                    flattened.Add(entry.Value);
-                }
-            }
-            return flattened.Distinct().ToList();
+
+            return result;
         }
 
         /// <summary>
@@ -75,55 +71,40 @@ namespace Iql.Queryable.Data.EntityConfiguration
         /// <param name="entity">The entity to flatten</param>
         /// <param name="entityType">The type of the entity to flatten</param>
         /// <returns></returns>
-        public List<FlattenedEntity> FlattenObjectGraph(object entity, Type entityType)
+        public Dictionary<Type, IList> FlattenObjectGraph(object entity, Type entityType)
         {
-            return FlattenObjectGraphInternal(entity, entityType,
-                new Dictionary<Type, Dictionary<string, FlattenedEntity>>(),
-                new Dictionary<object, object>());
-        }
-
-        private List<FlattenedEntity> FlattenObjectGraphInternal(object entity, Type entityType,
-            Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary,
-         Dictionary<object, object> recursionLookup)
-        {
-            var result = FlattenObjectGraphRecursive(
+            var result = new Dictionary<Type, IList>();
+            FlattenObjectGraphRecursive(
                 entity,
                 entityType,
-                dictionary,
-                recursionLookup
-                );
-            var list = new List<FlattenedEntity>();
-            foreach (var typeGroup in result)
-            {
-                foreach (var entry in typeGroup.Value)
-                {
-                    list.Add(entry.Value);
-                }
-            }
-
-            return list;
+                new Dictionary<Type, Dictionary<string, object>>(),
+                result, 
+                new Dictionary<object, object>()
+            );
+            return result;
         }
 
-        private Dictionary<Type, Dictionary<string, FlattenedEntity>> FlattenObjectGraphRecursive(
+        private void FlattenObjectGraphRecursive(
             object objectGraphRoot,
             Type entityType,
-            Dictionary<Type, Dictionary<string, FlattenedEntity>> dictionary,
+            Dictionary<Type, Dictionary<string, object>> dictionary,
+            Dictionary<Type, IList> result,
             Dictionary<object, object> recursionLookup
             )
         {
             if (!dictionary.ContainsKey(entityType))
             {
-                dictionary.Add(entityType, new Dictionary<string, FlattenedEntity>());
+                dictionary.Add(entityType, new Dictionary<string, object>());
+                result.Add(entityType, ListOfType(entityType));
             }
 
             var typeGroup = dictionary[entityType];
             if (recursionLookup.ContainsKey(objectGraphRoot))
             {
                 // Prevent infinite recursion
-                return dictionary;
+                return;
             }
             recursionLookup.Add(objectGraphRoot, objectGraphRoot);
-            var flattenedEntity = new FlattenedEntity(objectGraphRoot, entityType);
             var graphEntityConfiguration = GetEntityByType(entityType);
             var compositeKey = graphEntityConfiguration.GetCompositeKey(objectGraphRoot);
             var keyString = compositeKey.AsKeyString();
@@ -134,11 +115,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
             if (typeGroup.ContainsKey(keyString))
             {
-                return dictionary;
+                return;
             }
+
+            result[entityType].Add(objectGraphRoot);
             typeGroup.Add(
                 keyString,
-                flattenedEntity);
+                objectGraphRoot);
+
             foreach (var relationship in graphEntityConfiguration.Relationships)
             {
                 var isSource = relationship.Source.Configuration == graphEntityConfiguration;
@@ -157,16 +141,20 @@ namespace Iql.Queryable.Data.EntityConfiguration
                         var list = (IList)relationshipValue;
                         foreach (var item in list)
                         {
-                            FlattenObjectGraphRecursive(item, childType, dictionary, recursionLookup);
+                            FlattenObjectGraphRecursive(item, childType, dictionary, result, recursionLookup);
                         }
                     }
                     else
                     {
-                        FlattenObjectGraphRecursive(relationshipValue, childType, dictionary, recursionLookup);
+                        FlattenObjectGraphRecursive(relationshipValue, childType, dictionary, result, recursionLookup);
                     }
                 }
             }
-            return dictionary;
+        }
+
+        private static IList ListOfType(Type entityType)
+        {
+            return (IList) Activator.CreateInstance(typeof(List<>).MakeGenericType(entityType));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Iql.Extensions;
 using Iql.Queryable.Operations;
 using Iql.Queryable.Operations.Applicators;
 
@@ -16,8 +17,8 @@ namespace Iql.DotNet.Queryable.Applicators
                 (context.Operation.Expression as IqlPropertyExpression).PropertyName);
             var lambda = Expression.Lambda(property, root);
             var methodInfo = GetType().GetMethod(nameof(ApplyPropertyAction));
-            return (IEnumerable<TEntity>)methodInfo.MakeGenericMethod(typeof(TEntity), property.Type)
-                .Invoke(this, new object[] { typedList, lambda.Compile() });
+            return (IEnumerable<TEntity>)methodInfo
+                .InvokeGeneric(this, new object[] { typedList, lambda.Compile() }, typeof(TEntity), property.Type);
         }
 
         public override IEnumerable<TEntity> ApplyPropertyAction<TEntity, TProperty>(

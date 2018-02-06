@@ -10,7 +10,7 @@ using Iql.Queryable.Native;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class JavaScriptQuery<T> : QueryResult<T, IJavaScriptQueryResult>, IJavaScriptQueryResult
+    public class JavaScriptQuery<T> : QueryResult<IJavaScriptQueryResult>, IJavaScriptQueryResult
         where T : class
     {
         public JavaScriptQuery(IQueryable<T> queryable,
@@ -25,24 +25,19 @@ namespace Iql.JavaScript.QueryToJavaScript
             return "dataSet_" + type.Name;
         }
 
-        public void ExpandOneToMany(
+        public void Expand(
             IList source,
             IList target,
             string sourceProperty)
         {
             var property = DataContext.EntityConfigurationContext.EntityType<T>()
                 .FindProperty(sourceProperty);
-            source.ExpandOneToMany(target, property.Relationship.Relationship);
-        }
-
-        public void ExpandOneToOne(
-            IList source,
-            IList target,
-            string sourceProperty)
-        {
-            var property = DataContext.EntityConfigurationContext.EntityType<T>()
-                .FindProperty(sourceProperty);
-            source.ExpandOneToOne(target, property.Relationship.Relationship);
+            new RelationshipExpander()
+                .FindTargetEntities(
+                    source, 
+                    target, 
+                    property.Relationship.Relationship,
+                    false);
         }
 
         private IQueryable<T> Queryable { get; }
@@ -107,7 +102,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                 $".filter(function({filterExpression.RootVariableName}) {{ return {filterExpression.Expression}}} )");
         }
 
-        public override List<T> ToList()
+        public List<T> ToList()
         {
             // JavaScript implementation
             var str = ToJavaScriptQuery();

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Extensions;
 using Iql.Parsing.Reduction;
 using Iql.Queryable.Data;
 using Iql.Queryable.Expressions.QueryExpressions;
@@ -94,15 +95,14 @@ namespace Iql.Queryable
         private IQueryResultBase NewQueryData(IQueryableAdapterBase adapter, IQueryResultBase parentResult)
         {
             var newQueryData =
-                (IQueryResultBase)adapter.GetType().GetMethod(nameof(adapter.NewQueryData)).MakeGenericMethod(
-                        Queryable.ItemType)
-                    .Invoke(adapter, new object[]
-                    {
-                        Queryable
-#if TypeScript
-                        ,Queryable.ItemType
-#endif
-                    });
+                (IQueryResultBase) adapter
+                    .GetType()
+                    .GetMethod(nameof(adapter.NewQueryData))
+                    .InvokeGeneric(adapter, new object[]
+                        {
+                            Queryable
+                        },
+                        Queryable.ItemType);
             newQueryData.ParentResult = parentResult;
             return newQueryData;
         }
@@ -145,17 +145,10 @@ namespace Iql.Queryable
             );
             queryResult.Context = context;
             var name = nameof(IQueryOperationApplicator<IExpressionQueryOperation, IQueryResultBase, IQueryableAdapterBase>.Apply);
-            var method = applicator.GetType()
+            applicator.GetType()
                 .GetRuntimeMethods()
                 .First(m => m.Name == name)
-                .MakeGenericMethod(Queryable.ItemType);
-            var args = new List<object>();
-            args.Add(context);
-            if (Platform.Name == "JavaScript")
-            {
-                args.Add(Queryable.ItemType);
-            }
-            method.Invoke(applicator, args.ToArray());
+                .InvokeGeneric(applicator, new object[]{context}, Queryable.ItemType);
         }
 
         private Type ResolveExpand(

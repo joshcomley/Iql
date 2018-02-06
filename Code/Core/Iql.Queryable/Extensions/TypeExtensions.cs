@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using Iql.Extensions;
 
 namespace Iql.Queryable.Extensions
 {
@@ -28,15 +30,22 @@ namespace Iql.Queryable.Extensions
                        typeof(string).IsAssignableFrom(type);
         }
 
+        private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type,object>();
         public static object DefaultValue(this Type type)
         {
+            if (DefaultValues.ContainsKey(type))
+            {
+                return DefaultValues[type];
+            }
 #if TypeScript
-            return Activator.CreateInstance(type);
+            var defaultValue = Activator.CreateInstance(type);
 #else
-            return typeof(TypeExtensions).GetMethod(nameof(GetDefaultValue))
-                .MakeGenericMethod(type)
-                .Invoke(null, null);
+            var defaultValue = typeof(TypeExtensions)
+                .GetMethod(nameof(GetDefaultValue))
+                .InvokeGeneric(null, null, type);
 #endif
+            DefaultValues.Add(type, defaultValue);
+            return defaultValue;
         }
 
 #if !TypeScript

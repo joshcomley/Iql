@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
@@ -13,12 +14,15 @@ using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Native;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.DataStores
 {
     public class DataStore : IDataStore
     {
+        public RelationshipObserver RelationshipObserver { get; private set; }
+            = new RelationshipObserver();
         public TrackingSetCollection Tracking { get; private set; }
 
         public IDataContext DataContext { get; set; }
@@ -109,7 +113,7 @@ namespace Iql.Queryable.Data.DataStores
                     listener(operation);
                 }
             }
-            var result = new GetDataResult<TEntity>(null, operation, true);
+            var result = new FlattenedGetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
@@ -120,12 +124,13 @@ namespace Iql.Queryable.Data.DataStores
 #if TypeScript
             response.Data = (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), null, null, true);
 #endif
-            response.Data.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            var dbList = new DbList<TEntity>();
+            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue)
             {
                 var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
                 var skippedSoFar = skipOperations.Sum(o => (o as SkipOperation).Skip);
-                var pageSize = 0;
+                int pageSize;
                 var totalCount = response.TotalCount.Value;
                 var page = 0;
                 if (skippedSoFar == 0)
@@ -155,18 +160,26 @@ namespace Iql.Queryable.Data.DataStores
                     pageCount++;
                     i -= pageSize;
                 }
-                response.Data.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
+                dbList.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
             }
             // Flatten before we merge because the merge will update the result data set with
             // tracked data
-            if (response.Data.SourceQueryable.TrackEntities)
+            if (dbList.SourceQueryable.TrackEntities)
             {
-                GetTracking().TrackingSet<TEntity>().TrackEntities(response.Data, false);
+                foreach (var typeGroup in result.Data)
+                {
+                    RelationshipObserver.ObserveAll(typeGroup.Value, typeGroup.Key);
+                }
+                //GetTracking().TrackingSet<TEntity>().TrackEntities(response.Data, false);
             }
-            return result;
+            //
+            dbList.AddRange((List<TEntity>) result.Data[typeof(TEntity)]);
+            var getDataResult = new GetDataResult<TEntity>(dbList, operation, result.Success);
+            getDataResult.TotalCount = result.TotalCount;
+            return getDataResult;
         }
 
-        public virtual async Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
             where TEntity : class
         {
             throw new NotImplementedException();
@@ -184,14 +197,11 @@ namespace Iql.Queryable.Data.DataStores
             {
                 var task = GetType()
                     .GetMethod(nameof(Perform))
-                    .MakeGenericMethod(queuedOperation.Operation.EntityType)
-                    .Invoke(this, new object[]
-                    {
-                        queuedOperation, saveChangesResult
-#if TypeScript // The type info
-                        ,queuedOperation.Operation.EntityType
-#endif
-                    }) as Task;
+                    .InvokeGeneric(this, new object[]
+                        {
+                            queuedOperation, saveChangesResult
+                        },
+                        queuedOperation.Operation.EntityType) as Task;
                 await task;
             }
             return saveChangesResult;

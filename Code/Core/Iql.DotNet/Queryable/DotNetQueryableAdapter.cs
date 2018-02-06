@@ -31,7 +31,7 @@ namespace Iql.DotNet.Queryable
 
         public override IDotNetQueryResult NewQueryData<TEntity>(IQueryable<TEntity> queryable)
         {
-            return new DotNetQuery<TEntity>(Context);
+            return new DotNetQuery(Context, typeof(TEntity));
         }
 
         public static LambdaExpression GetExpression(

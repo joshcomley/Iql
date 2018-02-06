@@ -7,6 +7,5 @@ namespace Iql.Queryable
     {
         IQueryResultBase ParentResult { get; set; }
         IQueryOperationContextBase Context { get; set; }
-        IList ToList();
     }
 }

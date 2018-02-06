@@ -35,7 +35,7 @@ namespace Iql.Queryable.Data.DataStores
         Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class;
 
-        Task<GetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
             where TEntity : class;
 
         Task<SaveChangesResult> SaveChanges(SaveChangesOperation operation);
