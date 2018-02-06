@@ -10,7 +10,6 @@ using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Extensions;
@@ -21,12 +20,20 @@ namespace Iql.Queryable.Data.DataStores
 {
     public class DataStore : IDataStore
     {
+        private IDataContext _dataContext;
         public RelationshipObserver RelationshipObserver { get; private set; }
-            = new RelationshipObserver();
         public TrackingSetCollection Tracking { get; private set; }
 
-        public IDataContext DataContext { get; set; }
-        
+        public IDataContext DataContext
+        {
+            get => _dataContext;
+            set
+            {
+                _dataContext = value;
+                RelationshipObserver = new RelationshipObserver(value);
+            }
+        }
+
         public IEnumerable<IQueuedOperation> GetQueue()
         {
             return GetTracking().GetQueue();
@@ -50,7 +57,7 @@ namespace Iql.Queryable.Data.DataStores
         {
             var trackingSet = Tracking.TrackingSet<TEntity>();
             trackingSet.Delete(entity);
-            var entityState = (EntityState<TEntity>)trackingSet.GetEntityState(entity);
+            var entityState = (EntityState<TEntity>) trackingSet.GetEntityState(entity);
             return entityState;
         }
 
@@ -88,6 +95,7 @@ namespace Iql.Queryable.Data.DataStores
                     getConfiguration = new EntityDefaultQueryConfiguration();
                     DataContext.RegisterConfiguration(getConfiguration);
                 }
+
                 var queryableGetter = getConfiguration.GetQueryable<TEntity>();
                 if (queryableGetter != null)
                 {
@@ -95,6 +103,7 @@ namespace Iql.Queryable.Data.DataStores
                     queryable.Operations.AddRange(operation.Queryable.Operations);
                     operation.Queryable = queryable;
                 }
+
                 if (getConfiguration.AlwaysIncludeCount)
                 {
                     var countOperationCount = operation.Queryable.Operations.Count(o => o is IncludeCountOperation);
@@ -103,8 +112,10 @@ namespace Iql.Queryable.Data.DataStores
                         operation.Queryable.Operations.Add(new IncludeCountOperation());
                     }
                 }
+
                 operation.Queryable.HasDefaults = true;
             }
+
             var listenConfiguration = DataContext.GetConfiguration<DataContextEventsConfiguration>();
             if (listenConfiguration != null && listenConfiguration.GetBeginListeners != null)
             {
@@ -113,6 +124,7 @@ namespace Iql.Queryable.Data.DataStores
                     listener(operation);
                 }
             }
+
             var result = new FlattenedGetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
@@ -120,12 +132,13 @@ namespace Iql.Queryable.Data.DataStores
                 result));
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
-            response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
+            response.Queryable = (IQueryable<TEntity>) operation.Queryable.Copy();
 #if TypeScript
-            response.Data = (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), null, null, true);
+            response.Data =
+ (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), null, null, true);
 #endif
             var dbList = new DbList<TEntity>();
-            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            dbList.SourceQueryable = (DbQueryable<TEntity>) response.Queryable;
             if (response.TotalCount.HasValue)
             {
                 var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
@@ -149,10 +162,12 @@ namespace Iql.Queryable.Data.DataStores
                     //    pageSize = skippedSoFar / response.Data.Count;
                     //}
                 }
+
                 if (pageSize > 0)
                 {
                     page = skippedSoFar / pageSize;
                 }
+
                 var pageCount = 0;
                 var i = totalCount;
                 while (i > 0)
@@ -160,18 +175,18 @@ namespace Iql.Queryable.Data.DataStores
                     pageCount++;
                     i -= pageSize;
                 }
+
                 dbList.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
             }
+
             // Flatten before we merge because the merge will update the result data set with
             // tracked data
             if (dbList.SourceQueryable.TrackEntities)
             {
-                foreach (var typeGroup in result.Data)
-                {
-                    RelationshipObserver.ObserveAll(typeGroup.Value, typeGroup.Key);
-                }
+                RelationshipObserver.ObserveAll(result.Data);
                 //GetTracking().TrackingSet<TEntity>().TrackEntities(response.Data, false);
             }
+
             //
             dbList.AddRange((List<TEntity>) result.Data[typeof(TEntity)]);
             var getDataResult = new GetDataResult<TEntity>(dbList, operation, result.Success);
@@ -179,7 +194,8 @@ namespace Iql.Queryable.Data.DataStores
             return getDataResult;
         }
 
-        public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
+            QueuedGetDataOperation<TEntity> operation)
             where TEntity : class
         {
             throw new NotImplementedException();
@@ -204,6 +220,7 @@ namespace Iql.Queryable.Data.DataStores
                         queuedOperation.Operation.EntityType) as Task;
                 await task;
             }
+
             return saveChangesResult;
         }
 
@@ -228,7 +245,7 @@ namespace Iql.Queryable.Data.DataStores
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
-                    var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
+                    var addEntityOperation = (QueuedAddEntityOperation<TEntity>) operation;
                     var localEntity = addEntityOperation.Operation.Entity;
                     result = await PerformAdd(addEntityOperation);
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
@@ -238,15 +255,16 @@ namespace Iql.Queryable.Data.DataStores
                         trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
                         trackingSet.GetEntityState(localEntity).IsNew = false;
                     }
+
                     await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                        );
+                    );
                     //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     break;
                 case OperationType.Update:
-                    var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
+                    var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>) operation;
                     var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity, typeof(TEntity));
                     if (isEntityNew == true)
                     {
@@ -255,7 +273,7 @@ namespace Iql.Queryable.Data.DataStores
                         failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
                         updateEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else if(isEntityNew != null)
+                    else if (isEntityNew != null)
                     {
                         result = await PerformUpdate(updateEntityOperation);
                         var operationEntity = updateEntityOperation.Operation
@@ -264,12 +282,13 @@ namespace Iql.Queryable.Data.DataStores
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                            );
+                        );
                         //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
                     }
+
                     break;
                 case OperationType.Delete:
-                    var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
+                    var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>) operation;
                     var entityNew = DataContext.IsEntityNew(deleteEntityOperation.Operation.Entity, typeof(TEntity));
                     if (entityNew == true)
                     {
@@ -278,19 +297,21 @@ namespace Iql.Queryable.Data.DataStores
                         failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
                         deleteEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else if(entityNew != null)
+                    else if (entityNew != null)
                     {
                         result = await PerformDelete(deleteEntityOperation);
                         GetTracking().TrackingSet<TEntity>().Delete(deleteEntityOperation.Operation.Entity);
                     }
+
                     break;
             }
+
             var entityCrudResult = operation.Result as IEntityCrudResult;
             if (entityCrudResult != null)
             {
                 saveChangesResult.Results.Add(entityCrudResult);
                 entityCrudResult.EntityValidationResults = entityCrudResult.EntityValidationResults ??
-                                                       new Dictionary<object, EntityValidationResult>();
+                                                           new Dictionary<object, EntityValidationResult>();
                 ParseEntityResult(
                     entityCrudResult.EntityValidationResults,
                     entityCrudResult.LocalEntity,
@@ -298,13 +319,15 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
-        private static void ParseEntityResult(IDictionary<object, EntityValidationResult> resultsDictionary, object entity,
+        private static void ParseEntityResult(IDictionary<object, EntityValidationResult> resultsDictionary,
+            object entity,
             EntityValidationResult entityValidationResult)
         {
             if (entityValidationResult == null || resultsDictionary.ContainsKey(entity))
             {
                 return;
             }
+
             resultsDictionary.Add(entity, entityValidationResult);
             entityValidationResult.LocalEntity = entity;
             foreach (var collectionValidationResultSet in entityValidationResult
@@ -314,10 +337,12 @@ namespace Iql.Queryable.Data.DataStores
                 {
                     var index = validationResult.Key;
                     var collectionEntity =
-                        ((IList)entity.GetPropertyValueByName(validationResult.Value.PropertyName))[index];
-                    ParseEntityResult(resultsDictionary, collectionEntity, validationResult.Value.EntityValidationResult);
+                        ((IList) entity.GetPropertyValueByName(validationResult.Value.PropertyName))[index];
+                    ParseEntityResult(resultsDictionary, collectionEntity,
+                        validationResult.Value.EntityValidationResult);
                 }
             }
+
             foreach (var relationshipResult in entityValidationResult.RelationshipValidationResults)
             {
                 var relationshipEntity = entity.GetPropertyValueByName(relationshipResult.PropertyName);

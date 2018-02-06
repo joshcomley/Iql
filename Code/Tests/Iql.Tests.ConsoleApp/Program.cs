@@ -48,6 +48,7 @@ namespace Iql.Tests.ConsoleApp
                     .Expand(e => e.Results)
                     //.ExpandAll()
                     .ToList();
+            //examCandidateResults[0].ClickCount = 7;
             stopwatch.Stop();
             Console.WriteLine($"Fetch data: {stopwatch.Elapsed} - {examCandidateResults.Count} entit{(examCandidateResults.Count == 1 ? "y" : "ies")}");
             Elapseds.Add(stopwatch.Elapsed.Ticks);

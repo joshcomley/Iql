@@ -131,7 +131,12 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                 null,
                 null);
             var lists = q.GetResults();
-            operation.Result.Data = lists;
+            var dictionary = new Dictionary<Type, IList>();
+            foreach (var item in lists)
+            {
+                dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
+            }
+            operation.Result.Data = dictionary;
             return Task.FromResult(operation.Result);
         }
     }

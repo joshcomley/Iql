@@ -13,15 +13,25 @@ namespace Hazception.ApiContext.Base
 		public HazceptionDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
 			this.ClientTypes = (DbSet<HazClientType,int>)this.AsDbSet<HazClientType, int>();
+			
 			this.Users = (DbSet<HazApplicationUser,string>)this.AsDbSet<HazApplicationUser, string>();
+			
 			this.Clients = (DbSet<HazClient,int>)this.AsDbSet<HazClient, int>();
+			
 			this.Videos = (DbSet<Video,int>)this.AsDbSet<Video, int>();
+			
 			this.Exams = (DbSet<Exam,int>)this.AsDbSet<Exam, int>();
+			
 			this.ExamManagers = (DbSet<ExamManager,int>)this.AsDbSet<ExamManager, int>();
+			
 			this.ExamResults = (DbSet<ExamResult,int>)this.AsDbSet<ExamResult, int>();
+			
 			this.ExamCandidateResults = (DbSet<ExamCandidateResult,int>)this.AsDbSet<ExamCandidateResult, int>();
+			
 			this.ExamCandidates = (DbSet<ExamCandidate,int>)this.AsDbSet<ExamCandidate, int>();
+			
 			this.Hazards = (DbSet<Hazard,int>)this.AsDbSet<Hazard, int>();
+			
 			this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
 			this.ODataConfiguration.RegisterEntitySet<HazClientType>(nameof(ClientTypes));
 			this.ODataConfiguration.RegisterEntitySet<HazApplicationUser>(nameof(Users));
