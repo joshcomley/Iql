@@ -19,7 +19,9 @@ namespace Iql.Queryable.Operations.Applicators
             TQueryResult data,
             IQueryable<TEntity> queryable,
             TQueryAdapter adapter,
-            IQueryOperationContext<TQueryOperation, TEntity, TQueryResult, TQueryAdapter> parentContext)
+            //IQueryOperationContext<TQueryOperation, TEntity, TQueryResult, TQueryAdapter> parentContext
+            IQueryOperationContextBase parentContext
+            )
         {
             DataContext = dataContext;
             Operation = operation;
@@ -36,7 +38,7 @@ namespace Iql.Queryable.Operations.Applicators
         IQueryResultBase IQueryOperationContextBase.Data => Data;
 
         public TQueryAdapter Adapter { get; set; }
-        public IQueryOperationContext<TQueryOperation, TEntity, TQueryResult, TQueryAdapter> ParentContext { get; }
+        public IQueryOperationContextBase ParentContext { get; }
         public IQueryable<TEntity> Queryable { get; set; }
         public TQueryResult Data { get; set; }
         public IDataContext DataContext { get; }

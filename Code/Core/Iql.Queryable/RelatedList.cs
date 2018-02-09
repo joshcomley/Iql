@@ -17,7 +17,7 @@ namespace Iql.Queryable
         public RelatedList(TSource owner = null, string property = null, IEnumerable<TTarget> source = null)
         {
             Owner = owner;
-            Property = property;
+            PropertyName = property;
             this.Initialize(source);
         }
 
@@ -30,7 +30,7 @@ namespace Iql.Queryable
         public TSource Owner { get; }
         public Type OwnerType => typeof(TSource);
         public Type TargetType => typeof(TTarget);
-        public string Property { get; }
+        public string PropertyName { get; }
 
         //void IRelatedList.AddChange(IRelatedListChange change)
         //{
@@ -104,6 +104,7 @@ namespace Iql.Queryable
 
         public void AssignRelationship(TTarget item)
         {
+            Add(item);
             Emit(item, null, RelatedListChangeKind.Assign);
         }
 
@@ -114,6 +115,7 @@ namespace Iql.Queryable
 
         public void RemoveRelationship(TTarget item)
         {
+            Remove(item);
             Emit(item, null, RelatedListChangeKind.Remove);
         }
     }

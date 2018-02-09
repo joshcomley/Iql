@@ -625,8 +625,13 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.RiskAssessment, true)
 				.DefineProperty(p => p.Site, false)
 				.DefineProperty(p => p.CreatedByUser, true);
-			
-			builder.EntityType<SiteInspection>()
+
+		    builder.EntityType<RiskAssessment>()
+		        .HasOne(p => p.SiteInspection)
+		        .WithOne(p => p.RiskAssessment)
+		        .WithConstraint(p => p.SiteInspectionId, p => p.Id);
+
+		    builder.EntityType<SiteInspection>()
 				.HasOne(p => p.RiskAssessment)
 				.WithOne(p => p.SiteInspection)
 				.WithConstraint(p => p.Id, p => p.SiteInspectionId);

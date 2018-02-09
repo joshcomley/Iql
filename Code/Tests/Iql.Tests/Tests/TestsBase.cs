@@ -49,7 +49,7 @@ namespace Iql.Tests.Tests
             catch (Exception e)
             {
                 exceptionCount++;
-                Assert.IsTrue(e is TException);
+                Assert.IsTrue(e is TException || e.InnerException is TException);
             }
             Assert.AreEqual(exceptionCount, 1);
         }

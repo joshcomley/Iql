@@ -173,6 +173,7 @@ namespace Iql.Tests.Tests
             Db.EvaluateContext.Evaluate = s => entity;
             var clientType = await Db.ClientTypes.First(ct => ct.Id == entity.Id);
             Assert.AreEqual(entity.Id, clientType.Id);
+            Assert.AreEqual(entity, clientType);
             var changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
             clientType.Name = "Something else";
@@ -185,8 +186,8 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, updateOperation.Operation.EntityState.ChangedProperties.Count);
             var property = updateOperation.Operation.EntityState.ChangedProperties[0];
             Assert.AreEqual(nameof(ClientType.Name), property.Property.Name);
-            Assert.AreEqual(0, property.ChildChangedProperties.Count);
-            Assert.AreEqual(0, property.EnumerableChangedProperties.Count);
+            //Assert.AreEqual(0, property.ChildChangedProperties.Count);
+            //Assert.AreEqual(0, property.EnumerableChangedProperties.Count);
         }
 
         [TestMethod]
@@ -236,7 +237,7 @@ namespace Iql.Tests.Tests
             await Db.SaveChanges();
             var addEntityResult = Db.ClientTypes.Add(clientTypes.ClientType2);
             await Db.SaveChanges();
-            Assert.IsNull(addEntityResult);
+            Assert.AreEqual(addEntityResult.Entity, clientTypes.ClientType2);
         }
 
         //[TestMethod]
@@ -345,10 +346,9 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.AssignRelationshipByKey(
-                Db.EntityConfigurationContext.EntityType<Client>()
-                .GetCompositeKey(clientTypes.ClientType2.Clients[0])
-                );
+            var compositeKey = Db.EntityConfigurationContext.EntityType<Client>()
+                .GetCompositeKey(clientTypes.ClientType2.Clients[0]);
+            clientTypes.ClientType1.Clients.AssignRelationshipByKey(compositeKey);
             Assert.AreEqual(1, eventFiredCount);
             Assert.AreEqual(1, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
@@ -582,17 +582,17 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(existingClient, changeOperation.EntityState.Entity);
             Assert.AreEqual(existingClient, changeOperation.Entity);
             var propertyChanges = changeOperation.EntityState.ChangedProperties;
-            Assert.AreEqual(2, propertyChanges.Count);
+            Assert.AreEqual(1, propertyChanges.Count);
 
             var keyPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.TypeId));
             Assert.IsNotNull(keyPropertyChange);
             Assert.AreEqual(clientType2.Id, keyPropertyChange.OldValue);
             Assert.AreEqual(clientType1.Id, keyPropertyChange.NewValue);
 
-            var relationshipPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
-            Assert.IsNotNull(relationshipPropertyChange);
-            Assert.AreEqual(clientType2, relationshipPropertyChange.OldValue);
-            Assert.AreEqual(clientType1, relationshipPropertyChange.NewValue);
+            //var relationshipPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
+            //Assert.IsNotNull(relationshipPropertyChange);
+            //Assert.AreEqual(clientType2, relationshipPropertyChange.OldValue);
+            //Assert.AreEqual(clientType1, relationshipPropertyChange.NewValue);
 
             // Revert the change
             switch (type1)
@@ -782,9 +782,9 @@ namespace Iql.Tests.Tests
             };
             Db.RiskAssessments.Add(riskAssessment);
             riskAssessment.SiteInspectionId = siteInspection1.Id;
-            Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment);
-            Assert.AreEqual(riskAssessment.SiteInspectionId, siteInspection1.Id);
-            Assert.AreEqual(riskAssessment.SiteInspection, siteInspection1);
+            Assert.AreEqual(riskAssessment, siteInspection1.RiskAssessment);
+            Assert.AreEqual(siteInspection1.Id, riskAssessment.SiteInspectionId);
+            Assert.AreEqual(siteInspection1, riskAssessment.SiteInspection);
         }
 
 

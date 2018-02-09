@@ -132,15 +132,17 @@ namespace Iql.Queryable
                 contextArgs.Add(null);
                 contextArgs.Add(null);
             }
+
+            var type = typeof(QueryOperationContext<,,,>)
+                .MakeGenericType(
+                    Queryable.ItemType, 
+                    operation.GetType(), 
+                    queryResult.GetType(),
+                    adapter.GetType()
+                );
             var context =  (IQueryOperationContextBase)
                 Activator.CreateInstance(
-                typeof(QueryOperationContext<,,,>)
-                    .MakeGenericType(
-                        Queryable.ItemType, 
-                        operation.GetType(), 
-                        queryResult.GetType(),
-                        adapter.GetType()
-                        ),
+                type,
                 contextArgs.ToArray()
             );
             queryResult.Context = context;

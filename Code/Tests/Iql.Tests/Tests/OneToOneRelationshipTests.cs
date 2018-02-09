@@ -115,12 +115,14 @@ namespace Iql.Tests.Tests
             var person = people.Single(p => p.Id == 62);
             Db.People.Delete(person);
             Assert.IsTrue(Db.DataStore.GetTracking().IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
-            Assert.AreEqual(0, person.Types.Count);
+            Assert.AreEqual(1, person.Types.Count);
         }
 
         [TestMethod]
         public async Task OneToOneShouldPersistRelationshipChangesWhenTracked()
         {
+            // A one to one relationship has been changed at the database end
+            // so when retrieve the latest version it should update accordingly
             var riskAssessment1 = new RiskAssessment();
             var riskAssessment2 = new RiskAssessment();
             //riskAssessment1.Id = 7;
@@ -161,7 +163,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(siteInspection.RiskAssessment.Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspectionId, siteInspection.Id);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspection, siteInspection);
-            Assert.AreEqual(61, riskAssessment1.SiteInspectionId);
+            Assert.AreEqual(62, riskAssessment1.SiteInspectionId);
         }
         public enum OneToOneTestType
         {

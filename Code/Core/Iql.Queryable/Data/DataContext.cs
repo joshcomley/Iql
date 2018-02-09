@@ -28,6 +28,7 @@ namespace Iql.Queryable.Data
         )
         {
             DataStore = dataStore;
+            DataStore.DataContext = this;
             EvaluateContext = evaluateContext;
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
@@ -42,7 +43,6 @@ namespace Iql.Queryable.Data
                 _initialized = true;
                 InitializeProperties();
             }
-            DataStore.DataContext = this;
         }
 
         private void Initialize()

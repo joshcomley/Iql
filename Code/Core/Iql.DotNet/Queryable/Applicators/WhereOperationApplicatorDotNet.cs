@@ -18,7 +18,8 @@ namespace Iql.DotNet.Queryable.Applicators
                 context.DataContext.EntityConfigurationContext,
                 typeof(TEntity));
             var method = lambda.Compile();
-            return typedList.Where((Func<TEntity, bool>) method);
+            var result = typedList.Where((Func<TEntity, bool>) method).ToList();
+            return result;
         }
     }
 }

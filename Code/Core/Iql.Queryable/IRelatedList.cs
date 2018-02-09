@@ -8,7 +8,7 @@ namespace Iql.Queryable
 {
     public interface IRelatedList : IList
     {
-        string Property { get; }
+        string PropertyName { get; }
         //IEnumerable<IRelatedListChange> GetChanges();
         //void AddChange(IRelatedListChange change);
         //void RemoveChange(IRelatedListChange change);

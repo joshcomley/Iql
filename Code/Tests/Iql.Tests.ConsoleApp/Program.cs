@@ -14,6 +14,9 @@ namespace Iql.Tests.ConsoleApp
         {
             //await RefreshDataSetAsync();
             //return;
+            //var db = new AppDbContext();
+            //AppDbContext.InMemoryDb.RiskAssessments.a
+            //var abc = await db.RiskAssessments.ToList();
 
             new HazceptionDataStore().GetData();
             //await Run();
@@ -65,12 +68,23 @@ namespace Iql.Tests.ConsoleApp
                     //.Expand(e => e.Results)
                     //.ExpandAll()
                     .ToList();
+            var users =
+                await dataContext
+                    .Users
+                    .ToList();
             var results =
                 await dataContext
                     .ExamResults
                     .ToList();
-            examCandidateResults[0].ClientId = clients[3].Id;
+            var user1 = users[0];
+            var client1 = clients[0];
+            user1.ClientId = 55555;
+            user1.Client = client1;
+            user1.ClientId = 55555;
             var examCandidateResult1 = examCandidateResults[0];
+            var newClient = clients[3];
+            var oldClient = examCandidateResults[0].Client;
+            examCandidateResults[0].ClientId = newClient.Id;
             var examCandidateResult2 = examCandidateResults[1];
             stopwatch.Stop();
             Console.WriteLine($"Fetch data: {stopwatch.Elapsed} - {examCandidateResults.Count} entit{(examCandidateResults.Count == 1 ? "y" : "ies")}");

@@ -12,10 +12,11 @@ using Iql.Queryable.Operations;
 namespace Iql.Queryable.Data.Crud.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
-    public class EntityState<T> : IEntityState<T>
+    public class EntityState<T> : IEntityState<T>, IEntityStateInternal
     {
         private bool _markedForDeletion;
         private bool _isNew;
+        private readonly List<IPropertyState> _changedProperties;
 
         public bool IsNew
         {
@@ -39,7 +40,7 @@ namespace Iql.Queryable.Data.Crud.State
             }
         }
 
-        public bool MarkedForCascadeDeletion { get; private set; }
+        public bool MarkedForCascadeDeletion { get; set; }
 
         public bool MarkedForAnyDeletion
         {
@@ -58,6 +59,16 @@ namespace Iql.Queryable.Data.Crud.State
             CascadeDeletedBy.Add(new CascadeDeletion(relationship, from));
         }
 
+        public void Reset()
+        {
+            IsNew = false;
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var propertyState = Properties[i];
+                propertyState.Reset();
+            }
+        }
+
         public CompositeKey Key { get; set; }
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
@@ -73,8 +84,13 @@ namespace Iql.Queryable.Data.Crud.State
             EntityType = entityType;
             DataContext = dataContext;
             EntityConfiguration = entityConfiguration;
-            ChangedProperties = new List<PropertyChange>();
-            Properties = new List<PropertyChange>();
+            _changedProperties = new List<IPropertyState>();
+            Properties = new List<IPropertyState>();
+            foreach (var property in EntityConfiguration.Properties)
+            {
+                Properties.Add(new PropertyState(property, this));
+            }
+            Key = entityConfiguration.GetCompositeKey(entity);
         }
 
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
@@ -84,42 +100,42 @@ namespace Iql.Queryable.Data.Crud.State
                 new object[] { entity, entityType, entityConfiguration });
         }
 
-        public List<PropertyChange> ChangedProperties { get; }
-        private List<PropertyChange> Properties { get; }
+        public List<IPropertyState> ChangedProperties => _changedProperties;
 
-        public PropertyChange GetPropertyState(string name)
+        private List<IPropertyState> Properties { get; }
+
+        public IPropertyState GetPropertyState(string name)
         {
-            return Properties.SingleOrDefault(p => p.Property.Name == name);
+            var state = Properties.SingleOrDefault(p => p.Property.Name == name);
+            return state;
         }
 
         public void SetPropertyState(string name, object oldValue, object newValue)
         {
             var propertyState = GetPropertyState(name);
-            if (propertyState == null)
+            propertyState.NewValue = newValue;
+            //propertyState.OldValue = oldValue;
+            UpdateChanged(propertyState);
+        }
+
+        public void UpdateChanged(IPropertyState propertyState)
+        {
+            if (!propertyState.HasChanged)
             {
-                propertyState = new PropertyChange(
-                    EntityConfiguration.FindProperty(name),
-                    oldValue,
-                    newValue,
-                    this);
-                Properties.Add(propertyState);
+                _changedProperties.Remove(propertyState);
             }
             else
             {
-                propertyState.NewValue = newValue;
-                propertyState.OldValue = oldValue;
-            }
-            if (Equals(propertyState.OldValue, propertyState.NewValue))
-            {
-                ChangedProperties.Remove(propertyState);
-            }
-            else
-            {
-                if (!ChangedProperties.Contains(propertyState))
+                if (!_changedProperties.Contains(propertyState))
                 {
-                    ChangedProperties.Add(propertyState);
+                    _changedProperties.Add(propertyState);
                 }
             }
         }
+    }
+
+    internal interface IEntityStateInternal
+    {
+        void UpdateChanged(IPropertyState state);
     }
 }

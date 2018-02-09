@@ -10,10 +10,11 @@ namespace Iql.Queryable.Data.Crud.State
 {
     public interface IEntityStateBase
     {
-        CompositeKey Key { get; }
+        void Reset();
+        CompositeKey Key { get; set; }
         Guid? PersistenceKey { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
-        List<PropertyChange> ChangedProperties { get; }
+        List<IPropertyState> ChangedProperties { get; }
         object Entity { get; }
         IEntityConfiguration EntityConfiguration { get; }
         Type EntityType { get; }
@@ -24,7 +25,7 @@ namespace Iql.Queryable.Data.Crud.State
         bool MarkedForDeletion { get; set; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
 
-        PropertyChange GetPropertyState(string name);
+        IPropertyState GetPropertyState(string name);
         void MarkForCascadeDeletion(object from, IRelationship relationship);
         void SetPropertyState(string name, object oldValue, object newValue);
         void UnmarkForDeletion();

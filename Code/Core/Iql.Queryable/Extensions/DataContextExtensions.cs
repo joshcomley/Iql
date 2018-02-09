@@ -52,16 +52,19 @@ namespace Iql.Queryable.Extensions
         //    }
         //}
 
-        public static List<PropertyChange> EntityNonNullProperties(this IDataContext dataContext, object entity)
+        public static List<PropertyState> EntityNonNullProperties(this IDataContext dataContext, object entity)
         {
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            var properties = new List<PropertyChange>();
+            var properties = new List<PropertyState>();
             foreach (var property in entityConfiguration.Properties)
             {
                 var propertyValue = entity.GetPropertyValue(property);
                 if (propertyValue != null)
                 {
-                    properties.Add(new PropertyChange(property, null, propertyValue, null));
+                    var state = new PropertyState(property, null);
+                    properties.Add(state);
+                    state.OldValue = null;
+                    state.NewValue = propertyValue;
                 }
             }
             return properties;

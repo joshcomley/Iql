@@ -5,6 +5,7 @@ using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Native;
 
 namespace Iql.Queryable.Data.DataStores
 {
@@ -12,10 +13,16 @@ namespace Iql.Queryable.Data.DataStores
     {
         IEnumerable<IQueuedOperation> GetQueue();
         IDataContext DataContext { get; set; }
+        IRelationshipObserver RelationshipObserver { get; }
         TrackingSetCollection GetTracking();
 
         EntityState<TEntity> Add<TEntity>(TEntity entity)
             where TEntity : class;
+
+#if !TypeScript
+        IEntityStateBase Add(object entity);
+        IEntityStateBase Delete(object entity);
+#endif
 
         Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation)
             where TEntity : class;

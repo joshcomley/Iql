@@ -25,7 +25,12 @@ namespace Iql.Tests.Context
             InMemoryDb = inMemoryDb;
             if (IqlQueryableAdapter.ExpressionConverter == null)
             {
-                IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
+                IqlQueryableAdapter.ExpressionConverter = () =>
+#if TypeScript
+                    new JavaScriptExpressionToIqlConverter();
+#else
+                    new DotNetExpressionToIqlConverter();
+#endif
             }
         }
 

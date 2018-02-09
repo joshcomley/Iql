@@ -5,15 +5,18 @@ using System.Reflection;
 using Iql.Extensions;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
+using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Exceptions;
 
 namespace Iql.Queryable.Data.Tracking
 {
     public class TrackingSetCollection
     {
-        public TrackingSetCollection(IDataContext dataContext)
+        public IDataStore DataStore { get; }
+
+        public TrackingSetCollection(IDataStore dataStore)
         {
-            DataContext = dataContext;
+            DataStore = dataStore;
             SetsMap = new Dictionary<string, ITrackingSet>();
             Sets = new List<ITrackingSet>();
         }
@@ -21,7 +24,7 @@ namespace Iql.Queryable.Data.Tracking
         internal bool ProcessingRelationshipChange { get; set; }
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
         public List<ITrackingSet> Sets { get; set; }
-        private IDataContext DataContext { get; }
+        private IDataContext DataContext => DataStore.DataContext;
 
         public List<IEntityCrudOperationBase> GetInserts()
         {
@@ -70,7 +73,7 @@ namespace Iql.Queryable.Data.Tracking
             var type = typeof(T);
             if (!SetsMap.ContainsKey(type.Name))
             {
-                var set = new TrackingSet<T>(DataContext, this);
+                var set = new TrackingSet<T>(DataStore, this);
                 SetsMap[type.Name] = set;
                 Sets.Add(set);
             }

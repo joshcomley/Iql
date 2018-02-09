@@ -41,7 +41,7 @@ namespace Iql.DotNet.Queryable.Applicators
                 var predicate = (Func<TEntity, bool>)Expression.Lambda(body, root).Compile();
                 typedList = typedList.Where(predicate);
             }
-            return typedList;
+            return typedList.ToList();
         }
     }
 }

@@ -20,9 +20,13 @@ namespace Iql.Queryable.Data.Tracking
         //IEnumerable<object> TrackedEntites();
         //Type EntityType { get; }
         //object Track(object entity, bool isNew);
-        void Delete(object entity);
-        void TrackEntities(IList data, bool isNew = true);
+        void MarkForDelete(object entity);
+        List<IEntityStateBase> TrackEntities(IList data, bool isNew = true);
         IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true);
+
+        void ResetEntity(object entity);
+        void Reset(IEntityStateBase state);
+        void ResetAll(List<IEntityStateBase> states);
         //List<IUpdateEntityOperation> GetChangesInternal(bool reset = false);
         //void Reset();
         //object FindClone(object entity);

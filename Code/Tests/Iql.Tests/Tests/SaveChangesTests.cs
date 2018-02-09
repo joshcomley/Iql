@@ -21,7 +21,7 @@ namespace Iql.Tests.Tests
 
             var clients = await Db.Clients.ToList();
             var client1 = clients.Single(c => c.Id == 1);
-            List<IQueuedOperation> queue = null;
+            List<IQueuedOperation> queue;
             void AssertQueue(string newName)
             {
                 queue = Db.DataStore.GetQueue().ToList();
@@ -255,8 +255,8 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(site, update.Operation.Entity);
 
                 var propertyChanges = update.Operation.EntityState.ChangedProperties;
-                Assert.AreEqual(2, propertyChanges.Count);
-                var propertyChange = propertyChanges.Single(p => p.Property.Name == nameof(Site.ClientId));
+                Assert.AreEqual(1, propertyChanges.Count);
+                var propertyChange = propertyChanges[0];//.Single(p => p.Property.Name == nameof(Site.ClientId));
 
                 Assert.AreEqual(nameof(Site.ClientId), propertyChange.Property.Name);
                 Assert.AreEqual(client1.Id, propertyChange.OldValue);

@@ -7,7 +7,7 @@ namespace Iql.Queryable
     {
         public static IRelatedList NewEmptyClone(this IRelatedList source, object newOwner)
         {
-            return New(source.Property, newOwner, source.OwnerType, source.TargetType);
+            return New(source.PropertyName, newOwner, source.OwnerType, source.TargetType);
         }
 
         public static IRelatedList New(string propertyName, object owner, Type ownerType, Type relationshipType)
