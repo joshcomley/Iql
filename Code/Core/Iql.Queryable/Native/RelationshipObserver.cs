@@ -276,7 +276,7 @@ namespace Iql.Queryable.Native
                     {
                         var mapping = _oneToTargetRelationshipKeyMaps[relationship.Relationship];
                         var key = GetRelationshipKeyString(entity, relationship.Relationship);
-                        if (mapping.ContainsKey(key))
+                        if (key != null && mapping.ContainsKey(key))
                         {
                             var target = mapping[key];
                             Unpair(relationship.Relationship, entity, target);
@@ -318,7 +318,11 @@ namespace Iql.Queryable.Native
                             var key = GetTargetKeyString(entity, relationship.Relationship);
                             if (mapping.ContainsKey(key))
                             {
-                                return true;
+                                var sourceMaps = _oneToSourceRelationshipKeyMaps[relationship.Relationship];
+                                if (sourceMaps.ContainsKey(key))
+                                {
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -854,10 +858,20 @@ namespace Iql.Queryable.Native
                                     sourceMaps.Add(newKeyString, sources);
                                     foreach (var source in sources)
                                     {
-                                        Pair(relationship.Relationship, source.Value, state.Entity);
+                                        var sourceEntity = source.Value;
+                                        if (_relationshipKeys.ContainsKey(sourceEntity))
+                                        {
+                                            var sourceMap = _relationshipKeys[sourceEntity];
+                                            if (sourceMap.ContainsKey(relationship.Relationship))
+                                            {
+                                                sourceMap[relationship.Relationship] = newKeyString;
+                                            }
+                                        }
+                                        Pair(relationship.Relationship, sourceEntity, state.Entity);
                                     }
                                 }
                             }
+
                             //foreach(var item in _oneToSourceRelationshipKeyMaps[])
                             // Update all source maps that point to the old target key string
                             // and set IDs to the new 

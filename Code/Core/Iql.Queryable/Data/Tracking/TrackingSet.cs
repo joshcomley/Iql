@@ -45,7 +45,7 @@ namespace Iql.Queryable.Data.Tracking
         {
             if (entity is CompositeKey)
             {
-                return GetEntityStateByKey((CompositeKey) entity);
+                return GetEntityStateByKey((CompositeKey)entity);
             }
             Guid persistenceKey;
             CompositeKey key;
@@ -58,9 +58,9 @@ namespace Iql.Queryable.Data.Tracking
                 return existingEntityState;
             }
             var entityState = new EntityState<T>(
-                (T)entity, 
-                typeof(T), 
-                DataContext, 
+                (T)entity,
+                typeof(T),
+                DataContext,
                 EntityConfiguration);
             EntitiesByObject.Add(entity, entityState);
             if (!key.HasDefaultValue())
@@ -184,30 +184,37 @@ namespace Iql.Queryable.Data.Tracking
         private readonly Dictionary<T, List<int>> _relatedListChangedSubscriptions =
             new Dictionary<T, List<int>>();
 
-        internal void Watch(T entity)
+        internal void Watch(T sourceEntity)
         {
-            if (!_entityStateChangedSubscriptions.ContainsKey(entity))
+            var entity = sourceEntity as IEntity;
+            if (entity == null)
+            {
+                return;
+            }
+            if (!_entityStateChangedSubscriptions.ContainsKey(sourceEntity))
             {
                 GetEntityState(entity).MarkedForDeletionChanged.Subscribe(MarkedForDeletionChanged);
             }
-            if (!_propertyChangingSubscriptions.ContainsKey(entity))
+            if (!_propertyChangingSubscriptions.ContainsKey(sourceEntity))
             {
-                var propertyChangingSubscriptionId = (entity as IEntity)?.PropertyChanging?.Subscribe(EntityPropertyChanging);
-                if (propertyChangingSubscriptionId.HasValue)
+                if (entity.PropertyChanging == null)
                 {
-                    _propertyChangingSubscriptions.Add(entity, propertyChangingSubscriptionId.Value);
+                    entity.PropertyChanging = new EventEmitter<IPropertyChangeEvent>();
                 }
+                var propertyChangingSubscriptionId = entity.PropertyChanging.Subscribe(EntityPropertyChanging);
+                _propertyChangingSubscriptions.Add(sourceEntity, propertyChangingSubscriptionId);
             }
-            if (!_propertyChangedSubscriptions.ContainsKey(entity))
+            if (!_propertyChangedSubscriptions.ContainsKey(sourceEntity))
             {
-                var propertyChangedSubscriptionId = (entity as IEntity)?.PropertyChanged?.Subscribe(EntityPropertyChanged);
-                if (propertyChangedSubscriptionId.HasValue)
+                if (entity.PropertyChanged == null)
                 {
-                    _propertyChangedSubscriptions.Add(entity, propertyChangedSubscriptionId.Value);
+                    entity.PropertyChanged = new EventEmitter<IPropertyChangeEvent>();
                 }
+                var propertyChangedSubscriptionId = entity.PropertyChanged.Subscribe(EntityPropertyChanged);
+                _propertyChangedSubscriptions.Add(sourceEntity, propertyChangedSubscriptionId);
             }
 
-            if (!_relatedListChangedSubscriptions.ContainsKey(entity))
+            if (!_relatedListChangedSubscriptions.ContainsKey(sourceEntity))
             {
                 var list = EntityConfiguration.AllRelationships();
                 for (var i = 0; i < list.Count; i++)
@@ -224,7 +231,7 @@ namespace Iql.Queryable.Data.Tracking
         }
 
         private void RelatedListChanged(
-            IRelatedListChangedEvent changeEvent, 
+            IRelatedListChangedEvent changeEvent,
             IRelationshipDetail relationship,
             ITrackingSet targetTracking)
         {
@@ -292,7 +299,6 @@ namespace Iql.Queryable.Data.Tracking
                 case PropertyKind.Primitive:
                     var entityState = GetEntityState(propertyChange.Entity);
                     var propertyState = entityState.GetPropertyState(property.Name);
-
                     propertyState.NewValue = propertyChange.NewValue;
                     break;
             }

@@ -14,30 +14,55 @@ namespace Tunnel.ApiContext.Base
 		public TunnelDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
 			this.Users = (DbSet<ApplicationUser,string>)this.AsDbSet<ApplicationUser, string>();
+			
 			this.Clients = (DbSet<Client,int>)this.AsDbSet<Client, int>();
+			
 			this.ClientTypes = (DbSet<ClientType,int>)this.AsDbSet<ClientType, int>();
+			
 			this.DocumentCategories = (DbSet<DocumentCategory,int>)this.AsDbSet<DocumentCategory, int>();
+			
 			this.SiteDocuments = (DbSet<SiteDocument,int>)this.AsDbSet<SiteDocument, int>();
+			
 			this.ReportActionsTaken = (DbSet<ReportActionsTaken,int>)this.AsDbSet<ReportActionsTaken, int>();
+			
 			this.ReportCategories = (DbSet<ReportCategory,int>)this.AsDbSet<ReportCategory, int>();
+			
 			this.ReportDefaultRecommendations = (DbSet<ReportDefaultRecommendation,int>)this.AsDbSet<ReportDefaultRecommendation, int>();
+			
 			this.ReportRecommendations = (DbSet<ReportRecommendation,int>)this.AsDbSet<ReportRecommendation, int>();
+			
 			this.ReportTypes = (DbSet<ReportType,int>)this.AsDbSet<ReportType, int>();
+			
 			this.Projects = (DbSet<Project,int>)this.AsDbSet<Project, int>();
+			
 			this.ReportReceiverEmailAddresses = (DbSet<ReportReceiverEmailAddress,int>)this.AsDbSet<ReportReceiverEmailAddress, int>();
+			
 			this.RiskAssessments = (DbSet<RiskAssessment,int>)this.AsDbSet<RiskAssessment, int>();
+			
 			this.RiskAssessmentSolutions = (DbSet<RiskAssessmentSolution,int>)this.AsDbSet<RiskAssessmentSolution, int>();
+			
 			this.RiskAssessmentAnswers = (DbSet<RiskAssessmentAnswer,int>)this.AsDbSet<RiskAssessmentAnswer, int>();
+			
 			this.RiskAssessmentQuestions = (DbSet<RiskAssessmentQuestion,int>)this.AsDbSet<RiskAssessmentQuestion, int>();
+			
 			this.People = (DbSet<Person,int>)this.AsDbSet<Person, int>();
+			
 			this.PersonInspections = (DbSet<PersonInspection,int>)this.AsDbSet<PersonInspection, int>();
+			
 			this.PersonLoadings = (DbSet<PersonLoading,int>)this.AsDbSet<PersonLoading, int>();
+			
 			this.PersonTypes = (DbSet<PersonType,int>)this.AsDbSet<PersonType, int>();
+			
 			this.PersonTypesMap = (DbSet<PersonTypeMap,CompositeKey>)this.AsDbSet<PersonTypeMap, CompositeKey>();
+			
 			this.PersonReports = (DbSet<PersonReport,int>)this.AsDbSet<PersonReport, int>();
+			
 			this.Sites = (DbSet<Site,int>)this.AsDbSet<Site, int>();
+			
 			this.SiteInspections = (DbSet<SiteInspection,int>)this.AsDbSet<SiteInspection, int>();
+			
 			this.UserSites = (DbSet<UserSite,CompositeKey>)this.AsDbSet<UserSite, CompositeKey>();
+			
 			this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
 			this.ODataConfiguration.RegisterEntitySet<ApplicationUser>(nameof(Users));
 			this.ODataConfiguration.RegisterEntitySet<Client>(nameof(Clients));
@@ -64,9 +89,10 @@ namespace Tunnel.ApiContext.Base
 			this.ODataConfiguration.RegisterEntitySet<Site>(nameof(Sites));
 			this.ODataConfiguration.RegisterEntitySet<SiteInspection>(nameof(SiteInspections));
 			this.ODataConfiguration.RegisterEntitySet<UserSite>(nameof(UserSites));
-		}
 		
-		public ODataConfiguration ODataConfiguration { get; set; } = new ODataConfiguration();
+		}
+
+		public ODataConfiguration ODataConfiguration { get; set; }		 = new ODataConfiguration();
 		
 		public override void Configure(EntityConfigurationBuilder builder)
 		{
@@ -337,21 +363,21 @@ namespace Tunnel.ApiContext.Base
 			
 			builder.EntityType<RiskAssessment>()
 				.HasKey(p => p.Id)
+				.DefineProperty(p => p.SiteInspectionId, true)
 				.DefineProperty(p => p.Id, false)
-				.DefineProperty(p => p.SiteInspectionId, false)
 				.DefineProperty(p => p.CreatedByUserId, true)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false)
 				.DefineProperty(p => p.CreatedDate, false)
 				.DefineProperty(p => p.Version, false)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
-				.DefineProperty(p => p.RiskAssessmentSolution, true)
+				.DefineProperty(p => p.SiteInspection, true)
 				.DefineProperty(p => p.CreatedByUser, true)
-				.DefineProperty(p => p.SiteInspection, false);
+				.DefineProperty(p => p.RiskAssessmentSolution, false);
 			
 			builder.EntityType<RiskAssessment>()
-				.HasOne(p => p.RiskAssessmentSolution)
+				.HasOne(p => p.SiteInspection)
 				.WithOne(p => p.RiskAssessment)
-				.WithConstraint(p => p.Id, p => p.RiskAssessmentId);
+				.WithConstraint(p => p.SiteInspectionId, p => p.Id);
 			
 			builder.EntityType<RiskAssessment>()
 				.HasOne(p => p.CreatedByUser)
@@ -369,6 +395,11 @@ namespace Tunnel.ApiContext.Base
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineProperty(p => p.RiskAssessment, false)
 				.DefineProperty(p => p.CreatedByUser, true);
+			
+			builder.EntityType<RiskAssessmentSolution>()
+				.HasOne(p => p.RiskAssessment)
+				.WithOne(p => p.RiskAssessmentSolution)
+				.WithConstraint(p => p.RiskAssessmentId, p => p.Id);
 			
 			builder.EntityType<RiskAssessmentAnswer>()
 				.HasKey(p => p.Id)
@@ -621,20 +652,10 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false)
 				.DefineProperty(p => p.Version, false)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
+				.DefineProperty(p => p.RiskAssessment, false)
 				.DefineCollectionProperty(p => p.PersonInspections, p => p.PersonInspectionsCount)
-				.DefineProperty(p => p.RiskAssessment, true)
 				.DefineProperty(p => p.Site, false)
 				.DefineProperty(p => p.CreatedByUser, true);
-
-		    builder.EntityType<RiskAssessment>()
-		        .HasOne(p => p.SiteInspection)
-		        .WithOne(p => p.RiskAssessment)
-		        .WithConstraint(p => p.SiteInspectionId, p => p.Id);
-
-		    builder.EntityType<SiteInspection>()
-				.HasOne(p => p.RiskAssessment)
-				.WithOne(p => p.SiteInspection)
-				.WithConstraint(p => p.Id, p => p.SiteInspectionId);
 			
 			builder.EntityType<SiteInspection>()
 				.HasOne(p => p.Site)
@@ -662,6 +683,7 @@ namespace Tunnel.ApiContext.Base
 				.HasOne(p => p.Site)
 				.WithMany(p => p.Users)
 				.WithConstraint(p => p.SiteId, p => p.Id);
+		
 		}
 		
 		
@@ -714,6 +736,7 @@ namespace Tunnel.ApiContext.Base
 		public DbSet<SiteInspection, int> SiteInspections { get; set; }
 		
 		public DbSet<UserSite, CompositeKey> UserSites { get; set; }
+	
 	}
 }
 

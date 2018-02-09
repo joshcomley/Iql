@@ -389,41 +389,89 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task TestReassigningExistingEntityFromOneCollectionToAnotherAndReverting()
+        public async Task TestAssignToCollectionByReferenceAndReassignByReference()
         {
             await TestReassign(ReassignType.AssignByReference, ReassignType.AssignByReference);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByReference, ReassignType.AssignByKeyMethod);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByReference, ReassignType.Key);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByReference, ReassignType.Relationship);
-            TestCleanUp();
-            await TestReassign(ReassignType.Key, ReassignType.AssignByReference);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByReference, ReassignType.AssignByKeyMethod);
-            TestCleanUp();
-            await TestReassign(ReassignType.Key, ReassignType.Key);
-            TestCleanUp();
-            await TestReassign(ReassignType.Key, ReassignType.Relationship);
-            TestCleanUp();
-            await TestReassign(ReassignType.Relationship, ReassignType.AssignByReference);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByReference, ReassignType.AssignByKeyMethod);
-            TestCleanUp();
-            await TestReassign(ReassignType.Relationship, ReassignType.Key);
-            TestCleanUp();
-            await TestReassign(ReassignType.Relationship, ReassignType.Relationship);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.AssignByReference);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.AssignByKeyMethod);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.Key);
-            TestCleanUp();
-            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.Relationship);
         }
 
+        [TestMethod]
+        public async Task TestAssignToCollectionByReferenceAndReassignByKey()
+        {
+            await TestReassign(ReassignType.AssignByReference, ReassignType.Key);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByReferenceAndReassignByRelationship()
+        {
+            await TestReassign(ReassignType.AssignByReference, ReassignType.Relationship);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByReferenceAndReassignByKeyMethod()
+        {
+            await TestReassign(ReassignType.AssignByReference, ReassignType.AssignByKeyMethod);
+        }
+
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyAndReassignByReference()
+        {
+            await TestReassign(ReassignType.Key, ReassignType.AssignByReference);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyAndReassignByKey()
+        {
+            await TestReassign(ReassignType.Key, ReassignType.Key);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyAndReassignByRelationship()
+        {
+            await TestReassign(ReassignType.Key, ReassignType.Relationship);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByRelationshipAndReassignByReference()
+        {
+            await TestReassign(ReassignType.Relationship, ReassignType.AssignByReference);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByRelationshipAndReassignByKey()
+        {
+            await TestReassign(ReassignType.Relationship, ReassignType.Key);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByRelationshipAndReassignByRelationship()
+        {
+            await TestReassign(ReassignType.Relationship, ReassignType.Relationship);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyMethodAndReassignByReference()
+        {
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.AssignByReference);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyMethodAndReassignByKeyMethod()
+        {
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.AssignByKeyMethod);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyMethodAndReassignByKey()
+        {
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.Key);
+        }
+
+        [TestMethod]
+        public async Task TestAssignToCollectionByKeyMethodAndReassignByRelationship()
+        {
+            await TestReassign(ReassignType.AssignByKeyMethod, ReassignType.Relationship);
+        }
         //[TestMethod]
         //public async Task AttemptingToSetNullValueToNonNullablePropertyShouldProduceNullNotAllowedException()
         //{
