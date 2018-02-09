@@ -235,9 +235,11 @@ namespace Iql.Queryable.Native
                         TrackingSetCollection.TrackingSetByType(relationship.Relationship.Source.Type);
                     var targetSourceValue = entityState.Entity.GetPropertyValue(
                         relationship.Relationship.Target.Property);
-                    switch (relationship.Relationship.Kind)
+                    if (targetSourceValue != null)
                     {
-                        case RelationshipKind.OneToMany:
+                        switch (relationship.Relationship.Kind)
+                        {
+                            case RelationshipKind.OneToMany:
                             {
                                 var list = targetSourceValue as IList;
                                 if (list != null)
@@ -249,13 +251,14 @@ namespace Iql.Queryable.Native
                                     }
                                 }
                             }
-                            break;
-                        case RelationshipKind.OneToOne:
+                                break;
+                            case RelationshipKind.OneToOne:
                             {
                                 var state = sourceTrackingSet.GetEntityState(targetSourceValue);
                                 MarkForDeletion(state, entityState.Entity, relationship.Relationship);
                             }
-                            break;
+                                break;
+                        }
                     }
                 }
             }
