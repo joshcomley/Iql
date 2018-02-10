@@ -364,7 +364,7 @@ namespace Iql.Queryable.Data.Tracking
             //}, ChangeEntityMode.NoKeyChecks);
         }
 
-        private void SilentlyMerge(object entity, object with)
+        private void SilentlyMerge(object entity, object mergeWith)
         {
             var markSilent = false;
             if (!_silentEntities.ContainsKey(entity))
@@ -374,7 +374,7 @@ namespace Iql.Queryable.Data.Tracking
             }
             SimplePropertyMerger.Merge(
                 entity,
-                with
+                mergeWith
             );
             Reindex(entity);
             if (markSilent)

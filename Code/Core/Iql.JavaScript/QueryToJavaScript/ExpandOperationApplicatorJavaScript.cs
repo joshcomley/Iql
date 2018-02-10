@@ -36,7 +36,6 @@ namespace Iql.JavaScript.QueryToJavaScript
                 {
                     case RelationshipKind.ManyToMany:
                         throw new NotSupportedException("Expanding many to many relationships are not yet supported.");
-                        break;
                 }
                 query += "\nthis." + expandMethodName + "(";
                 query += javaScriptQueryResult.GetDataSetObjectName(sourceType) + ",";

@@ -8,29 +8,17 @@ using Iql.Queryable.Operations;
 
 namespace Iql.OData.Queryable
 {
-    class ODataUriPart
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-
-        public ODataUriPart(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-    }
-
     public class ODataQuery<T> : QueryResult<IODataQuery>, IODataQuery
     {
         private Dictionary<ODataQueryPart, List<string>> QueryParts { get; }
             = new Dictionary<ODataQueryPart, List<string>>();
 
-        public ODataQuery(global::Iql.Queryable.IQueryable<T> queryable, IDataContext context)
+        public ODataQuery(global::Iql.Queryable.IQueryable<T> queryable, IDataContext dataContext)
         {
-            Context = context;
+            DataContext = dataContext;
         }
 
-        public IDataContext Context { get; }
+        public IDataContext DataContext { get; }
 
         public int TotalSkip { get; set; }
         public int TotalTake { get; set; }
