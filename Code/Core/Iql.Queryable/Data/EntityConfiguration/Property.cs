@@ -49,7 +49,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 readOnly,
                 countRelationship);
 
+#if !TypeScript
             PropertyInfo = declaringType.GetProperty(name);
+#endif
             PropertyGetterExpressionTyped = propertyGetterExpression;
             PropertyGetterTyped = propertyGetterExpression.Compile();
             PropertyGetter = o =>

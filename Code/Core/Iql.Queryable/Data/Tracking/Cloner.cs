@@ -67,8 +67,13 @@ namespace Iql.Queryable.Data.Tracking
             }
             if (obj.IsArray())
             {
+#if !TypeScript
                 var listType = (obj as IList).GetListType();
                 var listElementType = listType.GetGenericArguments().First();
+#else
+                var listType = typeof(IList);
+                var listElementType = typeof(object);
+#endif
                 var newList = CloneListMethod
                         .InvokeGeneric(null,
                         new []

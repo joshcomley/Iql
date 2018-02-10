@@ -31,8 +31,8 @@ namespace Iql.Queryable.Data
 
         public static T GetPropertyValueAs<T>(this object obj, IProperty property)
         {
-            return (T) property.PropertyInfo.GetValue(obj);
-            //return (T)property.PropertyGetter(obj);
+            //return (T) property.PropertyInfo.GetValue(obj);
+            return (T)property.PropertyGetter(obj);
         }
 
         public static object GetPropertyValueByName<T>(this T obj, string propertyName)

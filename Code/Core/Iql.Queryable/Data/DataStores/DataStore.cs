@@ -209,10 +209,6 @@ namespace Iql.Queryable.Data.DataStores
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
-#if TypeScript
-            response.Data =
- (DbList<TEntity>)DataContext.EnsureTypedListByType(response.Data, typeof(TEntity), null, null, true);
-#endif
             var dbList = new DbList<TEntity>();
             dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue)
@@ -264,14 +260,18 @@ namespace Iql.Queryable.Data.DataStores
                 data = new Dictionary<Type, IList>();
                 relationshipObserver = RelationshipObserver;
                 // TODO: Implement tracking
-                foreach (var set in response.Data)
+                foreach (var dataSet in response.Data)
                 {
-                    if (set.Value.Count > 0)
+                    if (dataSet.Value.Count > 0)
                     {
-                        var trackingSet = GetTracking().TrackingSetByType(set.Key);
-                        var states = trackingSet.TrackEntities(set.Value, false);
+                        var set = dataSet.Value;
+#if TypeScript
+                        set = DataContext.EnsureTypedListByType(dataSet.Value, dataSet.Key, null, null, true);
+#endif
+                        var trackingSet = GetTracking().TrackingSetByType(dataSet.Key);
+                        var states = trackingSet.TrackEntities(set, false);
                         trackingSet.ResetAll(states);
-                        data.Add(set.Key, states.Select(s => s.Entity).ToList(set.Key));
+                        data.Add(dataSet.Key, states.Select(s => s.Entity).ToList(dataSet.Key));
                     }
                 }
             }

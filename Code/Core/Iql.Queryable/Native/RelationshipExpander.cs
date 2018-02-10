@@ -11,17 +11,6 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Native
 {
-    public class RelationshipMatches
-    {
-        public IList SourceMatches { get; set; }
-        public IList TargetMatches { get; set; }
-
-        public RelationshipMatches(IList sourceMatches, IList targetMatches)
-        {
-            SourceMatches = sourceMatches;
-            TargetMatches = targetMatches;
-        }
-    }
     public class RelationshipExpander
     {
         static RelationshipExpander()
@@ -182,6 +171,7 @@ namespace Iql.Queryable.Native
                 {
                     foreach (var targetEntity in targetDictionary)
                     {
+#if !TypeScript
                         if (targetCountProperty.PropertyInfo.PropertyType == typeof(long))
                         {
                             targetEntity.Value.Item.SetPropertyValue(targetCountProperty,
@@ -189,9 +179,12 @@ namespace Iql.Queryable.Native
                         }
                         else
                         {
+#endif
                             targetEntity.Value.Item.SetPropertyValue(targetCountProperty,
                                 targetEntity.Value.Lists[relationship.Target.Property.Name].Count);
+#if !TypeScript
                         }
+#endif
                     }
                 }
             }
