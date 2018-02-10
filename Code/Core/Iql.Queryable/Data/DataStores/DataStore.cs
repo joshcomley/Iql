@@ -93,6 +93,7 @@ namespace Iql.Queryable.Data.DataStores
                 {
                     var thisTrackingSet = Tracking.TrackingSetByType(group.Key);
                     var state = thisTrackingSet.TrackEntity(item);
+                    state.UnmarkForDeletion();
                     if (item == (object)entity)
                     {
                         entityState = state;

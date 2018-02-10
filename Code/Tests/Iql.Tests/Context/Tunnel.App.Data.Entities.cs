@@ -7297,9 +7297,9 @@ namespace Tunnel.App.Data.Entities
 	public class RiskAssessment : RiskAssessmentBase, IEntity
 	{
 				
-		protected int? _siteInspectionId;
+		protected int _siteInspectionId;
 
-		public int? SiteInspectionId
+		public int SiteInspectionId
 		{
 			get => _siteInspectionId;
 			set

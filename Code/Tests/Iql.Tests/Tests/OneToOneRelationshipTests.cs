@@ -11,34 +11,33 @@ namespace Iql.Tests.Tests
     public class OneToOneRelationshipTests : TestsBase
     {
         [TestMethod]
-        public void OneToOneRelationshipsSetShouldPersistRelationshipsWhenTracked()
+        public void OneToOneRelationshipsSetShouldPersistRelationshipsWhenTrackedAfterAdd()
         {
-            void Perform(OneToOneTestType oneToOneTestType,
-                OneToOneTestOrder order)
-            {
-                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
-                TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
-                TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
-                TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
-                TestCleanUp();
-
-                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
-                TestCleanUp();
-                //
-                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
-                TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
-                TestCleanUp();
-                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
-                TestCleanUp();
-            }
-            Perform(OneToOneTestType.Reference, OneToOneTestOrder.BeforeAdd);
             Perform(OneToOneTestType.Reference, OneToOneTestOrder.AfterAdd);
             //Perform(OneToOneTestType.Key, OneToOneTestOrder.BeforeAdd);
             //Perform(OneToOneTestType.Key, OneToOneTestOrder.AfterAdd);
+        }
+
+        [TestMethod]
+        public void OneToOneRelationshipsSetShouldPersistRelationshipsWhenTrackedBeforeAdd()
+        {
+            Perform(OneToOneTestType.Reference, OneToOneTestOrder.BeforeAdd);
+        }
+
+        void Perform(OneToOneTestType oneToOneTestType,
+            OneToOneTestOrder order)
+        {
+            var count = 4;
+            for (var i = 0; i < count; i++)
+            {
+                OneToOneShouldPersistRelationshipsWhenTracked(false, order, oneToOneTestType);
+                TestCleanUp();
+            }
+            for (var i = 0; i < count; i++)
+            {
+                OneToOneShouldPersistRelationshipsWhenTracked(true, order, oneToOneTestType);
+                TestCleanUp();
+            }
         }
 
         [TestMethod]
@@ -83,7 +82,7 @@ namespace Iql.Tests.Tests
             Assert.IsFalse(riskAssessmentSolutionState.MarkedForCascadeDeletion);
             Assert.IsFalse(riskAssessmentSolutionState.CascadeDeletedBy.Any(cd => cd.Source == riskAssessment));
 
-            Db.DeleteEntity(siteInspections[0]
+            Db.DeleteEntity(siteInspections[0]  
 #if TypeScript
             , typeof(SiteInspection)
 #endif

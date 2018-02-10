@@ -213,17 +213,21 @@ namespace Iql.Queryable.Native
             ITrackingSet trackingSet)
         {
             // Recurse all relationships marking for cascade delete if necessary
-            if (e.NewValue)
-            {
-                MarkForDeletion(e.EntityState, null, null);
-            }
+            UpdateDeletionStatus(e.NewValue, e.EntityState, null, null);
         }
 
-        private void MarkForDeletion(IEntityStateBase entityState, object parent, IRelationship parentRelationship)
+        private void UpdateDeletionStatus(bool deleted, IEntityStateBase entityState, object parent, IRelationship parentRelationship)
         {
             if (parent != null)
             {
-                entityState.MarkForCascadeDeletion(parent, parentRelationship);
+                if (deleted)
+                {
+                    entityState.MarkForCascadeDeletion(parent, parentRelationship);
+                }
+                else
+                {
+                    entityState.UnmarkForDeletion();
+                }
             }
             var relationships = entityState.EntityConfiguration.AllRelationships();
             for (var i = 0; i < relationships.Count; i++)
@@ -247,7 +251,7 @@ namespace Iql.Queryable.Native
                                     foreach (var source in list)
                                     {
                                         var state = sourceTrackingSet.GetEntityState(source);
-                                        MarkForDeletion(state, entityState.Entity, relationship.Relationship);
+                                        UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
                                     }
                                 }
                             }
@@ -255,7 +259,7 @@ namespace Iql.Queryable.Native
                             case RelationshipKind.OneToOne:
                             {
                                 var state = sourceTrackingSet.GetEntityState(targetSourceValue);
-                                MarkForDeletion(state, entityState.Entity, relationship.Relationship);
+                                UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
                             }
                                 break;
                         }
