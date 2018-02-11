@@ -26,9 +26,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public List<IRelationship> Relationships { get; set; }
 
-        private IProperty FindOrDefinePropertyInternal(LambdaExpression lambda, Type propertyType, Type elementType)
+        private IProperty FindOrDefinePropertyInternal(
+            LambdaExpression lambda, 
+            Type propertyType, 
+            Type elementType)
         {
-            return (IProperty)GetType().GetRuntimeMethods().First(m => m.Name == nameof(FindOrDefineProperty))
+            return (IProperty)GetType()
+                .GetRuntimeMethods()
+                .First(m => m.Name == nameof(FindOrDefineProperty))
                 .InvokeGeneric(this, new object[]
                 {
                     lambda, elementType
@@ -60,7 +65,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public IProperty FindOrDefinePropertyByName(string name, Type elementType)
         {
             var property = typeof(T).GetProperty(name);
-            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType, elementType);
+            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType);
         }
 
         public RelationshipMatch FindRelationship(string propertyName)
@@ -243,7 +248,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
             var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<T, TProperty, TProperty> ?? new Property<T, TProperty, TProperty>(name, false, typeof(T), convertedFromType, false, null, property);
+            var definition = FindProperty(name) as Property<T, TProperty, TProperty> 
+                             ?? new Property<T, TProperty, TProperty>(
+                                 name, 
+                                 false, 
+                                 typeof(T), 
+                                 convertedFromType, 
+                                 false, 
+                                 null, 
+                                 property);
             definition.Nullable = nullable;
 
             //definition.PropertyGetter = property.Compile();

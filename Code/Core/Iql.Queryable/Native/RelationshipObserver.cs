@@ -244,23 +244,23 @@ namespace Iql.Queryable.Native
                         switch (relationship.Relationship.Kind)
                         {
                             case RelationshipKind.OneToMany:
-                            {
-                                var list = targetSourceValue as IList;
-                                if (list != null)
                                 {
-                                    foreach (var source in list)
+                                    var list = targetSourceValue as IList;
+                                    if (list != null)
                                     {
-                                        var state = sourceTrackingSet.GetEntityState(source);
-                                        UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
+                                        foreach (var source in list)
+                                        {
+                                            var state = sourceTrackingSet.GetEntityState(source);
+                                            UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
+                                        }
                                     }
                                 }
-                            }
                                 break;
                             case RelationshipKind.OneToOne:
-                            {
-                                var state = sourceTrackingSet.GetEntityState(targetSourceValue);
-                                UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
-                            }
+                                {
+                                    var state = sourceTrackingSet.GetEntityState(targetSourceValue);
+                                    UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
+                                }
                                 break;
                         }
                     }
@@ -524,7 +524,7 @@ namespace Iql.Queryable.Native
                 for (var i = 0; i < keys.Length; i++)
                 {
                     var key = keys[i];
-                    source.SetPropertyValue(key, key.Type.DefaultValue());
+                    source.SetPropertyValue(key, key.Nullable ? null : key.Type.DefaultValue());
                 }
 
                 source.SetPropertyValue(relationship.Source.Property,

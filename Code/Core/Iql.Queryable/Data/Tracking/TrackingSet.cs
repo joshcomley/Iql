@@ -47,15 +47,10 @@ namespace Iql.Queryable.Data.Tracking
             {
                 return GetEntityStateByKey((CompositeKey)entity);
             }
-            Guid persistenceKey;
-            CompositeKey key;
-            var existingEntityState = TryGetEntityState(
-                entity,
-                out persistenceKey,
-                out key);
-            if (existingEntityState != null)
+            var existingEntityState = TryGetEntityState(entity);
+            if (existingEntityState != null && existingEntityState.State != null)
             {
-                return existingEntityState;
+                return existingEntityState.State;
             }
             var entityState = new EntityState<T>(
                 (T)entity,
@@ -63,13 +58,13 @@ namespace Iql.Queryable.Data.Tracking
                 DataContext,
                 EntityConfiguration);
             EntitiesByObject.Add(entity, entityState);
-            if (!key.HasDefaultValue())
+            if (!existingEntityState.CompositeKey.HasDefaultValue())
             {
-                EntitiesByKey.Add(key.AsKeyString(), entityState);
+                EntitiesByKey.Add(existingEntityState.CompositeKey.AsKeyString(), entityState);
             }
             if (PersistenceKey != null)
             {
-                persistenceKey = EnsurePersistenceKey(entity).Value;
+                var persistenceKey = EnsurePersistenceKey(entity).Value;
                 EntitiesByPersistenceKey.Add(persistenceKey, entityState);
             }
 
@@ -79,38 +74,41 @@ namespace Iql.Queryable.Data.Tracking
 
         private bool HasEntityState(object entity)
         {
-            Guid persistenceKey;
-            CompositeKey key;
-            var existingEntityState = TryGetEntityState(
-                entity,
-                out persistenceKey,
-                out key);
-            return existingEntityState != null;
+            var existingEntityState = TryGetEntityState(entity);
+            return existingEntityState != null && existingEntityState.State != null;
         }
 
-        private IEntityStateBase TryGetEntityState(object entity, out Guid persistenceKey, out CompositeKey key)
+        class TryGetEntityStateResult
         {
-            persistenceKey = Guid.Empty;
+            public Guid PersistenceKey { get; set; }
+            public CompositeKey CompositeKey { get; set; }
+            public IEntityStateBase State { get; set; }
+        }
+        private TryGetEntityStateResult TryGetEntityState(object entity)
+        {
+            var result = new TryGetEntityStateResult();
+            result.PersistenceKey = Guid.Empty;
 
             if (EntitiesByObject.ContainsKey(entity))
             {
-                key = null;
-                return EntitiesByObject[entity];
+                result.State = EntitiesByObject[entity];
+                return result;
             }
 
             if (PersistenceKey != null)
             {
-                persistenceKey = entity.GetPropertyValueAs<Guid>(PersistenceKey);
+                var persistenceKey = entity.GetPropertyValueAs<Guid>(PersistenceKey);
                 if (!Equals(persistenceKey, Guid.Empty) && EntitiesByPersistenceKey.ContainsKey(persistenceKey))
                 {
-                    key = null;
-                    return EntitiesByPersistenceKey[persistenceKey];
+                    result.State = EntitiesByPersistenceKey[persistenceKey];
+                    return result;
                 }
             }
 
-            key = EntityConfiguration.GetCompositeKey(entity);
-            var entityStateByKey = GetEntityStateByKey(key);
-            return entityStateByKey;
+            result.CompositeKey = EntityConfiguration.GetCompositeKey(entity);
+            var entityStateByKey = GetEntityStateByKey(result.CompositeKey);
+            result.State = entityStateByKey;
+            return result;
         }
         public IEntityStateBase GetEntityStateByKey(CompositeKey key)
         {

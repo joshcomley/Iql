@@ -52,60 +52,35 @@ namespace Iql.DotNet.Queryable.Applicators
                 var targetData = targetQuery.GetResults()[detail.TargetQueryable.ItemType];
                 var targetList = targetData;
                 var sourceList = (IList) typedList;
+
                 //context.Data.GetRoot()
+                var rootResult = context.Data.GetRoot();
+                var relationshipExpander = rootResult
+                    .RelationshipExpander;
                 if (detail.IsTarget)
                 {
-                    var matched = context.Data.GetRoot()
-                        .RelationshipExpander
+                    var matched = relationshipExpander
                         .FindMatches(
                             targetList,
                             sourceList,
                             detail.Relationship,
                             false);
-                    context.Data.GetRoot().AddMatches(detail.Relationship.Source.Type,
+                    rootResult.AddMatches(
+                        detail.Relationship.Source.Type,
                         matched.SourceMatches);
                 }
                 else
                 {
-                    var matched = context.Data.GetRoot()
-                        .RelationshipExpander
+                    var matched = relationshipExpander
                         .FindMatches(
                             sourceList,
                             targetList,
                             detail.Relationship,
                             false);
-                    context.Data.GetRoot().AddMatches(detail.Relationship.Target.Type,
+                    rootResult.AddMatches(
+                        detail.Relationship.Target.Type,
                         matched.TargetMatches);
                 }
-                //switch (detail.Relationship.Type)
-                //{
-                //    case RelationshipType.OneToOne:
-                //        .ExpandOneToOne(
-                //            sourceList,
-                //            targetList,
-                //            detail.Relationship);
-                //        break;
-                //    case RelationshipType.OneToMany:
-                //        break;
-                //    //case RelationshipType.ManyToMany:
-                //    //    var manyToMany = detail.Relationship as IManyToManyRelationship;
-                //    //    typedList.ExpandManyToMany(
-                //    //        sourceType,
-                //    //        targetType,
-                //    //        targetList,
-                //    //        dotNetQueryResult.GetDataSetObjectName(manyToMany.PivotType),
-                //    //        detail.IsTarget
-                //    //            ? manyToMany.PivotTargetKeyProperty.PropertyName
-                //    //            : manyToMany.PivotSourceKeyProperty.PropertyName,
-                //    //        detail.IsTarget
-                //    //            ? manyToMany.PivotSourceKeyProperty.PropertyName
-                //    //            : manyToMany.PivotTargetKeyProperty.PropertyName,
-                //    //        thisEnd.Property.Name,
-                //    //        otherEnd.Property.Name,
-                //    //        thisConstraint.Name,
-                //    //        otherConstraint.Name);
-                //    //    break;
-                //}
             }
             return typedList;
         }

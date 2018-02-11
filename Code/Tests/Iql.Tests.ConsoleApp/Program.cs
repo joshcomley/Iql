@@ -20,7 +20,7 @@ namespace Iql.Tests.ConsoleApp
 
             new HazceptionDataStore().GetData();
             //await Run();
-            var runCount = 1;
+            var runCount = 10;
             for (var i = 0; i < runCount; i++)
             {
                 await Run();

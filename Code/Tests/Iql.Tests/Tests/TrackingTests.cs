@@ -36,9 +36,6 @@ namespace Iql.Tests.Tests
         public async Task TestGetHazceptionAllExpands()
         {
             var db = new HazceptionDataContext();
-#if TypeScript
-            if(false) {
-#endif
             var examCandidateResults =
                 await db
                 .ExamCandidateResults
@@ -52,9 +49,6 @@ namespace Iql.Tests.Tests
                 .Expand(e => e.Results)
                 //.ExpandAll()
                 .ToList();
-#if TypeScript
-            }
-#endif
         }
 
         [TestMethod]

@@ -1,10 +1,11 @@
 using System;
 using System.Text;
-using Iql.Queryable;
+using Iql.Queryable.Data.DataStores.InMemory;
+using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public interface IJavaScriptQueryResult : IQueryResultBase
+    public interface IJavaScriptQueryResult : IInMemoryResult
     {
         StringBuilder Query { get; set; }
         string GetDataSetObjectName(Type type);
@@ -12,6 +13,7 @@ namespace Iql.JavaScript.QueryToJavaScript
         object Key { get; set; }
         string ToJavaScriptQuery(bool returnValue = true);
         void RegisterType(ExpandEntityType type);
+        Guid RegisterProperty(IProperty property);
         void AppendWhere(JavaScriptExpression filterExpression);
     }
 }

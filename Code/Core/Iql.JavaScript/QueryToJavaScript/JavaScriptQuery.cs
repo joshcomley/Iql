@@ -5,43 +5,53 @@ using System.Text;
 using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores.InMemory;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Extensions;
 using Iql.Queryable.Native;
 
 namespace Iql.JavaScript.QueryToJavaScript
 {
-    public class JavaScriptQuery<T> : QueryResult<IJavaScriptQueryResult>, IJavaScriptQueryResult
+    public class JavaScriptQuery<T> : InMemoryResult<IJavaScriptQueryResult>, IJavaScriptQueryResult
         where T : class
     {
-        public JavaScriptQuery(IQueryable<T> queryable,
-            IDataContext dataContext)
+        public JavaScriptQuery(
+            IQueryable<T> queryable,
+            IDataContext dataContext) : base(typeof(T), dataContext)
         {
             Queryable = queryable;
-            DataContext = dataContext;
         }
         public StringBuilder Query { get; set; } = new StringBuilder();
         public string GetDataSetObjectName(Type type)
         {
-            return "dataSet_" + type.Name;
+            return $"dataSet_{type.Name}";
         }
 
         public void Expand(
             IList source,
             IList target,
-            string sourceProperty)
+            Guid propertyGuid)
         {
-            var property = DataContext.EntityConfigurationContext.EntityType<T>()
-                .FindProperty(sourceProperty);
-            new RelationshipExpander()
+            var property = this.GetRoot().Properties[propertyGuid];
+
+            var allMatches = new RelationshipExpander()
                 .FindMatches(
-                    source, 
-                    target, 
+                    source,
+                    target,
                     property.Relationship.Relationship,
                     false);
+
+            var ourMatches =
+                property.Relationship.ThisIsTarget
+                    ? allMatches.SourceMatches
+                    : allMatches.TargetMatches;
+
+            this.GetRoot().AddMatches(
+                property.Relationship.ThisEnd.Property.ElementType,
+                ourMatches);
         }
 
         private IQueryable<T> Queryable { get; }
-        public IDataContext DataContext { get; }
 
         public bool HasKey { get; set; }
         public object Key { get; set; }
@@ -75,7 +85,7 @@ namespace Iql.JavaScript.QueryToJavaScript
                 if (queryable != null)
                 {
                     var js = queryable.ToQueryWithAdapter<IJavaScriptQueryResult, JavaScriptQueryableAdapter>(
-                            new JavaScriptQueryableAdapter(), DataContext, null, null)
+                            new JavaScriptQueryableAdapter(), DataContext, null, this)
                         .ToJavaScriptQuery(false);
                     typeDefs += js.Trim() + "\n\n";
                 }
@@ -96,26 +106,29 @@ namespace Iql.JavaScript.QueryToJavaScript
             }
         }
 
+        protected readonly Dictionary<Guid, IProperty> Properties = new Dictionary<Guid, IProperty>();
+        public Guid RegisterProperty(IProperty property)
+        {
+            var root = this.GetRoot();
+            if (root == this)
+            {
+                var guid = Guid.NewGuid();
+                Properties.Add(guid, property);
+                return guid;
+            }
+
+            return root.RegisterProperty(property);
+        }
+
         public void AppendWhere(JavaScriptExpression filterExpression)
         {
             Query.Append(
                 $".filter(function({filterExpression.RootVariableName}) {{ return {filterExpression.Expression}}} )");
         }
 
-        public List<T> ToList()
-        {
-            // JavaScript implementation
-            var str = ToJavaScriptQuery();
-            //return eval(this.toJavaScriptQuery());
-            var list = (List<T>) JavaScript.Eval(str);
-            var clone = list.CloneAs(DataContext, typeof(T), RelationshipCloneMode.Full);
-            return clone;
-        }
-
         public object DataSet(string name)
         {
-            var sourceSet = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-                .GetSourceByTypeName(name);
+            var sourceSet = Configuration.GetSourceByTypeName(name);
             foreach (var configuration in DataContext.EntityConfigurationContext.AllConfigurations())
             {
                 if (configuration.Type.Name == name)
@@ -126,5 +139,14 @@ namespace Iql.JavaScript.QueryToJavaScript
             }
             throw new Exception($"Unable to find entity type \"{name}\"");
         }
-   }
+
+        public override List<TEntity> ApplyOperations<TEntity>()
+        {
+            var str = ToJavaScriptQuery();
+            //return eval(this.toJavaScriptQuery());
+            var list = (List<TEntity>)JavaScript.Eval(str);
+            var clone = list.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.Full);
+            return clone;
+        }
+    }
 }
