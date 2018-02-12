@@ -17,7 +17,25 @@ namespace Iql.Queryable.Operations
 
         public bool HasDefaultValue()
         {
-            return Keys.Any(k => k.IsDefaultValue());
+            // Avoid for loop in most casesS
+            if (Keys.Length == 1)
+            {
+                return Keys[0].HasDefaultValue;
+            }
+
+            if (Keys.Length == 2)
+            {
+                return Keys[0].HasDefaultValue ||
+                       Keys[1].HasDefaultValue;
+            }
+            for (var i = 0; i < Keys.Length; i++)
+            {
+                if (Keys[i].HasDefaultValue)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool Matches(CompositeKey compositeKey)

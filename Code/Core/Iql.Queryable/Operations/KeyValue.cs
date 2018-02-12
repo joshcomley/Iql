@@ -5,8 +5,39 @@ namespace Iql.Queryable.Operations
 {
     public class KeyValue
     {
+        private bool _hasDefaultValueSet;
+        private bool _hasDefaultValue;
+        private object _value;
+
+        public bool HasDefaultValue
+        {
+            get
+            {
+                if (!_hasDefaultValueSet)
+                {
+                    _hasDefaultValueSet = true;
+                    _hasDefaultValue = Value.IsDefaultValue();
+                }
+
+                return _hasDefaultValue;
+            }
+        }
+
         public string Name { get; set; }
-        public object Value { get; set; }
+
+        public object Value
+        {
+            get => _value;
+            set
+            {
+                if (_value != value)
+                {
+                    _hasDefaultValueSet = false;
+                }
+                _value = value;
+            }
+        }
+
         public Type ValueType { get; set; }
         public KeyValue(string name, object value, Type valueType)
         {

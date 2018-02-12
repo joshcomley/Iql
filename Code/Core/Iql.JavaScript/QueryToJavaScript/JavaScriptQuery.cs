@@ -133,8 +133,8 @@ namespace Iql.JavaScript.QueryToJavaScript
             {
                 if (configuration.Type.Name == name)
                 {
-                    var cloneSet = sourceSet.CloneAs(DataContext, configuration.Type, RelationshipCloneMode.Full);
-                    return cloneSet;
+                    //var cloneSet = sourceSet.CloneAs(DataContext, configuration.Type, RelationshipCloneMode.Full);
+                    return sourceSet;
                 }
             }
             throw new Exception($"Unable to find entity type \"{name}\"");
@@ -145,8 +145,9 @@ namespace Iql.JavaScript.QueryToJavaScript
             var str = ToJavaScriptQuery();
             //return eval(this.toJavaScriptQuery());
             var list = (List<TEntity>)JavaScript.Eval(str);
-            var clone = list.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.Full);
-            return clone;
+            return list;
+            //var clone = list.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.Full);
+            //return clone;
         }
     }
 }
