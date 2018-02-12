@@ -231,12 +231,15 @@ namespace Iql.Queryable.Native
                 for (var i = 0; i < dataSet.Count; i++)
                 {
                     var entity = dataSet[i];
-                    var compositeKey = new CompositeKey();
-                    foreach (var property in properties)
+                    var compositeKey = new CompositeKey(properties.Length);
+                    for (var j = 0; j < properties.Length; j++)
                     {
-                        compositeKey.Keys.Add(new KeyValue(property.Name,
-                            entity.GetPropertyValue(property),
-                            property.ElementType));
+                        var property = properties[j];
+                        compositeKey.Keys[j] = 
+                            new KeyValue(
+                                property.Name,
+                                entity.GetPropertyValue(property),
+                                property.ElementType);
                     }
 
                     var itemAndList = new EntityRelationships<T>(entity);
@@ -287,13 +290,13 @@ namespace Iql.Queryable.Native
                 for (var i = 0; i < dataSet.Count; i++)
                 {
                     var entity = dataSet[i];
-                    var compositeKey = new CompositeKey();
+                    var compositeKey = new CompositeKey(properties.Length);
                     for (var j = 0; j < properties.Length; j++)
                     {
                         var property = properties[j];
-                        compositeKey.Keys.Add(new KeyValue(property.Name,
+                        compositeKey.Keys[j] = new KeyValue(property.Name,
                             entity.GetPropertyValue(property),
-                            property.ElementType));
+                            property.ElementType);
                     }
 
                     if (compositeKey.HasDefaultValue())

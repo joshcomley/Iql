@@ -5,8 +5,15 @@ namespace Iql.Queryable.Operations
 {
     public class CompositeKey
     {
+        public static List<CompositeKey> All { get; set; }
+        = new List<CompositeKey>();
+        public CompositeKey(int size)
+        {
+            //All.Add(this);
+            Keys = new KeyValue[size];
+        }
         public object Entity { get; set; }
-        public List<KeyValue> Keys { get; } = new List<KeyValue>();
+        public KeyValue[] Keys { get; }
 
         public bool HasDefaultValue()
         {

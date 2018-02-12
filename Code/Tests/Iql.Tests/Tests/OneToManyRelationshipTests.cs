@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Iql.Queryable;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -59,15 +58,21 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task ChangingTheSourceOfAChildEntityShouldUpdatedAllRelatedCollections()
+        public async Task ChangingTheSourceOfAChildEntityShouldUpdatedAllRelatedCollectionsByAssign()
         {
             await ApplyToLiveObjects(ChangeOneToManySourceType.Assign);
-            TestCleanUp();
-            await ApplyToLiveObjects(ChangeOneToManySourceType.Key);
-            TestCleanUp();
-            await ApplyToLiveObjects(ChangeOneToManySourceType.Assign);
-            TestCleanUp();
+        }
+
+        [TestMethod]
+        public async Task ChangingTheSourceOfAChildEntityShouldUpdatedAllRelatedCollectionsByAssignByReference()
+        {
             await ApplyToLiveObjects(ChangeOneToManySourceType.Reference);
+        }
+
+        [TestMethod]
+        public async Task ChangingTheSourceOfAChildEntityShouldUpdatedAllRelatedCollectionsByKey()
+        {
+            await ApplyToLiveObjects(ChangeOneToManySourceType.Key);
         }
 
         public async Task ApplyToLiveObjects(ChangeOneToManySourceType type)

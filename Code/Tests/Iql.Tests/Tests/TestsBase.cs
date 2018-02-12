@@ -19,6 +19,7 @@ namespace Iql.Tests.Tests
 #else
             IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionToIqlConverter();
 #endif
+            new HazceptionDataStore().GetData();
         }
         protected static AppDbContext Db => TestsBlock.Db;
 

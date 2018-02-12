@@ -667,13 +667,13 @@ namespace Iql.Queryable
             {
                 return key as CompositeKey;
             }
-            var compositeKey = new CompositeKey();
+            var compositeKey = new CompositeKey(1);
             var propertyName = DataContext.EntityConfigurationContext.GetEntity<T>().Key.Properties.First().Name;
-            compositeKey.Keys.Add(new KeyValue(
+            compositeKey.Keys[0] = new KeyValue(
                 propertyName,
                 key,
                 DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).ElementType
-            ));
+            );
             return compositeKey;
         }
 

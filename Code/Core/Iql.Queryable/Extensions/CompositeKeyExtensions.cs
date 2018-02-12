@@ -7,8 +7,21 @@ namespace Iql.Queryable.Extensions
 {
     public static class CompositeKeyExtensions
     {
+        public static int AsKeyStringCount = 0;
         public static string AsKeyString(this CompositeKey compositeKey, bool includeName = true)
         {
+            AsKeyStringCount++;
+            if (compositeKey.Keys.Length == 1)
+            {
+                return compositeKey.Keys[0].Value?.ToString() ?? "NULL";
+            }
+            if (compositeKey.Keys.Length == 2)
+            {
+                return (compositeKey.Keys[0].Value?.ToString() ?? "NULL") + ";"
+                                                                          +
+                                                                          (compositeKey.Keys[1].Value?.ToString() ??
+                                                                           "NULL");
+            }
             var str = "";
             foreach (var key in compositeKey.Keys)
             {

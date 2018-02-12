@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Queryable.Operations;
@@ -7,6 +8,8 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
     public class RelationshipDetail<T, TProperty> : IRelationshipDetail where T : class
     {
+        private IProperty[] _constraints;
+
         public RelationshipDetail(
             IRelationship relationship,
             RelationshipSide relationshipSide,
@@ -39,45 +42,73 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public IProperty KeyProperty { get; set; }
         public IEntityConfiguration Configuration { get; set; }
 
-        public IProperty[] Constraints(bool inverse = false)
+        public void MarkDirty(object entity)
         {
+            if (entity != null)
+            {
+                CompositeKeys.Remove(entity);
+                InverseCompositeKeys.Remove(entity);
+            }
+        }
+
+        public IProperty[] Constraints()
+        {
+            if (_constraints != null)
+            {
+                return _constraints;
+            }
             switch (RelationshipSide)
             {
                 case RelationshipSide.Target:
-                    return Relationship.Constraints.Select(rc => rc.TargetKeyProperty).ToArray();
+                    return _constraints = Relationship.Constraints.Select(rc => rc.TargetKeyProperty).ToArray();
                 case RelationshipSide.Source:
-                    return Relationship.Constraints.Select(rc => rc.SourceKeyProperty).ToArray();
+                    return _constraints = Relationship.Constraints.Select(rc => rc.SourceKeyProperty).ToArray();
             }
             throw new NotSupportedException();
         }
 
-        public CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false)
+        internal Dictionary<object, CompositeKey> CompositeKeys { get; }
+            = new Dictionary<object, CompositeKey>();
+        internal Dictionary<object, CompositeKey> InverseCompositeKeys { get; }
+            = new Dictionary<object, CompositeKey>();
+        public CompositeKey GetCompositeKey(object entity, bool inverse = false)
         {
-            var constraints = Constraints(inverse);
+            var dic = inverse
+                ? InverseCompositeKeys
+                : CompositeKeys;
+            if (dic.ContainsKey(entity))
+            {
+                return dic[entity];
+            }
+            return GetCompositeKeyInternal(entity, inverse, dic);
+        }
+
+        private CompositeKey GetCompositeKeyInternal(object entity, bool inverse, Dictionary<object, CompositeKey> dic)
+        {
+            var constraints = Constraints();
             var inverseConstraints = RelationshipSide == RelationshipSide.Source
                 ? Relationship.Target.Constraints()
                 : Relationship.Source.Constraints();
-            var compositeKey = new CompositeKey();
-            compositeKey.Entity = entityOrCompositeKey;
-            for(var i = 0; i < constraints.Length; i++)
+            var compositeKey = new CompositeKey(constraints.Length);
+            compositeKey.Entity = entity;
+            for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
-                object value;
-                if (entityOrCompositeKey is CompositeKey)
-                {
-                    value = (entityOrCompositeKey as CompositeKey).Keys.Single(k => k.Name == constraint.Name).Value;
-                }
-                else
-                {
-                    value = entityOrCompositeKey.GetPropertyValue(constraint);
-                }
-                compositeKey.Keys.Add(new KeyValue(
+                var value = entity.GetPropertyValue(constraint);
+                var keyValue = new KeyValue(
                     inverse
                         ? inverseConstraints[i].Name
                         : constraint.Name,
                     value,
-                    constraint.ElementType));
+                    constraint.ElementType);
+                compositeKey.Keys[i] = keyValue;
             }
+
+            if (!dic.ContainsKey(entity))
+            {
+                dic.Add(entity, compositeKey);
+            }
+
             return compositeKey;
         }
     }

@@ -15,7 +15,7 @@ namespace Iql.OData.Queryable.Applicators
         public static string FormatKey(CompositeKey key)
         {
             string ketStr;
-            if (key.Keys.Count == 1)
+            if (key.Keys.Length == 1)
             {
                 ketStr = key.Keys.Single().Value.ToString();
             }

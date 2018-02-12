@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 
 namespace Iql.JavaScript.IqlToJavaScript.Parsers
@@ -22,6 +23,10 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                     );
                 }
                 return new IqlFinalExpression<string>("null");
+            }else if (action.ReturnType == IqlType.Date ||
+                      action.Value is DateTime)
+            {
+                return new IqlFinalExpression<string>($"new Date(\'{action.Value}\')");
             }
             return new IqlFinalExpression<string>(action.Value?.ToString());
         }

@@ -564,7 +564,7 @@ namespace Iql.Queryable.Native
                     var targetCompositeKey = relationship.Target.GetCompositeKey(target, true);
                     if (!targetCompositeKey.HasDefaultValue())
                     {
-                        for (var i = 0; i < targetCompositeKey.Keys.Count; i++)
+                        for (var i = 0; i < targetCompositeKey.Keys.Length; i++)
                         {
                             var key = targetCompositeKey.Keys[i];
                             source.SetPropertyValue(relationship.Source.Configuration.FindProperty(key.Name),
@@ -796,6 +796,7 @@ namespace Iql.Queryable.Native
                                 //}
                                 var entityRelationshipKeyMap =
                                     GetEntityRelationshipKeyMap(entity, property.Relationship.Relationship);
+                                property.Relationship.ThisEnd.MarkDirty(entity);
                                 ProcessRelationshipKeyChange(
                                     entityRelationshipKeyMap[property.Relationship.Relationship],
                                     GetRelationshipKeyString(entity, property.Relationship.Relationship),
@@ -866,6 +867,7 @@ namespace Iql.Queryable.Native
                                     foreach (var source in sources)
                                     {
                                         var sourceEntity = source.Value;
+                                        relationship.OtherEnd.MarkDirty(sourceEntity);
                                         if (_relationshipKeys.ContainsKey(sourceEntity))
                                         {
                                             var sourceMap = _relationshipKeys[sourceEntity];
@@ -1034,162 +1036,6 @@ namespace Iql.Queryable.Native
                 case RelationshipSide.Target:
                     throw new Exception("Assigning a key to a collection is invalid.");
             }
-            //switch (relationship.Relationship.Kind)
-            //{
-            //    case RelationshipKind.OneToOne:
-            //        switch (relationship.RelationshipSide)
-            //        {
-            //            case RelationshipSide.Source:
-            //                if (_oneToOneSourceRelationshipKeyMaps.ContainsKey(relationship.Relationship))
-            //                {
-            //                    //PairOneToOne(relationship, entity);
-            //                    var map = _oneToOneSourceRelationshipKeyMaps[relationship.Relationship];
-            //                    if (!string.IsNullOrWhiteSpace(oldTargetKey))
-            //                    {
-            //                        if (map.ContainsKey(oldTargetKey))
-            //                        {
-            //                            map.Remove(oldTargetKey);
-            //                        }
-            //                    }
-
-            //                    if (!string.IsNullOrWhiteSpace(newTargetKey))
-            //                    {
-            //                        if (!map.ContainsKey(newTargetKey))
-            //                        {
-            //                            map.Add(newTargetKey, entity);
-            //                        }
-            //                    }
-
-            //                    if (_oneToTargetRelationshipKeyMaps.ContainsKey(relationship
-            //                        .Relationship.QualifiedConstraintKey))
-            //                    {
-            //                        var targetMap =
-            //                            _oneToTargetRelationshipKeyMaps[
-            //                                relationship.Relationship.QualifiedConstraintKey];
-            //                        if (!string.IsNullOrWhiteSpace(oldTargetKey))
-            //                        {
-            //                            if (targetMap.ContainsKey(oldTargetKey))
-            //                            {
-            //                                UnpairOneToOne(relationship, entity, targetMap[oldTargetKey]);
-            //                            }
-            //                        }
-
-            //                        if (!string.IsNullOrWhiteSpace(newTargetKey))
-            //                        {
-            //                            if (targetMap.ContainsKey(newTargetKey))
-            //                            {
-            //                                PairOneToOne(relationship, entity, targetMap[newTargetKey]);
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                break;
-            //            case RelationshipSide.Target:
-            //                throw new Exception("Assigning a key to the target of a one-to-one relationship is invalid.");
-            //        }
-
-            //        break;
-            //    case RelationshipKind.OneToMany:
-            //        switch (relationship.RelationshipSide)
-            //        {
-            //            case RelationshipSide.Source:
-            //                if (_oneToManySourceRelationshipKeyMaps.ContainsKey(relationship.Relationship))
-            //                {
-            //                    var map = _oneToManySourceRelationshipKeyMaps[relationship.Relationship];
-            //                    if (!string.IsNullOrWhiteSpace(oldTargetKey))
-            //                    {
-            //                        if (map.ContainsKey(oldTargetKey))
-            //                        {
-            //                            var dictionary = map[oldTargetKey];
-            //                            if (dictionary.ContainsKey(entity))
-            //                            {
-            //                                dictionary.Remove(entity);
-            //                            }
-            //                        }
-            //                    }
-
-            //                    if (!string.IsNullOrWhiteSpace(newTargetKey))
-            //                    {
-            //                        Dictionary<object, object> targetSourceEntityMap;
-            //                        if (!map.ContainsKey(newTargetKey))
-            //                        {
-            //                            targetSourceEntityMap = new Dictionary<object, object>();
-            //                            map.Add(newTargetKey, targetSourceEntityMap);
-            //                        }
-            //                        else
-            //                        {
-            //                            targetSourceEntityMap = map[newTargetKey];
-            //                        }
-
-            //                        if (!targetSourceEntityMap.ContainsKey(entity))
-            //                        {
-            //                            targetSourceEntityMap.Add(entity, entity);
-            //                        }
-            //                    }
-
-            //                    object newTarget = null;
-            //                    if (_oneToTargetRelationshipKeyMaps.ContainsKey(relationship
-            //                        .Relationship.QualifiedConstraintKey))
-            //                    {
-            //                        var targetMap =
-            //                            _oneToTargetRelationshipKeyMaps[
-            //                                relationship.Relationship.QualifiedConstraintKey];
-            //                        if (!string.IsNullOrWhiteSpace(oldTargetKey))
-            //                        {
-            //                            if (targetMap.ContainsKey(oldTargetKey))
-            //                            {
-            //                                UnpairOneToMany(relationship, entity, targetMap[oldTargetKey]);
-            //                            }
-            //                        }
-
-            //                        if (!string.IsNullOrWhiteSpace(newTargetKey))
-            //                        {
-            //                            if (targetMap.ContainsKey(newTargetKey))
-            //                            {
-            //                                PairOneToMany(relationship, entity, targetMap[newTargetKey]);
-            //                            }
-            //                        }
-            //                    }
-            //                }
-
-            //                break;
-            //            case RelationshipSide.Target:
-            //                throw new Exception("Assigning a key to a collection is invalid.");
-            //        }
-
-            //        break;
-            //}
         }
-
-        //private readonly Dictionary<IRelatedList, int> _collectionChangeSubscriptions =
-        //    new Dictionary<IRelatedList, int>();
-        //internal void Unwatch(T entity)
-        //{
-        //    if (_propertyChangingSubscriptions.ContainsKey(entity))
-        //    {
-        //        (entity as IEntity)?.PropertyChanging?.Unsubscribe(
-        //            _propertyChangingSubscriptions[entity]);
-        //        _propertyChangingSubscriptions.Remove(entity);
-        //    }
-        //    if (_propertyChangedSubscriptions.ContainsKey(entity))
-        //    {
-        //        (entity as IEntity)?.PropertyChanged?.Unsubscribe(
-        //            _propertyChangedSubscriptions[entity]);
-        //        _propertyChangedSubscriptions.Remove(entity);
-        //    }
-        //    foreach (var relationship in EntityConfiguration.AllRelationships())
-        //    {
-        //        if (relationship.ThisEnd.IsCollection)
-        //        {
-        //            var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property)
-        //                as IRelatedList;
-        //            if (relatedList != null && _collectionChangeSubscriptions.ContainsKey(relatedList))
-        //            {
-        //                relatedList.Changed.Unsubscribe(_collectionChangeSubscriptions[relatedList]);
-        //                _collectionChangeSubscriptions.Remove(relatedList);
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

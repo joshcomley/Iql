@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Haz.App.Data.Entities;
+using Iql.Queryable.Extensions;
+using Iql.Queryable.Operations;
 using Iql.Tests.Context;
 
 namespace Iql.Tests.ConsoleApp
@@ -20,7 +22,7 @@ namespace Iql.Tests.ConsoleApp
 
             new HazceptionDataStore().GetData();
             //await Run();
-            var runCount = 10;
+            var runCount = 1;
             for (var i = 0; i < runCount; i++)
             {
                 await Run();
@@ -33,6 +35,8 @@ namespace Iql.Tests.ConsoleApp
                 Console.WriteLine($"Average (normalised): {new TimeSpan((long)Elapseds.Skip(1).Average())}");
             }
             Console.WriteLine($"Total: {new TimeSpan((long)Elapseds.Sum())}");
+            Console.WriteLine($"Composite Keys: {CompositeKey.All.Select(x=>x.AsKeyString()).Distinct().Count()}");
+//            Console.WriteLine($"Composite Key Strings: {CompositeKeyExtensions.AsKeyStringCount}");
         }
 
         private static readonly List<long> Elapseds = new List<long>();
@@ -46,46 +50,46 @@ namespace Iql.Tests.ConsoleApp
                 await dataContext
                     .ExamCandidateResults
                     //.Take(50)
-                    //.Expand(e => e.Client)
-                    //.Expand(e => e.Candidate)
-                    //.Expand(e => e.CreatedByUser)
-                    //.Expand(e => e.ExamCandidate)
-                    //.Expand(e => e.Video)
-                    //.Expand(e => e.Exam)
-                    //.Expand(e => e.Results)
+                    .Expand(e => e.Client)
+                    .Expand(e => e.Candidate)
+                    .Expand(e => e.CreatedByUser)
+                    .Expand(e => e.ExamCandidate)
+                    .Expand(e => e.Video)
+                    .Expand(e => e.Exam)
+                    .Expand(e => e.Results)
                     //.ExpandAll()
                     .ToList();
-            var clients =
-                await dataContext
-                    .Clients
-                    //.Take(50)
-                    //.Expand(e => e.Client)
-                    //.Expand(e => e.Candidate)
-                    //.Expand(e => e.CreatedByUser)
-                    //.Expand(e => e.ExamCandidate)
-                    //.Expand(e => e.Video)
-                    //.Expand(e => e.Exam)
-                    //.Expand(e => e.Results)
-                    //.ExpandAll()
-                    .ToList();
-            var users =
-                await dataContext
-                    .Users
-                    .ToList();
-            var results =
-                await dataContext
-                    .ExamResults
-                    .ToList();
-            var user1 = users[0];
-            var client1 = clients[0];
-            user1.ClientId = 55555;
-            user1.Client = client1;
-            user1.ClientId = 55555;
-            var examCandidateResult1 = examCandidateResults[0];
-            var newClient = clients[3];
-            var oldClient = examCandidateResults[0].Client;
-            examCandidateResults[0].ClientId = newClient.Id;
-            var examCandidateResult2 = examCandidateResults[1];
+            //var clients =
+            //    await dataContext
+            //        .Clients
+            //        //.Take(50)
+            //        //.Expand(e => e.Client)
+            //        //.Expand(e => e.Candidate)
+            //        //.Expand(e => e.CreatedByUser)
+            //        //.Expand(e => e.ExamCandidate)
+            //        //.Expand(e => e.Video)
+            //        //.Expand(e => e.Exam)
+            //        //.Expand(e => e.Results)
+            //        //.ExpandAll()
+            //        .ToList();
+            //var users =
+            //    await dataContext
+            //        .Users
+            //        .ToList();
+            //var results =
+            //    await dataContext
+            //        .ExamResults
+            //        .ToList();
+            //var user1 = users[0];
+            //var client1 = clients[0];
+            //user1.ClientId = 55555;
+            //user1.Client = client1;
+            //user1.ClientId = 55555;
+            //var examCandidateResult1 = examCandidateResults[0];
+            //var newClient = clients[3];
+            //var oldClient = examCandidateResults[0].Client;
+            //examCandidateResults[0].ClientId = newClient.Id;
+            //var examCandidateResult2 = examCandidateResults[1];
             stopwatch.Stop();
             Console.WriteLine($"Fetch data: {stopwatch.Elapsed} - {examCandidateResults.Count} entit{(examCandidateResults.Count == 1 ? "y" : "ies")}");
             Elapseds.Add(stopwatch.Elapsed.Ticks);

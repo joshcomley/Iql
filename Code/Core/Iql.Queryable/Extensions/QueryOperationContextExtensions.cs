@@ -32,14 +32,15 @@ namespace Iql.Queryable.Extensions
 #endif
             var configuration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             var keyDefinition = configuration.Key;
-            var compositeKey = new CompositeKey();
-            compositeKey.Keys
-                .AddRange(
-                    keyDefinition.Properties.Select(kp => new KeyValue(
-                        kp.Name, 
-                        entity.GetPropertyValue(kp),
-                        kp.ElementType))
-                );
+            var compositeKey = new CompositeKey(keyDefinition.Properties.Count);
+            for (var i = 0; i < keyDefinition.Properties.Count; i++)
+            {
+                var kp = keyDefinition.Properties[i];
+                compositeKey.Keys[i] = new KeyValue(
+                    kp.Name,
+                    entity.GetPropertyValue(kp),
+                    kp.ElementType);
+            }
             var withKeyOperation = new WithKeyOperation(compositeKey);
             return withKeyOperation;
         }

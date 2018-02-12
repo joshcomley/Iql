@@ -221,10 +221,12 @@ namespace Iql.OData.Data
                 apiUriBase += "/";
             }
             var key = DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
-            var compositeKeyProperties =
-                key.Properties.Select(p => new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null));
-            var compositeKey = new CompositeKey();
-            compositeKey.Keys.AddRange(compositeKeyProperties);
+            var compositeKey = new CompositeKey(key.Properties.Count);
+            for (var i = 0; i < key.Properties.Count; i++)
+            {
+                var p = key.Properties[i];
+                compositeKey.Keys[i] = new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null);
+            }
             var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";
             return entityUri;
         }

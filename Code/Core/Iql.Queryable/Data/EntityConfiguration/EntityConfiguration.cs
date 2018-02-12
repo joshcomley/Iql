@@ -163,10 +163,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public CompositeKey GetCompositeKey(object entity)
         {
-            var key = new CompositeKey();
-            foreach (var property in Key.Properties)
+            var key = new CompositeKey(Key.Properties.Count);
+            for (var i = 0; i < Key.Properties.Count; i++)
             {
-                key.Keys.Add(new KeyValue(property.Name, entity.GetPropertyValue(property), property.ElementType));
+                var property = Key.Properties[i];
+                key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.ElementType);
             }
             return key;
         }
