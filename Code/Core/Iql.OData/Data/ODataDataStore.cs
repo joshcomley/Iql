@@ -73,7 +73,7 @@ namespace Iql.OData.Data
 
             var oDataQuery =
                 operation.Operation.Queryable.ToQueryWithAdapterBase(
-                    QueryableAdapter, 
+                    QueryableAdapter,
                     DataContext,
                     null,
                     null) as IODataQuery;
@@ -81,17 +81,19 @@ namespace Iql.OData.Data
             var fullQueryUri = $"{entitySetUri}{queryString}";
 
             var httpResult = await http.Get(fullQueryUri);
-            var singleResult = operation.Operation.Queryable.Operations.Any(o => o is WithKeyOperation);
             operation.Result.Success = httpResult.Success;
-            if (singleResult)
+            if (operation.Operation.IsSingleResult)
             {
                 var odataResultRoot = JObject.Parse(httpResult.ResponseData);
                 ParseObj(odataResultRoot);
                 var oDataGetResult =
                     odataResultRoot.ToObject<TEntity>();
-                    //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
-                var enumerable = new[] {oDataGetResult};
-                operation.Result.AddDataArray(enumerable);
+                //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                  oDataGetResult,
+                  typeof(TEntity));
+                operation.Result.Data = flattened;
+                operation.Result.Root = new[] { oDataGetResult }.ToList();
             }
             else
             {
@@ -104,6 +106,7 @@ namespace Iql.OData.Data
                     typeof(TEntity),
                     values);
                 operation.Result.Data = flattened;
+                operation.Result.Root = values.ToList();
                 //operation.Result.Data =
                 //    oDataGetResult.Value;
                 operation.Result.TotalCount = count;

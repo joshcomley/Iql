@@ -8,7 +8,7 @@ namespace Iql.JavaScript.QueryToJavaScript
 {
     public class JavaScriptInMemoryQueryResult : QueryResult<JavaScriptInMemoryQueryResult>, IInMemoryResult
     {
-        public Dictionary<Type, IList> GetResults()
+        public InMemoryQueryResult GetResults()
         {
             throw new NotImplementedException();
         }

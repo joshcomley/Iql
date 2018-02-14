@@ -49,7 +49,7 @@ namespace Iql.DotNet.Queryable.Applicators
                     context,
                     context.Data);
                 //var targetQueryable = expand.ApplyQuery()
-                var targetData = targetQuery.GetResults()[detail.TargetQueryable.ItemType];
+                var targetData = targetQuery.GetResults().Root;
                 var targetList = targetData;
                 var sourceList = (IList) typedList;
 

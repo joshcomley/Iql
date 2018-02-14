@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql.Queryable.Data.Crud.Operations.Results
 {
     public class DataResult<T, TResult> : CrudResult<T, GetDataOperation<T>> where T : class
@@ -9,6 +11,7 @@ namespace Iql.Queryable.Data.Crud.Operations.Results
 
         public int? TotalCount { get; set; }
         public TResult Data { get; set; }
+        public List<T> Root { get; set; }
         public IQueryable<T> Queryable { get; set; }
     }
 }

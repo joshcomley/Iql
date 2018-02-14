@@ -66,9 +66,9 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             }
         }
 
-        public Dictionary<Type, IList> GetResults()
+        public InMemoryQueryResult GetResults()
         {
-            return (Dictionary<Type, IList>)GetResultsTypedMethod
+            return (InMemoryQueryResult)GetResultsTypedMethod
                 .InvokeGeneric(this, null, EntityType);
         }
 
@@ -105,14 +105,14 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             }
         }
 
-        public Dictionary<Type, IList> GetResultsTyped<T1>()
+        public InMemoryQueryResult GetResultsTyped<T1>()
         {
             //var list = Configuration.GetSource<T>();
             var list = ApplyOperations<T1>();
             //var clone = list.CloneAs(DataContext, typeof(T), RelationshipCloneMode.Full);
             //return clone;
             AddMatchesTyped(list);
-            return _matches;
+            return new InMemoryQueryResult(_matches, list);
         }
 
         public abstract List<TEntity> ApplyOperations<TEntity>();

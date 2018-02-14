@@ -95,7 +95,12 @@ namespace Iql.OData.Queryable
                 {
                     query += "?";
                 }
-                query += string.Join(isNested ? ";" : "&", queryParts.Select(q => q.Name + "=" + Uri.EscapeDataString(q.Value)));
+
+              query += string.Join(
+                isNested ? ";" : "&",
+                queryParts.Select(
+                  q => q.Name + "=" +
+                       (q.Name == "$expand" ? q.Value : Uri.EscapeDataString(q.Value))));
             }
             return query;
         }
