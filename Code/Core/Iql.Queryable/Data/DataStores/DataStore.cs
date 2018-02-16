@@ -211,7 +211,7 @@ namespace Iql.Queryable.Data.DataStores
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
             var dbList = new DbList<TEntity>();
             dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
-            if (response.TotalCount.HasValue)
+            if (response.TotalCount.HasValue && response.Data.Count != 0)
             {
                 var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
                 var skippedSoFar = skipOperations.Sum(o => (o as SkipOperation).Skip);
