@@ -19,7 +19,8 @@ namespace Iql.Queryable
         TrackingSetCollection TrackingSetCollection { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }
-        EntityConfigurationBuilder Configuration { get; set; }
+        EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
+        IEntityConfiguration EntityConfiguration { get; set; }
         ITrackingSet TrackingSet { get; set; }
         bool TrackEntities { get; set; }
         //IDbQueryable Copy();

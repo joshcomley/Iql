@@ -65,9 +65,9 @@ namespace Iql.Queryable.Data
             where T : class
         ;
 
-        T EnsureTypedEntity<T>(object entity) where T : class;
-        object EnsureTypedEntityByType(object entity, Type type);
+        T EnsureTypedEntity<T>(object entity, bool convertRelationships) where T : class;
+        object EnsureTypedEntityByType(object entity, Type type, bool convertRelationships);
         IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false) where T : class;
-        IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool forceNotNull = false);
+        IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool convertRelationships, bool forceNotNull = false);
     }
 }

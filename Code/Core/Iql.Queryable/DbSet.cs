@@ -15,11 +15,11 @@ namespace Iql.Queryable
 {
     public class DbSet<T, TKey> : DbQueryable<T>, IDbSetOperations<T, TKey> where T : class
     {
-        public DbSet(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
+        public DbSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(
-                configuration, dataStoreGetter, evaluateContext, dataContext)
+                entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
         {
-            Configuration = configuration;
+            EntityConfigurationBuilder = entityConfigurationBuilder;
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
         }
@@ -155,7 +155,7 @@ namespace Iql.Queryable
         public override DbQueryable<T> New()
         {
             var dbQueryable = new DbSet<T, TKey>(
-                Configuration,
+                EntityConfigurationBuilder,
                 DataStoreGetter,
                 EvaluateContext,
                 DataContext);

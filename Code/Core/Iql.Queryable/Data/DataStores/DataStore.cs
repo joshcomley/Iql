@@ -319,7 +319,7 @@ namespace Iql.Queryable.Data.DataStores
             if (set.Count > 0)
             {
 #if TypeScript
-                set = DataContext.EnsureTypedListByType(set, type, null, null, true);
+                set = DataContext.EnsureTypedListByType(set, type, null, null, false, true);
 #endif
                 var trackingSet = GetTracking().TrackingSetByType(type);
                 var states = trackingSet.TrackEntities(set, false);

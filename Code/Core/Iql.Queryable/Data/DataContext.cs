@@ -271,13 +271,13 @@ namespace Iql.Queryable.Data
             return (T)await queryable.WithKey(identityWhereOperation.Key);
         }
 
-        public T EnsureTypedEntity<T>(object entity)
+        public T EnsureTypedEntity<T>(object entity, bool convertRelationships)
             where T : class
         {
-            return (T)EnsureTypedEntityByType(entity, typeof(T));
+            return (T)EnsureTypedEntityByType(entity, typeof(T), convertRelationships);
         }
 
-        public object EnsureTypedEntityByType(object entity, Type type)
+        public object EnsureTypedEntityByType(object entity, Type type, bool convertRelationships)
         {
             if (entity != null && entity.GetType() != type /* prevent infinite recursion */)
             {
@@ -285,6 +285,12 @@ namespace Iql.Queryable.Data
                 var typedEntity = Activator.CreateInstance(type);
                 foreach (var property in entityConfiguration.Properties)
                 {
+                    if (!convertRelationships &&
+                        property.Relationship != null &&
+                        property.Relationship.ThisEnd.Property == property)
+                    {
+                        continue;
+                    }
                     //var instanceValue = typedEntity.GetPropertyValue(property.Name);
                     var remoteValue = EnsureTypedValue(entity.GetPropertyValue(property), property);
 
@@ -293,50 +299,57 @@ namespace Iql.Queryable.Data
                         typedEntity.SetPropertyValue(property, remoteValue);
                     }
                 }
-                foreach (var relationship in entityConfiguration.Relationships)
+
+                if (convertRelationships)
                 {
-                    var isSource = relationship.Source.Configuration == entityConfiguration;
-                    var propertyName = isSource
-                        ? relationship.Source.Property
-                        : relationship.Target.Property;
-                    if (isSource)
+                    foreach (var relationship in entityConfiguration.Relationships)
                     {
-                        switch (relationship.Kind)
+                        var isSource = relationship.Source.Configuration == entityConfiguration;
+                        var propertyName = isSource
+                            ? relationship.Source.Property
+                            : relationship.Target.Property;
+                        if (isSource)
                         {
-                            case RelationshipKind.OneToMany:
-                            case RelationshipKind.OneToOne:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedEntityByType(
-                                        entity.GetPropertyValue(propertyName),
-                                        relationship.Target.Type
-                                    ));
-                                break;
-                            case RelationshipKind.ManyToMany:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Source.Type, entity, relationship.Target.Type));
-                                break;
+                            switch (relationship.Kind)
+                            {
+                                case RelationshipKind.OneToMany:
+                                case RelationshipKind.OneToOne:
+                                    typedEntity.SetPropertyValue(propertyName,
+                                        EnsureTypedEntityByType(
+                                            entity.GetPropertyValue(propertyName),
+                                            relationship.Target.Type,
+                                            convertRelationships
+                                        ));
+                                    break;
+                                case RelationshipKind.ManyToMany:
+                                    typedEntity.SetPropertyValue(propertyName,
+                                        EnsureTypedListByType((IEnumerable)entity.GetPropertyValue(propertyName), relationship.Source.Type, entity, relationship.Target.Type, convertRelationships));
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        switch (relationship.Kind)
+                        else
                         {
-                            case RelationshipKind.OneToOne:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedEntityByType(
-                                        entity.GetPropertyValue(propertyName),
-                                        relationship.Source.Type)
-                                );
-                                break;
-                            case RelationshipKind.OneToMany:
-                            case RelationshipKind.ManyToMany:
-                                typedEntity.SetPropertyValue(propertyName,
-                                    EnsureTypedListByType(
-                                        (IEnumerable)entity.GetPropertyValue(propertyName),
-                                        relationship.Target.Type,
-                                        entity,
-                                        relationship.Source.Type));
-                                break;
+                            switch (relationship.Kind)
+                            {
+                                case RelationshipKind.OneToOne:
+                                    typedEntity.SetPropertyValue(propertyName,
+                                        EnsureTypedEntityByType(
+                                            entity.GetPropertyValue(propertyName),
+                                            relationship.Source.Type,
+                                            convertRelationships)
+                                    );
+                                    break;
+                                case RelationshipKind.OneToMany:
+                                case RelationshipKind.ManyToMany:
+                                    typedEntity.SetPropertyValue(propertyName,
+                                        EnsureTypedListByType(
+                                            (IEnumerable)entity.GetPropertyValue(propertyName),
+                                            relationship.Target.Type,
+                                            entity,
+                                            relationship.Source.Type,
+                                            convertRelationships));
+                                    break;
+                            }
                         }
                     }
                 }
@@ -380,7 +393,7 @@ namespace Iql.Queryable.Data
             return (IList<T>)EnsureTypedListByType(responseData, typeof(T), null, null, forceNotNull);
         }
 
-        public IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool forceNotNull = false)
+        public IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool convertRelationships, bool forceNotNull = false)
         {
             IList list = null;
             if (responseData != null || forceNotNull)
@@ -398,7 +411,7 @@ namespace Iql.Queryable.Data
             {
                 foreach (var entity in responseData)
                 {
-                    var typedEntity = EnsureTypedEntityByType(entity, childType ?? type);
+                    var typedEntity = EnsureTypedEntityByType(entity, childType ?? type, convertRelationships);
                     list.Add(typedEntity);
                 }
             }

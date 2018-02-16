@@ -23,15 +23,19 @@ namespace Iql.Queryable
     {
         private ITrackingSet _trackingSet;
         public bool TrackEntities { get; set; } = true;
-        public DbQueryable(EntityConfigurationBuilder configuration, Func<IDataStore> dataStoreGetter,
+        public DbQueryable(
+            EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)
         {
-            Configuration = configuration;
+            EntityConfigurationBuilder = entityConfigurationBuilder;
+            EntityConfiguration = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
             TrackingSetCollection = dataContext.DataStore.GetTracking();
             //TrackingSet = TrackingSetCollection.GetSet<T>();
         }
+
+        public IEntityConfiguration EntityConfiguration { get; set; }
 
         public ITrackingSet TrackingSet
         {
@@ -42,13 +46,12 @@ namespace Iql.Queryable
         public Func<IDataStore> DataStoreGetter { get; set; }
         public TrackingSetCollection TrackingSetCollection { get; }
         public IDataContext DataContext { get; set; }
-        public EntityConfigurationBuilder Configuration { get; set; }
+        public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
         TrackingSetCollection IDbQueryable.TrackingSetCollection => throw new NotImplementedException();
 
         Func<IDataStore> IDbQueryable.DataStoreGetter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         IDataContext IDbQueryable.DataContext { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        EntityConfigurationBuilder IDbQueryable.Configuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         ITrackingSet IDbQueryable.TrackingSet { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         bool IDbQueryable.TrackEntities { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -604,7 +607,7 @@ namespace Iql.Queryable
         public DbQueryable<T> AllCollectionRelationships(
             Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
         {
-            var entityConfig = Configuration.GetEntityByType(typeof(T));
+            var entityConfig = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
@@ -619,7 +622,7 @@ namespace Iql.Queryable
         public DbQueryable<T> AllSingleRelationships(
             Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
         {
-            var entityConfig = Configuration.GetEntityByType(typeof(T));
+            var entityConfig = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
@@ -691,7 +694,7 @@ namespace Iql.Queryable
         public override DbQueryable<T> New()
         {
             var dbQueryable = new DbQueryable<T>(
-                Configuration,
+                EntityConfigurationBuilder,
                 DataStoreGetter,
                 EvaluateContext,
                 DataContext);
