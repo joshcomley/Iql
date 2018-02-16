@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Hazception.ApiContext.Base;
 using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
 #if TypeScript
@@ -10,13 +8,11 @@ using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
 #else
 using Iql.DotNet.Queryable;
 using Iql.DotNet;
-using System.Net.Http;
 #endif
 using Iql.OData.Data;
 using Iql.Queryable;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Data.Http;
 
 namespace Iql.Tests.Context
 {
@@ -50,45 +46,17 @@ namespace Iql.Tests.Context
 
         public static HazceptionInMemoryDataBase InMemoryDb { get; set; }
 
-        public HazceptionDataContext() :
+        public HazceptionDataContext(IDataStore dataStore = null) :
 #if TypeScript
-            base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
+            base(dataStore ?? new InMemoryDataStore(new JavaScriptQueryableAdapter()))
 #else
             //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
-            base(new InMemoryDataStore(new DotNetQueryableAdapter()))
+            base(dataStore ?? new InMemoryDataStore(new DotNetQueryableAdapter()))
 #endif
         {
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
-            this.ODataConfiguration.HttpProvider = new ODataHttpProvider();
-        }
-    }
-
-    public class ODataHttpProvider : IHttpProvider
-    {
-        public async Task<IHttpResult> Get(string uri, IHttpRequest payload = null)
-        {
-#if TypeScript
-            throw new NotImplementedException();
-#else
-            var result = await new HttpClient().GetAsync(uri);
-            return new HttpResult(await result.Content.ReadAsStringAsync(), result.IsSuccessStatusCode);
-#endif
-        }
-
-        public Task<IHttpResult> Post(string uri, IHttpRequest payload = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IHttpResult> Put(string uri, IHttpRequest payload = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IHttpResult> Delete(string uri, IHttpRequest payload = null)
-        {
-            throw new NotImplementedException();
+            this.ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
         }
     }
 }
