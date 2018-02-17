@@ -82,34 +82,37 @@ namespace Iql.OData.Data
 
             var httpResult = await http.Get(fullQueryUri);
             operation.Result.Success = httpResult.Success;
-            if (operation.Operation.IsSingleResult)
+            if (operation.Result.Success && !string.IsNullOrWhiteSpace(httpResult.ResponseData))
             {
-                var odataResultRoot = JObject.Parse(httpResult.ResponseData);
-                ParseObj(odataResultRoot);
-                var oDataGetResult =
-                    odataResultRoot.ToObject<TEntity>();
-                //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
-                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                  oDataGetResult,
-                  typeof(TEntity));
-                operation.Result.Data = flattened;
-                operation.Result.Root = new[] { oDataGetResult }.ToList();
-            }
-            else
-            {
-                var odataResultRoot = JObject.Parse(httpResult.ResponseData);
-                ParseObj(odataResultRoot);
-                var countToken = odataResultRoot["Count"];
-                var count = countToken?.ToObject<int?>();
-                var values = odataResultRoot["value"].ToObject<TEntity[]>();
-                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
-                    typeof(TEntity),
-                    values);
-                operation.Result.Data = flattened;
-                operation.Result.Root = values.ToList();
-                //operation.Result.Data =
-                //    oDataGetResult.Value;
-                operation.Result.TotalCount = count;
+                if (operation.Operation.IsSingleResult)
+                {
+                    var odataResultRoot = JObject.Parse(httpResult.ResponseData);
+                    ParseObj(odataResultRoot);
+                    var oDataGetResult =
+                        odataResultRoot.ToObject<TEntity>();
+                    //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+                    var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                        oDataGetResult,
+                        typeof(TEntity));
+                    operation.Result.Data = flattened;
+                    operation.Result.Root = new[] { oDataGetResult }.ToList();
+                }
+                else
+                {
+                    var odataResultRoot = JObject.Parse(httpResult.ResponseData);
+                    ParseObj(odataResultRoot);
+                    var countToken = odataResultRoot["Count"];
+                    var count = countToken?.ToObject<int?>();
+                    var values = odataResultRoot["value"].ToObject<TEntity[]>();
+                    var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
+                        typeof(TEntity),
+                        values);
+                    operation.Result.Data = flattened;
+                    operation.Result.Root = values.ToList();
+                    //operation.Result.Data =
+                    //    oDataGetResult.Value;
+                    operation.Result.TotalCount = count;
+                }
             }
             return operation.Result;
         }

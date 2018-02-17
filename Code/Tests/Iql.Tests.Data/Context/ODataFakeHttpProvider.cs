@@ -8,7 +8,8 @@ namespace Iql.Tests.Context
     {
         public async Task<IHttpResult> Get(string uri, IHttpRequest payload = null)
         {
-            return new HttpResult(ODataFakeRequestResults.Get(uri), true);
+            var responseData = ODataFakeRequestResults.Get(uri);
+            return new HttpResult(responseData, responseData != null);
         }
 
         public Task<IHttpResult> Post(string uri, IHttpRequest payload = null)

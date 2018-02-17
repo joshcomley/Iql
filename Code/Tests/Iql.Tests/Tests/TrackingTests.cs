@@ -29,6 +29,16 @@ namespace Iql.Tests.Tests
                     .WithKey("2b2b0e44-4579-4965-8e3a-097e6684b767");
             Assert.AreEqual(1, user.ExamResults.Count);
         }
+        [TestMethod]
+        public async Task TestFailedGet()
+        {
+            var db = new HazceptionDataContext(new ODataDataStore());
+            var user = await
+                db
+                    .Users
+                    .ExpandCollection(u => u.ExamResults)
+                    .WithKey("this-will-return-null");
+        }
 
         [TestMethod]
         public async Task TestGetHazceptionNoExpands()

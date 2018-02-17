@@ -15,7 +15,9 @@ namespace Iql.Tests.Context
 
         public static string Get(string uri)
         {
-            return Lookup[uri];
+            return Lookup.ContainsKey(uri) 
+                ? Lookup[uri] 
+                : null;
         }
     }
 }

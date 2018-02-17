@@ -206,6 +206,7 @@ namespace Iql.Queryable.Data.DataStores
             var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
                 result));
+            var success = response.Success && response.Data != null;
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
@@ -253,64 +254,73 @@ namespace Iql.Queryable.Data.DataStores
 
             // Flatten before we merge because the merge will update the result data set with
             // tracked data
-            IRelationshipObserver relationshipObserver;
-            Dictionary<Type, IList> data;
-            if (!result.Data.ContainsKey(typeof(TEntity)))
+            GetDataResult<TEntity> getDataResult;
+            if (success)
             {
-                result.Data.Add(typeof(TEntity), new List<TEntity>());
-            }
-
-            var rootDictionary = new Dictionary<object,object>();
-            foreach (var item in result.Data[typeof(TEntity)])
-            {
-                rootDictionary.Add(item, item);
-            }
-            foreach (var item in result.Root)
-            {
-                if (rootDictionary.ContainsKey(item))
+                IRelationshipObserver relationshipObserver;
+                Dictionary<Type, IList> data;
+                if (!result.Data.ContainsKey(typeof(TEntity)))
                 {
-                    rootDictionary.Remove(item);
+                    result.Data.Add(typeof(TEntity), new List<TEntity>());
                 }
-            }
 
-            var newList = new List<TEntity>();
-            result.Data[typeof(TEntity)] = newList;
-            foreach (var item in rootDictionary)
-            {
-                newList.Add((TEntity) item.Key);
-            }
-            if (dbList.SourceQueryable.TrackEntities)
-            {
-                data = new Dictionary<Type, IList>();
-                result.Root = ((List<TEntity>) TrackCollection(result.Root, typeof(TEntity), data)).ToList();
-                relationshipObserver = RelationshipObserver;
-                // TODO: Implement tracking
-                foreach (var dataSet in response.Data)
+                var rootDictionary = new Dictionary<object, object>();
+                foreach (var item in result.Data[typeof(TEntity)])
                 {
-                    TrackCollection(dataSet.Value, dataSet.Key, data);
+                    rootDictionary.Add(item, item);
                 }
+                foreach (var item in result.Root)
+                {
+                    if (rootDictionary.ContainsKey(item))
+                    {
+                        rootDictionary.Remove(item);
+                    }
+                }
+
+                var newList = new List<TEntity>();
+                result.Data[typeof(TEntity)] = newList;
+                foreach (var item in rootDictionary)
+                {
+                    newList.Add((TEntity)item.Key);
+                }
+                if (dbList.SourceQueryable.TrackEntities)
+                {
+                    data = new Dictionary<Type, IList>();
+                    result.Root = ((List<TEntity>)TrackCollection(result.Root, typeof(TEntity), data)).ToList();
+                    relationshipObserver = RelationshipObserver;
+                    // TODO: Implement tracking
+                    foreach (var dataSet in response.Data)
+                    {
+                        TrackCollection(dataSet.Value, dataSet.Key, data);
+                    }
+                }
+                else
+                {
+                    relationshipObserver = new RelationshipObserver(this, false);
+                    data = result.Data;
+                }
+                relationshipObserver.ObserveAll(data);
+
+                //
+                //if (!operation.IsSingleResult)
+                //{
+                //    if (data.ContainsKey(typeof(TEntity)))
+                //    {
+                //        dbList.AddRange((List<TEntity>)data[typeof(TEntity)]);
+                //    }
+                //}
+                //else
+                //{
+                //}
+                dbList.AddRange(result.Root);
+                getDataResult = new GetDataResult<TEntity>(dbList, operation, result.Success);
+                getDataResult.TotalCount = result.TotalCount;
             }
             else
             {
-                relationshipObserver = new RelationshipObserver(this, false);
-                data = result.Data;
+                getDataResult = new GetDataResult<TEntity>(new DbList<TEntity>(), operation, false);
             }
-            relationshipObserver.ObserveAll(data);
 
-            //
-            //if (!operation.IsSingleResult)
-            //{
-            //    if (data.ContainsKey(typeof(TEntity)))
-            //    {
-            //        dbList.AddRange((List<TEntity>)data[typeof(TEntity)]);
-            //    }
-            //}
-            //else
-            //{
-            //}
-            dbList.AddRange(result.Root);
-            var getDataResult = new GetDataResult<TEntity>(dbList, operation, result.Success);
-            getDataResult.TotalCount = result.TotalCount;
             return getDataResult;
         }
 
