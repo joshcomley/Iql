@@ -50,10 +50,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Hazard";
-		}
+
+		public static String ClassName { get; set; }		 = "Hazard";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -107,10 +105,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ExamCandidate";
-		}
+
+		public static String ClassName { get; set; }		 = "ExamCandidate";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -164,10 +160,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ExamCandidateResult";
-		}
+
+		public static String ClassName { get; set; }		 = "ExamCandidateResult";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -221,10 +215,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ExamResult";
-		}
+
+		public static String ClassName { get; set; }		 = "ExamResult";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -278,10 +270,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ExamManager";
-		}
+
+		public static String ClassName { get; set; }		 = "ExamManager";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -335,10 +325,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Exam";
-		}
+
+		public static String ClassName { get; set; }		 = "Exam";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -392,10 +380,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Video";
-		}
+
+		public static String ClassName { get; set; }		 = "Video";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -449,10 +435,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "HazClient";
-		}
+
+		public static String ClassName { get; set; }		 = "HazClient";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -506,10 +490,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "HazApplicationUser";
-		}
+
+		public static String ClassName { get; set; }		 = "HazApplicationUser";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -563,10 +545,8 @@ namespace Haz.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "HazClientType";
-		}
+
+		public static String ClassName { get; set; }		 = "HazClientType";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -622,11 +602,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -635,11 +615,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -660,11 +640,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clonedFromId;
+				var oldValue = this._clonedFromId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clonedFromId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -673,11 +653,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clonedFromId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clonedFromId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -698,11 +678,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoId;
+				var oldValue = this._videoId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -711,11 +691,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -736,11 +716,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -749,11 +729,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -774,11 +754,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -787,11 +767,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -812,11 +792,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -825,11 +805,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -850,11 +830,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoGuid;
+				var oldValue = this._videoGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -863,11 +843,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -888,11 +868,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _title != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -901,11 +881,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _title != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -926,11 +906,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _description != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -939,11 +919,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _description != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -964,11 +944,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _timeFrom;
+				var oldValue = this._timeFrom;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _timeFrom != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -977,11 +957,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_timeFrom = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _timeFrom != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1002,11 +982,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _duration;
+				var oldValue = this._duration;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _duration != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1015,11 +995,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_duration = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _duration != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1040,11 +1020,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _left;
+				var oldValue = this._left;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _left != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1053,11 +1033,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_left = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _left != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1078,11 +1058,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _top;
+				var oldValue = this._top;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _top != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1091,11 +1071,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_top = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _top != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1116,11 +1096,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _width;
+				var oldValue = this._width;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _width != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1129,11 +1109,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_width = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _width != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1154,11 +1134,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _height;
+				var oldValue = this._height;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _height != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1167,11 +1147,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_height = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _height != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1192,11 +1172,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _revisionKey;
+				var oldValue = this._revisionKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _revisionKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1205,11 +1185,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_revisionKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _revisionKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1230,11 +1210,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _imageUrl;
+				var oldValue = this._imageUrl;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _imageUrl != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1243,11 +1223,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_imageUrl = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _imageUrl != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1268,11 +1248,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1281,11 +1261,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1306,11 +1286,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1319,11 +1299,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1344,11 +1324,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1357,11 +1337,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1382,11 +1362,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1395,11 +1375,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1427,11 +1407,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _results;
+				var oldValue = this._results;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _results != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1440,11 +1420,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_results = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _results != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1465,11 +1445,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clonedFrom;
+				var oldValue = this._clonedFrom;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clonedFrom != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1478,11 +1458,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clonedFrom = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clonedFrom != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1510,11 +1490,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clonedTo;
+				var oldValue = this._clonedTo;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clonedTo != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1523,11 +1503,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clonedTo = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clonedTo != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1548,11 +1528,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _video;
+				var oldValue = this._video;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _video != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1561,11 +1541,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_video = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _video != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1586,11 +1566,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1599,11 +1579,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1624,11 +1604,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1637,11 +1617,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1677,11 +1657,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examId;
+				var oldValue = this._examId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1690,11 +1670,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1715,11 +1695,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoId;
+				var oldValue = this._videoId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1728,11 +1708,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1753,11 +1733,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateId;
+				var oldValue = this._candidateId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1766,11 +1746,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1791,11 +1771,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1804,11 +1784,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1829,11 +1809,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1842,11 +1822,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1867,11 +1847,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1880,11 +1860,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1905,11 +1885,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _lastTime;
+				var oldValue = this._lastTime;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _lastTime != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1918,11 +1898,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_lastTime = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _lastTime != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1943,11 +1923,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1956,11 +1936,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -1981,11 +1961,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _status;
+				var oldValue = this._status;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _status != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -1994,11 +1974,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_status = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _status != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2019,11 +1999,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _dateLastTaken;
+				var oldValue = this._dateLastTaken;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _dateLastTaken != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2032,11 +2012,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_dateLastTaken = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _dateLastTaken != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2057,11 +2037,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2070,11 +2050,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2095,11 +2075,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2108,11 +2088,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2133,11 +2113,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2146,11 +2126,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2171,11 +2151,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2184,11 +2164,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2216,11 +2196,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _results;
+				var oldValue = this._results;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _results != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2229,11 +2209,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_results = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _results != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2261,11 +2241,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateResults;
+				var oldValue = this._candidateResults;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateResults != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2274,11 +2254,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateResults = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateResults != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2299,11 +2279,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exam;
+				var oldValue = this._exam;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exam != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2312,11 +2292,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exam = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exam != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2337,11 +2317,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _video;
+				var oldValue = this._video;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _video != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2350,11 +2330,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_video = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _video != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2375,11 +2355,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidate;
+				var oldValue = this._candidate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2388,11 +2368,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2413,11 +2393,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2426,11 +2406,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2451,11 +2431,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2464,11 +2444,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2504,11 +2484,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoId;
+				var oldValue = this._videoId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2517,11 +2497,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2542,11 +2522,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examId;
+				var oldValue = this._examId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2555,11 +2535,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2580,11 +2560,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2593,11 +2573,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2618,11 +2598,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidateId;
+				var oldValue = this._examCandidateId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidateId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2631,11 +2611,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidateId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidateId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2656,11 +2636,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateId;
+				var oldValue = this._candidateId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2669,11 +2649,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2694,11 +2674,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2707,11 +2687,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2732,11 +2712,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2745,11 +2725,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2770,11 +2750,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2783,11 +2763,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2808,11 +2788,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _score;
+				var oldValue = this._score;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _score != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2821,11 +2801,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_score = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _score != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2846,11 +2826,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _pass;
+				var oldValue = this._pass;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _pass != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2859,11 +2839,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_pass = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _pass != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2884,11 +2864,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clickData;
+				var oldValue = this._clickData;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clickData != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2897,11 +2877,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clickData = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clickData != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2922,11 +2902,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clickCount;
+				var oldValue = this._clickCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clickCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2935,11 +2915,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clickCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clickCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2960,11 +2940,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazardCount;
+				var oldValue = this._hazardCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazardCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -2973,11 +2953,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazardCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazardCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -2998,11 +2978,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _successCount;
+				var oldValue = this._successCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _successCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3011,11 +2991,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_successCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _successCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3036,11 +3016,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _date;
+				var oldValue = this._date;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _date != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3049,11 +3029,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_date = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _date != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3074,11 +3054,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3087,11 +3067,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3112,11 +3092,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3125,11 +3105,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3150,11 +3130,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3163,11 +3143,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3188,11 +3168,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3201,11 +3181,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3233,11 +3213,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _results;
+				var oldValue = this._results;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _results != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3246,11 +3226,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_results = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _results != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3271,11 +3251,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _video;
+				var oldValue = this._video;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _video != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3284,11 +3264,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_video = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _video != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3309,11 +3289,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exam;
+				var oldValue = this._exam;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exam != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3322,11 +3302,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exam = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exam != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3347,11 +3327,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3360,11 +3340,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3385,11 +3365,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidate;
+				var oldValue = this._examCandidate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3398,11 +3378,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3423,11 +3403,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidate;
+				var oldValue = this._candidate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3436,11 +3416,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3461,11 +3441,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3474,11 +3454,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3513,11 +3493,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examId;
+				var oldValue = this._examId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3526,11 +3506,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3551,11 +3531,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoId;
+				var oldValue = this._videoId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3564,11 +3544,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3589,11 +3569,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3602,11 +3582,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3627,11 +3607,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateId;
+				var oldValue = this._candidateId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3640,11 +3620,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3665,11 +3645,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateResultId;
+				var oldValue = this._candidateResultId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateResultId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3678,11 +3658,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateResultId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateResultId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3703,11 +3683,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazardId;
+				var oldValue = this._hazardId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazardId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3716,11 +3696,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazardId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazardId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3741,11 +3721,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidateId;
+				var oldValue = this._examCandidateId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidateId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3754,11 +3734,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidateId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidateId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3779,11 +3759,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3792,11 +3772,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3817,11 +3797,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _success;
+				var oldValue = this._success;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _success != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3830,11 +3810,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_success = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _success != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3855,11 +3835,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3868,11 +3848,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3893,11 +3873,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _x;
+				var oldValue = this._x;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _x != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3906,11 +3886,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_x = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _x != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3931,11 +3911,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _y;
+				var oldValue = this._y;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _y != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3944,11 +3924,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_y = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _y != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -3969,11 +3949,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _time;
+				var oldValue = this._time;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _time != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -3982,11 +3962,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_time = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _time != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4007,11 +3987,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4020,11 +4000,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4045,11 +4025,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4058,11 +4038,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4083,11 +4063,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4096,11 +4076,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4121,11 +4101,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4134,11 +4114,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4159,11 +4139,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4172,11 +4152,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4197,11 +4177,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exam;
+				var oldValue = this._exam;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exam != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4210,11 +4190,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exam = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exam != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4235,11 +4215,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _video;
+				var oldValue = this._video;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _video != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4248,11 +4228,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_video = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _video != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4273,11 +4253,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4286,11 +4266,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4311,11 +4291,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidate;
+				var oldValue = this._candidate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4324,11 +4304,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4349,11 +4329,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateResult;
+				var oldValue = this._candidateResult;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateResult != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4362,11 +4342,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateResult = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateResult != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4387,11 +4367,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazard;
+				var oldValue = this._hazard;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazard != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4400,11 +4380,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazard = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazard != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4425,11 +4405,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidate;
+				var oldValue = this._examCandidate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4438,11 +4418,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4463,11 +4443,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4476,11 +4456,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4515,11 +4495,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examId;
+				var oldValue = this._examId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4528,11 +4508,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4553,11 +4533,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4566,11 +4546,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4591,11 +4571,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4604,11 +4584,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4629,11 +4609,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4642,11 +4622,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4667,11 +4647,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _managerId;
+				var oldValue = this._managerId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _managerId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4680,11 +4660,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_managerId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _managerId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4705,11 +4685,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4718,11 +4698,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4743,11 +4723,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4756,11 +4736,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4781,11 +4761,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4794,11 +4774,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4819,11 +4799,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4832,11 +4812,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4857,11 +4837,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4870,11 +4850,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4895,11 +4875,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exam;
+				var oldValue = this._exam;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exam != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4908,11 +4888,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exam = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exam != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4933,11 +4913,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4946,11 +4926,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -4971,11 +4951,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -4984,11 +4964,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5009,11 +4989,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _manager;
+				var oldValue = this._manager;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _manager != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5022,11 +5002,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_manager = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _manager != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5061,11 +5041,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5074,11 +5054,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5099,11 +5079,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoId;
+				var oldValue = this._videoId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5112,11 +5092,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5137,11 +5117,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5150,11 +5130,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5175,11 +5155,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5188,11 +5168,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5213,11 +5193,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videoGuid;
+				var oldValue = this._videoGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videoGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5226,11 +5206,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videoGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videoGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5251,11 +5231,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5264,11 +5244,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5289,11 +5269,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _isTraining;
+				var oldValue = this._isTraining;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _isTraining != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5302,11 +5282,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_isTraining = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _isTraining != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5327,11 +5307,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _availableToAllUsers;
+				var oldValue = this._availableToAllUsers;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _availableToAllUsers != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5340,11 +5320,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_availableToAllUsers = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _availableToAllUsers != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5365,11 +5345,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _scheduledDate;
+				var oldValue = this._scheduledDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _scheduledDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5378,11 +5358,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_scheduledDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _scheduledDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5403,11 +5383,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _passMark;
+				var oldValue = this._passMark;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _passMark != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5416,11 +5396,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_passMark = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _passMark != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5441,11 +5421,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _title != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5454,11 +5434,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _title != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5479,11 +5459,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _allowAnyArea;
+				var oldValue = this._allowAnyArea;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _allowAnyArea != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5492,11 +5472,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_allowAnyArea = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _allowAnyArea != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5517,11 +5497,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _description != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5530,11 +5510,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _description != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5555,11 +5535,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _status;
+				var oldValue = this._status;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _status != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5568,11 +5548,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_status = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _status != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5593,11 +5573,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _notStarted;
+				var oldValue = this._notStarted;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _notStarted != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5606,11 +5586,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_notStarted = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _notStarted != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5631,11 +5611,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _complete;
+				var oldValue = this._complete;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _complete != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5644,11 +5624,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_complete = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _complete != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5669,11 +5649,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _inProgress;
+				var oldValue = this._inProgress;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _inProgress != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5682,11 +5662,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_inProgress = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _inProgress != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5707,11 +5687,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateCount;
+				var oldValue = this._candidateCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5720,11 +5700,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5745,11 +5725,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _imageUrl;
+				var oldValue = this._imageUrl;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _imageUrl != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5758,11 +5738,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_imageUrl = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _imageUrl != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5783,11 +5763,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5796,11 +5776,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5821,11 +5801,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5834,11 +5814,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5859,11 +5839,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5872,11 +5852,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5897,11 +5877,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5910,11 +5890,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5935,11 +5915,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _video;
+				var oldValue = this._video;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _video != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5948,11 +5928,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_video = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _video != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -5973,11 +5953,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -5986,11 +5966,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6011,11 +5991,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6024,11 +6004,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6056,11 +6036,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _managers;
+				var oldValue = this._managers;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _managers != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6069,11 +6049,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_managers = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _managers != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6101,11 +6081,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _results;
+				var oldValue = this._results;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _results != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6114,11 +6094,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_results = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _results != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6146,11 +6126,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateResults;
+				var oldValue = this._candidateResults;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateResults != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6159,11 +6139,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateResults = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateResults != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6191,11 +6171,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidates;
+				var oldValue = this._candidates;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidates != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6204,11 +6184,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidates = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidates != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6244,11 +6224,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6257,11 +6237,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6282,11 +6262,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6295,11 +6275,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6320,11 +6300,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6333,11 +6313,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6358,11 +6338,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clonedFromId;
+				var oldValue = this._clonedFromId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clonedFromId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6371,11 +6351,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clonedFromId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clonedFromId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6396,11 +6376,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6409,11 +6389,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6434,11 +6414,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _title != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6447,11 +6427,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _title != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6472,11 +6452,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _description != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6485,11 +6465,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _description != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6510,11 +6490,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _duration;
+				var oldValue = this._duration;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _duration != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6523,11 +6503,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_duration = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _duration != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6548,11 +6528,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _resultsCount;
+				var oldValue = this._resultsCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _resultsCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6561,11 +6541,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_resultsCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _resultsCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6586,11 +6566,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateResultsCount;
+				var oldValue = this._candidateResultsCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateResultsCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6599,11 +6579,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateResultsCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateResultsCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6624,11 +6604,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidatesCount;
+				var oldValue = this._candidatesCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidatesCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6637,11 +6617,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidatesCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidatesCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6662,11 +6642,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCount;
+				var oldValue = this._examCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6675,11 +6655,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6700,11 +6680,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazardCount;
+				var oldValue = this._hazardCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazardCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6713,11 +6693,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazardCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazardCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6738,11 +6718,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _revisionKey;
+				var oldValue = this._revisionKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _revisionKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6751,11 +6731,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_revisionKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _revisionKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6776,11 +6756,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _screenshotUrl;
+				var oldValue = this._screenshotUrl;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _screenshotUrl != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6789,11 +6769,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_screenshotUrl = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _screenshotUrl != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6814,11 +6794,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _screenshotMiniUrl;
+				var oldValue = this._screenshotMiniUrl;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _screenshotMiniUrl != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6827,11 +6807,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_screenshotMiniUrl = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _screenshotMiniUrl != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6852,11 +6832,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6865,11 +6845,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6890,11 +6870,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6903,11 +6883,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6928,11 +6908,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6941,11 +6921,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -6966,11 +6946,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -6979,11 +6959,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7004,11 +6984,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7017,11 +6997,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7042,11 +7022,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7055,11 +7035,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7080,11 +7060,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clonedFrom;
+				var oldValue = this._clonedFrom;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clonedFrom != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7093,11 +7073,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clonedFrom = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clonedFrom != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7125,11 +7105,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clonedTo;
+				var oldValue = this._clonedTo;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clonedTo != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7138,11 +7118,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clonedTo = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clonedTo != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7170,11 +7150,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exams;
+				var oldValue = this._exams;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exams != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7183,11 +7163,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exams = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exams != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7213,11 +7193,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _results;
+				var oldValue = this._results;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _results != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7226,11 +7206,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_results = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _results != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7256,11 +7236,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidateResults;
+				var oldValue = this._candidateResults;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidateResults != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7269,11 +7249,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidateResults = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidateResults != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7299,11 +7279,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _candidates;
+				var oldValue = this._candidates;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _candidates != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7312,11 +7292,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_candidates = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _candidates != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7344,11 +7324,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazards;
+				var oldValue = this._hazards;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazards != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7357,11 +7337,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazards = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazards != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7397,11 +7377,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _typeId;
+				var oldValue = this._typeId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _typeId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7410,11 +7390,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_typeId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _typeId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7435,11 +7415,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7448,11 +7428,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7473,11 +7453,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7486,11 +7466,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7511,11 +7491,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _name != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7524,11 +7504,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _name != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7549,11 +7529,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _description != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7562,11 +7542,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _description != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7587,11 +7567,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _guid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7600,11 +7580,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _guid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7625,11 +7605,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdDate != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7638,11 +7618,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdDate != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7663,11 +7643,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _version != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7676,11 +7656,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _version != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7701,11 +7681,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _persistenceKey != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7714,11 +7694,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _persistenceKey != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7746,11 +7726,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _users;
+				var oldValue = this._users;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _users != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7759,11 +7739,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_users = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _users != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7784,11 +7764,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _type;
+				var oldValue = this._type;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _type != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7797,11 +7777,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_type = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _type != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7822,11 +7802,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7835,11 +7815,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7867,11 +7847,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videos;
+				var oldValue = this._videos;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videos != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7880,11 +7860,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videos = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videos != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7912,11 +7892,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exams;
+				var oldValue = this._exams;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exams != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7925,11 +7905,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exams = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exams != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -7957,11 +7937,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examManagers;
+				var oldValue = this._examManagers;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examManagers != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -7970,11 +7950,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examManagers = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examManagers != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8002,11 +7982,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examResults;
+				var oldValue = this._examResults;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examResults != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8015,11 +7995,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examResults = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examResults != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8047,11 +8027,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidateResults;
+				var oldValue = this._examCandidateResults;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidateResults != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8060,11 +8040,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidateResults = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidateResults != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8092,11 +8072,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidates;
+				var oldValue = this._examCandidates;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidates != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8105,11 +8085,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidates = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidates != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8137,11 +8117,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazards;
+				var oldValue = this._hazards;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazards != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8150,11 +8130,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazards = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazards != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8190,11 +8170,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8203,11 +8183,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8228,11 +8208,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientGuid;
+				var oldValue = this._clientGuid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientGuid != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8241,11 +8221,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientGuid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientGuid != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8266,11 +8246,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8279,11 +8259,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8304,11 +8284,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUserId != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8317,11 +8297,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUserId != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8342,11 +8322,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _email;
+				var oldValue = this._email;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _email != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8355,11 +8335,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_email = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _email != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8380,11 +8360,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _userType;
+				var oldValue = this._userType;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _userType != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8393,11 +8373,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_userType = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _userType != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8418,11 +8398,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _fullName;
+				var oldValue = this._fullName;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _fullName != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8431,16 +8411,130 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_fullName = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _fullName != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
 					{
 						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(FullName), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected int _assessedExams;
+
+		public int AssessedExams
+		{
+			get => _assessedExams;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._assessedExams;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AssessedExams), this, oldValue, value));
+					}
+				
+				}
+				_assessedExams = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AssessedExams), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected int _trainingExams;
+
+		public int TrainingExams
+		{
+			get => _trainingExams;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._trainingExams;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(TrainingExams), this, oldValue, value));
+					}
+				
+				}
+				_trainingExams = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(TrainingExams), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected float? _averageScore;
+
+		public float? AverageScore
+		{
+			get => _averageScore;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._averageScore;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AverageScore), this, oldValue, value));
+					}
+				
+				}
+				_averageScore = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AverageScore), this, oldValue, value));
 					}
 				
 				}
@@ -8456,11 +8550,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _isLockedOut;
+				var oldValue = this._isLockedOut;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _isLockedOut != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8469,11 +8563,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_isLockedOut = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _isLockedOut != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8494,11 +8588,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _userName;
+				var oldValue = this._userName;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _userName != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8507,11 +8601,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_userName = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _userName != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8532,11 +8626,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _normalizedUserName;
+				var oldValue = this._normalizedUserName;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _normalizedUserName != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8545,11 +8639,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_normalizedUserName = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _normalizedUserName != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8570,11 +8664,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _normalizedEmail;
+				var oldValue = this._normalizedEmail;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _normalizedEmail != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8583,11 +8677,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_normalizedEmail = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _normalizedEmail != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8608,11 +8702,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _emailConfirmed;
+				var oldValue = this._emailConfirmed;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _emailConfirmed != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8621,11 +8715,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_emailConfirmed = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _emailConfirmed != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8646,11 +8740,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _passwordHash;
+				var oldValue = this._passwordHash;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _passwordHash != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8659,11 +8753,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_passwordHash = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _passwordHash != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8684,11 +8778,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _securityStamp;
+				var oldValue = this._securityStamp;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _securityStamp != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8697,11 +8791,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_securityStamp = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _securityStamp != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8722,11 +8816,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _concurrencyStamp;
+				var oldValue = this._concurrencyStamp;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _concurrencyStamp != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8735,11 +8829,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_concurrencyStamp = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _concurrencyStamp != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8760,11 +8854,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _phoneNumber;
+				var oldValue = this._phoneNumber;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _phoneNumber != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8773,11 +8867,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_phoneNumber = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _phoneNumber != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8798,11 +8892,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _phoneNumberConfirmed;
+				var oldValue = this._phoneNumberConfirmed;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _phoneNumberConfirmed != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8811,11 +8905,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_phoneNumberConfirmed = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _phoneNumberConfirmed != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8836,11 +8930,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _twoFactorEnabled;
+				var oldValue = this._twoFactorEnabled;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _twoFactorEnabled != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8849,11 +8943,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_twoFactorEnabled = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _twoFactorEnabled != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8874,11 +8968,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _lockoutEnd;
+				var oldValue = this._lockoutEnd;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _lockoutEnd != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8887,11 +8981,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_lockoutEnd = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _lockoutEnd != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8912,11 +9006,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _lockoutEnabled;
+				var oldValue = this._lockoutEnabled;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _lockoutEnabled != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8925,11 +9019,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_lockoutEnabled = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _lockoutEnabled != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8950,11 +9044,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _accessFailedCount;
+				var oldValue = this._accessFailedCount;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _accessFailedCount != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -8963,11 +9057,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_accessFailedCount = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _accessFailedCount != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -8988,11 +9082,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9001,11 +9095,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9026,11 +9120,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _createdByUser != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9039,11 +9133,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _createdByUser != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9071,11 +9165,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _usersCreated;
+				var oldValue = this._usersCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _usersCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9084,11 +9178,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_usersCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _usersCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9116,11 +9210,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientsCreated;
+				var oldValue = this._clientsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _clientsCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9129,11 +9223,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_clientsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _clientsCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9161,11 +9255,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _videosCreated;
+				var oldValue = this._videosCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _videosCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9174,11 +9268,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_videosCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _videosCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9206,11 +9300,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examsCreated;
+				var oldValue = this._examsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examsCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9219,11 +9313,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examsCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9251,11 +9345,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examManagersCreated;
+				var oldValue = this._examManagersCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examManagersCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9264,11 +9358,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examManagersCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examManagersCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9296,11 +9390,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _results;
+				var oldValue = this._results;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _results != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9309,11 +9403,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_results = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _results != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9341,11 +9435,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examResultsCreated;
+				var oldValue = this._examResultsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examResultsCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9354,11 +9448,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examResultsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examResultsCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9386,11 +9480,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examResults;
+				var oldValue = this._examResults;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examResults != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9399,11 +9493,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examResults = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examResults != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9431,11 +9525,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidateResultsCreated;
+				var oldValue = this._examCandidateResultsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidateResultsCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9444,11 +9538,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidateResultsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidateResultsCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9476,11 +9570,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _exams;
+				var oldValue = this._exams;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _exams != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9489,11 +9583,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_exams = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _exams != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9521,11 +9615,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _examCandidatesCreated;
+				var oldValue = this._examCandidatesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _examCandidatesCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9534,11 +9628,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_examCandidatesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _examCandidatesCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9566,11 +9660,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _hazardsCreated;
+				var oldValue = this._hazardsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _hazardsCreated != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9579,11 +9673,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_hazardsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _hazardsCreated != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9619,11 +9713,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _id != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9632,11 +9726,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _id != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9657,11 +9751,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _name != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9670,11 +9764,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _name != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)
@@ -9702,11 +9796,11 @@ namespace Haz.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
-					changed = _client != oldValue;
+					changed = value != oldValue;
 					changedSet = true;
 					if(changed)
 					{
@@ -9715,11 +9809,11 @@ namespace Haz.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
-						changed = _client != oldValue;
+						changed = value != oldValue;
 					
 					}
 					if(changed)

@@ -50,10 +50,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "UserSite";
-		}
+
+		public static String ClassName { get; set; }		 = "UserSite";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -107,10 +105,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "SiteInspection";
-		}
+
+		public static String ClassName { get; set; }		 = "SiteInspection";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -164,10 +160,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Site";
-		}
+
+		public static String ClassName { get; set; }		 = "Site";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -221,10 +215,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "PersonReport";
-		}
+
+		public static String ClassName { get; set; }		 = "PersonReport";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -278,10 +270,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "PersonTypeMap";
-		}
+
+		public static String ClassName { get; set; }		 = "PersonTypeMap";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -335,10 +325,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "PersonType";
-		}
+
+		public static String ClassName { get; set; }		 = "PersonType";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -392,10 +380,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "PersonLoading";
-		}
+
+		public static String ClassName { get; set; }		 = "PersonLoading";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -449,10 +435,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "PersonInspection";
-		}
+
+		public static String ClassName { get; set; }		 = "PersonInspection";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -506,10 +490,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Person";
-		}
+
+		public static String ClassName { get; set; }		 = "Person";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -563,10 +545,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "RiskAssessmentQuestion";
-		}
+
+		public static String ClassName { get; set; }		 = "RiskAssessmentQuestion";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -620,10 +600,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "RiskAssessmentAnswer";
-		}
+
+		public static String ClassName { get; set; }		 = "RiskAssessmentAnswer";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -677,10 +655,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "RiskAssessmentSolution";
-		}
+
+		public static String ClassName { get; set; }		 = "RiskAssessmentSolution";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -734,10 +710,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "RiskAssessment";
-		}
+
+		public static String ClassName { get; set; }		 = "RiskAssessment";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -791,10 +765,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ReportReceiverEmailAddress";
-		}
+
+		public static String ClassName { get; set; }		 = "ReportReceiverEmailAddress";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -848,10 +820,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Project";
-		}
+
+		public static String ClassName { get; set; }		 = "Project";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -905,10 +875,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ReportType";
-		}
+
+		public static String ClassName { get; set; }		 = "ReportType";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -962,10 +930,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ReportRecommendation";
-		}
+
+		public static String ClassName { get; set; }		 = "ReportRecommendation";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1019,10 +985,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ReportDefaultRecommendation";
-		}
+
+		public static String ClassName { get; set; }		 = "ReportDefaultRecommendation";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1076,10 +1040,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ReportCategory";
-		}
+
+		public static String ClassName { get; set; }		 = "ReportCategory";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1133,10 +1095,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ReportActionsTaken";
-		}
+
+		public static String ClassName { get; set; }		 = "ReportActionsTaken";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1190,10 +1150,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "SiteDocument";
-		}
+
+		public static String ClassName { get; set; }		 = "SiteDocument";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1247,10 +1205,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "DocumentCategory";
-		}
+
+		public static String ClassName { get; set; }		 = "DocumentCategory";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1304,10 +1260,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ClientType";
-		}
+
+		public static String ClassName { get; set; }		 = "ClientType";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1361,10 +1315,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "Client";
-		}
+
+		public static String ClassName { get; set; }		 = "Client";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1418,10 +1370,8 @@ namespace Tunnel.App.Data.Entities
 		{
 			return true;
 		}
-		public static string ClassName()
-		{
-			return "ApplicationUser";
-		}
+
+		public static String ClassName { get; set; }		 = "ApplicationUser";
 		public virtual EntityValidationResult ValidateEntity()
 		{
 			return new EntityValidationResult(this.GetType());
@@ -1500,9 +1450,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteId;
+				var oldValue = this._siteId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1513,7 +1463,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1538,9 +1488,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _userId;
+				var oldValue = this._userId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1551,7 +1501,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_userId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1576,9 +1526,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _user;
+				var oldValue = this._user;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1589,7 +1539,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_user = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1614,9 +1564,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _site;
+				var oldValue = this._site;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1627,7 +1577,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_site = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1666,9 +1616,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1679,7 +1629,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1704,9 +1654,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteId;
+				var oldValue = this._siteId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1717,7 +1667,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1742,9 +1692,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1755,7 +1705,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1780,9 +1730,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _startTime;
+				var oldValue = this._startTime;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1793,7 +1743,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_startTime = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1818,9 +1768,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _endTime;
+				var oldValue = this._endTime;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1831,7 +1781,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_endTime = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1856,9 +1806,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1869,7 +1819,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1894,9 +1844,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1907,7 +1857,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1932,9 +1882,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1945,7 +1895,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -1970,9 +1920,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -1983,7 +1933,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2008,9 +1958,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessment;
+				var oldValue = this._riskAssessment;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2021,7 +1971,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessment = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2053,9 +2003,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personInspections;
+				var oldValue = this._personInspections;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2066,7 +2016,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personInspections = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2091,9 +2041,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _site;
+				var oldValue = this._site;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2104,7 +2054,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_site = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2129,9 +2079,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2142,7 +2092,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2181,9 +2131,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2194,7 +2144,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2219,9 +2169,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _parentId;
+				var oldValue = this._parentId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2232,7 +2182,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_parentId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2257,9 +2207,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2270,7 +2220,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2295,9 +2245,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2308,7 +2258,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2333,9 +2283,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _address;
+				var oldValue = this._address;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2346,7 +2296,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_address = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2371,9 +2321,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _postCode;
+				var oldValue = this._postCode;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2384,7 +2334,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_postCode = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2409,9 +2359,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2422,7 +2372,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2447,9 +2397,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _left;
+				var oldValue = this._left;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2460,7 +2410,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_left = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2485,9 +2435,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _right;
+				var oldValue = this._right;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2498,7 +2448,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_right = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2523,9 +2473,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2536,7 +2486,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2561,9 +2511,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2574,7 +2524,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2599,9 +2549,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2612,7 +2562,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2637,9 +2587,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2650,7 +2600,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2682,9 +2632,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _documents;
+				var oldValue = this._documents;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2695,7 +2645,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_documents = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2727,9 +2677,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _additionalSendReportsTo;
+				var oldValue = this._additionalSendReportsTo;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2740,7 +2690,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_additionalSendReportsTo = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2765,9 +2715,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _parent;
+				var oldValue = this._parent;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2778,7 +2728,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_parent = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2810,9 +2760,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _children;
+				var oldValue = this._children;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2823,7 +2773,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_children = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2848,9 +2798,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2861,7 +2811,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2886,9 +2836,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2899,7 +2849,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2931,9 +2881,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteInspections;
+				var oldValue = this._siteInspections;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2944,7 +2894,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteInspections = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -2976,9 +2926,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _users;
+				var oldValue = this._users;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -2989,7 +2939,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_users = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3028,9 +2978,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personId;
+				var oldValue = this._personId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3041,7 +2991,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3066,9 +3016,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _typeId;
+				var oldValue = this._typeId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3079,7 +3029,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_typeId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3104,9 +3054,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3117,7 +3067,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3142,9 +3092,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3155,7 +3105,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3180,9 +3130,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3193,7 +3143,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3218,9 +3168,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _status;
+				var oldValue = this._status;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3231,7 +3181,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_status = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3256,9 +3206,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3269,7 +3219,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3294,9 +3244,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3307,7 +3257,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3332,9 +3282,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3345,7 +3295,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3370,9 +3320,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3383,7 +3333,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3415,9 +3365,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _actionsTaken;
+				var oldValue = this._actionsTaken;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3428,7 +3378,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_actionsTaken = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3460,9 +3410,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _recommendations;
+				var oldValue = this._recommendations;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3473,7 +3423,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_recommendations = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3498,9 +3448,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _person;
+				var oldValue = this._person;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3511,7 +3461,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_person = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3536,9 +3486,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _type;
+				var oldValue = this._type;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3549,7 +3499,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_type = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3574,9 +3524,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3587,7 +3537,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3626,9 +3576,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personId;
+				var oldValue = this._personId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3639,7 +3589,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3664,9 +3614,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _typeId;
+				var oldValue = this._typeId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3677,7 +3627,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_typeId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3702,9 +3652,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _notes;
+				var oldValue = this._notes;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3715,7 +3665,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_notes = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3740,9 +3690,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3753,7 +3703,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3778,9 +3728,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3791,7 +3741,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3816,9 +3766,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3829,7 +3779,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3854,9 +3804,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _person;
+				var oldValue = this._person;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3867,7 +3817,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_person = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3892,9 +3842,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _type;
+				var oldValue = this._type;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3905,7 +3855,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_type = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3944,9 +3894,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3957,7 +3907,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -3982,9 +3932,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -3995,7 +3945,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4020,9 +3970,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4033,7 +3983,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4058,9 +4008,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4071,7 +4021,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4096,9 +4046,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4109,7 +4059,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4134,9 +4084,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4147,7 +4097,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4172,9 +4122,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4185,7 +4135,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4217,9 +4167,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _people;
+				var oldValue = this._people;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4230,7 +4180,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_people = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4255,9 +4205,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4268,7 +4218,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4300,9 +4250,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _peopleMap;
+				var oldValue = this._peopleMap;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4313,7 +4263,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_peopleMap = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4352,9 +4302,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4365,7 +4315,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4390,9 +4340,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4403,7 +4353,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4428,9 +4378,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4441,7 +4391,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4466,9 +4416,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4479,7 +4429,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4504,9 +4454,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4517,7 +4467,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4542,9 +4492,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4555,7 +4505,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4580,9 +4530,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4593,7 +4543,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4625,9 +4575,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _people;
+				var oldValue = this._people;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4638,7 +4588,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_people = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4663,9 +4613,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4676,7 +4626,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4727,9 +4677,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteInspectionId;
+				var oldValue = this._siteInspectionId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4740,7 +4690,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteInspectionId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4765,9 +4715,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4778,7 +4728,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4803,9 +4753,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personId;
+				var oldValue = this._personId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4816,7 +4766,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4841,9 +4791,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _inspectionStatus;
+				var oldValue = this._inspectionStatus;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4854,7 +4804,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_inspectionStatus = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4879,9 +4829,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _startTime;
+				var oldValue = this._startTime;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4892,7 +4842,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_startTime = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4917,9 +4867,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _endTime;
+				var oldValue = this._endTime;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4930,7 +4880,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_endTime = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4955,9 +4905,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _reasonForFailure;
+				var oldValue = this._reasonForFailure;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -4968,7 +4918,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_reasonForFailure = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -4993,9 +4943,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _isDesignRequired;
+				var oldValue = this._isDesignRequired;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5006,7 +4956,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_isDesignRequired = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5031,9 +4981,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _drawingNumber;
+				var oldValue = this._drawingNumber;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5044,7 +4994,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_drawingNumber = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5069,9 +5019,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5082,7 +5032,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5107,9 +5057,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5120,7 +5070,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5145,9 +5095,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5158,7 +5108,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5183,9 +5133,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5196,7 +5146,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5221,9 +5171,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5234,7 +5184,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5259,9 +5209,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteInspection;
+				var oldValue = this._siteInspection;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5272,7 +5222,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteInspection = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5297,9 +5247,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5310,7 +5260,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5349,9 +5299,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _typeId;
+				var oldValue = this._typeId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5362,7 +5312,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_typeId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5387,9 +5337,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _loadingId;
+				var oldValue = this._loadingId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5400,7 +5350,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_loadingId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5425,9 +5375,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5438,7 +5388,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5463,9 +5413,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5476,7 +5426,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5501,9 +5451,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _key;
+				var oldValue = this._key;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5514,7 +5464,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_key = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5539,9 +5489,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5552,7 +5502,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5577,9 +5527,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5590,7 +5540,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5615,9 +5565,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _category;
+				var oldValue = this._category;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5628,7 +5578,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_category = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5653,9 +5603,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5666,7 +5616,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5691,9 +5641,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5704,7 +5654,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5729,9 +5679,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5742,7 +5692,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5767,9 +5717,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5780,7 +5730,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5805,9 +5755,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5818,7 +5768,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5843,9 +5793,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5856,7 +5806,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5881,9 +5831,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _type;
+				var oldValue = this._type;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5894,7 +5844,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_type = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5919,9 +5869,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _loading;
+				var oldValue = this._loading;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5932,7 +5882,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_loading = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -5957,9 +5907,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -5970,7 +5920,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6002,9 +5952,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _types;
+				var oldValue = this._types;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6015,7 +5965,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_types = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6047,9 +5997,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _reports;
+				var oldValue = this._reports;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6060,7 +6010,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_reports = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6154,9 +6104,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6167,7 +6117,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6192,9 +6142,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6205,7 +6155,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6230,9 +6180,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6243,7 +6193,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6268,9 +6218,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6281,7 +6231,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6306,9 +6256,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6319,7 +6269,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6344,9 +6294,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6357,7 +6307,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6382,9 +6332,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6395,7 +6345,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6427,9 +6377,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _answers;
+				var oldValue = this._answers;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6440,7 +6390,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_answers = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6465,9 +6415,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6478,7 +6428,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6517,9 +6467,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _questionId;
+				var oldValue = this._questionId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6530,7 +6480,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_questionId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6555,9 +6505,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6568,7 +6518,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6593,9 +6543,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _specificHazard;
+				var oldValue = this._specificHazard;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6606,7 +6556,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_specificHazard = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6631,9 +6581,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _precautionsToControlHazard;
+				var oldValue = this._precautionsToControlHazard;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6644,7 +6594,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_precautionsToControlHazard = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6669,9 +6619,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6682,7 +6632,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6707,9 +6657,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6720,7 +6670,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6745,9 +6695,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6758,7 +6708,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6783,9 +6733,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6796,7 +6746,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6821,9 +6771,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6834,7 +6784,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6859,9 +6809,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _question;
+				var oldValue = this._question;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6872,7 +6822,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_question = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6897,9 +6847,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6910,7 +6860,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6949,9 +6899,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessmentId;
+				var oldValue = this._riskAssessmentId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -6962,7 +6912,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessmentId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -6987,9 +6937,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7000,7 +6950,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7025,9 +6975,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7038,7 +6988,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7063,9 +7013,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7076,7 +7026,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7101,9 +7051,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7114,7 +7064,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7139,9 +7089,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7152,7 +7102,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7177,9 +7127,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7190,7 +7140,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7215,9 +7165,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessment;
+				var oldValue = this._riskAssessment;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7228,7 +7178,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessment = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7253,9 +7203,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7266,7 +7216,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7297,17 +7247,17 @@ namespace Tunnel.App.Data.Entities
 	public class RiskAssessment : RiskAssessmentBase, IEntity
 	{
 				
-		protected int _siteInspectionId;
+		protected int? _siteInspectionId;
 
-		public int SiteInspectionId
+		public int? SiteInspectionId
 		{
 			get => _siteInspectionId;
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteInspectionId;
+				var oldValue = this._siteInspectionId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7318,7 +7268,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteInspectionId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7343,9 +7293,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7356,7 +7306,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7381,9 +7331,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7394,7 +7344,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7419,9 +7369,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7432,7 +7382,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7457,9 +7407,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7470,7 +7420,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7495,9 +7445,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7508,7 +7458,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7533,9 +7483,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7546,7 +7496,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7571,9 +7521,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteInspection;
+				var oldValue = this._siteInspection;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7584,7 +7534,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteInspection = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7609,9 +7559,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7622,7 +7572,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7647,9 +7597,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessmentSolution;
+				var oldValue = this._riskAssessmentSolution;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7660,7 +7610,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessmentSolution = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7699,9 +7649,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7712,7 +7662,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7737,9 +7687,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteId;
+				var oldValue = this._siteId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7750,7 +7700,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7775,9 +7725,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _emailAddress;
+				var oldValue = this._emailAddress;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7788,7 +7738,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_emailAddress = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7813,9 +7763,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7826,7 +7776,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7851,9 +7801,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7864,7 +7814,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7889,9 +7839,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7902,7 +7852,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7927,9 +7877,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7940,7 +7890,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -7965,9 +7915,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -7978,7 +7928,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8003,9 +7953,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _site;
+				var oldValue = this._site;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8016,7 +7966,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_site = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8041,9 +7991,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8054,7 +8004,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8093,9 +8043,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8106,7 +8056,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8131,9 +8081,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8144,7 +8094,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8169,9 +8119,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8182,7 +8132,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8207,9 +8157,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8220,7 +8170,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8245,9 +8195,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8258,7 +8208,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8297,9 +8247,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8310,7 +8260,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8335,9 +8285,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _categoryId;
+				var oldValue = this._categoryId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8348,7 +8298,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_categoryId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8373,9 +8323,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8386,7 +8336,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8411,9 +8361,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8424,7 +8374,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8449,9 +8399,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8462,7 +8412,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8487,9 +8437,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8500,7 +8450,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8525,9 +8475,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8538,7 +8488,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8563,9 +8513,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8576,7 +8526,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8601,9 +8551,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _category;
+				var oldValue = this._category;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8614,7 +8564,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_category = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8639,9 +8589,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8652,7 +8602,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8684,9 +8634,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultReports;
+				var oldValue = this._faultReports;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8697,7 +8647,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultReports = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8736,9 +8686,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _reportId;
+				var oldValue = this._reportId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8749,7 +8699,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_reportId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8774,9 +8724,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _recommendationId;
+				var oldValue = this._recommendationId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8787,7 +8737,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_recommendationId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8812,9 +8762,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8825,7 +8775,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8850,9 +8800,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _notes;
+				var oldValue = this._notes;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8863,7 +8813,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_notes = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8888,9 +8838,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8901,7 +8851,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8926,9 +8876,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8939,7 +8889,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -8964,9 +8914,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -8977,7 +8927,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9002,9 +8952,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9015,7 +8965,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9040,9 +8990,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9053,7 +9003,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9078,9 +9028,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personReport;
+				var oldValue = this._personReport;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9091,7 +9041,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personReport = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9116,9 +9066,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _recommendation;
+				var oldValue = this._recommendation;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9129,7 +9079,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_recommendation = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9154,9 +9104,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9167,7 +9117,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9206,9 +9156,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9219,7 +9169,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9244,9 +9194,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9257,7 +9207,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9282,9 +9232,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9295,7 +9245,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9320,9 +9270,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _text;
+				var oldValue = this._text;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9333,7 +9283,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_text = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9358,9 +9308,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9371,7 +9321,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9396,9 +9346,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9409,7 +9359,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9434,9 +9384,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9447,7 +9397,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9472,9 +9422,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9485,7 +9435,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9510,9 +9460,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9523,7 +9473,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9555,9 +9505,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _recommendations;
+				var oldValue = this._recommendations;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9568,7 +9518,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_recommendations = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9607,9 +9557,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9620,7 +9570,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9645,9 +9595,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9658,7 +9608,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9683,9 +9633,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9696,7 +9646,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9721,9 +9671,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9734,7 +9684,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9759,9 +9709,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9772,7 +9722,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9797,9 +9747,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9810,7 +9760,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9835,9 +9785,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9848,7 +9798,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9873,9 +9823,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9886,7 +9836,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9918,9 +9868,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _reportTypes;
+				var oldValue = this._reportTypes;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9931,7 +9881,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_reportTypes = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -9970,9 +9920,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultReportId;
+				var oldValue = this._faultReportId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -9983,7 +9933,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultReportId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10008,9 +9958,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10021,7 +9971,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10046,9 +9996,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _notes;
+				var oldValue = this._notes;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10059,7 +10009,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_notes = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10084,9 +10034,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10097,7 +10047,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10122,9 +10072,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10135,7 +10085,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10160,9 +10110,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10173,7 +10123,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10198,9 +10148,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10211,7 +10161,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10236,9 +10186,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10249,7 +10199,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10274,9 +10224,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personReport;
+				var oldValue = this._personReport;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10287,7 +10237,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personReport = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10312,9 +10262,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10325,7 +10275,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10381,9 +10331,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _categoryId;
+				var oldValue = this._categoryId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10394,7 +10344,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_categoryId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10419,9 +10369,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteId;
+				var oldValue = this._siteId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10432,7 +10382,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10457,9 +10407,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10470,7 +10420,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10495,9 +10445,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _title;
+				var oldValue = this._title;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10508,7 +10458,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_title = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10533,9 +10483,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10546,7 +10496,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10571,9 +10521,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10584,7 +10534,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10609,9 +10559,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10622,7 +10572,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10647,9 +10597,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10660,7 +10610,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10685,9 +10635,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10698,7 +10648,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10723,9 +10673,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _category;
+				var oldValue = this._category;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10736,7 +10686,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_category = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10761,9 +10711,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _site;
+				var oldValue = this._site;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10774,7 +10724,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_site = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10799,9 +10749,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10812,7 +10762,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10851,9 +10801,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10864,7 +10814,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10889,9 +10839,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10902,7 +10852,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10927,9 +10877,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10940,7 +10890,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -10965,9 +10915,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -10978,7 +10928,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11003,9 +10953,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11016,7 +10966,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11041,9 +10991,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11054,7 +11004,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11079,9 +11029,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11092,7 +11042,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11117,9 +11067,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11130,7 +11080,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11162,9 +11112,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _documents;
+				var oldValue = this._documents;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11175,7 +11125,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_documents = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11214,9 +11164,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11227,7 +11177,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11252,9 +11202,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11265,7 +11215,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11297,9 +11247,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clients;
+				var oldValue = this._clients;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11310,7 +11260,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_clients = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11349,9 +11299,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _typeId;
+				var oldValue = this._typeId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11362,7 +11312,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_typeId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11387,9 +11337,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11400,7 +11350,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11425,9 +11375,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUserId;
+				var oldValue = this._createdByUserId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11438,7 +11388,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUserId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11463,9 +11413,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _name;
+				var oldValue = this._name;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11476,7 +11426,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_name = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11501,9 +11451,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _description;
+				var oldValue = this._description;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11514,7 +11464,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_description = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11539,9 +11489,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _guid;
+				var oldValue = this._guid;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11552,7 +11502,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_guid = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11577,9 +11527,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdDate;
+				var oldValue = this._createdDate;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11590,7 +11540,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdDate = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11615,9 +11565,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _version;
+				var oldValue = this._version;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11628,7 +11578,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_version = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11653,9 +11603,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _persistenceKey;
+				var oldValue = this._persistenceKey;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11666,7 +11616,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_persistenceKey = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11698,9 +11648,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _users;
+				var oldValue = this._users;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11711,7 +11661,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_users = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11736,9 +11686,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _type;
+				var oldValue = this._type;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11749,7 +11699,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_type = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11774,9 +11724,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _createdByUser;
+				var oldValue = this._createdByUser;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11787,7 +11737,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_createdByUser = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11819,9 +11769,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _people;
+				var oldValue = this._people;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11832,7 +11782,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_people = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11864,9 +11814,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _sites;
+				var oldValue = this._sites;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11877,7 +11827,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_sites = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11916,9 +11866,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _id;
+				var oldValue = this._id;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11929,7 +11879,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_id = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11954,9 +11904,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientId;
+				var oldValue = this._clientId;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -11967,7 +11917,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_clientId = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -11992,9 +11942,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _email;
+				var oldValue = this._email;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12005,7 +11955,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_email = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12030,9 +11980,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _fullName;
+				var oldValue = this._fullName;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12043,7 +11993,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_fullName = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12068,9 +12018,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _emailConfirmed;
+				var oldValue = this._emailConfirmed;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12081,7 +12031,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_emailConfirmed = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12106,9 +12056,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _userType;
+				var oldValue = this._userType;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12119,7 +12069,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_userType = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12144,9 +12094,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _isLockedOut;
+				var oldValue = this._isLockedOut;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12157,7 +12107,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_isLockedOut = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12182,9 +12132,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _client;
+				var oldValue = this._client;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12195,7 +12145,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_client = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12227,9 +12177,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _clientsCreated;
+				var oldValue = this._clientsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12240,7 +12190,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_clientsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12272,9 +12222,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _documentCategoriesCreated;
+				var oldValue = this._documentCategoriesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12285,7 +12235,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_documentCategoriesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12317,9 +12267,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteDocumentsCreated;
+				var oldValue = this._siteDocumentsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12330,7 +12280,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteDocumentsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12362,9 +12312,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultActionsTakenCreated;
+				var oldValue = this._faultActionsTakenCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12375,7 +12325,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultActionsTakenCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12407,9 +12357,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultCategoriesCreated;
+				var oldValue = this._faultCategoriesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12420,7 +12370,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultCategoriesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12452,9 +12402,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultDefaultRecommendationsCreated;
+				var oldValue = this._faultDefaultRecommendationsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12465,7 +12415,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultDefaultRecommendationsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12497,9 +12447,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultRecommendationsCreated;
+				var oldValue = this._faultRecommendationsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12510,7 +12460,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultRecommendationsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12542,9 +12492,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultTypesCreated;
+				var oldValue = this._faultTypesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12555,7 +12505,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultTypesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12587,9 +12537,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _projectCreated;
+				var oldValue = this._projectCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12600,7 +12550,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_projectCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12632,9 +12582,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _reportReceiverEmailAddressesCreated;
+				var oldValue = this._reportReceiverEmailAddressesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12645,7 +12595,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_reportReceiverEmailAddressesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12677,9 +12627,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessmentsCreated;
+				var oldValue = this._riskAssessmentsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12690,7 +12640,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessmentsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12722,9 +12672,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessmentAnswersCreated;
+				var oldValue = this._riskAssessmentAnswersCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12735,7 +12685,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessmentAnswersCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12767,9 +12717,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _riskAssessmentQuestionsCreated;
+				var oldValue = this._riskAssessmentQuestionsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12780,7 +12730,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_riskAssessmentQuestionsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12812,9 +12762,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _peopleCreated;
+				var oldValue = this._peopleCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12825,7 +12775,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_peopleCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12857,9 +12807,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personInspectionsCreated;
+				var oldValue = this._personInspectionsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12870,7 +12820,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personInspectionsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12902,9 +12852,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personLoadingsCreated;
+				var oldValue = this._personLoadingsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12915,7 +12865,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personLoadingsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12947,9 +12897,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _personTypesCreated;
+				var oldValue = this._personTypesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -12960,7 +12910,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_personTypesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -12992,9 +12942,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _faultReportsCreated;
+				var oldValue = this._faultReportsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -13005,7 +12955,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_faultReportsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -13037,9 +12987,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _sitesCreated;
+				var oldValue = this._sitesCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -13050,7 +13000,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_sitesCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -13082,9 +13032,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _siteInspectionsCreated;
+				var oldValue = this._siteInspectionsCreated;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -13095,7 +13045,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_siteInspectionsCreated = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{
@@ -13127,9 +13077,9 @@ namespace Tunnel.App.Data.Entities
 			set
 			{
 				var changedSet = false;
-				var oldValue = _sites;
+				var oldValue = this._sites;
 				var changed = false;
-				if(_propertyChangingSet)
+				if(this._propertyChangingSet)
 				{
 					changed = value != oldValue;
 					changedSet = true;
@@ -13140,7 +13090,7 @@ namespace Tunnel.App.Data.Entities
 				
 				}
 				_sites = value;
-				if(_propertyChangedSet)
+				if(this._propertyChangedSet)
 				{
 					if(!(changedSet))
 					{

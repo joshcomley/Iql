@@ -363,14 +363,14 @@ namespace Tunnel.ApiContext.Base
 			
 			builder.EntityType<RiskAssessment>()
 				.HasKey(p => p.Id)
-				.DefineProperty(p => p.SiteInspectionId, false)
+				.DefineProperty(p => p.SiteInspectionId, true)
 				.DefineProperty(p => p.Id, false)
 				.DefineProperty(p => p.CreatedByUserId, true)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false)
 				.DefineProperty(p => p.CreatedDate, false)
 				.DefineProperty(p => p.Version, false)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
-				.DefineProperty(p => p.SiteInspection, false)
+				.DefineProperty(p => p.SiteInspection, true)
 				.DefineProperty(p => p.CreatedByUser, true)
 				.DefineProperty(p => p.RiskAssessmentSolution, false);
 			
