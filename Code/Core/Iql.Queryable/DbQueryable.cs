@@ -31,7 +31,7 @@ namespace Iql.Queryable
             EntityConfiguration = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
-            TrackingSetCollection = dataContext.DataStore.GetTracking();
+            TrackingSetCollection = dataContext.DataStore.Tracking;
             //TrackingSet = TrackingSetCollection.GetSet<T>();
         }
 

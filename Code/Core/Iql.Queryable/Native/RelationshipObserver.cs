@@ -17,6 +17,7 @@ namespace Iql.Queryable.Native
 {
     public class RelationshipObserver : IRelationshipObserver
     {
+        public IDataStore DataStore { get; }
         private readonly Dictionary<object, object> _changingEntities =
             new Dictionary<object, object>();
 
@@ -63,13 +64,13 @@ namespace Iql.Queryable.Native
         }
 
         public IDataContext DataContext => DataStore.DataContext;
-        public TrackingSetCollection TrackingSetCollection => DataStore.GetTracking();
+        public TrackingSetCollection TrackingSetCollection => DataStore.Tracking;
 
         public EntityConfigurationBuilder EntityConfigurationContext => DataContext.EntityConfigurationContext;
 
         public static MethodInfo PairAllTypedMethod { get; set; }
         public static MethodInfo ObserveListTypedMethod { get; set; }
-        public IDataStore DataStore { get; }
+        //public IDataStore DataStore { get; }
         public bool TrackEntities { get; }
 
         public void ObserveList(IList list, Type entityType)
@@ -352,8 +353,7 @@ namespace Iql.Queryable.Native
             var sourceProperty = relationship.Relationship.Source.Property;
             if (newSource == null)
             {
-                var sourceTracking = DataStore.GetTracking()
-                    .TrackingSetByType(relationship.Relationship.Source.Configuration.Type);
+                var sourceTracking = DataStore.Tracking                    .TrackingSetByType(relationship.Relationship.Source.Configuration.Type);
                 var sourceState = sourceTracking.GetEntityState(relatedListChangedEvent.ItemKey);
                 newSource = sourceState.Entity;
             }
@@ -936,7 +936,7 @@ namespace Iql.Queryable.Native
             {
                 if (TrackEntities)
                 {
-                    var trackingSet = DataStore.GetTracking().TrackingSetByType(relationship.Relationship.Target.Type);
+                    var trackingSet = DataStore.Tracking.TrackingSetByType(relationship.Relationship.Target.Type);
                     trackingSet.TrackEntity(newTarget);
                 }
 

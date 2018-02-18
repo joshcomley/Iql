@@ -86,7 +86,7 @@ namespace Iql.Queryable.Data
 #if !TypeScript
             var entityType = entity.GetType();
 #endif
-            return DataStore.GetTracking().TrackingSetByType(entityType).GetEntityState(entity);
+            return DataStore.Tracking.TrackingSetByType(entityType).GetEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -189,7 +189,7 @@ namespace Iql.Queryable.Data
             var entityType = entity.GetType();
             var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
-            var entityState = DataStore.GetTracking().TrackingSetByType(entityType)
+            var entityState = DataStore.Tracking.TrackingSetByType(entityType)
                 .GetEntityState(entity);
             entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
             DeleteEntity(entity
@@ -360,8 +360,16 @@ namespace Iql.Queryable.Data
 
         private static object EnsureTypedValue(object value, IProperty property)
         {
-            if (property.Nullable && Equals(value, null))
+            if (Equals(value, null))
             {
+                if (property.Nullable)
+                {
+                    return null;
+                }
+                //if (!property.Nullable)
+                //{
+                //    return property.Type.DefaultValue();
+                //}
                 return null;
             }
             if (property.Type == typeof(String) && !(value is String))

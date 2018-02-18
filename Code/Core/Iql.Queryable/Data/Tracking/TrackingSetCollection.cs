@@ -13,12 +13,13 @@ namespace Iql.Queryable.Data.Tracking
     public class TrackingSetCollection
     {
         public IDataStore DataStore { get; }
-
+        public string Id { get; }
         public TrackingSetCollection(IDataStore dataStore)
         {
             DataStore = dataStore;
             SetsMap = new Dictionary<string, ITrackingSet>();
             Sets = new List<ITrackingSet>();
+            Id = Guid.NewGuid().ToString();
         }
 
         internal bool ProcessingRelationshipChange { get; set; }

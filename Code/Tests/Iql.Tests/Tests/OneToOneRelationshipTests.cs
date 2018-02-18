@@ -68,7 +68,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 27, RiskAssessmentId = 4 });
             var siteInspections = await Db.SiteInspections.ExpandSingle(s => s.RiskAssessment, q => q.Expand(r => r.RiskAssessmentSolution)).ToList();
             var riskAssessment = siteInspections[0].RiskAssessment;
-            var tracking = Db.DataStore.GetTracking();
+            var tracking = Db.DataStore.Tracking;
             //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
             //Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
@@ -113,7 +113,7 @@ namespace Iql.Tests.Tests
             var personTypeMap = await Db.PersonTypesMap.Where(p => p.PersonId == 62 && p.TypeId == 53).Single();
             var person = people.Single(p => p.Id == 62);
             Db.People.Delete(person);
-            Assert.IsTrue(Db.DataStore.GetTracking().IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
+            Assert.IsTrue(Db.DataStore.Tracking.IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
             Assert.AreEqual(1, person.Types.Count);
         }
 
@@ -224,9 +224,9 @@ namespace Iql.Tests.Tests
                 SetRelationships();
             }
             Assert.AreEqual(siteInspection1, riskAssessment1.SiteInspection);
-            Assert.AreEqual(siteInspection1.Id, riskAssessment1.SiteInspectionId);
+            Assert.AreEqual(null, riskAssessment1.SiteInspectionId);
             Assert.AreEqual(siteInspection2, riskAssessment2.SiteInspection);
-            Assert.AreEqual(siteInspection2.Id, riskAssessment2.SiteInspectionId);
+            Assert.AreEqual(null, riskAssessment2.SiteInspectionId);
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment1);
             Assert.AreEqual(siteInspection2.RiskAssessment, riskAssessment2);
         }

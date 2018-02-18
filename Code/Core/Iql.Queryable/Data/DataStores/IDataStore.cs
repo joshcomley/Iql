@@ -14,7 +14,7 @@ namespace Iql.Queryable.Data.DataStores
         IEnumerable<IQueuedOperation> GetQueue();
         IDataContext DataContext { get; set; }
         IRelationshipObserver RelationshipObserver { get; }
-        TrackingSetCollection GetTracking();
+        TrackingSetCollection Tracking { get; }
 
         EntityState<TEntity> Add<TEntity>(TEntity entity)
             where TEntity : class;

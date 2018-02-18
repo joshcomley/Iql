@@ -19,10 +19,7 @@ namespace Iql.Queryable.Data.DataStores
             return InternalDataStore;
         }
 
-        public override TrackingSetCollection GetTracking()
-        {
-            return InternalDataStore.GetTracking();
-        }
+        public override TrackingSetCollection Tracking => InternalDataStore.Tracking;
 
         public override async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)

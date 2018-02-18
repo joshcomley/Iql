@@ -21,34 +21,27 @@ namespace Iql.Queryable.Data.DataStores
 {
     public class DataStore : IDataStore
     {
+        private DataTracker _dataTracker;
         public static MethodInfo ToListTypedMethod { get; set; }
 
-        private RelationshipObserver _relationshipObserver;
-
-        public IRelationshipObserver RelationshipObserver
+        public DataTracker DataTracker
         {
-            get
-            {
-                if (_relationshipObserver == null)
-                {
-                    _relationshipObserver = new RelationshipObserver(this, true);
-                }
-                return _relationshipObserver;
-            }
+            get { return _dataTracker = _dataTracker ?? new DataTracker(this, true); }
         }
 
-        public TrackingSetCollection Tracking { get; private set; }
+        public virtual TrackingSetCollection Tracking => DataTracker.Tracking;
+        public virtual IRelationshipObserver RelationshipObserver => DataTracker.RelationshipObserver;
 
-        public IDataContext DataContext { get; set; }
+        public virtual IDataContext DataContext { get; set; }
 
         public IEnumerable<IQueuedOperation> GetQueue()
         {
-            return GetTracking().GetQueue();
+            return Tracking.GetQueue();
         }
 
         public IEnumerable<IQueuedOperation> GetChanges()
         {
-            return GetTracking().GetQueue().Where(op => op.Type == QueuedOperationType.Update);
+            return Tracking.GetQueue().Where(op => op.Type == QueuedOperationType.Update);
         }
 
         static DataStore()
@@ -155,11 +148,6 @@ namespace Iql.Queryable.Data.DataStores
             throw new NotImplementedException();
         }
 
-        public virtual TrackingSetCollection GetTracking()
-        {
-            return Tracking ?? (Tracking = new TrackingSetCollection(this));
-        }
-
         public virtual async Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class
         {
@@ -201,11 +189,11 @@ namespace Iql.Queryable.Data.DataStores
                 }
             }
 
-            var result = new FlattenedGetDataResult<TEntity>(null, operation, true);
+            var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
-            var response = await PerformGet(new QueuedGetDataOperation<TEntity>(
+            await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
-                result));
+                response));
             var success = response.Success && response.Data != null;
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
@@ -257,49 +245,11 @@ namespace Iql.Queryable.Data.DataStores
             GetDataResult<TEntity> getDataResult;
             if (success)
             {
-                IRelationshipObserver relationshipObserver;
-                Dictionary<Type, IList> data;
-                if (!result.Data.ContainsKey(typeof(TEntity)))
-                {
-                    result.Data.Add(typeof(TEntity), new List<TEntity>());
-                }
+                var tracker = dbList.SourceQueryable.TrackEntities 
+                    ? DataTracker 
+                    : new DataTracker(this, false);
 
-                var rootDictionary = new Dictionary<object, object>();
-                foreach (var item in result.Data[typeof(TEntity)])
-                {
-                    rootDictionary.Add(item, item);
-                }
-                foreach (var item in result.Root)
-                {
-                    if (rootDictionary.ContainsKey(item))
-                    {
-                        rootDictionary.Remove(item);
-                    }
-                }
-
-                var newList = new List<TEntity>();
-                result.Data[typeof(TEntity)] = newList;
-                foreach (var item in rootDictionary)
-                {
-                    newList.Add((TEntity)item.Key);
-                }
-                if (dbList.SourceQueryable.TrackEntities)
-                {
-                    data = new Dictionary<Type, IList>();
-                    result.Root = ((List<TEntity>)TrackCollection(result.Root, typeof(TEntity), data)).ToList();
-                    relationshipObserver = RelationshipObserver;
-                    // TODO: Implement tracking
-                    foreach (var dataSet in response.Data)
-                    {
-                        TrackCollection(dataSet.Value, dataSet.Key, data);
-                    }
-                }
-                else
-                {
-                    relationshipObserver = new RelationshipObserver(this, false);
-                    data = result.Data;
-                }
-                relationshipObserver.ObserveAll(data);
+                tracker.TrackResults<TEntity>(response);
 
                 //
                 //if (!operation.IsSingleResult)
@@ -312,9 +262,9 @@ namespace Iql.Queryable.Data.DataStores
                 //else
                 //{
                 //}
-                dbList.AddRange(result.Root);
-                getDataResult = new GetDataResult<TEntity>(dbList, operation, result.Success);
-                getDataResult.TotalCount = result.TotalCount;
+                dbList.AddRange(response.Root);
+                getDataResult = new GetDataResult<TEntity>(dbList, operation, response.Success);
+                getDataResult.TotalCount = response.TotalCount;
             }
             else
             {
@@ -322,33 +272,6 @@ namespace Iql.Queryable.Data.DataStores
             }
 
             return getDataResult;
-        }
-
-        private IList TrackCollection(IList set, Type type, Dictionary<Type, IList> data)
-        {
-            if (set.Count > 0)
-            {
-#if TypeScript
-                set = DataContext.EnsureTypedListByType(set, type, null, null, false, true);
-#endif
-                var trackingSet = GetTracking().TrackingSetByType(type);
-                var states = trackingSet.TrackEntities(set, false);
-                trackingSet.ResetAll(states);
-                set = states.Select(s => s.Entity).ToList(type);
-                if (data.ContainsKey(type))
-                {
-                    foreach (var item in set)
-                    {
-                        data[type].Add(item);
-                    }
-                }
-                else
-                {
-                    data.Add(type, set);
-                }
-            }
-
-            return set;
         }
 
         public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
@@ -408,7 +331,7 @@ namespace Iql.Queryable.Data.DataStores
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
                     if (remoteEntity != null)
                     {
-                        var trackingSet = GetTracking().TrackingSet<TEntity>();
+                        var trackingSet = Tracking.TrackingSet<TEntity>();
                         trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
                         trackingSet.GetEntityState(localEntity).IsNew = false;
                     }
@@ -462,7 +385,7 @@ namespace Iql.Queryable.Data.DataStores
                     else if (entityNew != null)
                     {
                         result = await PerformDelete(deleteEntityOperation);
-                        GetTracking().TrackingSet<TEntity>().MarkForDelete(deleteEntityOperation.Operation.Entity);
+                        Tracking.TrackingSet<TEntity>().MarkForDelete(deleteEntityOperation.Operation.Entity);
                     }
 
                     break;

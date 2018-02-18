@@ -15,9 +15,14 @@ namespace Iql.Extensions
 
         public static MethodInfo ToListTypedMethod { get; set; }
 
-        public static IList ToList(this IEnumerable<object> enumerable, Type type)
+        public static IList EnumerableToList(this IEnumerable<object> enumerable, Type type)
         {
-            return (IList)ToListTypedMethod.InvokeGeneric(null, new object[] {enumerable}, type);
+            return (IList)ToListTypedMethod.InvokeGeneric(null, new object[] { enumerable }, type);
+        }
+
+        public static IList ToList(this IList enumerable, Type type)
+        {
+            return (IList)ToListTypedMethod.InvokeGeneric(null, new object[] { enumerable }, type);
         }
 
         public static List<TEntity> ToListTyped<TEntity>(this IEnumerable<object> enumerable)
