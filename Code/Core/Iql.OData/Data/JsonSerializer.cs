@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Extensions;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Extensions;
@@ -70,7 +71,19 @@ namespace Iql.OData.Data
                 //{
                 //    obj[property.Property.Name] = new JValue(entity.GetPropertyValue(property.Property));
                 //}
-                obj[property.Property.Name] = new JValue(entity.GetPropertyValue(property.Property));
+                //if (property.Property.IsCollection)
+                //{
+                //    propertyValue = (propertyValue as IList).ToArray(property.Property.ElementType);
+                //}
+                var propertyValue = entity.GetPropertyValue(property.Property);
+                if (property.Property.IsCollection)
+                {
+                    obj[property.Property.Name] = new JArray(propertyValue);
+                }
+                else
+                {
+                    obj[property.Property.Name] = new JValue(propertyValue);
+                }
             }
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             foreach (var key in entityConfiguration.Key.Properties)
