@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Haz.App.Data.Entities;
 using Iql.Tests.Context;
+using Iql.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.OData
@@ -57,7 +58,7 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"{
   ""Name"": ""Some new name"",
   ""Id"": 0
-}", patch.Body.Body);
+}".CompressJson(), patch.Body.Body.CompressJson());
             Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", patch.Uri);
         }
 
@@ -95,7 +96,7 @@ namespace Iql.Tests.Tests.OData
   ""ExamCandidatesCount"": 0,
   ""Hazards"": [],
   ""HazardsCount"": 0
-}", request.Body.Body);
+}".CompressJson(), request.Body.Body.CompressJson());
         }
     }
 }

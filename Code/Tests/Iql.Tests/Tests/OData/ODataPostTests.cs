@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using Haz.App.Data.Entities;
 using Iql.OData.Data;
 using Iql.Tests.Context;
+using Iql.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.Tests.Tests.OData
 {
@@ -27,7 +30,7 @@ namespace Iql.Tests.Tests.OData
                 var request = log.Posts.Pop().Single();
                 var changes = db.DataStore.Tracking.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
-                Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
+                Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);                
                 Assert.AreEqual(@"{
   ""Users"": [],
   ""Id"": 0,
@@ -52,7 +55,7 @@ namespace Iql.Tests.Tests.OData
   ""ExamCandidatesCount"": 0,
   ""Hazards"": [],
   ""HazardsCount"": 0
-}", request.Body.Body);
+}".CompressJson(), request.Body.Body.CompressJson());
                 await db.SaveChanges();
                 Assert.AreEqual(0, log.Posts.Count);
             });

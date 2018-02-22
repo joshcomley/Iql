@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.Tests.Context
 {
@@ -15,7 +17,9 @@ namespace Iql.Tests.Context
         public async Task<IHttpResult> Post(string uri, IHttpRequest payload = null)
         {
             RequestLog.Instance.Posts.Add(new FakeHttpRequest(uri, payload));
-            return new HttpResult(payload.Body, true);
+            var jobj = JObject.Parse(payload.Body);
+            jobj["Id"] = 0;
+            return new HttpResult(jobj.ToString(), true);
         }
 
         public async Task<IHttpResult> Put(string uri, IHttpRequest payload = null)
