@@ -24,7 +24,7 @@ namespace Iql.Queryable.Native
         private readonly Dictionary<IRelationship, Dictionary<object, string>> _ids =
             new Dictionary<IRelationship, Dictionary<object, string>>();
 
-        private readonly Dictionary<object, bool> _observed = new Dictionary<object, bool>();
+        private readonly Dictionary<object, EntityObserver> _observed = new Dictionary<object, EntityObserver>();
 
         //private readonly Dictionary<IRelationship, Dictionary<string, object>> _oneToOneSourceRelationshipKeyMaps
         //    = new Dictionary<IRelationship, Dictionary<string, object>>();
@@ -177,41 +177,18 @@ namespace Iql.Queryable.Native
                     var entity = item as IEntity;
                     if (entity != null)
                     {
-                        _observed.Add(item, true);
-                        if (entity.PropertyChanged == null)
-                        {
-                            entity.PropertyChanged = new EventEmitter<IPropertyChangeEvent>();
-                        }
-
-                        var trackingSet = TrackingSetCollection.TrackingSetByType(entityConfiguration.Type);
-                        var entityState = trackingSet
-                            .GetEntityState(entity);
-                        entityState.MarkedForDeletionChanged.Subscribe(e =>
-                            {
-                                MarkedForDeletionChange(e, entityConfiguration, trackingSet);
-                            });
-                        entity.PropertyChanged.Subscribe(e => { PropertyChangeEvent(e, entityConfiguration, lookup); });
-                        var matches = entityConfiguration.AllRelationships();
-                        for (var j = 0; j < matches.Count; j++)
-                        {
-                            var relationship = matches[j];
-                            if (relationship.ThisEnd.IsCollection)
-                            {
-                                var relatedList = (IRelatedList)entity.GetPropertyValue(relationship.ThisEnd.Property);
-                                relatedList.Changed.Subscribe(e => { RelatedListChanged(e, entityConfiguration); });
-                            }
-                        }
-
+                        var observer = new EntityObserver(TrackingSetCollection.TrackingSet<T>().GetEntityState(item));
+                        _observed.Add(item, observer);
+                        observer.RegisterMarkForDeletionChanged(MarkedForDeletionChange);
+                        observer.RegisterPropertyChanged(e => { PropertyChangeEvent(e, entityConfiguration, lookup); });
+                        observer.RegisterRelatedListChanged(RelatedListChanged);
                         MapRelationships<T>(entity);
                     }
                 }
             }
         }
 
-        private void MarkedForDeletionChange(
-            MarkedForDeletionChangeEvent e,
-            IEntityConfiguration entityConfiguration,
-            ITrackingSet trackingSet)
+        private void MarkedForDeletionChange(MarkedForDeletionChangeEvent e)
         {
             // Recurse all relationships marking for cascade delete if necessary
             UpdateDeletionStatus(e.NewValue, e.EntityState, null, null);
@@ -270,7 +247,15 @@ namespace Iql.Queryable.Native
         }
 
         public void Unobserve(object entity, Type entityType)
-        { }
+        {
+            if (_observed.ContainsKey(entity))
+            {
+                var observer = _observed[entity];
+                observer.Unobserve();
+                _observed.Remove(entity);
+            }
+        }
+
         public void DeleteRelationships(object entity, Type entityType)
         {
             var relationships = EntityConfigurationContext.GetEntityByType(entityType)
@@ -340,9 +325,7 @@ namespace Iql.Queryable.Native
             return false;
         }
 
-        private void RelatedListChanged(
-            IRelatedListChangedEvent relatedListChangedEvent,
-            IEntityConfiguration entityConfiguration)
+        private void RelatedListChanged(IRelatedListChangedEvent relatedListChangedEvent)
         {
             var newSource = relatedListChangedEvent.Item;
             object oldTarget = null;

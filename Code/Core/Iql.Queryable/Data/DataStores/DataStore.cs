@@ -333,6 +333,7 @@ namespace Iql.Queryable.Data.DataStores
                     {
                         var trackingSet = Tracking.TrackingSet<TEntity>();
                         trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
+                        trackingSet.GetEntityState(localEntity).Reset();
                         trackingSet.GetEntityState(localEntity).IsNew = false;
                     }
 
@@ -385,7 +386,10 @@ namespace Iql.Queryable.Data.DataStores
                     else if (entityNew != null)
                     {
                         result = await PerformDelete(deleteEntityOperation);
-                        Tracking.TrackingSet<TEntity>().MarkForDelete(deleteEntityOperation.Operation.Entity);
+                        if (result.Success)
+                        {
+                            DataTracker.RemoveEntity(deleteEntityOperation.Operation.Entity);
+                        }
                     }
 
                     break;

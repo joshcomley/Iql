@@ -23,7 +23,7 @@ namespace Iql.Queryable.Data.Tracking
         void MarkForDelete(object entity);
         List<IEntityStateBase> TrackEntities(IList data, bool isNew = true);
         IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true);
-
+        void RemoveEntity(object entity);
         void ResetEntity(object entity);
         void Reset(IEntityStateBase state);
         void ResetAll(List<IEntityStateBase> states);

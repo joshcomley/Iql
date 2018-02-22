@@ -110,5 +110,13 @@ namespace Iql.Queryable.Data.DataStores
 
             return set;
         }
+
+        public void RemoveEntity<T>(T entity) 
+            where T : class
+        {
+            var set = Tracking.TrackingSet<T>();
+            set.RemoveEntity(entity);
+            RelationshipObserver.Unobserve(entity, typeof(T));
+        }
     }
 }

@@ -13,34 +13,6 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
-        public async Task TestGetExpand()
-        {
-            var db = new HazceptionDataContext(new ODataDataStore());
-            var user = await
-                db
-                    .Users
-                    .ExpandCollection(u => u.ExamResults, examResults =>
-                        examResults
-                            .Expand(results => results.Exam)
-                            .Expand(results => results.Video)
-                            .ExpandCollection(results => results.Results, results =>
-                                results.Expand(examResult => examResult.Hazard))
-                    )
-                    .WithKey("2b2b0e44-4579-4965-8e3a-097e6684b767");
-            Assert.AreEqual(1, user.ExamResults.Count);
-        }
-        [TestMethod]
-        public async Task TestFailedGet()
-        {
-            var db = new HazceptionDataContext(new ODataDataStore());
-            var user = await
-                db
-                    .Users
-                    .ExpandCollection(u => u.ExamResults)
-                    .WithKey("this-will-return-null");
-        }
-
-        [TestMethod]
         public async Task TestGetHazceptionNoExpands()
         {
             var db = new HazceptionDataContext();
@@ -59,6 +31,28 @@ namespace Iql.Tests.Tests
                     .ExamCandidateResults
                     .Expand(e => e.Client)
                     .ToList();
+        }
+
+        [TestMethod]
+        public async Task MultipleDataContextsShouldReturnDifferentEntitiesForTheSameRequest()
+        {
+            var db1 = new HazceptionDataContext();
+            var db2 = new HazceptionDataContext();
+            var examCandidateResults1 =
+                await db1
+                    .ExamCandidateResults
+                    .ToList();
+            var examCandidateResults2 =
+                await db2
+                    .ExamCandidateResults
+                    .ToList();
+            Assert.AreEqual(examCandidateResults1.Count, examCandidateResults2.Count);
+            for (var i = 0; i < examCandidateResults2.Count; i++)
+            {
+                var examCandidateResult1 = examCandidateResults1[i];
+                var examCandidateResult2 = examCandidateResults2[i];
+                Assert.AreNotSame(examCandidateResult1, examCandidateResult2);
+            }
         }
 
         [TestMethod]

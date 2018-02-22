@@ -224,9 +224,9 @@ namespace Iql.Tests.Tests
                 SetRelationships();
             }
             Assert.AreEqual(siteInspection1, riskAssessment1.SiteInspection);
-            Assert.AreEqual(null, riskAssessment1.SiteInspectionId);
+            Assert.AreEqual(siteInspection1.Id, riskAssessment1.SiteInspectionId);
             Assert.AreEqual(siteInspection2, riskAssessment2.SiteInspection);
-            Assert.AreEqual(null, riskAssessment2.SiteInspectionId);
+            Assert.AreEqual(siteInspection2.Id, riskAssessment2.SiteInspectionId);
             Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment1);
             Assert.AreEqual(siteInspection2.RiskAssessment, riskAssessment2);
         }

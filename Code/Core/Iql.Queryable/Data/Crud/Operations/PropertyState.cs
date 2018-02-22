@@ -30,7 +30,10 @@ namespace Iql.Queryable.Data.Crud.Operations
                 if (!_originalValueSet)
                 {
                     _originalValueSet = true;
-                    _oldValue = Property.PropertyGetter(EntityState.Entity);
+                    if (EntityState != null)
+                    {
+                        _oldValue = Property.PropertyGetter(EntityState.Entity);
+                    }
                 }
                 return _oldValue;
             }
@@ -48,7 +51,7 @@ namespace Iql.Queryable.Data.Crud.Operations
             {
                 _newValue = value;
                 _hasChanged = !Equals(OldValue, NewValue);
-                (EntityState as IEntityStateInternal).UpdateChanged(this);
+                (EntityState as IEntityStateInternal)?.UpdateChanged(this);
             }
         }
 

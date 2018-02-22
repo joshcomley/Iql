@@ -12,19 +12,22 @@ namespace Iql.Tests.Context
             return new HttpResult(responseData, responseData != null);
         }
 
-        public Task<IHttpResult> Post(string uri, IHttpRequest payload = null)
+        public async Task<IHttpResult> Post(string uri, IHttpRequest payload = null)
         {
-            throw new NotImplementedException();
+            RequestLog.Instance.Posts.Add(new FakeHttpRequest(uri, payload));
+            return new HttpResult(payload.Body, true);
         }
 
-        public Task<IHttpResult> Put(string uri, IHttpRequest payload = null)
+        public async Task<IHttpResult> Put(string uri, IHttpRequest payload = null)
         {
-            throw new NotImplementedException();
+            RequestLog.Instance.Patches.Add(new FakeHttpRequest(uri, payload));
+            return new HttpResult("", true);
         }
 
-        public Task<IHttpResult> Delete(string uri, IHttpRequest payload = null)
+        public async Task<IHttpResult> Delete(string uri, IHttpRequest payload = null)
         {
-            throw new NotImplementedException();
+            RequestLog.Instance.Deletes.Add(new FakeHttpRequest(uri, payload));
+            return new HttpResult("", true);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Iql.Queryable.Data.Tracking
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
+        private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
@@ -154,6 +155,29 @@ namespace Iql.Queryable.Data.Tracking
             return TrackEntityInternal(entity, mergeWith, isNew);
         }
 
+        public void RemoveEntity(T entity)
+        {
+            var state = GetEntityState(entity);
+            entity = (T) state.Entity;
+            var iEntity = entity as IEntity;
+            if (_entityObservers.ContainsKey(entity))
+            {
+                _entityObservers[entity].Unobserve();
+                _entityObservers.Remove(entity);
+            }
+            EntitiesByKey.Remove(state.Key.AsKeyString());
+            EntitiesByObject.Remove(entity);
+            if (state.PersistenceKey.HasValue)
+            {
+                EntitiesByPersistenceKey.Remove(state.PersistenceKey.Value);
+            }
+        }
+
+        void ITrackingSet.RemoveEntity(object entity)
+        {
+            RemoveEntity((T)entity);
+        }
+
         public void ResetEntity(object entity)
         {
             Reset(GetEntityState(entity));
@@ -173,15 +197,6 @@ namespace Iql.Queryable.Data.Tracking
             }
         }
 
-        private readonly Dictionary<T, int> _entityStateChangedSubscriptions =
-            new Dictionary<T, int>();
-        private readonly Dictionary<T, int> _propertyChangingSubscriptions =
-            new Dictionary<T, int>();
-        private readonly Dictionary<T, int> _propertyChangedSubscriptions =
-            new Dictionary<T, int>();
-        private readonly Dictionary<T, List<int>> _relatedListChangedSubscriptions =
-            new Dictionary<T, List<int>>();
-
         internal void Watch(T sourceEntity)
         {
             var entity = sourceEntity as IEntity;
@@ -189,49 +204,18 @@ namespace Iql.Queryable.Data.Tracking
             {
                 return;
             }
-            if (!_entityStateChangedSubscriptions.ContainsKey(sourceEntity))
-            {
-                GetEntityState(entity).MarkedForDeletionChanged.Subscribe(MarkedForDeletionChanged);
-            }
-            if (!_propertyChangingSubscriptions.ContainsKey(sourceEntity))
-            {
-                if (entity.PropertyChanging == null)
-                {
-                    entity.PropertyChanging = new EventEmitter<IPropertyChangeEvent>();
-                }
-                var propertyChangingSubscriptionId = entity.PropertyChanging.Subscribe(EntityPropertyChanging);
-                _propertyChangingSubscriptions.Add(sourceEntity, propertyChangingSubscriptionId);
-            }
-            if (!_propertyChangedSubscriptions.ContainsKey(sourceEntity))
-            {
-                if (entity.PropertyChanged == null)
-                {
-                    entity.PropertyChanged = new EventEmitter<IPropertyChangeEvent>();
-                }
-                var propertyChangedSubscriptionId = entity.PropertyChanged.Subscribe(EntityPropertyChanged);
-                _propertyChangedSubscriptions.Add(sourceEntity, propertyChangedSubscriptionId);
-            }
 
-            if (!_relatedListChangedSubscriptions.ContainsKey(sourceEntity))
+            if (!_entityObservers.ContainsKey(sourceEntity))
             {
-                var list = EntityConfiguration.AllRelationships();
-                for (var i = 0; i < list.Count; i++)
-                {
-                    var relationship = list[i];
-                    if (relationship.ThisEnd.IsCollection)
-                    {
-                        var relatedList = relationship.ThisEnd.Property.PropertyGetter(entity) as IRelatedList;
-                        var targetTracking = TrackingSetCollection.TrackingSetByType(relationship.OtherEnd.Type);
-                        relatedList.Changed.Subscribe(e => RelatedListChanged(e, relationship.OtherEnd, targetTracking));
-                    }
-                }
+                var observer = new EntityObserver(GetEntityState(entity));
+                observer.RegisterMarkForDeletionChanged(MarkedForDeletionChanged);
+                observer.RegisterPropertyChanging(EntityPropertyChanging);
+                observer.RegisterPropertyChanged(EntityPropertyChanged);
+                observer.RegisterRelatedListChanged(RelatedListChanged);
             }
         }
 
-        private void RelatedListChanged(
-            IRelatedListChangedEvent changeEvent,
-            IRelationshipDetail relationship,
-            ITrackingSet targetTracking)
+        private void RelatedListChanged(IRelatedListChangedEvent changeEvent)
         {
             switch (changeEvent.Kind)
             {
