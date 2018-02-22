@@ -8,7 +8,7 @@ namespace Iql.Tests.Extensions
         public static string CompressJson(this string json)
         {
 #if TypeScript
-            return json;
+            return JObject.Parse(json).ToString();
 #else
             return JObject.Parse(json).ToString(Formatting.None);
 #endif

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Extensions
@@ -59,7 +60,7 @@ namespace Iql.Queryable.Extensions
             foreach (var property in entityConfiguration.Properties)
             {
                 var propertyValue = entity.GetPropertyValue(property);
-                if (propertyValue != null)
+                if (propertyValue != null || !property.Nullable && property.Kind != PropertyKind.Relationship)
                 {
                     var state = new PropertyState(property, null);
                     properties.Add(state);

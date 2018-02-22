@@ -37,24 +37,16 @@ namespace Iql.Tests.Tests.OData
   ""TypeId"": 0,
   ""Name"": ""New client 123"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
-  ""CreatedDate"": ""0001-01-01T00:00:00+00:00"",
+  ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3"",
-  ""UsersCount"": 0,
   ""Videos"": [],
-  ""VideosCount"": 0,
   ""Exams"": [],
-  ""ExamsCount"": 0,
   ""ExamManagers"": [],
-  ""ExamManagersCount"": 0,
   ""ExamResults"": [],
-  ""ExamResultsCount"": 0,
   ""ExamCandidateResults"": [],
-  ""ExamCandidateResultsCount"": 0,
   ""ExamCandidates"": [],
-  ""ExamCandidatesCount"": 0,
-  ""Hazards"": [],
-  ""HazardsCount"": 0
+  ""Hazards"": []
 }".CompressJson(), request.Body.Body.CompressJson());
                 await db.SaveChanges();
                 Assert.AreEqual(0, log.Posts.Count);

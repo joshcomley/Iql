@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Extensions;
+using Iql.OData.Extensions;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Crud.Operations;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,7 +17,16 @@ namespace Iql.OData.Data
 {
     public static class JsonSerializer
     {
-        public static string Serialize(object entity, 
+        public static string NormalizeDate(this DateTimeOffset offset)
+        {
+            var timezoneOffsetInHours = -offset.Offset.TotalHours; //UTC minus local time
+            var sign = timezoneOffsetInHours >= 0 ? '+' : '-';
+            var iso =
+                $"{offset.Year.PadLeft('0', 4)}-{offset.Month.PadLeft('0', 2)}-{offset.Day.PadLeft('0', 2)}T{offset.Hour.PadLeft('0', 2)}:{offset.Minute.PadLeft('0', 2)}:{offset.Second.PadLeft('0', 2)}.{offset.Millisecond}{sign}{Math.Abs(timezoneOffsetInHours).PadLeft('0', 2)}:00";
+            return iso;
+        }
+
+        public static string Serialize(object entity,
             IDataContext dataContext,
             params IPropertyState[] properties)
         {
@@ -76,13 +88,35 @@ namespace Iql.OData.Data
                 //    propertyValue = (propertyValue as IList).ToArray(property.Property.ElementType);
                 //}
                 var propertyValue = entity.GetPropertyValue(property.Property);
+                if (property.Property.Kind == PropertyKind.Count)
+                {
+                    continue;
+                }
                 if (property.Property.IsCollection)
                 {
                     obj[property.Property.Name] = new JArray(propertyValue);
                 }
                 else
                 {
-                    obj[property.Property.Name] = new JValue(propertyValue);
+                    if (property.Property.Type == typeof(DateTimeOffset))
+                    {
+                        if (propertyValue == null && !property.Property.Nullable)
+                        {
+                            obj[property.Property.Name] = "0001-01-01T00:00:00.0+00:00";
+                        }
+                        else
+                        {
+                            obj[property.Property.Name] = new JValue(((DateTimeOffset)propertyValue).NormalizeDate());
+                        }
+                    }
+                    else if (property.Property.ConvertedFromType == nameof(Guid) && !property.Property.Nullable && propertyValue == null)
+                    {
+                        obj[property.Property.Name] = "00000000-0000-0000-0000-000000000000";
+                    }
+                    else
+                    {
+                        obj[property.Property.Name] = new JValue(propertyValue);
+                    }
                 }
             }
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
