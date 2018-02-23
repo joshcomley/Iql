@@ -44,22 +44,6 @@ namespace Iql.Queryable
             }
         }
 
-        //        public override void RemoveAt(int index)
-        //        {
-        //            var item = this[index];
-        //            base.RemoveAt(index);
-        //            EmitRelatedListEvent(item, null, RelatedListChangeKind.Remove);
-        //        }
-
-        //        public override bool Remove(TTarget item)
-        //        {
-        //            var result = base.Remove(item);
-        //#if !TypeScript
-        //            EmitRelatedListEvent(item, null, RelatedListChangeKind.Remove);
-        //#endif
-        //            return result;
-        //        }
-
         object IRelatedList.Owner => Owner;
 
         IEventSubscriber<IRelatedListChangeEvent> IRelatedList.RelatedListChange => RelatedListChange;
