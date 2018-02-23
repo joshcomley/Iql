@@ -329,7 +329,7 @@ namespace Iql.Tests.Tests
             var eventFiredCount = 0;
             var assignEventFiredCount = 0;
             var removeEventFiredCount = 0;
-            clientTypes.ClientType1.Clients.Changed.Subscribe(e =>
+            clientTypes.ClientType1.Clients.RelatedListChange.Subscribe(e =>
             {
                 eventFiredCount++;
                 switch (e.Kind)

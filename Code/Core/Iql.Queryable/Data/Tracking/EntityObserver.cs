@@ -60,7 +60,7 @@ namespace Iql.Queryable.Data.Tracking
             _subscriptions.Add(key, new KeyValuePair<IEventSubscriberBase, int>(eventEmitter, eventEmitter.Subscribe(action)));
         }
 
-        public void RegisterRelatedListChanged(Action<IRelatedListChangedEvent> action)
+        public void RegisterRelatedListChanged(Action<IRelatedListChangeEvent> action)
         {
             var matches = EntityState.EntityConfiguration.AllRelationships();
             for (var j = 0; j < matches.Count; j++)
@@ -70,7 +70,7 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     var relatedList = (IRelatedList) Entity.GetPropertyValue(relationship.ThisEnd.Property);
                     _relatedListChangedSubscriptions.Add(relatedList,
-                        relatedList.Changed.Subscribe(action));
+                        relatedList.RelatedListChange.Subscribe(action));
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace Iql.Queryable.Data.Tracking
 
             foreach (var key in _relatedListChangedSubscriptions)
             {
-                key.Key.Changed.Unsubscribe(key.Value);
+                key.Key.RelatedListChange.Unsubscribe(key.Value);
             }
         }
     }

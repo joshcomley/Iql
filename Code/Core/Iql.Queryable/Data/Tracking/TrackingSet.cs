@@ -223,7 +223,7 @@ namespace Iql.Queryable.Data.Tracking
             }
         }
 
-        private void RelatedListChanged(IRelatedListChangedEvent changeEvent)
+        private void RelatedListChanged(IRelatedListChangeEvent changeEvent)
         {
             _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {

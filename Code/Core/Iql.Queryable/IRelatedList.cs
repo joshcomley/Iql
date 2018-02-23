@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Iql.Queryable.Events;
 using Iql.Queryable.Operations;
 
@@ -12,8 +11,7 @@ namespace Iql.Queryable
         //IEnumerable<IRelatedListChange> GetChanges();
         //void AddChange(IRelatedListChange change);
         //void RemoveChange(IRelatedListChange change);
-        IEventSubscriber<IRelatedListChangedEvent> Changed { get; }
-        IEventSubscriber<IRelatedListChangedEvent> Changing { get; }
+        IEventSubscriber<IRelatedListChangeEvent> RelatedListChange { get; }
         object Owner { get; }
         Type OwnerType { get; }
         Type TargetType { get; }

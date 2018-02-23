@@ -297,30 +297,30 @@ namespace Iql.Queryable.Native
             return false;
         }
 
-        private void RelatedListChanged(IRelatedListChangedEvent relatedListChangedEvent)
+        private void RelatedListChanged(IRelatedListChangeEvent relatedListChangeEvent)
         {
             _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                var newSource = relatedListChangedEvent.Item;
-                var propertyName = relatedListChangedEvent.List.PropertyName;
+                var newSource = relatedListChangeEvent.Item;
+                var propertyName = relatedListChangeEvent.List.PropertyName;
                 var targetConfiguration =
-                    EntityConfigurationContext.GetEntityByType(relatedListChangedEvent.List.OwnerType);
+                    EntityConfigurationContext.GetEntityByType(relatedListChangeEvent.List.OwnerType);
                 var relationship = targetConfiguration.FindProperty(propertyName).Relationship;
                 var sourceProperty = relationship.Relationship.Source.Property;
                 if (newSource == null)
                 {
                     var sourceTracking = DataStore.Tracking.TrackingSetByType(relationship.Relationship.Source.Configuration.Type);
-                    var sourceState = sourceTracking.GetEntityState(relatedListChangedEvent.ItemKey);
+                    var sourceState = sourceTracking.GetEntityState(relatedListChangeEvent.ItemKey);
                     newSource = sourceState.Entity;
                 }
 
-                switch (relatedListChangedEvent.Kind)
+                switch (relatedListChangeEvent.Kind)
                 {
                     case RelatedListChangeKind.AssignByKey:
                     case RelatedListChangeKind.Add:
                         ProcessRelationshipReferenceChange(
                             sourceProperty.PropertyGetter(newSource),
-                            relatedListChangedEvent.Owner,
+                            relatedListChangeEvent.Owner,
                             sourceProperty,
                             newSource,
                             relationship.Relationship.Source
@@ -328,7 +328,7 @@ namespace Iql.Queryable.Native
                         break;
                     case RelatedListChangeKind.Remove:
                         ProcessRelationshipReferenceChange(
-                            relatedListChangedEvent.Owner,
+                            relatedListChangeEvent.Owner,
                             null,
                             sourceProperty,
                             newSource,
@@ -336,7 +336,7 @@ namespace Iql.Queryable.Native
                         );
                         break;
                 }
-            }, relatedListChangedEvent.Item, relatedListChangedEvent.List.Owner);
+            }, relatedListChangeEvent.Item, relatedListChangeEvent.List.Owner);
         }
 
         public void PairAllTyped<T>(List<T> items)

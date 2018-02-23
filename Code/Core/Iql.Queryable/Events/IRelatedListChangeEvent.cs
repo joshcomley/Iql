@@ -4,7 +4,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public interface IRelatedListChangedEvent
+    public interface IRelatedListChangeEvent
     {
         Type OwnerType { get; }
         object Owner { get; }

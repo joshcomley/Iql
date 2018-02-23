@@ -3,7 +3,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangedEvent
+    public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangeEvent
         where TRelated : class 
         where TSource : class
     {
@@ -15,13 +15,13 @@ namespace Iql.Queryable
         public RelatedListChangeKind Kind { get; set; }
         public RelatedList<TSource, TRelated> List { get; set; }
 
-        object IRelatedListChangedEvent.Owner => Owner;
+        object IRelatedListChangeEvent.Owner => Owner;
 
-        object IRelatedListChangedEvent.Item => Item;
+        object IRelatedListChangeEvent.Item => Item;
 
-        RelatedListChangeKind IRelatedListChangedEvent.Kind => Kind;
+        RelatedListChangeKind IRelatedListChangeEvent.Kind => Kind;
 
-        IRelatedList IRelatedListChangedEvent.List => List;
+        IRelatedList IRelatedListChangeEvent.List => List;
 
         public RelatedListChangeEvent(
             TSource owner, 
