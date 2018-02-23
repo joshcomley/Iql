@@ -334,7 +334,7 @@ namespace Iql.Tests.Tests
                 eventFiredCount++;
                 switch (e.Kind)
                 {
-                    case RelatedListChangeKind.Assign:
+                    case RelatedListChangeKind.Add:
                         assignEventFiredCount++;
                         break;
                     case RelatedListChangeKind.Remove:
@@ -349,12 +349,12 @@ namespace Iql.Tests.Tests
             var compositeKey = Db.EntityConfigurationContext.EntityType<Client>()
                 .GetCompositeKey(clientTypes.ClientType2.Clients[0]);
             clientTypes.ClientType1.Clients.AssignRelationshipByKey(compositeKey);
-            Assert.AreEqual(1, eventFiredCount);
+            Assert.AreEqual(2, eventFiredCount);
             Assert.AreEqual(1, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
-            clientTypes.ClientType1.Clients.AssignRelationship(new Client());
-            Assert.AreEqual(2, eventFiredCount);
+            clientTypes.ClientType1.Clients.Add(new Client());
+            Assert.AreEqual(3, eventFiredCount);
             Assert.AreEqual(2, assignEventFiredCount);
             Assert.AreEqual(0, removeEventFiredCount);
 
@@ -380,7 +380,7 @@ namespace Iql.Tests.Tests
             var clientTypes = TestsBlock.AddClientTypes();
             var clientType = clientTypes.ClientType1;
             var newClient = new Client { Name = "My new client" };
-            clientType.Clients.AssignRelationship(newClient);
+            clientType.Clients.Add(newClient);
             Assert.AreEqual(clientType.Id, newClient.TypeId);
             //var changes = Db.DataStore.GetChanges();
             //Assert.AreEqual(1, changes.Count());
@@ -518,7 +518,7 @@ namespace Iql.Tests.Tests
             client.Sites.Add(site);
             Db.Clients.Add(client);
             await Db.SaveChanges();
-            client.Sites.RemoveRelationship(site);
+            client.Sites.Remove(site);
             Assert.AreEqual(null, site.ClientId);
         }
 
@@ -554,13 +554,13 @@ namespace Iql.Tests.Tests
 
             for (var i = 0; i < assignCount; i++)
             {
-                clientType1.Clients.AssignRelationship(clientType1NewClient);
+                clientType1.Clients.Add(clientType1NewClient);
                 AssertCheck();
             }
 
             // Now remove this association and ensure that the add operation is no longer
             // in the queue
-            clientType1.Clients.RemoveRelationship(clientType1NewClient);
+            clientType1.Clients.Remove(clientType1NewClient);
             Assert.AreEqual(1, clientType1.Clients.Count);
             var operations = Db.DataStore.GetQueue().ToList();
             Assert.AreEqual(0, operations.Count);
@@ -594,7 +594,7 @@ namespace Iql.Tests.Tests
             switch (type1)
             {
                 case ReassignType.AssignByReference:
-                    clientType1.Clients.AssignRelationship(existingClient);
+                    clientType1.Clients.Add(existingClient);
                     break;
                 case ReassignType.AssignByKeyMethod:
                     clientType1.Clients.AssignRelationshipByKey(existingClientKey);
@@ -646,7 +646,7 @@ namespace Iql.Tests.Tests
             switch (type1)
             {
                 case ReassignType.AssignByReference:
-                    clientType2.Clients.AssignRelationship(existingClient);
+                    clientType2.Clients.Add(existingClient);
                     break;
                 case ReassignType.AssignByKeyMethod:
                     clientType2.Clients.AssignRelationshipByKey(existingClientKey);
@@ -777,7 +777,7 @@ namespace Iql.Tests.Tests
 
 
             // Reinstate the deleted entity
-            clients.ClientType2.Clients.AssignRelationship(deleteOperation.Operation.Entity);
+            clients.ClientType2.Clients.Add(deleteOperation.Operation.Entity);
 
             Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
             Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");

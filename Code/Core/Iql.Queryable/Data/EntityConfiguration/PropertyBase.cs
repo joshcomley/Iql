@@ -7,11 +7,25 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public abstract class PropertyBase : IProperty
     {
+        private RelationshipMatch _relationship;
 #if !TypeScript
         public PropertyInfo PropertyInfo { get; set; }
 #endif
         public bool Nullable { get; set; }
-        public RelationshipMatch Relationship { get; set; }
+
+        public RelationshipMatch Relationship
+        {
+            get { return _relationship; }
+            set
+            {
+                if (Name == "RiskAssessment" && value != null)
+                {
+                    int a = 0;
+                }
+                _relationship = value;
+            }
+        }
+
         public PropertyKind Kind { get; set; }
         public IProperty CountRelationship { get; private set; }
         public bool ReadOnly { get; private set; }

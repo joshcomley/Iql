@@ -6,7 +6,6 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Events;
-using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Crud.State
@@ -14,21 +13,32 @@ namespace Iql.Queryable.Data.Crud.State
     [DebuggerDisplay("{EntityType.Name}")]
     public class EntityState<T> : IEntityState<T>, IEntityStateInternal
     {
+        private bool _exists;
         private bool _markedForDeletion;
-        private bool _isNew;
         private readonly List<IPropertyState> _changedProperties;
 
-        public bool IsNew
+        public bool IsNew { get; set; }
+
+        public EventEmitter<ExistsChangeEvent> ExistsChanged { get; } = new EventEmitter<ExistsChangeEvent>();
+        public bool Exists
         {
-            get { return _isNew; }
-            set { _isNew = value; }
+            get => _exists;
+            set
+            {
+                var changed = _exists != value;
+                _exists = value;
+                if (changed)
+                {
+                    ExistsChanged.Emit(() => new ExistsChangeEvent(this, value));
+                }
+            }
         }
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
 
         public bool MarkedForDeletion
         {
-            get { return _markedForDeletion; }
+            get => _markedForDeletion;
             set
             {
                 var changed = _markedForDeletion != value;

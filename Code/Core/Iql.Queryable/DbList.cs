@@ -7,7 +7,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
 {
-    public class DbList<T> : List<T>, IDbList where T : class
+    public class DbList<T> : ObservableList<T>, IDbList where T : class
     {
         public DbList(IEnumerable<T> source = null)
         {

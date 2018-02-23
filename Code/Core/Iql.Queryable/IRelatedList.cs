@@ -17,8 +17,6 @@ namespace Iql.Queryable
         object Owner { get; }
         Type OwnerType { get; }
         Type TargetType { get; }
-        void AssignRelationship(object item);
-        void RemoveRelationship(object item);
         void AssignRelationshipByKey(CompositeKey item);
         void RemoveRelationshipByKey(CompositeKey item);
     }

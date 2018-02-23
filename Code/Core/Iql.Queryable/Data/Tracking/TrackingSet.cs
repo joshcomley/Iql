@@ -10,6 +10,7 @@ using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Events;
 using Iql.Queryable.Exceptions;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Native;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
@@ -17,6 +18,7 @@ namespace Iql.Queryable.Data.Tracking
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
+        private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; }
@@ -41,6 +43,11 @@ namespace Iql.Queryable.Data.Tracking
         }
 
         protected IProperty PersistenceKey { get; set; }
+
+        public bool IsTracked(object entity)
+        {
+            return HasEntityState(entity);
+        }
 
         public IEntityStateBase GetEntityState(object entity)
         {
@@ -208,6 +215,7 @@ namespace Iql.Queryable.Data.Tracking
             if (!_entityObservers.ContainsKey(sourceEntity))
             {
                 var observer = new EntityObserver(GetEntityState(entity));
+                _entityObservers.Add(sourceEntity, observer);
                 observer.RegisterMarkForDeletionChanged(MarkedForDeletionChanged);
                 observer.RegisterPropertyChanging(EntityPropertyChanging);
                 observer.RegisterPropertyChanged(EntityPropertyChanged);
@@ -217,58 +225,59 @@ namespace Iql.Queryable.Data.Tracking
 
         private void RelatedListChanged(IRelatedListChangedEvent changeEvent)
         {
-            switch (changeEvent.Kind)
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                case RelatedListChangeKind.Assign:
-                    if (changeEvent.Item != null)
-                    {
-                        DataStore.Add(changeEvent.Item);
-                    }
-                    break;
-                case RelatedListChangeKind.Remove:
-                    if (changeEvent.Item != null)
-                    {
-                        if (!DataStore.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
-                            changeEvent.ItemType))
+                switch (changeEvent.Kind)
+                {
+                    case RelatedListChangeKind.Add:
+                        if (changeEvent.Item != null)
                         {
-                            DataStore.Delete(changeEvent.Item);
+                            DataStore.Add(changeEvent.Item);
                         }
-                    }
-                    break;
-            }
+                        break;
+                    case RelatedListChangeKind.Remove:
+                        if (changeEvent.Item != null)
+                        {
+                            if (!DataStore.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
+                                changeEvent.ItemType))
+                            {
+                                DataStore.Delete(changeEvent.Item);
+                            }
+                        }
+                        break;
+                }
+            }, changeEvent.Item, changeEvent.List.Owner);
         }
 
-        private readonly Dictionary<object, object> _silentEntities = new Dictionary<object, object>();
         private void EntityPropertyChanged(IPropertyChangeEvent propertyChange)
         {
-            if (_silentEntities.ContainsKey(propertyChange.Entity))
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                return;
-            }
-            if (Equals(propertyChange.OldValue, propertyChange.NewValue))
-            {
-                return;
-            }
-
-            IEntityStateBase entityState = null;
-            var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-            if (property.Kind == PropertyKind.Key)
-            {
-                entityState = GetEntityState(propertyChange.Entity);
-                if (entityState.IsNew)
+                if (Equals(propertyChange.OldValue, propertyChange.NewValue))
                 {
-                    var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
-                    if (!key.HasDefaultValue())
+                    return;
+                }
+
+                IEntityStateBase entityState = null;
+                var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
+                if (property.Kind == PropertyKind.Key)
+                {
+                    entityState = GetEntityState(propertyChange.Entity);
+                    if (entityState.IsNew)
                     {
-                        throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                        var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
+                        if (!key.HasDefaultValue())
+                        {
+                            throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                        }
                     }
                 }
-            }
 
-            if (property.Kind == PropertyKind.Key)
-            {
-                Reindex(propertyChange.Entity);
-            }
+                if (property.Kind == PropertyKind.Key)
+                {
+                    Reindex(propertyChange.Entity);
+                }
+            }, propertyChange.Entity);
         }
 
         private void EntityPropertyChanging(IPropertyChangeEvent propertyChange)
@@ -348,21 +357,15 @@ namespace Iql.Queryable.Data.Tracking
 
         private void SilentlyMerge(object entity, object mergeWith)
         {
-            var markSilent = false;
-            if (!_silentEntities.ContainsKey(entity))
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                markSilent = true;
-                _silentEntities.Add(entity, entity);
-            }
-            SimplePropertyMerger.Merge(
-                entity,
-                mergeWith
-            );
-            Reindex(entity);
-            if (markSilent)
-            {
-                _silentEntities.Remove(entity);
-            }
+                SimplePropertyMerger.Merge(
+                    entity,
+                    mergeWith
+                );
+                Reindex(entity);
+
+            }, entity);
         }
 
         private void Reindex(object entity)

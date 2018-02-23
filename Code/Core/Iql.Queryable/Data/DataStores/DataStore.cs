@@ -75,8 +75,16 @@ namespace Iql.Queryable.Data.DataStores
             return (EntityState<TEntity>)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
-        private IEntityStateBase AddInternal<T>(T entity)
+        private IEntityStateBase AddInternal<T>(T entity) 
+            where T : class
         {
+            var rootTrackingSet = Tracking.TrackingSet<T>();
+            if (rootTrackingSet.IsTracked(entity))
+            {
+                var state = rootTrackingSet.GetEntityState(entity);
+                state.MarkedForDeletion = false;
+                return state;
+            }
             var entityType = typeof(T);
             var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
             IEntityStateBase entityState = null;
@@ -273,7 +281,7 @@ namespace Iql.Queryable.Data.DataStores
 
             return getDataResult;
         }
-
+        
         public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
             where TEntity : class

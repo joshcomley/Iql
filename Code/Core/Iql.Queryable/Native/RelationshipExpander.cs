@@ -318,50 +318,5 @@ namespace Iql.Queryable.Native
 
             return inner[relationship];
         }
-
-        //public static void ExpandManyToMany(
-        //    IEnumerable source,
-        //    Type sourceType,
-        //    Type targetType,
-        //    IEnumerable target,
-        //    IEnumerable pivot,
-        //    string pivotSourceKeyProperty,
-        //    string pivotTargetKeyPropery,
-        //    string sourceProperty,
-        //    string targetProperty,
-        //    string sourceKeyProperty,
-        //    string targetKeyProperty)
-        //{
-        //    for (var i = 0; i < source.Count(); i++)
-        //    {
-        //        var sourceEntity = source.ItemAt(i);
-        //        if (Equals(sourceEntity.GetPropertyValueByName(sourceProperty), null))
-        //        {
-        //            sourceEntity.SetPropertyValueByName(sourceProperty,
-        //                Activator.CreateInstance(typeof(List<>).MakeGenericType(targetType)));
-        //        }
-        //        for (var j = 0; j < target.Count(); j++)
-        //        {
-        //            var targetEntity = target.ItemAt(j);
-        //            if (Equals(targetEntity.GetPropertyValueByName(targetProperty), null))
-        //            {
-        //                targetEntity.SetPropertyValueByName(targetProperty,
-        //                    Activator.CreateInstance(typeof(List<>).MakeGenericType(sourceType)));
-        //            }
-        //            for (var k = 0; k < pivot.Count(); k++)
-        //            {
-        //                var pivotEntity = pivot.ItemAt(k);
-        //                if (Equals(pivotEntity.GetPropertyValueByName(pivotSourceKeyProperty),
-        //                        sourceEntity.GetPropertyValueByName(sourceKeyProperty)) &&
-        //                    Equals(pivotEntity.GetPropertyValueByName(pivotTargetKeyPropery),
-        //                        targetEntity.GetPropertyValueByName(targetKeyProperty)))
-        //                {
-        //                    targetEntity.GetPropertyValueByNameAs<IList>(targetProperty).Add(sourceEntity);
-        //                    sourceEntity.GetPropertyValueByNameAs<IList>(sourceProperty).Add(targetEntity);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

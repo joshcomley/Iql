@@ -94,7 +94,7 @@ namespace Iql.Tests.Tests
                     // ...perhaps when we clone the expand items we need to look up
                     // their tracked version, too
                     // clientType2.Clients.Owner != clientType2
-                    clientType2.Clients.AssignRelationship(clientType1.Clients[0]);
+                    clientType2.Clients.Add(clientType1.Clients[0]);
                     break;
                 case ChangeOneToManySourceType.Key:
                     clientType1.Clients[0].TypeId = clientType2.Id;

@@ -11,16 +11,16 @@ using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Events;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Native
 {
     public class RelationshipObserver : IRelationshipObserver
     {
+        private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
+        private readonly ChangeIgnorer _pairChangeIgnorer = new ChangeIgnorer();
         public IDataStore DataStore { get; }
-        private readonly Dictionary<object, object> _changingEntities =
-            new Dictionary<object, object>();
 
+        private readonly Dictionary<object, object> _moving = new Dictionary<object, object>();
         private readonly Dictionary<IRelationship, Dictionary<object, string>> _ids =
             new Dictionary<IRelationship, Dictionary<object, string>>();
 
@@ -113,18 +113,6 @@ namespace Iql.Queryable.Native
             Dictionary<string, IProperty> lookup;
             if (!_properties.ContainsKey(typeof(T)))
             {
-                //foreach (var relationship in EntityConfiguration.AllRelationships())
-                //{
-                //    if (relationship.ThisEnd.IsCollection)
-                //    {
-                //        var relatedList = entity.GetPropertyValue(relationship.ThisEnd.Property)
-                //            as IRelatedList;
-                //        if (relatedList != null && !_collectionChangeSubscriptions.ContainsKey(relatedList))
-                //        {
-                //            _collectionChangeSubscriptions.Add(relatedList, relatedList.Changed.Subscribe(RelatedListChanged));
-                //        }
-                //    }
-                //}
                 lookup = new Dictionary<string, IProperty>();
                 _properties.Add(typeof(T), lookup);
                 var relationships = new List<RelationshipMatch>();
@@ -137,11 +125,6 @@ namespace Iql.Queryable.Native
                     switch (relationship.Relationship.Kind)
                     {
                         case RelationshipKind.OneToOne:
-                        //if (!_oneToOneSourceRelationshipKeyMaps.ContainsKey(relationship.Relationship))
-                        //{
-                        //    _oneToOneSourceRelationshipKeyMaps.Add(relationship.Relationship, new Dictionary<string, object>());
-                        //}
-                        //break;
                         case RelationshipKind.OneToMany:
                             if (!_oneToSourceRelationshipKeyMaps.ContainsKey(relationship.Relationship))
                             {
@@ -276,26 +259,15 @@ namespace Iql.Queryable.Native
                         }
                     }
                 }
-                //if (_oneToSourceRelationshipMaps.ContainsKey(entity))
-                //{
-                //    var sourceMap = _oneToSourceRelationshipMaps[entity];
-                //    var list = new List<KeyValuePair<IRelationship, string>>();
-                //    foreach (var item in sourceMap)
-                //    {
-                //        list.Add(item);
-                //    }
-
-                //    for (var j = 0; j < list.Count; j++)
-                //    {
-                //        var item = list[j];
-                //    }
-                //}
             }
-
         }
 
         public bool IsAssignedToAnyRelationship(object entity, Type entityType)
         {
+            if (_moving.ContainsKey(entity))
+            {
+                return true;
+            }
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(entityType);
             var list = entityConfiguration.AllRelationships();
             for (var i = 0; i < list.Count; i++)
@@ -327,42 +299,44 @@ namespace Iql.Queryable.Native
 
         private void RelatedListChanged(IRelatedListChangedEvent relatedListChangedEvent)
         {
-            var newSource = relatedListChangedEvent.Item;
-            object oldTarget = null;
-            var propertyName = relatedListChangedEvent.List.PropertyName;
-            var targetConfiguration =
-                EntityConfigurationContext.GetEntityByType(relatedListChangedEvent.List.OwnerType);
-            var relationship = targetConfiguration.FindProperty(propertyName).Relationship;
-            var sourceProperty = relationship.Relationship.Source.Property;
-            if (newSource == null)
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                var sourceTracking = DataStore.Tracking                    .TrackingSetByType(relationship.Relationship.Source.Configuration.Type);
-                var sourceState = sourceTracking.GetEntityState(relatedListChangedEvent.ItemKey);
-                newSource = sourceState.Entity;
-            }
+                var newSource = relatedListChangedEvent.Item;
+                var propertyName = relatedListChangedEvent.List.PropertyName;
+                var targetConfiguration =
+                    EntityConfigurationContext.GetEntityByType(relatedListChangedEvent.List.OwnerType);
+                var relationship = targetConfiguration.FindProperty(propertyName).Relationship;
+                var sourceProperty = relationship.Relationship.Source.Property;
+                if (newSource == null)
+                {
+                    var sourceTracking = DataStore.Tracking.TrackingSetByType(relationship.Relationship.Source.Configuration.Type);
+                    var sourceState = sourceTracking.GetEntityState(relatedListChangedEvent.ItemKey);
+                    newSource = sourceState.Entity;
+                }
 
-            oldTarget = sourceProperty.PropertyGetter(newSource);
-            switch (relatedListChangedEvent.Kind)
-            {
-                case RelatedListChangeKind.Assign:
-                    ProcessRelationshipReferenceChange(
-                        oldTarget,
-                        relatedListChangedEvent.Owner,
-                        sourceProperty,
-                        newSource,
-                        relationship.Relationship.Source
-                    );
-                    break;
-                case RelatedListChangeKind.Remove:
-                    ProcessRelationshipReferenceChange(
-                        oldTarget,
-                        null,
-                        sourceProperty,
-                        newSource,
-                        relationship.Relationship.Source
-                    );
-                    break;
-            }
+                switch (relatedListChangedEvent.Kind)
+                {
+                    case RelatedListChangeKind.AssignByKey:
+                    case RelatedListChangeKind.Add:
+                        ProcessRelationshipReferenceChange(
+                            sourceProperty.PropertyGetter(newSource),
+                            relatedListChangedEvent.Owner,
+                            sourceProperty,
+                            newSource,
+                            relationship.Relationship.Source
+                        );
+                        break;
+                    case RelatedListChangeKind.Remove:
+                        ProcessRelationshipReferenceChange(
+                            relatedListChangedEvent.Owner,
+                            null,
+                            sourceProperty,
+                            newSource,
+                            relationship.Relationship.Source
+                        );
+                        break;
+                }
+            }, relatedListChangedEvent.Item, relatedListChangedEvent.List.Owner);
         }
 
         public void PairAllTyped<T>(List<T> items)
@@ -482,7 +456,7 @@ namespace Iql.Queryable.Native
             object source,
             object target)
         {
-            IgnoreChanges(() =>
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
                 var targetMapping = GetTargetMapping(
                     relationship,
@@ -503,15 +477,18 @@ namespace Iql.Queryable.Native
                     }
                 }
 
-                var keys = relationship.Source.Constraints();
-                for (var i = 0; i < keys.Length; i++)
-                {
-                    var key = keys[i];
-                    source.SetPropertyValue(key, key.Nullable ? null : key.Type.DefaultValue());
-                }
+                //var keys = relationship.Source.Constraints();
+                //for (var i = 0; i < keys.Length; i++)
+                //{
+                //    var key = keys[i];
+                //    source.SetPropertyValue(key, key.Nullable ? null : key.Type.DefaultValue());
+                //}
 
-                source.SetPropertyValue(relationship.Source.Property,
-                    null);
+                _changeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(() =>
+                {
+                    source.SetPropertyValue(relationship.Source.Property,
+                        null);
+                }, source);
                 switch (relationship.Kind)
                 {
                     case RelationshipKind.OneToOne:
@@ -523,12 +500,14 @@ namespace Iql.Queryable.Native
                         list.Remove(source);
                         break;
                 }
-            }, source, target);
+            }
+                //, source, target
+                );
         }
 
         private void Pair(IRelationship relationship, object source, object target)
         {
-            IgnoreChanges(() =>
+            _pairChangeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
                 var targetMapping = GetTargetMapping(relationship, target);
 
@@ -577,8 +556,9 @@ namespace Iql.Queryable.Native
                         }
                         break;
                 }
-            }, source, target);
-
+            }
+                //, source, target
+                );
         }
 
         private Dictionary<IRelationship, string> GetSourceMap(object source)
@@ -712,40 +692,8 @@ namespace Iql.Queryable.Native
                     foreach (var source in collection)
                     {
                         Pair(relationshipTarget.Relationship, source, entity);
-                        //MapRelationshipSource(source, relationship);
                     }
                 }
-            }
-            //switch (relationship.Relationship.Kind)
-            //{
-            //    case RelationshipKind.OneToOne:
-            //        break;
-            //    case RelationshipKind.OneToMany:
-            //        break;
-            //}
-        }
-
-        private bool IsIgnored(object entity)
-        {
-            return _changingEntities.ContainsKey(entity);
-        }
-
-        private void IgnoreChanges(Action action, params object[] entities)
-        {
-            var ignored = new List<object>();
-            foreach (var entity in entities)
-            {
-                if (!IsIgnored(entity))
-                {
-                    ignored.Add(entity);
-                    _changingEntities.Add(entity, entity);
-                }
-            }
-
-            action();
-            foreach (var entity in ignored)
-            {
-                _changingEntities.Remove(entity);
             }
         }
 
@@ -757,46 +705,31 @@ namespace Iql.Queryable.Native
             if (lookup.ContainsKey(propertyChangeEvent.PropertyName))
             {
                 var entity = propertyChangeEvent.Entity;
-                if (!_changingEntities.ContainsKey(entity))
+                _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
                 {
-                    IgnoreChanges(() =>
+                    var property = lookup[propertyChangeEvent.PropertyName];
+                    switch (property.Kind)
                     {
-                        var property = lookup[propertyChangeEvent.PropertyName];
-                        switch (property.Kind)
-                        {
-                            case PropertyKind.RelationshipKey:
-                                //var newCompositeKey = property.Relationship.ThisEnd
-                                //    .GetCompositeKey(entity);
-                                //var oldCompositeKey = property.Relationship.ThisEnd
-                                //    .GetCompositeKey(entity);
-                                //for (var i = 0; i < oldCompositeKey.Keys.Count; i++)
-                                //{
-                                //    var key = oldCompositeKey.Keys[i];
-                                //    if (key.Name == propertyChangeEvent.PropertyName)
-                                //    {
-                                //        key.Value = propertyChangeEvent.OldValue;
-                                //    }
-                                //}
-                                var entityRelationshipKeyMap =
-                                    GetEntityRelationshipKeyMap(entity, property.Relationship.Relationship);
-                                property.Relationship.ThisEnd.MarkDirty(entity);
-                                ProcessRelationshipKeyChange(
-                                    entityRelationshipKeyMap[property.Relationship.Relationship],
-                                    GetRelationshipKeyString(entity, property.Relationship.Relationship),
-                                    entity,
-                                    property.Relationship.ThisEnd
-                                );
-                                break;
-                            case PropertyKind.Relationship:
-                                ProcessRelationshipReferenceChange(propertyChangeEvent.OldValue,
-                                    propertyChangeEvent.NewValue, property, entity, property.Relationship.ThisEnd);
-                                break;
-                            case PropertyKind.Key:
-                                ProcessKeyChange(propertyChangeEvent, entityConfiguration);
-                                break;
-                        }
-                    }, entity);
-                }
+                        case PropertyKind.RelationshipKey:
+                            var entityRelationshipKeyMap =
+                                GetEntityRelationshipKeyMap(entity, property.Relationship.Relationship);
+                            property.Relationship.ThisEnd.MarkDirty(entity);
+                            ProcessRelationshipKeyChange(
+                                entityRelationshipKeyMap[property.Relationship.Relationship],
+                                GetRelationshipKeyString(entity, property.Relationship.Relationship),
+                                entity,
+                                property.Relationship.ThisEnd
+                            );
+                            break;
+                        case PropertyKind.Relationship:
+                            ProcessRelationshipReferenceChange(propertyChangeEvent.OldValue,
+                                propertyChangeEvent.NewValue, property, entity, property.Relationship.ThisEnd);
+                            break;
+                        case PropertyKind.Key:
+                            ProcessKeyChange(propertyChangeEvent, entityConfiguration);
+                            break;
+                    }
+                }, entity);
             }
         }
 
@@ -844,10 +777,16 @@ namespace Iql.Queryable.Native
                                 var sourceMaps = _oneToSourceRelationshipKeyMaps[relationship.Relationship];
                                 if (sourceMaps.ContainsKey(oldKeyString))
                                 {
-                                    var sources = sourceMaps[oldKeyString];
+                                    Dictionary<object, object> sources = sourceMaps[oldKeyString];
                                     sourceMaps.Remove(oldKeyString);
                                     sourceMaps.Add(newKeyString, sources);
+                                    Dictionary<object, object> copy = new Dictionary<object, object>();
                                     foreach (var source in sources)
+                                    {
+                                        copy.Add(source.Key, source.Value);
+                                    }
+
+                                    foreach (var source in copy)
                                     {
                                         var sourceEntity = source.Value;
                                         relationship.OtherEnd.MarkDirty(sourceEntity);
@@ -915,23 +854,31 @@ namespace Iql.Queryable.Native
             object source,
             IRelationshipDetail relationship)
         {
+            if (relationship.RelationshipSide == RelationshipSide.Target)
+            {
+                return;
+            }
             if (newTarget != null)
             {
                 if (TrackEntities)
                 {
-                    var trackingSet = DataStore.Tracking.TrackingSetByType(relationship.Relationship.Target.Type);
+                    var trackingSet = DataStore.Tracking.TrackingSetByType(property.Type);
                     trackingSet.TrackEntity(newTarget);
                 }
-
-                if (source != null)
+            }
+            if (source != null)
+            {
+                _pairChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(() =>
                 {
                     for (var i = 0; i < relationship.Relationship.Constraints.Count; i++)
                     {
                         var constraint = relationship.Relationship.Constraints[i];
                         source.SetPropertyValue(constraint.SourceKeyProperty,
-                            newTarget.GetPropertyValue(constraint.TargetKeyProperty));
+                            newTarget == null
+                                ? (constraint.SourceKeyProperty.Nullable ? null : constraint.SourceKeyProperty.Type.DefaultValue())
+                                : newTarget.GetPropertyValue(constraint.TargetKeyProperty));
                     }
-                }
+                }, source);
             }
 
             ProcessRelationshipKeyChange(
@@ -982,42 +929,48 @@ namespace Iql.Queryable.Native
                             }
                         }
 
-                        object newTarget = null;
                         if (_oneToTargetRelationshipKeyMaps.ContainsKey(relationship
                             .Relationship))
                         {
-                            var targetMap =
-                                _oneToTargetRelationshipKeyMaps[
-                                    relationship.Relationship];
-                            if (!string.IsNullOrWhiteSpace(oldTargetKey))
+                            if (oldTargetKey != newTargetKey)
                             {
-                                if (targetMap.ContainsKey(oldTargetKey))
-                                {
-                                    Unpair(relationship.Relationship, entity, targetMap[oldTargetKey]);
-                                }
-                            }
+                                var targetMap =
+                                    _oneToTargetRelationshipKeyMaps[
+                                        relationship.Relationship];
 
-                            if (!string.IsNullOrWhiteSpace(newTargetKey))
-                            {
-                                if (targetMap.ContainsKey(newTargetKey))
+                                var oldTarget = !string.IsNullOrWhiteSpace(oldTargetKey) && targetMap.ContainsKey(oldTargetKey) ? targetMap[oldTargetKey] : null;
+                                var newTarget = !string.IsNullOrWhiteSpace(newTargetKey) && targetMap.ContainsKey(newTargetKey) ? targetMap[newTargetKey] : null;
+
+                                if (oldTarget != newTarget)
                                 {
-                                    switch (relationship.Relationship.Kind)
+                                    _changeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(() =>
                                     {
-                                        case RelationshipKind.OneToOne:
-                                            Pair(relationship.Relationship, entity, targetMap[newTargetKey]);
-                                            break;
-                                        case RelationshipKind.OneToMany:
-                                            Pair(relationship.Relationship, entity, targetMap[newTargetKey]);
-                                            break;
-                                    }
+                                        var isMoving = oldTarget != null && newTarget != null;
+                                        if (isMoving)
+                                        {
+                                            _moving.Add(entity, entity);
+                                        }
+                                        if (oldTarget != null)
+                                        {
+                                            Unpair(relationship.Relationship, entity, oldTarget);
+                                        }
+                                        if (newTarget != null)
+                                        {
+                                            Pair(relationship.Relationship, entity, newTarget);
+                                        }
+
+                                        if (isMoving)
+                                        {
+                                            _moving.Remove(entity);
+                                        }
+                                    }, entity, oldTarget);
                                 }
                             }
                         }
                     }
-
                     break;
                 case RelationshipSide.Target:
-                    throw new Exception("Assigning a key to a collection is invalid.");
+                    throw new Exception("Assigning a key to a collection is an invalid operation.");
             }
         }
     }

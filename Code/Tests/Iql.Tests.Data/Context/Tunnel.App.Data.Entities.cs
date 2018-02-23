@@ -4,6 +4,7 @@ using Tunnel.App.Data.Entities;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Events;
 using System;
+using Iql.Queryable.Data.Crud.State;
 
 
 namespace Tunnel.App.Data.Entities
@@ -12,6 +13,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -28,16 +43,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -67,6 +84,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -83,16 +114,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -122,6 +155,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -138,16 +185,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -177,6 +226,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -193,16 +256,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -232,6 +297,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -248,16 +327,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -287,6 +368,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -303,16 +398,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -342,6 +439,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -358,16 +469,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -397,6 +510,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -413,16 +540,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -452,6 +581,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -468,16 +611,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -507,6 +652,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -523,16 +682,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -562,6 +723,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -578,16 +753,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -617,6 +794,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -633,16 +824,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -672,6 +865,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -688,16 +895,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -727,6 +936,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -743,16 +966,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -782,6 +1007,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -798,16 +1037,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -837,6 +1078,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -853,16 +1108,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -892,6 +1149,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -908,16 +1179,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -947,6 +1220,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -963,16 +1250,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1002,6 +1291,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1018,16 +1321,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1057,6 +1362,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1073,16 +1392,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1112,6 +1433,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1128,16 +1463,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1167,6 +1504,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1183,16 +1534,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1222,6 +1575,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1238,16 +1605,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1277,6 +1646,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1293,16 +1676,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}
@@ -1332,6 +1717,20 @@ namespace Tunnel.App.Data.Entities
 	{
 		
 		protected Boolean _propertyChangingSet;
+				
+		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+
+		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		{
+			get => _propertyChanging;
+			set
+			{
+				_propertyChanging = value;
+				this._propertyChangingSet = value != null;
+				
+			}
+		}
+
 		
 		protected Boolean _propertyChangedSet;
 				
@@ -1348,16 +1747,18 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
+		
+		protected Boolean _existsChangedSet;
 				
-		protected EventEmitter<IPropertyChangeEvent> _propertyChanging;
+		protected EventEmitter<ExistsChangeEvent> _existsChanged;
 
-		public EventEmitter<IPropertyChangeEvent> PropertyChanging
+		public EventEmitter<ExistsChangeEvent> ExistsChanged
 		{
-			get => _propertyChanging;
+			get => _existsChanged;
 			set
 			{
-				_propertyChanging = value;
-				this._propertyChangingSet = value != null;
+				_existsChanged = value;
+				this._existsChangedSet = value != null;
 				
 			}
 		}

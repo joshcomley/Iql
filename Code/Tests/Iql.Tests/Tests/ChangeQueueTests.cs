@@ -37,7 +37,7 @@ namespace Iql.Tests.Tests
                 //Id = 1,
                 Name = "Client 1"
             };
-            clientType1.Clients.AssignRelationship(client1);
+            clientType1.Clients.Add(client1);
             Db.ClientTypes.Add(clientType1);
             Assert.AreEqual(clientType1, client1.Type);
             Assert.AreEqual(clientType1.Id, client1.TypeId);

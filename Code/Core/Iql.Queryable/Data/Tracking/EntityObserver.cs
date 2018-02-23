@@ -28,6 +28,15 @@ namespace Iql.Queryable.Data.Tracking
             RegisterEvent(action, nameof(IEntity.PropertyChanged), Entity.PropertyChanged);
         }
 
+        public void RegisterExistsChanged(Action<ExistsChangeEvent> action)
+        {
+            if (Entity.ExistsChanged == null)
+            {
+                Entity.ExistsChanged = new EventEmitter<ExistsChangeEvent>();
+            }
+            RegisterEvent(action, nameof(IEntity.ExistsChanged), Entity.ExistsChanged);
+        }
+
         public void RegisterPropertyChanging(Action<IPropertyChangeEvent> action)
         {
             if (Entity.PropertyChanging == null)

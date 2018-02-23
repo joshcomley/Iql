@@ -10,7 +10,7 @@ namespace Iql.Queryable.Data.Tracking
 {
     public interface ITrackingSet
     {
-        //bool IsTracked(object entity);
+        bool IsTracked(object entity);
         //void Watch(object entity);
         //void Unwatch(object entity);
         //void SilentlyChangeEntity(object entity, Action action);
