@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Iql.OData.Data;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -7,7 +8,7 @@ using Tunnel.App.Data.Entities;
 namespace Iql.Tests.Tests
 {
     [TestClass]
-    public class EntityDeletionTests: TestsBase
+    public class EntityDeletionTests : TestsBase
     {
         [TestMethod]
         public async Task DeletingAnEntityShouldRemoveEntityFromDbLists()
@@ -29,6 +30,60 @@ namespace Iql.Tests.Tests
             Assert.IsFalse(people.Contains(person));
             Assert.IsFalse(people2.Contains(person));
         }
+
+        [TestMethod]
+        public async Task DeletingARecentlyCreatedEntityShouldRemoveEntityFromDbLists()
+        {
+            var person1 = new Person();
+            var person2 = new Person();
+            Db.People.Add(person1);
+            Db.People.Add(person2);
+            await Db.SaveChanges();
+
+            var people = await Db.People.ToList();
+            var people2 = await Db.People.Where(p => p.Id == 1).ToList();
+            Assert.AreEqual(2, people.Count);
+            Assert.AreEqual(1, people2.Count);
+            Db.People.Delete(person1);
+            Assert.AreEqual(2, people.Count);
+            Assert.AreEqual(1, people2.Count);
+            await Db.SaveChanges();
+            Assert.AreEqual(1, people.Count);
+            Assert.AreEqual(0, people2.Count);
+            Assert.IsFalse(people.Contains(person1));
+            Assert.IsFalse(people2.Contains(person1));
+        }
+
+        [TestMethod]
+        public async Task DeletingAnEntityCreatedWithADifferentDataContextShouldRemoveEntityFromDbLists()
+        {
+            var db1 = new AppDbContext();
+            var person1 = new Person();
+            var person2 = new Person();
+            db1.People.Add(person1);
+            db1.People.Add(person2);
+            await db1.SaveChanges();
+            var people1 = await db1.People.ToList();
+
+            var db2 = new AppDbContext();
+            var people2 = await db2.People.ToList();
+            var personQueryList = await db2.People.Where(p => p.Id == 1).ToList();
+            var localPerson1 = people2[0];
+            Assert.AreEqual(2, people1.Count);
+            Assert.AreEqual(2, people2.Count);
+            Assert.AreEqual(1, personQueryList.Count);
+            db2.People.Delete(localPerson1);
+            Assert.AreEqual(2, people1.Count);
+            Assert.AreEqual(2, people2.Count);
+            Assert.AreEqual(1, personQueryList.Count);
+            await db2.SaveChanges();
+            Assert.AreEqual(1, people1.Count);
+            Assert.AreEqual(1, people2.Count);
+            Assert.AreEqual(0, personQueryList.Count);
+            Assert.IsFalse(people2.Contains(person1));
+            Assert.IsFalse(personQueryList.Contains(person1));
+        }
+
         [TestMethod]
         public async Task DeletingAnEntityShouldRemoveEntityFromRelatedLists()
         {

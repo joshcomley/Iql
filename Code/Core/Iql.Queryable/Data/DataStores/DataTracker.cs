@@ -31,35 +31,42 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
+        internal static List<DataTracker> AllDataTrackers { get; }
+            = new List<DataTracker>();
         public DataTracker(IDataStore dataStore, bool trackEntities)
         {
+            AllDataTrackers.Add(this);
             TrackEntities = trackEntities;
             DataStore = dataStore;
         }
 
-        public void TrackResults<TEntity>(IFlattenedGetDataResult response)
+        public List<TEntity> TrackResults<TEntity>(Dictionary<Type, IList> responseData, List<TEntity> responseRoot = null)
         {
             Dictionary<Type, IList> data;
-            if (!response.Data.ContainsKey(typeof(TEntity)))
+            if (!responseData.ContainsKey(typeof(TEntity)))
             {
-                response.Data.Add(typeof(TEntity), new List<TEntity>());
+                responseData.Add(typeof(TEntity), new List<TEntity>());
             }
 
             var rootDictionary = new Dictionary<object, object>();
-            foreach (var item in response.Data[typeof(TEntity)])
+            foreach (var item in responseData[typeof(TEntity)])
             {
                 rootDictionary.Add(item, item);
             }
-            foreach (var item in response.Root)
+
+            if (responseRoot != null)
             {
-                if (rootDictionary.ContainsKey(item))
+                foreach (var item in responseRoot)
                 {
-                    rootDictionary.Remove(item);
+                    if (rootDictionary.ContainsKey(item))
+                    {
+                        rootDictionary.Remove(item);
+                    }
                 }
             }
 
             var newList = new List<TEntity>();
-            response.Data[typeof(TEntity)] = newList;
+            responseData[typeof(TEntity)] = newList;
             foreach (var item in rootDictionary)
             {
                 newList.Add((TEntity)item.Key);
@@ -67,18 +74,22 @@ namespace Iql.Queryable.Data.DataStores
             if (TrackEntities)
             {
                 data = new Dictionary<Type, IList>();
-                response.Root = TrackCollection(response.Root, response.EntityType, data).ToList(response.EntityType);
+                if (responseRoot != null)
+                {
+                    responseRoot = (List<TEntity>) TrackCollection(responseRoot, typeof(TEntity), data).ToList(typeof(TEntity));
+                }
                 // TODO: Implement tracking
-                foreach (var dataSet in response.Data)
+                foreach (var dataSet in responseData)
                 {
                     TrackCollection(dataSet.Value, dataSet.Key, data);
                 }
             }
             else
             {
-                data = response.Data;
+                data = responseData;
             }
             RelationshipObserver.ObserveAll(data);
+            return responseRoot;
         }
 
         private IList TrackCollection(IList set, Type type, Dictionary<Type, IList> data)
@@ -111,7 +122,7 @@ namespace Iql.Queryable.Data.DataStores
             return set;
         }
 
-        public void RemoveEntity<T>(T entity) 
+        public void RemoveEntity<T>(T entity)
             where T : class
         {
             var set = Tracking.TrackingSet<T>();

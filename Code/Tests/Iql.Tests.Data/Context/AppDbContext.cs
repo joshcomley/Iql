@@ -2,6 +2,7 @@
 using Iql.JavaScript.QueryToJavaScript;
 using Iql.Queryable;
 using Iql.Queryable.Data;
+using Iql.Queryable.Data.DataStores;
 #if TypeScript
 using Iql.JavaScript.QueryToJavaScript;
 using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
@@ -36,12 +37,12 @@ namespace Iql.Tests.Context
 
         public static InMemoryDataStoreConfiguration InMemoryDataStoreConfiguration { get; set; }
 
-        public AppDbContext() :
+        public AppDbContext(IDataStore dataStore = null) :
 #if TypeScript
             base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
 #else
             //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
-            base(new InMemoryDataStore(new DotNetQueryableAdapter()))
+            base(dataStore ?? new InMemoryDataStore(new DotNetQueryableAdapter()))
 #endif
         {
             RegisterConfiguration(InMemoryDataStoreConfiguration);
@@ -57,6 +58,8 @@ namespace Iql.Tests.Context
             var defaultQueries = new EntityDefaultQueryConfiguration();
             defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
             RegisterConfiguration(defaultQueries);
+            ODataConfiguration.ApiUriBase = @"http://localhost:28000/odata";
+            ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
         }
 
         public static InMemoryDataBase InMemoryDb { get; set; }
