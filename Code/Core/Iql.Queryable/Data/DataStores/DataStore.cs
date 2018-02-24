@@ -396,7 +396,13 @@ namespace Iql.Queryable.Data.DataStores
                         result = await PerformDelete(deleteEntityOperation);
                         if (result.Success)
                         {
+                            var entityState = Tracking.TrackingSet<TEntity>().GetEntityState(deleteEntityOperation.Operation.Entity);
                             DataTracker.RemoveEntity(deleteEntityOperation.Operation.Entity);
+                            var iEntity = deleteEntityOperation.Operation.Entity as IEntity;
+                            if (iEntity != null && iEntity.ExistsChanged != null)
+                            {
+                                iEntity.ExistsChanged.Emit(() => new ExistsChangeEvent(entityState, false));
+                            }
                         }
                     }
 

@@ -1,0 +1,54 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Iql.Tests.Context;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tunnel.App.Data.Entities;
+
+namespace Iql.Tests.Tests
+{
+    [TestClass]
+    public class EntityDeletionTests: TestsBase
+    {
+        [TestMethod]
+        public async Task DeletingAnEntityShouldRemoveEntityFromDbLists()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52 });
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 63 });
+
+            var people = await Db.People.ToList();
+            var people2 = await Db.People.Where(p => p.Id == 62).ToList();
+            Assert.AreEqual(2, people.Count);
+            Assert.AreEqual(1, people2.Count);
+            var person = people[0];
+            Db.People.Delete(person);
+            Assert.AreEqual(2, people.Count);
+            Assert.AreEqual(1, people2.Count);
+            await Db.SaveChanges();
+            Assert.AreEqual(1, people.Count);
+            Assert.AreEqual(0, people2.Count);
+            Assert.IsFalse(people.Contains(person));
+            Assert.IsFalse(people2.Contains(person));
+        }
+        [TestMethod]
+        public async Task DeletingAnEntityShouldRemoveEntityFromRelatedLists()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 13 });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 14 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 3, TypeId = 14 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 4, TypeId = 13 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 5, TypeId = 13 });
+
+            var clientTypes = await Db.ClientTypes.Expand(c => c.Clients).ToList();
+            var clientToDelete = await Db.Clients.Where(p => p.Id == 4).Single();
+            var clientType = clientTypes.Single(c => c.Id == 13);
+            Assert.AreEqual(2, clientType.Clients.Count);
+            Db.Clients.Delete(clientToDelete);
+            Assert.AreEqual(1, clientType.Clients.Count);
+            Assert.IsFalse(clientType.Clients.Contains(clientToDelete));
+            await Db.SaveChanges();
+            Assert.AreEqual(1, clientType.Clients.Count);
+            Assert.IsFalse(clientType.Clients.Contains(clientToDelete));
+        }
+
+    }
+}

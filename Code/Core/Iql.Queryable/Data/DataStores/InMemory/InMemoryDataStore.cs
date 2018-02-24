@@ -117,7 +117,8 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation.Operation);
             if (index != -1)
             {
-                DataSet<TEntity>(operation.Operation).RemoveAt(0);
+                DataSet<TEntity>(operation.Operation).RemoveAt(index);
+                operation.Result.Success = true;
             }
             return Task.FromResult(operation.Result);
         }

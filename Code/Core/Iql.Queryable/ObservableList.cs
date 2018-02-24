@@ -73,10 +73,17 @@ namespace Iql.Queryable
 
         public virtual bool Remove(T item)
         {
-            Emit(item, ObservableListChangeKind.Removing);
-            var result = _rootList.Remove(item);
-            Emit(item, ObservableListChangeKind.Removed);
-            return result;
+            var success = false;
+            for (var i = 0; i < Count; i++)
+            {
+                if (Equals(this[i], item))
+                {
+                    RemoveAt(i);
+                    success = true;
+                    break;
+                }
+            }
+            return success;
         }
 
         public bool Contains(T item)
@@ -120,7 +127,10 @@ namespace Iql.Queryable
 
         public virtual void RemoveAt(int index)
         {
+            var item = this[index];
+            Emit(item, ObservableListChangeKind.Removing);
             _rootList.RemoveAt(index);
+            Emit(item, ObservableListChangeKind.Removed);
         }
 
         public bool IsFixedSize => ((IList)_rootList).IsFixedSize;

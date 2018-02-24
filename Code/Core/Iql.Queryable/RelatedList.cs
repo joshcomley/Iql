@@ -36,14 +36,6 @@ namespace Iql.Queryable
         public Type TargetType => typeof(TTarget);
         public string PropertyName { get; }
 
-        public override void Add(TTarget item)
-        {
-            if (!Contains(item))
-            {
-                base.Add(item);
-            }
-        }
-
         object IRelatedList.Owner => Owner;
 
         IEventSubscriber<IRelatedListChangeEvent> IRelatedList.RelatedListChange => RelatedListChange;

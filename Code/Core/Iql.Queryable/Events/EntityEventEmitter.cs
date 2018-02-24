@@ -30,10 +30,6 @@ namespace Iql.Queryable.Events
                 return;
             }
             _subscriptions.Remove(subscription);
-            if (_subscriptions.Count == 0)
-            {
-                SubscriptionActions = null;
-            }
         }
 
         public int Subscribe(Action<TEvent> propertyChangeEvent)
