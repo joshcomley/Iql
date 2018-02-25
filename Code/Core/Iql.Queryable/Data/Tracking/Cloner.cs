@@ -21,26 +21,33 @@ namespace Iql.Queryable.Data.Tracking
     }
     public static class Cloner
     {
-        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships)
+        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
             where T : class
         {
-            return (T)obj.Clone(dataContext, entityType, cloneRelationships);
+            return (T)obj.Clone(dataContext, entityType, cloneRelationships, cloneMap, mergeMap);
         }
 
         public static object Clone(this object obj, IDataContext dataContext, Type entityType,
-            RelationshipCloneMode cloneRelationships)
+            RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
         {
-            return obj.CloneInternal(dataContext, entityType, cloneRelationships, new Dictionary<object, object>());
+            var clonedObjects = cloneMap ?? new Dictionary<object, object>();
+            return obj.CloneInternal(dataContext, entityType, cloneRelationships, clonedObjects, mergeMap);
         }
 
-        public static List<T> CloneList<T>(this List<T> list, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> clonedObjects)
+        private static List<T> CloneList<T>(
+            this List<T> list, 
+            IDataContext dataContext, 
+            Type entityType, 
+            RelationshipCloneMode cloneRelationships,
+            Dictionary<object, object> clonedObjects,
+            Dictionary<object, object> mergeMap)
         {
             var newList = new List<T>();
             clonedObjects.Add(list, newList);
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < list.Count; i++)
             {
-                var clonedItem = list[i].CloneInternal(dataContext, entityType, cloneRelationships, clonedObjects);
+                var clonedItem = list[i].CloneInternal(dataContext, entityType, cloneRelationships, clonedObjects, mergeMap);
                 newList.Add((T)clonedItem);
             }
             return newList;
@@ -50,12 +57,18 @@ namespace Iql.Queryable.Data.Tracking
         {
             CloneListMethod = typeof(Cloner).GetMethod(
                 nameof(CloneList), 
-                BindingFlags.Public | BindingFlags.Static);
+                BindingFlags.NonPublic | BindingFlags.Static);
         }
 
-        public static MethodInfo CloneListMethod { get; set; }
+        private static MethodInfo CloneListMethod { get; set; }
 
-        private static object CloneInternal(this object obj, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> clonedObjects)
+        private static object CloneInternal(
+            this object obj, 
+            IDataContext dataContext, 
+            Type entityType, 
+            RelationshipCloneMode cloneRelationships, 
+            Dictionary<object, object> clonedObjects,
+            Dictionary<object, object> mergeMap)
         {
             if (obj == null)
             {
@@ -82,7 +95,8 @@ namespace Iql.Queryable.Data.Tracking
                             dataContext,
                             entityType,
                             cloneRelationships,
-                            clonedObjects
+                            clonedObjects,
+                            mergeMap
                         },
                         listElementType);
                 return newList;
@@ -96,7 +110,20 @@ namespace Iql.Queryable.Data.Tracking
                 //}
                 //return collection;
             }
-            var clone = Activator.CreateInstance(entityType);
+
+            object clone;
+            if (mergeMap != null && mergeMap.ContainsKey(obj))
+            {
+                clone = mergeMap[obj];
+            }
+            else
+            {
+                clone = Activator.CreateInstance(entityType);
+                if (mergeMap != null)
+                {
+                    mergeMap.Add(obj, clone);
+                }
+            }
             clonedObjects.Add(obj, clone);
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             for (var i = 0; i < entityConfiguration.Properties.Count; i++)
@@ -123,7 +150,7 @@ namespace Iql.Queryable.Data.Tracking
                                         cloneRelationships == RelationshipCloneMode.KeysOnly
                                             ? CloneKeysOnly(dataContext, property, value)
                                             : value.CloneInternal(dataContext, property.ElementType, cloneRelationships,
-                                                clonedObjects)
+                                                clonedObjects, mergeMap)
                                     );
                                 }
                                 else
@@ -148,7 +175,8 @@ namespace Iql.Queryable.Data.Tracking
                                                 ? CloneKeysOnly(dataContext, property, item)
                                                 : item.CloneInternal(dataContext, property.ElementType,
                                                     cloneRelationships,
-                                                    clonedObjects));
+                                                    clonedObjects,
+                                                    mergeMap));
                                         }
                                     }
 

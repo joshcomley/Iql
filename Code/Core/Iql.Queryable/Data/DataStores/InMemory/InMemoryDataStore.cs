@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
@@ -9,11 +10,25 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.Native;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
 {
     public class InMemoryDataStore : DataStore
     {
+        private RelationshipObserver _inMemoryRelationshipObserver;
+        private TrackingSetCollection _inMemoryTrackingSetCollection;
+
+        private TrackingSetCollection InMemoryTrackingSetCollection
+        {
+            get { return _inMemoryTrackingSetCollection = _inMemoryTrackingSetCollection ?? new TrackingSetCollection(this); }
+        }
+
+        private RelationshipObserver InMemoryRelationshipObserver
+        {
+            get { return _inMemoryRelationshipObserver = _inMemoryRelationshipObserver ?? new RelationshipObserver(DataContext, InMemoryTrackingSetCollection, true); }
+        }
+
         public InMemoryDataStore(IQueryableAdapterBase queryableAdapter)
         {
             QueryableAdapter = queryableAdapter;
@@ -21,49 +36,85 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public IQueryableAdapterBase QueryableAdapter { get; }
 
+        private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
+
         public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
             var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
                 .GetSourceByType(operation.Operation.EntityType);
-            var clone = operation.Operation.Entity.CloneAs(DataContext, operation.Operation.EntityType, RelationshipCloneMode.DoNotClone);
+
+            var clone = operation.Operation.Entity.CloneAs(
+                DataContext,
+                typeof(TEntity),
+                RelationshipCloneMode.Full,
+                null,
+                _cloneMap);
+
             var configuration = operation
                 .Operation
                 .DataContext
                 .EntityConfigurationContext
                 .GetEntityByType(operation.Operation.EntityType);
-            foreach (var property in configuration.Key.Properties)
-            {
-                if (property.Kind == PropertyKind.Key)
+
+            var rootTrackingSet = InMemoryTrackingSetCollection.TrackingSet<TEntity>();
+            rootTrackingSet.SetKey(clone,
+                () =>
                 {
-                    var oldId = clone.GetPropertyValue(property);
-                    if (property.ElementType == typeof(int))
+                    if (!rootTrackingSet.IsTracked(clone))
                     {
-                        clone.SetPropertyValue(property, NextIdInteger(data, property));
+                        rootTrackingSet.TrackEntity(clone, null, false);
                     }
-                    else if (property.ElementType == typeof(string))
+                    else
                     {
-                        clone.SetPropertyValue(property, NextIdString(data, property));
+                        rootTrackingSet.GetEntityState(clone).IsNew = false;
                     }
-                    if (!oldId.IsDefaultValue())
+                    foreach (var property in configuration.Key.Properties)
                     {
-                        var newId = clone.GetPropertyValue(property);
-                        foreach (var relationship in configuration.Relationships)
+                        if (property.Kind == PropertyKind.Key)
                         {
-                            switch (relationship.Kind)
+                            var oldId = clone.GetPropertyValue(property);
+                            if (property.ElementType == typeof(int))
                             {
-                                case RelationshipKind.OneToOne:
-                                    break;
-                                case RelationshipKind.OneToMany:
-                                    break;
+                                clone.SetPropertyValue(property, NextIdInteger(data, property));
+                            }
+                            else if (property.ElementType == typeof(string))
+                            {
+                                clone.SetPropertyValue(property, NextIdString(data, property));
+                            }
+                            if (!oldId.IsDefaultValue())
+                            {
+                                var newId = clone.GetPropertyValue(property);
+                                foreach (var relationship in configuration.Relationships)
+                                {
+                                    switch (relationship.Kind)
+                                    {
+                                        case RelationshipKind.OneToOne:
+                                            break;
+                                        case RelationshipKind.OneToMany:
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
+                });
+            var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(clone, typeof(TEntity));
+            foreach (var grouping in flattenObjectGraph)
+            {
+                var trackingSet = InMemoryTrackingSetCollection.TrackingSetByType(grouping.Key);
+                foreach (var entity in grouping.Value)
+                {
+                    if (!trackingSet.IsTracked(entity))
+                    {
+                        trackingSet.TrackEntity(entity, null, entity != clone);
+                    }
                 }
             }
+            InMemoryRelationshipObserver.ObserveAll(flattenObjectGraph);
             data.Add(clone);
             operation.Result.Success = true;
-            operation.Result.RemoteEntity = clone;
+            operation.Result.RemoteEntity = (TEntity)clone;
             return Task.FromResult(operation.Result);
         }
 
@@ -73,7 +124,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             foreach (var existingEntity in data)
             {
                 var value = (int)existingEntity.GetPropertyValue(property);
-                if(value > max)
+                if (value > max)
                 {
                     max = value;
                 }
@@ -106,7 +157,9 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation.Operation);
             if (index != -1)
             {
-                DataSet<TEntity>(operation.Operation)[index] = operation.Operation.Entity;
+                var entity = DataSet<TEntity>(operation.Operation)[index];
+                new SimplePropertyMerger(DataContext.EntityConfigurationContext.EntityType<TEntity>())
+                    .Merge(entity, operation.Operation.Entity);
             }
             return Task.FromResult(operation.Result);
         }
@@ -127,8 +180,8 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         {
             var q = (IInMemoryResult)
                 operation.Operation.Queryable.ToQueryWithAdapterBase(
-                QueryableAdapter, 
-                DataContext, 
+                QueryableAdapter,
+                DataContext,
                 null,
                 null);
             var lists = q.GetResults();
@@ -140,7 +193,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
             lists.Root = lists.Root.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone);
             operation.Result.Data = dictionary;
-            operation.Result.Root = (List<TEntity>) lists.Root;
+            operation.Result.Root = (List<TEntity>)lists.Root;
             return Task.FromResult(operation.Result);
         }
     }

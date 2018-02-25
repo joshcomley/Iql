@@ -253,7 +253,6 @@ namespace Iql.Queryable.Data.DataStores
             GetDataResult<TEntity> getDataResult;
             if (success)
             {
-                var root = response.Root.ToList();
                 ForAllDataStores(tracker =>
                 {
                     if (tracker == DataTracker)
@@ -266,6 +265,19 @@ namespace Iql.Queryable.Data.DataStores
                     }
                     else
                     {
+                        foreach (var entityType in response.Data)
+                        {
+                            foreach (var entity in entityType.Value)
+                            {
+                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                if (trackingSet.IsTracked(entity))
+                                {
+                                    var state = trackingSet.GetEntityState(entity);
+                                    trackingSet.TrackEntity(state.Entity, entity);
+                                    state.Reset();
+                                }
+                            }
+                        }
                         //tracker.TrackResults(response.Data, root);
                     }
                 });
@@ -383,13 +395,17 @@ namespace Iql.Queryable.Data.DataStores
                             .Entity;
                         if (result.Success)
                         {
-                            var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                                operationEntity, typeof(TEntity));
+                            //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                            //    operationEntity, typeof(TEntity));
+                            var rootDictionary = new Dictionary<Type, IList>();
+                            rootDictionary.Ensure(
+                                typeof(TEntity),
+                                () => new List<TEntity> {updateEntityOperation.Operation.Entity});
                             ForAnEntityAcrossAllDataStores(operationEntity, (tracker, state) =>
                             {
                                 if (state.Entity != operationEntity)
                                 {
-                                    tracker.TrackResults<TEntity>(flattenObjectGraph);
+                                    tracker.TrackResults<TEntity>(rootDictionary, null, true);
                                 }
                                 tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
                             });

@@ -25,7 +25,7 @@ namespace Iql.Queryable.Data.DataStores
             {
                 if (_relationshipObserver == null)
                 {
-                    _relationshipObserver = new RelationshipObserver(DataStore, TrackEntities);
+                    _relationshipObserver = new RelationshipObserver(DataContext, Tracking, TrackEntities);
                 }
                 return _relationshipObserver;
             }
@@ -40,7 +40,10 @@ namespace Iql.Queryable.Data.DataStores
             DataStore = dataStore;
         }
 
-        public List<TEntity> TrackResults<TEntity>(Dictionary<Type, IList> responseData, List<TEntity> responseRoot = null)
+        public List<TEntity> TrackResults<TEntity>(
+            Dictionary<Type, IList> responseData, 
+            List<TEntity> responseRoot = null,
+            bool mergeExistingOnly = false)
         {
             Dictionary<Type, IList> data;
             if (!responseData.ContainsKey(typeof(TEntity)))
@@ -76,23 +79,28 @@ namespace Iql.Queryable.Data.DataStores
                 data = new Dictionary<Type, IList>();
                 if (responseRoot != null)
                 {
-                    responseRoot = (List<TEntity>) TrackCollection(responseRoot, typeof(TEntity), data).ToList(typeof(TEntity));
+                    responseRoot = (List<TEntity>) TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly).ToList(typeof(TEntity));
                 }
                 // TODO: Implement tracking
                 foreach (var dataSet in responseData)
                 {
-                    TrackCollection(dataSet.Value, dataSet.Key, data);
+                    TrackCollection(dataSet.Value, dataSet.Key, data, mergeExistingOnly);
                 }
             }
             else
             {
                 data = responseData;
             }
-            RelationshipObserver.ObserveAll(data);
+
+            if (!mergeExistingOnly)
+            {
+                RelationshipObserver.ObserveAll(data);
+            }
             return responseRoot;
         }
 
-        private IList TrackCollection(IList set, Type type, Dictionary<Type, IList> data)
+        private IList TrackCollection(
+            IList set, Type type, Dictionary<Type, IList> data, bool mergeExistingOnly)
         {
             if (set.Count > 0)
             {
@@ -100,7 +108,7 @@ namespace Iql.Queryable.Data.DataStores
                 set = DataContext.EnsureTypedListByType(set, type, null, null, false, true);
 #endif
                 var trackingSet = Tracking.TrackingSetByType(type);
-                var states = trackingSet.TrackEntities(set, false);
+                var states = trackingSet.TrackEntities(set, false, !mergeExistingOnly);
                 trackingSet.ResetAll(states);
                 set = states.Select(s => s.Entity).EnumerableToList(type);
                 if (data.ContainsKey(type))

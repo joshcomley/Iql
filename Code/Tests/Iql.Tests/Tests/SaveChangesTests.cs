@@ -13,6 +13,22 @@ namespace Iql.Tests.Tests
     public class SaveChangesTests : TestsBase
     {
         [TestMethod]
+        public async Task AddingAnEntityWithANewChildEntityShouldPersistRelationshipKeys()
+        {
+            var db1 = new AppDbContext();
+
+            var clienType = new ClientType();
+            var client = new Client();
+            client.Type = clienType;
+            client.Name = "My client";
+
+            db1.Clients.Add(client);
+            await db1.SaveChanges();
+
+            Assert.AreEqual(1, AppDbContext.InMemoryDb.Clients[0].TypeId);
+        }
+
+        [TestMethod]
         public async Task ChangeSinglePropertyAndRevertAndChangeAgainAndSave()
         {
             // Set up

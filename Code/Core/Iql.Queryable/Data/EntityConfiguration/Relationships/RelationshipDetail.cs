@@ -75,6 +75,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             = new Dictionary<object, CompositeKey>();
         internal Dictionary<object, CompositeKey> InverseCompositeKeys { get; }
             = new Dictionary<object, CompositeKey>();
+
         public CompositeKey GetCompositeKey(object entity, bool inverse = false)
         {
             var dic = inverse

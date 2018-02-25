@@ -19,11 +19,13 @@ namespace Iql.Queryable.Data.Tracking
         where T : class
     {
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
+        private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
         public EntityConfiguration<T> EntityConfiguration { get; }
+        IEntityConfiguration ITrackingSet.EntityConfiguration => EntityConfiguration;
         public SimplePropertyMerger SimplePropertyMerger { get; }
 
         private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey { get; }
@@ -43,6 +45,13 @@ namespace Iql.Queryable.Data.Tracking
         }
 
         protected IProperty PersistenceKey { get; set; }
+
+        public void SetKey(object entity, Action action)
+        {            
+            _keyChangeAllower.IgnoreAndRunEvenIfAlreadyIgnored(action,
+                EntityConfiguration.Key.Properties.ToArray(),
+                entity);
+        }
 
         public bool IsTracked(object entity)
         {
@@ -144,14 +153,17 @@ namespace Iql.Queryable.Data.Tracking
             //DataStore.RelationshipObserver.Unobserve(entity, typeof(T));
         }
 
-        public List<IEntityStateBase> TrackEntities(IList data, bool isNew = true)
+        public List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true)
         {
             var result = new List<IEntityStateBase>();
             var typed = (List<T>)data;
             for (var i = 0; i < typed.Count; i++)
             {
                 var item = typed[i];
-                result.Add(TrackEntity(item, null, isNew));
+                if (allowNew || (!isNew && IsTracked(item)))
+                {
+                    result.Add(TrackEntity(item, null, isNew));
+                }
             }
 
             return result;
@@ -262,13 +274,16 @@ namespace Iql.Queryable.Data.Tracking
                 var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
                 if (property.Kind == PropertyKind.Key)
                 {
-                    entityState = GetEntityState(propertyChange.Entity);
-                    if (entityState.IsNew)
+                    if (!_keyChangeAllower.AreAnyIgnored(new[] {property}, propertyChange.Entity))
                     {
-                        var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
-                        if (!key.HasDefaultValue())
+                        entityState = GetEntityState(propertyChange.Entity);
+                        if (entityState.IsNew)
                         {
-                            throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                            var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
+                            if (!key.HasDefaultValue())
+                            {
+                                throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                            }
                         }
                     }
                 }
@@ -373,14 +388,18 @@ namespace Iql.Queryable.Data.Tracking
             if (EntitiesByObject.ContainsKey(entity))
             {
                 var state = EntitiesByObject[entity];
-                var asKeyString = state.Key.AsKeyString();
-                if (EntitiesByKey.ContainsKey(asKeyString))
+                var newKey = EntityConfiguration.GetCompositeKey(entity);
+                var oldKeyString = state.Key.AsKeyString();
+                var newKeyString = newKey.AsKeyString();
+                if (newKeyString != oldKeyString)
                 {
-                    EntitiesByKey.Remove(asKeyString);
+                    if (EntitiesByKey.ContainsKey(oldKeyString))
+                    {
+                        EntitiesByKey.Remove(oldKeyString);
+                    }
+                    EntitiesByKey.Add(newKeyString, state);
+                    state.Key = newKey;
                 }
-
-                state.Key = EntityConfiguration.GetCompositeKey(entity);
-                EntitiesByKey.Add(state.Key.AsKeyString(), state);
             }
         }
 

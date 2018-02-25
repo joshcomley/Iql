@@ -10,6 +10,78 @@ namespace Iql.Tests.Tests
     public class OneToManyRelationshipTests : TestsBase
     {
         [TestMethod]
+        public async Task TestRelationshipMaps()
+        {
+            // Set up
+            //var inMemoryDbClient1 = new Client { Id = 1, Name = "Test", TypeId = 1 };
+            //AppDbContext.InMemoryDb.Clients.Add(inMemoryDbClient1);
+            //AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2", TypeId = 2 });
+            //AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 1, Name = "Type 1" });
+            //AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 2, Name = "Type 2" });
+
+            var clientType1 = new ClientType();
+            clientType1.Name = "Type 1";
+            var clientType2 = new ClientType();
+            clientType2.Name = "Type 2";
+            Db.ClientTypes.Add(clientType1);
+            Db.ClientTypes.Add(clientType2);
+            await Db.SaveChanges();
+            var client = new Client();
+            client.Name = "Client 1";
+            Db.Clients.Add(client);
+
+            // Set to client type 1 via key
+            client.TypeId = clientType1.Id;
+            Assert.AreEqual(1, clientType1.Clients.Count);
+            Assert.AreEqual(0, clientType2.Clients.Count);
+            Assert.AreEqual(clientType1, client.Type);
+            Assert.AreEqual(clientType1.Id, client.TypeId);
+
+            // Set to client type 2 via key
+            client.TypeId = clientType2.Id;
+            Assert.AreEqual(0, clientType1.Clients.Count);
+            Assert.AreEqual(1, clientType2.Clients.Count);
+            Assert.AreEqual(clientType2, client.Type);
+            Assert.AreEqual(clientType2.Id, client.TypeId);
+
+            // Set to client type 1 via reference
+            client.Type = clientType1;
+            Assert.AreEqual(1, clientType1.Clients.Count);
+            Assert.AreEqual(0, clientType2.Clients.Count);
+            Assert.AreEqual(clientType1, client.Type);
+            Assert.AreEqual(clientType1.Id, client.TypeId);
+
+            // Set to client type 2 via reference
+            client.Type = clientType2;
+            Assert.AreEqual(0, clientType1.Clients.Count);
+            Assert.AreEqual(1, clientType2.Clients.Count);
+            Assert.AreEqual(clientType2, client.Type);
+            Assert.AreEqual(clientType2.Id, client.TypeId);
+
+            // Assign a type that isn't saved, yet
+            var clientType3 = new ClientType();
+            clientType3.Name = "Type 3";
+            client.Type = clientType3;
+            Assert.AreEqual(0, clientType1.Clients.Count);
+            Assert.AreEqual(0, clientType2.Clients.Count);
+            Assert.AreEqual(1, clientType3.Clients.Count);
+            Assert.AreEqual(clientType3, client.Type);
+            Assert.AreEqual(clientType3.Id, client.TypeId);
+
+            // Save the new type
+            await Db.SaveChanges();
+            // The TypeId property should have auto-updated
+            Assert.AreEqual(3, clientType3.Id);
+            Assert.AreEqual(clientType3.Id, client.TypeId);
+
+            // Assign by related list
+            clientType1.Clients.Add(client);
+            Assert.AreEqual(1, clientType1.Clients.Count);
+            Assert.AreEqual(0, clientType2.Clients.Count);
+            Assert.AreEqual(0, clientType3.Clients.Count);
+        }
+
+        [TestMethod]
         public async Task ExpandShouldIncludeExpandedEntities()
         {
             InsertData();
