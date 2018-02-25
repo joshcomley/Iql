@@ -13,6 +13,8 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var db2 = new AppDbContext();
+            db1.Synchronicity = "db";
+            db2.Synchronicity = db1.Synchronicity;
 
             var client = new Client();
             client.Name = "My client";
@@ -42,6 +44,8 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var db2 = new AppDbContext();
+            db1.Synchronicity = "db";
+            db2.Synchronicity = db1.Synchronicity;
 
             var client = new Client();
             client.Name = "My client";
@@ -96,6 +100,8 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var db2 = new AppDbContext();
+            db1.Synchronicity = "db";
+            db2.Synchronicity = db1.Synchronicity;
 
             var clienType = new ClientType();
             var client = new Client();

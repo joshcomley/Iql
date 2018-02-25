@@ -473,7 +473,8 @@ namespace Iql.Queryable.Data.DataStores
                     dataTrackersDealtWith.Add(dataTracker, dataTracker);
                 }
 
-                if (dataTracker.DataContext.GetType() == DataTracker.DataContext.GetType())
+                if (dataTracker.DataContext.GetType() == DataTracker.DataContext.GetType() &&
+                    dataTracker.DataContext.Synchronicity == DataTracker.DataContext.Synchronicity)
                 {
                     action(dataTracker);
                 }
