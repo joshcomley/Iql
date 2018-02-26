@@ -1,5 +1,8 @@
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNet;
+#if TypeScript
+using Iql.Parsing;
+#endif
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 
@@ -21,9 +24,17 @@ namespace Iql.DotNet
             );
         }
 
-        public LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql) where TEntity : class
+        public LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        ) where TEntity : class
         {
-            return new IqlToDotNetConverter().ConvertIqlToExpression<TEntity>(iql);
+            return new IqlToDotNetConverter().ConvertIqlToExpression<TEntity>(iql
+#if TypeScript
+                , evaluateContext
+#endif
+            );
         }
     }
 }

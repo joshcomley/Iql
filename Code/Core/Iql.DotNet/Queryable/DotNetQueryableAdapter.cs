@@ -50,7 +50,11 @@ namespace Iql.DotNet.Queryable
                 adapter,
                 rootEntityType);
             parser.IsFilter = isFilter;
-            var expression = parser.Parse(operation.Expression);
+            var expression = parser.Parse(operation.Expression
+#if TypeScript
+                , null
+#endif
+            );
             var lambda = Expression.Lambda(expression.Expression, parser.RootEntity);
             return lambda;
         }

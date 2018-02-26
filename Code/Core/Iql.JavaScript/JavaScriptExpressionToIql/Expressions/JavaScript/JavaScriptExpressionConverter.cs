@@ -1,5 +1,8 @@
 using System.Linq.Expressions;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
+#if TypeScript
+using Iql.Parsing;    
+#endif
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 

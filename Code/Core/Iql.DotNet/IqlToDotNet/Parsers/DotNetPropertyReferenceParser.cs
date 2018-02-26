@@ -9,7 +9,11 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
         {
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(
-                    Expression.PropertyOrField(parser.Parse(action.Parent).Expression, action.PropertyName)
+                    Expression.PropertyOrField(parser.Parse(action.Parent
+#if TypeScript
+                        , null
+#endif
+                    ).Expression, action.PropertyName)
                 );
             return expression;
         }

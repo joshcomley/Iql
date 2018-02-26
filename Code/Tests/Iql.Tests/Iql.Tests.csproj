@@ -4,6 +4,12 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Configurations>Debug;Release;TypeScript Debug</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
+    <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETCOREAPP2_0;TypeScript</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

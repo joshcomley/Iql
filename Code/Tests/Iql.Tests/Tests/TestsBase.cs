@@ -15,7 +15,7 @@ namespace Iql.Tests.Tests
         static TestsBase()
         {
 #if TypeScript
-            IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
+            IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionConverter();
 #else
             IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
 #endif

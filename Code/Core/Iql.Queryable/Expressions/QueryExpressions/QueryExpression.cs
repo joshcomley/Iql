@@ -1,3 +1,4 @@
+using System;
 using Iql.Parsing;
 using Iql.Parsing.Extensions;
 
@@ -92,7 +93,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                             , new EvaluateContext
                             {
                                 Context = this,
-                                Evaluate = n => Evaluator.Eval(n)
+                                Evaluate = n => Evaluator.Eval<Func<object, object>>(n)
                             }
 #endif
                                 );
@@ -106,7 +107,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                             , new EvaluateContext
                             {
                                 Context = this,
-                                Evaluate = n => Evaluator.Eval(n)
+                                Evaluate = n => Evaluator.Eval<Func<object, object>>(n)
                             }
 #endif
                             );

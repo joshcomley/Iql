@@ -1,4 +1,5 @@
-﻿using Iql.DotNet;
+﻿#if !TypeScript
+using Iql.DotNet;
 using Iql.DotNet.IqlToDotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
@@ -8,7 +9,6 @@ using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.Serialization
 {
-#if !TypeScript
     [TestClass]
     public class IqlSerializationTests
     {
@@ -82,17 +82,18 @@ namespace Iql.Tests.Tests.Serialization
         public void TestDeserializeStringConcatenationFromXmlAndApply()
         {
             IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")");
+            var xml = IqlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id);
             var expression = IqlSerializer.DeserializeFromXml(xml);
             var query = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToFunction<Client, string>(expression);
 
             var client = new Client();
             client.Name = "Brandless";
             client.Description = "The best company";
+            client.Id = 12;
             var compiledQuery = query.Compile();
             var result = compiledQuery.Invoke(client);
-            Assert.AreEqual($"{client.Name} ({client.Description})", result);
+            Assert.AreEqual($"{client.Name} ({client.Description}) - {client.Id}", result);
         }
     }
-#endif
 }
+#endif

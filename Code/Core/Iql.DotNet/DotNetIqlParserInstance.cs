@@ -15,12 +15,24 @@ namespace Iql.DotNet
 
         public ParameterExpression RootEntity { get; }
 
-        public override DotNetOutput Parse(IqlExpression expression)
+        public override DotNetOutput Parse(IqlExpression expression
+#if TypeScript
+                , EvaluateContext evaluateContext
+#endif
+        )
         {
-            return new DotNetOutput(RootEntity, ParseAsExpression(expression));
+            return new DotNetOutput(RootEntity, ParseAsExpression(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            ));
         }
 
-        private Expression ParseAsExpression(IqlExpression expression)
+        private Expression ParseAsExpression(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
         {
             while (true)
             {

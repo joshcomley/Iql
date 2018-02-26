@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Queryable.Extensions;
 
 namespace Iql.DotNet.IqlToDotNet.Parsers
 {
@@ -24,16 +27,50 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
             var isStringComparison =
                 (action.Type == IqlExpressionType.IsEqualTo || action.Type == IqlExpressionType.IsNotEqualTo) &&
                 (IsString(action.Left) || IsString(action.Right));
-            var left = parser.Parse(action.Left).Expression;
-            var right = parser.Parse(action.Right).Expression;
+            var left = parser.Parse(action.Left
+#if TypeScript
+                , null
+#endif
+            ).Expression;
+            var right = parser.Parse(action.Right
+#if TypeScript
+                , null
+#endif
+            ).Expression;
             if (isStringComparison && !parser.Data.AlreadyCoalesced.Contains(action))
             {
                 left = CoalesceOrUpperCase(left);
                 right = CoalesceOrUpperCase(right);
             }
 
+            MethodInfo method = null;
+            // Deal with string concatenation
+            var @operator = ResolveOperator(action);
+            if (@operator == ExpressionType.Add)
+            {
+                method = (left.Type == typeof(string) || right.Type == typeof(string)) ? ConcatMethod : null;
+                if (left.Type == typeof(string) && right.Type != typeof(string))
+                {
+                    right = AsToString(right);
+                }
+                if (right.Type == typeof(string) && left.Type != typeof(string))
+                {
+                    left = AsToString(left);
+                }
+            }
+
             return new IqlFinalExpression<Expression>(
-                Expression.MakeBinary(ResolveOperator(action), left, right, false, (left.Type == typeof(string) || right.Type == typeof(string)) ? ConcatMethod : null));
+                Expression.MakeBinary(@operator, left, right, false, method));
+        }
+
+        private static Dictionary<Type, MethodInfo> _toStringMethods = new Dictionary<Type, MethodInfo>();
+        private static Expression AsToString(Expression expression)
+        {
+            MethodInfo toStringMethod = _toStringMethods.Ensure(expression.Type,
+                () => expression.Type.GetMethods()
+                    .First(m => m.Name == nameof(ToString) && m.GetParameters().Length == 0));
+            expression = Expression.Call(expression, toStringMethod);
+            return expression;
         }
 
         private static MethodInfo ConcatMethod { get; } = typeof(string).GetMethod(nameof(string.Concat), new[] { typeof(string), typeof(string) });
