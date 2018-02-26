@@ -13,7 +13,7 @@ namespace Iql.Queryable.Data
 {
     public interface IDataContext
     {
-        string Synchronicity { get; set; }
+        string SynchronicityKey { get; set; }
         EvaluateContext EvaluateContext { get; set; }
         IDataStore DataStore { get; }
         EntityConfigurationBuilder EntityConfigurationContext { get; set; }

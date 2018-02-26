@@ -2,9 +2,9 @@ namespace Iql.Queryable.Expressions
 {
     public class Evaluator
     {
-        public static object Eval(object input)
+        public static TOutput Eval<TOutput>(string input)
         {
-            return input;
+            return default(TOutput);
         }
     }
 }

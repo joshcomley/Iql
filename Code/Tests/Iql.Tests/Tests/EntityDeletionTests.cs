@@ -66,8 +66,8 @@ namespace Iql.Tests.Tests
             var people1 = await db1.People.ToList();
 
             var db2 = new AppDbContext();
-            db1.Synchronicity = "db";
-            db2.Synchronicity = db1.Synchronicity;
+            db1.SynchronicityKey = "db";
+            db2.SynchronicityKey = db1.SynchronicityKey;
             var people2 = await db2.People.ToList();
             var personQueryList = await db2.People.Where(p => p.Id == 1).ToList();
             var localPerson1 = people2[0];

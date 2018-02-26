@@ -15,6 +15,13 @@ namespace Iql.Queryable.Data.EntityConfiguration
     {
         private readonly EntityConfigurationBuilder _builder;
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
+        public Func<T, string> DefaultDisplayFormatter { get; set; }
+
+        Func<object, string> IEntityConfiguration.DefaultDisplayFormatter
+        {
+            get { return _ => DefaultDisplayFormatter((T)_); }
+            set => DefaultDisplayFormatter = value;
+        }
 
         public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
         {

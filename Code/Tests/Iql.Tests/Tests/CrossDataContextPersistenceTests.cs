@@ -13,8 +13,8 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var db2 = new AppDbContext();
-            db1.Synchronicity = "db";
-            db2.Synchronicity = db1.Synchronicity;
+            db1.SynchronicityKey = "db";
+            db2.SynchronicityKey = db1.SynchronicityKey;
 
             var client = new Client();
             client.Name = "My client";
@@ -44,8 +44,8 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var db2 = new AppDbContext();
-            db1.Synchronicity = "db";
-            db2.Synchronicity = db1.Synchronicity;
+            db1.SynchronicityKey = "db";
+            db2.SynchronicityKey = db1.SynchronicityKey;
 
             var client = new Client();
             client.Name = "My client";
@@ -100,8 +100,8 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var db2 = new AppDbContext();
-            db1.Synchronicity = "db";
-            db2.Synchronicity = db1.Synchronicity;
+            db1.SynchronicityKey = "db";
+            db2.SynchronicityKey = db1.SynchronicityKey;
 
             var clienType = new ClientType();
             var client = new Client();
@@ -120,17 +120,35 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(client.Name, client.Name);
             Assert.AreEqual(client.Name, db2Clients[0].Name);
             Assert.AreEqual(client.Name, db1ClientTypes[0].Clients[0].Name);
-            //Assert.AreSame(client, db1Client);
-            //Assert.AreSame(client, db1Clientb);
-            //Assert.AreNotSame(client, db2Client);
+        }
 
-            //var newName = "My modified client";
-            //AppDbContext.InMemoryDb.Clients[0].Name = newName;
-            //await db1.Clients.Single(c => c.Id == 1);
+        [TestMethod]
+        public async Task PersistingAnEntityDeletionFromOneSycnrhonisedDataContextShouldRemoveFromRelatedDataContexts()
+        {
+            var db1 = new AppDbContext();
+            var db2 = new AppDbContext();
+            db1.SynchronicityKey = "db";
+            db2.SynchronicityKey = db1.SynchronicityKey;
 
-            //Assert.AreEqual(newName, db1Client.Name);
-            //Assert.AreEqual(newName, db2Client.Name);
-            //Assert.AreEqual(newName, client.Name);
+            var clientType = new ClientType();
+            clientType.Name = "My new type";
+
+            db1.ClientTypes.Add(clientType);
+
+            await db1.SaveChanges();
+
+            var db1Clients = await db1.ClientTypes.ToList();
+            var db2Clients = await db2.ClientTypes.ToList();
+
+            Assert.AreEqual(1, db1Clients.Count);
+            Assert.AreEqual(db1Clients.Count, db2Clients.Count);
+
+            db1.ClientTypes.Delete(clientType);
+
+            await db1.SaveChanges();
+
+            Assert.AreEqual(0, db1Clients.Count);
+            Assert.AreEqual(db1Clients.Count, db2Clients.Count);
         }
     }
 }

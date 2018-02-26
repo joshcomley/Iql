@@ -13,7 +13,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
             Evaluate = evaluate;
         }
 
-        public override ExpressionResult<IqlExpression> Parse<TEntity>
+        public override ExpressionResult<IqlExpression> ConvertExpressionToIql<TEntity>
         (
             QueryExpression filter
         )

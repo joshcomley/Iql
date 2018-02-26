@@ -19,9 +19,9 @@ namespace Iql.DotNet.Serialization
                 .ToArray();
         }
 
-        public static string SerializeToXml<T>(Expression<Func<T, bool>> expression)
+        public static string SerializeToXml<TEntity, TOut>(Expression<Func<TEntity, TOut>> expression)
         {
-            return SerializeToXml(ExpressionToIqlExpressionParser<T>.Parse(expression));
+            return SerializeToXml(ExpressionToIqlExpressionParser<TEntity>.Parse(expression));
         }
 
         public static string SerializeToXml(IqlExpression expression)

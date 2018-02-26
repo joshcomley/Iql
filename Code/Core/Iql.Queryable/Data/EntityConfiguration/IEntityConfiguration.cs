@@ -8,6 +8,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IEntityConfiguration
     {
+        Func<object, string> DefaultDisplayFormatter { get; set; }
         List<IRelationship> Relationships { get; }
         List<IProperty> Properties { get; }
         IEntityKey Key { get; }

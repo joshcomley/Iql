@@ -28,9 +28,9 @@ namespace Iql.Tests.Context
             {
                 IqlQueryableAdapter.ExpressionConverter = () =>
 #if TypeScript
-                    new JavaScriptExpressionToIqlConverter();
+                    new JavaScriptExpressionConverter();
 #else
-                    new DotNetExpressionToIqlConverter();
+                    new DotNetExpressionConverter();
 #endif
             }
         }

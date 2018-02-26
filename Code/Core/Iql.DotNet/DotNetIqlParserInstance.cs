@@ -17,7 +17,7 @@ namespace Iql.DotNet
 
         public override DotNetOutput Parse(IqlExpression expression)
         {
-            return new DotNetOutput(ParseAsExpression(expression));
+            return new DotNetOutput(RootEntity, ParseAsExpression(expression));
         }
 
         private Expression ParseAsExpression(IqlExpression expression)

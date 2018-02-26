@@ -1,11 +1,13 @@
+using System.Linq.Expressions;
+using Iql.DotNet.IqlToDotNet;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.DotNet
 {
-    public class DotNetExpressionToIqlConverter : IExpressionToIqlConverter
+    public class DotNetExpressionConverter : IExpressionConverter
     {
-        public ExpressionResult<IqlExpression> Parse<TEntity>(QueryExpression filter) where TEntity : class
+        public ExpressionResult<IqlExpression> ConvertExpressionToIql<TEntity>(QueryExpression filter) where TEntity : class
         {
             var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
             var lambdaExpression = whereQueryExpression.GetExpression();
@@ -17,6 +19,11 @@ namespace Iql.DotNet
 #endif
                     )
             );
+        }
+
+        public LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql) where TEntity : class
+        {
+            return new IqlToDotNetConverter().ConvertIqlToExpression<TEntity>(iql);
         }
     }
 }

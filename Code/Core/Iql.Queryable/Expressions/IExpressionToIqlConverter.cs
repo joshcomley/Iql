@@ -4,7 +4,7 @@ namespace Iql.Queryable.Expressions
 {
     public interface IExpressionToIqlConverter
     {
-        ExpressionResult<IqlExpression> Parse<TEntity>(QueryExpression filter)
+        ExpressionResult<IqlExpression> ConvertExpressionToIql<TEntity>(QueryExpression filter)
             where TEntity : class;
     }
 }

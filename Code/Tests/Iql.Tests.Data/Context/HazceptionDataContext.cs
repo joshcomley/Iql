@@ -26,7 +26,7 @@ namespace Iql.Tests.Context
 #if TypeScript
                 IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionToIqlConverter();
 #else
-                IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionToIqlConverter();
+                IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
 #endif
             }
             InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();

@@ -1,29 +1,18 @@
-using System;
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNet;
 using Iql.Queryable.Expressions;
 
 namespace Iql.DotNet
 {
-    public class IqlToDotNetConverter : IIqlToNativeConverter
+    public class IqlToDotNetConverter : IIqlToExpressionConverter
     {
-        public Expression<LambdaExpression> Parse<TEntity>(IqlExpression expression) where TEntity : class
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    public static class IqlToDotNetParser
-    {
-        public static LambdaExpression GetExpression(IqlExpression iql, Type rootEntityType)
+        public LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql) where TEntity : class
         {
             var adapter = new DotNetIqlExpressionAdapter("entity");
-            var parser = new DotNetIqlParserInstance(adapter, rootEntityType);
+            var parser = new DotNetIqlParserInstance(adapter, typeof(TEntity));
             parser.IsFilter = true;
-            var javascriptExpression = parser.Parse(iql);
-            throw new NotImplementedException();
-            //var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression);
-            //return javascript;
+            var dotNetExpression = parser.Parse(iql);
+            return dotNetExpression.ToLambda();
         }
     }
 }

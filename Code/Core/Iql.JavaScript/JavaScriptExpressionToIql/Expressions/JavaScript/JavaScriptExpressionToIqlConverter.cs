@@ -15,7 +15,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
 
         public virtual Func<string, object> Evaluate { get; set; }
 
-        public virtual ExpressionResult<IqlExpression> Parse<TEntity>
+        public virtual ExpressionResult<IqlExpression> ConvertExpressionToIql<TEntity>
         (
             QueryExpression filter
         )

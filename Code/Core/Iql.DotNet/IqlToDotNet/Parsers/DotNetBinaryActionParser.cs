@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Iql.DotNet.IqlToDotNet.Parsers
 {
@@ -30,9 +31,12 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
                 left = CoalesceOrUpperCase(left);
                 right = CoalesceOrUpperCase(right);
             }
+
             return new IqlFinalExpression<Expression>(
-                Expression.MakeBinary(ResolveOperator(action), left, right));
+                Expression.MakeBinary(ResolveOperator(action), left, right, false, (left.Type == typeof(string) || right.Type == typeof(string)) ? ConcatMethod : null));
         }
+
+        private static MethodInfo ConcatMethod { get; } = typeof(string).GetMethod(nameof(string.Concat), new[] { typeof(string), typeof(string) });
 
         static Expression CoalesceOrUpperCase(Expression expression)
         {
@@ -86,7 +90,7 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
             }
             throw new NotSupportedException(
                 $"{nameof(IqlExpressionType)} of type {action.Type} is not supported for binary operations");
-            
+
         }
     }
 }
