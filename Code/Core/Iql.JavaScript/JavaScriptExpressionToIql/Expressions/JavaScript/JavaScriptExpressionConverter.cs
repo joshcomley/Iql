@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
 #if TypeScript
-using Iql.Parsing;    
+using Iql.Parsing;
 #endif
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
@@ -26,7 +26,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
             , evaluateContext
 #endif
             );
-            return Evaluator.Eval<Expression<TEntity>>(javascript.Expression);
+            return (LambdaExpression)Evaluator.Eval(javascript.Expression);
         }
     }
 }

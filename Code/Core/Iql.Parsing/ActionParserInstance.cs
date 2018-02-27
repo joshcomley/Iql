@@ -54,7 +54,7 @@ namespace Iql.Parsing
 #if TypeScript
                         , evaluateContext
 #endif
-                        ).ToCodeString();
+                        ).ToCSharpString();
                     });
                     return str1;
                 }

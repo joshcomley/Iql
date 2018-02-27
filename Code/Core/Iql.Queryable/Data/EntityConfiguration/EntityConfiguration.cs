@@ -15,13 +15,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
     {
         private readonly EntityConfigurationBuilder _builder;
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
-        public Func<T, string> DefaultDisplayFormatter { get; set; }
 
-        Func<object, string> IEntityConfiguration.DefaultDisplayFormatter
-        {
-            get { return _ => DefaultDisplayFormatter((T)_); }
-            set => DefaultDisplayFormatter = value;
-        }
+        public ValidationCollection<T> EntityValidation { get; } = new ValidationCollection<T>();
+        public DisplayFormatting<T> DisplayFormatting { get; } = new DisplayFormatting<T>();
+
+        IDisplayFormatting IEntityConfiguration.DisplayFormatting => DisplayFormatting;
+        IValidationCollection IEntityConfiguration.EntityValidation => EntityValidation;
 
         public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
         {
@@ -281,6 +280,33 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 definition.Relationship = relationship;
             }
             TrySetKey(iql.PropertyName);
+            return this;
+        }
+
+        public EntityConfiguration<T> DefineDisplayFormatter(Expression<Func<T, string>> formatter,
+            string key = null)
+        {
+            DisplayFormatting.Set(formatter, key);
+            return this;
+        }
+
+        public EntityConfiguration<T> DefineEntityValidation(Expression<Func<T, bool>> validation,
+            string key,
+            string message)
+        {
+            EntityValidation.Add(validation, key, message);
+            return this;
+        }
+
+        public EntityConfiguration<T> DefinePropertyValidation<TProperty>(
+            Expression<Func<T, TProperty>> property,
+            Expression<Func<T, bool>> validation,
+            string key,
+            string message)
+        {
+            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty));
+            var validationCollection = (ValidationCollection<T>)propertyDefinition.Validation;
+            validationCollection.Add(validation, key, message);
             return this;
         }
 

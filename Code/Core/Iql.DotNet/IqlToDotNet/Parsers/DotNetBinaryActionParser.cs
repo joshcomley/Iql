@@ -48,7 +48,7 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
             var @operator = ResolveOperator(action);
             if (@operator == ExpressionType.Add)
             {
-                method = (left.Type == typeof(string) || right.Type == typeof(string)) ? ConcatMethod : null;
+                method = left.Type == typeof(string) || right.Type == typeof(string) ? ConcatMethod : null;
                 if (left.Type == typeof(string) && right.Type != typeof(string))
                 {
                     right = AsToString(right);
@@ -63,10 +63,10 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
                 Expression.MakeBinary(@operator, left, right, false, method));
         }
 
-        private static Dictionary<Type, MethodInfo> _toStringMethods = new Dictionary<Type, MethodInfo>();
+        private static readonly Dictionary<Type, MethodInfo> ToStringMethods = new Dictionary<Type, MethodInfo>();
         private static Expression AsToString(Expression expression)
         {
-            MethodInfo toStringMethod = _toStringMethods.Ensure(expression.Type,
+            MethodInfo toStringMethod = ToStringMethods.Ensure(expression.Type,
                 () => expression.Type.GetMethods()
                     .First(m => m.Name == nameof(ToString) && m.GetParameters().Length == 0));
             expression = Expression.Call(expression, toStringMethod);
@@ -79,7 +79,11 @@ namespace Iql.DotNet.IqlToDotNet.Parsers
         {
             if (expression is ConstantExpression)
             {
-                return Expression.Constant(((expression as ConstantExpression).Value as string).ToUpper());
+                var constantExpression = expression as ConstantExpression;
+                return Expression.Constant(
+                    constantExpression.Value == null
+                        ? constantExpression.Value
+                        : ((expression as ConstantExpression).Value as string).ToUpper());
             }
             return Expression.Condition(Expression.Equal(expression, Expression.Constant(null)), expression, Expression.Call(expression, nameof(string.ToUpper), new Type[] { }));
         }

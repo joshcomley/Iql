@@ -1,9 +1,9 @@
 using Iql.Queryable;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
-using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Events;
 using System;
+using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Data.Crud.State;
 
 
@@ -1994,12 +1994,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -2509,12 +2503,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -3356,12 +3344,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -3954,12 +3936,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -4272,12 +4248,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -4680,12 +4650,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -5043,24 +5007,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			validationResult.AddPropertyValidationResult(this.ValidateName());
-			return validationResult;
-		}
-		public PropertyValidationResult ValidateName()
-		{
-			var validationResult = new PropertyValidationResult(this.GetType(), "Name");
-			var entity = this;
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter a loading name");
-			
-			}
-			return validationResult;
-		}
 	
 	}
 }
@@ -5677,12 +5623,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -6428,66 +6368,6 @@ namespace Tunnel.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter either a title or a description");
-			
-			}
-			if(!(true))
-			{
-				validationResult.AddFailure("If the name is 'Josh' please match it in the description");
-			
-			}
-			validationResult.AddPropertyValidationResult(this.ValidateTitle());
-			validationResult.AddPropertyValidationResult(this.ValidateDescription());
-			return validationResult;
-		}
-		public PropertyValidationResult ValidateTitle()
-		{
-			var validationResult = new PropertyValidationResult(this.GetType(), "Title");
-			var entity = this;
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter a valid person title");
-			
-			}
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter less than fifty characters");
-			
-			}
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter at least three characters for the person's title");
-			
-			}
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter a valid report title");
-			
-			}
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter less than five characters");
-			
-			}
-			return validationResult;
-		}
-		public PropertyValidationResult ValidateDescription()
-		{
-			var validationResult = new PropertyValidationResult(this.GetType(), "Description");
-			var entity = this;
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter a valid person description");
-			
-			}
-			return validationResult;
-		}
 	
 	}
 }
@@ -6845,12 +6725,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -7277,12 +7151,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -7633,12 +7501,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -8027,12 +7889,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -8421,12 +8277,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -8625,12 +8475,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -9064,12 +8908,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -9534,12 +9372,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -9935,12 +9767,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -10298,12 +10124,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -10692,29 +10512,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			validationResult.AddPropertyValidationResult(this.ValidateNotes());
-			return validationResult;
-		}
-		public PropertyValidationResult ValidateNotes()
-		{
-			var validationResult = new PropertyValidationResult(this.GetType(), "Notes");
-			var entity = this;
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter some actions taken notes");
-			
-			}
-			if(!(true))
-			{
-				validationResult.AddFailure("Please enter at least five characters for notes");
-			
-			}
-			return validationResult;
-		}
 	
 	}
 }
@@ -11179,12 +10976,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -11542,12 +11333,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -11677,12 +11462,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -12244,12 +12023,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -13508,12 +13281,6 @@ namespace Tunnel.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }

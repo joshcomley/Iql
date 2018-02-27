@@ -462,7 +462,10 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Loading, true)
 				.DefineProperty(p => p.CreatedByUser, true)
 				.DefineCollectionProperty(p => p.Types, p => p.TypesCount)
-				.DefineCollectionProperty(p => p.Reports, p => p.ReportsCount);
+				.DefineCollectionProperty(p => p.Reports, p => p.ReportsCount)
+				//.DefineEntityValidation(true, "7e270199-b972-4a97-9697-73095fdfeb5d", "Please enter either a title or a description")
+				//.DefineEntityValidation(true, "8ec85fa7-4b5a-4d3f-8541-46aad0ad28ef", "If the name is 'Josh' please match it in the description")
+		        ;
 			
 			builder.EntityType<Person>()
 				.HasOne(p => p.Client)

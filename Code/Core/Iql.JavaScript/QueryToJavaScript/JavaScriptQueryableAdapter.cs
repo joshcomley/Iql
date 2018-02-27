@@ -55,7 +55,7 @@ namespace Iql.JavaScript.QueryToJavaScript
 #endif
             );
             var expression = new JavaScriptExpression(adapter.RootVariableName,
-                javaScriptOutput.ToCodeString());
+                javaScriptOutput.ToCSharpString());
             return expression;
         }
     }

@@ -93,7 +93,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                             , new EvaluateContext
                             {
                                 Context = this,
-                                Evaluate = n => Evaluator.Eval<Func<object, object>>(n)
+                                Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
                             }
 #endif
                                 );
@@ -107,7 +107,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                             , new EvaluateContext
                             {
                                 Context = this,
-                                Evaluate = n => Evaluator.Eval<Func<object, object>>(n)
+                                Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
                             }
 #endif
                             );

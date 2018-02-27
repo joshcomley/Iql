@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Iql.DotNet.Expressions;
 using Iql.DotNet.Visitors;
 
 namespace Iql.DotNet.Extensions
@@ -11,6 +12,11 @@ namespace Iql.DotNet.Extensions
         {
             return new ExpressionContainsRootVisitor(rootType, rootVariableName)
                 .ContainsRoot(member);
+        }
+
+        public static string ToCSharpString(this Expression expression)
+        {
+            return ExpressionCSharpStringBuilder.ExpressionToString(expression);
         }
     }
 }

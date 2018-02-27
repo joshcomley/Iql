@@ -11,7 +11,7 @@ namespace Iql.OData.Parsers
             _code = code;
         }
 
-        public string ToCodeString()
+        public string ToCSharpString()
         {
             return _code;
         }

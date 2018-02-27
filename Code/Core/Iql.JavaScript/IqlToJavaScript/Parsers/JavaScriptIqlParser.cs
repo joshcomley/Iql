@@ -21,7 +21,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
                 , evaluateContext
 #endif
                 );
-            var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression.ToCodeString());
+            var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression.ToCSharpString());
             return javascript;
         }
     }

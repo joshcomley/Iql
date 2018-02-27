@@ -1,5 +1,8 @@
 ﻿#if !TypeScript
+using System;
+using System.Linq.Expressions;
 using Iql.DotNet;
+using Iql.DotNet.Extensions;
 using Iql.DotNet.IqlToDotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
@@ -93,6 +96,72 @@ namespace Iql.Tests.Tests.Serialization
             var compiledQuery = query.Compile();
             var result = compiledQuery.Invoke(client);
             Assert.AreEqual($"{client.Name} ({client.Description}) - {client.Id}", result);
+        }
+
+        [TestMethod]
+        public void TestDeserializeComplexExpression()
+        {
+            AssertCode(
+                c => !(c.Name != "Josh"),
+                @"entity => !((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != ""JOSH""))");
+        }
+
+        [TestMethod]
+        public void TestDeserializeStringTrimExpression()
+        {
+            AssertCode(
+                c => !string.IsNullOrWhiteSpace(c.Name) || !string.IsNullOrWhiteSpace(c.Description),
+                @"entity => (!(((((entity.Name.Trim() == null) ? entity.Name.Trim() : entity.Name.Trim().ToUpper()) == """") || (((entity.Name.Trim() == null) ? entity.Name.Trim() : entity.Name.Trim().ToUpper()) == null))) || !(((((entity.Description.Trim() == null) ? entity.Description.Trim() : entity.Description.Trim().ToUpper()) == """") || (((entity.Description.Trim() == null) ? entity.Description.Trim() : entity.Description.Trim().ToUpper()) == null))))");
+        }
+
+        [TestMethod]
+        public void TestDeserializeStringLengthExpression()
+        {
+            AssertCode(
+                s => s.Name != null && s.Name.Length > 50,
+                @"entity => ((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != null) && (entity.Name.Length > 50))");
+        }
+
+        [TestMethod]
+        public void TestDeserializeParenthesisExpression()
+        {
+            AssertCode(
+                s => (s.Name == null || s.Name.Length > 50) && (s.Name == "Jim") ,
+                @"entity => (((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) == null) || (entity.Name.Length > 50)) && (((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) == ""JIM""))");
+        }
+
+
+        [TestMethod]
+        public void TestDeserializeStringSubStringWithoutTakeExpression()
+        {
+            //
+            AssertCode(
+                s => s.Name != null && s.Name.Substring(2) == "hi",
+                @"entity => ((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != null) && (((entity.Name.Substring(2) == null) ? entity.Name.Substring(2) : entity.Name.Substring(2).ToUpper()) == ""HI""))"
+            );
+        }
+
+        [TestMethod]
+        public void TestDeserializeStringSubStringWithTakeExpression()
+        {
+            //
+            AssertCode(
+                s => s.Name != null && s.Name.Substring(2, 3) == "hi",
+                @"entity => ((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != null) && (((entity.Name.Substring(2, 3) == null) ? entity.Name.Substring(2, 3) : entity.Name.Substring(2, 3).ToUpper()) == ""HI""))"
+            );
+        }
+
+        private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
+        {
+            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+            var xml = IqlSerializer.SerializeToXml(
+                expression);
+            var iqlExpression = IqlSerializer.DeserializeFromXml(xml);
+            var query = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToFunction<Client, bool>(iqlExpression);
+            var code = query.ToCSharpString();
+            Assert.AreEqual(
+                expected,
+                code);
         }
     }
 }

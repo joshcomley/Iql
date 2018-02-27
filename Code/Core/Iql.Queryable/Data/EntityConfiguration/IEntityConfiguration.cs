@@ -8,9 +8,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IEntityConfiguration
     {
-        Func<object, string> DefaultDisplayFormatter { get; set; }
-        List<IRelationship> Relationships { get; }
+        IDisplayFormatting DisplayFormatting { get; }
+        IValidationCollection EntityValidation { get; }
         List<IProperty> Properties { get; }
+        List<IRelationship> Relationships { get; set; }
         IEntityKey Key { get; }
         Type Type { get; }
         IProperty FindProperty(string name);

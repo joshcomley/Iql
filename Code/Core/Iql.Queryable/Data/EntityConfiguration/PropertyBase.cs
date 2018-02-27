@@ -5,7 +5,7 @@ using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
-    public abstract class PropertyBase : IProperty
+    public abstract class PropertyBase
     {
         private RelationshipMatch _relationship;
 #if !TypeScript

@@ -9,6 +9,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #if !TypeScript
         PropertyInfo PropertyInfo { get; set; }
 #endif
+        IValidationCollection Validation { get; }
         bool Nullable { get; set; }
         RelationshipMatch Relationship { get; set; }
         PropertyKind Kind { get; set; }

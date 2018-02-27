@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Iql.Queryable.Data.EntityConfiguration
 {
     [DebuggerDisplay("{Name} - {Kind}")]
-    public class Property<TOwner, TProperty, TElementType> : PropertyBase
+    public class Property<TOwner, TProperty, TElementType> : PropertyBase, IProperty
     {
         public Property(
             string name, 
@@ -66,6 +66,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
             PropertySetterTyped = PropertySetterExpressionTyped.Compile();
             PropertySetter = (o, v) => PropertySetterTyped((TOwner) o, (TProperty) v);
         }
+
+        public ValidationCollection<TOwner> Validation { get; } = new ValidationCollection<TOwner>();
+        IValidationCollection IProperty.Validation => Validation;
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }

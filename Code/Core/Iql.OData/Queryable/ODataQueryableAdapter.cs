@@ -34,7 +34,7 @@ namespace Iql.OData.Queryable
 #if TypeScript
                 , operation.EvaluateContext
 #endif
-                ).ToCodeString();
+                ).ToCSharpString();
         }
 
         // public generateQuery(): ODataQuery<T> {

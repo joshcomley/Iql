@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Iql.DotNet.Extensions;
 using Iql.Parsing;
 
 namespace Iql.DotNet
@@ -19,9 +20,9 @@ namespace Iql.DotNet
             return Expression.Lambda(Expression, RootEntity);
         }
 
-        public string ToCodeString()
+        public string ToCSharpString()
         {
-            return Expression.ToString();
+            return Expression.ToCSharpString();
         }
     }
 }
