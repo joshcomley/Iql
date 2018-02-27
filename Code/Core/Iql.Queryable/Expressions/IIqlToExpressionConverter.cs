@@ -13,5 +13,11 @@ namespace Iql.Queryable.Expressions
 #endif
         )
             where TEntity : class;
+
+        string ConvertIqlToExpressionString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        );
     }
 }

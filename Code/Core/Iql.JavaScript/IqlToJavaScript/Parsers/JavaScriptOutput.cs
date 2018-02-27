@@ -11,7 +11,7 @@ namespace Iql.JavaScript.IqlToJavaScript.Parsers
             _code = code;
         }
 
-        public string ToCSharpString()
+        public string ToCodeString()
         {
             return _code;
         }

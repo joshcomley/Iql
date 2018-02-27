@@ -36,5 +36,18 @@ namespace Iql.DotNet
 #endif
             );
         }
+
+        public string ConvertIqlToExpressionString(IqlExpression iql
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
+        {
+            return new IqlToDotNetConverter().ConvertIqlToExpressionString(iql
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+        }
     }
 }

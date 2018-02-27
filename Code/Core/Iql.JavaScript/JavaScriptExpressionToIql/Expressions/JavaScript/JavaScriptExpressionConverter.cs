@@ -21,12 +21,17 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
 #endif
         ) where TEntity : class
         {
+            return (LambdaExpression)Evaluator.Eval(ConvertIqlToExpressionString(expression));
+        }
+
+        public string ConvertIqlToExpressionString(IqlExpression expression)
+        {
             var javascript = JavaScriptIqlParser.GetJavaScript(expression
 #if TypeScript
             , evaluateContext
 #endif
             );
-            return (LambdaExpression)Evaluator.Eval(javascript.Expression);
+            return javascript.Expression;
         }
     }
 }

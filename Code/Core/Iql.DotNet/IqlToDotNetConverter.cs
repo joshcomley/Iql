@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNet;
+using Iql.DotNet.IqlToDotNetString;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -24,6 +25,19 @@ namespace Iql.DotNet
 #endif
             );
             return dotNetExpression.ToLambda();
+        }
+
+        public string ConvertIqlToExpressionString(IqlExpression iql)
+        {
+            var adapter = new DotNetStringIqlExpressionAdapter("entity");
+            var parser = new DotNetStringIqlParserInstance(adapter);
+            parser.IsFilter = true;
+            var dotNetExpression = parser.Parse(iql
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            return $"{adapter.RootVariableName} => {dotNetExpression.Expression}";
         }
     }
 }

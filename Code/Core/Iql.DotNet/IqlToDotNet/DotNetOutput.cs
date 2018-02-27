@@ -20,7 +20,7 @@ namespace Iql.DotNet
             return Expression.Lambda(Expression, RootEntity);
         }
 
-        public string ToCSharpString()
+        public string ToCodeString()
         {
             return Expression.ToCSharpString();
         }

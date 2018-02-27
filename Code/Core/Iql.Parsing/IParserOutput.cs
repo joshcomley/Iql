@@ -2,6 +2,6 @@
 {
     public interface IParserOutput
     {
-        string ToCSharpString();
+        string ToCodeString();
     }
 }

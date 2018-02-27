@@ -15,7 +15,7 @@ namespace Iql.OData.Parsers
                 , evaluateContext
 #endif
                 );
-            return javascriptExpression.ToCSharpString();
+            return javascriptExpression.ToCodeString();
             //;
             //var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression);
             //return javascript;
