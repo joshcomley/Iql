@@ -5,12 +5,12 @@ using Iql.Parsing.Extensions;
 
 namespace Iql.Queryable.Expressions.QueryExpressions
 {
-    public class WhereQueryExpression<T> : ExpressionQueryExpression<T, bool>
+    public class WhereQueryExpression : ExpressionQueryExpression
     {
         public static string WhereGuidKey = "4c8e97bd-77a6-4ee6-8617-8922802f676d";
 
         public WhereQueryExpression(
-            Expression<Func<T, bool>> expression
+            LambdaExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

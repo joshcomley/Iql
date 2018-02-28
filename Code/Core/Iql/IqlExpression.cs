@@ -26,7 +26,7 @@
         public static IqlPropertyExpression GetPropertyExpression(string propertyName)
         {
             var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
-            var propertyExpression = new IqlPropertyExpression(propertyName, null, IqlType.Unknown);
+            var propertyExpression = new IqlPropertyExpression(propertyName);
             propertyExpression.Parent = rootReferenceExpression;
             return propertyExpression;
         }

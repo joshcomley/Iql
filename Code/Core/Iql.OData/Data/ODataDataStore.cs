@@ -111,20 +111,7 @@ namespace Iql.OData.Data
             }
             return operation.Result;
         }
-
-        public string ResolveODataQueryUri<TEntity>(global::Iql.Queryable.IQueryable<TEntity> queryable) where TEntity : class
-        {
-            var oDataQuery =
-                queryable.ToQueryWithAdapterBase(
-                    QueryableAdapter,
-                    DataContext,
-                    null,
-                    null) as IODataQuery;
-            var queryString = oDataQuery.ToODataQuery();
-            var fullQueryUri = $"{ResolveEntitySetUri<TEntity>()}{queryString}";
-            return fullQueryUri;
-        }
-
+        
         public string ResolveODataQueryUri(IQueryableBase queryable)
         {
             var oDataQuery =

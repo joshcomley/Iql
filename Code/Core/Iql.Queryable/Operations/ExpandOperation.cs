@@ -4,11 +4,10 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations
 {
-    public class ExpandOperation<T, TTarget, TTargetElement>
-        : ExpressionQueryOperation<IqlPropertyExpression, ExpandQueryExpression<T, TTarget, TTargetElement>>, IExpandOperation
-        where TTarget : class
+    public class ExpandOperation
+        : ExpressionQueryOperation<IqlPropertyExpression, ExpandQueryExpression>, IExpandOperation
     {
-        public ExpandOperation(ExpandQueryExpression<T, TTarget, TTargetElement> queryExpression = null)
+        public ExpandOperation(ExpandQueryExpression queryExpression = null)
         {
             QueryExpression = queryExpression;
         }
@@ -18,20 +17,11 @@ namespace Iql.Queryable.Operations
         public IQueryableBase ApplyQuery(IQueryableBase queryable)
         {
             return queryable;
-            //var abx = typeof(TTarget);
-            //return ApplyQuery((IQueryable<TTarget>) queryable);
         }
-
-        //public ExpandQueryExpression<T, TTarget> QueryExpression { get; }
 
         public override QueryExpression GetExpression()
         {
             return QueryExpression;
         }
-
-        //public IQueryable<TTarget> ApplyQuery(IQueryable<TTarget> queryable)
-        //{
-        //    return queryable;
-        //}
     }
 }

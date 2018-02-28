@@ -32,8 +32,9 @@ namespace Iql.DotNet.Parsers
                     node.Expression.Type.Name));
             }
                 var iqlPropertyExpression = new IqlPropertyExpression(
-                node.Member.Name, "", node.Member.ReflectedType.ToIqlType());
-            iqlPropertyExpression.Parent = context.ToIqlExpression(node.Expression);
+                node.Member.Name,
+                (IqlReferenceExpression)context.ToIqlExpression(node.Expression),
+                node.Member.ReflectedType.ToIqlType());
             return iqlPropertyExpression;
         }
     }

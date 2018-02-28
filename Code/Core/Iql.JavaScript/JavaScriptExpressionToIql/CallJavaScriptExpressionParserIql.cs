@@ -94,16 +94,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 // Check if this is a sub-tree
                 // TODO: Support sub-trees
                 var local = context.Reducer.Evaluate(member);
-                if (local.Value is WhereQueryExpression<object>)
+                if (local.Value is WhereQueryExpression)
                 {
-                    return new IqlParseResult(context.ParseSubTree(local.Value as WhereQueryExpression<T>));
+                    return new IqlParseResult(context.ParseSubTree(local.Value as WhereQueryExpression));
                 }
                 if (parent != null)
                 {
                     local = context.Reducer.Evaluate(parent);
-                    if (local.Value is WhereQueryExpression<object>)
+                    if (local.Value is WhereQueryExpression)
                     {
-                        return new IqlParseResult(context.ParseSubTree(local.Value as WhereQueryExpression<T>));
+                        return new IqlParseResult(context.ParseSubTree(local.Value as WhereQueryExpression));
                     }
                 }
                 throw new Exception("Method not supported in IQL: " + nativeMethodName);

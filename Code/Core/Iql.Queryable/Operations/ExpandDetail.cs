@@ -9,13 +9,15 @@ namespace Iql.Queryable.Operations
             IQueryableBase sourceQueryable,
             IQueryableBase targetQueryable,
             IRelationship relationship,
-            bool isTarget
+            bool isTarget,
+            bool isCount
         )
         {
             SourceQueryable = sourceQueryable;
             TargetQueryable = targetQueryable;
             Relationship = relationship;
             IsTarget = isTarget;
+            IsCount = isCount;
             ExpandedQueryable = isTarget ? targetQueryable : sourceQueryable;
         }
         public IQueryableBase ExpandedQueryable { get; }
@@ -23,6 +25,7 @@ namespace Iql.Queryable.Operations
         public IQueryableBase TargetQueryable { get; set; }
         public IRelationship Relationship { get; }
         public bool IsTarget { get; }
+        public bool IsCount { get; }
 
         public IProperty GetExpandProperty()
         {

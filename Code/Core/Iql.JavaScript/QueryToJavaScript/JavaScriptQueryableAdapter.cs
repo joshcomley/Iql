@@ -13,7 +13,6 @@ namespace Iql.JavaScript.QueryToJavaScript
             RegisterApplicator(() => new OrderByOperationApplicatorJavaScript());
             RegisterApplicator(() => new ReverseOperationApplicatorJavaScript());
             RegisterApplicator(() => new WhereOperationApplicatorJavaScript());
-            RegisterApplicator(() => new ExpandCountOperationApplicatorJavaScript());
             RegisterApplicator(() => new IncludeCountOperationApplicatorJavaScript());
             RegisterApplicator(() => new ExpandOperationApplicatorJavaScript());
             RegisterApplicator(() => new WithKeyOperationApplicatorJavaScript());

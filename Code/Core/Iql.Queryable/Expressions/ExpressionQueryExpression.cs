@@ -5,10 +5,10 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Expressions
 {
-    public class ExpressionQueryExpression<T, TResult> : ExpressionQueryExpressionBase
+    public class ExpressionQueryExpression : ExpressionQueryExpressionBase
     {
         public ExpressionQueryExpression(
-            Expression<Func<T, TResult>> expression,
+            LambdaExpression expression,
             QueryExpressionType type
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -22,7 +22,7 @@ namespace Iql.Queryable.Expressions
             Expression = expression;
         }
 
-        public Expression<Func<T, TResult>> Expression { get; }
+        public LambdaExpression Expression { get; }
 
         public override LambdaExpression GetExpression()
         {

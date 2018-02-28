@@ -27,6 +27,17 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public void TestResolveCountUri()
+        {
+            var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);
+
+            var uri = query.ResolveODataQueryUri();
+            uri = HttpUtility.UrlDecode(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$expand=Users/$count",
+                uri);
+        }
+
+        [TestMethod]
         public void TestResolveUriFromIQueryable()
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello");

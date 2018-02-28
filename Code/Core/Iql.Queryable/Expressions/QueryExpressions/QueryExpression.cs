@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Iql.Parsing;
 using Iql.Parsing.Extensions;
 
@@ -55,7 +56,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             return Flatten<TEntity>() ?? this;
         }
 
-        public WhereQueryExpression<TEntity> Flatten<TEntity>()
+        public WhereQueryExpression Flatten<TEntity>()
         {
             switch (Type)
             {
@@ -65,12 +66,12 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                         this as BinaryQueryExpression
                     );
                 case QueryExpressionType.Where:
-                    return this as WhereQueryExpression<TEntity>;
+                    return this as WhereQueryExpression;
             }
             return null;
         }
 
-        private WhereQueryExpression<TEntity> ResolveBinary<TEntity>
+        private WhereQueryExpression ResolveBinary<TEntity>
         (
             BinaryQueryExpression filter
         )
@@ -85,10 +86,11 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                 switch (filter.Type)
                 {
                     case QueryExpressionType.And:
-                        expressionResolved = new WhereQueryExpression<TEntity>(
-                            entity =>
-                                lastExpression.Expression.Compile()(entity) &&
-                                nextExpression.Expression.Compile()(entity)
+                        Expression<Func<TEntity, bool>> andLambda = entity =>
+                            ((Func<TEntity, bool>)lastExpression.Expression.Compile())(entity) &&
+                            ((Func<TEntity, bool>)nextExpression.Expression.Compile())(entity);
+                        expressionResolved = new WhereQueryExpression(
+                            andLambda
 #if TypeScript
                             , new EvaluateContext
                             {
@@ -99,10 +101,11 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                                 );
                         break;
                     case QueryExpressionType.Or:
-                        expressionResolved = new WhereQueryExpression<TEntity>(
-                            entity =>
-                                lastExpression.Expression.Compile()(entity) ||
-                                nextExpression.Expression.Compile()(entity)
+                        Expression<Func<TEntity, bool>> orLambda = entity =>
+                            ((Func<TEntity, bool>)lastExpression.Expression.Compile())(entity) ||
+                            ((Func<TEntity, bool>)nextExpression.Expression.Compile())(entity);
+                        expressionResolved = new WhereQueryExpression(
+                            orLambda
 #if TypeScript
                             , new EvaluateContext
                             {

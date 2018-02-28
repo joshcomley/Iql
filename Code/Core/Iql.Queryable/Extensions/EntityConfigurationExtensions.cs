@@ -11,38 +11,39 @@ namespace Iql.Queryable.Extensions
             this IEntityConfiguration entityConfiguration,
             string propertyName)
         {
-            var relationship = entityConfiguration
-                .Relationships.Single(r =>
-                {
-                    var thisEnd = r.Source.Configuration == entityConfiguration
-                        ? r.Source
-                        : r.Target;
-                    if (thisEnd.Property.Name == propertyName)
-                    {
-                        return true;
-                    }
+            throw new NotImplementedException();
+            //var relationship = entityConfiguration
+            //    .Relationships.Single(r =>
+            //    {
+            //        var thisEnd = r.Source.Configuration == entityConfiguration
+            //            ? r.Source
+            //            : r.Target;
+            //        if (thisEnd.Property.Name == propertyName)
+            //        {
+            //            return true;
+            //        }
 
-                    return false;
-                });
-            var source = relationship.Source.Configuration == entityConfiguration
-                ? relationship.Source
-                : relationship.Target;
-            var target = relationship.Source.Configuration == entityConfiguration
-                ? relationship.Target
-                : relationship.Source;
-            var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.Name);
-            var type = property.Kind == PropertyKind.Count
-                ? typeof(ExpandCountOperation<,,>)
-                : typeof(ExpandOperation<,,>);
-            var propertyExpression = IqlExpression.GetPropertyExpression(propertyName);
-            var expandOperationType = type.MakeGenericType(
-                entityConfiguration.Type,
-                property.ElementType,
-                target.Type);
-            var expandOperation =
-                (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
-            expandOperation.Expression = propertyExpression;
-            return expandOperation;
+            //        return false;
+            //    });
+            //var source = relationship.Source.Configuration == entityConfiguration
+            //    ? relationship.Source
+            //    : relationship.Target;
+            //var target = relationship.Source.Configuration == entityConfiguration
+            //    ? relationship.Target
+            //    : relationship.Source;
+            //var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.Name);
+            //var type = property.Kind == PropertyKind.Count
+            //    ? typeof(ExpandCountOperation<,,>)
+            //    : typeof(ExpandOperation<,,>);
+            //var propertyExpression = IqlExpression.GetPropertyExpression(propertyName);
+            //var expandOperationType = type.MakeGenericType(
+            //    entityConfiguration.Type,
+            //    property.ElementType,
+            //    target.Type);
+            //var expandOperation =
+            //    (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
+            //expandOperation.Expression = propertyExpression;
+            //return expandOperation;
         }
     }
 }

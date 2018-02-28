@@ -24,7 +24,7 @@ namespace Iql.Queryable
             where T : class
         {
             return QueryExpressionToIqlExpressionTree<T>(
-                new ExpressionQueryExpression<T, TProperty>(property, QueryExpressionType.NonBinary)
+                new ExpressionQueryExpression(property, QueryExpressionType.NonBinary)
             );
         }
 

@@ -84,7 +84,7 @@ namespace Iql.Queryable
             return ResolveSingle(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression<T> expression
+        public async Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -127,7 +127,7 @@ namespace Iql.Queryable
             return ResolveSingleOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression<T> expression
+        public async Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -170,7 +170,7 @@ namespace Iql.Queryable
             return ResolveFirst(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression<T> expression
+        public async Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -213,7 +213,7 @@ namespace Iql.Queryable
             return ResolveFirstOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression<T> expression
+        public async Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -257,7 +257,7 @@ namespace Iql.Queryable
             return ResolveLast(result);
         }
 
-        public async Task<GetSingleResult<T>> LastQuery(WhereQueryExpression<T> expression
+        public async Task<GetSingleResult<T>> LastQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -301,7 +301,7 @@ namespace Iql.Queryable
         }
 
 
-        public async Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression<T> expression
+        public async Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -466,31 +466,12 @@ namespace Iql.Queryable
                 result.Operation,
                 result.Success);
         }
-
-        public DbQueryable<T> ExpandCollectionCount<TTarget>(
-            Expression<Func<T, IEnumerable<TTarget>>> target)
-            where TTarget : class
-        {
-            return ExpandCollectionCountQuery(new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(target));
-        }
-
-        public DbQueryable<T> ExpandCollectionCountRelationship(
-            string propertyName)
-        {
-            return ExpandRelationship(propertyName);
-        }
-
-        public DbQueryable<T> ExpandCollectionCountQuery<TTarget>(
-            ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
-            where TTarget : class
-        {
-            return Then(new ExpandCountOperation<T, IEnumerable<TTarget>, TTarget>(expression));
-        }
+        
 
         public DbQueryable<T> ExpandAllCollectionCounts()
         {
             return AllCollectionRelationships(
-                (queryable, relationship, detail) => queryable.ExpandCollectionCountRelationship(detail.Property.Name));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
         }
 
         public DbQueryable<T> ExpandAllSingleRelationships()
@@ -501,9 +482,8 @@ namespace Iql.Queryable
 
         public DbQueryable<T> Expand<TTarget>(
             Expression<Func<T, TTarget>> target)
-            where TTarget : class
         {
-            return ExpandQuery(new ExpandQueryExpression<T, TTarget, TTarget>(target));
+            return ExpandQuery(new ExpandQueryExpression(target));
         }
 
         public DbQueryable<T> ExpandRelationship(
@@ -529,11 +509,10 @@ namespace Iql.Queryable
                 (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
         }
 
-        public DbQueryable<T> ExpandQuery<TTarget>(
-            ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class
+        public DbQueryable<T> ExpandQuery(
+            ExpandQueryExpression expression)
         {
-            return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
+            return Then(new ExpandOperation(expression));
         }
 
         public DbQueryable<T> ExpandSingle<TTarget>(
@@ -541,18 +520,11 @@ namespace Iql.Queryable
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
             where TTarget : class
         {
-            return ExpandSingleQuery(
-                new ExpandQueryExpression<T, TTarget, TTarget>(
+            return ExpandQuery(
+                new ExpandQueryExpression(
                     target,
                     q => filter((DbQueryable<TTarget>)q)
                     ));
-        }
-
-        public DbQueryable<T> ExpandSingleQuery<TTarget>(
-            ExpandQueryExpression<T, TTarget, TTarget> expression)
-            where TTarget : class
-        {
-            return Then(new ExpandOperation<T, TTarget, TTarget>(expression));
         }
 
         public DbQueryable<T> ExpandCollection<TTarget>(
@@ -560,20 +532,13 @@ namespace Iql.Queryable
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
             where TTarget : class
         {
-            return ExpandCollectionQuery(
-                new ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget>(
+            return ExpandQuery(
+                new ExpandQueryExpression(
                     target,
                     q => filter == null ? q : filter((DbQueryable<TTarget>)q)
                     ));
         }
-
-        public DbQueryable<T> ExpandCollectionQuery<TTarget>(
-            ExpandQueryExpression<T, IEnumerable<TTarget>, TTarget> expression)
-            where TTarget : class
-        {
-            return Then(new ExpandOperation<T, IEnumerable<TTarget>, TTarget>(expression));
-        }
-
+        
         public DbQueryable<T> AllCollectionRelationships(
             Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
         {
@@ -700,11 +665,6 @@ namespace Iql.Queryable
         IDbQueryable IDbQueryable.ExpandAllCollectionCounts()
         {
             return ExpandAllCollectionCounts();
-        }
-
-        IDbQueryable IDbQueryable.ExpandCollectionCountRelationship(string name)
-        {
-            return ExpandCollectionCountRelationship(name);
         }
 
         //IDbQueryable IDbQueryable.Copy()

@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Operations
-{
-    public interface IExpandCountOperation : IExpandOperation { }
-}
+//namespace Iql.Queryable.Operations
+//{
+//    /public interface IExpandCountOperation : IExpandOperation { }
+//}

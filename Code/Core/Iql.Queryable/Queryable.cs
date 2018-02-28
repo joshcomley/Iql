@@ -40,7 +40,7 @@ namespace Iql.Queryable
 #endif
             )
         {
-            var queryExpression = new WhereQueryExpression<T>(expression);
+            var queryExpression = new WhereQueryExpression(expression);
             return WhereQuery(queryExpression
 #if TypeScript
             , evaluateContext
@@ -97,7 +97,7 @@ namespace Iql.Queryable
             )
         {
             return OrderByQuery(
-                new PropertyQueryExpression<T, TProperty>(
+                new PropertyQueryExpression(
                     expression
 #if TypeScript
                     , evaluateContext ?? EvaluateContext
@@ -105,7 +105,7 @@ namespace Iql.Queryable
                     ));
         }
 
-        public TQueryable OrderByQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression
+        public TQueryable OrderByQuery(PropertyQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -113,6 +113,8 @@ namespace Iql.Queryable
         {
             return Then(new OrderByOperation(expression));
         }
+
+        
 
         public TQueryable OrderByProperty(string propetyName, bool descending = false
 #if TypeScript
@@ -143,14 +145,14 @@ namespace Iql.Queryable
             )
         {
             return Then(new OrderByOperation(
-                new PropertyQueryExpression<T, TProperty>(expression
+                new PropertyQueryExpression(expression
 #if TypeScript
                 , evaluateContext ?? EvaluateContext
 #endif
                 ), true));
         }
 
-        public TQueryable OrderByDescendingQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression
+        public TQueryable OrderByDescendingQuery(PropertyQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

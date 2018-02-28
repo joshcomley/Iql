@@ -22,7 +22,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 var type = context.Expression.Value.GetType();
                 if (type.Name == "string")
                 {
-                    exp = new IqlPropertyExpression(context.Expression.Value.ToString(), null, IqlType.Unknown);
+                    exp = new IqlPropertyExpression(context.Expression.Value.ToString());
                 }
                 else if (type.Name == "number")
                 {

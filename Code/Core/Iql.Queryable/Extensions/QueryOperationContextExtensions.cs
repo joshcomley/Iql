@@ -57,9 +57,8 @@ namespace Iql.Queryable.Extensions
                 var keyValue = key.Keys.Single(k => k.Name == property.Name);
                 var propertyExpression = new IqlPropertyExpression(
                     property.Name,
-                    itemType.Name,
+                    root,
                     keyValue.Value.GetType().ToIqlType());
-                propertyExpression.Parent = root;
                 var check = new IqlIsEqualToExpression(
                     propertyExpression,
                     new IqlLiteralExpression(keyValue.Value.ToString(), keyValue.Value.GetType().ToIqlType())
@@ -72,7 +71,7 @@ namespace Iql.Queryable.Extensions
                 rootOperation = new IqlAndExpression(rootOperation, checks[i]);
             }
             var operation = new WhereOperation();
-            var queryExpressinType = typeof(WhereQueryExpression<>).MakeGenericType(itemType);
+            var queryExpressinType = typeof(WhereQueryExpression);
             var queryExpression = (ExpressionQueryExpressionBase)Activator.CreateInstance(queryExpressinType, new object[]
             {
                 null

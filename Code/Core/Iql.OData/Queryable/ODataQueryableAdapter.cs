@@ -14,7 +14,7 @@ namespace Iql.OData.Queryable
             RegisterApplicator(() => new OrderByOperationApplicatorOData());
             RegisterApplicator(() => new ReverseOperationApplicatorOData());
             RegisterApplicator(() => new WhereOperationApplicatorOData());
-            RegisterApplicator(() => new ExpandCountOperationApplicatorOData());
+            //RegisterApplicator(() => new ExpandCountOperationApplicatorOData());
             RegisterApplicator(() => new ExpandOperationApplicatorOData());
             RegisterApplicator(() => new IncludeCountApplicatorOData());
             RegisterApplicator(() => new WithKeyOperationApplicatorOData());

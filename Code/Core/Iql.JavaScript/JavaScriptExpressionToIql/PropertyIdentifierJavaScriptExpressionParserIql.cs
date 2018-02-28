@@ -38,7 +38,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                         if (property == null)
                         {
                             throw new Exception(
-                                $"No property \"{context.Expression.Name}\" found on type \"{propertyParent.OwningEntityTypeName}\"");
+                                $"No property \"{context.Expression.Name}\" found on type \"{typeof(T).Name}\"");
                         }
                         propertyType = property.PropertyType;
                         // var p = new propertyParent.entityType();
@@ -46,7 +46,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                         break;
                 }
                 //instance.entityConfigurationContext.entity()
-                exp = new IqlPropertyExpression(context.Expression.Name, "", propertyType.ToIqlType());
+                exp = new IqlPropertyExpression(context.Expression.Name, null, propertyType.ToIqlType());
             }
             else
             {

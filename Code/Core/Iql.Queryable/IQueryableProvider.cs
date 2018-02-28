@@ -32,7 +32,7 @@ namespace Iql.Queryable
 #endif
             );
 
-        TQueryable OrderByQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression
+        TQueryable OrderByQuery(PropertyQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -44,7 +44,7 @@ namespace Iql.Queryable
 #endif
             );
 
-        TQueryable OrderByDescendingQuery<TProperty>(PropertyQueryExpression<T, TProperty> expression
+        TQueryable OrderByDescendingQuery(PropertyQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

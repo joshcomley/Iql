@@ -12,11 +12,11 @@ namespace Iql.Tests.Tests {
         {
             var dates = new DateTimeOffset[] {DateTimeOffset.Now, DateTimeOffset.Now,};
             var root = new IqlRootReferenceExpression("root", "", typeof(RiskAssessment));
-            var property = new IqlPropertyExpression(nameof(RiskAssessment.CreatedDate), null, IqlType.Unknown);
+            var property = new IqlPropertyExpression(nameof(RiskAssessment.CreatedDate));
             property.Parent = root;
             var and = new IqlAndExpression(
-                new IqlIsGreaterThanExpression(property, new IqlLiteralExpression(dates[0], IqlType.Unknown)),
-                new IqlIsLessThanExpression(property, new IqlLiteralExpression(dates[1], IqlType.Unknown))
+                new IqlIsGreaterThanExpression(property, new IqlLiteralExpression(dates[0], IqlType.Date)),
+                new IqlIsLessThanExpression(property, new IqlLiteralExpression(dates[1], IqlType.Date))
             );
             await Db.RiskAssessments.WhereEquals(and).ToList();
         }

@@ -5,12 +5,12 @@ using Iql.Parsing.Extensions;
 
 namespace Iql.Queryable.Expressions.QueryExpressions
 {
-    public class PropertyQueryExpression<T, TProperty> : ExpressionQueryExpression<T, TProperty>
+    public class PropertyQueryExpression : ExpressionQueryExpression
     {
         public static string PropertyQueryExpressionGuidKey = "301e2db4-0132-422d-82cb-e7ce9ac95717";
 
         public PropertyQueryExpression(
-            Expression<Func<T, TProperty>> expression
+            LambdaExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

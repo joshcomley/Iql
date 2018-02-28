@@ -27,7 +27,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression<T> expression
+        Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -45,7 +45,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression<T> expression
+        Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -63,7 +63,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        Task<GetSingleResult<T>> LastQuery(WhereQueryExpression<T> expression
+        Task<GetSingleResult<T>> LastQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -81,7 +81,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression<T> expression
+        Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -99,7 +99,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression<T> expression
+        Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -117,7 +117,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression<T> expression
+        Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

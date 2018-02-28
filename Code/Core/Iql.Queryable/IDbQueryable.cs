@@ -15,7 +15,6 @@ namespace Iql.Queryable
         IDbQueryable ExpandRelationship(string name);
         IDbQueryable ExpandAllSingleRelationships();
         IDbQueryable ExpandAllCollectionCounts();
-        IDbQueryable ExpandCollectionCountRelationship(string name);
         TrackingSetCollection TrackingSetCollection { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }

@@ -12,7 +12,7 @@ namespace Iql
         //}
 
         public IqlLiteralExpression(
-            object value, IqlType type) : base(IqlExpressionType.Literal,
+            object value, IqlType type = IqlType.Unknown) : base(IqlExpressionType.Literal,
             type)
         {
             Value = value;

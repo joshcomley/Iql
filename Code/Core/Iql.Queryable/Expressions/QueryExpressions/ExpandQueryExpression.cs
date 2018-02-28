@@ -1,16 +1,17 @@
 using System;
 using System.Linq.Expressions;
+#if TypeScript
 using Iql.Parsing;
+#endif
 
 namespace Iql.Queryable.Expressions.QueryExpressions
 {
-    public class ExpandQueryExpression<T, TTarget, TTargetElement> 
-        : ExpressionQueryExpression<T, TTarget>, IExpandQueryExpression
-        where TTarget : class
+    public class ExpandQueryExpression
+        : ExpressionQueryExpression, IExpandQueryExpression
     {
         public ExpandQueryExpression(
-            Expression<Func<T, TTarget>> expression,
-            Func<IQueryable<TTargetElement>, IQueryable<TTargetElement>> queryable = null
+            LambdaExpression expression,
+            Func<IQueryableBase, IQueryableBase> queryable = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -24,7 +25,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             Queryable = queryable;
         }
 
-        public Func<IQueryable<TTargetElement>, IQueryable<TTargetElement>> Queryable { get; set; }
+        public Func<IQueryableBase, IQueryableBase> Queryable { get; set; }
 
         public Func<IQueryableBase, IQueryableBase> GetQueryable()
         {
@@ -32,7 +33,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             {
                 return q => q;
             }
-            return q => Queryable((IQueryable<TTargetElement>) q);
+            return q => Queryable(q);
         }
     }
 }
