@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.OData.Extensions;
 using Iql.OData.Queryable;
 using Iql.OData.Queryable.Applicators;
 using Iql.Queryable;

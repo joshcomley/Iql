@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using Iql.Queryable.Data.EntityConfiguration.Validation;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 #if TypeScript
-using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
+using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
 #endif

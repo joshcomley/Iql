@@ -1,4 +1,4 @@
-﻿using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
+﻿using Iql.JavaScript.JavaScriptExpressionToIql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.JavaScript

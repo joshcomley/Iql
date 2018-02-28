@@ -1,10 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using TypeSharp.Extensions;
 
 namespace Iql.DotNet.Visitors
 {
-    [DoNotConvert]
     internal class ExpressionContainsRootVisitor : ExpressionVisitor
     {
         private readonly Type _rootType;

@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable
+namespace Iql.Queryable.Events
 {
     public interface IRelatedListChangeEvent
     {

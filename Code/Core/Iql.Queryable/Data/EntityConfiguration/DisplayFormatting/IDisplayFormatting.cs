@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Queryable.Data.EntityConfiguration.DisplayFormatting
 {
     public interface IDisplayFormatting
     {

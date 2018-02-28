@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Queryable.Data.EntityConfiguration.Validation
 {
     public interface IValidationCollection
     {

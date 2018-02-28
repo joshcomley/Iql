@@ -1,7 +1,7 @@
 using System;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable
+namespace Iql.Queryable.Events
 {
     public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangeEvent
         where TRelated : class 

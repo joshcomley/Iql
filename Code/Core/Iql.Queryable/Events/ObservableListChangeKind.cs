@@ -1,4 +1,4 @@
-namespace Iql.Queryable
+namespace Iql.Queryable.Events
 {
     public enum ObservableListChangeKind
     {

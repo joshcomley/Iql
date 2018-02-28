@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
-using Iql.DotNet.IqlToDotNet;
+using Iql.DotNet.DotNetExpressionToIql;
+using Iql.DotNet.IqlToDotNetExpression;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -15,7 +16,7 @@ namespace Iql.DotNet
             var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
             var lambdaExpression = whereQueryExpression.GetExpression();
             return new ExpressionResult<IqlExpression>(
-                ExpressionToIqlExpressionParser<TEntity>.Parse(
+                DotNetExpressionToIqlExpressionParser<TEntity>.Parse(
                     lambdaExpression
 #if TypeScript
                     , filter.EvaluateContext

@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using Iql.OData.Data;
+using Iql.OData.Extensions;
 using Iql.Queryable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

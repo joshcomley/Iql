@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Hazception.ApiContext.Base;
-using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
 #if TypeScript
 using Iql.JavaScript.QueryToJavaScript;
-using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
+using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
-using Iql.DotNet.Queryable;
 using Iql.DotNet;
+using Iql.DotNet.QueryableApplicator;
 #endif
 using Iql.OData.Data;
 using Iql.Queryable;

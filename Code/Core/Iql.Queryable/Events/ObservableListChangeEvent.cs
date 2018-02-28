@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable
+namespace Iql.Queryable.Events
 {
     public class ObservableListChangeEvent<T> : IObservableListChangeEvent
     {

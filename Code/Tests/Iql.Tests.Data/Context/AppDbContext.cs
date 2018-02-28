@@ -1,14 +1,12 @@
-﻿using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
-using Iql.JavaScript.QueryToJavaScript;
-using Iql.Queryable;
+﻿using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores;
 #if TypeScript
+using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.JavaScript.QueryToJavaScript;
-using Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript;
 #else
-using Iql.DotNet.Queryable;
 using Iql.DotNet;
+using Iql.DotNet.QueryableApplicator;
 #endif
 using Iql.Queryable.Data.DataStores.InMemory;
 using Iql.Queryable.Data.EntityConfiguration;

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.DotNet.DotNetExpressionToIql;
 
 namespace Iql.DotNet.Serialization
 {
@@ -21,7 +22,7 @@ namespace Iql.DotNet.Serialization
 
         public static string SerializeToXml<TEntity, TOut>(Expression<Func<TEntity, TOut>> expression)
         {
-            return SerializeToXml(ExpressionToIqlExpressionParser<TEntity>.Parse(expression));
+            return SerializeToXml(DotNetExpressionToIqlExpressionParser<TEntity>.Parse(expression));
         }
 
         public static string SerializeToXml(IqlExpression expression)

@@ -1,7 +1,8 @@
-﻿using Iql.Queryable;
+﻿using Iql.OData.Data;
+using Iql.Queryable;
 using Iql.Queryable.Data;
 
-namespace Iql.OData.Data
+namespace Iql.OData.Extensions
 {
     public static class ODataQueryableExtensions
     {
