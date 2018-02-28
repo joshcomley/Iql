@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Native;
+using Iql.Queryable.Data.Relationships;
 
 namespace Iql.DotNet.QueryableApplicator
 {

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Hazception.ApiContext.Base;
+using Iql.JavaScript.QueryableApplicator;
 #if TypeScript
-using Iql.JavaScript.QueryToJavaScript;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
 using Iql.DotNet.QueryableApplicator;
 #endif
-using Iql.OData.Data;
 using Iql.Queryable;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.DataStores.InMemory;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 
 namespace Iql.Tests.Context
 {

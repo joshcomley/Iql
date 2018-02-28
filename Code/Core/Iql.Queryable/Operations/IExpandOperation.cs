@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations

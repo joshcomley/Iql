@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Iql.DotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 

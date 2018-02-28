@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Brandless.ObjectSerializer;
 using Iql.Queryable;
+using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Events;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

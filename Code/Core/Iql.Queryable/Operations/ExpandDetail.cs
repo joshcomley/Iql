@@ -1,5 +1,6 @@
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Queryable;
 
 namespace Iql.Queryable.Operations
 {

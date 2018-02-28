@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.OData.Data;
-using Iql.OData.Queryable;
+using Iql.OData;
 using Iql.Queryable;
 using Iql.Queryable.Data.Http;
+using Iql.Queryable.Data.Lists;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

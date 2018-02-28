@@ -5,16 +5,21 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Extensions;
+using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.Crud.State;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Data.Paging;
+using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Data.Tracking.State;
 using Iql.Queryable.Data.Validation;
+using Iql.Queryable.Events;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Native;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.DataStores
@@ -171,7 +176,7 @@ namespace Iql.Queryable.Data.DataStores
                 var queryableGetter = getConfiguration.GetQueryable<TEntity>();
                 if (queryableGetter != null)
                 {
-                    var queryable = queryableGetter() as IQueryable<TEntity>;
+                    var queryable = queryableGetter() as Queryable.IQueryable<TEntity>;
                     queryable.Operations.AddRange(operation.Queryable.Operations);
                     operation.Queryable = queryable;
                 }
@@ -205,7 +210,7 @@ namespace Iql.Queryable.Data.DataStores
             var success = response.Success && response.Data != null;
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
-            response.Queryable = (IQueryable<TEntity>)operation.Queryable.Copy();
+            response.Queryable = (Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
             var dbList = new DbList<TEntity>();
             dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue && response.Data.Count != 0)

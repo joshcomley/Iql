@@ -8,9 +8,10 @@ using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Native;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
 {

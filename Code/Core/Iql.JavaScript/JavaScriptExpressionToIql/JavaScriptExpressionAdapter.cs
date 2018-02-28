@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
+using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {

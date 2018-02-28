@@ -1,7 +1,8 @@
 using System.Linq.Expressions;
-using Iql.JavaScript.IqlToJavaScript.Parsers;
-using Iql.JavaScript.QueryToJavaScript;
+using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
+using Iql.JavaScript.QueryableApplicator;
 using Iql.Queryable.Expressions;
+using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 #if TypeScript
 using Iql.Parsing;

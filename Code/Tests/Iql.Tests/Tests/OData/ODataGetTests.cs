@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Iql.OData.Data;
+using Iql.OData;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Crud.State;
+using Iql.Queryable.Data.Tracking.State;
 
 namespace Iql.Queryable.Data.Tracking
 {

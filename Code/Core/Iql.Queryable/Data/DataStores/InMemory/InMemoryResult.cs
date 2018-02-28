@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Iql.Extensions;
+using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Native;
+using Iql.Queryable.QueryApplicator;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
 {

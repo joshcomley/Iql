@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
+using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Queryable.Expressions;
+using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql

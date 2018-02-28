@@ -1,5 +1,6 @@
 using System;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
+using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers

@@ -1,4 +1,4 @@
-﻿using Iql.OData.Data;
+﻿using Iql.OData;
 using Iql.Tests.Context;
 
 namespace Iql.Tests.Tests.OData

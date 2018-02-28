@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using Iql.Queryable.Data;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Extensions

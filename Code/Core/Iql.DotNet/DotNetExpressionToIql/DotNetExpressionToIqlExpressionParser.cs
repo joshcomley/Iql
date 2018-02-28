@@ -4,6 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using Iql.DotNet.DotNetExpressionToIql.Parsers;
 using Iql.Extensions;
+#if TypeScript
+using Iql.Parsing;
+#endif
 using Iql.Parsing.Extensions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Reduction.Reducers;

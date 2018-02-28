@@ -5,7 +5,9 @@ using Iql.DotNet;
 using Iql.DotNet.Extensions;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Expressions;
+using Iql.Queryable.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 

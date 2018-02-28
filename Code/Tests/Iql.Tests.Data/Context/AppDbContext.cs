@@ -1,15 +1,17 @@
-﻿using Iql.Queryable;
+﻿using Iql.JavaScript.QueryableApplicator;
+using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.DataStores;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
-using Iql.JavaScript.QueryToJavaScript;
 #else
 using Iql.DotNet;
 using Iql.DotNet.QueryableApplicator;
 #endif
 using Iql.Queryable.Data.DataStores.InMemory;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.Queryable;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
 

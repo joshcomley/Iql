@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Iql.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
+using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers

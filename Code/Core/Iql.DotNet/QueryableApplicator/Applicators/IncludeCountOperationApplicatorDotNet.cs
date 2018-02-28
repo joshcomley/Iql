@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Queryable.Operations;
-using Iql.Queryable.Operations.Applicators;
+using Iql.Queryable.QueryApplicator.Applicators;
 
 namespace Iql.DotNet.QueryableApplicator.Applicators
 {

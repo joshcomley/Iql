@@ -1,5 +1,7 @@
 using System;
 using System.Linq.Expressions;
+using Iql.Queryable.Data.Queryable;
+
 #if TypeScript
 using Iql.Parsing;
 #endif

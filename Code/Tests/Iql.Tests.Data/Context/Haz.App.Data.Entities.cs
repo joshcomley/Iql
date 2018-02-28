@@ -3,7 +3,9 @@ using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
 using Iql.Queryable.Events;
 using System;
-using Iql.Queryable.Data.Crud.State;
+using Iql.Queryable.Data;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.Lists;
 
 
 namespace Haz.App.Data.Entities

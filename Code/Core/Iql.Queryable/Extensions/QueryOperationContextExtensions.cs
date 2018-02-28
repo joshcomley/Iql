@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Extensions;
 using Iql.Queryable.Data;
+using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
-using Iql.Queryable.Operations.Applicators;
+using Iql.Queryable.QueryApplicator.Applicators;
 
 namespace Iql.Queryable.Extensions
 {

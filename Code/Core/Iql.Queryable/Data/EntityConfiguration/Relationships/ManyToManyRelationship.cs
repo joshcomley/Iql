@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {

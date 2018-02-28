@@ -1,6 +1,7 @@
-﻿using Iql.OData.Data;
-using Iql.Queryable;
+﻿using Iql.Queryable;
 using Iql.Queryable.Data;
+using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.Queryable;
 
 namespace Iql.OData.Extensions
 {

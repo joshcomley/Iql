@@ -1,4 +1,6 @@
-﻿namespace Iql.Queryable.Extensions
+﻿using Iql.Queryable.Data.Queryable;
+
+namespace Iql.Queryable.Extensions
 {
     // ReSharper disable once InconsistentNaming
     public static class IQueryResultBaseExtensions

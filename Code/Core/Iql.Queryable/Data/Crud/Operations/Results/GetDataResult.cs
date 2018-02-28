@@ -1,3 +1,5 @@
+using Iql.Queryable.Data.Lists;
+
 namespace Iql.Queryable.Data.Crud.Operations.Results
 {
     public class GetDataResult<T> : DataResult<T, DbList<T>> where T : class

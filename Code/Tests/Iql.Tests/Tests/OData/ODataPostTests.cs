@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Haz.App.Data.Entities;
-using Iql.OData.Data;
 using Iql.Tests.Context;
 using Iql.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

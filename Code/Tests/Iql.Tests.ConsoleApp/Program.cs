@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Brandless.ObjectSerializer;
 using Haz.App.Data.Entities;
 using Iql.DotNet.Serialization;
+using Iql.Queryable.Data;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 using Iql.Tests.Context;

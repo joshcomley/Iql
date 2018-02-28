@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Iql.Extensions;
 using Iql.Queryable.Operations;
-using Iql.Queryable.Operations.Applicators;
+using Iql.Queryable.QueryApplicator.Applicators;
 
 namespace Iql.DotNet.QueryableApplicator.Applicators
 {

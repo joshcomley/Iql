@@ -5,6 +5,7 @@ using Iql.DotNet.IqlToDotNetExpression;
 using Iql.Parsing;
 #endif
 using Iql.Queryable.Expressions;
+using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.DotNet

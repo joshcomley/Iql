@@ -5,6 +5,7 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.DotNet;
 #endif
 using Iql.Queryable;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
