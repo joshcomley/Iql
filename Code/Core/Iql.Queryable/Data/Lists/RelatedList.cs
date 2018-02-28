@@ -10,7 +10,10 @@ namespace Iql.Queryable.Data.Lists
         where TTarget : class
         where TSource : class
     {
-        public RelatedList(TSource owner = null, string property = null, IEnumerable<TTarget> source = null)
+        public RelatedList(
+            TSource owner = null, 
+            string property = null, 
+            IEnumerable<TTarget> source = null)
         {
             Owner = owner;
             PropertyName = property;
