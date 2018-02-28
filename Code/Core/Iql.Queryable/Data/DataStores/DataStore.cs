@@ -383,8 +383,8 @@ namespace Iql.Queryable.Data.DataStores
                     if (isEntityNew == true)
                     {
                         operation.Result.Success = false;
-                        var failure = new EntityValidationResult(updateEntityOperation.Operation.EntityType);
-                        failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
+                        var failure = new EntityValidationResult<TEntity>(updateEntityOperation.Operation.Entity);
+                        failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
                         updateEntityOperation.Result.RootEntityValidationResult = failure;
                     }
                     else if (isEntityNew != null)
@@ -426,8 +426,9 @@ namespace Iql.Queryable.Data.DataStores
                     if (entityNew == true)
                     {
                         operation.Result.Success = false;
-                        var failure = new EntityValidationResult(deleteEntityOperation.Operation.EntityType);
-                        failure.AddFailure("This entity has not yet been saved so it cannot be updated.");
+                        var failure = new EntityValidationResult<TEntity>(
+                            deleteEntityOperation.Operation.Entity);
+                        failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
                         deleteEntityOperation.Result.RootEntityValidationResult = failure;
                     }
                     else if (entityNew != null)
@@ -454,12 +455,6 @@ namespace Iql.Queryable.Data.DataStores
             if (entityCrudResult != null)
             {
                 saveChangesResult.Results.Add(entityCrudResult);
-                entityCrudResult.EntityValidationResults = entityCrudResult.EntityValidationResults ??
-                                                           new Dictionary<object, EntityValidationResult>();
-                ParseEntityResult(
-                    entityCrudResult.EntityValidationResults,
-                    entityCrudResult.LocalEntity,
-                    entityCrudResult.RootEntityValidationResult);
             }
         }
 
@@ -504,37 +499,6 @@ namespace Iql.Queryable.Data.DataStores
             //    var entityState = Tracking.TrackingSet<TEntity>().GetEntityState(entity);
             //    action(DataTracker, (EntityState<TEntity>)entityState);
             //}
-        }
-
-        private static void ParseEntityResult(IDictionary<object, EntityValidationResult> resultsDictionary,
-            object entity,
-            EntityValidationResult entityValidationResult)
-        {
-            if (entityValidationResult == null || resultsDictionary.ContainsKey(entity))
-            {
-                return;
-            }
-
-            resultsDictionary.Add(entity, entityValidationResult);
-            entityValidationResult.LocalEntity = entity;
-            foreach (var collectionValidationResultSet in entityValidationResult
-                .RelationshipCollectionValidationResults)
-            {
-                foreach (var validationResult in collectionValidationResultSet.RelationshipValidationResults)
-                {
-                    var index = validationResult.Key;
-                    var collectionEntity =
-                        ((IList)entity.GetPropertyValueByName(validationResult.Value.PropertyName))[index];
-                    ParseEntityResult(resultsDictionary, collectionEntity,
-                        validationResult.Value.EntityValidationResult);
-                }
-            }
-
-            foreach (var relationshipResult in entityValidationResult.RelationshipValidationResults)
-            {
-                var relationshipEntity = entity.GetPropertyValueByName(relationshipResult.PropertyName);
-                ParseEntityResult(resultsDictionary, relationshipEntity, relationshipResult.EntityValidationResult);
-            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Iql.Queryable.Data.Crud
     {
         OperationType Type { get; }
         object LocalEntity { get; }
-        Dictionary<object, EntityValidationResult> EntityValidationResults { get; set; }
-        EntityValidationResult RootEntityValidationResult { get; set; }
+        Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; }
+        IEntityValidationResult RootEntityValidationResult { get; set; }
     }
 }

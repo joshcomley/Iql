@@ -5,7 +5,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IEntityDisplayTextFormatter
     {
-        Expression FormatterExpression { get; }
+        LambdaExpression FormatterExpression { get; }
         Func<object, string> Format { get; }
     }
 }

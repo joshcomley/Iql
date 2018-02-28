@@ -11,7 +11,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public Func<TEntity, string> Format => _formatterFunction ?? (_formatterFunction = FormatterExpression.Compile());
 
-        Expression IEntityDisplayTextFormatter.FormatterExpression => FormatterExpression;
+        LambdaExpression IEntityDisplayTextFormatter.FormatterExpression => FormatterExpression;
         Func<object, string> IEntityDisplayTextFormatter.Format => obj => Format((TEntity)obj);
 
         public EntityDisplayTextFormatter(Expression<Func<TEntity, string>> formatterExpression, string key)

@@ -46,14 +46,15 @@ namespace Iql.DotNet.Parsers
                         emptyCheck = new IqlStringTrimExpression(
                             parent);
                     }
+                    // s.Title == null || s.Title.Trim() == ""
                     return new IqlOrExpression(
                         new IqlIsEqualToExpression(
-                            emptyCheck,
-                            new IqlLiteralExpression("", IqlType.String)
+                            parent,
+                            new IqlLiteralExpression(null, IqlType.String)
                         ),
                         new IqlIsEqualToExpression(
                             emptyCheck,
-                            new IqlLiteralExpression(null, IqlType.String)
+                            new IqlLiteralExpression("", IqlType.String)
                         )
                     );
             }

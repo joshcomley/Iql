@@ -1,18 +1,17 @@
 ﻿using System;
+using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Validation
 {
-    public class PropertyValidationResult : ValidationResult, IPropertyValidationResult
+    public class PropertyValidationResult<T> : ValidationResult<T>, IPropertyValidationResult
     {
-        public Type EntityType { get; }
-        public string PropertyName { get; set; }
+        public IProperty Property { get; set; }
 
         public PropertyValidationResult(
-            Type entityType,
-            string propertyName)
+            T entity,
+            IProperty property) : base(entity)
         {
-            EntityType = entityType;
-            PropertyName = propertyName;
+            Property = property;
         }
     }
 }

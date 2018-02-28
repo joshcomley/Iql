@@ -125,6 +125,17 @@ namespace Iql.Queryable
             return Then(orderByOperation);
         }
 
+//        public TQueryable ExpandProperty(string propetyName
+//#if TypeScript
+//            , EvaluateContext evaluateContext = null
+//#endif
+//        )
+//        {
+//            var orderByOperation = new ExpandOperation<>(null, descending);
+//            orderByOperation.Expression = PropertyExpression(propetyName);
+//            return Then();
+//        }
+
         public TQueryable OrderByDescending<TProperty>(Expression<Func<T, TProperty>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -214,10 +225,7 @@ namespace Iql.Queryable
         public virtual IqlPropertyExpression PropertyExpression(string propertyName)
         {
             //var property = this.Configuration.GetEntityByType(typeof(T)).Properties.Single(p => p.Name == propertyName);
-            var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
-            var propertyExpression = new IqlPropertyExpression(propertyName, typeof(T).Name, IqlType.Unknown);
-            propertyExpression.Parent = rootReferenceExpression;
-            return propertyExpression;
+            return IqlExpression.GetPropertyExpression(propertyName);
         }
 
         IQueryableBase IQueryableBase.WherePropertyEquals(string propertyName, object value
@@ -271,5 +279,18 @@ namespace Iql.Queryable
 #endif
             );
         }
+
+//        IQueryableBase IQueryableBase.ExpandProperty(string propetyName
+//#if TypeScript
+//            , EvaluateContext evaluateContext = null
+//#endif
+//        )
+//        {
+//            return OrderByProperty(propetyName, descending
+//#if TypeScript
+//                , evaluateContext
+//#endif
+//            );
+//        }
     }
 }

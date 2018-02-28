@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
@@ -17,7 +18,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
         public ValidationCollection<T> EntityValidation { get; } = new ValidationCollection<T>();
-        public DisplayFormatting<T> DisplayFormatting { get; } = new DisplayFormatting<T>();
+
+        public DisplayFormatting<T> DisplayFormatting { get; }
 
         IDisplayFormatting IEntityConfiguration.DisplayFormatting => DisplayFormatting;
         IValidationCollection IEntityConfiguration.EntityValidation => EntityValidation;
@@ -26,8 +28,86 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             Type = type;
             _builder = builder;
+            DisplayFormatting = new DisplayFormatting<T>(this);
             Relationships = new List<IRelationship>();
             Properties = new List<IProperty>();
+        }
+
+        public string GetDisplayText(T entity, string key = null)
+        {
+            return DisplayFormatting.TryFormat(entity, key);
+        }
+
+        string IEntityConfiguration.GetDisplayText(object entity, string key = null)
+        {
+            return GetDisplayText((T) entity, key);
+        }
+
+        IEntityValidationResult IEntityConfiguration.ValidateEntity(object entity)
+        {
+            return ValidateEntity((T) entity);
+        }
+
+        IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByExpression<TProperty>(object entity,
+            Expression<Func<object, TProperty>> expression)
+        {
+            var property = ((IEntityConfiguration) this).FindPropertyByExpression(expression);
+            return ValidateEntityProperty((T)entity, property);
+        }
+
+        IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByName(object entity, string property)
+        {
+            return ValidateEntityPropertyByName((T) entity, property);
+        }
+
+        IPropertyValidationResult IEntityConfiguration.ValidateEntityProperty(object entity, IProperty property)
+        {
+            return ValidateEntityProperty((T) entity, property);
+        }
+
+        public EntityValidationResult<T> ValidateEntity(T entity)
+        {
+            var validationResult = new EntityValidationResult<T>(entity);
+            foreach (var validation in EntityValidation.All)
+            {
+                if (!validation.Validate(entity))
+                {
+                    validationResult.AddFailure(validation.Key, validation.Message);
+                }
+            }
+
+            foreach (var property in Properties)
+            {
+                var result = ValidateEntityProperty(entity, property);
+                if (result.HasValidationFailures())
+                {
+                    validationResult.AddPropertyValidationResult(result);
+                }
+            }
+            return validationResult;
+        }
+
+        public PropertyValidationResult<T> ValidateEntityPropertyByExpression<TProperty>(T entity, Expression<Func<T, TProperty>> property)
+        {
+            return ValidateEntityProperty(entity, FindPropertyByExpression(property));
+        }
+
+        public PropertyValidationResult<T> ValidateEntityPropertyByName(T entity, string property)
+        {
+            return ValidateEntityProperty(entity, FindProperty(property));
+        }
+
+        public PropertyValidationResult<T> ValidateEntityProperty(T entity, IProperty property)
+        {
+            var validationResult = new PropertyValidationResult<T>(entity, property);
+            foreach (var validation in property.Validation.All)
+            {
+                if (!validation.Validate(entity))
+                {
+                    validationResult.AddFailure(validation.Key, validation.Message);
+                }
+            }
+            return validationResult;
         }
 
         public List<IRelationship> Relationships { get; set; }
@@ -185,6 +265,19 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public IProperty FindProperty(string name)
         {
             return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
+        }
+
+        public IProperty FindPropertyByExpression<TProperty>(Expression<Func<T, TProperty>> property)
+        {
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+            return FindProperty(iql.PropertyName);
+        }
+
+        IProperty IEntityConfiguration.FindPropertyByExpression<TProperty>(
+            Expression<Func<object, TProperty>> expression)
+        {
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as IqlPropertyExpression;
+            return FindProperty(iql.PropertyName);
         }
 
         public IEntityKey GetKey()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !TypeScript
+using System;
 using System.Linq.Expressions;
 using Iql.DotNet;
 using Iql.DotNet.Serialization;
@@ -33,3 +34,4 @@ namespace Iql.Tests.Tests.Serialization
         }
     }
 }
+#endif

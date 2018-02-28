@@ -11,6 +11,7 @@ using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Http;
 using Iql.Queryable.Data.Validation;
@@ -44,9 +45,10 @@ namespace Iql.OData.Data
     //    // ReSharper disable once InconsistentNaming
     //    public T Value { get; set; }
     //}
-
     public class ODataDataStore : DataStore
     {
+        private ODataConfiguration _configuration;
+
         public ODataDataStore(IQueryableAdapterBase queryableAdapter = null)
         {
             QueryableAdapter = queryableAdapter ?? new ODataQueryableAdapter();
@@ -54,31 +56,24 @@ namespace Iql.OData.Data
 
         public IQueryableAdapterBase QueryableAdapter { get; }
 
-        public ODataConfiguration GetConfiguration()
+        public ODataConfiguration Configuration
         {
-            return DataContext.GetConfiguration<ODataConfiguration>();
+            get => _configuration ?? DataContext?.GetConfiguration<ODataConfiguration>();
+            set => _configuration = value;
         }
 
         public IHttpProvider GetHttp()
         {
-            return GetConfiguration().HttpProvider;
+            return Configuration.HttpProvider;
         }
 
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
-            var configuration = GetConfiguration();
+            var configuration = Configuration;
             var http = configuration.HttpProvider;
-            var entitySetUri = ResolveEntitySetUri<TEntity>();
 
-            var oDataQuery =
-                operation.Operation.Queryable.ToQueryWithAdapterBase(
-                    QueryableAdapter,
-                    DataContext,
-                    null,
-                    null) as IODataQuery;
-            var queryString = oDataQuery.ToODataQuery();
-            var fullQueryUri = $"{entitySetUri}{queryString}";
+            var fullQueryUri = ResolveODataQueryUri(operation.Operation.Queryable);
 
             var httpResult = await http.Get(fullQueryUri);
             operation.Result.Success = httpResult.Success;
@@ -115,6 +110,44 @@ namespace Iql.OData.Data
                 }
             }
             return operation.Result;
+        }
+
+        public string ResolveODataQueryUri<TEntity>(global::Iql.Queryable.IQueryable<TEntity> queryable) where TEntity : class
+        {
+            var oDataQuery =
+                queryable.ToQueryWithAdapterBase(
+                    QueryableAdapter,
+                    DataContext,
+                    null,
+                    null) as IODataQuery;
+            var queryString = oDataQuery.ToODataQuery();
+            var fullQueryUri = $"{ResolveEntitySetUri<TEntity>()}{queryString}";
+            return fullQueryUri;
+        }
+
+        public string ResolveODataQueryUri(IQueryableBase queryable)
+        {
+            var oDataQuery =
+                queryable.ToQueryWithAdapterBase(
+                    QueryableAdapter,
+                    DataContext,
+                    null,
+                    null) as IODataQuery;
+            var queryString = oDataQuery.ToODataQuery();
+            var fullQueryUri = $"{ResolveEntitySetUriByType(queryable.ItemType)}{queryString}";
+            return fullQueryUri;
+        }
+
+        public static string ResolveODataUri<TEntity>(DbQueryable<TEntity> queryable)
+            where TEntity : class
+        {
+            return queryable.ResolveODataQueryUri();
+        }
+
+        public static string ResolveODataUriFromQuery<TEntity>(global::Iql.Queryable.IQueryable<TEntity> queryable, IDataContext dataContext)
+            where TEntity : class
+        {
+            return queryable.ResolveODataQueryUriFromQuery(dataContext);
         }
 
         private void ParseObj(object jvalue)
@@ -155,7 +188,7 @@ namespace Iql.OData.Data
         public override async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            var configuration = GetConfiguration();
+            var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entitySetUri = ResolveEntitySetUri<TEntity>();
             var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext);
@@ -169,7 +202,7 @@ namespace Iql.OData.Data
         public override async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation)
         {
-            var configuration = GetConfiguration();
+            var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var properties = new List<string>();
@@ -195,7 +228,7 @@ namespace Iql.OData.Data
         public override async Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation)
         {
-            var configuration = GetConfiguration();
+            var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var httpResult = await http.Delete(entityUri);
@@ -206,20 +239,26 @@ namespace Iql.OData.Data
 
         private string ResolveEntitySetUri<TEntity>()
         {
-            var configuration = GetConfiguration();
-            var entitySetName = configuration.GetEntitySetName<TEntity>();
+            return ResolveEntitySetUriByType(typeof(TEntity));
+        }
+
+        private string ResolveEntitySetUriByType(Type type)
+        {
+            var configuration = Configuration;
+            var entitySetName = configuration.GetEntitySetNameByType(type);
             var apiUriBase = configuration.ApiUriBase;
             if (!apiUriBase.EndsWith("/"))
             {
                 apiUriBase += "/";
             }
+
             var entitySetUri = $"{apiUriBase}{entitySetName}";
             return entitySetUri;
         }
 
         private string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class
         {
-            var configuration = GetConfiguration();
+            var configuration = Configuration;
             var entitySetName = configuration.GetEntitySetName<TEntity>();
             var apiUriBase = configuration.ApiUriBase;
             if (!apiUriBase.EndsWith("/"))
@@ -250,7 +289,7 @@ namespace Iql.OData.Data
         }
 
         #region Validation
-        private void ParseValidation(IEntityCrudResult result, object entity, string responseData)
+        private void ParseValidation<TEntity>(IEntityCrudResult result, TEntity entity, string responseData) where TEntity : class
         {
             if (!result.Success)
             {
@@ -259,18 +298,18 @@ namespace Iql.OData.Data
                 if (error != null)
                 {
                     var entityType = entity.GetType();
-                    var entityValidationResult = new EntityValidationResult(entityType);
+                    var entityValidationResult = new EntityValidationResult<TEntity>(entity);
                     foreach (var detail in error.details)
                     {
                         if (string.IsNullOrWhiteSpace(detail.target))
                         {
-                            entityValidationResult.AddFailure(detail.message);
+                            entityValidationResult.AddFailure(detail.code, detail.message);
                         }
                         else
                         {
                             var path = detail.target.Split('.');
                             var currentEntityType = entityType;
-                            EntityValidationResult currentError = entityValidationResult;
+                            EntityValidationResult< TEntity> currentError = entityValidationResult;
                             for (var i = 0; i < path.Length; i++)
                             {
                                 var pathPart = path[i];
@@ -279,18 +318,20 @@ namespace Iql.OData.Data
                                     int index;
                                     var openBracketIndex = pathPart.IndexOf("[");
                                     pathPart = pathPart.Substring(0, pathPart.Length - 1);
-                                    var property = pathPart.Substring(0, openBracketIndex);
+                                    var propertyName = pathPart.Substring(0, openBracketIndex);
+                                    var property = DataContext.EntityConfigurationContext.EntityType<TEntity>()
+                                        .FindProperty(propertyName);
                                     index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
-                                    var relationship = FindRelationship(currentEntityType, property);
+                                    var relationship = FindRelationship(currentEntityType, property.Name);
                                     if (relationship != null)
                                     {
                                         var relationshipEntityType = relationship.Type;
 
-                                        RelationshipCollectionValidationResult relationshipCollectionValidationResult = null;
+                                        RelationshipCollectionValidationResult<TEntity> relationshipCollectionValidationResult = null;
                                         foreach (var existingCollectionResult in currentError
                                             .RelationshipCollectionValidationResults)
                                         {
-                                            if (existingCollectionResult.PropertyName == property)
+                                            if (existingCollectionResult.Property == property)
                                             {
                                                 relationshipCollectionValidationResult = existingCollectionResult;
                                                 break;
@@ -298,18 +339,18 @@ namespace Iql.OData.Data
                                         }
                                         if (relationshipCollectionValidationResult == null)
                                         {
-                                            relationshipCollectionValidationResult = new RelationshipCollectionValidationResult(
-                                                relationshipEntityType, currentEntityType, property);
+                                            relationshipCollectionValidationResult = new RelationshipCollectionValidationResult<TEntity>(
+                                                relationshipEntityType, entity, property);
                                             currentError.RelationshipCollectionValidationResults.Add(
                                                 relationshipCollectionValidationResult);
                                         }
                                         var relationshipCollectionEntityValidationResult =
-                                            new EntityValidationResult(relationshipEntityType);
+                                            new EntityValidationResult<TEntity>(entity);
                                         if (!relationshipCollectionValidationResult.RelationshipValidationResults
                                             .ContainsKey(index))
                                         {
-                                            var relationshipValidationResult = new RelationshipValidationResult(
-                                                relationshipEntityType, currentEntityType,
+                                            var relationshipValidationResult = new RelationshipValidationResult<TEntity>(
+                                                relationshipEntityType, entity,
                                                 relationshipCollectionEntityValidationResult, property);
                                             relationshipCollectionValidationResult.RelationshipValidationResults.Add(index,
                                                 relationshipValidationResult);
@@ -324,27 +365,29 @@ namespace Iql.OData.Data
                                     }
                                     else
                                     {
-                                        AddPropertyError(currentError, property, currentEntityType, detail);
+                                        AddPropertyError(currentError, property, entity, detail);
                                     }
                                 }
                                 else
                                 {
-                                    var property = pathPart;
-                                    var relationship = FindRelationship(currentEntityType, property);
+                                    var propertyName = pathPart;
+                                    var property = DataContext.EntityConfigurationContext.EntityType<TEntity>()
+                                        .FindProperty(propertyName);
+                                    var relationship = FindRelationship(currentEntityType, property.Name);
                                     if (relationship != null)
                                     {
                                         var relationshipEntityType = relationship.Type;
-                                        var relationshipValidationResult = new RelationshipValidationResult(
-                                            relationshipEntityType, currentEntityType, currentError, property);
+                                        var relationshipValidationResult = new RelationshipValidationResult<TEntity>(
+                                            relationshipEntityType, entity, currentError, property);
                                         currentError.RelationshipValidationResults.Add(relationshipValidationResult);
                                         relationshipValidationResult.EntityValidationResult =
-                                            new EntityValidationResult(relationshipEntityType);
+                                            new EntityValidationResult<TEntity>(entity);
                                         currentError = relationshipValidationResult.EntityValidationResult;
                                         currentEntityType = relationshipEntityType;
                                     }
                                     else
                                     {
-                                        AddPropertyError(currentError, property, currentEntityType, detail);
+                                        AddPropertyError(currentError, property, entity, detail);
                                     }
                                 }
                             }
@@ -355,16 +398,16 @@ namespace Iql.OData.Data
             }
         }
 
-        private static void AddPropertyError(EntityValidationResult currentError, string property,
-            Type currentEntityType, ODataError detail)
+        private void AddPropertyError<TEntity>(EntityValidationResult<TEntity> currentError, IProperty property,
+            TEntity currentEntity, ODataError detail)
         {
-            var propertyError = currentError.PropertyValidationResults.FirstOrDefault(p => p.PropertyName == property);
+            var propertyError = currentError.PropertyValidationResults.FirstOrDefault(p => p.Property == property);
             if (propertyError == null)
             {
-                propertyError = new PropertyValidationResult(currentEntityType, property);
+                propertyError = new PropertyValidationResult<TEntity>(currentEntity, property);
                 currentError.AddPropertyValidationResult(propertyError);
             }
-            propertyError.AddFailure(detail.message);
+            propertyError.AddFailure(detail.code, detail.message);
         }
 
         private IRelationshipDetail FindRelationship(Type entityType, string property)

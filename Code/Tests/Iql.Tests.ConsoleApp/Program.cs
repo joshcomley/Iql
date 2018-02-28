@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Brandless.ObjectSerializer;
 using Haz.App.Data.Entities;
+using Iql.DotNet.Serialization;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 using Iql.Tests.Context;
@@ -14,6 +16,10 @@ namespace Iql.Tests.ConsoleApp
     {
         private static async Task Main()
         {
+            //var iql = IqlSerializer.DeserializeFromXml(
+            //    @"<?xml version=""1.0"" encoding=""utf-16""?> <IqlPropertyExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""> <Type>Property</Type> <ReturnType>Unknown</ReturnType> <Parent xsi:type=""IqlRootReferenceExpression""> <Type>RootReference</Type> <ReturnType>Unknown</ReturnType> <VariableName>p</VariableName> </Parent> <PropertyName>Title</PropertyName> </IqlPropertyExpression>");
+            //CSharpObjectSerializer serializer = new CSharpObjectSerializer();
+            //var str = serializer.Serialize(iql);
             //await RefreshDataSetAsync();
             //return;
             //var db = new AppDbContext();

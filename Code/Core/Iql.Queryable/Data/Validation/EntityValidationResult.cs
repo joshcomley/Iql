@@ -1,31 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.Queryable.Data.Validation
 {
-    public class EntityValidationResult : ValidationResult
+    public class EntityValidationResult<T> : ValidationResult<T>, IEntityValidationResult
     {
-        public List<PropertyValidationResult> PropertyValidationResults { get; set; }
-            = new List<PropertyValidationResult>();
-        public List<RelationshipValidationResult> RelationshipValidationResults { get; set; }
-            = new List<RelationshipValidationResult>();
-        public List<RelationshipCollectionValidationResult> RelationshipCollectionValidationResults { get; set; }
-            = new List<RelationshipCollectionValidationResult>();
+        public List<PropertyValidationResult<T>> PropertyValidationResults { get; private set; }
+            = new List<PropertyValidationResult<T>>();
+        public List<RelationshipValidationResult<T>> RelationshipValidationResults { get; set; }
+            = new List<RelationshipValidationResult<T>>();
+        public List<RelationshipCollectionValidationResult<T>> RelationshipCollectionValidationResults { get; set; }
+            = new List<RelationshipCollectionValidationResult<T>>();
 
-        public Type EntityType { get; set; }
-        public object LocalEntity { get; set; }
-
-        public EntityValidationResult(Type entityType)
+        public EntityValidationResult(T entity) : base(entity)
         {
-            EntityType = entityType;
         }
 
-        public void AddPropertyValidationResult(PropertyValidationResult result)
+        IEnumerable<IPropertyValidationResult> IEntityValidationResult.PropertyValidationResults => PropertyValidationResults;
+
+        void IEntityValidationResult.AddPropertyValidationResult(IPropertyValidationResult result)
+        {
+            AddPropertyValidationResult((PropertyValidationResult<T>) result);
+        }
+
+        public void AddPropertyValidationResult(PropertyValidationResult<T> result)
         {
             if (PropertyValidationResults == null)
             {
-                PropertyValidationResults = new List<PropertyValidationResult>();
+                PropertyValidationResults = new List<PropertyValidationResult<T>>();
             }
             PropertyValidationResults.Add(result);
         }

@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Iql.JavaScript.IqlToJavaScript.Parsers;
+using Iql.JavaScript.QueryToJavaScript;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -21,17 +22,53 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Expressions.JavaScript
 #endif
         ) where TEntity : class
         {
-            return (LambdaExpression)Evaluator.Eval(ConvertIqlToExpressionString(expression));
+            return (LambdaExpression)Evaluator.Eval(ConvertIqlToJavaScript(expression
+#if TypeScript
+            , evaluateContext
+#endif
+            ).Expression);
         }
 
-        public string ConvertIqlToExpressionString(IqlExpression expression)
+        public string ConvertIqlToExpressionString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
+        {
+            var javascript = ConvertIqlToJavaScript(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                );
+            return $"function({javascript.RootVariableName}) {{ return {javascript.Expression}; }}";
+        }
+
+        public string ConvertIqlToTypeScriptExpressionString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var javascript = ConvertIqlToJavaScript(expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+            return $"{javascript.RootVariableName} => {javascript.Expression}";
+        }
+
+        private static JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
         {
             var javascript = JavaScriptIqlParser.GetJavaScript(expression
 #if TypeScript
             , evaluateContext
 #endif
             );
-            return javascript.Expression;
+            return javascript;
         }
     }
 }

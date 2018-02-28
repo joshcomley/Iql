@@ -111,7 +111,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => !string.IsNullOrWhiteSpace(c.Name) || !string.IsNullOrWhiteSpace(c.Description),
-                @"entity => (!(((((entity.Name.Trim() == null) ? entity.Name.Trim() : entity.Name.Trim().ToUpper()) == """") || (((entity.Name.Trim() == null) ? entity.Name.Trim() : entity.Name.Trim().ToUpper()) == null))) || !(((((entity.Description.Trim() == null) ? entity.Description.Trim() : entity.Description.Trim().ToUpper()) == """") || (((entity.Description.Trim() == null) ? entity.Description.Trim() : entity.Description.Trim().ToUpper()) == null))))");
+                @"entity => (!(((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) == null) || (((entity.Name.Trim() == null) ? entity.Name.Trim() : entity.Name.Trim().ToUpper()) == """"))) || !(((((entity.Description == null) ? entity.Description : entity.Description.ToUpper()) == null) || (((entity.Description.Trim() == null) ? entity.Description.Trim() : entity.Description.Trim().ToUpper()) == """"))))");
         }
 
         [TestMethod]

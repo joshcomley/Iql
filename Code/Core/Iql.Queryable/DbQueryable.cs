@@ -14,6 +14,7 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable
@@ -476,7 +477,7 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandCollectionCountRelationship(
             string propertyName)
         {
-            return ExpandRelationshipInternal(propertyName, typeof(ExpandCountOperation<,,>));
+            return ExpandRelationship(propertyName);
         }
 
         public DbQueryable<T> ExpandCollectionCountQuery<TTarget>(
@@ -508,39 +509,8 @@ namespace Iql.Queryable
         public DbQueryable<T> ExpandRelationship(
             string propertyName)
         {
-            return ExpandRelationshipInternal(propertyName, typeof(ExpandOperation<,,>));
-        }
-
-        private DbQueryable<T> ExpandRelationshipInternal(string propertyName, Type type)
-        {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
-            var relationship = entityConfiguration
-                .Relationships.Single(r =>
-                {
-                    var thisEnd = r.Source.Configuration == entityConfiguration
-                        ? r.Source
-                        : r.Target;
-                    if (thisEnd.Property.Name == propertyName)
-                    {
-                        return true;
-                    }
-                    return false;
-                });
-            var source = relationship.Source.Configuration == entityConfiguration
-                ? relationship.Source
-                : relationship.Target;
-            var target = relationship.Source.Configuration == entityConfiguration
-                ? relationship.Target
-                : relationship.Source;
-            var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.Name);
-            var propertyExpression = PropertyExpression(propertyName);
-            var expandOperationType = type.MakeGenericType(
-                typeof(T),
-                property.ElementType,
-                target.Type);
-            var expandOperation =
-                (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
-            expandOperation.Expression = propertyExpression;
+            var expandOperation = entityConfiguration.BuildExpandOperation(propertyName);
             return Then(expandOperation);
         }
 

@@ -471,7 +471,11 @@ namespace Hazception.ApiContext.Base
 				.DefineCollectionProperty(p => p.ClonedTo, p => p.ClonedToCount)
 				.DefineProperty(p => p.Video, false)
 				.DefineProperty(p => p.Client, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineEntityValidation(entity => !((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == null) || !((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == null), "c48ee09e-7d39-4a34-9c84-6ed6eb57e4b8", "Please enter either a title or a description")
+				.DefineDisplayFormatter(entity => entity.Title, "Default")
+				.DefineDisplayFormatter(entity => entity.Title + " (" + entity.Id + ")", "Report")
+				.DefinePropertyValidation(entity => entity.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) != null && entity.Title.Length > 50, "9c3c0ce9-4398-4684-b829-0a16dca8634d", "Please enter less than fifty characters");
 			
 			builder.EntityType<Hazard>()
 				.HasOne(p => p.ClonedFrom)

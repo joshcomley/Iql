@@ -46,6 +46,12 @@ namespace Iql.Queryable
 #endif
         );
 
+//        IQueryableBase ExpandProperty(string propetyName
+//#if TypeScript
+//            , EvaluateContext evaluateContext = null
+//#endif
+//        );
+
         IqlPropertyExpression PropertyExpression(string propertyName);
     }
 }

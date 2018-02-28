@@ -1,7 +1,6 @@
 using Iql.Queryable;
 using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
-using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Events;
 using System;
 using Iql.Queryable.Data.Crud.State;
@@ -59,20 +58,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Hazard";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -130,20 +117,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ExamCandidate";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -201,20 +176,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ExamCandidateResult";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -272,20 +235,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ExamResult";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -343,20 +294,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ExamManager";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -414,20 +353,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Exam";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -485,20 +412,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Video";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -556,20 +471,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "HazClient";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -627,20 +530,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "HazApplicationUser";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -698,20 +589,8 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "HazClientType";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1795,12 +1674,6 @@ namespace Haz.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -2622,12 +2495,6 @@ namespace Haz.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -3631,12 +3498,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -4633,12 +4494,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -5179,12 +5034,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -6362,12 +6211,6 @@ namespace Haz.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -7515,12 +7358,6 @@ namespace Haz.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -8308,12 +8145,6 @@ namespace Haz.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -9851,12 +9682,6 @@ namespace Haz.App.Data.Entities
 		}
 
 		
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }
@@ -9986,12 +9811,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		public override EntityValidationResult ValidateEntity()
-		{
-			var entity = this;
-			var validationResult = new EntityValidationResult(this.GetType());
-			return validationResult;
-		}
 	
 	}
 }

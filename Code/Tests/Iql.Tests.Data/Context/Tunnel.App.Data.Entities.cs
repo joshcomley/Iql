@@ -3,7 +3,6 @@ using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
 using Iql.Queryable.Events;
 using System;
-using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Data.Crud.State;
 
 
@@ -59,20 +58,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "UserSite";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -130,20 +117,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "SiteInspection";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -201,20 +176,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Site";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -272,20 +235,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "PersonReport";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -343,20 +294,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "PersonTypeMap";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -414,20 +353,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "PersonType";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -485,20 +412,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "PersonLoading";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -556,20 +471,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "PersonInspection";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -627,20 +530,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Person";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -698,20 +589,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "RiskAssessmentQuestion";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -769,20 +648,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "RiskAssessmentAnswer";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -840,20 +707,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "RiskAssessmentSolution";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -911,20 +766,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "RiskAssessment";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -982,20 +825,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ReportReceiverEmailAddress";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1053,20 +884,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Project";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1124,20 +943,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ReportType";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1195,20 +1002,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ReportRecommendation";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1266,20 +1061,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ReportDefaultRecommendation";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1337,20 +1120,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ReportCategory";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1408,20 +1179,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ReportActionsTaken";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1479,20 +1238,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "SiteDocument";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1550,20 +1297,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "DocumentCategory";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1621,20 +1356,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ClientType";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1692,20 +1415,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "Client";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -1763,20 +1474,8 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		public virtual bool OnSaving()
-		{
-			return true;
-		}
-		public virtual bool OnDeleting()
-		{
-			return true;
-		}
 
 		public static String ClassName { get; set; }		 = "ApplicationUser";
-		public virtual EntityValidationResult ValidateEntity()
-		{
-			return new EntityValidationResult(this.GetType());
-		}
 	
 	}
 }
@@ -6367,7 +6066,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }
@@ -13280,7 +12978,6 @@ namespace Tunnel.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }

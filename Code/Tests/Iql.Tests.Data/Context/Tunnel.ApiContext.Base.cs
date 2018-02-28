@@ -13,7 +13,7 @@ namespace Tunnel.ApiContext.Base
 	{
 		public TunnelDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
-			this.Users = (DbSet<ApplicationUser,string>)this.AsDbSet<ApplicationUser, string>();
+			this.Users = (DbSet<ApplicationUser,string>)this.AsDbSet<ApplicationUser, String>();
 			
 			this.Clients = (DbSet<Client,int>)this.AsDbSet<Client, int>();
 			
@@ -224,7 +224,9 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Version, false)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineProperty(p => p.PersonReport, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.CreatedByUser, true)
+				.DefinePropertyValidation(entity => entity.Notes, entity => (entity.Notes == null ? null : entity.Notes.ToUpper()) != null || (entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()), "1edb84ad-915b-4e83-8555-a95fba8073ec", "Please enter some actions taken notes")
+				.DefinePropertyValidation(entity => entity.Notes, entity => entity.Notes.Length > 5, "5f3325c9-2452-4e8d-8fb6-0bca1eee50bb", "Please enter at least five characters for notes");
 			
 			builder.EntityType<ReportActionsTaken>()
 				.HasOne(p => p.PersonReport)
@@ -463,9 +465,14 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedByUser, true)
 				.DefineCollectionProperty(p => p.Types, p => p.TypesCount)
 				.DefineCollectionProperty(p => p.Reports, p => p.ReportsCount)
-				//.DefineEntityValidation(true, "7e270199-b972-4a97-9697-73095fdfeb5d", "Please enter either a title or a description")
-				//.DefineEntityValidation(true, "8ec85fa7-4b5a-4d3f-8541-46aad0ad28ef", "If the name is 'Josh' please match it in the description")
-		        ;
+				.DefineEntityValidation(entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) && (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "NoTitleOrDescription", "Please enter either a title or a description")
+				.DefineEntityValidation(entity => (entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper()) && (entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()), "JoshCheck", "If the name is 'Josh' please match it in the description")
+				.DefineDisplayFormatter(entity => entity.Title, "Default")
+				.DefineDisplayFormatter(entity => entity.Title + " (" + entity.Id + ")", "Report")
+				.DefinePropertyValidation(entity => entity.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "EmptyTitle", "Please enter a person title")
+				.DefinePropertyValidation(entity => entity.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length > 50, "TitleMaxLength", "Please enter less than fifty characters")
+				.DefinePropertyValidation(entity => entity.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length < 3, "TitleMinLength", "Please enter at least three characters for the person's title")
+				.DefinePropertyValidation(entity => entity.Description, entity => (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "EmptyDescription", "Please enter a person description");
 			
 			builder.EntityType<Person>()
 				.HasOne(p => p.Client)
@@ -526,7 +533,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Version, false)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.CreatedByUser, true)
+				.DefinePropertyValidation(entity => entity.Name, entity => (entity.Name == null ? null : entity.Name.ToUpper()) != null && (entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()), "c9b0b574-1bf9-468b-945b-6ee4ef20fb21", "Please enter a loading name");
 			
 			builder.EntityType<PersonLoading>()
 				.HasOne(p => p.CreatedByUser)
@@ -588,7 +596,9 @@ namespace Tunnel.ApiContext.Base
 				.DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount)
 				.DefineProperty(p => p.Person, false)
 				.DefineProperty(p => p.Type, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.CreatedByUser, true)
+				.DefinePropertyValidation(entity => entity.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "709d6fe5-d92b-4ba5-afc0-e27b671df730", "Please enter a valid report title")
+				.DefinePropertyValidation(entity => entity.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length > 5, "9ddc6f85-18e4-40b7-a742-825acd15d430", "Please enter less than five characters");
 			
 			builder.EntityType<PersonReport>()
 				.HasOne(p => p.Person)
