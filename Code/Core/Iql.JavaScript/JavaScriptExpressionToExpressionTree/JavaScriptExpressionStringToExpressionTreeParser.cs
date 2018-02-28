@@ -70,7 +70,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                     }
                     else if (_index < _length)
                     {
-                        JavaScriptParserSettings.ThrowError("Unexpected \"" + ExprI(_index) + "\"", _index);
+                        JavaScriptParserSettings.ThrowError(_expr, "Unexpected \"" + ExprI(_index) + "\"", _index);
                     }
                 }
             }
@@ -104,7 +104,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 var consequent = ReadExpression();
                 if (consequent == null)
                 {
-                    JavaScriptParserSettings.ThrowError("Expected expression", _index);
+                    JavaScriptParserSettings.ThrowError(_expr, "Expected expression", _index);
                 }
                 ReadSpaces();
                 if (ExprICode(_index) == JavaScriptParserSettings.ColonCode)
@@ -113,11 +113,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                     var alternate = ReadExpression();
                     if (alternate == null)
                     {
-                        JavaScriptParserSettings.ThrowError("Expected expression", _index);
+                        JavaScriptParserSettings.ThrowError(_expr, "Expected expression", _index);
                     }
                     return new ConditionalJavaScriptExpressionNode(test, consequent, alternate);
                 }
-                JavaScriptParserSettings.ThrowError("Expected :", _index);
+                JavaScriptParserSettings.ThrowError(_expr, "Expected :", _index);
             }
             else
             {
@@ -171,7 +171,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             var right = ReadToken();
             if (right == null)
             {
-                JavaScriptParserSettings.ThrowError("Expected expression after " + biop, _index);
+                JavaScriptParserSettings.ThrowError(_expr, "Expected expression after " + biop, _index);
             }
             var stack = new List<object>(new object[] {left, biopInfo, right});
 
@@ -200,7 +200,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 node = ReadToken();
                 if (node == null)
                 {
-                    JavaScriptParserSettings.ThrowError("Expected expression after " + biop, _index);
+                    JavaScriptParserSettings.ThrowError(_expr, "Expected expression after " + biop, _index);
                 }
                 stack.Add(biopInfo);
                 stack.Add(node);
@@ -306,7 +306,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 }
                 if (!_settings.IsDecimalDigit(ExprICode(_index - 1)))
                 {
-                    JavaScriptParserSettings.ThrowError("Expected exponent (" + number + ExprI(_index) + ')', _index);
+                    JavaScriptParserSettings.ThrowError(_expr, "Expected exponent (" + number + ExprI(_index) + ')', _index);
                 }
             }
 
@@ -315,12 +315,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             // Check to make sure this isn't a variable name that start with a number (123abc)
             if (_settings.IsIdentifierStart(chCode))
             {
-                JavaScriptParserSettings.ThrowError("Variable names cannot start with a number (" +
+                JavaScriptParserSettings.ThrowError(_expr, "Variable names cannot start with a number (" +
                                                     number + ExprI(_index) + ')', _index);
             }
             else if (chCode == JavaScriptParserSettings.PeriodCode)
             {
-                JavaScriptParserSettings.ThrowError("Unexpected period", _index);
+                JavaScriptParserSettings.ThrowError(_expr, "Unexpected period", _index);
             }
 
             return new LiteralJavaScriptExpressionNode(double.Parse(number), number);
@@ -379,7 +379,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
             if (!closed)
             {
-                JavaScriptParserSettings.ThrowError("Unclosed quote after \"" + str + "\"", _index);
+                JavaScriptParserSettings.ThrowError(_expr, "Unclosed quote after \"" + str + "\"", _index);
             }
             var node = new LiteralJavaScriptExpressionNode(str, quote + str + quote);
             ReadSpaces();
@@ -401,7 +401,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             }
             else
             {
-                JavaScriptParserSettings.ThrowError("Unexpected " + ExprI(_index), _index);
+                JavaScriptParserSettings.ThrowError(_expr, "Unexpected " + ExprI(_index), _index);
             }
 
             while (_index < _length)
@@ -459,14 +459,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                     var node = ReadExpression();
                     if (node == null || node.Type == ExpressionType.Compound)
                     {
-                        JavaScriptParserSettings.ThrowError("Expected comma", _index);
+                        JavaScriptParserSettings.ThrowError(_expr, "Expected comma", _index);
                     }
                     args.Add(node);
                 }
             }
             if (!closed)
             {
-                JavaScriptParserSettings.ThrowError("Expected " + termination, _index);
+                JavaScriptParserSettings.ThrowError(_expr, "Expected " + termination, _index);
             }
             return args;
         }
@@ -512,7 +512,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                         chI = ExprICode(_index);
                         if (chI != JavaScriptParserSettings.CbrackCode)
                         {
-                            JavaScriptParserSettings.ThrowError("Unclosed [", _index);
+                            JavaScriptParserSettings.ThrowError(_expr, "Unclosed [", _index);
                         }
                         _index++;
                         break;
@@ -544,7 +544,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 _index++;
                 return node;
             }
-            JavaScriptParserSettings.ThrowError("Unclosed (", _index);
+            JavaScriptParserSettings.ThrowError(_expr, "Unclosed (", _index);
             return null;
         }
 

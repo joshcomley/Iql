@@ -142,9 +142,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             return "JavaScript Expression Parser (JSEP) v" + Version;
         }
 
-        public static void ThrowError(string message, int index)
+        public static void ThrowError(string source, string message, int index)
         {
-            var error = new Exception(message + " at character " + index);
+            var error = new Exception(message + " at character " + index + ":\r\n\r\n" + source);
             //error["index"] = index;
             //error["description"] = message;
             throw error;
