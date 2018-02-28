@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
+#if TypeScript
+using Iql.Parsing;
+#endif
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
