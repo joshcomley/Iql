@@ -1,70 +1,69 @@
-using Iql.Queryable.Operations;
+using Iql.Queryable.Data.EntityConfiguration;
+using Tunnel.Sets;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.OData;
+using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.DataStores;
 using System;
-using Iql.OData;
-using Iql.Queryable;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Lists;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Iql.Queryable.Data.Methods;
 namespace Tunnel.ApiContext.Base
 {
 	public class TunnelDataContextBase : DataContext
 	{
 		public TunnelDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
-			this.Users = (DbSet<ApplicationUser,string>)this.AsDbSet<ApplicationUser, String>();
+			this.Users = this.AsCustomDbSet<ApplicationUser, String, ApplicationUserSet>();
 			
-			this.Clients = (DbSet<Client,int>)this.AsDbSet<Client, int>();
+			this.Clients = this.AsCustomDbSet<Client, int, ClientSet>();
 			
-			this.ClientTypes = (DbSet<ClientType,int>)this.AsDbSet<ClientType, int>();
+			this.ClientTypes = this.AsCustomDbSet<ClientType, int, ClientTypeSet>();
 			
-			this.DocumentCategories = (DbSet<DocumentCategory,int>)this.AsDbSet<DocumentCategory, int>();
+			this.DocumentCategories = this.AsCustomDbSet<DocumentCategory, int, DocumentCategorySet>();
 			
-			this.SiteDocuments = (DbSet<SiteDocument,int>)this.AsDbSet<SiteDocument, int>();
+			this.SiteDocuments = this.AsCustomDbSet<SiteDocument, int, SiteDocumentSet>();
 			
-			this.ReportActionsTaken = (DbSet<ReportActionsTaken,int>)this.AsDbSet<ReportActionsTaken, int>();
+			this.ReportActionsTaken = this.AsCustomDbSet<ReportActionsTaken, int, ReportActionsTakenSet>();
 			
-			this.ReportCategories = (DbSet<ReportCategory,int>)this.AsDbSet<ReportCategory, int>();
+			this.ReportCategories = this.AsCustomDbSet<ReportCategory, int, ReportCategorySet>();
 			
-			this.ReportDefaultRecommendations = (DbSet<ReportDefaultRecommendation,int>)this.AsDbSet<ReportDefaultRecommendation, int>();
+			this.ReportDefaultRecommendations = this.AsCustomDbSet<ReportDefaultRecommendation, int, ReportDefaultRecommendationSet>();
 			
-			this.ReportRecommendations = (DbSet<ReportRecommendation,int>)this.AsDbSet<ReportRecommendation, int>();
+			this.ReportRecommendations = this.AsCustomDbSet<ReportRecommendation, int, ReportRecommendationSet>();
 			
-			this.ReportTypes = (DbSet<ReportType,int>)this.AsDbSet<ReportType, int>();
+			this.ReportTypes = this.AsCustomDbSet<ReportType, int, ReportTypeSet>();
 			
-			this.Projects = (DbSet<Project,int>)this.AsDbSet<Project, int>();
+			this.Projects = this.AsCustomDbSet<Project, int, ProjectSet>();
 			
-			this.ReportReceiverEmailAddresses = (DbSet<ReportReceiverEmailAddress,int>)this.AsDbSet<ReportReceiverEmailAddress, int>();
+			this.ReportReceiverEmailAddresses = this.AsCustomDbSet<ReportReceiverEmailAddress, int, ReportReceiverEmailAddressSet>();
 			
-			this.RiskAssessments = (DbSet<RiskAssessment,int>)this.AsDbSet<RiskAssessment, int>();
+			this.RiskAssessments = this.AsCustomDbSet<RiskAssessment, int, RiskAssessmentSet>();
 			
-			this.RiskAssessmentSolutions = (DbSet<RiskAssessmentSolution,int>)this.AsDbSet<RiskAssessmentSolution, int>();
+			this.RiskAssessmentSolutions = this.AsCustomDbSet<RiskAssessmentSolution, int, RiskAssessmentSolutionSet>();
 			
-			this.RiskAssessmentAnswers = (DbSet<RiskAssessmentAnswer,int>)this.AsDbSet<RiskAssessmentAnswer, int>();
+			this.RiskAssessmentAnswers = this.AsCustomDbSet<RiskAssessmentAnswer, int, RiskAssessmentAnswerSet>();
 			
-			this.RiskAssessmentQuestions = (DbSet<RiskAssessmentQuestion,int>)this.AsDbSet<RiskAssessmentQuestion, int>();
+			this.RiskAssessmentQuestions = this.AsCustomDbSet<RiskAssessmentQuestion, int, RiskAssessmentQuestionSet>();
 			
-			this.People = (DbSet<Person,int>)this.AsDbSet<Person, int>();
+			this.People = this.AsCustomDbSet<Person, int, PersonSet>();
 			
-			this.PersonInspections = (DbSet<PersonInspection,int>)this.AsDbSet<PersonInspection, int>();
+			this.PersonInspections = this.AsCustomDbSet<PersonInspection, int, PersonInspectionSet>();
 			
-			this.PersonLoadings = (DbSet<PersonLoading,int>)this.AsDbSet<PersonLoading, int>();
+			this.PersonLoadings = this.AsCustomDbSet<PersonLoading, int, PersonLoadingSet>();
 			
-			this.PersonTypes = (DbSet<PersonType,int>)this.AsDbSet<PersonType, int>();
+			this.PersonTypes = this.AsCustomDbSet<PersonType, int, PersonTypeSet>();
 			
-			this.PersonTypesMap = (DbSet<PersonTypeMap,CompositeKey>)this.AsDbSet<PersonTypeMap, CompositeKey>();
+			this.PersonTypesMap = this.AsCustomDbSet<PersonTypeMap, CompositeKey, PersonTypeMapSet>();
 			
-			this.PersonReports = (DbSet<PersonReport,int>)this.AsDbSet<PersonReport, int>();
+			this.PersonReports = this.AsCustomDbSet<PersonReport, int, PersonReportSet>();
 			
-			this.Sites = (DbSet<Site,int>)this.AsDbSet<Site, int>();
+			this.Sites = this.AsCustomDbSet<Site, int, SiteSet>();
 			
-			this.SiteInspections = (DbSet<SiteInspection,int>)this.AsDbSet<SiteInspection, int>();
+			this.SiteInspections = this.AsCustomDbSet<SiteInspection, int, SiteInspectionSet>();
 			
-			this.UserSites = (DbSet<UserSite,CompositeKey>)this.AsDbSet<UserSite, CompositeKey>();
+			this.UserSites = this.AsCustomDbSet<UserSite, CompositeKey, UserSiteSet>();
 			
 			this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
 			this.ODataConfiguration.RegisterEntitySet<ApplicationUser>(nameof(Users));
@@ -228,8 +227,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineProperty(p => p.PersonReport, false)
 				.DefineProperty(p => p.CreatedByUser, true)
-				.DefinePropertyValidation(entity => entity.Notes, entity => (entity.Notes == null ? null : entity.Notes.ToUpper()) != null || (entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()), "1edb84ad-915b-4e83-8555-a95fba8073ec", "Please enter some actions taken notes")
-				.DefinePropertyValidation(entity => entity.Notes, entity => entity.Notes.Length > 5, "5f3325c9-2452-4e8d-8fb6-0bca1eee50bb", "Please enter at least five characters for notes");
+				.DefinePropertyValidation(p => p.Notes, entity => (entity.Notes == null ? null : entity.Notes.ToUpper()) != null || (entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()), "a5111c24-1930-4e07-a4c9-4874b4046798", "Please enter some actions taken notes")
+				.DefinePropertyValidation(p => p.Notes, entity => entity.Notes.Length > 5, "cc22c6a6-d778-4883-978d-b0b53230cefc", "Please enter at least five characters for notes");
 			
 			builder.EntityType<ReportActionsTaken>()
 				.HasOne(p => p.PersonReport)
@@ -472,10 +471,10 @@ namespace Tunnel.ApiContext.Base
 				.DefineEntityValidation(entity => (entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper()) && (entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()), "JoshCheck", "If the name is 'Josh' please match it in the description")
 				.DefineDisplayFormatter(entity => entity.Title, "Default")
 				.DefineDisplayFormatter(entity => entity.Title + " (" + entity.Id + ")", "Report")
-				.DefinePropertyValidation(entity => entity.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "EmptyTitle", "Please enter a person title")
-				.DefinePropertyValidation(entity => entity.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length > 50, "TitleMaxLength", "Please enter less than fifty characters")
-				.DefinePropertyValidation(entity => entity.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length < 3, "TitleMinLength", "Please enter at least three characters for the person's title")
-				.DefinePropertyValidation(entity => entity.Description, entity => (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "EmptyDescription", "Please enter a person description");
+				.DefinePropertyValidation(p => p.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "EmptyTitle", "Please enter a person title")
+				.DefinePropertyValidation(p => p.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length > 50, "TitleMaxLength", "Please enter less than fifty characters")
+				.DefinePropertyValidation(p => p.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length < 3, "TitleMinLength", "Please enter at least three characters for the person's title")
+				.DefinePropertyValidation(p => p.Description, entity => (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "EmptyDescription", "Please enter a person description");
 			
 			builder.EntityType<Person>()
 				.HasOne(p => p.Client)
@@ -537,7 +536,7 @@ namespace Tunnel.ApiContext.Base
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false)
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 				.DefineProperty(p => p.CreatedByUser, true)
-				.DefinePropertyValidation(entity => entity.Name, entity => (entity.Name == null ? null : entity.Name.ToUpper()) != null && (entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()), "c9b0b574-1bf9-468b-945b-6ee4ef20fb21", "Please enter a loading name");
+				.DefinePropertyValidation(p => p.Name, entity => (entity.Name == null ? null : entity.Name.ToUpper()) != null && (entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()), "d91c77ab-c7be-4513-b764-983fa5e01cc3", "Please enter a loading name");
 			
 			builder.EntityType<PersonLoading>()
 				.HasOne(p => p.CreatedByUser)
@@ -600,8 +599,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Person, false)
 				.DefineProperty(p => p.Type, false)
 				.DefineProperty(p => p.CreatedByUser, true)
-				.DefinePropertyValidation(entity => entity.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "709d6fe5-d92b-4ba5-afc0-e27b671df730", "Please enter a valid report title")
-				.DefinePropertyValidation(entity => entity.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length > 5, "9ddc6f85-18e4-40b7-a742-825acd15d430", "Please enter less than five characters");
+				.DefinePropertyValidation(p => p.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "b9d05f5a-e7f3-4af6-bf3c-03959981e082", "Please enter a valid report title")
+				.DefinePropertyValidation(p => p.Title, entity => !((entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())) && entity.Title.Trim().Length > 5, "60a27da7-b424-407d-b393-b2678fc2fffb", "Please enter less than five characters");
 			
 			builder.EntityType<PersonReport>()
 				.HasOne(p => p.Person)
@@ -703,55 +702,67 @@ namespace Tunnel.ApiContext.Base
 		}
 		
 		
-		public DbSet<ApplicationUser, string> Users { get; set; }
+		public ApplicationUserSet Users { get; set; }
 		
-		public DbSet<Client, int> Clients { get; set; }
+		public ClientSet Clients { get; set; }
 		
-		public DbSet<ClientType, int> ClientTypes { get; set; }
+		public ClientTypeSet ClientTypes { get; set; }
 		
-		public DbSet<DocumentCategory, int> DocumentCategories { get; set; }
+		public DocumentCategorySet DocumentCategories { get; set; }
 		
-		public DbSet<SiteDocument, int> SiteDocuments { get; set; }
+		public SiteDocumentSet SiteDocuments { get; set; }
 		
-		public DbSet<ReportActionsTaken, int> ReportActionsTaken { get; set; }
+		public ReportActionsTakenSet ReportActionsTaken { get; set; }
 		
-		public DbSet<ReportCategory, int> ReportCategories { get; set; }
+		public ReportCategorySet ReportCategories { get; set; }
 		
-		public DbSet<ReportDefaultRecommendation, int> ReportDefaultRecommendations { get; set; }
+		public ReportDefaultRecommendationSet ReportDefaultRecommendations { get; set; }
 		
-		public DbSet<ReportRecommendation, int> ReportRecommendations { get; set; }
+		public ReportRecommendationSet ReportRecommendations { get; set; }
 		
-		public DbSet<ReportType, int> ReportTypes { get; set; }
+		public ReportTypeSet ReportTypes { get; set; }
 		
-		public DbSet<Project, int> Projects { get; set; }
+		public ProjectSet Projects { get; set; }
 		
-		public DbSet<ReportReceiverEmailAddress, int> ReportReceiverEmailAddresses { get; set; }
+		public ReportReceiverEmailAddressSet ReportReceiverEmailAddresses { get; set; }
 		
-		public DbSet<RiskAssessment, int> RiskAssessments { get; set; }
+		public RiskAssessmentSet RiskAssessments { get; set; }
 		
-		public DbSet<RiskAssessmentSolution, int> RiskAssessmentSolutions { get; set; }
+		public RiskAssessmentSolutionSet RiskAssessmentSolutions { get; set; }
 		
-		public DbSet<RiskAssessmentAnswer, int> RiskAssessmentAnswers { get; set; }
+		public RiskAssessmentAnswerSet RiskAssessmentAnswers { get; set; }
 		
-		public DbSet<RiskAssessmentQuestion, int> RiskAssessmentQuestions { get; set; }
+		public RiskAssessmentQuestionSet RiskAssessmentQuestions { get; set; }
 		
-		public DbSet<Person, int> People { get; set; }
+		public PersonSet People { get; set; }
 		
-		public DbSet<PersonInspection, int> PersonInspections { get; set; }
+		public PersonInspectionSet PersonInspections { get; set; }
 		
-		public DbSet<PersonLoading, int> PersonLoadings { get; set; }
+		public PersonLoadingSet PersonLoadings { get; set; }
 		
-		public DbSet<PersonType, int> PersonTypes { get; set; }
+		public PersonTypeSet PersonTypes { get; set; }
 		
-		public DbSet<PersonTypeMap, CompositeKey> PersonTypesMap { get; set; }
+		public PersonTypeMapSet PersonTypesMap { get; set; }
 		
-		public DbSet<PersonReport, int> PersonReports { get; set; }
+		public PersonReportSet PersonReports { get; set; }
 		
-		public DbSet<Site, int> Sites { get; set; }
+		public SiteSet Sites { get; set; }
 		
-		public DbSet<SiteInspection, int> SiteInspections { get; set; }
+		public SiteInspectionSet SiteInspections { get; set; }
 		
-		public DbSet<UserSite, CompositeKey> UserSites { get; set; }
+		public UserSiteSet UserSites { get; set; }
+		public virtual async Task<DataMethodResult<string>> SendHi(string name)
+		{
+			var parameters = new List<ODataParameter>();
+			
+			parameters.Add(new ODataParameter(name, typeof(string), "name", false));
+			return await ((ODataDataStore)this.DataStore).MethodWithResponseAsync<string>(
+				parameters,
+				ODataMethodType.Action,
+				ODataMethodScope.Global,
+				"Tunnel",
+				null);
+		}
 	
 	}
 }

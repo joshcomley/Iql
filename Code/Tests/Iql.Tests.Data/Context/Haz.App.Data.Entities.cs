@@ -1,11 +1,10 @@
-using Iql.Queryable;
+using Iql.Queryable.Data.EntityConfiguration;
+using Hazception.Sets;
 using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
+using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Events;
 using System;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Lists;
 
 
 namespace Haz.App.Data.Entities
@@ -1675,7 +1674,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }
@@ -2496,7 +2494,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }
@@ -6212,7 +6209,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }
@@ -7359,7 +7355,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }
@@ -8146,7 +8141,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }
@@ -8726,120 +8720,6 @@ namespace Haz.App.Data.Entities
 		}
 
 				
-		protected string _passwordHash;
-
-		public string PasswordHash
-		{
-			get => _passwordHash;
-			set
-			{
-				var changedSet = false;
-				var oldValue = this._passwordHash;
-				var changed = false;
-				if(this._propertyChangingSet)
-				{
-					changed = value != oldValue;
-					changedSet = true;
-					if(changed)
-					{
-						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
-					}
-				
-				}
-				_passwordHash = value;
-				if(this._propertyChangedSet)
-				{
-					if(!(changedSet))
-					{
-						changed = value != oldValue;
-					
-					}
-					if(changed)
-					{
-						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(PasswordHash), this, oldValue, value));
-					}
-				
-				}
-			}
-		}
-
-				
-		protected string _securityStamp;
-
-		public string SecurityStamp
-		{
-			get => _securityStamp;
-			set
-			{
-				var changedSet = false;
-				var oldValue = this._securityStamp;
-				var changed = false;
-				if(this._propertyChangingSet)
-				{
-					changed = value != oldValue;
-					changedSet = true;
-					if(changed)
-					{
-						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
-					}
-				
-				}
-				_securityStamp = value;
-				if(this._propertyChangedSet)
-				{
-					if(!(changedSet))
-					{
-						changed = value != oldValue;
-					
-					}
-					if(changed)
-					{
-						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(SecurityStamp), this, oldValue, value));
-					}
-				
-				}
-			}
-		}
-
-				
-		protected string _concurrencyStamp;
-
-		public string ConcurrencyStamp
-		{
-			get => _concurrencyStamp;
-			set
-			{
-				var changedSet = false;
-				var oldValue = this._concurrencyStamp;
-				var changed = false;
-				if(this._propertyChangingSet)
-				{
-					changed = value != oldValue;
-					changedSet = true;
-					if(changed)
-					{
-						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
-					}
-				
-				}
-				_concurrencyStamp = value;
-				if(this._propertyChangedSet)
-				{
-					if(!(changedSet))
-					{
-						changed = value != oldValue;
-					
-					}
-					if(changed)
-					{
-						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(ConcurrencyStamp), this, oldValue, value));
-					}
-				
-				}
-			}
-		}
-
-				
 		protected string _phoneNumber;
 
 		public string PhoneNumber
@@ -8916,44 +8796,6 @@ namespace Haz.App.Data.Entities
 		}
 
 				
-		protected bool _twoFactorEnabled;
-
-		public bool TwoFactorEnabled
-		{
-			get => _twoFactorEnabled;
-			set
-			{
-				var changedSet = false;
-				var oldValue = this._twoFactorEnabled;
-				var changed = false;
-				if(this._propertyChangingSet)
-				{
-					changed = value != oldValue;
-					changedSet = true;
-					if(changed)
-					{
-						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
-					}
-				
-				}
-				_twoFactorEnabled = value;
-				if(this._propertyChangedSet)
-				{
-					if(!(changedSet))
-					{
-						changed = value != oldValue;
-					
-					}
-					if(changed)
-					{
-						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
-					}
-				
-				}
-			}
-		}
-
-				
 		protected DateTimeOffset? _lockoutEnd;
 
 		public DateTimeOffset? LockoutEnd
@@ -8992,44 +8834,6 @@ namespace Haz.App.Data.Entities
 		}
 
 				
-		protected bool _lockoutEnabled;
-
-		public bool LockoutEnabled
-		{
-			get => _lockoutEnabled;
-			set
-			{
-				var changedSet = false;
-				var oldValue = this._lockoutEnabled;
-				var changed = false;
-				if(this._propertyChangingSet)
-				{
-					changed = value != oldValue;
-					changedSet = true;
-					if(changed)
-					{
-						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
-					}
-				
-				}
-				_lockoutEnabled = value;
-				if(this._propertyChangedSet)
-				{
-					if(!(changedSet))
-					{
-						changed = value != oldValue;
-					
-					}
-					if(changed)
-					{
-						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
-					}
-				
-				}
-			}
-		}
-
-				
 		protected int _accessFailedCount;
 
 		public int AccessFailedCount
@@ -9061,44 +8865,6 @@ namespace Haz.App.Data.Entities
 					if(changed)
 					{
 						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(AccessFailedCount), this, oldValue, value));
-					}
-				
-				}
-			}
-		}
-
-				
-		protected HazClient _client;
-
-		public HazClient Client
-		{
-			get => _client;
-			set
-			{
-				var changedSet = false;
-				var oldValue = this._client;
-				var changed = false;
-				if(this._propertyChangingSet)
-				{
-					changed = value != oldValue;
-					changedSet = true;
-					if(changed)
-					{
-						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
-					}
-				
-				}
-				_client = value;
-				if(this._propertyChangedSet)
-				{
-					if(!(changedSet))
-					{
-						changed = value != oldValue;
-					
-					}
-					if(changed)
-					{
-						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
 					}
 				
 				}
@@ -9182,6 +8948,44 @@ namespace Haz.App.Data.Entities
 					if(changed)
 					{
 						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(UsersCreated), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected HazClient _client;
+
+		public HazClient Client
+		{
+			get => _client;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._client;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
+					}
+				
+				}
+				_client = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<HazApplicationUser>(nameof(Client), this, oldValue, value));
 					}
 				
 				}
@@ -9683,7 +9487,6 @@ namespace Haz.App.Data.Entities
 			}
 		}
 
-		
 	
 	}
 }

@@ -6,7 +6,6 @@ using Iql.OData.Extensions;
 using Iql.OData.Json;
 using Iql.OData.QueryableApplicator;
 using Iql.OData.QueryableApplicator.Applicators;
-using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud;
@@ -16,10 +15,10 @@ using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Http;
+using Iql.Queryable.Data.Methods;
 using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Operations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonSerializer = Iql.OData.Json.JsonSerializer;
@@ -48,14 +47,41 @@ namespace Iql.OData
             return Configuration.HttpProvider;
         }
 
+        public virtual async Task<DataMethodResult<TResult>> MethodWithResponseAsync<TResult>(
+            IEnumerable<ODataParameter> parameters,
+            ODataMethodType methodType,
+            ODataMethodScope methodScope,
+            string nameSpace,
+            Type entityType
+        )
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual async Task<MethodResult> MethodAsync(
+            IEnumerable<ODataParameter> parameters,
+            ODataMethodType methodType,
+            ODataMethodScope methodScope,
+            string nameSpace,
+            Type entityType
+        )
+        {
+            throw new NotImplementedException();
+        }
+
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
+            var fullQueryUri = ResolveODataQueryUri(operation.Operation.Queryable);
+            return await PerformGetInternalAsync(operation, fullQueryUri);
+        }
+
+        private async Task<FlattenedGetDataResult<TEntity>> PerformGetInternalAsync<TEntity>(
+            QueuedGetDataOperation<TEntity> operation,
+            string fullQueryUri) where TEntity : class
+        {
             var configuration = Configuration;
             var http = configuration.HttpProvider;
-
-            var fullQueryUri = ResolveODataQueryUri(operation.Operation.Queryable);
-
             var httpResult = await http.Get(fullQueryUri);
             operation.Result.Success = httpResult.Success;
             if (operation.Result.Success && !string.IsNullOrWhiteSpace(httpResult.ResponseData))
@@ -90,9 +116,10 @@ namespace Iql.OData
                     operation.Result.TotalCount = count;
                 }
             }
+
             return operation.Result;
         }
-        
+
         public string ResolveODataQueryUri(IQueryableBase queryable)
         {
             var oDataQuery =
@@ -244,18 +271,6 @@ namespace Iql.OData
             return entityUri;
         }
 
-        public Task<ODataResult<TResult>> PostOnEntityInstance<TEntity, TResult>(TEntity entity,
-            object payload) where TEntity : class
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ODataResult<TResult>> GetOnEntityInstance<TEntity, TResult>(TEntity entity,
-            object payload) where TEntity : class
-        {
-            throw new NotImplementedException();
-        }
-
         #region Validation
         private void ParseValidation<TEntity>(IEntityCrudResult result, TEntity entity, string responseData) where TEntity : class
         {
@@ -277,7 +292,7 @@ namespace Iql.OData
                         {
                             var path = detail.target.Split('.');
                             var currentEntityType = entityType;
-                            EntityValidationResult< TEntity> currentError = entityValidationResult;
+                            EntityValidationResult<TEntity> currentError = entityValidationResult;
                             for (var i = 0; i < path.Length; i++)
                             {
                                 var pathPart = path[i];

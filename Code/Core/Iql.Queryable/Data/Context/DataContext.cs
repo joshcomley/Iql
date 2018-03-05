@@ -62,7 +62,21 @@ namespace Iql.Queryable.Data.Context
                 .ToList();
             foreach (var property in properties)
             {
-                var asDbSetByType = AsDbSetByType(property.PropertyType.GenericTypeArguments[0]);
+                IDbSet asDbSetByType;
+                var dbSetName = nameof(DbSet<object, object>);
+                if (property.PropertyType.Name == dbSetName)
+                {
+                    asDbSetByType = AsDbSetByType(property.PropertyType.GenericTypeArguments[0]);
+                }
+                else
+                {
+                    var baseType = property.PropertyType.BaseType;
+                    while (baseType.SimpleName() != dbSetName)
+                    {
+                        baseType = baseType.BaseType;
+                    }
+                    asDbSetByType = AsCustomDbSetByType(baseType.GenericTypeArguments[0], property.PropertyType);
+                }
                 property.SetValue(this, asDbSetByType);
             }
         }
@@ -108,10 +122,25 @@ namespace Iql.Queryable.Data.Context
             return (IDbSet)GetType().GetMethod(nameof(AsDbSet))
                 .InvokeGeneric(
                     this,
-                    new object[] {},
+                    new object[] { },
                     entityType,
                     keyType
                     );
+        }
+
+        public IDbSet AsCustomDbSetByType(Type entityType, Type setType)
+        {
+            Initialize();
+            var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
+            var keyType = entityKey.KeyType;
+            return (IDbSet)GetType().GetMethod(nameof(AsCustomDbSet))
+                .InvokeGeneric(
+                    this,
+                    new object[] { },
+                    entityType,
+                    keyType,
+                    setType
+                );
         }
 
         private bool _initialized;
@@ -123,6 +152,28 @@ namespace Iql.Queryable.Data.Context
                 () => DataStore,
                 EvaluateContext,
                 this);
+        }
+
+        public TDbSet AsCustomDbSet<T, TKey, TDbSet>()
+            where T : class
+        {
+            Initialize();
+            Func<IDataStore> dataStoreGetter = () => DataStore;
+            return (TDbSet)Activator.CreateInstance(
+                typeof(TDbSet),
+                new object[]
+                {
+                    EntityConfigurationContext,
+                    dataStoreGetter,
+                    EvaluateContext,
+                    this
+#if TypeScript
+                    ,
+                    typeof(T),
+                    typeof(TKey)
+#endif
+                }
+            );
         }
 
         private static string ConfigurationName<T>() where T : class

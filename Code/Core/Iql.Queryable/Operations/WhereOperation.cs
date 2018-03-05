@@ -9,7 +9,6 @@ namespace Iql.Queryable.Operations
 
         public WhereOperation(QueryExpression queryExpression = null)
         {
-
             _queryExpression = queryExpression;
 #if TypeScript
             EvaluateContext = _queryExpression?.EvaluateContext;

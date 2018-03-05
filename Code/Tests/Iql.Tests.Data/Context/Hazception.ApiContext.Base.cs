@@ -1,39 +1,39 @@
+using Iql.OData;
+using Hazception.Sets;
 using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
-using Iql.Queryable.Data;
+using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.DataStores;
 using System;
-using Iql.OData;
-using Iql.Queryable;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Lists;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Iql.Queryable.Data.Methods;
 namespace Hazception.ApiContext.Base
 {
 	public class HazceptionDataContextBase : DataContext
 	{
 		public HazceptionDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
-			this.ClientTypes = (DbSet<HazClientType,int>)this.AsDbSet<HazClientType, int>();
+			this.ClientTypes = this.AsCustomDbSet<HazClientType, int, HazClientTypeSet>();
 			
-			this.Users = (DbSet<HazApplicationUser,string>)this.AsDbSet<HazApplicationUser, string>();
+			this.Users = this.AsCustomDbSet<HazApplicationUser, String, HazApplicationUserSet>();
 			
-			this.Clients = (DbSet<HazClient,int>)this.AsDbSet<HazClient, int>();
+			this.Clients = this.AsCustomDbSet<HazClient, int, HazClientSet>();
 			
-			this.Videos = (DbSet<Video,int>)this.AsDbSet<Video, int>();
+			this.Videos = this.AsCustomDbSet<Video, int, VideoSet>();
 			
-			this.Exams = (DbSet<Exam,int>)this.AsDbSet<Exam, int>();
+			this.Exams = this.AsCustomDbSet<Exam, int, ExamSet>();
 			
-			this.ExamManagers = (DbSet<ExamManager,int>)this.AsDbSet<ExamManager, int>();
+			this.ExamManagers = this.AsCustomDbSet<ExamManager, int, ExamManagerSet>();
 			
-			this.ExamResults = (DbSet<ExamResult,int>)this.AsDbSet<ExamResult, int>();
+			this.ExamResults = this.AsCustomDbSet<ExamResult, int, ExamResultSet>();
 			
-			this.ExamCandidateResults = (DbSet<ExamCandidateResult,int>)this.AsDbSet<ExamCandidateResult, int>();
+			this.ExamCandidateResults = this.AsCustomDbSet<ExamCandidateResult, int, ExamCandidateResultSet>();
 			
-			this.ExamCandidates = (DbSet<ExamCandidate,int>)this.AsDbSet<ExamCandidate, int>();
+			this.ExamCandidates = this.AsCustomDbSet<ExamCandidate, int, ExamCandidateSet>();
 			
-			this.Hazards = (DbSet<Hazard,int>)this.AsDbSet<Hazard, int>();
+			this.Hazards = this.AsCustomDbSet<Hazard, int, HazardSet>();
 			
 			this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
 			this.ODataConfiguration.RegisterEntitySet<HazClientType>(nameof(ClientTypes));
@@ -76,18 +76,13 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.NormalizedUserName, true)
 				.DefineProperty(p => p.NormalizedEmail, true)
 				.DefineProperty(p => p.EmailConfirmed, false)
-				.DefineProperty(p => p.PasswordHash, true)
-				.DefineProperty(p => p.SecurityStamp, true)
-				.DefineProperty(p => p.ConcurrencyStamp, true)
 				.DefineProperty(p => p.PhoneNumber, true)
 				.DefineProperty(p => p.PhoneNumberConfirmed, false)
-				.DefineProperty(p => p.TwoFactorEnabled, false)
 				.DefineProperty(p => p.LockoutEnd, true)
-				.DefineProperty(p => p.LockoutEnabled, false)
 				.DefineProperty(p => p.AccessFailedCount, false)
-				.DefineProperty(p => p.Client, true)
 				.DefineProperty(p => p.CreatedByUser, true)
 				.DefineCollectionProperty(p => p.UsersCreated, p => p.UsersCreatedCount)
+				.DefineProperty(p => p.Client, true)
 				.DefineCollectionProperty(p => p.ClientsCreated, p => p.ClientsCreatedCount)
 				.DefineCollectionProperty(p => p.VideosCreated, p => p.VideosCreatedCount)
 				.DefineCollectionProperty(p => p.ExamsCreated, p => p.ExamsCreatedCount)
@@ -101,14 +96,14 @@ namespace Hazception.ApiContext.Base
 				.DefineCollectionProperty(p => p.HazardsCreated, p => p.HazardsCreatedCount);
 			
 			builder.EntityType<HazApplicationUser>()
-				.HasOne(p => p.Client)
-				.WithMany(p => p.Users)
-				.WithConstraint(p => p.ClientId, p => p.Id);
-			
-			builder.EntityType<HazApplicationUser>()
 				.HasOne(p => p.CreatedByUser)
 				.WithMany(p => p.UsersCreated)
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
+			
+			builder.EntityType<HazApplicationUser>()
+				.HasOne(p => p.Client)
+				.WithMany(p => p.Users)
+				.WithConstraint(p => p.ClientId, p => p.Id);
 			
 			builder.EntityType<HazClient>()
 				.HasKey(p => p.Id)
@@ -475,10 +470,9 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.Video, false)
 				.DefineProperty(p => p.Client, false)
 				.DefineProperty(p => p.CreatedByUser, true)
-				.DefineEntityValidation(entity => !((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == null) || !((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == null), "c48ee09e-7d39-4a34-9c84-6ed6eb57e4b8", "Please enter either a title or a description")
+				.DefineEntityValidation(entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) && (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "e64dd84a-7e67-48f2-a76f-46a5910fb0d6", "Please enter either a title or a description")
 				.DefineDisplayFormatter(entity => entity.Title, "Default")
-				.DefineDisplayFormatter(entity => entity.Title + " (" + entity.Id + ")", "Report")
-				.DefinePropertyValidation(entity => entity.Title, entity => (entity.Title == null ? null : entity.Title.ToUpper()) != null && entity.Title.Length > 50, "9c3c0ce9-4398-4684-b829-0a16dca8634d", "Please enter less than fifty characters");
+				.DefineDisplayFormatter(entity => entity.Title + " (" + entity.Id + ")", "Report");
 			
 			builder.EntityType<Hazard>()
 				.HasOne(p => p.ClonedFrom)
@@ -503,25 +497,41 @@ namespace Hazception.ApiContext.Base
 		}
 		
 		
-		public DbSet<HazClientType, int> ClientTypes { get; set; }
+		public HazClientTypeSet ClientTypes { get; set; }
 		
-		public DbSet<HazApplicationUser, string> Users { get; set; }
+		public HazApplicationUserSet Users { get; set; }
 		
-		public DbSet<HazClient, int> Clients { get; set; }
+		public HazClientSet Clients { get; set; }
 		
-		public DbSet<Video, int> Videos { get; set; }
+		public VideoSet Videos { get; set; }
 		
-		public DbSet<Exam, int> Exams { get; set; }
+		public ExamSet Exams { get; set; }
 		
-		public DbSet<ExamManager, int> ExamManagers { get; set; }
+		public ExamManagerSet ExamManagers { get; set; }
 		
-		public DbSet<ExamResult, int> ExamResults { get; set; }
+		public ExamResultSet ExamResults { get; set; }
 		
-		public DbSet<ExamCandidateResult, int> ExamCandidateResults { get; set; }
+		public ExamCandidateResultSet ExamCandidateResults { get; set; }
 		
-		public DbSet<ExamCandidate, int> ExamCandidates { get; set; }
+		public ExamCandidateSet ExamCandidates { get; set; }
 		
-		public DbSet<Hazard, int> Hazards { get; set; }
+		public HazardSet Hazards { get; set; }
+		public virtual async Task<DataMethodResult<string>> ValidateField(string SetName,
+			string Name,
+			string Value)
+		{
+			var parameters = new List<ODataParameter>();
+			
+			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
+			parameters.Add(new ODataParameter(Name, typeof(string), "Name", false));
+			parameters.Add(new ODataParameter(Value, typeof(string), "Value", false));
+			return await ((ODataDataStore)this.DataStore).MethodWithResponseAsync<string>(
+				parameters,
+				ODataMethodType.Action,
+				ODataMethodScope.Global,
+				"Hazception",
+				null);
+		}
 	
 	}
 }

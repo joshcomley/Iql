@@ -54,5 +54,22 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name",
                 uri);
         }
+
+        [TestMethod]
+        public void TestResolveUriFromIQueryable2()
+        {
+            IQueryableBase query = Db.Clients.Where(c => c.Name == "hello2");
+
+            var uri = query.ResolveODataQueryUriFromQuery(Db);
+            uri = HttpUtility.UrlDecode(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')",
+                uri);
+
+            query = query.OrderByProperty(nameof(Client.Name));
+            uri = query.ResolveODataQueryUriFromQuery(Db);
+            uri = HttpUtility.UrlDecode(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')&$orderby=Name",
+                uri);
+        }
     }
 }

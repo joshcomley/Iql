@@ -19,6 +19,18 @@ namespace Iql.Queryable.Extensions
         }
 #endif
 
+        public static string SimpleName(this Type type)
+        {
+            var name = type.Name;
+            var index = name.IndexOf("`");
+            if (index != -1)
+            {
+                return name.Substring(0, index);
+            }
+
+            return name;
+        }
+
         public static bool IsEnumerable<TProperty>()
         {
             return IsEnumerableType(typeof(TProperty));
