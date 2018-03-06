@@ -1,7 +1,9 @@
 ﻿using System.Web;
+using Iql.OData;
 using Iql.OData.Extensions;
 using Iql.Queryable;
 using Iql.Queryable.Data.Queryable;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -10,6 +12,42 @@ namespace Iql.Tests.Tests.OData
     [TestClass]
     public class ODataUriTests : TestsBase
     {
+        [TestMethod]
+        public void TestResolveEntitySetMethodUriWithNoParameters()
+        {
+            var db = new AppDbContext(new ODataDataStore());
+            var meRequest = db.Users.Me();
+            var uri = meRequest.Uri;
+            Assert.AreEqual(@"http://localhost:28000/odata/Users/Tunnel.Me", uri);
+        }
+
+        [TestMethod]
+        public void TestResolveEntitySetMethodUriWithParameters()
+        {
+            var db = new AppDbContext(new ODataDataStore());
+            var meRequest = db.Users.ForClient(7, 2);
+            var uri = meRequest.Uri;
+            Assert.AreEqual(@"http://localhost:28000/odata/Users/Tunnel.ForClient(id=7,type=2)", uri);
+        }
+
+        [TestMethod]
+        public void TestResolveEntityMethodUriWithNoParameters()
+        {
+            var db = new AppDbContext(new ODataDataStore());
+            var meRequest = db.Users.ReinstateUser(new ApplicationUser { Id = "928B9116-B06C-49EF-98C9-52A776E03ECD" });
+            var uri = meRequest.Uri;
+            Assert.AreEqual(@"http://localhost:28000/odata/Users('928B9116-B06C-49EF-98C9-52A776E03ECD')/Tunnel.ReinstateUser", uri);
+        }
+
+        [TestMethod]
+        public void TestResolveEntityMethodUriWithParameters()
+        {
+            var db = new AppDbContext(new ODataDataStore());
+            var meRequest = db.ClientTypes.SayHi(new ClientType { Id = 2 }, "bebo");
+            var uri = meRequest.Uri;
+            Assert.AreEqual(@"http://localhost:28000/odata/ClientTypes(2)/Tunnel.SayHi(name='bebo')", uri);
+        }
+
         [TestMethod]
         public void TestResolveUri()
         {

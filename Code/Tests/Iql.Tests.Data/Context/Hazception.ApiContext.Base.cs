@@ -7,8 +7,7 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.DataStores;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Iql.Queryable.Data.Methods;
+using Iql.OData.Methods;
 namespace Hazception.ApiContext.Base
 {
 	public class HazceptionDataContextBase : DataContext
@@ -516,7 +515,7 @@ namespace Hazception.ApiContext.Base
 		public ExamCandidateSet ExamCandidates { get; set; }
 		
 		public HazardSet Hazards { get; set; }
-		public virtual async Task<DataMethodResult<string>> ValidateField(string SetName,
+		public virtual ODataDataMethodRequest<string> ValidateField(string SetName,
 			string Name,
 			string Value)
 		{
@@ -525,11 +524,12 @@ namespace Hazception.ApiContext.Base
 			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
 			parameters.Add(new ODataParameter(Name, typeof(string), "Name", false));
 			parameters.Add(new ODataParameter(Value, typeof(string), "Value", false));
-			return await ((ODataDataStore)this.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Global,
 				"Hazception",
+				"ValidateField",
 				null);
 		}
 	

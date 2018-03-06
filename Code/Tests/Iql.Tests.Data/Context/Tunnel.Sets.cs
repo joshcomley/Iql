@@ -8,8 +8,7 @@ using Iql.OData;
 using Iql.Parsing;
 using System.Collections.Generic;
 using Iql.Queryable.Data.Lists;
-using System.Threading.Tasks;
-using Iql.Queryable.Data.Methods;
+using Iql.OData.Methods;
 using System;
 namespace Tunnel.Sets
 {
@@ -25,91 +24,98 @@ namespace Tunnel.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<DataMethodResult<IEnumerable<ApplicationUser>>> ForClient(int id,
+		public virtual ODataDataMethodRequest<IEnumerable<ApplicationUser>> ForClient(int id,
 			int type)
 		{
 			var parameters = new List<ODataParameter>();
 			
 			parameters.Add(new ODataParameter(id, typeof(int), "id", false));
 			parameters.Add(new ODataParameter(type, typeof(int), "type", false));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<IEnumerable<ApplicationUser>>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<ApplicationUser>>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Tunnel",
+				"ForClient",
 				typeof(ApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<ApplicationUser>> Me()
+		public virtual ODataDataMethodRequest<ApplicationUser> Me()
 		{
 			var parameters = new List<ODataParameter>();
 			
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<ApplicationUser>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<ApplicationUser>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Tunnel",
+				"Me",
 				typeof(ApplicationUser));
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> GeneratePasswordResetLink(ApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> GeneratePasswordResetLink(ApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(ApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"GeneratePasswordResetLink",
 				typeof(ApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> AccountConfirm(ApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> AccountConfirm(ApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(ApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"AccountConfirm",
 				typeof(ApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> SendAccountConfirmationEmail(ApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> SendAccountConfirmationEmail(ApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(ApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"SendAccountConfirmationEmail",
 				typeof(ApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> SendPasswordResetEmail(ApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> SendPasswordResetEmail(ApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(ApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"SendPasswordResetEmail",
 				typeof(ApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> ReinstateUser(ApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> ReinstateUser(ApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(ApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"ReinstateUser",
 				typeof(ApplicationUser));
 		}
 	
@@ -129,15 +135,16 @@ namespace Tunnel.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<DataMethodResult<IEnumerable<Client>>> All()
+		public virtual ODataDataMethodRequest<IEnumerable<Client>> All()
 		{
 			var parameters = new List<ODataParameter>();
 			
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<IEnumerable<Client>>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<Client>>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Tunnel",
+				"All",
 				typeof(Client));
 		}
 	
@@ -156,18 +163,19 @@ namespace Tunnel.Sets
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> SayHi(string name,
-			ClientType entityKey)
+		public virtual ODataDataMethodRequest<string> SayHi(ClientType bindingParameter,
+			string name)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ClientType), "bindingParameter", true));
 			parameters.Add(new ODataParameter(name, typeof(string), "name", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(ClientType), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"SayHi",
 				typeof(ClientType));
 		}
 	
@@ -368,16 +376,17 @@ namespace Tunnel.Sets
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> IncrementVersion(Person entityKey)
+		public virtual ODataDataMethodRequest<string> IncrementVersion(Person bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Person), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Person), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Tunnel",
+				"IncrementVersion",
 				typeof(Person));
 		}
 	

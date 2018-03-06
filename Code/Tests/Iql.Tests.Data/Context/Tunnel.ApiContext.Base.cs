@@ -7,8 +7,7 @@ using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.DataStores;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Iql.Queryable.Data.Methods;
+using Iql.OData.Methods;
 namespace Tunnel.ApiContext.Base
 {
 	public class TunnelDataContextBase : DataContext
@@ -751,16 +750,17 @@ namespace Tunnel.ApiContext.Base
 		public SiteInspectionSet SiteInspections { get; set; }
 		
 		public UserSiteSet UserSites { get; set; }
-		public virtual async Task<DataMethodResult<string>> SendHi(string name)
+		public virtual ODataDataMethodRequest<string> SendHi(string name)
 		{
 			var parameters = new List<ODataParameter>();
 			
 			parameters.Add(new ODataParameter(name, typeof(string), "name", false));
-			return await ((ODataDataStore)this.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Global,
 				"Tunnel",
+				"SendHi",
 				null);
 		}
 	

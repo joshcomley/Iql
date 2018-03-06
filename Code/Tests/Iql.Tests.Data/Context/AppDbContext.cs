@@ -39,7 +39,7 @@ namespace Iql.Tests.Context
 
         public AppDbContext(IDataStore dataStore = null) :
 #if TypeScript
-            base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
+            base(dataStore ?? new InMemoryDataStore(new JavaScriptQueryableAdapter()))
 #else
             //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
             base(dataStore ?? new InMemoryDataStore(new DotNetQueryableAdapter()))

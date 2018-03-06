@@ -8,26 +8,32 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
             ODataIqlParserInstance parser)
         {
-            if (action.Value is string)
+            var value = action.Value;
+            return new IqlFinalExpression<string>(ODataEncode(value));
+        }
+
+        public static string ODataEncode(object value)
+        {
+            if (value is string)
             {
-                var str = action.Value as string;
+                var str = value as string;
                 str = Regex.Replace(str, "'", "''");
-                return new IqlAggregateExpression(
-                    new IqlFinalExpression<string>("'"),
-                    new IqlFinalExpression<string>(str),
-                    new IqlFinalExpression<string>("'"));
+                return $"\'{str}\'";
             }
-            else if (action.Value is DateTime)
+
+            if (value is DateTime)
             {
-                var dateTime = (DateTime)action.Value;
-                return new IqlFinalExpression<string>(dateTime.ToString("o"));
+                var dateTime = (DateTime)value;
+                return dateTime.ToString("o");
             }
-            else if (action.Value is DateTimeOffset)
+
+            if (value is DateTimeOffset)
             {
-                var dateTimeOffset = (DateTimeOffset)action.Value;
-                return new IqlFinalExpression<string>(dateTimeOffset.ToString("o"));
+                var dateTimeOffset = (DateTimeOffset)value;
+                return dateTimeOffset.ToString("o");
             }
-            return new IqlFinalExpression<string>(action.Value.ToString());
+
+            return value.ToString();
         }
     }
 }

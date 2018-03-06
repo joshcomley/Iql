@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.OData.Extensions;
+using Iql.OData.IqlToODataExpression.Parsers;
 using Iql.OData.Json;
+using Iql.OData.Methods;
 using Iql.OData.QueryableApplicator;
 using Iql.OData.QueryableApplicator.Applicators;
 using Iql.Queryable.Data;
@@ -47,26 +50,86 @@ namespace Iql.OData
             return Configuration.HttpProvider;
         }
 
-        public virtual async Task<DataMethodResult<TResult>> MethodWithResponseAsync<TResult>(
+        public virtual ODataDataMethodRequest<TResult> MethodWithResponse<TResult>(
             IEnumerable<ODataParameter> parameters,
             ODataMethodType methodType,
             ODataMethodScope methodScope,
             string nameSpace,
+            string name,
             Type entityType
         )
         {
-            throw new NotImplementedException();
+            var uri = GetMethodUri(parameters, methodScope, nameSpace, name, entityType);
+            var http = GetHttp();
+            var request = new ODataDataMethodRequest<TResult>(
+                this,
+                uri,
+                async () => { return new DataMethodResult<TResult>(); });
+            return request;
         }
 
-        public virtual async Task<MethodResult> MethodAsync(
+        public virtual ODataMethodRequest Method(
             IEnumerable<ODataParameter> parameters,
             ODataMethodType methodType,
             ODataMethodScope methodScope,
             string nameSpace,
+            string name,
             Type entityType
         )
         {
-            throw new NotImplementedException();
+            var uri = GetMethodUri(parameters, methodScope, nameSpace, name, entityType);
+            var http = GetHttp();
+            var request = new ODataMethodRequest(
+                this,
+                uri,
+                async () => { return new MethodResult(); });
+            return request;
+        }
+        
+        public string GetMethodUri(
+            IEnumerable<ODataParameter> parameters,
+            ODataMethodScope methodScope,
+            string nameSpace,
+            string name,
+            Type entityType)
+        {
+            var baseUri = Configuration.ApiUriBase;
+            var bindingParameterName = "bindingParameter";
+            switch (methodScope)
+            {
+                case ODataMethodScope.Collection:
+                    baseUri = ResolveEntitySetUriByType(entityType);
+                    break;
+                case ODataMethodScope.Entity:
+                    var bindingParameter = parameters.Single(p => p.Name == bindingParameterName);
+                    baseUri = ResolveEntityUriByType(bindingParameter.Value, bindingParameter.ValueType);
+                    break;
+                case ODataMethodScope.Global:
+                    nameSpace = "";
+                    break;
+            }
+
+            if (baseUri.EndsWith("/"))
+            {
+                baseUri = baseUri.Substring(0, baseUri.Length - 1);
+            }
+
+            baseUri = baseUri + "/";
+            if (!string.IsNullOrWhiteSpace(nameSpace))
+            {
+                baseUri += nameSpace + ".";
+            }
+
+            baseUri += name;
+            var otherParameters = parameters.Where(p => p.Name != bindingParameterName).ToArray();
+            if (otherParameters.Any())
+            {
+                baseUri += "(";
+                baseUri += string.Join(",", otherParameters.Select(p => $"{p.Name}={ODataLiteralParser.ODataEncode(p.Value)}"));
+                baseUri += ")";
+            }
+
+            return baseUri;
         }
 
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
@@ -232,12 +295,12 @@ namespace Iql.OData
             return operation.Result;
         }
 
-        private string ResolveEntitySetUri<TEntity>()
+        public string ResolveEntitySetUri<TEntity>()
         {
             return ResolveEntitySetUriByType(typeof(TEntity));
         }
 
-        private string ResolveEntitySetUriByType(Type type)
+        public string ResolveEntitySetUriByType(Type type)
         {
             var configuration = Configuration;
             var entitySetName = configuration.GetEntitySetNameByType(type);
@@ -251,22 +314,29 @@ namespace Iql.OData
             return entitySetUri;
         }
 
-        private string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class
+        public string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class
+        {
+            return ResolveEntityUriByType(entity, typeof(TEntity));
+        }
+
+        public string ResolveEntityUriByType(object entity, Type entityType)
         {
             var configuration = Configuration;
-            var entitySetName = configuration.GetEntitySetName<TEntity>();
+            var entitySetName = configuration.GetEntitySetNameByType(entityType);
             var apiUriBase = configuration.ApiUriBase;
             if (!apiUriBase.EndsWith("/"))
             {
                 apiUriBase += "/";
             }
-            var key = DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
+
+            var key = DataContext.EntityConfigurationContext.GetEntityByType(entityType).Key;
             var compositeKey = new CompositeKey(key.Properties.Count);
             for (var i = 0; i < key.Properties.Count; i++)
             {
                 var p = key.Properties[i];
                 compositeKey.Keys[i] = new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null);
             }
+
             var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";
             return entityUri;
         }

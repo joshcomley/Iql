@@ -8,8 +8,7 @@ using Iql.OData;
 using Iql.Parsing;
 using System.Collections.Generic;
 using Iql.Queryable.Data.Lists;
-using System.Threading.Tasks;
-using Iql.Queryable.Data.Methods;
+using Iql.OData.Methods;
 using System;
 namespace Hazception.Sets
 {
@@ -39,107 +38,115 @@ namespace Hazception.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<DataMethodResult<HazApplicationUser>> Me()
+		public virtual ODataDataMethodRequest<HazApplicationUser> Me()
 		{
 			var parameters = new List<ODataParameter>();
 			
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<HazApplicationUser>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<HazApplicationUser>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Hazception",
+				"Me",
 				typeof(HazApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<IEnumerable<HazApplicationUser>>> ForClient(int id,
+		public virtual ODataDataMethodRequest<IEnumerable<HazApplicationUser>> ForClient(int id,
 			int type)
 		{
 			var parameters = new List<ODataParameter>();
 			
 			parameters.Add(new ODataParameter(id, typeof(int), "id", false));
 			parameters.Add(new ODataParameter(type, typeof(int), "type", false));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<IEnumerable<HazApplicationUser>>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<HazApplicationUser>>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Hazception",
+				"ForClient",
 				typeof(HazApplicationUser));
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> GeneratePasswordResetLink(HazApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> GeneratePasswordResetLink(HazApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(HazApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"GeneratePasswordResetLink",
 				typeof(HazApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> SendAccountConfirmationEmail(HazApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> SendAccountConfirmationEmail(HazApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(HazApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"SendAccountConfirmationEmail",
 				typeof(HazApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> SendPasswordResetEmail(HazApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> SendPasswordResetEmail(HazApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(HazApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"SendPasswordResetEmail",
 				typeof(HazApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> AccountConfirm(HazApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> AccountConfirm(HazApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(HazApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"AccountConfirm",
 				typeof(HazApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> ReinstateUser(HazApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> ReinstateUser(HazApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(HazApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ReinstateUser",
 				typeof(HazApplicationUser));
 		}
-		public virtual async Task<DataMethodResult<string>> ValidateEntity(string SetName,
-			HazApplicationUser Entity,
-			HazApplicationUser entityKey)
+		public virtual ODataDataMethodRequest<string> ValidateEntity(HazApplicationUser bindingParameter,
+			string SetName,
+			HazApplicationUser Entity)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
 			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
 			parameters.Add(new ODataParameter(Entity, typeof(HazApplicationUser), "Entity", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(HazApplicationUser), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ValidateEntity",
 				typeof(HazApplicationUser));
 		}
 	
@@ -159,33 +166,35 @@ namespace Hazception.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<DataMethodResult<IEnumerable<HazClient>>> All()
+		public virtual ODataDataMethodRequest<IEnumerable<HazClient>> All()
 		{
 			var parameters = new List<ODataParameter>();
 			
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<IEnumerable<HazClient>>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<HazClient>>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Hazception",
+				"All",
 				typeof(HazClient));
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> ValidateEntity(string SetName,
-			HazClient Entity,
-			HazClient entityKey)
+		public virtual ODataDataMethodRequest<string> ValidateEntity(HazClient bindingParameter,
+			string SetName,
+			HazClient Entity)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(HazClient), "bindingParameter", true));
 			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
 			parameters.Add(new ODataParameter(Entity, typeof(HazClient), "Entity", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(HazClient), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ValidateEntity",
 				typeof(HazClient));
 		}
 	
@@ -205,152 +214,163 @@ namespace Hazception.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<DataMethodResult<IEnumerable<Video>>> ForClient(int id)
+		public virtual ODataDataMethodRequest<IEnumerable<Video>> ForClient(int id)
 		{
 			var parameters = new List<ODataParameter>();
 			
 			parameters.Add(new ODataParameter(id, typeof(int), "id", false));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<IEnumerable<Video>>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<Video>>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Hazception",
+				"ForClient",
 				typeof(Video));
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> ValidateEntity(string SetName,
-			Video Entity,
-			Video entityKey)
+		public virtual ODataDataMethodRequest<string> ValidateEntity(Video bindingParameter,
+			string SetName,
+			Video Entity)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
 			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
 			parameters.Add(new ODataParameter(Entity, typeof(Video), "Entity", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ValidateEntity",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> UpdateTitle(string title,
-			Video entityKey)
+		public virtual ODataDataMethodRequest<string> UpdateTitle(Video bindingParameter,
+			string title)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
 			parameters.Add(new ODataParameter(title, typeof(string), "title", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"UpdateTitle",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> VideoUrl(Video entityKey)
+		public virtual ODataDataMethodRequest<string> VideoUrl(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"VideoUrl",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> VideoUploadUrl(Video entityKey)
+		public virtual ODataDataMethodRequest<string> VideoUploadUrl(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"VideoUploadUrl",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> ScreenshotUploadUrl(Video entityKey)
+		public virtual ODataDataMethodRequest<string> ScreenshotUploadUrl(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ScreenshotUploadUrl",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> ScreenshotMiniUploadUrl(Video entityKey)
+		public virtual ODataDataMethodRequest<string> ScreenshotMiniUploadUrl(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ScreenshotMiniUploadUrl",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> ScreenshotMiniUrl(Video entityKey)
+		public virtual ODataDataMethodRequest<string> ScreenshotMiniUrl(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ScreenshotMiniUrl",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> IncrementVersion(Video entityKey)
+		public virtual ODataDataMethodRequest<string> IncrementVersion(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"IncrementVersion",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<int>> Clone(int clientId,
+		public virtual ODataDataMethodRequest<int> Clone(Video bindingParameter,
+			int clientId,
 			bool cloneHazards,
 			string title,
-			string description,
-			Video entityKey)
+			string description)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
 			parameters.Add(new ODataParameter(clientId, typeof(int), "clientId", false));
 			parameters.Add(new ODataParameter(cloneHazards, typeof(bool), "cloneHazards", false));
 			parameters.Add(new ODataParameter(title, typeof(string), "title", false));
 			parameters.Add(new ODataParameter(description, typeof(string), "description", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<int>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<int>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"Clone",
 				typeof(Video));
 		}
-		public virtual async Task<DataMethodResult<string>> Description(Video entityKey)
+		public virtual ODataDataMethodRequest<string> Description(Video bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Video), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Video), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"Description",
 				typeof(Video));
 		}
 	
@@ -370,88 +390,94 @@ namespace Hazception.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<DataMethodResult<IEnumerable<Exam>>> ForClient(int id)
+		public virtual ODataDataMethodRequest<IEnumerable<Exam>> ForClient(int id)
 		{
 			var parameters = new List<ODataParameter>();
 			
 			parameters.Add(new ODataParameter(id, typeof(int), "id", false));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<IEnumerable<Exam>>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<Exam>>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Collection,
 				"Hazception",
+				"ForClient",
 				typeof(Exam));
 		}
 		
 		// Entity methods
-		public virtual async Task<MethodResult> SetCandidateExamOpened(Exam entityKey)
+		public virtual ODataMethodRequest SetCandidateExamOpened(Exam bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Exam), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodAsync(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Exam), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"SetCandidateExamOpened",
 				typeof(Exam));
 		}
-		public virtual async Task<MethodResult> SetCandidateExamStarted(Exam entityKey)
+		public virtual ODataMethodRequest SetCandidateExamStarted(Exam bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Exam), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodAsync(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Exam), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"SetCandidateExamStarted",
 				typeof(Exam));
 		}
-		public virtual async Task<DataMethodResult<ExamCandidateResult>> LogClicks(IEnumerable<double> time,
+		public virtual ODataDataMethodRequest<ExamCandidateResult> LogClicks(Exam bindingParameter,
+			IEnumerable<double> time,
 			IEnumerable<double> x,
-			IEnumerable<double> y,
-			Exam entityKey)
+			IEnumerable<double> y)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Exam), "bindingParameter", true));
 			parameters.Add(new ODataParameter(time, typeof(IEnumerable<double>), "time", false));
 			parameters.Add(new ODataParameter(x, typeof(IEnumerable<double>), "x", false));
 			parameters.Add(new ODataParameter(y, typeof(IEnumerable<double>), "y", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(Exam), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<ExamCandidateResult>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<ExamCandidateResult>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"LogClicks",
 				typeof(Exam));
 		}
-		public virtual async Task<DataMethodResult<Exam>> SetStarted(Exam entityKey)
+		public virtual ODataDataMethodRequest<Exam> SetStarted(Exam bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Exam), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<Exam>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Exam), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<Exam>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"SetStarted",
 				typeof(Exam));
 		}
-		public virtual async Task<DataMethodResult<string>> ValidateEntity(string SetName,
-			Exam Entity,
-			Exam entityKey)
+		public virtual ODataDataMethodRequest<string> ValidateEntity(Exam bindingParameter,
+			string SetName,
+			Exam Entity)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Exam), "bindingParameter", true));
 			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
 			parameters.Add(new ODataParameter(Entity, typeof(Exam), "Entity", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(Exam), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ValidateEntity",
 				typeof(Exam));
 		}
 	
@@ -512,16 +538,17 @@ namespace Hazception.Sets
 		}
 		
 		// Entity methods
-		public virtual async Task<MethodResult> SetExamCandidateLatestTime(ExamCandidate entityKey)
+		public virtual ODataMethodRequest SetExamCandidateLatestTime(ExamCandidate bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(ExamCandidate), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodAsync(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(ExamCandidate), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"SetExamCandidateLatestTime",
 				typeof(ExamCandidate));
 		}
 	
@@ -541,57 +568,61 @@ namespace Hazception.Sets
 		
 		
 		// Collection methods
-		public virtual async Task<MethodResult> IncrementVersionsForVideo()
+		public virtual ODataMethodRequest IncrementVersionsForVideo()
 		{
 			var parameters = new List<ODataParameter>();
 			
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodAsync(
+			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Collection,
 				"Hazception",
+				"IncrementVersionsForVideo",
 				typeof(Hazard));
 		}
 		
 		// Entity methods
-		public virtual async Task<DataMethodResult<string>> ScreenshotUploadUrl(Hazard entityKey)
+		public virtual ODataDataMethodRequest<string> ScreenshotUploadUrl(Hazard bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Hazard), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Hazard), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ScreenshotUploadUrl",
 				typeof(Hazard));
 		}
-		public virtual async Task<DataMethodResult<string>> IncrementVersion(Hazard entityKey)
+		public virtual ODataDataMethodRequest<string> IncrementVersion(Hazard bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();
 			
-			parameters.Add(new ODataParameter(entityKey, typeof(Hazard), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Hazard), "bindingParameter", true));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"IncrementVersion",
 				typeof(Hazard));
 		}
-		public virtual async Task<DataMethodResult<string>> ValidateEntity(string SetName,
-			Hazard Entity,
-			Hazard entityKey)
+		public virtual ODataDataMethodRequest<string> ValidateEntity(Hazard bindingParameter,
+			string SetName,
+			Hazard Entity)
 		{
 			var parameters = new List<ODataParameter>();
 			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Hazard), "bindingParameter", true));
 			parameters.Add(new ODataParameter(SetName, typeof(string), "SetName", false));
 			parameters.Add(new ODataParameter(Entity, typeof(Hazard), "Entity", false));
-			parameters.Add(new ODataParameter(entityKey, typeof(Hazard), "entityKey", true));
-			return await ((ODataDataStore)this.DataContext.DataStore).MethodWithResponseAsync<string>(
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
 				ODataMethodScope.Entity,
 				"Hazception",
+				"ValidateEntity",
 				typeof(Hazard));
 		}
 	

@@ -39,10 +39,8 @@ namespace Iql.Tests.Context
                 var result = RequestLog.Instance.Interceptor(method, uri, payload);
                 if (result != null)
                 {
-                    {
-                        post = result;
-                        return true;
-                    }
+                    post = result;
+                    return true;
                 }
             }
 
