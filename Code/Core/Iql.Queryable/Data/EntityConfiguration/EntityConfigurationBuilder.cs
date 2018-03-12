@@ -11,6 +11,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();
 
+        public bool IsEntityType(Type type)
+        {
+            return _entities.ContainsKey(type);
+        }
+
         public EntityConfiguration<T> EntityType<T>() where T : class
         {
             var entityType = typeof(T);

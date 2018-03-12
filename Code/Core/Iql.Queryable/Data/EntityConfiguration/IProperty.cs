@@ -1,5 +1,5 @@
 using System;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using System.Reflection;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 
@@ -24,5 +24,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
         string ConvertedFromType { get; }
         Func<object, object> PropertyGetter { get; }
         Func<object, object, object> PropertySetter { get; }
+        Dictionary<string, object> CustomInformation { get; }
     }
 }

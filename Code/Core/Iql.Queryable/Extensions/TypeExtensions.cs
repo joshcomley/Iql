@@ -36,7 +36,7 @@ namespace Iql.Queryable.Extensions
             return IsEnumerableType(typeof(TProperty));
         }
 
-        public static bool IsEnumerableType(Type type)
+        public static bool IsEnumerableType(this Type type)
         {
             return typeof(IEnumerable).IsAssignableFrom(type) && !
                        typeof(string).IsAssignableFrom(type);

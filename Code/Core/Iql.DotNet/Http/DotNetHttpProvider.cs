@@ -20,19 +20,18 @@ namespace Iql.DotNet.Http
                 }
             }
             var result = await httpClient.GetAsync(uri);
-            var dataString = await result.Content.ReadAsStringAsync();
-            var httpResult = new HttpResult(dataString, result.IsSuccessStatusCode);
+            var httpResult = GetHttpResult(result);
             return httpResult;
         }
 
-        public string AppedQueryStringValues(string uri ,object obj)
+        public string AppedQueryStringValues(string uri, object obj)
         {
             var uriBuilder = new UriBuilder(uri);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             foreach (var property in obj.GetType().GetProperties())
             {
                 var value = property.GetValue(obj, null);
-                    query[property.Name] = value?.ToString();
+                query[property.Name] = value?.ToString();
             }
             uriBuilder.Query = query.ToString();
             return uriBuilder.ToString();
@@ -59,8 +58,19 @@ namespace Iql.DotNet.Http
                 }
             }
             var result = await http.SendAsync(request);
-            var dataString = await result.Content.ReadAsStringAsync();
-            var httpResult = new HttpResult(dataString, result.IsSuccessStatusCode);
+            var httpResult = GetHttpResult(result);
+            return httpResult;
+        }
+
+        private static HttpResult GetHttpResult(HttpResponseMessage result)
+        {
+            var httpResult = new HttpResult(
+                async () => await result.Content.ReadAsStringAsync(),
+                async () => await result.Content.ReadAsByteArrayAsync(),
+                async () => await result.Content.ReadAsStreamAsync(),
+                (HttpStatusCode)(int)result.StatusCode,
+                result.Content.Headers.ContentType.MediaType,
+                result.IsSuccessStatusCode);
             return httpResult;
         }
 
@@ -83,8 +93,7 @@ namespace Iql.DotNet.Http
                 }
             }
             var result = await http.DeleteAsync(uri);
-            var dataString = await result.Content.ReadAsStringAsync();
-            var httpResult = new HttpResult(dataString, result.IsSuccessStatusCode);
+            var httpResult = GetHttpResult(result);
             return httpResult;
         }
     }

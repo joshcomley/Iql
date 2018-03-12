@@ -37,6 +37,7 @@ namespace Tunnel.Sets
 				ODataMethodScope.Collection,
 				"Tunnel",
 				"ForClient",
+				typeof(ApplicationUser),
 				typeof(ApplicationUser));
 		}
 		public virtual ODataDataMethodRequest<ApplicationUser> Me()
@@ -49,6 +50,7 @@ namespace Tunnel.Sets
 				ODataMethodScope.Collection,
 				"Tunnel",
 				"Me",
+				typeof(ApplicationUser),
 				typeof(ApplicationUser));
 		}
 		
@@ -64,7 +66,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"GeneratePasswordResetLink",
-				typeof(ApplicationUser));
+				typeof(ApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> AccountConfirm(ApplicationUser bindingParameter)
 		{
@@ -77,7 +80,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"AccountConfirm",
-				typeof(ApplicationUser));
+				typeof(ApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> SendAccountConfirmationEmail(ApplicationUser bindingParameter)
 		{
@@ -90,7 +94,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"SendAccountConfirmationEmail",
-				typeof(ApplicationUser));
+				typeof(ApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> SendPasswordResetEmail(ApplicationUser bindingParameter)
 		{
@@ -103,7 +108,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"SendPasswordResetEmail",
-				typeof(ApplicationUser));
+				typeof(ApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ReinstateUser(ApplicationUser bindingParameter)
 		{
@@ -116,7 +122,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"ReinstateUser",
-				typeof(ApplicationUser));
+				typeof(ApplicationUser),
+				typeof(string));
 		}
 	
 	}
@@ -145,6 +152,7 @@ namespace Tunnel.Sets
 				ODataMethodScope.Collection,
 				"Tunnel",
 				"All",
+				typeof(Client),
 				typeof(Client));
 		}
 	
@@ -176,7 +184,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"SayHi",
-				typeof(ClientType));
+				typeof(ClientType),
+				typeof(string));
 		}
 	
 	}
@@ -387,7 +396,8 @@ namespace Tunnel.Sets
 				ODataMethodScope.Entity,
 				"Tunnel",
 				"IncrementVersion",
-				typeof(Person));
+				typeof(Person),
+				typeof(string));
 		}
 	
 	}

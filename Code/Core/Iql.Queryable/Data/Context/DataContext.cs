@@ -82,6 +82,7 @@ namespace Iql.Queryable.Data.Context
         }
 
         public IDataStore DataStore { get; set; }
+        public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
         public EvaluateContext EvaluateContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }

@@ -207,12 +207,97 @@ namespace Iql.Queryable.Data.DataStores
             await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
                 response));
-            var success = response.Success && response.Data != null;
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
+
+            var dbList = TrackGetDataResult(response);
+
+            var getDataResult =
+                new GetDataResult<TEntity>(dbList, operation, response.IsSuccessful())
+                {
+                    TotalCount = response.TotalCount
+                };
+
+            ApplyPaging(dbList, response);
+
+            return getDataResult;
+        }
+
+        public IDbList TrackGetDataResultByType(
+            Type entityType,
+            IFlattenedGetDataResult response)
+        {
+            return (IDbList) GetType()
+                .GetMethod(nameof(TrackGetDataResult))
+                .InvokeGeneric(this,
+                    new object[] {response},
+                    entityType
+                );
+        }
+
+        public DbList<TEntity> TrackGetDataResult<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
+        {
             var dbList = new DbList<TEntity>();
-            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            dbList.SourceQueryable = (DbQueryable<TEntity>) response.Queryable;
+            // Flatten before we merge because the merge will update the result data set with
+            // tracked data
+            if (response.IsSuccessful())
+            {
+                ForAllDataStores(tracker =>
+                {
+                    if (tracker == DataTracker)
+                    {
+                        if (dbList.SourceQueryable != null && !dbList.SourceQueryable.TrackEntities 
+                            || !DataContext.TrackEntities)
+                        {
+                            tracker = new DataTracker(this, false);
+                        }
+
+                        response.Root = tracker.TrackResults(response.Data, response.Root);
+                    }
+                    else
+                    {
+                        foreach (var entityType in response.Data)
+                        {
+                            foreach (var entity in entityType.Value)
+                            {
+                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                if (trackingSet.IsTracked(entity))
+                                {
+                                    var state = trackingSet.GetEntityState(entity);
+                                    trackingSet.TrackEntity(state.Entity, entity);
+                                    state.Reset();
+                                }
+                            }
+                        }
+
+                        //tracker.TrackResults(response.Data, root);
+                    }
+                });
+                //var tracker = dbList.SourceQueryable.TrackEntities?
+                //    DataTracker : new DataTracker(this, false);
+                //response.Root = tracker.TrackResults(response.Data, response.Root);
+                //
+                //if (!operation.IsSingleResult)
+                //{
+                //    if (data.ContainsKey(typeof(TEntity)))
+                //    {
+                //        dbList.AddRange((List<TEntity>)data[typeof(TEntity)]);
+                //    }
+                //}
+                //else
+                //{
+                //}
+                dbList.AddRange(response.Root);
+            }
+
+            return dbList;
+        }
+
+        private static void ApplyPaging<TEntity>(DbList<TEntity> dbList, FlattenedGetDataResult<TEntity> response) where TEntity : class
+        {
+            dbList.SourceQueryable = (DbQueryable<TEntity>) response.Queryable;
             if (response.TotalCount.HasValue && response.Data.Count != 0)
             {
                 var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
@@ -252,64 +337,6 @@ namespace Iql.Queryable.Data.DataStores
 
                 dbList.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
             }
-
-            // Flatten before we merge because the merge will update the result data set with
-            // tracked data
-            GetDataResult<TEntity> getDataResult;
-            if (success)
-            {
-                ForAllDataStores(tracker =>
-                {
-                    if (tracker == DataTracker)
-                    {
-                        if (!dbList.SourceQueryable.TrackEntities)
-                        {
-                            tracker = new DataTracker(this, false);
-                        }
-                        response.Root = tracker.TrackResults(response.Data, response.Root);
-                    }
-                    else
-                    {
-                        foreach (var entityType in response.Data)
-                        {
-                            foreach (var entity in entityType.Value)
-                            {
-                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
-                                if (trackingSet.IsTracked(entity))
-                                {
-                                    var state = trackingSet.GetEntityState(entity);
-                                    trackingSet.TrackEntity(state.Entity, entity);
-                                    state.Reset();
-                                }
-                            }
-                        }
-                        //tracker.TrackResults(response.Data, root);
-                    }
-                });
-                //var tracker = dbList.SourceQueryable.TrackEntities?
-                //    DataTracker : new DataTracker(this, false);
-                //response.Root = tracker.TrackResults(response.Data, response.Root);
-                //
-                //if (!operation.IsSingleResult)
-                //{
-                //    if (data.ContainsKey(typeof(TEntity)))
-                //    {
-                //        dbList.AddRange((List<TEntity>)data[typeof(TEntity)]);
-                //    }
-                //}
-                //else
-                //{
-                //}
-                dbList.AddRange(response.Root);
-                getDataResult = new GetDataResult<TEntity>(dbList, operation, response.Success);
-                getDataResult.TotalCount = response.TotalCount;
-            }
-            else
-            {
-                getDataResult = new GetDataResult<TEntity>(new DbList<TEntity>(), operation, false);
-            }
-
-            return getDataResult;
         }
 
         public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(

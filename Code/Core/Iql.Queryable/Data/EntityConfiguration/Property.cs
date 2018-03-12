@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
@@ -8,6 +9,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
     [DebuggerDisplay("{Name} - {Kind}")]
     public class Property<TOwner, TProperty, TElementType> : PropertyBase, IProperty
     {
+        private Dictionary<string, object> _customInformation;
+
         public Property(
             string name, 
             bool isCollection, 
@@ -77,6 +80,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public Func<TOwner, TProperty, TProperty> PropertySetterTyped { get; set; }
         public override Func<object, object> PropertyGetter { get; set; }
         public override Func<object, object, object> PropertySetter { get; set; }
+
+        public Dictionary<string, object> CustomInformation => _customInformation = _customInformation ?? new Dictionary<string, object>();
 
         private static Expression<Func<T, TAssignmentProperty, TAssignmentProperty>> GetAssignmentLambda<T, TAssignmentProperty>(string name)
         {

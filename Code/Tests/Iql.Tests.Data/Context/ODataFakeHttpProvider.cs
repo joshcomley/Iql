@@ -16,7 +16,7 @@ namespace Iql.Tests.Context
                 return interceptedResult;
             }
             var responseData = ODataFakeRequestResults.HttpGetResponse(uri);
-            return new HttpResult(responseData, responseData != null);
+            return HttpResult.FromString(responseData, responseData != null);
         }
 
         public async Task<IHttpResult> Post(string uri, IHttpRequest payload = null)
@@ -29,7 +29,7 @@ namespace Iql.Tests.Context
             }
             var jobj = JObject.Parse(payload.Body);
             jobj["Id"] = 0;
-            return new HttpResult(jobj.ToString(), true);
+            return HttpResult.FromString(jobj.ToString());
         }
 
         private static bool TryIntercept(HttpMethod method, string uri, IHttpRequest payload, out IHttpResult post)
@@ -51,23 +51,27 @@ namespace Iql.Tests.Context
         public async Task<IHttpResult> Put(string uri, IHttpRequest payload = null)
         {
             RequestLog.Instance?.Patches.Add(new FakeHttpRequest(uri, payload));
+
             IHttpResult interceptedResult;
             if (TryIntercept(HttpMethod.Patch, uri, payload, out interceptedResult))
             {
                 return interceptedResult;
             }
-            return new HttpResult("", true);
+
+            return HttpResult.EmptySuccess();
         }
 
         public async Task<IHttpResult> Delete(string uri, IHttpRequest payload = null)
         {
             RequestLog.Instance?.Deletes.Add(new FakeHttpRequest(uri, payload));
+
             IHttpResult interceptedResult;
             if (TryIntercept(HttpMethod.Delete, uri, payload, out interceptedResult))
             {
                 return interceptedResult;
             }
-            return new HttpResult("", true);
+
+            return HttpResult.EmptySuccess();
         }
     }
 }

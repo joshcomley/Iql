@@ -53,13 +53,13 @@ namespace Iql.Tests.Tests.OData
         {
             var query = Db.Clients.Where(c => c.Name == "hello");
 
-            var uri = query.ResolveODataQueryUri();
+            var uri = query.ResolveODataUri();
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')",
                 uri);
 
             query = query.OrderBy(c => c.Name).Expand(c => c.Type);
-            uri = query.ResolveODataQueryUri();
+            uri = query.ResolveODataUri();
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name&$expand=Type",
                 uri);
@@ -70,7 +70,7 @@ namespace Iql.Tests.Tests.OData
         {
             var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);
 
-            var uri = query.ResolveODataQueryUri();
+            var uri = query.ResolveODataUri();
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$expand=Users/$count",
                 uri);
@@ -81,13 +81,13 @@ namespace Iql.Tests.Tests.OData
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello");
 
-            var uri = query.ResolveODataQueryUriFromQuery(Db);
+            var uri = query.ResolveODataUriFromQuery(Db);
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
-            uri = query.ResolveODataQueryUriFromQuery(Db);
+            uri = query.ResolveODataUriFromQuery(Db);
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name",
                 uri);
@@ -98,13 +98,13 @@ namespace Iql.Tests.Tests.OData
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello2");
 
-            var uri = query.ResolveODataQueryUriFromQuery(Db);
+            var uri = query.ResolveODataUriFromQuery(Db);
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
-            uri = query.ResolveODataQueryUriFromQuery(Db);
+            uri = query.ResolveODataUriFromQuery(Db);
             uri = HttpUtility.UrlDecode(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')&$orderby=Name",
                 uri);

@@ -49,12 +49,12 @@ namespace Iql.Queryable.Data.Queryable
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
-        TrackingSetCollection IDbQueryable.TrackingSetCollection => throw new NotImplementedException();
+        TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
 
-        Func<IDataStore> IDbQueryable.DataStoreGetter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        IDataContext IDbQueryable.DataContext { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        ITrackingSet IDbQueryable.TrackingSet { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IDbQueryable.TrackEntities { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
+        IDataContext IDbQueryable.DataContext { get => DataContext; set => DataContext = value; }
+        ITrackingSet IDbQueryable.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
+        bool IDbQueryable.TrackEntities { get => TrackEntities; set => TrackEntities = value; }
 
         public async Task<T> Single(Expression<Func<T, bool>> expression = null
 #if TypeScript

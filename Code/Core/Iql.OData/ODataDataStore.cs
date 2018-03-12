@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.OData.Extensions;
 using Iql.OData.IqlToODataExpression.Parsers;
 using Iql.OData.Json;
@@ -12,6 +14,7 @@ using Iql.OData.QueryableApplicator.Applicators;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud;
+using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
@@ -56,15 +59,44 @@ namespace Iql.OData
             ODataMethodScope methodScope,
             string nameSpace,
             string name,
-            Type entityType
+            Type entityType,
+            Type responseElementType
         )
         {
             var uri = GetMethodUri(parameters, methodScope, nameSpace, name, entityType);
-            var http = GetHttp();
             var request = new ODataDataMethodRequest<TResult>(
                 this,
                 uri,
-                async () => { return new DataMethodResult<TResult>(); });
+                async () =>
+                {
+                    var httpResult = await GetMethodHttpResult(methodType, uri);
+                    var dataMethodResult = new DataMethodResult<TResult>(httpResult.Success);
+                    var isCollectionResult = typeof(TResult).IsEnumerableType();
+                    if (DataContext.EntityConfigurationContext.IsEntityType(responseElementType))
+                    {
+                        var flattenedResponse = await ParseODataEntityResponseByTypeAsync(responseElementType, httpResult, isCollectionResult);
+                        var dbList = TrackGetDataResultByType(responseElementType, flattenedResponse);
+                        var list = dbList.ToList(responseElementType);
+                        dataMethodResult.Data = (TResult)(isCollectionResult
+                            ? list
+                            : (list.Count == 0 ? null : list[0]));
+                    }
+                    else
+                    {
+                        if (isCollectionResult)
+                        {
+                            var collectionResult = await GetODataCollectionResponseByTypeAsync(responseElementType, httpResult);
+                            dataMethodResult.Data = (TResult)collectionResult.Items;
+                        }
+                        else
+                        {
+                            var oDataGetResult = await GetODataSingleResultAsync<TResult>(httpResult);
+                            dataMethodResult.Data = oDataGetResult;
+                        }
+
+                    }
+                    return dataMethodResult;
+                });
             return request;
         }
 
@@ -78,14 +110,36 @@ namespace Iql.OData
         )
         {
             var uri = GetMethodUri(parameters, methodScope, nameSpace, name, entityType);
-            var http = GetHttp();
             var request = new ODataMethodRequest(
                 this,
                 uri,
-                async () => { return new MethodResult(); });
+                async () =>
+                {
+                    var httpResult = await GetMethodHttpResult(methodType, uri);
+                    //var flattenedResponse = ParseODataResponseByType(responseType, httpResult, false);
+                    //var dbList = TrackGetDataResultByType(responseType, flattenedResponse);
+                    return new MethodResult(httpResult.Success);
+                });
             return request;
         }
-        
+
+        private async Task<IHttpResult> GetMethodHttpResult(ODataMethodType methodType, string uri)
+        {
+            var http = GetHttp();
+            IHttpResult httpResult = null;
+            switch (methodType)
+            {
+                case ODataMethodType.Action:
+                    httpResult = await http.Post(uri);
+                    break;
+                case ODataMethodType.Function:
+                    httpResult = await http.Get(uri);
+                    break;
+            }
+
+            return httpResult;
+        }
+
         public string GetMethodUri(
             IEnumerable<ODataParameter> parameters,
             ODataMethodScope methodScope,
@@ -132,11 +186,11 @@ namespace Iql.OData
             return baseUri;
         }
 
-        public override async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
+        public override Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
             var fullQueryUri = ResolveODataQueryUri(operation.Operation.Queryable);
-            return await PerformGetInternalAsync(operation, fullQueryUri);
+            return PerformGetInternalAsync(operation, fullQueryUri);
         }
 
         private async Task<FlattenedGetDataResult<TEntity>> PerformGetInternalAsync<TEntity>(
@@ -146,41 +200,90 @@ namespace Iql.OData
             var configuration = Configuration;
             var http = configuration.HttpProvider;
             var httpResult = await http.Get(fullQueryUri);
-            operation.Result.Success = httpResult.Success;
-            if (operation.Result.Success && !string.IsNullOrWhiteSpace(httpResult.ResponseData))
+            var result = operation.Result;
+            var isSingleResult = operation.Operation.IsSingleResult;
+            await ParseODataEntityResponseAsync(httpResult, !isSingleResult, result);
+            return result;
+        }
+
+        protected async Task<IFlattenedGetDataResult> ParseODataEntityResponseByTypeAsync(
+            Type entityType,
+            IHttpResult httpResult,
+            bool isCollection,
+            IFlattenedGetDataResult result = null)
+        {
+            return await (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync))
+                .InvokeGeneric(this, new object[] { httpResult, isCollection, result }, entityType);
+        }
+
+        protected async Task<FlattenedGetDataResult<TEntity>> ParseODataEntityResponseAsync<TEntity>(
+            IHttpResult httpResult,
+            bool isCollection,
+            FlattenedGetDataResult<TEntity> result = null)
+            where TEntity : class
+        {
+            result = result ?? new FlattenedGetDataResult<TEntity>(
+                         new Dictionary<Type, IList>(),
+                         new GetDataOperation<TEntity>(null, DataContext),
+                         false);
+            result.Success = httpResult.Success;
+            if (!result.IsSuccessful())
             {
-                if (operation.Operation.IsSingleResult)
-                {
-                    var odataResultRoot = JObject.Parse(httpResult.ResponseData);
-                    ParseObj(odataResultRoot);
-                    var oDataGetResult =
-                        odataResultRoot.ToObject<TEntity>();
-                    //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
-                    var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                        oDataGetResult,
-                        typeof(TEntity));
-                    operation.Result.Data = flattened;
-                    operation.Result.Root = new[] { oDataGetResult }.ToList();
-                }
-                else
-                {
-                    var odataResultRoot = JObject.Parse(httpResult.ResponseData);
-                    ParseObj(odataResultRoot);
-                    var countToken = odataResultRoot["Count"];
-                    var count = countToken?.ToObject<int?>();
-                    var values = odataResultRoot["value"].ToObject<TEntity[]>();
-                    var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
-                        typeof(TEntity),
-                        values);
-                    operation.Result.Data = flattened;
-                    operation.Result.Root = values.ToList();
-                    //operation.Result.Data =
-                    //    oDataGetResult.Value;
-                    operation.Result.TotalCount = count;
-                }
+                return result;
             }
 
-            return operation.Result;
+            if (isCollection)
+            {
+                var collectionResult = await GetODataCollectionResponseAsync<TEntity>(httpResult);
+                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
+                    typeof(TEntity),
+                    collectionResult.Items);
+                result.Data = flattened;
+                result.Root = collectionResult.Items.ToList();
+                result.TotalCount = collectionResult.TotalCount;
+            }
+            else
+            {
+                var oDataGetResult = await GetODataSingleResultAsync<TEntity>(httpResult);
+                //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                    oDataGetResult,
+                    typeof(TEntity));
+                result.Data = flattened;
+                result.Root = new[] { oDataGetResult }.ToList();
+            }
+
+            return result;
+        }
+
+        private static async Task<TEntity> GetODataSingleResultAsync<TEntity>(IHttpResult httpResult)
+        {
+            var json = await httpResult.GetResponseTextAsync();
+            var odataResultRoot = JObject.Parse(json);
+            ParseObj(odataResultRoot);
+            var oDataGetResult =
+                odataResultRoot.ToObject<TEntity>();
+            return oDataGetResult;
+        }
+
+        private static async Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
+        {
+            return await (Task<IODataCollectionResult>)typeof(ODataDataStore).GetMethod(nameof(GetODataCollectionResponseAsync))
+                .InvokeGeneric(
+                    null,
+                    new object[] { httpResult },
+                    entityType
+                );
+        }
+
+        private static async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(IHttpResult httpResult)
+        {
+            var odataResultRoot = JObject.Parse(await httpResult.GetResponseTextAsync());
+            ParseObj(odataResultRoot);
+            var countToken = odataResultRoot["Count"];
+            var count = countToken?.ToObject<int?>();
+            var values = odataResultRoot["value"].ToObject<TEntity[]>();
+            return new ODataCollectionResult<TEntity>(values, count);
         }
 
         public string ResolveODataQueryUri(IQueryableBase queryable)
@@ -199,16 +302,16 @@ namespace Iql.OData
         public static string ResolveODataUri<TEntity>(DbQueryable<TEntity> queryable)
             where TEntity : class
         {
-            return queryable.ResolveODataQueryUri();
+            return queryable.ResolveODataUri();
         }
 
-        public static string ResolveODataUriFromQuery<TEntity>(global::Iql.Queryable.Data.Queryable.IQueryable<TEntity> queryable, IDataContext dataContext)
+        public static string ResolveODataUriFromQuery<TEntity>(Queryable.Data.Queryable.IQueryable<TEntity> queryable, IDataContext dataContext)
             where TEntity : class
         {
-            return queryable.ResolveODataQueryUriFromQuery(dataContext);
+            return queryable.ResolveODataUriFromQuery(dataContext);
         }
 
-        private void ParseObj(object jvalue)
+        private static void ParseObj(object jvalue)
         {
             if (jvalue is JArray)
             {
@@ -251,9 +354,10 @@ namespace Iql.OData
             var entitySetUri = ResolveEntitySetUri<TEntity>();
             var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
-            operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
+            var responseData = await httpResult.GetResponseTextAsync();
+            operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(responseData);
             operation.Result.Success = httpResult.Success;
-            ParseValidation(operation.Result, operation.Operation.Entity, httpResult.ResponseData);
+            ParseValidation(operation.Result, operation.Operation.Entity, responseData);
             return operation.Result;
         }
 
@@ -279,7 +383,7 @@ namespace Iql.OData
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = httpResult.Success;
-            ParseValidation(operation.Result, operation.Operation.Entity, httpResult.ResponseData);
+            ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
 
@@ -291,7 +395,7 @@ namespace Iql.OData
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var httpResult = await http.Delete(entityUri);
             operation.Result.Success = httpResult.Success;
-            ParseValidation(operation.Result, operation.Operation.Entity, httpResult.ResponseData);
+            ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
 

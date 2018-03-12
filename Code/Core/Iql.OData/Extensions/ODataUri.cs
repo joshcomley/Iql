@@ -5,15 +5,14 @@ using Iql.Queryable.Data.Queryable;
 
 namespace Iql.OData.Extensions
 {
-    public static class ODataQueryableExtensions
+    public static class ODataUri
     {
-        public static string ResolveODataQueryUri<TEntity>(this DbQueryable<TEntity> queryable)
-            where TEntity : class
+        public static string ResolveODataUri(this IDbQueryable queryable)
         {
-            return queryable.ResolveODataQueryUriFromQuery(queryable.DataContext);
+            return queryable.ResolveODataUriFromQuery(queryable.DataContext);
         }
 
-        public static string ResolveODataQueryUriFromQuery(this IQueryableBase queryable, IDataContext dataContext)
+        public static string ResolveODataUriFromQuery(this IQueryableBase queryable, IDataContext dataContext)
         {
             var oDataDataStore = new ODataDataStore();
             oDataDataStore.DataContext = dataContext;

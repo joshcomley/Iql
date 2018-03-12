@@ -35,12 +35,12 @@ namespace Iql.Tests.Tests
                 var db = new AppDbContext(new ODataDataStore());
                 db.Clients.Add(client);
                 await log.InterceptAsync((method, uri, request) =>
-                {
-                    return new HttpResult($@"{{
+                    {
+                        return HttpResult.FromString($@"{{
   ""@odata.context"": ""http://josh-pc:58000/odata/$metadata#Clients/$entity"",
   {clientOData}
-}}", true);
-                },
+}}");
+                    },
                     async () =>
                     {
                         await db.SaveChanges();
@@ -48,7 +48,7 @@ namespace Iql.Tests.Tests
                 DbList<Client> clients = null;
                 await log.InterceptAsync((method, uri, request) =>
                     {
-                        return new HttpResult($@"{{
+                        return HttpResult.FromString($@"{{
   ""@odata.context"": ""http://localhost:28000/odata/$metadata#Clients"",
   ""@odata.count"": 1,
   ""value"": [
@@ -56,7 +56,7 @@ namespace Iql.Tests.Tests
       {clientOData}
     }}
   ]
-}}", true);
+}}");
                     },
                     async () =>
                     {

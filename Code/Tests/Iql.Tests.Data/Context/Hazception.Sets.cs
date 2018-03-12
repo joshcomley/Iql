@@ -48,6 +48,7 @@ namespace Hazception.Sets
 				ODataMethodScope.Collection,
 				"Hazception",
 				"Me",
+				typeof(HazApplicationUser),
 				typeof(HazApplicationUser));
 		}
 		public virtual ODataDataMethodRequest<IEnumerable<HazApplicationUser>> ForClient(int id,
@@ -63,6 +64,7 @@ namespace Hazception.Sets
 				ODataMethodScope.Collection,
 				"Hazception",
 				"ForClient",
+				typeof(HazApplicationUser),
 				typeof(HazApplicationUser));
 		}
 		
@@ -78,7 +80,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"GeneratePasswordResetLink",
-				typeof(HazApplicationUser));
+				typeof(HazApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> SendAccountConfirmationEmail(HazApplicationUser bindingParameter)
 		{
@@ -91,7 +94,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"SendAccountConfirmationEmail",
-				typeof(HazApplicationUser));
+				typeof(HazApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> SendPasswordResetEmail(HazApplicationUser bindingParameter)
 		{
@@ -104,7 +108,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"SendPasswordResetEmail",
-				typeof(HazApplicationUser));
+				typeof(HazApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> AccountConfirm(HazApplicationUser bindingParameter)
 		{
@@ -117,7 +122,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"AccountConfirm",
-				typeof(HazApplicationUser));
+				typeof(HazApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ReinstateUser(HazApplicationUser bindingParameter)
 		{
@@ -130,7 +136,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ReinstateUser",
-				typeof(HazApplicationUser));
+				typeof(HazApplicationUser),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ValidateEntity(HazApplicationUser bindingParameter,
 			string SetName,
@@ -147,7 +154,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ValidateEntity",
-				typeof(HazApplicationUser));
+				typeof(HazApplicationUser),
+				typeof(string));
 		}
 	
 	}
@@ -176,6 +184,7 @@ namespace Hazception.Sets
 				ODataMethodScope.Collection,
 				"Hazception",
 				"All",
+				typeof(HazClient),
 				typeof(HazClient));
 		}
 		
@@ -195,7 +204,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ValidateEntity",
-				typeof(HazClient));
+				typeof(HazClient),
+				typeof(string));
 		}
 	
 	}
@@ -225,6 +235,7 @@ namespace Hazception.Sets
 				ODataMethodScope.Collection,
 				"Hazception",
 				"ForClient",
+				typeof(Video),
 				typeof(Video));
 		}
 		
@@ -244,7 +255,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ValidateEntity",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> UpdateTitle(Video bindingParameter,
 			string title)
@@ -259,7 +271,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"UpdateTitle",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> VideoUrl(Video bindingParameter)
 		{
@@ -272,7 +285,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"VideoUrl",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> VideoUploadUrl(Video bindingParameter)
 		{
@@ -285,7 +299,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"VideoUploadUrl",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ScreenshotUploadUrl(Video bindingParameter)
 		{
@@ -298,7 +313,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ScreenshotUploadUrl",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ScreenshotMiniUploadUrl(Video bindingParameter)
 		{
@@ -311,7 +327,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ScreenshotMiniUploadUrl",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ScreenshotMiniUrl(Video bindingParameter)
 		{
@@ -324,7 +341,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ScreenshotMiniUrl",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> IncrementVersion(Video bindingParameter)
 		{
@@ -337,7 +355,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"IncrementVersion",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<int> Clone(Video bindingParameter,
 			int clientId,
@@ -358,7 +377,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"Clone",
-				typeof(Video));
+				typeof(Video),
+				typeof(int));
 		}
 		public virtual ODataDataMethodRequest<string> Description(Video bindingParameter)
 		{
@@ -371,7 +391,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"Description",
-				typeof(Video));
+				typeof(Video),
+				typeof(string));
 		}
 	
 	}
@@ -401,6 +422,7 @@ namespace Hazception.Sets
 				ODataMethodScope.Collection,
 				"Hazception",
 				"ForClient",
+				typeof(Exam),
 				typeof(Exam));
 		}
 		
@@ -448,7 +470,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"LogClicks",
-				typeof(Exam));
+				typeof(Exam),
+				typeof(ExamCandidateResult));
 		}
 		public virtual ODataDataMethodRequest<Exam> SetStarted(Exam bindingParameter)
 		{
@@ -461,6 +484,7 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"SetStarted",
+				typeof(Exam),
 				typeof(Exam));
 		}
 		public virtual ODataDataMethodRequest<string> ValidateEntity(Exam bindingParameter,
@@ -478,7 +502,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ValidateEntity",
-				typeof(Exam));
+				typeof(Exam),
+				typeof(string));
 		}
 	
 	}
@@ -593,7 +618,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ScreenshotUploadUrl",
-				typeof(Hazard));
+				typeof(Hazard),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> IncrementVersion(Hazard bindingParameter)
 		{
@@ -606,7 +632,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"IncrementVersion",
-				typeof(Hazard));
+				typeof(Hazard),
+				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> ValidateEntity(Hazard bindingParameter,
 			string SetName,
@@ -623,7 +650,8 @@ namespace Hazception.Sets
 				ODataMethodScope.Entity,
 				"Hazception",
 				"ValidateEntity",
-				typeof(Hazard));
+				typeof(Hazard),
+				typeof(string));
 		}
 	
 	}

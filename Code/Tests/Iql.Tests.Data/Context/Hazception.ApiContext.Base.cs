@@ -469,7 +469,7 @@ namespace Hazception.ApiContext.Base
 				.DefineProperty(p => p.Video, false)
 				.DefineProperty(p => p.Client, false)
 				.DefineProperty(p => p.CreatedByUser, true)
-				.DefineEntityValidation(entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) && (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "e64dd84a-7e67-48f2-a76f-46a5910fb0d6", "Please enter either a title or a description")
+				.DefineEntityValidation(entity => (entity.Title == null ? null : entity.Title.ToUpper()) == null || (entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()) && (entity.Description == null ? null : entity.Description.ToUpper()) == null || (entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()), "16b68667-f7bc-4828-b626-3a6ea1b7c36f", "Please enter either a title or a description")
 				.DefineDisplayFormatter(entity => entity.Title, "Default")
 				.DefineDisplayFormatter(entity => entity.Title + " (" + entity.Id + ")", "Report");
 			
@@ -530,7 +530,8 @@ namespace Hazception.ApiContext.Base
 				ODataMethodScope.Global,
 				"Hazception",
 				"ValidateField",
-				null);
+				null,
+				typeof(string));
 		}
 	
 	}

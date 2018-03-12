@@ -13,6 +13,7 @@ namespace Iql.Queryable.Data.Context
 {
     public interface IDataContext
     {
+        bool TrackEntities { get; set; }
         string SynchronicityKey { get; set; }
         EvaluateContext EvaluateContext { get; set; }
         IDataStore DataStore { get; }
