@@ -349,6 +349,17 @@ namespace Iql.Queryable.Data.Context
 
                     if (remoteValue != null)
                     {
+                        if (property.Type.IsEnum && remoteValue is string)
+                        {
+                            try
+                            {
+                                remoteValue = Enum.Parse(property.Type, remoteValue as string);
+                            }
+                            catch
+                            {
+                                remoteValue = 0;
+                            }
+                        }
                         typedEntity.SetPropertyValue(property, remoteValue);
                     }
                 }
