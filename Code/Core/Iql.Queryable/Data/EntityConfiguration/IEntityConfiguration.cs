@@ -11,6 +11,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IEntityConfiguration
     {
+        EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
         IEntityValidationResult ValidateEntity(object entity);
         IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity,

@@ -17,7 +17,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
-        private readonly EntityConfigurationBuilder _builder;
+        public EntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
         public ValidationCollection<T> EntityValidation { get; } = new ValidationCollection<T>();
@@ -30,7 +30,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
         {
             Type = type;
-            _builder = builder;
+            Builder = builder;
             DisplayFormatting = new DisplayFormatting<T>(this);
             Relationships = new List<IRelationship>();
             Properties = new List<IProperty>();
@@ -559,9 +559,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, TTarget>> property) where TTarget : class
         {
             return new OneToRelationshipMap<T, TTarget>(
-                _builder,
+                Builder,
                 this,
-                _builder.EntityType<TTarget>(),
+                Builder.EntityType<TTarget>(),
                 RelationshipMapType.One,
                 property);
         }
@@ -570,9 +570,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, IEnumerable<TTarget>>> property) where TTarget : class
         {
             return new ManyToRelationshipMap<T, TTarget>(
-                _builder,
+                Builder,
                 this,
-                _builder.EntityType<TTarget>(),
+                Builder.EntityType<TTarget>(),
                 RelationshipMapType.Many,
                 property);
         }
@@ -593,7 +593,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             {
                 definition.Kind = PropertyKind.Relationship;
                 definition.Relationship = relationship;
-                var otherEndConfiguration = _builder.GetEntityByType(relationship.OtherEnd.Type);
+                var otherEndConfiguration = Builder.GetEntityByType(relationship.OtherEnd.Type);
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
                     var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
