@@ -25,7 +25,8 @@ namespace Iql.Tests.Tests.OData
                 var client = new HazClient { PersistenceKey = new Guid("e4a693fc-1041-4dd9-9f57-7097dd7053a3") };
                 db.Clients.Add(client);
                 client.Name = "New client 123";
-                await db.SaveChanges();
+                var result = await db.SaveChanges();
+                Assert.AreEqual(true, result.Success);
                 var request = log.Posts.Pop().Single();
                 var changes = db.DataStore.Tracking.GetUpdates();
                 Assert.AreEqual(0, changes.Count);

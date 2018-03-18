@@ -352,7 +352,7 @@ namespace Iql.Queryable.Data.DataStores
             // Sets could be added to whilst detecting changes
             // so get a copy now
             //var observable = this.Observable<SaveChangesResult>();
-            var saveChangesResult = new SaveChangesResult(false);
+            var saveChangesResult = new SaveChangesResult(true);
             var queue = GetQueue();
             foreach (var queuedOperation in queue)
             {
@@ -364,6 +364,10 @@ namespace Iql.Queryable.Data.DataStores
                         },
                         queuedOperation.Operation.EntityType) as Task;
                 await task;
+                if (!queuedOperation.Result.Success)
+                {
+                    saveChangesResult.Success = false;
+                }
             }
 
             return saveChangesResult;
@@ -393,6 +397,7 @@ namespace Iql.Queryable.Data.DataStores
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
                     var localEntity = addEntityOperation.Operation.Entity;
                     result = await PerformAdd(addEntityOperation);
+                    
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
                     if (remoteEntity != null)
                     {

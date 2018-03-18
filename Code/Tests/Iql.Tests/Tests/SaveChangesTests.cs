@@ -23,8 +23,9 @@ namespace Iql.Tests.Tests
             client.Name = "My client";
 
             db1.Clients.Add(client);
-            await db1.SaveChanges();
+            var result = await db1.SaveChanges();
 
+            Assert.AreEqual(true, result.Success);
             Assert.AreEqual(1, AppDbContext.InMemoryDb.Clients[0].TypeId);
         }
 
