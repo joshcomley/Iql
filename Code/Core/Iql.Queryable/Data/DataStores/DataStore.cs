@@ -399,7 +399,7 @@ namespace Iql.Queryable.Data.DataStores
                     result = await PerformAdd(addEntityOperation);
                     
                     var remoteEntity = addEntityOperation.Result.RemoteEntity;
-                    if (remoteEntity != null)
+                    if (remoteEntity != null && result.Success)
                     {
                         var trackingSet = Tracking.TrackingSet<TEntity>();
                         trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);

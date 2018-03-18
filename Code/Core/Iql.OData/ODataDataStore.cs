@@ -550,6 +550,13 @@ namespace Iql.OData
                             }
                         }
                     }
+
+                    result.EntityValidationResults =
+                        result.EntityValidationResults ?? new Dictionary<object, IEntityValidationResult>();
+                    if (!result.EntityValidationResults.ContainsKey(entity))
+                    {
+                        result.EntityValidationResults.Add(entity, entityValidationResult);
+                    }
                     result.RootEntityValidationResult = entityValidationResult;
                 }
             }
