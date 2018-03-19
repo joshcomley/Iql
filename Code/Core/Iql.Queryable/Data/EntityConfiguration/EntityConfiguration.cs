@@ -337,6 +337,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
+        public EntityConfiguration<T> ConfigureProperty<TProperty>(
+            Expression<Func<T, TProperty>> property,
+            Action<IProperty> configure)
+        {
+            var propertyDefinition = FindPropertyByExpression(property);
+            configure(propertyDefinition);
+            return this;
+        }
+
         public EntityConfiguration<T> DefineConvertedProperty<TProperty>(
             Expression<Func<T, TProperty>> property,
             string convertedFromType,

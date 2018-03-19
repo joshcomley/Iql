@@ -15,8 +15,13 @@ namespace Iql.Queryable.Data.EntityConfiguration
         RelationshipMatch Relationship { get; set; }
         PropertyKind Kind { get; set; }
         IProperty CountRelationship { get; }
-        bool ReadOnly { get; }
-        string Name { get; }
+        bool ReadOnly { get; set; }
+        string Name { get; set; }
+        string FriendlyName { get; set; }
+        string Title { get; set; }
+        string Description { get; set; }
+        List<object> Helpers { get; set; }
+        List<string> Hints { get; set; }
         Type ElementType { get; }
         Type Type { get; }
         bool IsCollection { get; }

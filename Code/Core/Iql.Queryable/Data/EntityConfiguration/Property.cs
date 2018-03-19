@@ -72,6 +72,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public ValidationCollection<TOwner> Validation { get; } = new ValidationCollection<TOwner>();
+        public string FriendlyName { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public List<object> Helpers { get; set; }
+        public List<string> Hints { get; set; }
         IValidationCollection IProperty.Validation => Validation;
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }

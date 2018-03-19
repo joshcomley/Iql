@@ -1,7 +1,5 @@
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
-using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -28,8 +26,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public PropertyKind Kind { get; set; }
         public IProperty CountRelationship { get; private set; }
-        public bool ReadOnly { get; private set; }
-        public string Name { get; private set; }
+        public bool ReadOnly { get; set; }
+        public string Name { get; set; }
         public Type ElementType { get; set; }
         public Type Type { get; set; }
         public bool IsCollection { get; internal set; }
