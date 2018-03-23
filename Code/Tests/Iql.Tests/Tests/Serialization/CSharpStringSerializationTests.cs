@@ -18,7 +18,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 s => s.Name != null && s.Name.Substring(2, 3) == "hi",
-                @"entity => (entity.Name == null ? null : entity.Name.ToUpper()) != null && (entity.Name.Substring(2, 3) == null ? null : entity.Name.Substring(2, 3).ToUpper()) == (""hi"" == null ? null : ""hi"".ToUpper())");
+                @"entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name.Substring(2, 3) == null ? null : entity.Name.Substring(2, 3).ToUpper()) == (""hi"" == null ? null : ""hi"".ToUpper())))");
         }
 
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)

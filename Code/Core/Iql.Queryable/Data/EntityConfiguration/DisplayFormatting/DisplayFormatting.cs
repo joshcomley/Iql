@@ -17,6 +17,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.DisplayFormatting
 
         private readonly Dictionary<string, EntityDisplayTextFormatter<TEntity>> _formatters
             = new Dictionary<string, EntityDisplayTextFormatter<TEntity>>();
+
+        public IEnumerable<EntityDisplayTextFormatter<TEntity>> All => _formatters.Values.ToArray();
+
         public EntityDisplayTextFormatter<TEntity> Default { get; private set; }
 
         public EntityDisplayTextFormatter<TEntity> Get(string key)

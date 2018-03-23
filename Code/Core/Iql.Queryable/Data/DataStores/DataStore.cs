@@ -395,24 +395,35 @@ namespace Iql.Queryable.Data.DataStores
             {
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    var localEntity = addEntityOperation.Operation.Entity;
-                    result = await PerformAdd(addEntityOperation);
-                    
-                    var remoteEntity = addEntityOperation.Result.RemoteEntity;
-                    if (remoteEntity != null && result.Success)
+                    var entityConfig = DataContext.EntityConfigurationContext.EntityType<TEntity>();
+                    var validationResult = entityConfig.ValidateEntity(addEntityOperation.Operation.Entity);
+                    if (validationResult.HasValidationFailures())
                     {
-                        var trackingSet = Tracking.TrackingSet<TEntity>();
-                        trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
-                        trackingSet.GetEntityState(localEntity).Reset();
-                        trackingSet.GetEntityState(localEntity).IsNew = false;
+                        addEntityOperation.Result.Success = false;
+                        addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
+                        addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, validationResult);
                     }
+                    else
+                    {
+                        var localEntity = addEntityOperation.Operation.Entity;
+                        result = await PerformAdd(addEntityOperation);
 
-                    await DataContext.RefreshEntity(localEntity
+                        var remoteEntity = addEntityOperation.Result.RemoteEntity;
+                        if (remoteEntity != null && result.Success)
+                        {
+                            var trackingSet = Tracking.TrackingSet<TEntity>();
+                            trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
+                            trackingSet.GetEntityState(localEntity).Reset();
+                            trackingSet.GetEntityState(localEntity).IsNew = false;
+                        }
+
+                        await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                    );
-                    //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
+                        );
+                        //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
+                    }
                     break;
                 case OperationType.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;

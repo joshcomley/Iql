@@ -2,7 +2,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public enum PropertyKind
     {
-        Key,
+        Key = 1,
         Primitive,
         Relationship,
         RelationshipKey,

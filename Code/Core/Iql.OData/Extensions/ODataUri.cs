@@ -7,7 +7,7 @@ namespace Iql.OData.Extensions
 {
     public static class ODataUri
     {
-        public static string ResolveODataUri(this IDbQueryable queryable)
+        public static string ResolveODataUri(this IDbSet queryable)
         {
             return queryable.ResolveODataUriFromQuery(queryable.DataContext);
         }

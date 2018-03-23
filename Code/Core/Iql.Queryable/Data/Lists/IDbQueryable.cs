@@ -3,7 +3,7 @@ using Iql.Queryable.Data.Queryable;
 
 namespace Iql.Queryable.Data.Lists
 {
-    public interface IDbSet : IQueryableBase
+    public interface IDbQueryable : IQueryableBase
     {
         void DeleteEntity(object entity);
         void AddEntity(object entity);

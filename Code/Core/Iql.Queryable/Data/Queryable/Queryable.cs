@@ -115,7 +115,7 @@ namespace Iql.Queryable.Data.Queryable
             return Then(new OrderByOperation(expression));
         }
 
-        
+
 
         public TQueryable OrderByProperty(string propetyName, bool descending = false
 #if TypeScript
@@ -127,17 +127,23 @@ namespace Iql.Queryable.Data.Queryable
             orderByOperation.Expression = PropertyExpression(propetyName);
             return Then(orderByOperation);
         }
+        IQueryableBase IQueryableBase.OrderByDefault(bool descending = false)
+        {
+            return OrderByDefault(descending);
+        }
+
+        public abstract TQueryable OrderByDefault(bool descending = false);
 
 //        public TQueryable ExpandProperty(string propetyName
-//#if TypeScript
-//            , EvaluateContext evaluateContext = null
-//#endif
-//        )
-//        {
-//            var orderByOperation = new ExpandOperation<>(null, descending);
-//            orderByOperation.Expression = PropertyExpression(propetyName);
-//            return Then();
-//        }
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext = null
+        //#endif
+        //        )
+        //        {
+        //            var orderByOperation = new ExpandOperation<>(null, descending);
+        //            orderByOperation.Expression = PropertyExpression(propetyName);
+        //            return Then();
+        //        }
 
         public TQueryable OrderByDescending<TProperty>(Expression<Func<T, TProperty>> expression
 #if TypeScript
@@ -284,16 +290,16 @@ namespace Iql.Queryable.Data.Queryable
         }
 
 //        IQueryableBase IQueryableBase.ExpandProperty(string propetyName
-//#if TypeScript
-//            , EvaluateContext evaluateContext = null
-//#endif
-//        )
-//        {
-//            return OrderByProperty(propetyName, descending
-//#if TypeScript
-//                , evaluateContext
-//#endif
-//            );
-//        }
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext = null
+        //#endif
+        //        )
+        //        {
+        //            return OrderByProperty(propetyName, descending
+        //#if TypeScript
+        //                , evaluateContext
+        //#endif
+        //            );
+        //        }
     }
 }

@@ -5,7 +5,7 @@ using Iql.Queryable.Events;
 
 namespace Iql.Queryable.Data.Lists
 {
-    public interface IRelatedList : IList
+    public interface IRelatedList : IObservableList
     {
         string PropertyName { get; }
         //IEnumerable<IRelatedListChange> GetChanges();

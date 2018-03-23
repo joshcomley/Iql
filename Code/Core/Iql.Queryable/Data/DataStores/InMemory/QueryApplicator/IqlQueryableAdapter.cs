@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator.Applicators;
 using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Expressions;
@@ -11,6 +12,14 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
 {
     public class IqlQueryableAdapter : QueryableAdapter<IqlQueryResult, IqlQueryableAdapter>
     {
+        static IqlQueryableAdapter()
+        {
+            QueryExpressionToIqlExpressionTreeMethod =
+                typeof(IqlQueryableAdapter).GetMethod(nameof(QueryExpressionToIqlExpressionTree));
+        }
+
+        private static MethodInfo QueryExpressionToIqlExpressionTreeMethod { get; set; }
+
         public IqlQueryableAdapter()
         {
             RegisterApplicator(() => new IqlOrderByOperationApplicator());
@@ -22,13 +31,21 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
         //new JavaScriptExpressionToIqlConverter()
         public static Func<IExpressionConverter> ExpressionConverter { get; set; }
 
-        public static IqlExpression ExpressionToIqlExpressionTree<T, TProperty>(
+        public static IqlPropertyExpression ExpressionToIqlExpressionTree<T, TProperty>(
             Expression<Func<T, TProperty>> property)
             where T : class
         {
-            return QueryExpressionToIqlExpressionTree<T>(
+            return (IqlPropertyExpression)QueryExpressionToIqlExpressionTree<T>(
                 new ExpressionQueryExpression(property, QueryExpressionType.NonBinary)
             );
+        }
+
+        public static IqlPropertyExpression LambdaExpressionToIqlExpressionTree(
+            LambdaExpression property,
+            Type entityType)
+        {
+            return (IqlPropertyExpression) QueryExpressionToIqlExpressionTreeMethod.MakeGenericMethod(entityType)
+                .Invoke(null, new object[] {property, QueryExpressionType.NonBinary});
         }
 
         public static IqlExpression QueryOperationToIqlExpression<T>(

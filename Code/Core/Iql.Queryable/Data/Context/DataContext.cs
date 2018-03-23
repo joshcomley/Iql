@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Extensions;
 using Iql.Parsing;
@@ -11,6 +12,7 @@ using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Data.Tracking.State;
 using Iql.Queryable.Extensions;
 
@@ -113,6 +115,102 @@ namespace Iql.Queryable.Data.Context
                 return null;
             }
             return _configurations[ConfigurationName<T>()] as T;
+        }
+
+        public DbSet<T, TKey> GetDbSet<T, TKey>()
+            where T : class
+        {
+            return (DbSet<T, TKey>)GetDbSetByEntityType(typeof(T));
+        }
+
+        public DbQueryable<T> GetDbQueryable<T>()
+            where T : class
+        {
+            return (DbQueryable<T>)GetDbSetByEntityType(typeof(T));
+        }
+
+        public TDbSet GetDbSetBySet<TDbSet>()
+        where TDbSet : IDbSet
+        {
+            return (TDbSet) GetDbSetBySetType(typeof(TDbSet));
+        }
+
+        public string GetDbSetPropertyNameBySet<TDbSet>() where TDbSet : IDbSet
+        {
+            return GetDbSetPropertyNameBySetType(typeof(TDbSet));
+        }
+
+        public string GetDbSetPropertyNameByEntity<T>() where T : class
+        {
+            return GetDbSetPropertyNameByEntityType(typeof(T));
+        }
+
+        public string GetDbSetPropertyNameBySetType(Type setType)
+        {
+            var set = GetDbSetBySetType(setType);
+            if (set != null)
+            {
+                return _dbSetsBySetType[setType].Name;
+            }
+            return null;
+        }
+
+        public string GetDbSetPropertyNameByEntityType(Type entityType)
+        {
+            var set = GetDbSetByEntityType(entityType);
+            if (set != null)
+            {
+                return _dbSetsByEntityType[entityType].Name;
+            }
+            return null;
+        }
+
+        private readonly Dictionary<Type, PropertyInfo> _dbSetsByEntityType = new Dictionary<Type, PropertyInfo>();
+        public IDbSet GetDbSetByEntityType(Type entityType)
+        {
+            if (!_dbSetsByEntityType.ContainsKey(entityType))
+            {
+                foreach (var property in GetType().GetRuntimeProperties())
+                {
+                    var value = this.GetPropertyValueByName(property.Name);
+                    if (value is IDbSet)
+                    {
+                        var dbSet = value as IDbSet;
+                        if (dbSet.ItemType == entityType)
+                        {
+                            _dbSetsByEntityType.Add(entityType, property);
+                            return dbSet;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return this.GetPropertyValueByName(_dbSetsByEntityType[entityType].Name) as IDbSet;
+            }
+            return null;
+        }
+
+        private readonly Dictionary<Type, PropertyInfo> _dbSetsBySetType = new Dictionary<Type, PropertyInfo>();
+        public IDbSet GetDbSetBySetType(Type setType)
+        {
+            if (!_dbSetsBySetType.ContainsKey(setType))
+            {
+                foreach (var property in GetType().GetRuntimeProperties())
+                {
+                    var value = this.GetPropertyValueByName(property.Name);
+                    if (value != null && value is IDbSet && setType.IsAssignableFrom(value.GetType()))
+                    {
+                        _dbSetsBySetType.Add(setType, property);
+                        return value as IDbSet;
+                    }
+                }
+            }
+            else
+            {
+                return this.GetPropertyValueByName(_dbSetsBySetType[setType].Name) as IDbSet;
+            }
+            return null;
         }
 
         public IDbSet AsDbSetByType(Type entityType)

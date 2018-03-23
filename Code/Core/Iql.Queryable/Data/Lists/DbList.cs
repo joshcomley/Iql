@@ -25,7 +25,7 @@ namespace Iql.Queryable.Data.Lists
             set => PagingInfo = value;
         }
 
-        IDbSet IDbList.SourceQueryable
+        IDbQueryable IDbList.SourceQueryable
         {
             get => SourceQueryable;
             set => SourceQueryable = (DbQueryable<T>) value;
@@ -41,12 +41,12 @@ namespace Iql.Queryable.Data.Lists
             await LoadPreviousPage();
         }
 
-        IDbSet IDbList.NewNextPageQuery()
+        IDbQueryable IDbList.NewNextPageQuery()
         {
             return NewNextPageQuery();
         }
 
-        IDbSet IDbList.NewPreviousPageQuery()
+        IDbQueryable IDbList.NewPreviousPageQuery()
         {
             return NewPreviousPageQuery();
         }

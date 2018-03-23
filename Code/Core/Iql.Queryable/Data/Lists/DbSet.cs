@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Parsing;
@@ -43,7 +44,27 @@ namespace Iql.Queryable.Data.Lists
             }
             return await Then(new WithKeyOperation(compositeKey)).SingleOrDefaultWithResponse();
         }
-        
+
+        public new DbSet<T, TKey> WithKeys(IEnumerable<TKey> ids)
+        {
+            return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
+        }
+
+        public new DbSet<T, TKey> OrderByDefault(bool descending = false)
+        {
+            return (DbSet<T, TKey>)base.OrderByDefault(descending);
+        }
+
+        public new DbSet<T, TKey> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        {
+            return (DbSet<T, TKey>)base.Search(search, searchKind);
+        }
+
+        public new DbSet<T, TKey> SearchProperties(string search, IEnumerable<IProperty> properties)
+        {
+            return (DbSet<T, TKey>)base.SearchProperties(search, properties);
+        }
+
         public new DbSet<T, TKey> ExpandAllCollectionCounts()
         {
             return (DbSet<T, TKey>)base.ExpandAllCollectionCounts();
@@ -79,7 +100,7 @@ namespace Iql.Queryable.Data.Lists
         {
             return (DbSet<T, TKey>)base.ExpandSingle(target, filter);
         }
-        
+
         public new DbSet<T, TKey> ExpandCollection<TTarget>(
             Expression<Func<T, IEnumerable<TTarget>>> target,
             Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
@@ -87,7 +108,7 @@ namespace Iql.Queryable.Data.Lists
         {
             return (DbSet<T, TKey>)base.ExpandCollection(target, filter);
         }
-        
+
         public DbSet<T, TKey> AllCollectionRelationships(
             Func<DbSet<T, TKey>, IRelationship, IRelationshipDetail, DbSet<T, TKey>> action)
         {

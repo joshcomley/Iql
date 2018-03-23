@@ -19,7 +19,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbQueryable
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbSet
         where T : class
     {
         private ITrackingSet _trackingSet;
@@ -32,7 +32,7 @@ namespace Iql.Queryable.Data.Queryable
             EntityConfiguration = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
-            TrackingSetCollection = dataContext.DataStore.Tracking;
+            TrackingSetCollection = dataContext?.DataStore?.Tracking;
             //TrackingSet = TrackingSetCollection.GetSet<T>();
         }
 
@@ -40,8 +40,8 @@ namespace Iql.Queryable.Data.Queryable
 
         public ITrackingSet TrackingSet
         {
-            get { return _trackingSet = _trackingSet?? TrackingSetCollection.TrackingSet<T>(); }
-            set { _trackingSet = value; }
+            get { return _trackingSet = _trackingSet ?? TrackingSetCollection.TrackingSet<T>(); }
+            set => _trackingSet = value;
         }
 
         public Func<IDataStore> DataStoreGetter { get; set; }
@@ -49,12 +49,39 @@ namespace Iql.Queryable.Data.Queryable
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
-        TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
+        TrackingSetCollection IDbSet.TrackingSetCollection => TrackingSetCollection;
 
-        Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
-        IDataContext IDbQueryable.DataContext { get => DataContext; set => DataContext = value; }
-        ITrackingSet IDbQueryable.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
-        bool IDbQueryable.TrackEntities { get => TrackEntities; set => TrackEntities = value; }
+        Func<IDataStore> IDbSet.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
+        IDbSet IDbSet.WithKeys(IEnumerable<object> keys)
+        {
+            return WithKeys(keys);
+        }
+        IDbSet IDbSet.Search(string search, PropertySearchKind searchKind)
+        {
+            return Search(search, searchKind);
+        }
+        IDbSet IDbSet.SearchProperties(string search, IEnumerable<IProperty> properties)
+        {
+            return SearchProperties(search, properties);
+        }
+        IDataContext IDbSet.DataContext { get => DataContext; set => DataContext = value; }
+        ITrackingSet IDbSet.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
+        bool IDbSet.TrackEntities { get => TrackEntities; set => TrackEntities = value; }
+
+        public DbQueryable<T> WithKeys(IEnumerable<object> keys)
+        {
+            return WhereEquals(EntityConfiguration.BuildSearchKeyQuery(keys));
+        }
+
+        public DbQueryable<T> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        {
+            return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind));
+        }
+
+        public DbQueryable<T> SearchProperties(string search, IEnumerable<IProperty> searchFields)
+        {
+            return WhereEquals(IqlQueryBuilder.BuildSearchPropertiesQuery(search, searchFields));
+        }
 
         public async Task<T> Single(Expression<Func<T, bool>> expression = null
 #if TypeScript
@@ -316,6 +343,11 @@ namespace Iql.Queryable.Data.Queryable
             return ResolveLastOrDefault(result);
         }
 
+        public override DbQueryable<T> OrderByDefault(bool descending = false)
+        {
+            return this.OrderByProperty(EntityConfiguration.ResolveSearchProperties().First().Name, descending);
+        }
+
         public override async Task<DbList<T>> ToList()
         {
             var result = await ToListWithResponse();
@@ -466,7 +498,7 @@ namespace Iql.Queryable.Data.Queryable
                 result.Operation,
                 result.Success);
         }
-        
+
 
         public DbQueryable<T> ExpandAllCollectionCounts()
         {
@@ -538,7 +570,7 @@ namespace Iql.Queryable.Data.Queryable
                     q => filter == null ? q : filter((DbQueryable<TTarget>)q)
                     ));
         }
-        
+
         public DbQueryable<T> AllCollectionRelationships(
             Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
         {
@@ -636,33 +668,33 @@ namespace Iql.Queryable.Data.Queryable
             return dbQueryable;
         }
 
-        IDbQueryable IDbQueryable.SetTracking(bool enabled)
+        IDbSet IDbSet.SetTracking(bool enabled)
         {
             SetTracking(enabled);
             return this;
         }
 
-        IDbQueryable IDbQueryable.IncludeCount()
+        IDbSet IDbSet.IncludeCount()
         {
             return IncludeCount();
         }
 
-        IDbQueryable IDbQueryable.ExpandAll()
+        IDbSet IDbSet.ExpandAll()
         {
             return ExpandAll();
         }
 
-        IDbQueryable IDbQueryable.ExpandRelationship(string name)
+        IDbSet IDbSet.ExpandRelationship(string name)
         {
             return ExpandRelationship(name);
         }
 
-        IDbQueryable IDbQueryable.ExpandAllSingleRelationships()
+        IDbSet IDbSet.ExpandAllSingleRelationships()
         {
             return ExpandAllSingleRelationships();
         }
 
-        IDbQueryable IDbQueryable.ExpandAllCollectionCounts()
+        IDbSet IDbSet.ExpandAllCollectionCounts()
         {
             return ExpandAllCollectionCounts();
         }

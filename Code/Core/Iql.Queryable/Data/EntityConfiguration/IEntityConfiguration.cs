@@ -9,10 +9,11 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
-    public interface IEntityConfiguration
+    public interface IEntityConfiguration : IEntityMetadata
     {
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
+        IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
         IEntityValidationResult ValidateEntity(object entity);
         IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity,
             Expression<Func<object, TProperty>> property);

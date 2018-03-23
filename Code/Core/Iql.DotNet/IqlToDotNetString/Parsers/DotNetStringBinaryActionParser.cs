@@ -41,7 +41,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
             }
 
             return new IqlFinalExpression<string>(
-                $"{left} {@operator} {right}");
+                $"({left} {@operator} {right})");
         }
 
         static string CoalesceOrUpperCase(string expression)

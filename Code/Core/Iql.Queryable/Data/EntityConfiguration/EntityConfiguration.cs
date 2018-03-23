@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,7 +10,6 @@ using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -44,6 +42,40 @@ namespace Iql.Queryable.Data.EntityConfiguration
         string IEntityConfiguration.GetDisplayText(object entity, string key = null)
         {
             return GetDisplayText((T) entity, key);
+        }
+
+        public IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary)
+        {
+            var result = new List<IProperty>();
+            foreach (var property in Properties)
+            {
+                if (property.SearchKind != PropertySearchKind.None && property.SearchKind == searchKind)
+                {
+                    result.Add(property);
+                }
+            }
+
+            if (!result.Any() && searchKind == PropertySearchKind.Primary)
+            {
+                var secondarySearchFields = ResolveSearchProperties(PropertySearchKind.Secondary);
+                if (secondarySearchFields.Any())
+                {
+                    var priorityFields = new[] {"FullName", "Name", "Title"};
+                    foreach (var priorityField in priorityFields)
+                    {
+                        var priorityFieldMatch = secondarySearchFields.FirstOrDefault(f => f.Name == priorityField);
+                        if (priorityFieldMatch != null)
+                        {
+                            result.Add(priorityFieldMatch);
+                            return result.ToArray();
+                        }
+                    }
+
+                    result.Add(secondarySearchFields.First());
+                }
+            }
+
+            return result.ToArray();
         }
 
         IEntityValidationResult IEntityConfiguration.ValidateEntity(object entity)
@@ -261,10 +293,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return key;
         }
 
-        public List<IProperty> Properties { get; set; }
-        public IEntityKey Key { get; set; }
-        public Type Type { get; set; }
-
         public IProperty FindProperty(string name)
         {
             return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
@@ -337,8 +365,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return this;
         }
 
-        public EntityConfiguration<T> ConfigureProperty<TProperty>(
-            Expression<Func<T, TProperty>> property,
+        public EntityConfiguration<T> Configure(
+            Action<EntityConfiguration<T>> configure)
+        {
+            configure(this);
+            return this;
+        }
+
+        public EntityConfiguration<T> ConfigureProperty(
+            Expression<Func<T, object>> property,
             Action<IProperty> configure)
         {
             var propertyDefinition = FindPropertyByExpression(property);
@@ -510,7 +545,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     }
                 }
             }
-            TryAssignRelationshipToPropertyDefinition(collection);
+            EntityConfigurationRelationshipHelper.TryAssignRelationshipToPropertyDefinition(this, collection);
             return this;
         }
 
@@ -560,7 +595,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 Properties.Add(definition);
                 _propertiesMap[name] = definition;
             }
-            TryAssignRelationshipToPropertyDefinition(definition);
+            EntityConfigurationRelationshipHelper.TryAssignRelationshipToPropertyDefinition(this, definition);
             return definition;
         }
 
@@ -584,54 +619,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 Builder.EntityType<TTarget>(),
                 RelationshipMapType.Many,
                 property);
-        }
-
-        internal override void TryAssignRelationshipToProperty(string propertyName, bool tryAssignOtherEnd = true)
-        {
-            var propertyDefinition = FindProperty(propertyName);
-            if (propertyDefinition != null)
-            {
-                TryAssignRelationshipToPropertyDefinition(propertyDefinition, tryAssignOtherEnd);
-            }
-        }
-
-        internal override void TryAssignRelationshipToPropertyDefinition(IProperty definition, bool tryAssignOtherEnd = true)
-        {
-            var relationship = FindRelationship(definition.Name);
-            if (relationship != null)
-            {
-                definition.Kind = PropertyKind.Relationship;
-                definition.Relationship = relationship;
-                var otherEndConfiguration = Builder.GetEntityByType(relationship.OtherEnd.Type);
-                foreach (var constraint in relationship.Relationship.Constraints)
-                {
-                    var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
-                    if (constraintProperty != null && constraintProperty.Kind != PropertyKind.RelationshipKey && constraintProperty.Kind != PropertyKind.Key)
-                    {
-                        constraintProperty.Kind = PropertyKind.RelationshipKey;
-                        constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.Name);
-                    }
-                }
-                if (tryAssignOtherEnd)
-                {
-                    (otherEndConfiguration as EntityConfigurationBase)
-                        .TryAssignRelationshipToProperty(relationship.OtherEnd.Property.Name, false);
-                }
-            }
-            else
-            {
-                foreach (var relationshipMatch in AllRelationships())
-                {
-                    foreach (var constraint in relationshipMatch.Relationship.Constraints)
-                    {
-                        if (constraint.SourceKeyProperty.Name == definition.Name && definition.Kind != PropertyKind.RelationshipKey && definition.Kind != PropertyKind.Key)
-                        {
-                            definition.Kind = PropertyKind.RelationshipKey;
-                            definition.Relationship = relationshipMatch;
-                        }
-                    }
-                }
-            }
         }
     }
 }

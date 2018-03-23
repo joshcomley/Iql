@@ -71,6 +71,16 @@ namespace Iql.Queryable.Data.Lists
             Remove((T)value);
         }
 
+        bool IObservableList.Remove(object value)
+        {
+            return Remove((T)value);
+        }
+
+        void IObservableList.Add(object value)
+        {
+            Add((T)value);
+        }
+
         public virtual bool Remove(T item)
         {
             var success = false;

@@ -46,11 +46,13 @@ namespace Iql.Queryable.Data.Queryable
 #endif
         );
 
+        IQueryableBase OrderByDefault(bool descending = false);
+
 //        IQueryableBase ExpandProperty(string propetyName
-//#if TypeScript
-//            , EvaluateContext evaluateContext = null
-//#endif
-//        );
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext = null
+        //#endif
+        //        );
 
         IqlPropertyExpression PropertyExpression(string propertyName);
     }

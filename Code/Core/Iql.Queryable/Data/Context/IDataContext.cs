@@ -7,6 +7,7 @@ using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Data.Tracking.State;
 
 namespace Iql.Queryable.Data.Context
@@ -71,5 +72,21 @@ namespace Iql.Queryable.Data.Context
         object EnsureTypedEntityByType(object entity, Type type, bool convertRelationships);
         IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false) where T : class;
         IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool convertRelationships, bool forceNotNull = false);
+
+        DbSet<T, TKey> GetDbSet<T, TKey>()
+            where T : class;
+        DbQueryable<T> GetDbQueryable<T>()
+            where T : class;
+        TDbSet GetDbSetBySet<TDbSet>()
+            where TDbSet : IDbSet;
+        string GetDbSetPropertyNameBySet<TDbSet>()
+            where TDbSet : IDbSet;
+        string GetDbSetPropertyNameByEntity<T>()
+            where T : class;
+        string GetDbSetPropertyNameBySetType(Type setType);
+        string GetDbSetPropertyNameByEntityType(Type entityType);
+        IDbSet GetDbSetBySetType(Type entityType);
+        IDbSet GetDbSetByEntityType(Type entityType);
+
     }
 }
