@@ -155,6 +155,24 @@ namespace Tunnel.Sets
 				typeof(Client),
 				typeof(Client));
 		}
+		
+		// Entity methods
+		public virtual ODataDataMethodRequest<int> DoSomething(Client bindingParameter,
+			string title)
+		{
+			var parameters = new List<ODataParameter>();
+			
+			parameters.Add(new ODataParameter(bindingParameter, typeof(Client), "bindingParameter", true));
+			parameters.Add(new ODataParameter(title, typeof(string), "title", false));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<int>(
+				parameters,
+				ODataMethodType.Function,
+				ODataMethodScope.Entity,
+				"Tunnel",
+				"DoSomething",
+				typeof(Client),
+				typeof(int));
+		}
 	
 	}
 }
@@ -168,6 +186,23 @@ namespace Tunnel.Sets
 			IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
 		{
 		
+		}
+		
+		
+		// Collection methods
+		public virtual ODataDataMethodRequest<string> SayHi2(string name)
+		{
+			var parameters = new List<ODataParameter>();
+			
+			parameters.Add(new ODataParameter(name, typeof(string), "name", false));
+			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
+				parameters,
+				ODataMethodType.Function,
+				ODataMethodScope.Collection,
+				"Tunnel",
+				"SayHi2",
+				typeof(ClientType),
+				typeof(String));
 		}
 		
 		// Entity methods

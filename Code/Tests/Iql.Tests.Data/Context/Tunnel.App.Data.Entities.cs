@@ -1488,7 +1488,6 @@ namespace Tunnel.App.Data.Entities
 	{
 		Fail = 0,
 		PassWithObservations = 1
-	
 	}
 }
 
@@ -1502,7 +1501,6 @@ namespace Tunnel.App.Data.Entities
 		FailuresInFaultReports = 3,
 		TooManyMinorObservations = 4,
 		NoDesignSupplied = 5
-	
 	}
 }
 
@@ -1513,7 +1511,6 @@ namespace Tunnel.App.Data.Entities
 		Pass = 0,
 		Fail = 1,
 		PassWithObservations = 2
-	
 	}
 }
 
@@ -1523,7 +1520,18 @@ namespace Tunnel.App.Data.Entities
 	{
 		System = 0,
 		Conventional = 1
-	
+	}
+}
+
+namespace Tunnel.App.Data.Entities
+{
+	[Flags]
+	public enum UserPermissions
+	{
+		Read = 1,
+		Create = 2,
+		Delete = 4,
+		Edit = 8
 	}
 }
 
@@ -1534,7 +1542,6 @@ namespace Tunnel.App.Data.Entities
 		Super = 1,
 		Client = 2,
 		Candidate = 3
-	
 	}
 }
 
@@ -12104,6 +12111,44 @@ namespace Tunnel.App.Data.Entities
 					if(changed)
 					{
 						this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected UserPermissions _permissions;
+
+		public UserPermissions Permissions
+		{
+			get => _permissions;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._permissions;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Permissions), this, oldValue, value));
+					}
+				
+				}
+				_permissions = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Permissions), this, oldValue, value));
 					}
 				
 				}

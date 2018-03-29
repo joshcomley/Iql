@@ -99,15 +99,16 @@ namespace Tunnel.ApiContext.Base
 		public override void Configure(EntityConfigurationBuilder builder)
 		{
 			builder.EntityType<ApplicationUser>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.String)
 				.DefineProperty(p => p.ClientId, true, IqlType.Integer)
 				.DefineProperty(p => p.Email, true, IqlType.String)
 				.DefineProperty(p => p.FullName, false, IqlType.String)
 				.DefineProperty(p => p.EmailConfirmed, false, IqlType.Boolean)
-				.DefineProperty(p => p.UserType, false)
+				.DefineProperty(p => p.UserType, false, IqlType.Unknown)
 				.DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean)
-				.DefineProperty(p => p.Client, true)
+				.DefineProperty(p => p.Permissions, false, IqlType.Unknown)
+				.DefineProperty(p => p.Client, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.ClientsCreated, p => p.ClientsCreatedCount)
 				.DefineCollectionProperty(p => p.DocumentCategoriesCreated, p => p.DocumentCategoriesCreatedCount)
 				.DefineCollectionProperty(p => p.SiteDocumentsCreated, p => p.SiteDocumentsCreatedCount)
@@ -136,7 +137,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.ClientId, p => p.Id);
 			
 			builder.EntityType<Client>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.TypeId, false, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
@@ -150,8 +151,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
 				.DefineCollectionProperty(p => p.Users, p => p.UsersCount)
-				.DefineProperty(p => p.Type, false)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.Type, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 				.DefineCollectionProperty(p => p.Sites, p => p.SitesCount);
 			
@@ -166,13 +167,13 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ClientType>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineCollectionProperty(p => p.Clients, p => p.ClientsCount);
 			
 			builder.EntityType<DocumentCategory>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Name, true, IqlType.String)
@@ -180,7 +181,7 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount);
 			
 			builder.EntityType<DocumentCategory>()
@@ -189,7 +190,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<SiteDocument>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.CategoryId, false, IqlType.Integer)
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
@@ -199,9 +200,9 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.Category, false)
-				.DefineProperty(p => p.Site, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.Category, false, IqlType.Unknown)
+				.DefineProperty(p => p.Site, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<SiteDocument>()
 				.HasOne(p => p.Category)
@@ -219,7 +220,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ReportActionsTaken>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.FaultReportId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Notes, true, IqlType.String)
@@ -228,10 +229,10 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.PersonReport, false)
-				.DefineProperty(p => p.CreatedByUser, true)
-				.DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "61318538-e13d-4f95-86a0-17fee35a5f26", "Please enter some actions taken notes")
-				.DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "12f7e734-ea37-43bb-898a-ebd68a136023", "Please enter at least five characters for notes");
+				.DefineProperty(p => p.PersonReport, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "04194450-7975-4e29-83af-c815cc50932c", "Please enter some actions taken notes")
+				.DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "8c8f1a37-6e14-47f3-af85-a734c29a604b", "Please enter at least five characters for notes");
 			
 			builder.EntityType<ReportActionsTaken>()
 				.HasOne(p => p.PersonReport)
@@ -244,7 +245,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ReportCategory>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Name, true, IqlType.String)
@@ -252,7 +253,7 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.ReportTypes, p => p.ReportTypesCount);
 			
 			builder.EntityType<ReportCategory>()
@@ -261,7 +262,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ReportDefaultRecommendation>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Name, true, IqlType.String)
@@ -270,7 +271,7 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount);
 			
 			builder.EntityType<ReportDefaultRecommendation>()
@@ -279,7 +280,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ReportRecommendation>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.ReportId, false, IqlType.Integer)
 				.DefineProperty(p => p.RecommendationId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
@@ -289,9 +290,9 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.PersonReport, false)
-				.DefineProperty(p => p.Recommendation, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.PersonReport, false, IqlType.Unknown)
+				.DefineProperty(p => p.Recommendation, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<ReportRecommendation>()
 				.HasOne(p => p.PersonReport)
@@ -309,7 +310,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ReportType>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CategoryId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
@@ -318,8 +319,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
-				.DefineProperty(p => p.Category, false)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.Category, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.FaultReports, p => p.FaultReportsCount);
 			
 			builder.EntityType<ReportType>()
@@ -333,12 +334,12 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<Project>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.Title, false, IqlType.String)
 				.DefineProperty(p => p.Description, true, IqlType.String)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<Project>()
 				.HasOne(p => p.CreatedByUser)
@@ -346,7 +347,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<ReportReceiverEmailAddress>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.EmailAddress, true, IqlType.String)
@@ -355,8 +356,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.Site, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.Site, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<ReportReceiverEmailAddress>()
 				.HasOne(p => p.Site)
@@ -369,7 +370,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<RiskAssessment>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
@@ -377,9 +378,9 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.SiteInspection, false)
-				.DefineProperty(p => p.CreatedByUser, true)
-				.DefineProperty(p => p.RiskAssessmentSolution, false);
+				.DefineProperty(p => p.SiteInspection, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.DefineProperty(p => p.RiskAssessmentSolution, false, IqlType.Unknown);
 			
 			builder.EntityType<RiskAssessment>()
 				.HasOne(p => p.SiteInspection)
@@ -392,7 +393,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<RiskAssessmentSolution>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
@@ -400,8 +401,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.RiskAssessment, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.RiskAssessment, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<RiskAssessmentSolution>()
 				.HasOne(p => p.RiskAssessment)
@@ -409,7 +410,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.RiskAssessmentId, p => p.Id);
 			
 			builder.EntityType<RiskAssessmentAnswer>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.QuestionId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.SpecificHazard, true, IqlType.String)
@@ -419,8 +420,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.Question, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.Question, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<RiskAssessmentAnswer>()
 				.HasOne(p => p.Question)
@@ -433,7 +434,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<RiskAssessmentQuestion>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Name, true, IqlType.String)
@@ -442,7 +443,7 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
 				.DefineCollectionProperty(p => p.Answers, p => p.AnswersCount)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<RiskAssessmentQuestion>()
 				.HasOne(p => p.CreatedByUser)
@@ -450,24 +451,33 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<Person>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.TypeId, true, IqlType.Integer)
+				.ConfigureProperty(p => p.TypeId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.LoadingId, true, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Key, true, IqlType.String)
 				.DefineProperty(p => p.Title, true, IqlType.String)
+				.ConfigureProperty(p => p.Title, p => {
+					p.Description = "Some key2";
+					p.FriendlyName = "Key me2";
+					p.Hints = new List<string>(new [] { "!2", "Open2" });
+					p.Title = "__key2";
+				})
 				.DefineProperty(p => p.Description, true, IqlType.String)
-				.DefineProperty(p => p.Category, false)
+				.DefineProperty(p => p.Category, false, IqlType.Unknown)
 				.DefineProperty(p => p.ClientId, true, IqlType.Integer)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.Client, true)
-				.DefineProperty(p => p.Type, true)
-				.DefineProperty(p => p.Loading, true)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.Client, true, IqlType.Unknown)
+				.DefineProperty(p => p.Type, true, IqlType.Unknown)
+				.DefineProperty(p => p.Loading, true, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.Types, p => p.TypesCount)
 				.DefineCollectionProperty(p => p.Reports, p => p.ReportsCount)
 				.DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "NoTitleOrDescription", "Please enter either a title or a description")
@@ -477,7 +487,13 @@ namespace Tunnel.ApiContext.Base
 				.DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "EmptyTitle", "Please enter a person title")
 				.DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "TitleMaxLength", "Please enter less than fifty characters")
 				.DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "TitleMinLength", "Please enter at least three characters for the person's title")
-				.DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "EmptyDescription", "Please enter a person description");
+				.DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "EmptyDescription", "Please enter a person description")
+				.Configure(p => {
+					p.Description = "Hello";
+					p.FriendlyName = "A person";
+					p.Hints = new List<string>(new [] { "%", "Print" });
+					p.Title = "PERSON";
+				});
 			
 			builder.EntityType<Person>()
 				.HasOne(p => p.Client)
@@ -500,14 +516,14 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<PersonInspection>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.PersonId, false, IqlType.Integer)
-				.DefineProperty(p => p.InspectionStatus, false)
+				.DefineProperty(p => p.InspectionStatus, false, IqlType.Unknown)
 				.DefineProperty(p => p.StartTime, false, IqlType.Date)
 				.DefineProperty(p => p.EndTime, false, IqlType.Date)
-				.DefineProperty(p => p.ReasonForFailure, false)
+				.DefineProperty(p => p.ReasonForFailure, false, IqlType.Unknown)
 				.DefineProperty(p => p.IsDesignRequired, false, IqlType.Boolean)
 				.DefineProperty(p => p.DrawingNumber, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
@@ -515,8 +531,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.SiteInspection, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.SiteInspection, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<PersonInspection>()
 				.HasOne(p => p.SiteInspection)
@@ -529,7 +545,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<PersonLoading>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Name, true, IqlType.String)
@@ -538,8 +554,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
-				.DefineProperty(p => p.CreatedByUser, true)
-				.DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "db1235a9-4eb3-4898-92b2-4cc86657be43", "Please enter a loading name");
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "b90b2519-727a-44dd-a4b1-b1914b9e0698", "Please enter a loading name");
 			
 			builder.EntityType<PersonLoading>()
 				.HasOne(p => p.CreatedByUser)
@@ -547,7 +563,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<PersonType>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Title, false, IqlType.String)
@@ -556,7 +572,7 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.PeopleMap, p => p.PeopleMapCount);
 			
 			builder.EntityType<PersonType>()
@@ -572,8 +588,8 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Description, false, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
-				.DefineProperty(p => p.Person, false)
-				.DefineProperty(p => p.Type, false);
+				.DefineProperty(p => p.Person, false, IqlType.Unknown)
+				.DefineProperty(p => p.Type, false, IqlType.Unknown);
 			
 			builder.EntityType<PersonTypeMap>()
 				.HasOne(p => p.Person)
@@ -586,24 +602,24 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.TypeId, p => p.Id);
 			
 			builder.EntityType<PersonReport>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.PersonId, false, IqlType.Integer)
 				.DefineProperty(p => p.TypeId, false, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
 				.DefineProperty(p => p.Title, true, IqlType.String)
-				.DefineProperty(p => p.Status, false)
+				.DefineProperty(p => p.Status, false, IqlType.Unknown)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
 				.DefineCollectionProperty(p => p.ActionsTaken, p => p.ActionsTakenCount)
 				.DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount)
-				.DefineProperty(p => p.Person, false)
-				.DefineProperty(p => p.Type, false)
-				.DefineProperty(p => p.CreatedByUser, true)
-				.DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "75104589-3dd4-4f04-bc83-bb227595488d", "Please enter a valid report title")
-				.DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "1e838c09-152b-4e7c-b248-3be32e3424b2", "Please enter less than five characters");
+				.DefineProperty(p => p.Person, false, IqlType.Unknown)
+				.DefineProperty(p => p.Type, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "e966e113-2479-456b-8d17-ab2d7bc14ab0", "Please enter a valid report title")
+				.DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "4ebff465-4fac-45fd-a092-ae75d9a59a75", "Please enter less than five characters");
 			
 			builder.EntityType<PersonReport>()
 				.HasOne(p => p.Person)
@@ -621,7 +637,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<Site>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.ParentId, true, IqlType.Integer)
 				.DefineProperty(p => p.ClientId, true, IqlType.Integer)
@@ -637,10 +653,10 @@ namespace Tunnel.ApiContext.Base
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
 				.DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount)
 				.DefineCollectionProperty(p => p.AdditionalSendReportsTo, p => p.AdditionalSendReportsToCount)
-				.DefineProperty(p => p.Parent, true)
+				.DefineProperty(p => p.Parent, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.Children, p => p.ChildrenCount)
-				.DefineProperty(p => p.Client, true)
-				.DefineProperty(p => p.CreatedByUser, true)
+				.DefineProperty(p => p.Client, true, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.SiteInspections, p => p.SiteInspectionsCount)
 				.DefineCollectionProperty(p => p.Users, p => p.UsersCount);
 			
@@ -660,7 +676,7 @@ namespace Tunnel.ApiContext.Base
 				.WithConstraint(p => p.CreatedByUserId, p => p.Id);
 			
 			builder.EntityType<SiteInspection>()
-				.HasKey(p => p.Id)
+				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
@@ -670,10 +686,10 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
-				.DefineProperty(p => p.RiskAssessment, false)
+				.DefineProperty(p => p.RiskAssessment, false, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.PersonInspections, p => p.PersonInspectionsCount)
-				.DefineProperty(p => p.Site, false)
-				.DefineProperty(p => p.CreatedByUser, true);
+				.DefineProperty(p => p.Site, false, IqlType.Unknown)
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
 			
 			builder.EntityType<SiteInspection>()
 				.HasOne(p => p.Site)
@@ -689,8 +705,8 @@ namespace Tunnel.ApiContext.Base
 				.HasCompositeKey(p => p.SiteId, p => p.UserId)
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.UserId, true, IqlType.String)
-				.DefineProperty(p => p.User, false)
-				.DefineProperty(p => p.Site, false);
+				.DefineProperty(p => p.User, false, IqlType.Unknown)
+				.DefineProperty(p => p.Site, false, IqlType.Unknown);
 			
 			builder.EntityType<UserSite>()
 				.HasOne(p => p.User)
