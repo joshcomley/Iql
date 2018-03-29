@@ -23,7 +23,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators
             .Map(() => OperatorType.SubtractEquals, "-=")
             .Map(() => OperatorType.AddEquals, "+=")
             .Map(() => OperatorType.BitwiseOr, "|")
-            .Map(() => OperatorType.BitwiseAnd, "&")
+            .Map(() => OperatorType.Has, "&")
             .Map(() => OperatorType.BitwiseNot, "~");
     }
 }

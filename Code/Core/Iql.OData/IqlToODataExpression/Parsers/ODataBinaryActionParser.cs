@@ -43,7 +43,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     return "add";
                 case IqlExpressionType.Subtract:
                     return "sub";
-                case IqlExpressionType.BitwiseAnd:
+                case IqlExpressionType.Has:
                     return "has";
                 default:
                     ODataErrors.OperationNotSupported(action.Type);

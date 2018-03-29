@@ -25,7 +25,7 @@ namespace Iql
         MultiplyEquals,
         DivideEquals,
         BitwiseOr,
-        BitwiseAnd,
+        Has,
         BitwiseNot,
         Literal,
         UnarySubtract,

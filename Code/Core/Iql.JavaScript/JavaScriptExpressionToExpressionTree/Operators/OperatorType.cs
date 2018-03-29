@@ -22,7 +22,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators
         SubtractEquals,
         AddEquals,
         BitwiseOr,
-        BitwiseAnd,
+        Has,
         BitwiseNot
     }
 }

@@ -64,8 +64,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 case OperatorType.BitwiseOr:
                     exp = new IqlBitwiseOrExpression(left, right);
                     break;
-                case OperatorType.BitwiseAnd:
-                    exp = new IqlBitwiseAndExpression(left, right);
+                case OperatorType.Has:
+                    exp = new IqlHasExpression(left, right);
                     break;
                 case OperatorType.BitwiseNot:
                     exp = new IqlBitwiseNotExpression(left, right);

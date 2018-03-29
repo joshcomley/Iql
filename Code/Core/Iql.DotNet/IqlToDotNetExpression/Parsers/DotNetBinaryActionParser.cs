@@ -126,7 +126,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     return ExpressionType.MultiplyAssign;
                 case IqlExpressionType.DivideEquals:
                     return ExpressionType.DivideAssign;
-                case IqlExpressionType.BitwiseAnd:
+                case IqlExpressionType.Has:
                     return ExpressionType.And;
             }
             throw new NotSupportedException(

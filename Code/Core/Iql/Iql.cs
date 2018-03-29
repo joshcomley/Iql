@@ -26,7 +26,7 @@
             .Map(() => IqlExpressionType.MultiplyEquals)
             .Map(() => IqlExpressionType.DivideEquals)
             .Map(() => IqlExpressionType.BitwiseOr)
-            .Map(() => IqlExpressionType.BitwiseAnd)
+            .Map(() => IqlExpressionType.Has)
             .Map(() => IqlExpressionType.BitwiseNot)
             .Map(() => IqlExpressionType.Literal)
             .Map(() => IqlExpressionType.UnarySubtract)

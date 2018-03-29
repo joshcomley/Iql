@@ -91,7 +91,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
                     return "*=";
                 case IqlExpressionType.DivideEquals:
                     return "/=";
-                case IqlExpressionType.BitwiseAnd:
+                case IqlExpressionType.Has:
                     return "&";
             }
             throw new NotSupportedException(

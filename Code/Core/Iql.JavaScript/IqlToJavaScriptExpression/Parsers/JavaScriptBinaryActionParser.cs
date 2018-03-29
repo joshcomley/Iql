@@ -102,7 +102,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                     return "*=";
                 case IqlExpressionType.DivideEquals:
                     return "/=";
-                case IqlExpressionType.BitwiseAnd:
+                case IqlExpressionType.Has:
                     return "&";
             }
             JavaScriptErrors.OperationNotSupported(action.Type);

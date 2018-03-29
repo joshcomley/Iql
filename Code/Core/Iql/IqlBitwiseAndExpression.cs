@@ -1,14 +1,14 @@
 namespace Iql
 {
-    public class IqlBitwiseAndExpression : IqlBinaryExpression
+    public class IqlHasExpression : IqlBinaryExpression
     {
-        public IqlBitwiseAndExpression(
+        public IqlHasExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.BitwiseAnd, left, right)
+            IqlExpression right) : base(IqlExpressionType.Has, left, right)
         {
         }
 
-        public IqlBitwiseAndExpression() : this(null, null)
+        public IqlHasExpression() : this(null, null)
         {
         }
     }
