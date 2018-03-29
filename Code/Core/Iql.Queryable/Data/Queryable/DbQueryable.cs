@@ -578,7 +578,7 @@ namespace Iql.Queryable.Data.Queryable
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (entityConfig.FindProperty(detail.Property.Name).IsCollection)
+                    if (entityConfig.FindProperty(detail.Property.Name).TypeDefinition.IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -593,7 +593,7 @@ namespace Iql.Queryable.Data.Queryable
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (!entityConfig.FindProperty(detail.Property.Name).IsCollection)
+                    if (!entityConfig.FindProperty(detail.Property.Name).TypeDefinition.IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -642,7 +642,7 @@ namespace Iql.Queryable.Data.Queryable
             compositeKey.Keys[0] = new KeyValue(
                 propertyName,
                 key,
-                DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).ElementType
+                DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).TypeDefinition
             );
             return compositeKey;
         }

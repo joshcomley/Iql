@@ -12,7 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Brandless\Brandless.ObjectSerializer\Code\Brandless.ObjectSerializer\Brandless.ObjectSerializer.csproj" />
+    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10008" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\Iql.Tests\Iql.Tests.csproj" />
   </ItemGroup>

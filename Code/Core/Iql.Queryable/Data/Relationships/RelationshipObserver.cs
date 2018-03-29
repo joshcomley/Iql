@@ -320,7 +320,7 @@ namespace Iql.Queryable.Data.Relationships
                                 propertyChangeEvent.OldValue);
                             break;
                         case PropertyKind.Relationship:
-                            if (!property.IsCollection)
+                            if (!property.TypeDefinition.IsCollection)
                             {
                                 ProcessRelationshipReferenceChange(
                                     propertyChangeEvent.Entity,
@@ -478,7 +478,7 @@ namespace Iql.Queryable.Data.Relationships
             for (var i = 0; i < relationships.Count; i++)
             {
                 var relationship = relationships[i];
-                if (relationship.ThisIsTarget && !relationship.Relationship.Source.Property.Nullable)
+                if (relationship.ThisIsTarget && !relationship.Relationship.Source.Property.TypeDefinition.Nullable)
                 {
                     var sourceTrackingSet =
                         TrackingSetCollection.TrackingSetByType(relationship.Relationship.Source.Type);
@@ -750,9 +750,9 @@ namespace Iql.Queryable.Data.Relationships
                         {
                             newValue = newTarget.GetPropertyValue(constraint.TargetKeyProperty);
                         }
-                        else if (!constraint.SourceKeyProperty.Nullable)
+                        else if (!constraint.SourceKeyProperty.TypeDefinition.Nullable)
                         {
-                            newValue = constraint.SourceKeyProperty.Type.DefaultValue();
+                            newValue = constraint.SourceKeyProperty.TypeDefinition.Type.DefaultValue();
                         }
 
                         source.SetPropertyValue(

@@ -11,6 +11,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private bool _friendlyNameSet;
         private string _resolvedFriendlyName;
         private string _title;
+        public ITypeDefinition TypeDefinition { get; set; }
 
         private bool _titleSet;
         private string _name;
@@ -18,7 +19,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #if !TypeScript
         public PropertyInfo PropertyInfo { get; set; }
 #endif
-        public bool Nullable { get; set; }
         public RelationshipMatch Relationship { get; set; }
         public PropertyKind Kind { get; set; }
 
@@ -30,7 +30,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 if (!_searchKindSet)
                 {
                     _searchKindSet = true;
-                    _searchKind = Kind == PropertyKind.Primitive && Type == typeof(string) && string.IsNullOrWhiteSpace(ConvertedFromType)
+                    _searchKind = Kind == PropertyKind.Primitive && TypeDefinition.Type == typeof(string) && string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType)
                         ? PropertySearchKind.Secondary
                         : PropertySearchKind.None;
                 }
@@ -44,7 +44,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             }
         }
 
-        public IProperty CountRelationship { get; private set; }
+        public IProperty CountRelationship { get; protected set; }
         public bool ReadOnly { get; set; }
 
         public string Name
@@ -57,11 +57,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
             }
         }
         public string Placeholder { get; set; }
-        public Type ElementType { get; set; }
-        public Type Type { get; set; }
-        public bool IsCollection { get; internal set; }
-        public Type DeclaringType { get; internal set; }
-        public string ConvertedFromType { get; set; }
         public abstract Func<object, object> PropertyGetter { get; set; }
         public abstract Func<object, object, object> PropertySetter { get; set; }
 
@@ -90,27 +85,26 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public List<object> Helpers { get; set; }
         public List<string> Hints { get; set; }
 
-        internal void Configure(
-            string name,
-            Type declaringType,
-            Type propertyType,
-            Type elementType,
-            string convertedFromType,
-            bool isCollection,
-            bool readOnly,
-            IProperty countRelationship
-        )
+        public MetadataHint FindHint(string name)
         {
-            Name = name;
-            DeclaringType = declaringType;
-            ElementType = elementType;
-            Type = propertyType;
-            IsCollection = isCollection;
-            ConvertedFromType = convertedFromType;
-            ReadOnly = readOnly;
-            CountRelationship = countRelationship;
-            Kind = PropertyKind.Primitive;
+            return HintHelper.FindHint(this, name);
         }
+
+        public bool HasHint(string name)
+        {
+            return HintHelper.HasHint(this, name);
+        }
+
+        public void RemoveHint(string name)
+        {
+            HintHelper.RemoveHint(this, name);
+        }
+
+        public void SetHint(string name, string value = null)
+        {
+            HintHelper.SetHint(this, name, value);
+        }
+
 
         public string ResolveFriendlyName()
         {

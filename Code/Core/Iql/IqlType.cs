@@ -4,6 +4,8 @@ namespace Iql
     {
         Void,
         Unknown,
+        Collection,
+        Class,
         String,
         Integer,
         Decimal,

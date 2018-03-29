@@ -6,7 +6,7 @@ namespace Iql.Queryable.Data.Lists
 {
     public class EntityList<T> : ObservableList<T>
     {
-        private readonly Dictionary<IEntity, int> _entitySubscriptions = new Dictionary<IEntity, int>();
+        private readonly Dictionary<IEntity, EventSubscription> _entitySubscriptions = new Dictionary<IEntity, EventSubscription>();
 
         public override void Add(T item)
         {
@@ -39,7 +39,7 @@ namespace Iql.Queryable.Data.Lists
             base.RemoveAt(index);
             if (item != null && _entitySubscriptions.ContainsKey(item))
             {
-                item.ExistsChanged.Unsubscribe(_entitySubscriptions[item]);
+                _entitySubscriptions[item].Unsubscribe();
                 _entitySubscriptions.Remove(item);
             }
         }

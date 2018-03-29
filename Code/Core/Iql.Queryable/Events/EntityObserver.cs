@@ -9,9 +9,9 @@ namespace Iql.Queryable.Events
 {
     public class EntityObserver
     {
-        private readonly Dictionary<string, KeyValuePair<IEventSubscriberBase, int>> _subscriptions = new Dictionary<string, KeyValuePair<IEventSubscriberBase, int>>();
-        private readonly Dictionary<IRelatedList, int> _relatedListChangedSubscriptions =
-            new Dictionary<IRelatedList, int>();
+        private readonly Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>> _subscriptions = new Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>>();
+        private readonly Dictionary<IRelatedList, EventSubscription> _relatedListChangedSubscriptions =
+            new Dictionary<IRelatedList, EventSubscription>();
 
         public IEntityStateBase EntityState { get; }
         private IEntity Entity { get; }
@@ -59,7 +59,7 @@ namespace Iql.Queryable.Events
             {
                 throw new Exception("Attempting to register for entity event twice");
             }
-            _subscriptions.Add(key, new KeyValuePair<IEventSubscriberBase, int>(eventEmitter, eventEmitter.Subscribe(action)));
+            _subscriptions.Add(key, new KeyValuePair<IEventSubscriberBase, EventSubscription>(eventEmitter, eventEmitter.Subscribe(action)));
         }
 
         public void RegisterRelatedListChanged(Action<IRelatedListChangeEvent> action)
@@ -81,12 +81,12 @@ namespace Iql.Queryable.Events
         {
             foreach (var key in _subscriptions)
             {
-                key.Value.Key.Unsubscribe(key.Value.Value);
+                key.Value.Value.Unsubscribe();
             }
 
             foreach (var key in _relatedListChangedSubscriptions)
             {
-                key.Key.RelatedListChange.Unsubscribe(key.Value);
+                key.Value.Unsubscribe();
             }
         }
     }

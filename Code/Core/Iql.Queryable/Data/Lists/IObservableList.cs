@@ -8,13 +8,13 @@ namespace Iql.Queryable.Data.Lists
     {
         IEventSubscriber<IObservableListChangeEvent> Change { get; }
 #if TypeScript
-        void Add(object value);
         void Clear();
         bool Contains(object value);
         int IndexOf(object value);
         void Insert(int index, object value);
         void RemoveAt(int index);
-        bool Remove(object item);
 #endif
+        void Add(object value);
+        bool Remove(object item);
     }
 }

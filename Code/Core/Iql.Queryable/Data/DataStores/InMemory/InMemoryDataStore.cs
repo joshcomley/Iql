@@ -75,11 +75,11 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                         if (property.Kind == PropertyKind.Key)
                         {
                             var oldId = clone.GetPropertyValue(property);
-                            if (property.ElementType == typeof(int))
+                            if (property.TypeDefinition.ElementType == typeof(int))
                             {
                                 clone.SetPropertyValue(property, NextIdInteger(data, property));
                             }
-                            else if (property.ElementType == typeof(string))
+                            else if (property.TypeDefinition.ElementType == typeof(string))
                             {
                                 clone.SetPropertyValue(property, NextIdString(data, property));
                             }

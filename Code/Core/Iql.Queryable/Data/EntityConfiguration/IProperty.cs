@@ -13,11 +13,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IValidationCollection Validation { get; }
         RelationshipMatch Relationship { get; set; }
         IProperty CountRelationship { get; }
+        ITypeDefinition TypeDefinition { get; set; }
         List<object> Helpers { get; set; }
-        Type ElementType { get; }
-        Type Type { get; }
-        bool IsCollection { get; }
-        Type DeclaringType { get; }
         Func<object, object> PropertyGetter { get; }
         Func<object, object, object> PropertySetter { get; }
         Dictionary<string, object> CustomInformation { get; }

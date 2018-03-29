@@ -41,7 +41,7 @@ namespace Iql.Queryable.Extensions
                 compositeKey.Keys[i] = new KeyValue(
                     kp.Name,
                     entity.GetPropertyValue(kp),
-                    kp.ElementType);
+                    kp.TypeDefinition);
             }
             var withKeyOperation = new WithKeyOperation(compositeKey);
             return withKeyOperation;

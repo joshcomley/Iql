@@ -34,7 +34,7 @@ namespace Iql.OData.QueryableApplicator.Applicators
         {
             if (key.Value is string || key.Value is Guid || key.Value is Guid? || 
                 (key.ValueType != null && 
-                 (key.ValueType == typeof(string) ||  key.ValueType == typeof(Guid))))
+                 (key.ValueType.Type == typeof(string) ||  key.ValueType.Type == typeof(Guid))))
             {
                 return $"\'{key.Value}\'";
             }

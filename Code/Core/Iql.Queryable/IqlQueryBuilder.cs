@@ -21,11 +21,11 @@ namespace Iql.Queryable
                 {
                     compositeKey = id as CompositeKey;
                 }
-                else if(entityConfiguration.Key.Properties.Count == 1 && id.GetType() == entityConfiguration.Key.Properties[0].Type)
+                else if(entityConfiguration.Key.Properties.Count == 1 && id.GetType() == entityConfiguration.Key.Properties[0].TypeDefinition.Type)
                 {
                     var primaryKey = entityConfiguration.Key.Properties[0];
                     compositeKey = new CompositeKey(1);
-                    compositeKey.Keys[0] = new KeyValue(primaryKey.Name, id, primaryKey.Type);
+                    compositeKey.Keys[0] = new KeyValue(primaryKey.Name, id, primaryKey.TypeDefinition);
                 }
                 else
                 {
@@ -36,7 +36,7 @@ namespace Iql.Queryable
                         var value = keyProperty.PropertyGetter(id);
                         if (value != null)
                         {
-                            compositeKey.Keys[i] = new KeyValue(keyProperty.Name, value, keyProperty.Type);
+                            compositeKey.Keys[i] = new KeyValue(keyProperty.Name, value, keyProperty.TypeDefinition);
                         }
                     }
                 }
@@ -49,7 +49,7 @@ namespace Iql.Queryable
                         var propertyExpression = new IqlPropertyExpression(keyPart.Name, root);
                         var where = new IqlIsEqualToExpression(
                             propertyExpression,
-                            new IqlLiteralExpression(keyPart.Value, keyPart.ValueType.ToIqlType()));
+                            new IqlLiteralExpression(keyPart.Value, keyPart.ValueType.Type.ToIqlType()));
                         entityWheres.Add(where);
                     }
                 }

@@ -144,13 +144,13 @@ namespace Iql.Queryable.Data
                             var value = obj.GetPropertyValue(property);
                             if (value != null)
                             {
-                                if (!property.IsCollection)
+                                if (!property.TypeDefinition.IsCollection)
                                 {
                                     clone.SetPropertyValue(
                                         property,
                                         cloneRelationships == RelationshipCloneMode.KeysOnly
                                             ? CloneKeysOnly(dataContext, property, value)
-                                            : value.CloneInternal(dataContext, property.ElementType, cloneRelationships,
+                                            : value.CloneInternal(dataContext, property.TypeDefinition.ElementType, cloneRelationships,
                                                 clonedObjects, mergeMap)
                                     );
                                 }
@@ -174,7 +174,7 @@ namespace Iql.Queryable.Data
                                             var item = oldValue[j];
                                             newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
                                                 ? CloneKeysOnly(dataContext, property, item)
-                                                : item.CloneInternal(dataContext, property.ElementType,
+                                                : item.CloneInternal(dataContext, property.TypeDefinition.ElementType,
                                                     cloneRelationships,
                                                     clonedObjects,
                                                     mergeMap));

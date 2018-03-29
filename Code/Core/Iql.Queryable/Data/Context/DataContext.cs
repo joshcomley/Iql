@@ -24,6 +24,20 @@ namespace Iql.Queryable.Data.Context
             new Dictionary<string, object>();
         private static readonly Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders
             = new Dictionary<Type, EntityConfigurationBuilder>();
+
+        public static Type FindDataContextTypeForEntityType(Type entityType)
+        {
+            foreach (var lookup in EntityConfigurationsBuilders)
+            {
+                if (lookup.Value.IsEntityType(entityType))
+                {
+                    return lookup.Key;
+                }
+            }
+
+            return null;
+        }
+
         public DataContext(
             IDataStore dataStore,
             EvaluateContext evaluateContext = null
@@ -132,7 +146,7 @@ namespace Iql.Queryable.Data.Context
         public TDbSet GetDbSetBySet<TDbSet>()
         where TDbSet : IDbSet
         {
-            return (TDbSet) GetDbSetBySetType(typeof(TDbSet));
+            return (TDbSet)GetDbSetBySetType(typeof(TDbSet));
         }
 
         public string GetDbSetPropertyNameBySet<TDbSet>() where TDbSet : IDbSet
@@ -443,15 +457,15 @@ namespace Iql.Queryable.Data.Context
                         continue;
                     }
                     //var instanceValue = typedEntity.GetPropertyValue(property.Name);
-                    var remoteValue = EnsureTypedValue(entity.GetPropertyValue(property), property);
+                    var remoteValue = property.TypeDefinition.EnsureValueType(entity.GetPropertyValue(property));
 
                     if (remoteValue != null)
                     {
-                        if (property.Type.IsEnum && remoteValue is string)
+                        if (property.TypeDefinition.Type.IsEnum && remoteValue is string)
                         {
                             try
                             {
-                                remoteValue = Enum.Parse(property.Type, remoteValue as string);
+                                remoteValue = Enum.Parse(property.TypeDefinition.Type, remoteValue as string);
                             }
                             catch
                             {
@@ -520,45 +534,8 @@ namespace Iql.Queryable.Data.Context
             return entity;
         }
 
-        private static object EnsureTypedValue(object value, IProperty property)
-        {
-            if (Equals(value, null))
-            {
-                if (property.Nullable)
-                {
-                    return null;
-                }
-                //if (!property.Nullable)
-                //{
-                //    return property.Type.DefaultValue();
-                //}
-                return null;
-            }
-            if (property.Type == typeof(String) && !(value is String))
-            {
-                return value.ToString();
-            }
-            if (property.Type == typeof(Int32) && !(value is Int32) && !(value is Double))
-            {
-                return Convert.ToDouble(value.ToString());
-            }
-            if (property.Type == typeof(DateTime) && !(value is DateTime))
-            {
-                if (value is Int64)
-                {
-                    return new DateTime((long)value);
-                }
-                return DateTime.Parse(value.ToString());
-            }
-            if (property.Type == typeof(Boolean) && !(value is Boolean))
-            {
-                return Boolean.Parse(value.ToString());
-            }
-            return value;
-        }
-
         public IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false)
-            where T : class
+                    where T : class
         {
             return (IList<T>)EnsureTypedListByType(responseData, typeof(T), null, null, forceNotNull);
         }

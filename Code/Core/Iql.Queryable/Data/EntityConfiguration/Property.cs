@@ -13,19 +13,23 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public Property(
             string name, 
+            bool nullable,
             bool isCollection, 
             Type declaringType,
             string convertedFromType,
             bool readOnly,
+            IqlType kind,
             IProperty countRelationship,
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
             ConfigureProperty(
-                name, 
+                name,
+                nullable,
                 isCollection, 
                 declaringType, 
                 typeof(TProperty),
                 typeof(TElementType),
+                kind,
                 convertedFromType, 
                 readOnly, 
                 countRelationship, 
@@ -34,24 +38,29 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         internal void ConfigureProperty(
             string name, 
+            bool nullable,
             bool isCollection, 
             Type declaringType,
             Type propertyType,
             Type valueType,
+            IqlType kind,
             string convertedFromType,
             bool readOnly, 
             IProperty countRelationship, 
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
-            Configure(
-                name,
-                declaringType,
+            Name = name;
+            ReadOnly = readOnly;
+            CountRelationship = countRelationship;
+            Kind = PropertyKind.Primitive;
+            TypeDefinition = new TypeDetail(
                 propertyType,
-                valueType,
+                nullable,
+                declaringType,
                 convertedFromType,
+                valueType,
                 isCollection,
-                readOnly,
-                countRelationship);
+                kind);
 
 #if !TypeScript
             PropertyInfo = declaringType.GetProperty(name);

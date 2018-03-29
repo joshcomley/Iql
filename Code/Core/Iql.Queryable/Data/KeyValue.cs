@@ -1,4 +1,5 @@
 using System;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data
@@ -38,8 +39,8 @@ namespace Iql.Queryable.Data
             }
         }
 
-        public Type ValueType { get; set; }
-        public KeyValue(string name, object value, Type valueType)
+        public ITypeDefinition ValueType { get; set; }
+        public KeyValue(string name, object value, ITypeDefinition valueType)
         {
             Name = name;
             Value = value;
@@ -48,7 +49,7 @@ namespace Iql.Queryable.Data
 
         public bool IsDefaultValue()
         {
-            var type = ValueType ?? Value?.GetType();
+            var type = ValueType?.ElementType ?? Value?.GetType();
 #if !TypeScript
             if (type == null)
             {

@@ -106,7 +106,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                         ? inverseConstraints[i].Name
                         : constraint.Name,
                     value,
-                    constraint.ElementType);
+                    constraint.TypeDefinition);
                 compositeKey.Keys[i] = keyValue;
             }
 

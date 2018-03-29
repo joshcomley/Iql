@@ -73,21 +73,13 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(0, changes.Count);
             Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
             Assert.AreEqual(@"{
-  ""Users"": [],
   ""Id"": 0,
   ""TypeId"": 0,
   ""Name"": ""New client 123"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
   ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
-  ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3"",
-  ""Videos"": [],
-  ""Exams"": [],
-  ""ExamManagers"": [],
-  ""ExamResults"": [],
-  ""ExamCandidateResults"": [],
-  ""ExamCandidates"": [],
-  ""Hazards"": []
+  ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
 }".CompressJson(), request.Body.Body.CompressJson());
         }
     }

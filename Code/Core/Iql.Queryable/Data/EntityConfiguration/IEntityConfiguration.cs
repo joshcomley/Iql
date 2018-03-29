@@ -26,8 +26,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         List<IRelationship> Relationships { get; set; }
         IEntityKey Key { get; }
         Type Type { get; }
+        IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null);
         IProperty FindProperty(string name);
-        IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType);
         IProperty FindOrDefinePropertyByName(string name, Type elementType);
         RelationshipMatch FindRelationship(string propertyName);
         List<RelationshipMatch> AllRelationships();

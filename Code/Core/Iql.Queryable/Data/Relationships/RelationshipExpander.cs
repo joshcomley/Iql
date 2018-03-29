@@ -237,7 +237,7 @@ namespace Iql.Queryable.Data.Relationships
                             new KeyValue(
                                 property.Name,
                                 entity.GetPropertyValue(property),
-                                property.ElementType);
+                                property.TypeDefinition);
                     }
 
                     var itemAndList = new EntityRelationships<T>(entity);
@@ -294,7 +294,7 @@ namespace Iql.Queryable.Data.Relationships
                         var property = properties[j];
                         compositeKey.Keys[j] = new KeyValue(property.Name,
                             entity.GetPropertyValue(property),
-                            property.ElementType);
+                            property.TypeDefinition);
                     }
 
                     if (compositeKey.HasDefaultValue())

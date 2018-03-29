@@ -11360,6 +11360,120 @@ namespace Tunnel.App.Data.Entities
 		}
 
 				
+		protected decimal _discount;
+
+		public decimal Discount
+		{
+			get => _discount;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._discount;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
+					}
+				
+				}
+				_discount = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected float _averageSales;
+
+		public float AverageSales
+		{
+			get => _averageSales;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._averageSales;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageSales), this, oldValue, value));
+					}
+				
+				}
+				_averageSales = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageSales), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
+		protected double _averageIncome;
+
+		public double AverageIncome
+		{
+			get => _averageIncome;
+			set
+			{
+				var changedSet = false;
+				var oldValue = this._averageIncome;
+				var changed = false;
+				if(this._propertyChangingSet)
+				{
+					changed = value != oldValue;
+					changedSet = true;
+					if(changed)
+					{
+						this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageIncome), this, oldValue, value));
+					}
+				
+				}
+				_averageIncome = value;
+				if(this._propertyChangedSet)
+				{
+					if(!(changedSet))
+					{
+						changed = value != oldValue;
+					
+					}
+					if(changed)
+					{
+						this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageIncome), this, oldValue, value));
+					}
+				
+				}
+			}
+		}
+
+				
 		protected Guid _guid;
 
 		public Guid Guid

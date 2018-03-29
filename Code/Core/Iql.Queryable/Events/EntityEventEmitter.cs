@@ -15,7 +15,7 @@ namespace Iql.Queryable.Events
             
         }
 
-        int IEventSubscriberBase.Subscribe(Action<object> propertyChangeEvent)
+        EventSubscription IEventSubscriberBase.Subscribe(Action<object> propertyChangeEvent)
         {
             return Subscribe(e =>
             {
@@ -32,7 +32,7 @@ namespace Iql.Queryable.Events
             _subscriptions.Remove(subscription);
         }
 
-        public int Subscribe(Action<TEvent> propertyChangeEvent)
+        public EventSubscription Subscribe(Action<TEvent> propertyChangeEvent)
         {
             if (_subscriptions == null)
             {
@@ -41,7 +41,7 @@ namespace Iql.Queryable.Events
             var id = ++_subscriptionId;
             _subscriptions.Add(id, propertyChangeEvent);
             SubscriptionActions = _subscriptions.Values.ToList();
-            return id;
+            return new EventSubscription(this, id);
         }
 
         private List<Action<TEvent>> SubscriptionActions { get; set; }

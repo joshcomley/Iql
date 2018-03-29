@@ -48,7 +48,7 @@ namespace Iql.JavaScript.QueryableApplicator
                     : allMatches.TargetMatches;
 
             this.GetRoot().AddMatches(
-                property.Relationship.ThisEnd.Property.ElementType,
+                property.Relationship.ThisEnd.Property.TypeDefinition.ElementType,
                 ourMatches);
         }
 

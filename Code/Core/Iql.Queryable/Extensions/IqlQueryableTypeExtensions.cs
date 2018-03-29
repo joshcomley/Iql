@@ -5,7 +5,7 @@ using Iql.Extensions;
 
 namespace Iql.Queryable.Extensions
 {
-    public static class TypeExtensions
+    public static class IqlQueryableTypeExtensions
     {
 #if !TypeScript
         public static Type GetListType(this IList list)
@@ -31,17 +31,6 @@ namespace Iql.Queryable.Extensions
             return name;
         }
 
-        public static bool IsEnumerable<TProperty>()
-        {
-            return IsEnumerableType(typeof(TProperty));
-        }
-
-        public static bool IsEnumerableType(this Type type)
-        {
-            return typeof(IEnumerable).IsAssignableFrom(type) && !
-                       typeof(string).IsAssignableFrom(type);
-        }
-
         private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type,object>();
         public static object DefaultValue(this Type type)
         {
@@ -52,7 +41,7 @@ namespace Iql.Queryable.Extensions
 #if TypeScript
             var defaultValue = Activator.CreateInstance(type);
 #else
-            var defaultValue = typeof(TypeExtensions)
+            var defaultValue = typeof(IqlQueryableTypeExtensions)
                 .GetMethod(nameof(GetDefaultValue))
                 .InvokeGeneric(null, null, type);
 #endif

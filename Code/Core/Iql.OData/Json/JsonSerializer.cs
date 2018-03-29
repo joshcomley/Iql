@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Iql.OData.Extensions;
-using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
@@ -85,19 +84,19 @@ namespace Iql.OData.Json
                 //    propertyValue = (propertyValue as IList).ToArray(property.Property.ElementType);
                 //}
                 var propertyValue = entity.GetPropertyValue(property.Property);
-                if (property.Property.Kind == PropertyKind.Count)
+                if (property.Property.Kind == PropertyKind.Count || property.Property.Kind == PropertyKind.Relationship)
                 {
                     continue;
                 }
-                if (property.Property.IsCollection)
+                if (property.Property.TypeDefinition.IsCollection)
                 {
                     obj[property.Property.Name] = new JArray(propertyValue);
                 }
                 else
                 {
-                    if (property.Property.Type == typeof(DateTimeOffset))
+                    if (property.Property.TypeDefinition.Type == typeof(DateTimeOffset))
                     {
-                        if (propertyValue == null && !property.Property.Nullable)
+                        if (propertyValue == null && !property.Property.TypeDefinition.Nullable)
                         {
                             obj[property.Property.Name] = "0001-01-01T00:00:00.0+00:00";
                         }
@@ -106,7 +105,7 @@ namespace Iql.OData.Json
                             obj[property.Property.Name] = new JValue(((DateTimeOffset)propertyValue).NormalizeDate());
                         }
                     }
-                    else if (property.Property.ConvertedFromType == nameof(Guid) && !property.Property.Nullable && propertyValue == null)
+                    else if (property.Property.TypeDefinition.ConvertedFromType == nameof(Guid) && !property.Property.TypeDefinition.Nullable && propertyValue == null)
                     {
                         obj[property.Property.Name] = "00000000-0000-0000-0000-000000000000";
                     }

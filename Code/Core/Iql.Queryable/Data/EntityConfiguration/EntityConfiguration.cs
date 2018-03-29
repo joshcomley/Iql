@@ -150,33 +150,35 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private IProperty FindOrDefinePropertyInternal(
             LambdaExpression lambda, 
             Type propertyType, 
-            Type elementType)
+            Type elementType,
+            IqlType? iqlType)
         {
             return (IProperty)GetType()
                 .GetRuntimeMethods()
                 .First(m => m.Name == nameof(FindOrDefineProperty))
                 .InvokeGeneric(this, new object[]
                 {
-                    lambda, elementType
+                    lambda,
+                    elementType,
+                    iqlType
                 }, propertyType);
         }
 
-        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType)
+        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType, IqlType? iqlType)
         {
             var expression = (Expression<Func<T, TProperty>>) lambda;
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
-                IqlPropertyExpression;
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression);
             var property = FindProperty(iql.PropertyName);
             if (property == null)
             {
-                if (TypeExtensions.IsEnumerable<TProperty>())
+                if (typeof(TProperty).IsEnumerableType())
                 {
                     InvokeDefineCollectionPropertyInternal<TProperty>(
                         typeof(T).GetProperty(iql.PropertyName).PropertyType, elementType, lambda, null);
                 }
                 else
                 {
-                    DefineProperty(expression);
+                    DefineProperty(expression, true, iqlType);
                 }
                 property = FindProperty(iql.PropertyName);
             }
@@ -186,7 +188,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public IProperty FindOrDefinePropertyByName(string name, Type elementType)
         {
             var property = typeof(T).GetProperty(name);
-            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType);
+            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType, null);
         }
 
         public RelationshipMatch FindRelationship(string propertyName)
@@ -288,7 +290,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             for (var i = 0; i < Key.Properties.Count; i++)
             {
                 var property = Key.Properties[i];
-                key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.ElementType);
+                key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
             }
             return key;
         }
@@ -300,14 +302,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public IProperty FindPropertyByExpression<TProperty>(Expression<Func<T, TProperty>> property)
         {
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
             return FindProperty(iql.PropertyName);
         }
 
         IProperty IEntityConfiguration.FindPropertyByExpression<TProperty>(
             Expression<Func<object, TProperty>> expression)
         {
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as IqlPropertyExpression;
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression);
             return FindProperty(iql.PropertyName);
         }
 
@@ -325,14 +327,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public EntityConfiguration<T> HasKey<TKey>(
-            Expression<Func<T, TKey>> property
+            Expression<Func<T, TKey>> property,
+            IqlType? iqlType = null
         )
         {
-            DefineProperty(property);
+            var definedProperty = DefineAndGetProperty(property, null, false, iqlType);
             Key = new EntityKey<T, TKey>();
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
-            iql.ReturnType = typeof(TKey).ToIqlType();
-            Key.Properties.Add(FindOrDefineProperty<TKey>(property, typeof(TKey)));
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+            iql.ReturnType = iqlType ?? typeof(TKey).ToIqlType();
+            Key.Properties.Add(definedProperty);
             TrySetKey(iql.PropertyName);
             return this;
         }
@@ -357,10 +360,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Key = new EntityKey<T, CompositeKey>();
             foreach (var property in properties)
             {
-                var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+                var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
                 var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
-                Key.Properties.Add(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType));
+                Key.Properties.Add(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType, null));
             }
             return this;
         }
@@ -384,27 +387,42 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public EntityConfiguration<T> DefineConvertedProperty<TProperty>(
             Expression<Func<T, TProperty>> property,
             string convertedFromType,
-            bool nullable = true
+            bool nullable = true,
+            IqlType? iqlType = null
         )
         {
+            DefineAndGetProperty(property, convertedFromType, nullable, iqlType);
+            return this;
+        }
+
+        public IProperty DefineAndGetProperty<TProperty>(Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
+            IqlType? iqlType = null)
+        {
 #if !TypeScript
-            if (TypeExtensions.IsEnumerable<TProperty>())
+            if (typeof(TProperty).IsEnumerableType())
             {
                 throw new Exception($"Please use {nameof(DefineCollectionProperty)} to define collection properties.");
             }
 #endif
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
             var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<T, TProperty, TProperty> 
+            var definition = FindProperty(name) as Property<T, TProperty, TProperty>
                              ?? new Property<T, TProperty, TProperty>(
-                                 name, 
-                                 false, 
-                                 typeof(T), 
-                                 convertedFromType, 
-                                 false, 
-                                 null, 
+                                 name,
+                                 nullable,
+                                 false,
+                                 typeof(T),
+                                 convertedFromType,
+                                 false,
+                                 iqlType ?? typeof(TProperty).ToIqlType(),
+                                 null,
                                  property);
-            definition.Nullable = nullable;
+
+            definition.TypeDefinition = definition.TypeDefinition.ChangeNullable(nullable);
+            if (iqlType != null && iqlType != IqlType.Unknown)
+            {
+                definition.TypeDefinition = definition.TypeDefinition.ChangeKind(iqlType.Value);
+            }
 
             //definition.PropertyGetter = property.Compile();
             //definition.PropertyGetterExpression = property;
@@ -413,14 +431,17 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 Properties.Add(definition);
                 _propertiesMap[name] = definition;
             }
+
             var relationship = FindRelationship(name);
             if (relationship != null)
             {
                 definition.Kind = PropertyKind.Relationship;
                 definition.Relationship = relationship;
             }
+
             TrySetKey(iql.PropertyName);
-            return this;
+
+            return definition;
         }
 
         public EntityConfiguration<T> DefineDisplayFormatter(Expression<Func<T, string>> formatter,
@@ -444,7 +465,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             string key,
             string message)
         {
-            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty));
+            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
             var validationCollection = (ValidationCollection<T>)propertyDefinition.Validation;
             validationCollection.Add(validation, key, message);
             return this;
@@ -452,10 +473,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public EntityConfiguration<T> DefineProperty<TProperty>(
             Expression<Func<T, TProperty>> property,
-            bool nullable = true
+            bool nullable = true,
+            IqlType? iqlType = null
         )
         {
-            return DefineConvertedProperty(property, null, nullable);
+            return DefineConvertedProperty(property, null, nullable, iqlType);
         }
 
         public EntityConfiguration<T> DefineCollectionProperty<TProperty>(
@@ -464,7 +486,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             )
         {
             var iql =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
             var propertyInfo = typeof(T).GetProperty(iql.PropertyName);
             var propertyRuntimeType = propertyInfo.PropertyType;
             var propertyName = iql.PropertyName;
@@ -484,7 +506,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             var propertyType = typeof(TProperty);
 #if !TypeScript
-            if (TypeExtensions.IsEnumerableType(propertyType))
+            if (propertyType.IsEnumerableType())
             {
                 while (propertyType.GenericTypeArguments.Length > 1)
                 {
@@ -510,17 +532,17 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, long?>> countProperty = null
         )
         {
-            var collection = MapProperty<TElementType, TValueType>(property, true, false, null);
+            var collection = MapProperty<TElementType, TValueType>(property, true, false, IqlType.Collection, null);
             if (countProperty != null)
             {
                 var countPropertyIql =
-                    IqlQueryableAdapter.ExpressionToIqlExpressionTree(countProperty) as IqlPropertyExpression;
+                    IqlQueryableAdapter.ExpressionToIqlExpressionTree(countProperty);
                 var countPropertyDefinition = typeof(T).GetProperty(countPropertyIql.PropertyName);
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {
-                    var countDefinition = MapProperty<long?, long?>(countProperty, false, true, collection);
+                    var countDefinition = MapProperty<long?, long?>(countProperty, false, true, IqlType.Integer, collection);
                     countDefinition.Kind = PropertyKind.Count;
-                    countDefinition.Nullable = true;
+                    countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
                 }
                 else
                 {
@@ -528,19 +550,19 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     if (countPropertyDefinition.PropertyType == typeof(Int32))
                     {
                         var lambda = (Expression<Func<T, int>>) lambdaExpression;
-                        var countDefinition = MapProperty<int, int>(lambda, false, true, collection);
+                        var countDefinition = MapProperty<int, int>(lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = PropertyKind.Count;
 #if TypeScript
-                        countDefinition.Nullable = true;
+                        countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
 #endif
                     }
                     else
                     {
                         var lambda = (Expression<Func<T, long>>)lambdaExpression;
-                        var countDefinition = MapProperty<long, long>(lambda, false, true, collection);
+                        var countDefinition = MapProperty<long, long>(lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = PropertyKind.Count;
 #if TypeScript
-                        countDefinition.Nullable = true;
+                        countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
 #endif
                     }
                 }
@@ -560,6 +582,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, TPropertyType>> property,
             bool isCollection,
             bool readOnly,
+            IqlType kind,
             IProperty countRelationship)
         {
             var iql =
@@ -570,21 +593,25 @@ namespace Iql.Queryable.Data.EntityConfiguration
             {
                 definition = new Property<T, TPropertyType, TElementType>(
                     name, 
+                    false,
                     isCollection, 
-                    typeof(T), 
+                    typeof(T),
                     null, 
                     readOnly,
+                    kind,
                     countRelationship, 
                     property);
             }
             else
             {
                 definition.ConfigureProperty(
-                    name, 
+                    name,
+                    false,
                     isCollection, 
                     typeof(T),
                     typeof(TPropertyType),
-                    typeof(TElementType), 
+                    typeof(TElementType),
+                    kind,
                     null,
                     readOnly,
                     countRelationship, 

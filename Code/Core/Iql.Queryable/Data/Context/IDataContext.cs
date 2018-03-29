@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Parsing;
+using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
@@ -14,6 +15,7 @@ namespace Iql.Queryable.Data.Context
 {
     public interface IDataContext
     {
+        Task<SaveChangesResult> SaveChanges();
         bool TrackEntities { get; set; }
         string SynchronicityKey { get; set; }
         EvaluateContext EvaluateContext { get; set; }

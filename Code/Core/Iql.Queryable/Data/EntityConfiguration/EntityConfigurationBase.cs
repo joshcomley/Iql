@@ -6,8 +6,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public abstract class EntityConfigurationBase : IEntityMetadata
     {
+        private IEntityKey _key;
         public List<IProperty> Properties { get; set; }
-        public IEntityKey Key { get; set; }
+
+        public IEntityKey Key
+        {
+            get => _key;
+            set => _key = value;
+        }
+
         public Type Type { get; set; }
         public string Description { get; set; }
         public string FriendlyName { get; set; }
@@ -35,7 +42,27 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public string ResolveSetName()
         {
-            return SetName ?? Name;
+            return SetName ?? Name ?? Type.Name;
+        }
+
+        public MetadataHint FindHint(string name)
+        {
+            return HintHelper.FindHint(this, name);
+        }
+
+        public bool HasHint(string name)
+        {
+            return HintHelper.HasHint(this, name);
+        }
+
+        public void RemoveHint(string name)
+        {
+            HintHelper.RemoveHint(this, name);
+        }
+
+        public void SetHint(string name, string value = null)
+        {
+            HintHelper.SetHint(this, name, value);
         }
     }
 }

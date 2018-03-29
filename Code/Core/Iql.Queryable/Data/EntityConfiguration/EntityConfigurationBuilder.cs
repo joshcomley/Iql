@@ -11,6 +11,36 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();
 
+        private static readonly List<EntityConfigurationBuilder> _entityConfigurationBuilders =
+            new List<EntityConfigurationBuilder>();
+
+        public EntityConfigurationBuilder()
+        {
+            _entityConfigurationBuilders.Add(this);
+        }
+
+        public static IEntityConfiguration FindConfigurationForEntityType(Type entityType)
+        {
+            foreach (var builder in _entityConfigurationBuilders)
+            {
+                foreach (var config in builder._entities)
+                {
+                    if (config.Key == entityType)
+                    {
+                        return config.Value;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static EntityConfigurationBuilder FindConfigurationBuilderForEntityType(Type entityType)
+        {
+            var config = FindConfigurationForEntityType(entityType);
+            return config?.Builder;
+        }
+
         public bool IsEntityType(Type type)
         {
             return _entities.ContainsKey(type);

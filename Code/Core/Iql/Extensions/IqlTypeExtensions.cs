@@ -1,12 +1,38 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 
 namespace Iql.Extensions
 {
     public static class IqlTypeExtensions
     {
+        public static bool IsEnumerable<TProperty>()
+        {
+            return IsEnumerableType(typeof(TProperty));
+        }
+
+        public static bool IsEnumerableType(this Type type)
+        {
+            return typeof(IEnumerable).IsAssignableFrom(type) && !
+                       typeof(string).IsAssignableFrom(type);
+        }
+
         public static IqlType ToIqlType(this Type type)
         {
+            if (type == null)
+            {
+                return IqlType.Unknown;
+            }
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+            {
+                type = underlyingType;
+            }
+
+            if (type.IsEnumerableType())
+            {
+                return IqlType.Collection;
+            }
             if (type == typeof(string))
             {
                 return IqlType.String;
@@ -19,9 +45,13 @@ namespace Iql.Extensions
             {
                 return IqlType.Integer;
             }
-            if (new[] { typeof(float), typeof(double) }.Contains(type))
+            if (new[] { typeof(decimal), typeof(float), typeof(double) }.Contains(type))
             {
                 return IqlType.Decimal;
+            }
+            if (new[] { typeof(DateTime), typeof(DateTimeOffset) }.Contains(type))
+            {
+                return IqlType.Date;
             }
             return IqlType.Unknown;
         }

@@ -13,12 +13,12 @@ namespace Iql.Queryable.Events
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase
     {
-        int Subscribe(Action<TEvent> propertyChangeEvent);
+        EventSubscription Subscribe(Action<TEvent> propertyChangeEvent);
     }
 
     public interface IEventSubscriberBase
     {
-        int Subscribe(Action<object> propertyChangeEvent);
+        EventSubscription Subscribe(Action<object> propertyChangeEvent);
         void Unsubscribe(int subscription);
     }
 }
