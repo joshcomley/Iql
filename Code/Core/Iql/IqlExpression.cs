@@ -1,4 +1,7 @@
-﻿namespace Iql
+﻿using System;
+using System.Collections.Generic;
+
+namespace Iql
 {
     public abstract class IqlExpression
     {
@@ -29,6 +32,58 @@
             var propertyExpression = new IqlPropertyExpression(propertyName);
             propertyExpression.Parent = rootReferenceExpression;
             return propertyExpression;
+        }
+
+        public virtual Type ResolveType(Type rootEntityType)
+        {
+            var ancestors = new List<IqlExpression>();
+            ancestors.Add(this);
+            var parent = Parent;
+            while (parent != null)
+            {
+                ancestors.Add(parent);
+                parent = parent.Parent;
+            }
+
+            if (ancestors.Count == 1 && this is IqlRootReferenceExpression)
+            {
+                return rootEntityType;
+            }
+
+            Type type = null;
+            for (var i = ancestors.Count - 1; i >= 0; i--)
+            {
+                var ancestor = ancestors[i];
+                if (type == null)
+                {
+                    if (ancestor is IqlRootReferenceExpression)
+                    {
+                        type = rootEntityType;
+                    }
+                    else if(ancestor is IqlLiteralExpression)
+                    {
+                        type = (ancestor as IqlLiteralExpression).Value?.GetType();
+                    }
+
+                    if (type == null)
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (ancestor is IqlPropertyExpression)
+                    {
+                        type = type.GetProperty((ancestor as IqlPropertyExpression).PropertyName).PropertyType;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            return type;
         }
     }
 }

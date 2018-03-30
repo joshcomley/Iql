@@ -8,7 +8,8 @@ namespace Iql.OData.QueryableApplicator.Applicators
         public override void Apply<TEntity>(IQueryOperationContext<WhereOperation, TEntity, IODataQuery, ODataQueryableAdapter> context)
         {
             var expression = ODataQueryableAdapter.GetExpression(context.Operation,
-                context.DataContext.EntityConfigurationContext);
+                context.DataContext.EntityConfigurationContext,
+                context.Queryable.ItemType);
             context.Data.AddQueryPart(ODataQueryPart.Filter, expression);
         }
     }

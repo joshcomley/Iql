@@ -1,10 +1,11 @@
+using System;
 using Iql.Parsing;
 
 namespace Iql.OData.IqlToODataExpression
 {
     public class ODataIqlParserInstance : ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput>
     {
-        public ODataIqlParserInstance(ODataIqlExpressionAdapter adapter) : base(adapter, null)
+        public ODataIqlParserInstance(ODataIqlExpressionAdapter adapter, Type rootEntityType) : base(adapter, rootEntityType)
         {
         }
 

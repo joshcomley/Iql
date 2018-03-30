@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace Iql.OData.IqlToODataExpression.Parsers
 {
     public class ODataBinaryActionParser : ODataActionParserBase<IqlBinaryExpression>
@@ -5,13 +8,29 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         public override IqlExpression ToQueryString(IqlBinaryExpression action,
             ODataIqlParserInstance parser)
         {
+            if (action.Left is IqlPropertyExpression && 
+                action.Right is IqlLiteralExpression &&
+                action.Type == IqlExpressionType.Has &&
+                action.Right.ReturnType == IqlType.Integer)
+            {
+                var type = action.Left.ResolveType(parser.RootEntityType);
+                if (type.IsDefined(typeof(FlagsAttribute), true))
+                {
+                    var rightLiteral = action.Right as IqlLiteralExpression;
+                    var value = Enum.ToObject(type, rightLiteral.Value);
+                    var valueString = 
+                        string.Join(",", value.ToString().Split(',')
+                        .Select(s => s.Trim()));
+                    var enumString = $"\'{valueString}\'";
+                    action.Right = new IqlFinalExpression<string>(
+                        enumString);
+                }
+            }
             var spacer = " ";
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(
                     action.Left,
-                    new IqlFinalExpression<string>(spacer),
-                    new IqlFinalExpression<string>(ResolveOperator(action)),
-                    new IqlFinalExpression<string>(spacer),
+                    new IqlFinalExpression<string>($"{spacer}{ResolveOperator(action)}{spacer}"),
                     action.Right
                 )
             );

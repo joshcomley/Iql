@@ -66,6 +66,15 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public void EnumFlagsCheck()
+        {
+            var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0);
+            var uri = HttpUtility.UrlDecode(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has Tunnel.App.Data.Entities.UserPermissions'Create,Edit')",
+                uri);
+        }
+
+        [TestMethod]
         public void TestResolveCountUri()
         {
             var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);

@@ -21,6 +21,7 @@
             Register(typeof(IqlAddExpression), () => new IqlAddExpressionReducer());
             Register(typeof(IqlUnaryExpression), () => new IqlUnaryExpressionReducer());
             Register(typeof(IqlBinaryExpression), () => new IqlBinaryExpressionReducer());
+            Register(typeof(IqlIsNotEqualToExpression), () => new IqlIsNotEqualToExpressionReducer());
             Register(typeof(IqlAggregateExpression), () => new IqlAggregateExpressionReducer());
             Register(typeof(IqlParenthesisExpression), () => new IqlParenthesisExpressionReducer());
         }

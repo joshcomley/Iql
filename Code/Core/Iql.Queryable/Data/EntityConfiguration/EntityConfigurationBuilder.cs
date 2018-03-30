@@ -6,7 +6,7 @@ using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
-    public class EntityConfigurationBuilder
+    public class EntityConfigurationBuilder : IEntityConfigurationBuilder
     {
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();

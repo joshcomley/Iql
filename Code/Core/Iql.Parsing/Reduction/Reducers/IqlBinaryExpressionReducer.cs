@@ -13,6 +13,12 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             expression.Left = reducer.ReduceStaticContent(expression.Left);
             expression.Right = reducer.ReduceStaticContent(expression.Right);
+            if (expression.Type == IqlExpressionType.And &&
+                expression.Left.Type == IqlExpressionType.Property && expression.Right.Type == IqlExpressionType.Literal
+                                                                   && expression.Right.ReturnType == IqlType.Integer)
+            {
+                return new IqlHasExpression(expression.Left, expression.Right);
+            }
             if (expression.Left.Type == IqlExpressionType.Literal && expression.Right.Type == IqlExpressionType.Literal)
             {
                 var value = reducer.Evaluate(expression);
