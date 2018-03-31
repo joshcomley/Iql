@@ -12,8 +12,8 @@ namespace Iql.Parsing.Reduction.Reducers
             {
                 case IqlExpressionType.BitwiseOr:
                     {
-                        var l = (long)(object)left;
-                        var r = (long)(object)right;
+                        var l = (long)left.Value;
+                        var r = (long)right.Value;
                         return new IqlLiteralExpression(l | r);
                     }
             }
