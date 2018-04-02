@@ -5,10 +5,10 @@ namespace Iql
 {
     public abstract class IqlExpression
     {
-        protected IqlExpression(IqlExpressionType type, IqlType? returnType = IqlType.Void, IqlExpression parent = null)
+        protected IqlExpression(IqlExpressionType type, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null)
         {
             Type = type;
-            ReturnType = returnType ?? IqlType.Boolean;
+            ReturnType = returnType ?? IqlType.Unknown;
             Parent = parent;
         }
 

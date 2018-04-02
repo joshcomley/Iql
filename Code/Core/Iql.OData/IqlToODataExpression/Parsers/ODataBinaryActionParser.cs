@@ -11,7 +11,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             if (action.Left is IqlPropertyExpression && 
                 action.Right is IqlLiteralExpression &&
                 action.Type == IqlExpressionType.Has &&
-                action.Right.ReturnType == IqlType.Integer)
+                (action.Right.ReturnType == IqlType.Integer || (action.Right as IqlLiteralExpression).InferredReturnType == IqlType.Integer))
             {
                 var type = action.Left.ResolveType(parser.RootEntityType);
                 if (type.IsDefined(typeof(FlagsAttribute), true))

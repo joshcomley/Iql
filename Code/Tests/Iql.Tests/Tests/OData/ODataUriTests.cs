@@ -1,8 +1,10 @@
 ﻿using System.Web;
 using Iql.OData;
 using Iql.OData.Extensions;
+using Iql.Parsing;
 using Iql.Queryable;
 using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -68,9 +70,14 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public void EnumFlagsCheck()
         {
-            var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0);
+            
+            var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0
+#if TypeScript
+    , new EvaluateContext(code => Evaluator.Eval(code))
+#endif
+            );
             var uri = HttpUtility.UrlDecode(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has Tunnel.App.Data.Entities.UserPermissions'Create,Edit')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has 'Create,Edit')",
                 uri);
         }
 

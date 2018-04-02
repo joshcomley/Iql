@@ -1,7 +1,10 @@
+using Iql.Extensions;
+
 namespace Iql
 {
     public class IqlLiteralExpression : IqlReferenceExpression
     {
+        private object _value;
         //public IqlLiteralExpression(
         //    object value, Type type) : base(IqlExpressionType.Literal,
         //    type.ToIqlType())
@@ -22,6 +25,21 @@ namespace Iql
         {
         }
 
-        public object Value { get; set; }
+        public object Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                UpdateInferredType();
+            }
+        }
+
+        public IqlType InferredReturnType { get; set; }
+
+        private void UpdateInferredType()
+        {
+            InferredReturnType = Value?.GetType().ToIqlType() ?? ReturnType;
+        }
     }
 }
