@@ -4,10 +4,21 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlBinaryExpressionReducer : IqlReducerBase<IqlBinaryExpression>
     {
-        //public override IqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
-        //{
-        //    return null;
-        //}
+        public override IqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
+        {
+            var left = reducer.Evaluate(expression.Left);
+            var right = reducer.Evaluate(expression.Right);
+            switch (expression.Type)
+            {
+                case IqlExpressionType.BitwiseOr:
+                    {
+                        var l = (long)left.Value;
+                        var r = (long)right.Value;
+                        return new IqlLiteralExpression(l | r);
+                    }
+            }
+            return null;
+        }
 
         public override IqlExpression ReduceStaticContent(IqlBinaryExpression expression, IqlReducer reducer)
         {
