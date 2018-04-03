@@ -34,6 +34,27 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
             var binary = (IqlBinaryExpression) Activator.CreateInstance(type);
             binary.Left = context.ToIqlExpression(node.Left);
             binary.Right = context.ToIqlExpression(node.Right);
+
+            bool CheckEnum(Expression sideA, IqlExpression sideB)
+            {
+                if (sideA is UnaryExpression && (sideA as UnaryExpression).Operand.Type.IsEnum && sideB is IqlLiteralExpression)
+                {
+                    var value = Convert.ToInt64((sideB as IqlLiteralExpression).Value);
+                    binary.Right = new IqlEnumLiteralExpression((sideA as UnaryExpression).Operand.Type)
+                        .AddValue(value, "");
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (node.NodeType == ExpressionType.Equal)
+            {
+                if (!CheckEnum(node.Left, binary.Right))
+                {
+                    CheckEnum(node.Right, binary.Left);
+                }
+            }
             return binary;
         }
 

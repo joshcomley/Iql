@@ -18,7 +18,7 @@ namespace Iql.Parsing.Reduction.Reducers
                         }
                         var l = (long)left.Value;
                         var r = (long)right.Value;
-                        return new IqlLiteralExpression(l | r);
+                        return new IqlEnumLiteralExpression(null).AddValue(l | r, "");
                     }
             }
             return null;

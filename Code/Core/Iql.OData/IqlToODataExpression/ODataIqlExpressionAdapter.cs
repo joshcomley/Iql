@@ -11,6 +11,7 @@ namespace Iql.OData.IqlToODataExpression
             Registry.Register(typeof(IqlParenthesisExpression), () => new ODataParenthesisParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new ODataPropertyReferenceParser());
             Registry.Register(typeof(IqlRootReferenceExpression), () => new ODataRootReferenceParser());
+            Registry.Register(typeof(IqlEnumLiteralExpression), () => new ODataEnumLiteralParser());
             Registry.Register(typeof(IqlLiteralExpression), () => new ODataLiteralParser());
             Registry.Register(typeof(IqlStringSubStringExpression), () => new ODataStringSubStringActionParser());
             Registry.Register(typeof(IqlParentValueExpression), () => new ODataStringSourceValueActionParser());

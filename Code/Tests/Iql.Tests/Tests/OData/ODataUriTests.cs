@@ -77,7 +77,7 @@ namespace Iql.Tests.Tests.OData
 #endif
             );
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq 10)",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq '10')",
                 uri);
         }
 
@@ -88,9 +88,9 @@ namespace Iql.Tests.Tests.OData
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.Permissions),
                     new IqlRootReferenceExpression()), 
-                new IqlLiteralExpression(10)));
+                new IqlEnumLiteralExpression(null).AddValue(10, "")));
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq 10)",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq '10')",
                 uri);
         }
 
