@@ -28,8 +28,8 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                         field.FieldType.ToIqlType()
                     );
                 }
-                throw new Exception(string.Format("Attempting to access member of type other than source type: {0}",
-                    node.Expression.Type.Name));
+                //throw new Exception(string.Format("Attempting to access member of type other than source type: {0}",
+                //    node.Expression.Type.Name));
             }
                 var iqlPropertyExpression = new IqlPropertyExpression(
                 node.Member.Name,

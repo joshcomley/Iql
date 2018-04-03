@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 using Tunnel.Sets;
@@ -27,6 +28,12 @@ namespace Iql.Tests.Tests.DataContext
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Key)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Title)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Description)));
+        }
+
+        [TestMethod]
+        public void TestSetNameIsResolvedFromPropertyName()
+        {
+            Assert.AreEqual(nameof(AppDbContext.People), Db.EntityConfigurationContext.EntityType<Person>().SetName);
         }
     }
 }

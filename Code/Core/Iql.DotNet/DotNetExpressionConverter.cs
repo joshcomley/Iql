@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 using Iql.DotNet.DotNetExpressionToIql;
 using Iql.DotNet.IqlToDotNetExpression;
@@ -10,27 +11,41 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.DotNet
 {
-    public class DotNetExpressionConverter : IExpressionConverter
+    public class DotNetExpressionConverter : ExpressionConverterBase
     {
-        public ExpressionResult<IqlExpression> ConvertExpressionToIql<TEntity>(QueryExpression filter) where TEntity : class
+        public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter)
         {
             var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
             var lambdaExpression = whereQueryExpression.GetExpression();
-            return new ExpressionResult<IqlExpression>(
-                DotNetExpressionToIqlExpressionParser<TEntity>.Parse(
+            return ConvertLambdaExpressionToIql<TEntity>(
                     lambdaExpression
 #if TypeScript
                     , filter.EvaluateContext
 #endif
-                    )
+                    );
+        }
+
+        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambdaExpression
+#if TypeScript
+, EvaluateContext evaluateContext
+#endif
+        )
+        {
+            return new ExpressionResult<IqlExpression>(
+                DotNetExpressionToIqlExpressionParser<TEntity>.Parse(
+                    lambdaExpression
+#if TypeScript
+                    , evaluateContext
+#endif
+                )
             );
         }
 
-        public LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql
+        public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
-        ) where TEntity : class
+        )
         {
             return new IqlToDotNetConverter().ConvertIqlToExpression<TEntity>(iql
 #if TypeScript
@@ -39,7 +54,7 @@ namespace Iql.DotNet
             );
         }
 
-        public string ConvertIqlToExpressionString(IqlExpression iql
+        public override string ConvertIqlToExpressionString(IqlExpression iql
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

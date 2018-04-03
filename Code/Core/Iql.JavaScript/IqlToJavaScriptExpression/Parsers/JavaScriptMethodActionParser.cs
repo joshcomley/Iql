@@ -39,7 +39,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             return 
                 caller == null
                 ? invocation
-                : caller.Coalesce(caller.DotAccess(invocation));
+                : caller.Coalesce(invocation, new[]{"trim", "toUpperCase", "toLowerCase"}.Contains(name) ? @"""""" : null);
         }
 
         public virtual IqlExpression ResolveMethodCaller(TAction action)

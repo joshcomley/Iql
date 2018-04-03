@@ -24,6 +24,27 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 isStringComparison =
                     IsString(action.Left) ||
                     IsString(action.Right);
+                // We don't need to coalesce to upper case or null if one side is empty
+                if (isStringComparison)
+                {
+                    var expressions = new[] { action.Left, action.Right };
+                    for (var i = 0; i < expressions.Length; i++)
+                    {
+                        var expression = expressions[i];
+                        if (expression.Type == IqlExpressionType.Literal)
+                        {
+                            var literal = expression as IqlLiteralExpression;
+                            if (
+                                Equals(literal.Value, null) || 
+                                Equals(literal.Value, "")
+                                )
+                            {
+                                isStringComparison = false;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             var left = action.Left;
             var right = action.Right;
@@ -46,6 +67,10 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         private IqlExpression CoalesceOrUpperCase(IqlExpression left,
             JavaScriptIqlParserInstance parser)
         {
+            if (left.Type == IqlExpressionType.Literal && (left as IqlLiteralExpression).Value != null)
+            {
+                return new IqlStringToUpperCaseExpression(left as IqlReferenceExpression);
+            }
             var checkExpression = new IqlIsEqualToExpression(left, new IqlFinalExpression<string>("null"));
             parser.Data.AlreadyCoalesced.Add(checkExpression);
             var finalExpression =

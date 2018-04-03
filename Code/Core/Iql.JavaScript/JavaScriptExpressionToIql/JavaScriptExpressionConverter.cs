@@ -10,18 +10,32 @@ using Iql.Parsing;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
-    public class JavaScriptExpressionConverter : IExpressionConverter
+    public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
-        public ExpressionResult<IqlExpression> ConvertExpressionToIql<TEntity>(QueryExpression filter) where TEntity : class
-        {
-            return new JavaScriptExpressionToIqlConverter().ConvertExpressionToIql<TEntity>(filter);
-        }
-
-        public LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
+        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambdaExpression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
-        ) where TEntity : class
+            )
+        {
+            return
+                new JavaScriptExpressionToIqlConverter().ConvertLambdaExpressionToIql<TEntity>(
+                    lambdaExpression
+#if TypeScript
+                    , evaluateContext
+#endif
+                );
+        }
+        public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter)
+        {
+            return new JavaScriptExpressionToIqlConverter().ConvertQueryExpressionToIql<TEntity>(filter);
+        }
+
+        public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
         {
             return (LambdaExpression)Evaluator.Eval(ConvertIqlToJavaScript(expression
 #if TypeScript
@@ -30,7 +44,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             ).Expression);
         }
 
-        public string ConvertIqlToExpressionString(IqlExpression expression
+        public override string ConvertIqlToExpressionString(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

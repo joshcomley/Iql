@@ -69,7 +69,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
             QueryExpression expression)
             where T : class
         {
-            var expressionResult = ExpressionConverter().ConvertExpressionToIql<T>(
+            var expressionResult = ExpressionConverter().ConvertQueryExpressionToIql<T>(
                 expression
             );
             return expressionResult.Expression;

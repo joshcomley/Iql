@@ -92,7 +92,8 @@ namespace Iql.Queryable.Expressions.QueryExpressions
                         expressionResolved = new WhereQueryExpression(
                             andLambda
 #if TypeScript
-                            , new EvaluateContext
+                            , 
+                            new EvaluateContext
                             {
                                 Context = this,
                                 Evaluate = n => (Func<object, object>)Evaluator.Eval(n)

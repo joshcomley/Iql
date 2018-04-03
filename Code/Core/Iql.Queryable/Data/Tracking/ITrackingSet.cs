@@ -24,8 +24,8 @@ namespace Iql.Queryable.Data.Tracking
         //Type EntityType { get; }
         //object Track(object entity, bool isNew);
         void MarkForDelete(object entity);
-        List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true);
-        IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true);
+        List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true, bool onlyMergeWithExisting = false);
+        IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true, bool onlyMergeWithExisting = false);
         void RemoveEntity(object entity);
         void ResetEntity(object entity);
         void Reset(IEntityStateBase state);

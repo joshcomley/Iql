@@ -12,16 +12,20 @@
             return accessorExpression;
         }
 
-        public static IqlExpression Coalesce(this IqlExpression parent, IqlExpression accessorExpression)
+        public static IqlExpression Coalesce(this IqlExpression parent, IqlExpression accessorExpression, string coalesceWith = null)
         {
+            if (coalesceWith == null)
+            {
+                coalesceWith = "{}";
+            }
+
+            var isFunc = coalesceWith == @"""""";
             return new IqlAggregateExpression(
-                new IqlFinalExpression<string>(@"(function() { return "),
+                new IqlFinalExpression<string>(@"("),
                 parent,
-                new IqlFinalExpression<string>(@" === null || "),
-                parent,
-                new IqlFinalExpression<string>(@" === undefined ? null : "),
+                new IqlFinalExpression<string>($@" || {coalesceWith}){(isFunc ? "." : "[\"")}"),
                 accessorExpression,
-                new IqlFinalExpression<string>(";})()")
+                new IqlFinalExpression<string>($@"{(isFunc ? "" : "\"]")}")
             );
         }
     }

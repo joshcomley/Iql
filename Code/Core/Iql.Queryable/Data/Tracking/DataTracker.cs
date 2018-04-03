@@ -108,7 +108,7 @@ namespace Iql.Queryable.Data.Tracking
                 set = DataContext.EnsureTypedListByType(set, type, null, null, false, true);
 #endif
                 var trackingSet = Tracking.TrackingSetByType(type);
-                var states = trackingSet.TrackEntities(set, false, !mergeExistingOnly);
+                var states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
                 trackingSet.ResetAll(states);
                 set = states.Select(s => s.Entity).EnumerableToList(type);
                 if (data.ContainsKey(type))

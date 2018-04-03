@@ -28,7 +28,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             {
                 return new IqlFinalExpression<string>($"new Date(\'{action.Value}\')");
             }
-            return new IqlFinalExpression<string>(action.Value?.ToString());
+            return new IqlFinalExpression<string>(action.Value == null ? "null" : action.Value?.ToString());
         }
     }
 }

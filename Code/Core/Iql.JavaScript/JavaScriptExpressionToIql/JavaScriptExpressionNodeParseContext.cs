@@ -115,7 +115,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public IqlExpression ParseSubTree(WhereQueryExpression where)
         {
-            return Converter.ConvertExpressionToIql<IqlExpression>(where).Expression;
+            return Converter.ConvertQueryExpressionToIql<IqlExpression>(where).Expression;
         }
 
         //public T ExpressionAs<T>()

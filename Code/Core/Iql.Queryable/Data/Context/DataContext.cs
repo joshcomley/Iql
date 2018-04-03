@@ -69,31 +69,65 @@ namespace Iql.Queryable.Data.Context
                 Configure(EntityConfigurationContext);
                 InitializeProperties();
             }
+            InitializeSetNames();
+        }
+
+        private void InitializeSetNames()
+        {
+            var allConfigs = EntityConfigurationContext.AllConfigurations().ToArray();
+            for (var i = 0; i < allConfigs.Length; i++)
+            {
+                var config = allConfigs[i];
+                if (config.SetName == null)
+                {
+                    var propertyName = GetDbSetPropertyNameByEntityType(config.Type);
+                    config.SetName = propertyName;
+                }
+            }
         }
 
         private void InitializeProperties()
         {
-            var properties = GetType().GetProperties()
+            var allProperties = GetType().GetRuntimeProperties().ToArray();
+            var properties = allProperties
                 .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
                 .ToList();
             foreach (var property in properties)
             {
-                IDbSet asDbSetByType;
+                IDbSet asDbSetByType = null;
+                var existingValue = this.GetPropertyValueByName(property.Name);
+                Type entityType = null;
                 var dbSetName = nameof(DbSet<object, object>);
-                if (property.PropertyType.Name == dbSetName)
+                var propertyType = property.PropertyType;
+                if (propertyType.Name == dbSetName)
                 {
-                    asDbSetByType = AsDbSetByType(property.PropertyType.GenericTypeArguments[0]);
+                    entityType = propertyType.GenericTypeArguments[0];
+                    if (existingValue != null)
+                    {
+                        asDbSetByType = AsDbSetByType(entityType);
+                    }
                 }
                 else
                 {
-                    var baseType = property.PropertyType.BaseType;
+                    var baseType = propertyType.BaseType;
                     while (baseType.SimpleName() != dbSetName)
                     {
                         baseType = baseType.BaseType;
                     }
-                    asDbSetByType = AsCustomDbSetByType(baseType.GenericTypeArguments[0], property.PropertyType);
+
+                    entityType = baseType.GenericTypeArguments[0];
+                    if (existingValue != null)
+                    {
+                        asDbSetByType = AsCustomDbSetByType(entityType, propertyType);
+                    }
                 }
-                property.SetValue(this, asDbSetByType);
+
+                if (asDbSetByType != null)
+                {
+                    property.SetValue(this, asDbSetByType);
+                }
+                var configuration = EntityConfigurationContext.GetEntityByType(entityType);
+                configuration.SetName = configuration.SetName ?? property.Name;
             }
         }
 

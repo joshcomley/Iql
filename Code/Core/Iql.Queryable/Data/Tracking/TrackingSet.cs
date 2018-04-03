@@ -154,7 +154,7 @@ namespace Iql.Queryable.Data.Tracking
             //DataStore.RelationshipObserver.Unobserve(entity, typeof(T));
         }
 
-        public List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true)
+        public List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true, bool onlyMergeWithExisting = false)
         {
             var result = new List<IEntityStateBase>();
             var typed = (List<T>)data;
@@ -163,16 +163,16 @@ namespace Iql.Queryable.Data.Tracking
                 var item = typed[i];
                 if (allowNew || (!isNew && IsTracked(item)))
                 {
-                    result.Add(TrackEntity(item, null, isNew));
+                    result.Add(TrackEntity(item, null, isNew, onlyMergeWithExisting));
                 }
             }
 
             return result;
         }
 
-        public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true)
+        public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true, bool onlyMergeWithExisting = false)
         {
-            return TrackEntityInternal(entity, mergeWith, isNew);
+            return TrackEntityInternal(entity, mergeWith, isNew, onlyMergeWithExisting);
         }
 
         public void RemoveEntity(T entity)
@@ -323,8 +323,17 @@ namespace Iql.Queryable.Data.Tracking
 
         private readonly Dictionary<object, object> _tracking = new Dictionary<object, object>();
 
-        internal override IEntityStateBase TrackEntityInternal(object entity, object mergeWith = null, bool isNew = true)
+        internal override IEntityStateBase TrackEntityInternal(object entity, object mergeWith = null,
+            bool isNew = true, bool onlyMergeWithExisting = false)
         {
+            if (!IsEntityTracked(entity))
+            {
+                TrackedEntities.Add(entity, this);
+            }
+            else if (TrackedEntities[entity] != this && !onlyMergeWithExisting)
+            {
+                 throw new Exception("This entity is already tracked by another context.");
+            }
             var isAlreadyTracked = _tracking.ContainsKey(entity);
             if (!isAlreadyTracked)
             {
