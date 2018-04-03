@@ -5,7 +5,7 @@ namespace Iql.Parsing.Reduction.Reducers
     {
         public override IqlExpression ReduceStaticContent(TIqlExpression expression, IqlReducer reducer)
         {
-            expression.Parent = reducer.ReduceStaticContent(expression.Parent);
+            expression.Parent = (IqlExpression)reducer.ReduceStaticContent(expression.Parent);
             expression.Value = reducer.ReduceStaticContent(expression.Value);
             return expression;
         }

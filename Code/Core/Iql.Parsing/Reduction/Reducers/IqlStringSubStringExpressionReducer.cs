@@ -2,7 +2,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlStringSubStringExpressionReducer : IqlReducerBase<IqlStringSubStringExpression>
     {
-        public override IqlLiteralExpression Evaluate(IqlStringSubStringExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlStringSubStringExpression expression, IqlReducer reducer)
         {
             var substring = reducer.EvaluateAs<string>(expression.Parent).Substring(
                 reducer.EvaluateAs<int>(expression.Value),

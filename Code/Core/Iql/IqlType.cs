@@ -10,6 +10,7 @@ namespace Iql
         Integer,
         Decimal,
         Boolean,
-        Date
+        Date,
+        Enum
     }
 }

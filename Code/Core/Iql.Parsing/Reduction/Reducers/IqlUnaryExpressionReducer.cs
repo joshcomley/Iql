@@ -4,7 +4,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlUnaryExpressionReducer : IqlReducerBase<IqlUnaryExpression>
     {
-        public override IqlLiteralExpression Evaluate(IqlUnaryExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlUnaryExpression expression, IqlReducer reducer)
         {
             throw new NotImplementedException();
             //expression.Value = new IqlLiteralExpression(

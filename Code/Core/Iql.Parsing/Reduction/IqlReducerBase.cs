@@ -5,7 +5,7 @@ namespace Iql.Parsing.Reduction
     public class IqlReducerBase<TIqlExpression> : IIqlReducer<TIqlExpression>
         where TIqlExpression : IqlExpression
     {
-        public virtual IqlLiteralExpression Evaluate(TIqlExpression expression, IqlReducer reducer)
+        public virtual IIqlLiteralExpression Evaluate(TIqlExpression expression, IqlReducer reducer)
         {
             throw new Exception("Method not implemented.");
         }
@@ -14,19 +14,19 @@ namespace Iql.Parsing.Reduction
         {
             if (expression.Parent != null)
             {
-                expression.Parent = reducer.ReduceStaticContent(expression.Parent);
+                expression.Parent = (IqlExpression)reducer.ReduceStaticContent(expression.Parent);
             }
             return expression;
         }
 
-        IqlLiteralExpression IIqlReducerBase.Evaluate(IqlExpression expression, IqlReducer reducer)
+        IIqlLiteralExpression IIqlReducerBase.Evaluate(IqlExpression expression, IqlReducer reducer)
         {
-            return Evaluate(expression as TIqlExpression, reducer);
+            return Evaluate((TIqlExpression)expression, reducer);
         }
 
         IqlExpression IIqlReducerBase.ReduceStaticContent(IqlExpression expression, IqlReducer reducer)
         {
-            return ReduceStaticContent(expression as TIqlExpression, reducer);
+            return ReduceStaticContent((TIqlExpression)expression, reducer);
         }
     }
 }

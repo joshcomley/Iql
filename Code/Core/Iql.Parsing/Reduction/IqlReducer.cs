@@ -1,4 +1,5 @@
-﻿using Iql.Parsing.Reduction.Reducers;
+﻿using System.Collections.Generic;
+using Iql.Parsing.Reduction.Reducers;
 
 namespace Iql.Parsing.Reduction
 {
@@ -39,21 +40,43 @@ namespace Iql.Parsing.Reduction
             return (T)Evaluate(expression)?.Value;
         }
 
-        public IqlLiteralExpression Evaluate(IqlExpression expression)
+        public List<IqlExpression> Ancestors { get; set; } = new List<IqlExpression>();
+        
+        public IIqlLiteralExpression Evaluate(IqlExpression expression)
         {
             var reducer = _registry.Resolve(expression);
-            return reducer?.Evaluate(expression, this);
+            Ancestors.Add(expression);
+            var result = reducer?.Evaluate(expression, this);
+            Ancestors.RemoveAt(Ancestors.Count - 1);
+            return result;
         }
 
         public IqlExpression ReduceStaticContent(IqlExpression expression)
         {
             if (expression != null && !expression.ContainsRootEntity())
             {
-                var value = Evaluate(expression);
-                return value ?? expression;
+                // We need this initial cast to object in TypeScript because for some reason
+                // TypeScript won't let us cast an interface to another object
+                var value = (object)Evaluate(expression);
+                return (IqlExpression)value ?? expression;
             }
+            Ancestors.Add(expression);
             var reducer = _registry.Resolve(expression);
-            return reducer != null ? reducer.ReduceStaticContent(expression, this) : expression;
+            var result = reducer != null ? reducer.ReduceStaticContent(expression, this) : expression;
+            Ancestors.RemoveAt(Ancestors.Count - 1);
+            return result;
+        }
+
+        public bool HasAncestorOfType<T>()
+        {
+            foreach (var ancestor in Ancestors)
+            {
+                if (ancestor is T)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

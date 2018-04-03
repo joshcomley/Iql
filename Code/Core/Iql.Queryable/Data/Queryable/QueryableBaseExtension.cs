@@ -48,7 +48,8 @@ namespace Iql.Queryable.Data.Queryable
                     operation is WhereOperation ||
                     operation is IExpandOperation)
                 {
-                    ToIql(operation as IExpressionQueryOperation, dataContext);
+                    var expressionQueryOperation = operation as IExpressionQueryOperation;
+                    expressionQueryOperation.Expression = ToIql(expressionQueryOperation, dataContext);
                 }
                 if (operation is IExpandOperation)
                 {

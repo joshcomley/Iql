@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Iql.Extensions;
 using Iql.Queryable.Data;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;

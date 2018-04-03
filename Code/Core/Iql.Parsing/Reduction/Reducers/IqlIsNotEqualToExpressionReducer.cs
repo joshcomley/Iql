@@ -4,7 +4,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlIsNotEqualToExpressionReducer : IqlReducerBase<IqlIsNotEqualToExpression>
     {
-        //public override IqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
+        //public override IIqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
         //{
         //    return null;
         //}

@@ -1,10 +1,11 @@
-﻿using System.Web;
+﻿using System;
 using Iql.OData;
 using Iql.OData.Extensions;
-using Iql.Parsing;
-using Iql.Queryable;
 using Iql.Queryable.Data.Queryable;
+#if TypeScript
+using Iql.Parsing;
 using Iql.Queryable.Expressions;
+#endif
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -56,28 +57,101 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => c.Name == "hello");
 
             var uri = query.ResolveODataUri();
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')",
                 uri);
 
             query = query.OrderBy(c => c.Name).Expand(c => c.Type);
             uri = query.ResolveODataUri();
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name&$expand=Type",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsCheck()
+        public void EnumFlagsExactCheck()
         {
-            
+            var query = Db.Users.Where(c => c.Permissions == (UserPermissions.Edit | UserPermissions.Create)
+#if TypeScript
+    , new EvaluateContext(code => Evaluator.Eval(code))
+#endif
+            );
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq 10)",
+                uri);
+        }
+
+        [TestMethod]
+        public void EnumFlagsExactConstructedManuallyCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.Permissions),
+                    new IqlRootReferenceExpression()), 
+                new IqlLiteralExpression(10)));
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq 10)",
+                uri);
+        }
+
+        [TestMethod]
+        public void EnumFlagsContainsCheck()
+        {
             var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0
 #if TypeScript
     , new EvaluateContext(code => Evaluator.Eval(code))
 #endif
             );
-            var uri = HttpUtility.UrlDecode(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has 'Create,Edit')",
+                uri);
+        }
+
+        [TestMethod]
+        public void EnumFlagsContainsOrCheck()
+        {
+            var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0 || (c.Permissions & (UserPermissions.Delete)) != 0
+#if TypeScript
+    , new EvaluateContext(code => Evaluator.Eval(code))
+#endif
+            );
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=((Permissions has 'Create,Edit') or (Permissions has 'Delete'))",
+                uri);
+        }
+
+        [TestMethod]
+        public void EnumFlagsContainsCheckConstructedManually()
+        {
+            var enumExpression = new IqlEnumLiteralExpression(typeof(UserPermissions));
+            var expressionRoot = new IqlHasExpression(
+                new IqlPropertyExpression(nameof(ApplicationUser.Permissions), new IqlRootReferenceExpression()),
+                enumExpression);
+            enumExpression.AddValue((long)UserPermissions.Edit, nameof(UserPermissions.Edit));
+            enumExpression.AddValue((long)UserPermissions.Create, nameof(UserPermissions.Create));
+            var query = Db.Users.WhereEquals(expressionRoot);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has 'Create,Edit')",
+                uri);
+        }
+
+        [TestMethod]
+        public void EnumFlagsContainsOrCheckConstructedManually()
+        {
+            var has1 = new IqlHasExpression(
+                new IqlPropertyExpression(nameof(ApplicationUser.Permissions), new IqlRootReferenceExpression()),
+                new IqlEnumLiteralExpression(typeof(UserPermissions))
+                    .AddValue((long)UserPermissions.Edit, nameof(UserPermissions.Edit))
+                    .AddValue((long)UserPermissions.Create, nameof(UserPermissions.Create)));
+            var has2 = new IqlHasExpression(
+                new IqlPropertyExpression(nameof(ApplicationUser.Permissions), new IqlRootReferenceExpression()),
+                new IqlEnumLiteralExpression(typeof(UserPermissions))
+                    .AddValue((long)UserPermissions.Edit, nameof(UserPermissions.Delete)));
+            var query = Db.Users.WhereEquals(new IqlOrExpression(
+                has1,
+                has2));
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=((Permissions has 'Create,Edit') or (Permissions has 'Delete'))",
                 uri);
         }
 
@@ -87,7 +161,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);
 
             var uri = query.ResolveODataUri();
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$expand=Users/$count",
                 uri);
         }
@@ -98,13 +172,13 @@ namespace Iql.Tests.Tests.OData
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello");
 
             var uri = query.ResolveODataUriFromQuery(Db);
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
             uri = query.ResolveODataUriFromQuery(Db);
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name",
                 uri);
         }
@@ -115,13 +189,13 @@ namespace Iql.Tests.Tests.OData
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello2");
 
             var uri = query.ResolveODataUriFromQuery(Db);
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
             uri = query.ResolveODataUriFromQuery(Db);
-            uri = HttpUtility.UrlDecode(uri);
+            uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')&$orderby=Name",
                 uri);
         }

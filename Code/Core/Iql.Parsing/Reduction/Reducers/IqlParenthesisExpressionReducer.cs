@@ -2,7 +2,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlParenthesisExpressionReducer : IqlReducerBase<IqlParenthesisExpression>
     {
-        public override IqlLiteralExpression Evaluate(IqlParenthesisExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlParenthesisExpression expression, IqlReducer reducer)
         {
             //for (var i = 0; i < expression.Expressions.Count; i++)
             //{
@@ -16,7 +16,7 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             if (expression.Parent != null)
             {
-                expression.Parent = reducer.ReduceStaticContent(expression.Parent);
+                expression.Parent = (IqlExpression)reducer.ReduceStaticContent(expression.Parent);
             }
             expression.Expression = reducer.ReduceStaticContent(expression.Expression);
             return expression;

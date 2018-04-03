@@ -13,7 +13,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         {
             var owner = context.Parse(context.Expression.Owner).Value;
             var property = context.ParseWith(context.Expression.Property, owner).Value;
-            property.Parent = owner;
+            property.Parent = (IqlExpression)owner;
             return new IqlParseResult(property);
         }
     }

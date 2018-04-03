@@ -15,7 +15,9 @@ namespace Iql.DotNet.Serialization
             var allTypes = typeof(IqlExpression).GetTypeInfo().Assembly.GetTypes();
             IqlTypes = allTypes.Where(t =>
                     typeof(IqlExpression).GetTypeInfo().IsAssignableFrom(t) &&
-                    t != typeof(IqlFinalExpression<>)
+                    t != typeof(IqlFinalExpression<>) &&
+                    !t.IsAbstract && 
+                    !t.IsInterface
                 )
                 .ToArray();
         }

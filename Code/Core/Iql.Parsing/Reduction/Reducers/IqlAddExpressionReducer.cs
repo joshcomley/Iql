@@ -5,7 +5,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlAddExpressionReducer : IqlReducerBase<IqlAddExpression>
     {
-        public override IqlLiteralExpression Evaluate(IqlAddExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlAddExpression expression, IqlReducer reducer)
         {
             var left = reducer.Evaluate(expression.Left);
             var right = reducer.Evaluate(expression.Right);

@@ -4,7 +4,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlVariableExpressionReducer : IqlReducerBase<IqlVariableExpression>
     {
-        public override IqlLiteralExpression Evaluate(IqlVariableExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlVariableExpression expression, IqlReducer reducer)
         {
             //if (reducer.EvaluateContext == null)
             //{

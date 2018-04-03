@@ -8,7 +8,17 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         public override IqlExpression ToQueryString(IqlBinaryExpression action,
             ODataIqlParserInstance parser)
         {
-            if (action.Left is IqlPropertyExpression && 
+            if (action.Left is IqlPropertyExpression &&
+                action.Right is IqlEnumLiteralExpression &&
+                action.Type == IqlExpressionType.Has)
+            {
+                var rightLiteral = action.Right as IqlEnumLiteralExpression;
+                var valueString = string.Join(",", rightLiteral.Value.Select(v => v.Name).OrderBy(o => o));
+                var enumString = $"\'{valueString}\'";
+                action.Right = new IqlFinalExpression<string>(
+                    enumString);
+            }
+            else if (action.Left is IqlPropertyExpression && 
                 action.Right is IqlLiteralExpression &&
                 action.Type == IqlExpressionType.Has &&
                 (action.Right.ReturnType == IqlType.Integer || (action.Right as IqlLiteralExpression).InferredReturnType == IqlType.Integer))
@@ -20,7 +30,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     var value = Enum.ToObject(type, rightLiteral.Value);
                     var valueString = 
                         string.Join(",", value.ToString().Split(',')
-                        .Select(s => s.Trim()));
+                        .Select(s => s.Trim()).OrderBy(o => o));
                     var enumString = $"\'{valueString}\'";
                     action.Right = new IqlFinalExpression<string>(
                         enumString);

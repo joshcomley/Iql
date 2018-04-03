@@ -4,7 +4,7 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlBinaryExpressionReducer : IqlReducerBase<IqlBinaryExpression>
     {
-        public override IqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
         {
             var left = reducer.Evaluate(expression.Left);
             var right = reducer.Evaluate(expression.Right);
@@ -12,6 +12,10 @@ namespace Iql.Parsing.Reduction.Reducers
             {
                 case IqlExpressionType.BitwiseOr:
                     {
+                        if (left is IqlEnumLiteralExpression)
+                        {
+                            return IqlEnumLiteralExpression.Combine(left as IqlEnumLiteralExpression, right as IqlEnumLiteralExpression);
+                        }
                         var l = (long)left.Value;
                         var r = (long)right.Value;
                         return new IqlLiteralExpression(l | r);

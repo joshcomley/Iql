@@ -33,25 +33,10 @@ namespace Iql.Queryable.Extensions
             return (T)property.PropertyGetter(obj);
         }
 
-        public static object GetPropertyValueByName<T>(this T obj, string propertyName)
-        {
-            return obj.GetType().GetRuntimeProperty(propertyName).GetValue(obj);
-        }
-
-        public static T GetPropertyValueByNameAs<T>(this object obj, string propertyName)
-        {
-            return (T)obj.GetType().GetRuntimeProperty(propertyName).GetValue(obj);
-        }
-
         public static void SetPropertyValue<T>(this T obj, IProperty property, object value)
         {
             //property.PropertyInfo.SetValue(obj, value);
             property.PropertySetter(obj, value);
-        }
-
-        public static void SetPropertyValueByName<T>(this T obj, string propertyName, object value)
-        {
-            obj.GetType().GetRuntimeProperty(propertyName).SetValue(obj, value);
         }
 
         public static void SetPropertyValues<T>(this T obj, CompositeKey compositeKey)
@@ -62,12 +47,6 @@ namespace Iql.Queryable.Extensions
             }
         }
 
-#if !TypeScript
-        public static void SetFieldValue<T>(this T obj, string propertyName, object value)
-        {
-            obj.GetType().GetRuntimeFields().Single(f => f.Name == propertyName).SetValue(obj, value);
-        }
-#endif
         public static bool IsArray(this object obj)
         {
             return obj is IEnumerable && !(obj is string);
