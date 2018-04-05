@@ -17,12 +17,12 @@ namespace Iql.Tests.Tests.OData
             await RequestLog.LogSessionAsync(async log =>
             {
                 var db = NewDb();
-                var client = new HazClient() { PersistenceKey = new Guid("e4a693fc-1041-4dd9-9f57-7097dd7053a3") };
+                var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";
-                await db.SaveChanges();
+                var result = await db.SaveChanges();
                 client.Name = "Some new name";
-                await db.SaveChanges();
+                result = await db.SaveChanges();
                 var request = log.Patches.Pop().Single();
                 Assert.AreEqual(@"{
   ""Name"": ""Some new name"",

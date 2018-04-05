@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Iql.Extensions;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
@@ -15,6 +16,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
+        class DefaultValuePlaceholder { }
+
+        private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
+
         public EntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
@@ -41,7 +46,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         string IEntityConfiguration.GetDisplayText(object entity, string key = null)
         {
-            return GetDisplayText((T) entity, key);
+            return GetDisplayText((T)entity, key);
         }
 
         public IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary)
@@ -60,7 +65,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var secondarySearchFields = ResolveSearchProperties(PropertySearchKind.Secondary);
                 if (secondarySearchFields.Any())
                 {
-                    var priorityFields = new[] {"FullName", "Name", "Title"};
+                    var priorityFields = new[] { "FullName", "Name", "Title" };
                     foreach (var priorityField in priorityFields)
                     {
                         var priorityFieldMatch = secondarySearchFields.FirstOrDefault(f => f.Name == priorityField);
@@ -80,24 +85,24 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         IEntityValidationResult IEntityConfiguration.ValidateEntity(object entity)
         {
-            return ValidateEntity((T) entity);
+            return ValidateEntity((T)entity);
         }
 
         IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByExpression<TProperty>(object entity,
             Expression<Func<object, TProperty>> expression)
         {
-            var property = ((IEntityConfiguration) this).FindPropertyByExpression(expression);
+            var property = ((IEntityConfiguration)this).FindPropertyByExpression(expression);
             return ValidateEntityProperty((T)entity, property);
         }
 
         IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByName(object entity, string property)
         {
-            return ValidateEntityPropertyByName((T) entity, property);
+            return ValidateEntityPropertyByName((T)entity, property);
         }
 
         IPropertyValidationResult IEntityConfiguration.ValidateEntityProperty(object entity, IProperty property)
         {
-            return ValidateEntityProperty((T) entity, property);
+            return ValidateEntityProperty((T)entity, property);
         }
 
         public EntityValidationResult<T> ValidateEntity(T entity)
@@ -134,6 +139,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public PropertyValidationResult<T> ValidateEntityProperty(T entity, IProperty property)
         {
+            return ValidateEntityPropertyInternal(entity, property, false);
+        }
+
+        public PropertyValidationResult<T> ValidateEntityPropertyInternal(T entity, IProperty property, bool hasSetDefaultValue)
+        {
             var validationResult = new PropertyValidationResult<T>(entity, property);
             foreach (var validation in property.Validation.All)
             {
@@ -142,14 +152,103 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     validationResult.AddFailure(validation.Key, validation.Message);
                 }
             }
+
+            if (property.Kind != PropertyKind.Count && property.Kind != PropertyKind.Key)
+            {
+                var propertyValue = property.PropertyGetter(entity);
+                if (!validationResult.HasValidationFailures() &&
+                PropertyValueIsEmpty(property, entity, propertyValue)
+            )
+                {
+                    if (!hasSetDefaultValue)
+                    {
+                        // Mimic default values for 
+                        object newValue = DefaultValuePlaceholderInstance;
+                        if (property.TypeDefinition.ConvertedFromType == nameof(Guid) ||
+                            property.TypeDefinition.Kind == IqlType.Date ||
+                            property.TypeDefinition.Kind == IqlType.Enum)
+                        {
+                            newValue = property.TypeDefinition.DefaultValue();
+                        }
+                        if (!Equals(newValue, DefaultValuePlaceholderInstance))
+                        {
+                            property.PropertySetter(entity, newValue);
+                            return ValidateEntityPropertyInternal(entity, property, true);
+                        }
+                    }
+                    validationResult.AddFailure(
+                        DefaultRequiredAutoValidationFailureKey,
+                        DefaultRequiredAutoValidationFailureMessage);
+                }
+            }
             return validationResult;
+        }
+
+        private static bool PropertyValueIsEmpty(IProperty property, object entity, object propertyValue)
+        {
+            if (property.ReadOnly)
+            {
+                return false;
+            }
+
+            if (property.TypeDefinition.Nullable)
+            {
+                return false;
+            }
+
+            if (property.Kind == PropertyKind.Relationship &&
+                propertyValue == null)
+            {
+                if (!property.Relationship.ThisIsTarget)
+                {
+                    var properties = property.Relationship.ThisEnd.Constraints();
+                    for (var i = 0; i < properties.Length; i++)
+                    {
+                        var constraint = properties[i];
+                        var constraintValue = constraint.PropertyGetter(entity);
+                        if (Equals(null, constraintValue) ||
+                            Equals(constraint.TypeDefinition.DefaultValue(), constraintValue))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else if (Equals(null, propertyValue))
+            {
+                return true;
+            }
+
+            if (property.TypeDefinition.Kind == IqlType.Enum)
+            {
+                var stringValue = Enum.ToObject(property.TypeDefinition.Type, propertyValue).ToString();
+                if (string.IsNullOrWhiteSpace(stringValue) || Regex.IsMatch(stringValue, @"^\d+$"))
+                {
+                    return true;
+                }
+            }
+
+            if (property.TypeDefinition.Kind == IqlType.Date)
+            {
+                if (propertyValue.IsDefaultValue(property.TypeDefinition))
+                {
+                    return true;
+                }
+            }
+
+            if (property.TypeDefinition.Type == typeof(string) && Equals(propertyValue, ""))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public List<IRelationship> Relationships { get; set; }
 
         private IProperty FindOrDefinePropertyInternal(
-            LambdaExpression lambda, 
-            Type propertyType, 
+            LambdaExpression lambda,
+            Type propertyType,
             Type elementType,
             IqlType? iqlType)
         {
@@ -166,7 +265,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType, IqlType? iqlType)
         {
-            var expression = (Expression<Func<T, TProperty>>) lambda;
+            var expression = (Expression<Func<T, TProperty>>)lambda;
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression);
             var property = FindProperty(iql.PropertyName);
             if (property == null)
@@ -232,11 +331,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 }
             }
             return list;
-        }
-
-        private List<RelationshipMatch> FindAllRelationships<TRelationship>(EntityConfiguration<TRelationship> configuration) where TRelationship : class
-        {
-            return configuration.AllRelationshipsInternal(false);
         }
 
         public bool EntityHasKey(object entity, CompositeKey key)
@@ -418,6 +512,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                                  null,
                                  property);
 
+            definition.TypeDefinition = definition.TypeDefinition.ChangeType(typeof(TProperty));
             definition.TypeDefinition = definition.TypeDefinition.ChangeNullable(nullable);
             if (iqlType != null && iqlType != IqlType.Unknown)
             {
@@ -549,7 +644,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     var lambdaExpression = GetLambdaExpression<T>(countPropertyIql.PropertyName);
                     if (countPropertyDefinition.PropertyType == typeof(Int32))
                     {
-                        var lambda = (Expression<Func<T, int>>) lambdaExpression;
+                        var lambda = (Expression<Func<T, int>>)lambdaExpression;
                         var countDefinition = MapProperty<int, int>(lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = PropertyKind.Count;
 #if TypeScript
@@ -592,14 +687,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
             if (definition == null)
             {
                 definition = new Property<T, TPropertyType, TElementType>(
-                    name, 
+                    name,
                     false,
-                    isCollection, 
+                    isCollection,
                     typeof(T),
-                    null, 
+                    null,
                     readOnly,
                     kind,
-                    countRelationship, 
+                    countRelationship,
                     property);
             }
             else
@@ -607,14 +702,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 definition.ConfigureProperty(
                     name,
                     false,
-                    isCollection, 
+                    isCollection,
                     typeof(T),
                     typeof(TPropertyType),
                     typeof(TElementType),
                     kind,
                     null,
                     readOnly,
-                    countRelationship, 
+                    countRelationship,
                     property);
             }
             if (!Properties.Contains(definition))

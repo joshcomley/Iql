@@ -74,7 +74,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                     {
                         if (property.Kind == PropertyKind.Key)
                         {
-                            var oldId = clone.GetPropertyValue(property);
+                            //var oldId = clone.GetPropertyValue(property);
                             if (property.TypeDefinition.ElementType == typeof(int))
                             {
                                 clone.SetPropertyValue(property, NextIdInteger(data, property));
@@ -83,20 +83,20 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                             {
                                 clone.SetPropertyValue(property, NextIdString(data, property));
                             }
-                            if (!oldId.IsDefaultValue())
-                            {
-                                var newId = clone.GetPropertyValue(property);
-                                foreach (var relationship in configuration.Relationships)
-                                {
-                                    switch (relationship.Kind)
-                                    {
-                                        case RelationshipKind.OneToOne:
-                                            break;
-                                        case RelationshipKind.OneToMany:
-                                            break;
-                                    }
-                                }
-                            }
+                            //if (!oldId.IsDefaultValue())
+                            //{
+                            //    var newId = clone.GetPropertyValue(property);
+                            //    foreach (var relationship in configuration.Relationships)
+                            //    {
+                            //        switch (relationship.Kind)
+                            //        {
+                            //            case RelationshipKind.OneToOne:
+                            //                break;
+                            //            case RelationshipKind.OneToMany:
+                            //                break;
+                            //        }
+                            //    }
+                            //}
                         }
                     }
                 });

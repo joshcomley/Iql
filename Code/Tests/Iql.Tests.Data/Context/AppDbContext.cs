@@ -52,6 +52,8 @@ namespace Iql.Tests.Context
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.People);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypes);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypeMap);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PersonInspections);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportCategories);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteInspections);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessments);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentSolutions);

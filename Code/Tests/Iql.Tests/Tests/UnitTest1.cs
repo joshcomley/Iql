@@ -583,7 +583,7 @@ namespace Iql.Tests.Tests
         public async Task TestReassign(ReassignType type1, ReassignType type2)
         {
             var clientTypes = TestsBlock.AddClientTypes();
-            await Db.SaveChanges();
+            var result = await Db.SaveChanges();
             var clientType1 = clientTypes.ClientType1;
             var clientType2 = clientTypes.ClientType2;
             var originalClientType1Client = clientType1.Clients[0];
@@ -787,19 +787,13 @@ namespace Iql.Tests.Tests
 
         [TestMethod]
         public async Task
-            AddingAnEntityWithAAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
+            AddingAnEntityWithAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
         {
-            var siteInspection1 = new SiteInspection
-            {
-                //Id = 7
-            };
-            var siteInspection2 = new SiteInspection
-            {
-                //Id = 8
-            };
+            var siteInspection1 = EntityHelper.NewSiteInspection();
+            var siteInspection2 = EntityHelper.NewSiteInspection();
             Db.SiteInspections.Add(siteInspection1);
             Db.SiteInspections.Add(siteInspection2);
-            await Db.SaveChanges();
+            EntityHelper.AssertSuccess(await Db.SaveChanges());
             var riskAssessment = new RiskAssessment
             {
                 //Id = 42,
@@ -816,12 +810,8 @@ namespace Iql.Tests.Tests
         public async Task
             AssigningAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
         {
-            var siteInspection1 = new SiteInspection
-            {
-            };
-            var siteInspection2 = new SiteInspection
-            {
-            };
+            var siteInspection1 = EntityHelper.NewSiteInspection();
+            var siteInspection2 = EntityHelper.NewSiteInspection();
             Db.SiteInspections.Add(siteInspection1);
             Db.SiteInspections.Add(siteInspection2);
             await Db.SaveChanges();
@@ -840,8 +830,8 @@ namespace Iql.Tests.Tests
         public async Task
             RemovingAOneToOneRelationshipShouldPersistConstraintKeysAndRelationshipProperties()
         {
-            var siteInspection1 = new SiteInspection();
-            var siteInspection2 = new SiteInspection();
+            var siteInspection1 = EntityHelper.NewSiteInspection();
+            var siteInspection2 = EntityHelper.NewSiteInspection();
             Db.SiteInspections.Add(siteInspection1);
             Db.SiteInspections.Add(siteInspection2);
             await Db.SaveChanges();

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Extensions;
+using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -10,6 +13,153 @@ namespace Iql.Tests.Tests.Validation
     [TestClass]
     public class ValidationTests
     {
+        [TestMethod]
+        public async Task AddingAnEntityWithANonValidatedButNonNullablePropertySetToNullShouldFailAutoValidation()
+        {
+            var inspection = EntityHelper.NewSiteInspection();
+            inspection.SiteId = 0;
+            var db = new AppDbContext();
+            db.SiteInspections.Add(inspection);
+            var saveChangesResult = await db.SaveChanges();
+            AssertSinglePropertyValidationFailure(
+                saveChangesResult,
+                nameof(SiteInspection.Site),
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+        }
+
+        [TestMethod]
+        public async Task EmptyStringShouldFailNonNullableTest()
+        {
+            var reportCategory = new ReportCategory();
+            reportCategory.Name = "";
+            var db = new AppDbContext();
+            db.ReportCategories.Add(reportCategory);
+            var saveChangesResult = await db.SaveChanges();
+            AssertSinglePropertyValidationFailure(
+                saveChangesResult,
+                nameof(ReportCategory.Name),
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+        }
+
+        [TestMethod]
+        public async Task EmptyEnumShouldFailNonNullableTest()
+        {
+            var personInspection = EntityHelper.NewPersonInspection();
+            personInspection.InspectionStatus = 0;
+            var db = new AppDbContext();
+            db.PersonInspections.Add(personInspection);
+            var saveChangesResult = await db.SaveChanges();
+            AssertSinglePropertyValidationFailure(
+                saveChangesResult,
+                nameof(PersonInspection.InspectionStatus),
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+        }
+        
+        [TestMethod]
+        public async Task EmptyReferenceFieldShouldFailNonNullableTest()
+        {
+            var personTypeMap = EntityHelper.NewPersonTypeMap();
+            personTypeMap.PersonId = 0;
+            personTypeMap.TypeId = 0;
+            var db = new AppDbContext();
+            db.PersonTypesMap.Add(personTypeMap);
+            var saveChangesResult = await db.SaveChanges();
+            AssertPropertyValidationFailures(
+                saveChangesResult,
+                new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage),
+                new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Type),
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
+        }
+
+#if TypeScript
+        [TestMethod]
+        public async Task NullReferenceFieldShouldFailNonNullableTest()
+        {
+            var personTypeMap = EntityHelper.NewPersonTypeMap();
+            personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.PersonId), null);
+            personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.TypeId), null);
+            var db = new AppDbContext();
+            db.PersonTypesMap.Add(personTypeMap);
+            var saveChangesResult = await db.SaveChanges();
+            AssertPropertyValidationFailures(
+                saveChangesResult,
+                new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage),
+                new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Type),
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
+        }
+#endif
+
+        [TestMethod]
+        public async Task EmptyDateShouldFailNonNullableTest()
+        {
+            var personInspection = EntityHelper.NewPersonInspection();
+            personInspection.StartTime = new DateTimeOffset();
+            personInspection.InspectionStatus = PersonInspectionStatus.PassWithObservations;
+            var db = new AppDbContext();
+            db.PersonInspections.Add(personInspection);
+            var saveChangesResult = await db.SaveChanges();
+            AssertSinglePropertyValidationFailure(
+                saveChangesResult,
+                nameof(PersonInspection.StartTime),
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+        }
+
+        class ExpectedPropertyValidationFailure
+        {
+            public string PropertyName { get; set; }
+            public string ExpectedKey { get; set; }
+            public string ExpectedMessage { get; set; }
+
+            public ExpectedPropertyValidationFailure(string propertyName, string expectedKey, string expectedMessage)
+            {
+                PropertyName = propertyName;
+                ExpectedKey = expectedKey;
+                ExpectedMessage = expectedMessage;
+            }
+        }
+
+        private static void AssertSinglePropertyValidationFailure(SaveChangesResult saveChangesResult,
+            string propertyName,
+            string expectedKey,
+            string expectedMessage)
+        {
+            AssertPropertyValidationFailures(saveChangesResult, new ExpectedPropertyValidationFailure(
+                propertyName,
+                expectedKey,
+                expectedMessage
+            ));
+        }
+
+        private static void AssertPropertyValidationFailures(SaveChangesResult saveChangesResult, params ExpectedPropertyValidationFailure[] expectedFailures)
+        {
+            Assert.IsFalse(saveChangesResult.Success);
+            Assert.AreEqual(1, saveChangesResult.Results.Count);
+            var result = saveChangesResult.Results[0];
+            Assert.AreEqual(1, result.EntityValidationResults.Count);
+            var entityValidationResult = result.EntityValidationResults.First().Value;
+            Assert.AreEqual(expectedFailures.Length, entityValidationResult.PropertyValidationResults.Count());
+            foreach (var expectedFailure in expectedFailures)
+            {
+                var propertyValidationResult = entityValidationResult.PropertyValidationResults.First(
+                    pf => pf.Property.Name == expectedFailure.PropertyName);
+                Assert.IsNotNull(propertyValidationResult);
+                Assert.AreEqual(1, propertyValidationResult.ValidationFailures.Count);
+                var validationFailure = propertyValidationResult.ValidationFailures[0];
+                Assert.AreEqual(validationFailure.Key, expectedFailure.ExpectedKey);
+                Assert.AreEqual(validationFailure.Message, expectedFailure.ExpectedMessage);
+            }
+        }
+
         [TestMethod]
         public async Task SavingANewButInvalidEntityShouldFailBeforePosting()
         {

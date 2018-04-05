@@ -752,7 +752,7 @@ namespace Iql.Queryable.Data.Relationships
                         }
                         else if (!constraint.SourceKeyProperty.TypeDefinition.Nullable)
                         {
-                            newValue = constraint.SourceKeyProperty.TypeDefinition.Type.DefaultValue();
+                            newValue = constraint.SourceKeyProperty.TypeDefinition.DefaultValue();
                         }
 
                         source.SetPropertyValue(

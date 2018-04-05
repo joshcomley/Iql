@@ -127,6 +127,7 @@ namespace Iql.Tests.Tests
             //riskAssessment1.Id = 7;
             //riskAssessment2.Id = 8;
             riskAssessment1.SiteInspectionId = 62;
+            riskAssessment2.SiteInspectionId = 72;
             Db.RiskAssessments.Add(riskAssessment1);
             Db.RiskAssessments.Add(riskAssessment2);
             await Db.SaveChanges();

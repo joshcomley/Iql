@@ -7,6 +7,18 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public abstract class PropertyBase : IPropertyMetadata
     {
+        public virtual bool? Nullable
+        {
+            get => TypeDefinition?.Nullable;
+            set
+            {
+                if (value.HasValue && TypeDefinition != null)
+                {
+                    TypeDefinition = TypeDefinition.ChangeNullable(value.Value);
+                }
+            }
+        }
+
         private string _friendlyName;
         private bool _friendlyNameSet;
         private string _resolvedFriendlyName;

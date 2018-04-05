@@ -6,5 +6,6 @@
         PropertyKind Kind { get; set; }
         PropertySearchKind SearchKind { get; set; }
         bool ReadOnly { get; set; }
+        bool? Nullable { get; set; }
     }
 }

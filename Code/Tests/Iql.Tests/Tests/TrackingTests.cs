@@ -19,6 +19,7 @@ namespace Iql.Tests.Tests
         public async Task TestLocallyCreatedEntityBecomesEntityStateEntity()
         {
             var client = new Client();
+            client.TypeId = 7;
             client.Name = "Locally created client";
             var clientOData = $@"  ""TypeId"": 1,
   ""Id"": 44,

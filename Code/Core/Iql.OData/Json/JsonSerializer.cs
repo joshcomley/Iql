@@ -19,7 +19,7 @@ namespace Iql.OData.Json
             var timezoneOffsetInHours = -offset.Offset.TotalHours; //UTC minus local time
             var sign = timezoneOffsetInHours >= 0 ? '+' : '-';
             var iso =
-                $"{offset.Year.PadLeft('0', 4)}-{offset.Month.PadLeft('0', 2)}-{offset.Day.PadLeft('0', 2)}T{offset.Hour.PadLeft('0', 2)}:{offset.Minute.PadLeft('0', 2)}:{offset.Second.PadLeft('0', 2)}.{offset.Millisecond}{sign}{Math.Abs(timezoneOffsetInHours).PadLeft('0', 2)}:00";
+                $"{offset.Year.PadLeft('0', 4)}-{offset.Month.PadLeft('0', 2)}-{offset.Day.PadLeft('0', 2)}T{offset.Hour.PadLeft('0', 2)}:{offset.Minute.PadLeft('0', 2)}:{offset.Second.PadLeft('0', 2)}.{offset.Millisecond}{sign}00:00";
             return iso;
         }
 

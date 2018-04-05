@@ -66,5 +66,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             HintHelper.SetHint(this, name, value);
         }
+
+        public static string DefaultRequiredAutoValidationFailureMessage { get; set; } = "This field is required";
+        public static string DefaultRequiredAutoValidationFailureKey { get; set; } = "Auto";
     }
 }

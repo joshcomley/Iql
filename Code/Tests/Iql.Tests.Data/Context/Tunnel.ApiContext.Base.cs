@@ -101,13 +101,16 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<ApplicationUser>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.String)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.ClientId, true, IqlType.Integer)
 				.DefineProperty(p => p.Email, true, IqlType.String)
 				.DefineProperty(p => p.FullName, false, IqlType.String)
 				.DefineProperty(p => p.EmailConfirmed, false, IqlType.Boolean)
-				.DefineProperty(p => p.UserType, false, IqlType.Unknown)
+				.DefineProperty(p => p.UserType, false, IqlType.Enum)
 				.DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean)
-				.DefineProperty(p => p.Permissions, false, IqlType.Unknown)
+				.DefineProperty(p => p.Permissions, false, IqlType.Enum)
 				.DefineProperty(p => p.Client, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.ClientsCreated, p => p.ClientsCreatedCount)
 				.DefineCollectionProperty(p => p.DocumentCategoriesCreated, p => p.DocumentCategoriesCreatedCount)
@@ -140,19 +143,40 @@ namespace Tunnel.ApiContext.Base
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.TypeId, false, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, false, IqlType.String)
 				.DefineProperty(p => p.Description, true, IqlType.String)
 				.DefineProperty(p => p.Discount, false, IqlType.Decimal)
 				.DefineProperty(p => p.AverageSales, false, IqlType.Decimal)
 				.DefineProperty(p => p.AverageIncome, false, IqlType.Decimal)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.Users, p => p.UsersCount)
 				.DefineProperty(p => p.Type, false, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 				.DefineCollectionProperty(p => p.Sites, p => p.SitesCount);
 			
@@ -169,19 +193,43 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<ClientType>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineCollectionProperty(p => p.Clients, p => p.ClientsCount);
 			
 			builder.EntityType<DocumentCategory>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount);
 			
 			builder.EntityType<DocumentCategory>()
@@ -194,15 +242,36 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.CategoryId, false, IqlType.Integer)
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Title, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Category, false, IqlType.Unknown)
 				.DefineProperty(p => p.Site, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<SiteDocument>()
 				.HasOne(p => p.Category)
@@ -223,16 +292,37 @@ namespace Tunnel.ApiContext.Base
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.FaultReportId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Notes, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.PersonReport, false, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
-				.DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "04194450-7975-4e29-83af-c815cc50932c", "Please enter some actions taken notes")
-				.DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "8c8f1a37-6e14-47f3-af85-a734c29a604b", "Please enter at least five characters for notes");
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
+				.DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "e83e2b21-fad0-4571-bd96-a49d16937790", "Please enter some actions taken notes")
+				.DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "c3bea70f-ac11-49b2-b3fe-d7fa60f37579", "Please enter at least five characters for notes");
 			
 			builder.EntityType<ReportActionsTaken>()
 				.HasOne(p => p.PersonReport)
@@ -247,13 +337,37 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<ReportCategory>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
+				.ConfigureProperty(p => p.Name, p => {
+					p.Nullable = false;
+				})
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.ReportTypes, p => p.ReportTypesCount);
 			
 			builder.EntityType<ReportCategory>()
@@ -264,14 +378,35 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<ReportDefaultRecommendation>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineProperty(p => p.Text, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount);
 			
 			builder.EntityType<ReportDefaultRecommendation>()
@@ -284,15 +419,36 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.ReportId, false, IqlType.Integer)
 				.DefineProperty(p => p.RecommendationId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Notes, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.PersonReport, false, IqlType.Unknown)
 				.DefineProperty(p => p.Recommendation, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<ReportRecommendation>()
 				.HasOne(p => p.PersonReport)
@@ -312,15 +468,36 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<ReportType>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CategoryId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Category, false, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.FaultReports, p => p.FaultReportsCount);
 			
 			builder.EntityType<ReportType>()
@@ -336,10 +513,19 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<Project>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Title, false, IqlType.String)
 				.DefineProperty(p => p.Description, true, IqlType.String)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<Project>()
 				.HasOne(p => p.CreatedByUser)
@@ -349,15 +535,36 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<ReportReceiverEmailAddress>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.EmailAddress, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Site, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<ReportReceiverEmailAddress>()
 				.HasOne(p => p.Site)
@@ -373,13 +580,34 @@ namespace Tunnel.ApiContext.Base
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.SiteInspection, false, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.RiskAssessmentSolution, false, IqlType.Unknown);
 			
 			builder.EntityType<RiskAssessment>()
@@ -396,13 +624,34 @@ namespace Tunnel.ApiContext.Base
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.RiskAssessment, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<RiskAssessmentSolution>()
 				.HasOne(p => p.RiskAssessment)
@@ -413,15 +662,36 @@ namespace Tunnel.ApiContext.Base
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.QuestionId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.SpecificHazard, true, IqlType.String)
 				.DefineProperty(p => p.PrecautionsToControlHazard, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Question, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<RiskAssessmentAnswer>()
 				.HasOne(p => p.Question)
@@ -436,14 +706,35 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<RiskAssessmentQuestion>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.Answers, p => p.AnswersCount)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<RiskAssessmentQuestion>()
 				.HasOne(p => p.CreatedByUser)
@@ -458,7 +749,13 @@ namespace Tunnel.ApiContext.Base
 				})
 				.DefineProperty(p => p.LoadingId, true, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Key, true, IqlType.String)
 				.DefineProperty(p => p.Title, true, IqlType.String)
 				.ConfigureProperty(p => p.Title, p => {
@@ -468,16 +765,34 @@ namespace Tunnel.ApiContext.Base
 					p.Title = "__key2";
 				})
 				.DefineProperty(p => p.Description, true, IqlType.String)
-				.DefineProperty(p => p.Category, false, IqlType.Unknown)
+				.ConfigureProperty(p => p.Description, p => {
+					p.Nullable = false;
+				})
+				.DefineProperty(p => p.Category, false, IqlType.Enum)
 				.DefineProperty(p => p.ClientId, true, IqlType.Integer)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Client, true, IqlType.Unknown)
 				.DefineProperty(p => p.Type, true, IqlType.Unknown)
 				.DefineProperty(p => p.Loading, true, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.Types, p => p.TypesCount)
 				.DefineCollectionProperty(p => p.Reports, p => p.ReportsCount)
 				.DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "NoTitleOrDescription", "Please enter either a title or a description")
@@ -519,20 +834,41 @@ namespace Tunnel.ApiContext.Base
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.PersonId, false, IqlType.Integer)
-				.DefineProperty(p => p.InspectionStatus, false, IqlType.Unknown)
+				.DefineProperty(p => p.InspectionStatus, false, IqlType.Enum)
 				.DefineProperty(p => p.StartTime, false, IqlType.Date)
 				.DefineProperty(p => p.EndTime, false, IqlType.Date)
-				.DefineProperty(p => p.ReasonForFailure, false, IqlType.Unknown)
+				.DefineProperty(p => p.ReasonForFailure, false, IqlType.Enum)
 				.DefineProperty(p => p.IsDesignRequired, false, IqlType.Boolean)
 				.DefineProperty(p => p.DrawingNumber, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.SiteInspection, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<PersonInspection>()
 				.HasOne(p => p.SiteInspection)
@@ -547,15 +883,36 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<PersonLoading>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
-				.DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "b90b2519-727a-44dd-a4b1-b1914b9e0698", "Please enter a loading name");
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
+				.DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "2a784166-a6ee-4d30-a20f-489cdae3591d", "Please enter a loading name");
 			
 			builder.EntityType<PersonLoading>()
 				.HasOne(p => p.CreatedByUser)
@@ -565,14 +922,35 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<PersonType>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Title, false, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.People, p => p.PeopleCount)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.PeopleMap, p => p.PeopleMapCount);
 			
 			builder.EntityType<PersonType>()
@@ -588,6 +966,9 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.Description, false, IqlType.String)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Person, false, IqlType.Unknown)
 				.DefineProperty(p => p.Type, false, IqlType.Unknown);
 			
@@ -606,20 +987,41 @@ namespace Tunnel.ApiContext.Base
 				.DefineProperty(p => p.PersonId, false, IqlType.Integer)
 				.DefineProperty(p => p.TypeId, false, IqlType.Integer)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Title, true, IqlType.String)
-				.DefineProperty(p => p.Status, false, IqlType.Unknown)
+				.DefineProperty(p => p.Status, false, IqlType.Enum)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.ActionsTaken, p => p.ActionsTakenCount)
 				.DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount)
 				.DefineProperty(p => p.Person, false, IqlType.Unknown)
 				.DefineProperty(p => p.Type, false, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
-				.DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "e966e113-2479-456b-8d17-ab2d7bc14ab0", "Please enter a valid report title")
-				.DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "4ebff465-4fac-45fd-a092-ae75d9a59a75", "Please enter less than five characters");
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
+				.DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "9ad102da-7b91-4459-bc99-5947735f7da8", "Please enter a valid report title")
+				.DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "3a5dbfb0-aeb1-414b-82de-8f4740baf69e", "Please enter less than five characters");
 			
 			builder.EntityType<PersonReport>()
 				.HasOne(p => p.Person)
@@ -639,24 +1041,45 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<Site>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.ParentId, true, IqlType.Integer)
 				.DefineProperty(p => p.ClientId, true, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Address, true, IqlType.String)
 				.DefineProperty(p => p.PostCode, true, IqlType.String)
 				.DefineProperty(p => p.Name, true, IqlType.String)
 				.DefineProperty(p => p.Left, false, IqlType.Integer)
 				.DefineProperty(p => p.Right, false, IqlType.Integer)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount)
 				.DefineCollectionProperty(p => p.AdditionalSendReportsTo, p => p.AdditionalSendReportsToCount)
 				.DefineProperty(p => p.Parent, true, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.Children, p => p.ChildrenCount)
 				.DefineProperty(p => p.Client, true, IqlType.Unknown)
 				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				})
 				.DefineCollectionProperty(p => p.SiteInspections, p => p.SiteInspectionsCount)
 				.DefineCollectionProperty(p => p.Users, p => p.UsersCount);
 			
@@ -678,18 +1101,39 @@ namespace Tunnel.ApiContext.Base
 			builder.EntityType<SiteInspection>()
 				.HasKey(p => p.Id, IqlType.Unknown)
 				.DefineProperty(p => p.Id, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Id, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.SiteId, false, IqlType.Integer)
 				.DefineProperty(p => p.CreatedByUserId, true, IqlType.String)
+				.ConfigureProperty(p => p.CreatedByUserId, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.StartTime, false, IqlType.Date)
 				.DefineProperty(p => p.EndTime, false, IqlType.Date)
 				.DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.Guid, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.CreatedDate, false, IqlType.Date)
+				.ConfigureProperty(p => p.CreatedDate, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.Version, false, IqlType.Integer)
+				.ConfigureProperty(p => p.Version, p => {
+					p.ReadOnly = true;
+				})
 				.DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String)
+				.ConfigureProperty(p => p.PersistenceKey, p => {
+					p.ReadOnly = true;
+				})
 				.DefineProperty(p => p.RiskAssessment, false, IqlType.Unknown)
 				.DefineCollectionProperty(p => p.PersonInspections, p => p.PersonInspectionsCount)
 				.DefineProperty(p => p.Site, false, IqlType.Unknown)
-				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown);
+				.DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown)
+				.ConfigureProperty(p => p.CreatedByUser, p => {
+					p.ReadOnly = true;
+				});
 			
 			builder.EntityType<SiteInspection>()
 				.HasOne(p => p.Site)

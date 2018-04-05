@@ -15,7 +15,7 @@ namespace Iql.Tests.Tests.OData
         public async Task TestPostUpdateDeleteSingleEntity()
         {
             var db = NewDb();
-            var client = new HazClient { PersistenceKey = new Guid("e4a693fc-1041-4dd9-9f57-7097dd7053a3") };
+            var client = EntityHelper.NewHazClient();
             await RequestLog.LogSessionAsync(async log =>
             {
                 // Add
@@ -74,10 +74,10 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
             Assert.AreEqual(@"{
   ""Id"": 0,
-  ""TypeId"": 0,
+  ""TypeId"": 7,
   ""Name"": ""New client 123"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
-  ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
+  ""CreatedDate"": ""2018-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
 }".CompressJson(), request.Body.Body.CompressJson());

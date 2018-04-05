@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Extensions;
+using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Extensions
 {
@@ -31,22 +32,34 @@ namespace Iql.Queryable.Extensions
             return name;
         }
 
-        private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type,object>();
-        public static object DefaultValue(this Type type)
+        private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type, object>();
+        public static object DefaultValue(this ITypeDefinition type)
         {
-            if (DefaultValues.ContainsKey(type))
-            {
-                return DefaultValues[type];
-            }
 #if TypeScript
-            var defaultValue = Activator.CreateInstance(type);
+            if (type.ConvertedFromType == nameof(Guid))
+            {
+                return Guid.Empty;
+            }
+            if (type.Kind == IqlType.Enum) 
+            {
+                return 0;
+            }
+            if(type.Type == typeof(DateTime))
+            {
+                return new DateTime();
+            }
+            return Activator.CreateInstance(type.Type);
 #else
+            if (DefaultValues.ContainsKey(type.Type))
+            {
+                return DefaultValues[type.Type];
+            }
             var defaultValue = typeof(IqlQueryableTypeExtensions)
                 .GetMethod(nameof(GetDefaultValue))
-                .InvokeGeneric(null, null, type);
-#endif
-            DefaultValues.Add(type, defaultValue);
+                .InvokeGeneric(null, null, type.Type);
+            DefaultValues.Add(type.Type, defaultValue);
             return defaultValue;
+#endif
         }
 
 #if !TypeScript

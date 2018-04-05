@@ -27,7 +27,7 @@ namespace Iql.Tests.Tests.OData
                     async () =>
                     {
                         var db = NewDb();
-                        var client = new HazClient { PersistenceKey = new Guid("e4a693fc-1041-4dd9-9f57-7097dd7053a3") };
+                        var client = EntityHelper.NewHazClient();
                         db.Clients.Add(client);
                         client.Name = "New client 123";
                         var result = await db.SaveChanges();
@@ -55,7 +55,7 @@ namespace Iql.Tests.Tests.OData
             {
                 Assert.AreEqual(0, log.Posts.Count);
                 var db = NewDb();
-                var client = new HazClient { PersistenceKey = new Guid("e4a693fc-1041-4dd9-9f57-7097dd7053a3") };
+                var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";
                 var result = await db.SaveChanges();
@@ -63,16 +63,18 @@ namespace Iql.Tests.Tests.OData
                 var request = log.Posts.Pop().Single();
                 var changes = db.DataStore.Tracking.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
-                Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);                
+                Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
+                var body = request.Body.Body;
+                var compressed = body.CompressJson();
                 Assert.AreEqual(@"{
   ""Id"": 0,
-  ""TypeId"": 0,
+  ""TypeId"": 7,
   ""Name"": ""New client 123"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
-  ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
+  ""CreatedDate"": ""2018-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
-}".CompressJson(), request.Body.Body.CompressJson());
+}".CompressJson(), compressed);
                 await db.SaveChanges();
                 Assert.AreEqual(0, log.Posts.Count);
             });

@@ -29,5 +29,17 @@ namespace Iql.Queryable.Extensions
                 typeDefinition.Kind);
         }
 
+        public static ITypeDefinition ChangeType(this ITypeDefinition typeDefinition, Type type)
+        {
+            return new TypeDetail(
+                type,
+                typeDefinition.Nullable,
+                typeDefinition.DeclaringType,
+                typeDefinition.ConvertedFromType,
+                typeDefinition.ElementType ?? type,
+                typeDefinition.IsCollection,
+                typeDefinition.Kind);
+        }
+
     }
 }

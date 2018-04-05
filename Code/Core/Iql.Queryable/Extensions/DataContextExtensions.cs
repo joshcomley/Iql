@@ -35,7 +35,7 @@ namespace Iql.Queryable.Extensions
             var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var keyProperty in entityConfiguration.Key.Properties)
             {
-                if (entity.GetPropertyValue(keyProperty).IsDefaultValue())
+                if (entity.GetPropertyValue(keyProperty).IsDefaultValue(keyProperty.TypeDefinition))
                 {
                     return false;
                 }

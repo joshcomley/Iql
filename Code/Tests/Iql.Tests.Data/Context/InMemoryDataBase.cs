@@ -12,6 +12,8 @@ namespace Iql.Tests.Context
         public IList<Person> People { get; set; } = new List<Person>();
         public IList<PersonType> PeopleTypes { get; set; } = new List<PersonType>();
         public IList<PersonTypeMap> PeopleTypeMap { get; set; } = new List<PersonTypeMap>();
+        public IList<PersonInspection> PersonInspections { get; set; } = new List<PersonInspection>();
+        public IList<ReportCategory> ReportCategories { get; set; } = new List<ReportCategory>();
         public IList<RiskAssessment> RiskAssessments { get; set; } = new List<RiskAssessment>();
         public IList<RiskAssessmentSolution> RiskAssessmentSolutions { get; set; } = new List<RiskAssessmentSolution>();
     }

@@ -1508,9 +1508,9 @@ namespace Tunnel.App.Data.Entities
 {
 	public enum PersonInspectionStatus
 	{
-		Pass = 0,
-		Fail = 1,
-		PassWithObservations = 2
+		Pass = 1,
+		Fail = 2,
+		PassWithObservations = 3
 	}
 }
 

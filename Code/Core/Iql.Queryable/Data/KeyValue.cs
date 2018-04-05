@@ -17,7 +17,7 @@ namespace Iql.Queryable.Data
                 if (!_hasDefaultValueSet)
                 {
                     _hasDefaultValueSet = true;
-                    _hasDefaultValue = Value.IsDefaultValue();
+                    _hasDefaultValue = Value.IsDefaultValue(ValueType);
                 }
 
                 return _hasDefaultValue;
@@ -55,7 +55,7 @@ namespace Iql.Queryable.Data
             {
                 return Equals(Value, null);
             }
-            return Equals(Value, type.DefaultValue());
+            return Equals(Value, ValueType.DefaultValue());
 #else
             return Equals(Value, null) || Equals(Value, Activator.CreateInstance(type));
 #endif

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Iql.Tests.Extensions
@@ -10,7 +11,10 @@ namespace Iql.Tests.Extensions
 #if TypeScript
             return JObject.Parse(json).ToString();
 #else
-            return JObject.Parse(json).ToString(Formatting.None);
+            JsonReader reader = new JsonTextReader(new StringReader(json));
+            reader.DateParseHandling = DateParseHandling.None;
+            var jObject = JObject.Load(reader);
+            return jObject.ToString(Formatting.None);
 #endif
         }
     }

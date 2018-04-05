@@ -116,7 +116,8 @@ namespace Iql.Queryable.Data.Tracking
             if (PersistenceKey != null)
             {
                 var persistenceKey = entity.GetPropertyValueAs<Guid>(PersistenceKey);
-                if (!Equals(persistenceKey, Guid.Empty) && EntitiesByPersistenceKey.ContainsKey(persistenceKey))
+                if (// ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                    !Equals(persistenceKey, null) && !Equals(persistenceKey, Guid.Empty) && EntitiesByPersistenceKey.ContainsKey(persistenceKey))
                 {
                     result.State = EntitiesByPersistenceKey[persistenceKey];
                     return result;

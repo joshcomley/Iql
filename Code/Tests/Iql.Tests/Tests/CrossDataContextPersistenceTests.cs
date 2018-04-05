@@ -18,6 +18,7 @@ namespace Iql.Tests.Tests
 
             var client = new Client();
             client.Name = "My client";
+            client.TypeId = 7;
 
             db1.Clients.Add(client);
             await db1.SaveChanges();
@@ -49,6 +50,7 @@ namespace Iql.Tests.Tests
 
             var client = new Client();
             client.Name = "My client";
+            client.TypeId = 7;
 
             db1.Clients.Add(client);
             await db1.SaveChanges();
