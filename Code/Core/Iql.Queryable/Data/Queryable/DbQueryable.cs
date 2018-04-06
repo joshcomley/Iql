@@ -83,20 +83,20 @@ namespace Iql.Queryable.Data.Queryable
             return WhereEquals(IqlQueryBuilder.BuildSearchPropertiesQuery(search, searchFields));
         }
 
-        public async Task<T> Single(Expression<Func<T, bool>> expression = null
+        public async Task<T> SingleAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
             )
         {
-            return (await SingleWithResponse(expression
+            return (await SingleWithResponseAsync(expression
 #if TypeScript
                                 , evaluateContext
 #endif
                 )).Data;
         }
 
-        public async Task<GetSingleResult<T>> SingleWithResponse(Expression<Func<T, bool>> expression = null
+        public async Task<GetSingleResult<T>> SingleWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -107,11 +107,11 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveSingle(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression expression
+        public async Task<GetSingleResult<T>> SingleQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -122,24 +122,24 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveSingle(result);
         }
 
-        public async Task<T> SingleOrDefault(Expression<Func<T, bool>> expression = null
+        public async Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
             )
         {
-            return (await SingleOrDefaultWithResponse(expression
+            return (await SingleOrDefaultWithResponseAsync(expression
 #if TypeScript
                                 , evaluateContext
 #endif
                 )).Data;
         }
 
-        public async Task<GetSingleResult<T>> SingleOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+        public async Task<GetSingleResult<T>> SingleOrDefaultWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -150,11 +150,11 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveSingleOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression expression
+        public async Task<GetSingleResult<T>> SingleOrDefaultQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -165,24 +165,24 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveSingleOrDefault(result);
         }
 
-        public async Task<T> First(Expression<Func<T, bool>> expression = null
+        public async Task<T> FirstAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return (await FirstWithResponse(expression
+            return (await FirstWithResponseAsync(expression
 #if TypeScript
                                 , evaluateContext
 #endif
             )).Data;
         }
 
-        public async Task<GetSingleResult<T>> FirstWithResponse(Expression<Func<T, bool>> expression = null
+        public async Task<GetSingleResult<T>> FirstWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -193,11 +193,11 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveFirst(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression expression
+        public async Task<GetSingleResult<T>> FirstQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -208,24 +208,24 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveFirst(result);
         }
 
-        public async Task<T> FirstOrDefault(Expression<Func<T, bool>> expression = null
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return (await FirstOrDefaultWithResponse(expression
+            return (await FirstOrDefaultWithResponseAsync(expression
 #if TypeScript
                                 , evaluateContext
 #endif
             )).Data;
         }
 
-        public async Task<GetSingleResult<T>> FirstOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+        public async Task<GetSingleResult<T>> FirstOrDefaultWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -236,11 +236,11 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveFirstOrDefault(result);
         }
 
-        public async Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression expression
+        public async Task<GetSingleResult<T>> FirstOrDefaultQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -251,25 +251,25 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveFirstOrDefault(result);
         }
 
 
-        public async Task<T> Last(Expression<Func<T, bool>> expression = null
+        public async Task<T> LastAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return (await LastWithResponse(expression
+            return (await LastWithResponseAsync(expression
 #if TypeScript
                                 , evaluateContext
 #endif
             )).Data;
         }
 
-        public async Task<GetSingleResult<T>> LastWithResponse(Expression<Func<T, bool>> expression = null
+        public async Task<GetSingleResult<T>> LastWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -280,11 +280,11 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveLast(result);
         }
 
-        public async Task<GetSingleResult<T>> LastQuery(WhereQueryExpression expression
+        public async Task<GetSingleResult<T>> LastQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -295,24 +295,24 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveLast(result);
         }
 
-        public async Task<T> LastOrDefault(Expression<Func<T, bool>> expression = null
+        public async Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return (await LastOrDefaultWithResponse(expression
+            return (await LastOrDefaultWithResponseAsync(expression
 #if TypeScript
                                 , evaluateContext
 #endif
             )).Data;
         }
 
-        public async Task<GetSingleResult<T>> LastOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+        public async Task<GetSingleResult<T>> LastOrDefaultWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -323,12 +323,12 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveLastOrDefault(result);
         }
 
 
-        public async Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression expression
+        public async Task<GetSingleResult<T>> LastOrDefaultQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -339,7 +339,7 @@ namespace Iql.Queryable.Data.Queryable
                                 , evaluateContext
 #endif
                 )
-                .ToListWithResponse();
+                .ToListWithResponseAsync();
             return ResolveLastOrDefault(result);
         }
 
@@ -348,13 +348,13 @@ namespace Iql.Queryable.Data.Queryable
             return this.OrderByProperty(EntityConfiguration.ResolveSearchProperties().First().Name, descending);
         }
 
-        public override async Task<DbList<T>> ToList()
+        public override async Task<DbList<T>> ToListAsync()
         {
-            var result = await ToListWithResponse();
+            var result = await ToListWithResponseAsync();
             return result?.Data;
         }
 
-        public async Task<GetDataResult<T>> ToListWithResponse()
+        public async Task<GetDataResult<T>> ToListWithResponseAsync()
         {
             return await DataContext.DataStore.Get(new GetDataOperation<T>(this, DataContext));
         }
@@ -375,9 +375,9 @@ namespace Iql.Queryable.Data.Queryable
             return DataContext.DataStore.Delete(entity);
         }
 
-        public async Task<SaveChangesResult> SaveChanges(T entity)
+        public async Task<SaveChangesResult> SaveChangesAsync(T entity)
         {
-            return await DataContext.DataStore.SaveChanges(
+            return await DataContext.DataStore.SaveChangesAsync(
                 new SaveChangesOperation(DataContext));
         }
 
@@ -625,10 +625,10 @@ namespace Iql.Queryable.Data.Queryable
             Delete((T)entity);
         }
 
-        public override async Task<object> WithKey(object key)
+        public override async Task<object> WithKeyAsync(object key)
         {
             var compositeKey = GetCompositeKeyFromSingularKey(key);
-            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefault();
+            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefaultAsync();
         }
 
         protected virtual CompositeKey GetCompositeKeyFromSingularKey(object key)

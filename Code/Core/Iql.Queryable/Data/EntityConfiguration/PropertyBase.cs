@@ -7,6 +7,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public abstract class PropertyBase : IPropertyMetadata
     {
+        public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
         public virtual bool? Nullable
         {
             get => TypeDefinition?.Nullable;
@@ -32,9 +33,23 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public PropertyInfo PropertyInfo { get; set; }
 #endif
         public RelationshipMatch Relationship { get; set; }
-        public PropertyKind Kind { get; set; }
+
+        public PropertyKind Kind
+        {
+            get => _kind;
+            set
+            {
+                if (value.HasFlag(PropertyKind.RelationshipKey) && Name == "Id")
+                {
+                    int a = 0;
+                }
+                _kind = value;
+            }
+        }
 
         private bool _searchKindSet;
+        private PropertyKind _kind;
+
         public PropertySearchKind SearchKind
         {
             get
@@ -42,7 +57,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 if (!_searchKindSet)
                 {
                     _searchKindSet = true;
-                    _searchKind = Kind == PropertyKind.Primitive && TypeDefinition.Type == typeof(string) && string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType)
+                    _searchKind = Kind.HasFlag(PropertyKind.Primitive) && 
+                                  !Kind.HasFlag(PropertyKind.RelationshipKey) &&
+                                  !Kind.HasFlag(PropertyKind.Key) &&
+                                  TypeDefinition.Type == typeof(string) && string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType)
                         ? PropertySearchKind.Secondary
                         : PropertySearchKind.None;
                 }

@@ -28,7 +28,7 @@ namespace Iql.Queryable.Data.Queryable
 
         public abstract void AddEntity(object entity);
         public abstract void DeleteEntity(object entity);
-        public abstract Task<object> WithKey(object key);
+        public abstract Task<object> WithKeyAsync(object key);
 
         public TQueryable Reverse()
         {
@@ -190,11 +190,11 @@ namespace Iql.Queryable.Data.Queryable
 
         public Type ItemType { get; }
 
-        public abstract Task<DbList<T>> ToList();
+        public abstract Task<DbList<T>> ToListAsync();
 
         async Task<IList> IQueryableBase.ToList()
         {
-            return await ToList();
+            return await ToListAsync();
         }
         public abstract TQueryable New();
         public bool HasDefaults { get; set; }

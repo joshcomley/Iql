@@ -54,7 +54,7 @@ namespace Iql.Queryable.Extensions
             var keyDefinition = configuration.Key;
             var root = new IqlRootReferenceExpression("entity", null);
             var checks = new List<IqlExpression>();
-            keyDefinition.Properties.ForEach(property =>
+            foreach (var property in keyDefinition.Properties)
             {
                 var keyValue = key.Keys.Single(k => k.Name == property.Name);
                 var propertyExpression = new IqlPropertyExpression(
@@ -66,7 +66,7 @@ namespace Iql.Queryable.Extensions
                     new IqlLiteralExpression(keyValue.Value.ToString(), keyValue.Value.GetType().ToIqlType())
                 );
                 checks.Add(check);
-            });
+            }
             var rootOperation = checks[0];
             for (var i = 1; i < checks.Count; i++)
             {

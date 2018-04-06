@@ -22,7 +22,7 @@ namespace Iql.Tests.Tests
                     Name = "Client 2"}
             });
             Db.ClientTypes.Add(clientType2);
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
         }
         [TestMethod]
         public async Task TestAddingNestedItem()

@@ -130,66 +130,63 @@ namespace Iql.Queryable.Data
             for (var i = 0; i < entityConfiguration.Properties.Count; i++)
             {
                 var property = entityConfiguration.Properties[i];
-                switch (property.Kind)
+                if (property.Kind.HasFlag(PropertyKind.Key) ||
+                    property.Kind.HasFlag(PropertyKind.Primitive) ||
+                    property.Kind.HasFlag(PropertyKind.RelationshipKey))
                 {
-                    case PropertyKind.Key:
-                    case PropertyKind.Primitive:
-                    case PropertyKind.RelationshipKey:
-                        var propertyValue = obj.GetPropertyValue(property);
-                        clone.SetPropertyValue(property, propertyValue);
-                        break;
-                    case PropertyKind.Relationship:
-                        if (cloneRelationships != RelationshipCloneMode.DoNotClone)
+                    var propertyValue = obj.GetPropertyValue(property);
+                    clone.SetPropertyValue(property, propertyValue);
+                }else if (property.Kind.HasFlag(PropertyKind.Relationship))
+                {
+                    if (cloneRelationships != RelationshipCloneMode.DoNotClone)
+                    {
+                        var value = obj.GetPropertyValue(property);
+                        if (value != null)
                         {
-                            var value = obj.GetPropertyValue(property);
-                            if (value != null)
+                            if (!property.TypeDefinition.IsCollection)
                             {
-                                if (!property.TypeDefinition.IsCollection)
+                                clone.SetPropertyValue(
+                                    property,
+                                    cloneRelationships == RelationshipCloneMode.KeysOnly
+                                        ? CloneKeysOnly(dataContext, property, value)
+                                        : value.CloneInternal(dataContext, property.TypeDefinition.ElementType, cloneRelationships,
+                                            clonedObjects, mergeMap)
+                                );
+                            }
+                            else
+                            {
+                                IList newValue;
+                                if (value is IRelatedList)
                                 {
-                                    clone.SetPropertyValue(
-                                        property,
-                                        cloneRelationships == RelationshipCloneMode.KeysOnly
-                                            ? CloneKeysOnly(dataContext, property, value)
-                                            : value.CloneInternal(dataContext, property.TypeDefinition.ElementType, cloneRelationships,
-                                                clonedObjects, mergeMap)
-                                    );
+                                    newValue = (value as IRelatedList).NewEmptyClone(clone);
                                 }
                                 else
                                 {
-                                    IList newValue;
-                                    if (value is IRelatedList)
-                                    {
-                                        newValue = (value as IRelatedList).NewEmptyClone(clone);
-                                    }
-                                    else
-                                    {
-                                        newValue = Activator.CreateInstance(value.GetType()) as IList;
-                                    }
-
-                                    var oldValue = value as IList;
-                                    if (oldValue != null && newValue != null)
-                                    {
-                                        for (var j = 0; j < oldValue.Count; j++)
-                                        {
-                                            var item = oldValue[j];
-                                            newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
-                                                ? CloneKeysOnly(dataContext, property, item)
-                                                : item.CloneInternal(dataContext, property.TypeDefinition.ElementType,
-                                                    cloneRelationships,
-                                                    clonedObjects,
-                                                    mergeMap));
-                                        }
-                                    }
-
-                                    clone.SetPropertyValue(
-                                        property,
-                                        newValue
-                                    );
+                                    newValue = Activator.CreateInstance(value.GetType()) as IList;
                                 }
+
+                                var oldValue = value as IList;
+                                if (oldValue != null && newValue != null)
+                                {
+                                    for (var j = 0; j < oldValue.Count; j++)
+                                    {
+                                        var item = oldValue[j];
+                                        newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
+                                            ? CloneKeysOnly(dataContext, property, item)
+                                            : item.CloneInternal(dataContext, property.TypeDefinition.ElementType,
+                                                cloneRelationships,
+                                                clonedObjects,
+                                                mergeMap));
+                                    }
+                                }
+
+                                clone.SetPropertyValue(
+                                    property,
+                                    newValue
+                                );
                             }
                         }
-
-                        break;
+                    }
                 }
             }
 
@@ -210,7 +207,7 @@ namespace Iql.Queryable.Data
             for (var i = 0; i < relationshipTypeConfiguration.Properties.Count; i++)
             {
                 var relationshipProperty = relationshipTypeConfiguration.Properties[i];
-                if (relationshipProperty.Kind == PropertyKind.Key)
+                if (relationshipProperty.Kind.HasFlag(PropertyKind.Key))
                 {
                     newValue.SetPropertyValue(relationshipProperty,
                         value.GetPropertyValue(relationshipProperty));

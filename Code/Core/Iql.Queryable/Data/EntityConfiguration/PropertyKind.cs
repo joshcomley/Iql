@@ -1,11 +1,14 @@
+using System;
+
 namespace Iql.Queryable.Data.EntityConfiguration
 {
+    [Flags]
     public enum PropertyKind
     {
-        Key = 1,
-        Primitive,
-        Relationship,
-        RelationshipKey,
-        Count
+        Primitive = 1,
+        Relationship = 2 << 0,
+        Key = Primitive | 2 << 1,
+        RelationshipKey = Primitive | 2 << 2,
+        Count = Primitive | 2 << 3
     }
 }

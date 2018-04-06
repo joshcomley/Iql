@@ -19,15 +19,14 @@ namespace Iql.Queryable.Data
         {
             foreach (var property in EntityConfiguration.Properties)
             {
-                switch (property.Kind)
+                if (property.Kind.HasFlag(PropertyKind.Count) ||
+                   property.Kind.HasFlag(PropertyKind.Key) ||
+                   property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+                   property.Kind.HasFlag(PropertyKind.Primitive)
+                   )
                 {
-                    case PropertyKind.Count:
-                    case PropertyKind.Key:
-                    case PropertyKind.RelationshipKey:
-                    case PropertyKind.Primitive:
-                        entity.SetPropertyValue(property,
-                            mergeWith.GetPropertyValue(property));
-                        break;
+                    entity.SetPropertyValue(property,
+                        mergeWith.GetPropertyValue(property));
                 }
             }
         }

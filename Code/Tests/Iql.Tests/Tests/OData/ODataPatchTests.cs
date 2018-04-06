@@ -20,9 +20,9 @@ namespace Iql.Tests.Tests.OData
                 var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";
-                var result = await db.SaveChanges();
+                var result = await db.SaveChangesAsync();
                 client.Name = "Some new name";
-                result = await db.SaveChanges();
+                result = await db.SaveChangesAsync();
                 var request = log.Patches.Pop().Single();
                 Assert.AreEqual(@"{
   ""Name"": ""Some new name"",

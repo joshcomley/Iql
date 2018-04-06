@@ -19,7 +19,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId = 53 });
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId = 52 });
 
-            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToList();
+            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToListAsync();
             Assert.IsNotNull(people[0].Types[0].Type);
             Assert.AreEqual(people.Single(p => p.TypeId == 52), people.Single(p => p.Types[0].TypeId == 52).Types[0].Type.People[0]);
         }
@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId = 53 });
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId = 52 });
 
-            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToList();
+            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToListAsync();
             var person = people.Single(p => p.Id == 62);
 
             Assert.AreEqual(52, person.Type.Id);

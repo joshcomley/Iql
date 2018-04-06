@@ -30,7 +30,7 @@ namespace Iql.Tests.Tests.OData
                         var client = EntityHelper.NewHazClient();
                         db.Clients.Add(client);
                         client.Name = "New client 123";
-                        var result = await db.SaveChanges();
+                        var result = await db.SaveChangesAsync();
                         var state = db.DataStore.Tracking.TrackingSet<HazClient>().GetEntityState(client);
                         Assert.AreEqual(false, result.Success);
                         Assert.AreEqual(true, state.IsNew);
@@ -58,7 +58,7 @@ namespace Iql.Tests.Tests.OData
                 var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";
-                var result = await db.SaveChanges();
+                var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
                 var request = log.Posts.Pop().Single();
                 var changes = db.DataStore.Tracking.GetUpdates();
@@ -75,7 +75,7 @@ namespace Iql.Tests.Tests.OData
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
 }".CompressJson(), compressed);
-                await db.SaveChanges();
+                await db.SaveChangesAsync();
                 Assert.AreEqual(0, log.Posts.Count);
             });
         }

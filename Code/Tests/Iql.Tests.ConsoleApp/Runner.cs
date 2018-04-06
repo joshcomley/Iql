@@ -52,7 +52,7 @@ namespace Iql.Tests.ConsoleApp
                     .Expand(e => e.Exam)
                     .Expand(e => e.Results)
                     //.ExpandAll()
-                    .ToList();
+                    .ToListAsync();
 
             ////var clients =
             ////    await db
@@ -85,16 +85,16 @@ namespace Iql.Tests.ConsoleApp
         {
             //var db = new HazceptionDataContext();
             var inMemoryDb = new HazceptionInMemoryDataBase();
-            inMemoryDb.ClientTypes = (await new HazceptionDataContext().ClientTypes.SetTracking(false).ToList()).ToList();
-            inMemoryDb.Clients = (await new HazceptionDataContext().Clients.SetTracking(false).ToList()).ToList();
-            inMemoryDb.Users = (await new HazceptionDataContext().Users.SetTracking(false).ToList()).ToList();
-            inMemoryDb.Videos = (await new HazceptionDataContext().Videos.SetTracking(false).ToList()).ToList();
-            inMemoryDb.Exams = (await new HazceptionDataContext().Exams.SetTracking(false).ToList()).ToList();
-            inMemoryDb.ExamManagers = (await new HazceptionDataContext().ExamManagers.SetTracking(false).ToList()).ToList();
-            inMemoryDb.ExamResults = (await new HazceptionDataContext().ExamResults.SetTracking(false).ToList()).ToList();
-            inMemoryDb.ExamCandidateResults = (await new HazceptionDataContext().ExamCandidateResults.SetTracking(false).ToList()).ToList();
-            inMemoryDb.ExamCandidates = (await new HazceptionDataContext().ExamCandidates.SetTracking(false).ToList()).ToList();
-            inMemoryDb.Hazards = (await new HazceptionDataContext().Hazards.SetTracking(false).ToList()).ToList();
+            inMemoryDb.ClientTypes = (await new HazceptionDataContext().ClientTypes.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.Clients = (await new HazceptionDataContext().Clients.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.Users = (await new HazceptionDataContext().Users.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.Videos = (await new HazceptionDataContext().Videos.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.Exams = (await new HazceptionDataContext().Exams.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.ExamManagers = (await new HazceptionDataContext().ExamManagers.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.ExamResults = (await new HazceptionDataContext().ExamResults.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.ExamCandidateResults = (await new HazceptionDataContext().ExamCandidateResults.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.ExamCandidates = (await new HazceptionDataContext().ExamCandidates.SetTracking(false).ToListAsync()).ToList();
+            inMemoryDb.Hazards = (await new HazceptionDataContext().Hazards.SetTracking(false).ToListAsync()).ToList();
 
             //var examCandidateResults =
             //    await db

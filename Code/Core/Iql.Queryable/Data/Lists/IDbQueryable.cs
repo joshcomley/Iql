@@ -7,6 +7,6 @@ namespace Iql.Queryable.Data.Lists
     {
         void DeleteEntity(object entity);
         void AddEntity(object entity);
-        Task<object> WithKey(object key);
+        Task<object> WithKeyAsync(object key);
     }
 }

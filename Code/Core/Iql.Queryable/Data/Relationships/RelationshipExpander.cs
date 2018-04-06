@@ -165,7 +165,7 @@ namespace Iql.Queryable.Data.Relationships
             {
                 var targetCountProperty = relationship.Target.Configuration.FindProperty(
                     $"{relationship.Target.Property.Name}Count");
-                if (targetCountProperty != null && targetCountProperty.Kind == PropertyKind.Count)
+                if (targetCountProperty != null && targetCountProperty.Kind.HasFlag(PropertyKind.Count))
                 {
                     foreach (var targetEntity in targetDictionary)
                     {

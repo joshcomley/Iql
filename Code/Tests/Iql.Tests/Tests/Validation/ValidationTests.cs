@@ -20,7 +20,7 @@ namespace Iql.Tests.Tests.Validation
             inspection.SiteId = 0;
             var db = new AppDbContext();
             db.SiteInspections.Add(inspection);
-            var saveChangesResult = await db.SaveChanges();
+            var saveChangesResult = await db.SaveChangesAsync();
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(SiteInspection.Site),
@@ -35,7 +35,7 @@ namespace Iql.Tests.Tests.Validation
             reportCategory.Name = "";
             var db = new AppDbContext();
             db.ReportCategories.Add(reportCategory);
-            var saveChangesResult = await db.SaveChanges();
+            var saveChangesResult = await db.SaveChangesAsync();
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(ReportCategory.Name),
@@ -50,7 +50,7 @@ namespace Iql.Tests.Tests.Validation
             personInspection.InspectionStatus = 0;
             var db = new AppDbContext();
             db.PersonInspections.Add(personInspection);
-            var saveChangesResult = await db.SaveChanges();
+            var saveChangesResult = await db.SaveChangesAsync();
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(PersonInspection.InspectionStatus),
@@ -66,7 +66,7 @@ namespace Iql.Tests.Tests.Validation
             personTypeMap.TypeId = 0;
             var db = new AppDbContext();
             db.PersonTypesMap.Add(personTypeMap);
-            var saveChangesResult = await db.SaveChanges();
+            var saveChangesResult = await db.SaveChangesAsync();
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
@@ -86,7 +86,7 @@ namespace Iql.Tests.Tests.Validation
             personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.TypeId), null);
             var db = new AppDbContext();
             db.PersonTypesMap.Add(personTypeMap);
-            var saveChangesResult = await db.SaveChanges();
+            var saveChangesResult = await db.SaveChangesAsync();
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
@@ -106,7 +106,7 @@ namespace Iql.Tests.Tests.Validation
             personInspection.InspectionStatus = PersonInspectionStatus.PassWithObservations;
             var db = new AppDbContext();
             db.PersonInspections.Add(personInspection);
-            var saveChangesResult = await db.SaveChanges();
+            var saveChangesResult = await db.SaveChangesAsync();
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(PersonInspection.StartTime),
@@ -167,7 +167,7 @@ namespace Iql.Tests.Tests.Validation
             person.Title = "a";
             var db = new AppDbContext();
             db.People.Add(person);
-            var result = await db.SaveChanges();
+            var result = await db.SaveChangesAsync();
             Assert.AreEqual(false, result.Success);
             Assert.AreEqual(1, result.Results.Count);
             var entityValidationResults = result.Results[0].EntityValidationResults;

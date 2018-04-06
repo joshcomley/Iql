@@ -65,7 +65,7 @@ namespace Iql.Tests.ConsoleApp
                     .Expand(e => e.Exam)
                     .Expand(e => e.Results)
                     //.ExpandAll()
-                    .ToList();
+                    .ToListAsync();
             //var clients =
             //    await dataContext
             //        .Clients

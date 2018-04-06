@@ -89,7 +89,7 @@ namespace Iql.Queryable.Data.Lists
 
         public async Task<DbList<T>> NextPage()
         {
-            var result = await NewNextPageQuery().ToList();
+            var result = await NewNextPageQuery().ToListAsync();
             return result;
         }
 
@@ -101,7 +101,7 @@ namespace Iql.Queryable.Data.Lists
 
         public async Task<DbList<T>> PreviousPage()
         {
-            var result = await NewPreviousPageQuery().ToList();
+            var result = await NewPreviousPageQuery().ToListAsync();
             return result;
         }
 
@@ -112,7 +112,7 @@ namespace Iql.Queryable.Data.Lists
             queryable.Operations.Clear();
             queryable.Operations.AddRange(operations);
             queryable.Operations.Add(new SkipOperation((page - 1) * pageSize));
-            var result = await queryable.ToList();
+            var result = await queryable.ToListAsync();
             return result;
         }
 

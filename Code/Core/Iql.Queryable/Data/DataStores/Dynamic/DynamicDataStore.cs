@@ -44,11 +44,11 @@ namespace Iql.Queryable.Data.DataStores.Dynamic
             return await GetDataStore().PerformGet(operation);
         }
 
-        public override async Task<SaveChangesResult> SaveChanges(SaveChangesOperation operation)
+        public override async Task<SaveChangesResult> SaveChangesAsync(SaveChangesOperation operation)
         {
             //InternalDataStore.SetQueue(GetQueue());
             //SetQueue(new List<IQueuedOperation>());
-            return await GetDataStore().SaveChanges(operation);
+            return await GetDataStore().SaveChangesAsync(operation);
         }
     }
 }

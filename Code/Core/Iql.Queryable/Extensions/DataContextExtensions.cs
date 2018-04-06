@@ -62,7 +62,7 @@ namespace Iql.Queryable.Extensions
             foreach (var property in entityConfiguration.Properties)
             {
                 var propertyValue = entity.GetPropertyValue(property);
-                if (propertyValue != null || !property.TypeDefinition.Nullable && property.Kind != PropertyKind.Relationship)
+                if (propertyValue != null || !property.TypeDefinition.Nullable && !property.Kind.HasFlag(PropertyKind.Relationship))
                 {
                     var state = new PropertyState(property, null);
                     properties.Add(state);

@@ -52,7 +52,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Name = name;
             ReadOnly = readOnly;
             CountRelationship = countRelationship;
-            Kind = PropertyKind.Primitive;
+            Kind = 0;
             TypeDefinition = new TypeDetail(
                 propertyType,
                 nullable,

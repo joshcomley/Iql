@@ -85,7 +85,7 @@ namespace Iql.OData.Json
                 //    propertyValue = (propertyValue as IList).ToArray(property.Property.ElementType);
                 //}
                 var propertyValue = entity.GetPropertyValue(property.Property);
-                if (property.Property.Kind == PropertyKind.Count || property.Property.Kind == PropertyKind.Relationship)
+                if (property.Property.Kind.HasFlag(PropertyKind.Count) || property.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
                     continue;
                 }

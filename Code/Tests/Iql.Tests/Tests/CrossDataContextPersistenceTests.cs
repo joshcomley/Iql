@@ -21,11 +21,11 @@ namespace Iql.Tests.Tests
             client.TypeId = 7;
 
             db1.Clients.Add(client);
-            await db1.SaveChanges();
+            await db1.SaveChangesAsync();
 
-            var db1Client = await db1.Clients.Single(c => c.Id == 1);
-            var db1Clientb = await db1.Clients.Single(c => c.Id == 1);
-            var db2Client = await db2.Clients.Single(c => c.Id == 1);
+            var db1Client = await db1.Clients.SingleAsync(c => c.Id == 1);
+            var db1Clientb = await db1.Clients.SingleAsync(c => c.Id == 1);
+            var db2Client = await db2.Clients.SingleAsync(c => c.Id == 1);
 
             Assert.AreEqual(client.Name, db1Client.Name);
             Assert.AreEqual(client.Name, db2Client.Name);
@@ -35,7 +35,7 @@ namespace Iql.Tests.Tests
 
             client.Name = "My modified client";
 
-            await db1.SaveChanges();
+            await db1.SaveChangesAsync();
 
             Assert.AreEqual(client.Name, db1Client.Name);
             Assert.AreEqual(client.Name, db2Client.Name);
@@ -53,11 +53,11 @@ namespace Iql.Tests.Tests
             client.TypeId = 7;
 
             db1.Clients.Add(client);
-            await db1.SaveChanges();
+            await db1.SaveChangesAsync();
 
-            var db1Client = await db1.Clients.Single(c => c.Id == 1);
-            var db1Clientb = await db1.Clients.Single(c => c.Id == 1);
-            var db2Client = await db2.Clients.Single(c => c.Id == 1);
+            var db1Client = await db1.Clients.SingleAsync(c => c.Id == 1);
+            var db1Clientb = await db1.Clients.SingleAsync(c => c.Id == 1);
+            var db2Client = await db2.Clients.SingleAsync(c => c.Id == 1);
 
             Assert.AreEqual(client.Name, db1Client.Name);
             Assert.AreEqual(client.Name, db2Client.Name);
@@ -67,7 +67,7 @@ namespace Iql.Tests.Tests
 
             var newName = "My modified client";
             AppDbContext.InMemoryDb.Clients[0].Name = newName;
-            await db1.Clients.Single(c => c.Id == 1);
+            await db1.Clients.SingleAsync(c => c.Id == 1);
 
             Assert.AreEqual(newName, db1Client.Name);
             Assert.AreEqual(newName, db2Client.Name);
@@ -85,13 +85,13 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 1, Name = "Type 1" });
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 2, Name = "Type 2" });
 
-            var clients = await Db.Clients.ToList();
-            var clientTypes = await Db.ClientTypes.ToList();
+            var clients = await Db.Clients.ToListAsync();
+            var clientTypes = await Db.ClientTypes.ToListAsync();
 
             clients[0].TypeId = clientTypes[1].Id;
 
             Assert.AreEqual(1, inMemoryDbClient1.TypeId);
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
             Assert.AreEqual(2, inMemoryDbClient1.TypeId);
             Assert.AreEqual(0, clientTypes[0].Clients.Count);
             Assert.AreEqual(2, clientTypes[1].Clients.Count);
@@ -111,13 +111,13 @@ namespace Iql.Tests.Tests
             client.Name = "My client";
 
             db1.Clients.Add(client);
-            await db1.SaveChanges();
+            await db1.SaveChangesAsync();
 
-            var db2Clients = await db2.Clients.ToList();
+            var db2Clients = await db2.Clients.ToListAsync();
             var newName = "My modified client";
             AppDbContext.InMemoryDb.Clients[0].Name = newName;
             //var db1Clients = await db1.Clients.ToList();
-            var db1ClientTypes = await db1.ClientTypes.Expand(c => c.Clients).ToList();
+            var db1ClientTypes = await db1.ClientTypes.Expand(c => c.Clients).ToListAsync();
 
             Assert.AreEqual(client.Name, client.Name);
             Assert.AreEqual(client.Name, db2Clients[0].Name);
@@ -137,17 +137,17 @@ namespace Iql.Tests.Tests
 
             db1.ClientTypes.Add(clientType);
 
-            await db1.SaveChanges();
+            await db1.SaveChangesAsync();
 
-            var db1Clients = await db1.ClientTypes.ToList();
-            var db2Clients = await db2.ClientTypes.ToList();
+            var db1Clients = await db1.ClientTypes.ToListAsync();
+            var db2Clients = await db2.ClientTypes.ToListAsync();
 
             Assert.AreEqual(1, db1Clients.Count);
             Assert.AreEqual(db1Clients.Count, db2Clients.Count);
 
             db1.ClientTypes.Delete(clientType);
 
-            await db1.SaveChanges();
+            await db1.SaveChangesAsync();
 
             Assert.AreEqual(0, db1Clients.Count);
             Assert.AreEqual(db1Clients.Count, db2Clients.Count);

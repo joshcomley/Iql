@@ -12,6 +12,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
         IValidationCollection Validation { get; }
         RelationshipMatch Relationship { get; set; }
+        List<RelationshipMatch> RelationshipSources { get; set; }
         IProperty CountRelationship { get; }
         ITypeDefinition TypeDefinition { get; set; }
         List<object> Helpers { get; set; }

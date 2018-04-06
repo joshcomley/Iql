@@ -47,18 +47,18 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 IqlPropertyExpression;
             ;
             var sourceProperty = Source.Configuration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName, typeof(TKey));
-            if (sourceProperty != null && sourceProperty.Kind == PropertyKind.Primitive)
+            if (sourceProperty != null && sourceProperty.Kind.HasFlag(PropertyKind.Primitive))
             {
-                sourceProperty.Kind = PropertyKind.RelationshipKey;
+                sourceProperty.Kind = sourceProperty.Kind | PropertyKind.RelationshipKey;
                 sourceProperty.Relationship = Source.Configuration.FindRelationship(Source.Property.Name);
             }
             var targetProperty = Target.Configuration.FindOrDefinePropertyByName(
                 targetIqlProperty.PropertyName,
                 typeof(TKey));
-            if (targetProperty != null && targetProperty.Kind == PropertyKind.Primitive)
+            if (targetProperty != null && targetProperty.Kind.HasFlag(PropertyKind.Primitive))
             {
-                targetProperty.Kind = PropertyKind.RelationshipKey;
-                targetProperty.Relationship = Target.Configuration.FindRelationship(Target.Property.Name);
+                //targetProperty.Kind = targetProperty.Kind | PropertyKind.RelationshipKey;
+                targetProperty.RelationshipSources.Add(Target.Configuration.FindRelationship(Target.Property.Name));
             }
             Constraints.Add(new RelationshipConstraint(
                 _configuration.EntityType<TSource>().FindProperty(sourceIqlProperty.PropertyName),

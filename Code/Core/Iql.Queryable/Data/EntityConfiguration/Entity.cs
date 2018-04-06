@@ -12,7 +12,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             TEntity clone,
             IList<TEntity> data) where TEntity : class
         {
-            var key = dataContext.EntityConfigurationContext.GetEntity<TEntity>().GetKey();
+            var key = dataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
             if (key == null)
             {
                 throw new Exception($"No key has been defined for entity \"{typeof(TEntity).Name}\"");

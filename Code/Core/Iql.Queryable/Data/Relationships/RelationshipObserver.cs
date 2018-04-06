@@ -308,27 +308,27 @@ namespace Iql.Queryable.Data.Relationships
             _propertyChangeIgnorer.RunIfNotAlreadyIgnored(
                 () =>
                 {
-                    switch (property.Kind)
+                    if (property.Kind.HasFlag(PropertyKind.Key))
                     {
-                        case PropertyKind.Key:
-                            ProcessTargetKeyChange(propertyChangeEvent.Entity, entityConfiguration);
-                            break;
-                        case PropertyKind.RelationshipKey:
-                            ProcessRelationshipKeyChange(
+                        ProcessTargetKeyChange(propertyChangeEvent.Entity, entityConfiguration);
+                    }
+                    else if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                    {
+                        ProcessRelationshipKeyChange(
+                            propertyChangeEvent.Entity,
+                            property,
+                            propertyChangeEvent.OldValue);
+                    }
+                    else if (property.Kind.HasFlag(PropertyKind.Relationship))
+                    {
+                        if (!property.TypeDefinition.IsCollection)
+                        {
+                            ProcessRelationshipReferenceChange(
                                 propertyChangeEvent.Entity,
                                 property,
-                                propertyChangeEvent.OldValue);
-                            break;
-                        case PropertyKind.Relationship:
-                            if (!property.TypeDefinition.IsCollection)
-                            {
-                                ProcessRelationshipReferenceChange(
-                                    propertyChangeEvent.Entity,
-                                    property,
-                                    propertyChangeEvent.OldValue,
-                                    propertyChangeEvent.NewValue);
-                            }
-                            break;
+                                propertyChangeEvent.OldValue,
+                                propertyChangeEvent.NewValue);
+                        }
                     }
                 },
                 new[] { property },

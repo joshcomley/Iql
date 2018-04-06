@@ -25,7 +25,7 @@ namespace Iql.Tests.Tests
             clientType2.Name = "Type 2";
             Db.ClientTypes.Add(clientType1);
             Db.ClientTypes.Add(clientType2);
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
             var client = new Client();
             client.Name = "Client 1";
             Db.Clients.Add(client);
@@ -69,7 +69,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(clientType3.Id, client.TypeId);
 
             // Save the new type
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
             // The TypeId property should have auto-updated
             Assert.AreEqual(3, clientType3.Id);
             Assert.AreEqual(clientType3.Id, client.TypeId);
@@ -85,7 +85,7 @@ namespace Iql.Tests.Tests
         public async Task ExpandShouldIncludeExpandedEntities()
         {
             InsertData();
-            var clientTypes = await Db.ClientTypes.Expand(ct => ct.Clients).ToList();
+            var clientTypes = await Db.ClientTypes.Expand(ct => ct.Clients).ToListAsync();
             var clientType1 = clientTypes.Single(ct => ct.Id == 72);
             var clientType2 = clientTypes.Single(ct => ct.Id == 73);
             Assert.AreEqual(2, clientTypes.Count);
@@ -97,7 +97,7 @@ namespace Iql.Tests.Tests
         public async Task FetchingAChangedTargetShouldPersistChangesToChildCollections()
         {
             InsertData();
-            var clientTypes = await Db.ClientTypes.Expand(ct => ct.Clients).ToList();
+            var clientTypes = await Db.ClientTypes.Expand(ct => ct.Clients).ToListAsync();
             var clientType1 = clientTypes.Single(ct => ct.Id == 72);
             var clientType2 = clientTypes.Single(ct => ct.Id == 73);
             var client = clientType1.Clients[0];
@@ -118,7 +118,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, clientType1.Clients.Count);
             Assert.AreEqual(1, clientType2.Clients.Count);
 
-            var updatedClient = await Db.Clients.WithKey(7);
+            var updatedClient = await Db.Clients.WithKeyAsync(7);
             Assert.AreEqual(updatedClient, client);
         }
 
@@ -150,7 +150,7 @@ namespace Iql.Tests.Tests
         public async Task ApplyToLiveObjects(ChangeOneToManySourceType type)
         {
             InsertData();
-            var clientTypes = await Db.ClientTypes.Expand(ct => ct.Clients).ToList();
+            var clientTypes = await Db.ClientTypes.Expand(ct => ct.Clients).ToListAsync();
             var clientType1 = clientTypes.Single(ct => ct.Id == 72);
             var clientType2 = clientTypes.Single(ct => ct.Id == 73);
             var client = clientType1.Clients[0];
@@ -252,11 +252,11 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId = 53 });
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId = 52 });
 
-            var people = await Db.People.ToList();
+            var people = await Db.People.ToListAsync();
             var person = people.Single(p => p.Id == 62);
 
             Assert.IsNull(person.Type);
-            var personType = await Db.PersonTypes.Where(pt => pt.Id == 52).Single();
+            var personType = await Db.PersonTypes.Where(pt => pt.Id == 52).SingleAsync();
             Assert.AreEqual(52, person.Type.Id);
             Assert.AreEqual(personType, person.Type);
             Assert.IsTrue(personType.People.Contains(person));

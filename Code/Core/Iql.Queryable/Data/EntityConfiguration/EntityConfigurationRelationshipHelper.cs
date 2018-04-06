@@ -22,9 +22,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
                     var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
-                    if (constraintProperty != null && constraintProperty.Kind != PropertyKind.RelationshipKey && constraintProperty.Kind != PropertyKind.Key)
+                    if (constraintProperty != null &&
+                        !constraintProperty.Kind.HasFlag(PropertyKind.RelationshipKey) &&
+                        !constraintProperty.Kind.HasFlag(PropertyKind.Key))
                     {
-                        constraintProperty.Kind = PropertyKind.RelationshipKey;
+                        constraintProperty.Kind = constraintProperty.Kind | PropertyKind.RelationshipKey;
                         constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.Name);
                     }
                 }
@@ -40,9 +42,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 {
                     foreach (var constraint in relationshipMatch.Relationship.Constraints)
                     {
-                        if (constraint.SourceKeyProperty.Name == definition.Name && definition.Kind != PropertyKind.RelationshipKey && definition.Kind != PropertyKind.Key)
+                        if (constraint.SourceKeyProperty.Name == definition.Name &&
+                            !definition.Kind.HasFlag(PropertyKind.RelationshipKey) &&
+                            !definition.Kind.HasFlag(PropertyKind.Key))
                         {
-                            definition.Kind = PropertyKind.RelationshipKey;
+                            definition.Kind = definition.Kind | PropertyKind.RelationshipKey;
                             definition.Relationship = relationshipMatch;
                         }
                     }

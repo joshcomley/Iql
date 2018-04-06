@@ -44,7 +44,7 @@ namespace Iql.Tests.Tests
                     },
                     async () =>
                     {
-                        await db.SaveChanges();
+                        await db.SaveChangesAsync();
                     });
                 DbList<Client> clients = null;
                 await log.InterceptAsync((method, uri, request) =>
@@ -61,7 +61,7 @@ namespace Iql.Tests.Tests
                     },
                     async () =>
                     {
-                        clients = await db.Clients.ToList();
+                        clients = await db.Clients.ToListAsync();
                     });
                 Assert.AreEqual(1, clients.Count);
                 Assert.AreSame(client, clients[0]);
@@ -75,7 +75,7 @@ namespace Iql.Tests.Tests
             var examCandidateResults =
                 await db
                     .ExamCandidateResults
-                    .ToList();
+                    .ToListAsync();
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace Iql.Tests.Tests
                 await db
                     .ExamCandidateResults
                     .Expand(e => e.Client)
-                    .ToList();
+                    .ToListAsync();
         }
 
         [TestMethod]
@@ -97,11 +97,11 @@ namespace Iql.Tests.Tests
             var examCandidateResults1 =
                 await db1
                     .ExamCandidateResults
-                    .ToList();
+                    .ToListAsync();
             var examCandidateResults2 =
                 await db2
                     .ExamCandidateResults
-                    .ToList();
+                    .ToListAsync();
             Assert.AreEqual(examCandidateResults1.Count, examCandidateResults2.Count);
             for (var i = 0; i < examCandidateResults2.Count; i++)
             {
@@ -130,7 +130,7 @@ namespace Iql.Tests.Tests
                         .Expand(e => e.Exam)
                         .Expand(e => e.Results)
                         //.ExpandAll()
-                        .ToList();
+                        .ToListAsync();
             }
             catch (Exception e)
             {

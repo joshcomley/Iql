@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Iql.Queryable.Data.Lists;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -14,7 +16,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public bool IsGeneratedRemotely { get; set; }
         public Type Type { get; set; }
+        public bool HasRelationshipKeys => Properties.Any(p =>
+            p.Relationship != null && !p.Relationship.ThisIsTarget);
         public Type KeyType { get; set; }
-        public List<IProperty> Properties { get; set; }
+        public IList<IProperty> Properties { get; set; }
     }
 }

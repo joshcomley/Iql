@@ -19,9 +19,9 @@ namespace Iql.Tests.Tests.OData
                 var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";
-                await db.SaveChanges();
+                await db.SaveChangesAsync();
                 db.Clients.Delete(client);
-                await db.SaveChanges();
+                await db.SaveChangesAsync();
                 var request = log.Deletes.Pop().Single();
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
                 Assert.IsNull(request.Body);

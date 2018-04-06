@@ -47,7 +47,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 63 });
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 3, SiteInspectionId = 62 });
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
-            var siteInspections = await Db.SiteInspections.Expand(s => s.RiskAssessment).ToList();
+            var siteInspections = await Db.SiteInspections.Expand(s => s.RiskAssessment).ToListAsync();
             Db.DeleteEntity(siteInspections[0].RiskAssessment
 #if TypeScript
                 , typeof(RiskAssessment)
@@ -66,7 +66,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 26, RiskAssessmentId = 3 });
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 27, RiskAssessmentId = 4 });
-            var siteInspections = await Db.SiteInspections.ExpandSingle(s => s.RiskAssessment, q => q.Expand(r => r.RiskAssessmentSolution)).ToList();
+            var siteInspections = await Db.SiteInspections.ExpandSingle(s => s.RiskAssessment, q => q.Expand(r => r.RiskAssessmentSolution)).ToListAsync();
             var riskAssessment = siteInspections[0].RiskAssessment;
             var tracking = Db.DataStore.Tracking;
             //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
@@ -106,11 +106,11 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId =  53});
             AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId =  52});
 
-            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToList();
+            var people = await Db.People.ExpandCollection(s => s.Types, q => q.Expand(r => r.Type)).ToListAsync();
             Assert.IsNotNull(people[0].Types[0].Type);
             Assert.AreEqual(people.Single(p => p.TypeId == 52), people.Single(p => p.Types[0].TypeId == 52).Types[0].Type.People[0]);
 
-            var personTypeMap = await Db.PersonTypesMap.Where(p => p.PersonId == 62 && p.TypeId == 53).Single();
+            var personTypeMap = await Db.PersonTypesMap.Where(p => p.PersonId == 62 && p.TypeId == 53).SingleAsync();
             var person = people.Single(p => p.Id == 62);
             Db.People.Delete(person);
             Assert.IsTrue(Db.DataStore.Tracking.IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
@@ -130,7 +130,7 @@ namespace Iql.Tests.Tests
             riskAssessment2.SiteInspectionId = 72;
             Db.RiskAssessments.Add(riskAssessment1);
             Db.RiskAssessments.Add(riskAssessment2);
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
             var queuedOperations = Db.DataStore.GetQueue().ToList();
             Assert.AreEqual(0, queuedOperations.Count);
             Assert.IsNull(riskAssessment1.SiteInspection);
@@ -155,7 +155,7 @@ namespace Iql.Tests.Tests
 
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
-            var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).WithKey(62);
+            var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).WithKeyAsync(62);
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
             queuedOperations = Db.DataStore.GetQueue().ToList();
@@ -242,13 +242,13 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 39, RiskAssessmentId = 28 });
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 40, RiskAssessmentId = 29 });
 
-            var siteInspections = await Db.SiteInspections.ToList();
+            var siteInspections = await Db.SiteInspections.ToListAsync();
             foreach (var inspection in siteInspections)
             {
                 Assert.IsNull(inspection.RiskAssessment);
             }
 
-            var riskAssessments = await Db.RiskAssessments.ToList();
+            var riskAssessments = await Db.RiskAssessments.ToListAsync();
             foreach (var inspection in siteInspections)
             {
                 Assert.AreEqual(inspection.RiskAssessment.SiteInspectionId, inspection.RiskAssessment.SiteInspection.Id);
@@ -260,7 +260,7 @@ namespace Iql.Tests.Tests
                 Assert.IsNull(riskAssessment.RiskAssessmentSolution);
             }
 
-            var riskAssessmentSolutions = await Db.RiskAssessmentSolutions.ToList();
+            var riskAssessmentSolutions = await Db.RiskAssessmentSolutions.ToListAsync();
             foreach (var riskAssessment in riskAssessments)
             {
                 Assert.IsNotNull(riskAssessment.RiskAssessmentSolution);

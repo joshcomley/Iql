@@ -346,7 +346,7 @@ namespace Iql.Queryable.Data.DataStores
             throw new NotImplementedException();
         }
 
-        public virtual async Task<SaveChangesResult> SaveChanges(
+        public virtual async Task<SaveChangesResult> SaveChangesAsync(
             SaveChangesOperation operation)
         {
             // Sets could be added to whilst detecting changes

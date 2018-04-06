@@ -35,14 +35,14 @@ namespace Iql.Tests.Tests.OData
         private static async Task AssertNoChanges(RequestLog log, HazceptionDataContext db)
         {
             log.AssertEmpty();
-            await db.SaveChanges();
+            await db.SaveChangesAsync();
             log.AssertEmpty();
         }
 
         private static async Task AssertDeleteClient(HazceptionDataContext db, HazClient client, RequestLog log)
         {
             db.Clients.Delete(client);
-            await db.SaveChanges();
+            await db.SaveChangesAsync();
             var deleteRequest = log.Deletes.Pop().Single();
             log.AssertEmpty();
             Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", deleteRequest.Uri);
@@ -52,7 +52,7 @@ namespace Iql.Tests.Tests.OData
         private static async Task AssertUpdateClient(HazceptionDataContext db, HazClient client, RequestLog log)
         {
             client.Name = "Some new name";
-            await db.SaveChanges();
+            await db.SaveChangesAsync();
             var patch = log.Patches.Pop().Single();
             log.AssertEmpty();
             Assert.AreEqual(@"{
@@ -66,7 +66,7 @@ namespace Iql.Tests.Tests.OData
         {
             db.Clients.Add(client);
             client.Name = "New client 123";
-            await db.SaveChanges();
+            await db.SaveChangesAsync();
             var request = log.Posts.Pop().Single();
             log.AssertEmpty();
             var changes = db.DataStore.Tracking.GetUpdates();

@@ -179,7 +179,7 @@ namespace Iql.Queryable.Data.Queryable
                 typeConstructor
             );
             var property = sourceEntityConfiguration.FindProperty(propertyToExpand.PropertyName);
-            var isCount = property.Kind == PropertyKind.Count;
+            var isCount = property.Kind.HasFlag(PropertyKind.Count);
             var relationship =
                 isCount
                     ? property.CountRelationship.Relationship

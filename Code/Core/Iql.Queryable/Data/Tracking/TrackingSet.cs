@@ -48,7 +48,7 @@ namespace Iql.Queryable.Data.Tracking
         protected IProperty PersistenceKey { get; set; }
 
         public void SetKey(object entity, Action action)
-        {            
+        {
             _keyChangeAllower.IgnoreAndRunEvenIfAlreadyIgnored(action,
                 EntityConfiguration.Key.Properties.ToArray(),
                 entity);
@@ -179,7 +179,7 @@ namespace Iql.Queryable.Data.Tracking
         public void RemoveEntity(T entity)
         {
             var state = GetEntityState(entity);
-            entity = (T) state.Entity;
+            entity = (T)state.Entity;
             var iEntity = entity as IEntity;
             if (_entityObservers.ContainsKey(entity))
             {
@@ -274,9 +274,9 @@ namespace Iql.Queryable.Data.Tracking
 
                 IEntityStateBase entityState = null;
                 var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-                if (property.Kind == PropertyKind.Key)
+                if (property.Kind.HasFlag(PropertyKind.Key))
                 {
-                    if (!_keyChangeAllower.AreAnyIgnored(new[] {property}, propertyChange.Entity))
+                    if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
                     {
                         entityState = GetEntityState(propertyChange.Entity);
                         if (entityState.IsNew)
@@ -290,7 +290,7 @@ namespace Iql.Queryable.Data.Tracking
                     }
                 }
 
-                if (property.Kind == PropertyKind.Key)
+                if (property.Kind.HasFlag(PropertyKind.Key))
                 {
                     Reindex(propertyChange.Entity);
                 }
@@ -300,15 +300,13 @@ namespace Iql.Queryable.Data.Tracking
         private void EntityPropertyChanging(IPropertyChangeEvent propertyChange)
         {
             var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-            switch (property.Kind)
+            if (property.Kind.HasFlag(PropertyKind.Key) ||
+               property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+               property.Kind.HasFlag(PropertyKind.Primitive))
             {
-                case PropertyKind.Key:
-                case PropertyKind.RelationshipKey:
-                case PropertyKind.Primitive:
-                    var entityState = GetEntityState(propertyChange.Entity);
-                    var propertyState = entityState.GetPropertyState(property.Name);
-                    propertyState.NewValue = propertyChange.NewValue;
-                    break;
+                var entityState = GetEntityState(propertyChange.Entity);
+                var propertyState = entityState.GetPropertyState(property.Name);
+                propertyState.NewValue = propertyChange.NewValue;
             }
         }
 
@@ -333,7 +331,7 @@ namespace Iql.Queryable.Data.Tracking
             }
             else if (TrackedEntities[entity] != this && !onlyMergeWithExisting)
             {
-                 throw new Exception("This entity is already tracked by another context.");
+                throw new Exception("This entity is already tracked by another context.");
             }
             var isAlreadyTracked = _tracking.ContainsKey(entity);
             if (!isAlreadyTracked)

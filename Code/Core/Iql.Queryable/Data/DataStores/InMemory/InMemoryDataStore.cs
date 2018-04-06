@@ -72,7 +72,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                     }
                     foreach (var property in configuration.Key.Properties)
                     {
-                        if (property.Kind == PropertyKind.Key)
+                        if (property.Kind.HasFlag(PropertyKind.Key))
                         {
                             //var oldId = clone.GetPropertyValue(property);
                             if (property.TypeDefinition.ElementType == typeof(int))

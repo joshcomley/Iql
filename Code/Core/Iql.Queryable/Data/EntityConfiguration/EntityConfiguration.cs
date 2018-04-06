@@ -20,6 +20,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
+        public bool HasRelationshipKeys => Key != null && Key.HasRelationshipKeys;
+
         public EntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
@@ -153,7 +155,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 }
             }
 
-            if (property.Kind != PropertyKind.Count && property.Kind != PropertyKind.Key)
+            if (!property.Kind.HasFlag(PropertyKind.Count) && !property.Kind.HasFlag(PropertyKind.Key))
             {
                 var propertyValue = property.PropertyGetter(entity);
                 if (!validationResult.HasValidationFailures() &&
@@ -196,7 +198,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 return false;
             }
 
-            if (property.Kind == PropertyKind.Relationship &&
+            if (property.Kind.HasFlag(PropertyKind.Relationship) &&
                 propertyValue == null)
             {
                 if (!property.Relationship.ThisIsTarget)
@@ -407,11 +409,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return FindProperty(iql.PropertyName);
         }
 
-        public IEntityKey GetKey()
-        {
-            return Key;
-        }
-
         public EntityConfiguration<T> PrimaryKeyIsGeneratedRemotely(
             bool isTrue = true
         )
@@ -441,7 +438,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var property = FindProperty(propertyName);
                 if (property != null)
                 {
-                    property.Kind = PropertyKind.Key;
+                    property.Kind = property.Kind | PropertyKind.Key;
                     property.Relationship = null;
                 }
             }
@@ -535,6 +532,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
             }
 
             TrySetKey(iql.PropertyName);
+
+            if (definition.Kind == 0)
+            {
+                definition.Kind = PropertyKind.Primitive;
+            }
 
             return definition;
         }
@@ -636,7 +638,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {
                     var countDefinition = MapProperty<long?, long?>(countProperty, false, true, IqlType.Integer, collection);
-                    countDefinition.Kind = PropertyKind.Count;
+                    countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
                     countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
                 }
                 else
@@ -646,7 +648,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     {
                         var lambda = (Expression<Func<T, int>>)lambdaExpression;
                         var countDefinition = MapProperty<int, int>(lambda, false, true, IqlType.Integer, collection);
-                        countDefinition.Kind = PropertyKind.Count;
+                        countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
 #endif
@@ -655,7 +657,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     {
                         var lambda = (Expression<Func<T, long>>)lambdaExpression;
                         var countDefinition = MapProperty<long, long>(lambda, false, true, IqlType.Integer, collection);
-                        countDefinition.Kind = PropertyKind.Count;
+                        countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
 #endif

@@ -16,119 +16,119 @@ namespace Iql.Queryable.Data.Lists
         EntityState<T> Add(T entity);
         EntityState<T> Delete(T entity);
 
-        Task<T> First(Expression<Func<T, bool>> expression = null
+        Task<T> FirstAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> FirstWithResponse(Expression<Func<T, bool>> expression = null
+        Task<GetSingleResult<T>> FirstWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> FirstQuery(WhereQueryExpression expression
+        Task<GetSingleResult<T>> FirstQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<T> FirstOrDefault(Expression<Func<T, bool>> expression = null
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> FirstOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+        Task<GetSingleResult<T>> FirstOrDefaultWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> FirstOrDefaultQuery(WhereQueryExpression expression
+        Task<GetSingleResult<T>> FirstOrDefaultQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<T> Last(Expression<Func<T, bool>> expression = null
+        Task<T> LastAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> LastWithResponse(Expression<Func<T, bool>> expression = null
+        Task<GetSingleResult<T>> LastWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> LastQuery(WhereQueryExpression expression
+        Task<GetSingleResult<T>> LastQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<T> LastOrDefault(Expression<Func<T, bool>> expression = null
+        Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> LastOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+        Task<GetSingleResult<T>> LastOrDefaultWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> LastOrDefaultQuery(WhereQueryExpression expression
+        Task<GetSingleResult<T>> LastOrDefaultQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<T> Single(Expression<Func<T, bool>> expression = null
+        Task<T> SingleAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> SingleWithResponse(Expression<Func<T, bool>> expression = null
+        Task<GetSingleResult<T>> SingleWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> SingleQuery(WhereQueryExpression expression
+        Task<GetSingleResult<T>> SingleQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<T> SingleOrDefault(Expression<Func<T, bool>> expression = null
+        Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> SingleOrDefaultWithResponse(Expression<Func<T, bool>> expression = null
+        Task<GetSingleResult<T>> SingleOrDefaultWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<GetSingleResult<T>> SingleOrDefaultQuery(WhereQueryExpression expression
+        Task<GetSingleResult<T>> SingleOrDefaultQueryAsync(WhereQueryExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
 
-        Task<SaveChangesResult> SaveChanges(T entity);
-        Task<DbList<T>> ToList();
-        Task<GetDataResult<T>> ToListWithResponse();
+        Task<SaveChangesResult> SaveChangesAsync(T entity);
+        Task<DbList<T>> ToListAsync();
+        Task<GetDataResult<T>> ToListWithResponseAsync();
         //UpdateEntityResult<T> Update(T entity);
-        Task<T> WithKey(TKey key);
-        Task<GetSingleResult<T>> WithKeyWithResponse(TKey key);
+        Task<T> WithKeyAsync(TKey key);
+        Task<GetSingleResult<T>> WithKeyWithResponseAsync(TKey key);
     }
 }

@@ -18,7 +18,7 @@ namespace Iql.Tests.Tests {
                 new IqlIsGreaterThanExpression(property, new IqlLiteralExpression(dates[0], IqlType.Date)),
                 new IqlIsLessThanExpression(property, new IqlLiteralExpression(dates[1], IqlType.Date))
             );
-            await Db.RiskAssessments.WhereEquals(and).ToList();
+            await Db.RiskAssessments.WhereEquals(and).ToListAsync();
         }
     }
 }

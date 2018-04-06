@@ -23,7 +23,7 @@ namespace Iql.Tests.Tests
             client.Name = "My client";
 
             db1.Clients.Add(client);
-            var result = await db1.SaveChanges();
+            var result = await db1.SaveChangesAsync();
 
             Assert.AreEqual(true, result.Success);
             Assert.AreEqual(1, AppDbContext.InMemoryDb.Clients[0].TypeId);
@@ -36,7 +36,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test" });
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2" });
 
-            var clients = await Db.Clients.ToList();
+            var clients = await Db.Clients.ToListAsync();
             var client1 = clients.Single(c => c.Id == 1);
             List<IQueuedOperation> queue;
             void AssertQueue(string newName)
@@ -81,7 +81,7 @@ namespace Iql.Tests.Tests
             // Should have one change now
             AssertQueue("A new name 2");
 
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
 
             AssertQueueEmpty();
 
@@ -96,7 +96,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test" });
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2" });
 
-            var clients = await Db.Clients.ToList();
+            var clients = await Db.Clients.ToListAsync();
             var client1 = clients.Single(c => c.Id == 1);
 
             void AssertDescriptionOnlyQueued(string newDescription)
@@ -155,7 +155,7 @@ namespace Iql.Tests.Tests
             // Should have one change now
             AssertBothChangesQueued("A new name 2", "A new description");
 
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
 
             AssertQueueEmpty();
 
@@ -179,8 +179,8 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1" });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2" });
 
-            var client1 = await Db.Clients.WithKey(1);
-            var sites = await Db.Sites.ToList();
+            var client1 = await Db.Clients.WithKeyAsync(1);
+            var sites = await Db.Sites.ToListAsync();
             var site1 = sites.Single(s => s.Id == 1);
 
             site1.Name = "Site 1 - changed";
@@ -207,7 +207,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, clientChange.EntityState.ChangedProperties.Count);
             Assert.AreEqual(nameof(Client.Name), clientChange.EntityState.ChangedProperties[0].Property.Name);
 
-            await Db.SaveChanges();
+            await Db.SaveChangesAsync();
 
             AssertQueueEmpty();
 
@@ -225,7 +225,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
-            var site = await Db.Sites.Expand(s => s.Client).WithKey(1);
+            var site = await Db.Sites.Expand(s => s.Client).WithKeyAsync(1);
 
             site.Client.Name = "Client 1 - changed";
 
@@ -257,9 +257,9 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
-            var site = await Db.Sites.Expand(s => s.Client).WithKey(1);
+            var site = await Db.Sites.Expand(s => s.Client).WithKeyAsync(1);
             var client1 = site.Client;
-            var client2 = await Db.Clients.WithKey(2);
+            var client2 = await Db.Clients.WithKeyAsync(2);
 
             site.Client = client2;
 

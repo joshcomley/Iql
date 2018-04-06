@@ -342,9 +342,9 @@ namespace Iql.Queryable.Data.Context
             return _configurations[entityType.Name] as EntityConfiguration<T>;
         }
 
-        public async Task<SaveChangesResult> SaveChanges()
+        public async Task<SaveChangesResult> SaveChangesAsync()
         {
-            return await DataStore.SaveChanges(new SaveChangesOperation(this));
+            return await DataStore.SaveChangesAsync(new SaveChangesOperation(this));
         }
 
         public bool IsIdMatch(object left, object right, Type type)
@@ -467,7 +467,7 @@ namespace Iql.Queryable.Data.Context
             //        DataContext.AsDbSetByType(typeof(TEntity));
             //}
             // This will trigger a merge in the tracking store
-            return (T)await queryable.WithKey(identityWhereOperation.Key);
+            return (T)await queryable.WithKeyAsync(identityWhereOperation.Key);
         }
 
         public T EnsureTypedEntity<T>(object entity, bool convertRelationships)
