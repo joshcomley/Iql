@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.OData;
-using Iql.Queryable;
+using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Http;
 using Iql.Queryable.Data.Lists;
 using Iql.Tests.Context;
@@ -15,6 +14,25 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class TrackingTests : TestsBase
     {
+        [TestMethod]
+        public async Task InsertsWithNewDependenciesShouldBeInsertedInTheCorrectDependencyOrder()
+        {
+            var riskAssessment = new RiskAssessment();
+            Db.RiskAssessments.Add(riskAssessment);
+            var siteInspection = new SiteInspection();
+            riskAssessment.SiteInspection = siteInspection;
+            var user = new ApplicationUser();
+            riskAssessment.SiteInspection.CreatedByUser = user;
+            var operations = Db.DataStore.Tracking.GetQueue().ToList();
+            Assert.AreEqual(3, operations.Count);
+            var order = new object[] {user, siteInspection, riskAssessment};
+            for (var i = 0; i < operations.Count; i++)
+            {
+                var operation = operations[i];
+                Assert.AreEqual(order[i], (operation.Operation as IEntityCrudOperationBase).Entity);
+            }
+        }
+
         [TestMethod]
         public async Task TestLocallyCreatedEntityBecomesEntityStateEntity()
         {

@@ -6,13 +6,11 @@ using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Data.Tracking.State;
 using Iql.Queryable.Events;
 using Iql.Queryable.Exceptions;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -102,6 +100,7 @@ namespace Iql.Queryable.Data.Tracking
             public CompositeKey CompositeKey { get; set; }
             public IEntityStateBase State { get; set; }
         }
+
         private TryGetEntityStateResult TryGetEntityState(object entity)
         {
             var result = new TryGetEntityStateResult();
@@ -265,36 +264,42 @@ namespace Iql.Queryable.Data.Tracking
 
         private void EntityPropertyChanged(IPropertyChangeEvent propertyChange)
         {
-            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
-            {
-                if (Equals(propertyChange.OldValue, propertyChange.NewValue))
+            DataStore.RelationshipObserver.RunIfNotIgnored(() =>
                 {
-                    return;
-                }
-
-                IEntityStateBase entityState = null;
-                var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-                if (property.Kind.HasFlag(PropertyKind.Key))
-                {
-                    if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
+                    _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
                     {
-                        entityState = GetEntityState(propertyChange.Entity);
-                        if (entityState.IsNew)
+                        if (Equals(propertyChange.OldValue, propertyChange.NewValue))
                         {
-                            var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
-                            if (!key.HasDefaultValue())
+                            return;
+                        }
+
+                        IEntityStateBase entityState = null;
+                        var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
+                        if (property.Kind.HasFlag(PropertyKind.Key))
+                        {
+                            if (!_keyChangeAllower.AreAnyIgnored(new[] {property}, propertyChange.Entity))
                             {
-                                throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                                entityState = GetEntityState(propertyChange.Entity);
+                                if (entityState.IsNew)
+                                {
+                                    var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
+                                    if (!key.HasDefaultValue())
+                                    {
+                                        throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                                    }
+                                }
                             }
                         }
-                    }
-                }
 
-                if (property.Kind.HasFlag(PropertyKind.Key))
-                {
-                    Reindex(propertyChange.Entity);
-                }
-            }, propertyChange.Entity);
+                        if (property.Kind.HasFlag(PropertyKind.Key))
+                        {
+                            Reindex(propertyChange.Entity);
+                        }
+                    }, propertyChange.Entity);
+                },
+                EntityConfiguration.FindProperty(propertyChange.PropertyName),
+                propertyChange.Entity
+            );
         }
 
         private void EntityPropertyChanging(IPropertyChangeEvent propertyChange)

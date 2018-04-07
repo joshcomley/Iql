@@ -58,6 +58,14 @@ namespace Iql.Queryable.Data.Relationships
 
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
+        public void RunIfNotIgnored(Action action, IProperty property, object entity)
+        {
+            _propertyChangeIgnorer.RunIfNotAlreadyIgnored(action,
+                new[] {property},
+                entity
+            );
+        }
+
         public void ObserveAll(Dictionary<Type, IList> dictionary)
         {
             var filtered = new Dictionary<Type, IList>();
@@ -742,6 +750,7 @@ namespace Iql.Queryable.Data.Relationships
             }
             foreach (var constraint in relationship.Constraints)
             {
+                //DataContext.DataStore.DataTracker.
                 _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
                     () =>
                     {

@@ -2,10 +2,10 @@
 {
     public class EventSubscription
     {
-        public IEventSubscriberBase EventSubscriber { get; }
+        public IEventUnsubcriber EventSubscriber { get; }
         public int Id { get; }
 
-        public EventSubscription(IEventSubscriberBase eventSubscriber, int id)
+        public EventSubscription(IEventUnsubcriber eventSubscriber, int id)
         {
             EventSubscriber = eventSubscriber;
             Id = id;

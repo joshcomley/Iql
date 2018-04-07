@@ -12,6 +12,7 @@ namespace Iql.Queryable.Data.DataStores
 {
     public interface IDataStore
     {
+        DataTracker DataTracker { get; }
         IEnumerable<IQueuedOperation> GetQueue();
         IDataContext DataContext { get; set; }
         IRelationshipObserver RelationshipObserver { get; }

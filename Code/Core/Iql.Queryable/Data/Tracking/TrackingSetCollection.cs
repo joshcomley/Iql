@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Exceptions;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -26,7 +24,6 @@ namespace Iql.Queryable.Data.Tracking
         internal bool ProcessingRelationshipChange { get; set; }
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
         public List<ITrackingSet> Sets { get; set; }
-        private IDataContext DataContext => DataStore.DataContext;
 
         public List<IEntityCrudOperationBase> GetInserts()
         {
@@ -35,7 +32,58 @@ namespace Iql.Queryable.Data.Tracking
             {
                 inserts.AddRange(set.GetInserts());
             }
+
+            inserts = inserts
+                .OrderBy(GetUninsertedDependencyCount)
+                .ToList();
             return inserts;
+        }
+
+        private int GetUninsertedDependencyCount(IEntityCrudOperationBase operation)
+        {
+            var count = 0;
+            //var config = DataStore.DataContext.EntityConfigurationContext.GetEntityByType(operation.EntityType);
+            var flattened =
+                DataStore.DataContext.EntityConfigurationContext.FlattenDependencyGraph(operation.Entity,
+                    operation.EntityType);
+            foreach (var item in flattened)
+            {
+                var tracking = DataStore.Tracking.TrackingSetByType(item.Key);
+                foreach (var entity in item.Value)
+                {
+                    if (entity == operation.Entity)
+                    {
+                        continue;
+                    }
+                    if (tracking.GetEntityState(entity).IsNew)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+            //for (var i = 0; i < config.Properties.Count; i++)
+            //{
+            //    var relationshipMatches = config.AllRelationships().ToArray();
+            //    for (var j = 0; j < relationshipMatches.Length; j++)
+            //    {
+            //        var relationship = relationshipMatches[j];
+            //        if (!relationship.ThisEnd.IsCollection)
+            //        {
+            //            var value = relationship.ThisEnd.Property.PropertyGetter(operation.Entity);
+            //            if (value != null)
+            //            {
+            //                var tracking = DataStore.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
+            //                if (tracking.GetEntityState(value).IsNew)
+            //                {
+            //                    count++;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //return count;
         }
 
         public List<IEntityCrudOperationBase> GetDeletions()
@@ -109,7 +157,7 @@ namespace Iql.Queryable.Data.Tracking
         //    }
         //}
 
-        private IEnumerable<IQueuedOperation> GetQueuedUpdates()
+        private IEnumerable<IQueuedOperation> GetQueuedOperations()
         {
             var changes = new List<IQueuedOperation>();
             GetUpdates().ForEach(update =>
@@ -139,7 +187,7 @@ namespace Iql.Queryable.Data.Tracking
         public IEnumerable<IQueuedOperation> GetQueue()
         {
             var queue = new List<IQueuedOperation>();
-            foreach (var operation in GetQueuedUpdates())
+            foreach (var operation in GetQueuedOperations())
             {
                 var filteredOperation = GetType()
                     .GetMethod(nameof(Filter))
