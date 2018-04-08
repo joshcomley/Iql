@@ -2,6 +2,8 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Tracking.State;
 using Iql.Queryable.Expressions.QueryExpressions;
 
@@ -130,5 +132,7 @@ namespace Iql.Queryable.Data.Lists
         //UpdateEntityResult<T> Update(T entity);
         Task<T> WithKeyAsync(TKey key);
         Task<GetSingleResult<T>> WithKeyWithResponseAsync(TKey key);
+        Task LoadRelationshipPropertyAsync(T entity, IProperty relationship);
+        Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> relationship);
     }
 }

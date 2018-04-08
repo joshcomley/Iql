@@ -64,6 +64,47 @@ namespace Iql.Queryable.Data.Queryable
         {
             return SearchProperties(search, properties);
         }
+
+        public Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> property)
+        {
+            return LoadRelationshipPropertyAsync(
+                entity, DataContext.EntityConfigurationContext.EntityType<T>()
+                    .FindPropertyByExpression(property));
+        }
+
+        public async Task LoadRelationshipPropertyAsync(T entity, IProperty property)
+        {
+            if (property.Relationship == null)
+            {
+                return;
+            }
+            var otherDbSet = DataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type);
+            var root = new IqlRootReferenceExpression();
+            var expressions = new List<IqlExpression>();
+            var thisEndConstraints = property.Relationship.ThisEnd.Constraints().ToArray();
+            var otherEndConstraints = property.Relationship.OtherEnd.Constraints().ToArray();
+            for (var i = 0; i < thisEndConstraints.Length; i++)
+            {
+                expressions.Add(new IqlIsEqualToExpression(
+                    new IqlPropertyExpression(otherEndConstraints[i].Name, root),
+                    new IqlLiteralExpression(thisEndConstraints[i].PropertyGetter(entity))
+                ));
+            }
+
+            await otherDbSet.WhereEquals(expressions.And()).ToList();
+        }
+
+        Task IDbSet.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship)
+        {
+            return LoadRelationshipPropertyAsync((T)entity, DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType())
+                .FindPropertyByExpression(relationship));
+        }
+
+        Task IDbSet.LoadRelationshipPropertyAsync(object entity, IProperty property)
+        {
+            return LoadRelationshipPropertyAsync((T) entity, property);
+        }
+
         IDataContext IDbSet.DataContext { get => DataContext; set => DataContext = value; }
         ITrackingSet IDbSet.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
         bool IDbSet.TrackEntities { get => TrackEntities; set => TrackEntities = value; }

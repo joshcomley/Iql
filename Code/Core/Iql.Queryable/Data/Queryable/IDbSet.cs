@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Data.Tracking;
 
@@ -19,6 +22,8 @@ namespace Iql.Queryable.Data.Queryable
         IDbSet WithKeys(IEnumerable<object> keys);
         IDbSet Search(string search, PropertySearchKind searchKind);
         IDbSet SearchProperties(string search, IEnumerable<IProperty> properties);
+        Task LoadRelationshipPropertyAsync(object entity, IProperty relationship);
+        Task LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship);
         TrackingSetCollection TrackingSetCollection { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }
