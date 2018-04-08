@@ -43,6 +43,34 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task ShouldNotBeAbleToAddDifferentEntitiesWithSameKeyEvenWithDefaultValue()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1,
+                TypeId = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            var map1 = new PersonTypeMap
+            {
+                PersonId = 0,
+                TypeId = 1
+            };
+            var map2 = new PersonTypeMap
+            {
+                PersonId = 0,
+                TypeId = 1
+            };
+            var person = await Db.People.GetWithKeyAsync(1);
+            person.Types.Add(map1);
+            person.Types.Add(map2);
+            Assert.AreEqual(1, person.Types.Count);
+        }
+
+        [TestMethod]
         public async Task NoTracking()
         {
             AppDbContext.InMemoryDb.Clients.Add(new Client

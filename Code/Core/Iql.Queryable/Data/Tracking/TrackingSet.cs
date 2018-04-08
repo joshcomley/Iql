@@ -41,7 +41,7 @@ namespace Iql.Queryable.Data.Tracking
 
         bool ITrackingSet.EntityWithSameKeyIsTracked(object entity)
         {
-            return EntityWithSameKeyIsTracked((T) entity);
+            return EntityWithSameKeyIsTracked((T)entity);
         }
 
         public EntityConfiguration<T> EntityConfiguration { get; }
@@ -273,6 +273,27 @@ namespace Iql.Queryable.Data.Tracking
                         case RelatedListChangeKind.Add:
                             if (changeEvent.Item != null)
                             {
+                                // Make sure we prep the constraints so we can compare to see if
+                                // an item with a matching key already exists, and if so then 
+                                // reject this change
+                                var relationship =
+                                    EntityConfiguration.Builder
+                                    .GetEntityByType(changeEvent.OwnerType)
+                                    .FindProperty(changeEvent.List.PropertyName)
+                                    .Relationship;
+                                var sourceConstraints = relationship.OtherEnd.Constraints();
+                                var targetConstraints = relationship.ThisEnd.Constraints();
+                                for (var i = 0; i < sourceConstraints.Length; i++)
+                                {
+                                    var sourceConstraint = sourceConstraints[i];
+                                    var targetConstraint = targetConstraints[i];
+                                    if (sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
+                                    {
+                                        sourceConstraint.PropertySetter(
+                                            changeEvent.Item,
+                                            targetConstraint.PropertyGetter(changeEvent.Owner));
+                                    }
+                                }
                                 var state = DataStore.Add(changeEvent.Item);
                                 if (state.Entity != changeEvent.Item)
                                 {
@@ -310,7 +331,7 @@ namespace Iql.Queryable.Data.Tracking
                         var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
                         if (property.Kind.HasFlag(PropertyKind.Key))
                         {
-                            if (!_keyChangeAllower.AreAnyIgnored(new[] {property}, propertyChange.Entity))
+                            if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
                             {
                                 entityState = GetEntityState(propertyChange.Entity);
                                 if (entityState.IsNew)
@@ -377,10 +398,10 @@ namespace Iql.Queryable.Data.Tracking
                 _tracking.Add(entity, entity);
             }
             var hadEntityState = HasEntityState(entity);
-            if (!hadEntityState && 
-                isNew && 
+            if (!hadEntityState &&
+                isNew &&
                 !EntityConfiguration.GetCompositeKey(entity).HasDefaultValue() &&
-                EntityConfiguration.Key.IsGeneratedRemotely && 
+                EntityConfiguration.Key.IsGeneratedRemotely &&
                 !EntityConfiguration.Key.IsPivot())
             {
 
