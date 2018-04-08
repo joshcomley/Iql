@@ -93,7 +93,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByExpression<TProperty>(object entity,
             Expression<Func<object, TProperty>> expression)
         {
-            var property = ((IEntityConfiguration)this).FindPropertyByExpression(expression);
+            var property = ((IEntityConfiguration)this).FindPropertyByLambdaExpression(expression);
             return ValidateEntityProperty((T)entity, property);
         }
 
@@ -131,7 +131,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public PropertyValidationResult<T> ValidateEntityPropertyByExpression<TProperty>(T entity, Expression<Func<T, TProperty>> property)
         {
-            return ValidateEntityProperty(entity, FindPropertyByExpression(property));
+            return ValidateEntityProperty(entity, FindPropertyByLambdaExpression(property));
         }
 
         public PropertyValidationResult<T> ValidateEntityPropertyByName(T entity, string property)
@@ -396,17 +396,21 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
         }
 
-        public IProperty FindPropertyByExpression<TProperty>(Expression<Func<T, TProperty>> property)
+        public IProperty FindPropertyByLambdaExpression(LambdaExpression property)
         {
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+            var iql = IqlQueryableAdapter.LambdaExpressionToIqlExpressionTree(property, typeof(T));
             return FindProperty(iql.PropertyName);
         }
 
-        IProperty IEntityConfiguration.FindPropertyByExpression<TProperty>(
-            Expression<Func<object, TProperty>> expression)
+        public IProperty FindPropertyByExpression(Expression<Func<T, object>> property)
         {
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression);
-            return FindProperty(iql.PropertyName);
+            return FindPropertyByLambdaExpression(property);
+        }
+
+        IProperty IEntityConfiguration.FindPropertyByExpression(
+            Expression<Func<object, object>> expression)
+        {
+            return FindPropertyByLambdaExpression(expression);
         }
 
         public EntityConfiguration<T> PrimaryKeyIsGeneratedRemotely(

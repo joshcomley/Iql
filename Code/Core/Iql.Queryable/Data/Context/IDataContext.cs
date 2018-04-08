@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations.Results;
@@ -25,11 +26,7 @@ namespace Iql.Queryable.Data.Context
         void RegisterConfiguration<T>(T configuration)
             where T : class;
 
-        IEntityStateBase GetEntityState(object entity
-#if TypeScript
-            , Type entityType
-#endif
-        );
+        IEntityStateBase GetEntityState(object entity, Type entityType = null);
         T GetConfiguration<T>()
             where T : class;
 
@@ -89,6 +86,7 @@ namespace Iql.Queryable.Data.Context
         string GetDbSetPropertyNameByEntityType(Type entityType);
         IDbSet GetDbSetBySetType(Type entityType);
         IDbSet GetDbSetByEntityType(Type entityType);
-
+        Task LoadRelationshipPropertyAsync(object entity, IProperty relationship);
+        Task LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship);
     }
 }

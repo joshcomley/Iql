@@ -15,6 +15,97 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task AssigningATargetFromSourceShouldSetSourceId()
+        {
+            PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
+            var person = await Db.People.WithKeyAsync(7);
+            Assert.IsNull(person.Type);
+            await Db.People.LoadRelationshipAsync(person, c => c.Type);
+            Assert.IsNotNull(person.Type);
+            Assert.AreEqual(2, person.Type.Id);
+        }
+
+        [TestMethod]
+        public async Task LoadingOneToManyTargetRelationshipProperty()
+        {
+            PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
+            var person = await Db.People.WithKeyAsync(7);
+            Assert.IsNull(person.Type);
+            await Db.People.LoadRelationshipAsync(person, c => c.Type);
+            Assert.IsNotNull(person.Type);
+            Assert.AreEqual(2, person.Type.Id);
+        }
+
+        [TestMethod]
+        public async Task LoadingOneToManySourceRelationshipProperty()
+        {
+            PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
+            var type = await Db.PersonTypes.WithKeyAsync(2);
+            Assert.AreEqual(0, type.People.Count);
+            await Db.PersonTypes.LoadRelationshipAsync(type, c => c.People);
+            Assert.AreEqual(3, type.People.Count);
+            var personWithId7 = type.People.SingleOrDefault(c => c.Id == 7);
+            Assert.IsNotNull(personWithId7);
+            Assert.IsNotNull(type.People.SingleOrDefault(c => c.Id == 9));
+            Assert.IsNotNull(type.People.SingleOrDefault(c => c.Id == 8));
+            Assert.AreEqual(personWithId7.Type, type);
+        }
+
+        [TestMethod]
+        public async Task LoadingOneToManyTargetRelationshipPropertyFromDataContext()
+        {
+            PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
+            var person = await Db.People.WithKeyAsync(7);
+            Assert.IsNull(person.Type);
+            await Db.LoadRelationshipAsync(person, c => c.Type);
+            Assert.IsNotNull(person.Type);
+            Assert.AreEqual(2, person.Type.Id);
+        }
+
+        [TestMethod]
+        public async Task LoadingOneToManySourceRelationshipPropertyFromDataContext()
+        {
+            PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
+            var type = await Db.PersonTypes.WithKeyAsync(2);
+            Assert.AreEqual(0, type.People.Count);
+            await Db.LoadRelationshipAsync(type, c => c.People);
+            Assert.AreEqual(3, type.People.Count);
+            var personWithId7 = type.People.SingleOrDefault(c => c.Id == 7);
+            Assert.IsNotNull(personWithId7);
+            Assert.IsNotNull(type.People.SingleOrDefault(c => c.Id == 9));
+            Assert.IsNotNull(type.People.SingleOrDefault(c => c.Id == 8));
+            Assert.AreEqual(personWithId7.Type, type);
+        }
+
+        private static void PrepInMemoryDatabaseForLoadRelationshipPropertyTests()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 7,
+                TypeId = 2
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 8,
+                TypeId = 2
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 9,
+                TypeId = 2
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 9,
+                TypeId = 3
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 2
+            });
+        }
+
+        [TestMethod]
         public async Task InsertsWithNewDependenciesShouldBeInsertedInTheCorrectDependencyOrder()
         {
             var riskAssessment = new RiskAssessment();

@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Extensions;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator.Applicators;
 using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Expressions;
@@ -44,8 +45,10 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
             LambdaExpression property,
             Type entityType)
         {
-            return (IqlPropertyExpression) QueryExpressionToIqlExpressionTreeMethod.MakeGenericMethod(entityType)
-                .Invoke(null, new object[] {property, QueryExpressionType.NonBinary});
+            return (IqlPropertyExpression) QueryExpressionToIqlExpressionTreeMethod.InvokeGeneric(
+                    null,
+                    new object[] { new ExpressionQueryExpression(property, QueryExpressionType.NonBinary) }, 
+                    entityType);
         }
 
         public static IqlExpression QueryOperationToIqlExpression<T>(

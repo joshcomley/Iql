@@ -11,6 +11,7 @@ namespace Iql.Queryable.Data.Tracking.State
     {
         void Reset();
         CompositeKey Key { get; set; }
+        CompositeKey ResolveKey();
         Guid? PersistenceKey { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
         List<IPropertyState> ChangedProperties { get; }

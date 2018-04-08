@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Extensions;
@@ -143,15 +144,9 @@ namespace Iql.Queryable.Data.Context
             _configurations.Add(ConfigurationNameByType(configuration.GetType()), configuration);
         }
 
-        public IEntityStateBase GetEntityState(object entity
-#if TypeScript
-            , Type entityType
-#endif
-            )
+        public IEntityStateBase GetEntityState(object entity, Type entityType = null)
         {
-#if !TypeScript
-            var entityType = entity.GetType();
-#endif
+            entityType = entityType ?? entity.GetType();
             return DataStore.Tracking.TrackingSetByType(entityType).GetEntityState(entity);
         }
 
@@ -237,6 +232,17 @@ namespace Iql.Queryable.Data.Context
                 return this.GetPropertyValueByName(_dbSetsByEntityType[entityType].Name) as IDbSet;
             }
             return null;
+        }
+
+        public async Task LoadRelationshipPropertyAsync(object entity, IProperty property)
+        {
+            await GetDbSetByEntityType(property.TypeDefinition.DeclaringType).LoadRelationshipPropertyAsync(entity, property);
+        }
+
+        public Task LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship)
+        {
+            return LoadRelationshipPropertyAsync(entity,
+                EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType()).FindPropertyByLambdaExpression(relationship));
         }
 
         private readonly Dictionary<Type, PropertyInfo> _dbSetsBySetType = new Dictionary<Type, PropertyInfo>();

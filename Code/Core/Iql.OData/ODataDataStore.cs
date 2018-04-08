@@ -433,13 +433,13 @@ namespace Iql.OData
                 apiUriBase += "/";
             }
 
-            var key = DataContext.EntityConfigurationContext.GetEntityByType(entityType).Key;
-            var compositeKey = new CompositeKey(key.Properties.Count);
-            for (var i = 0; i < key.Properties.Count; i++)
-            {
-                var p = key.Properties[i];
-                compositeKey.Keys[i] = new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null);
-            }
+            var compositeKey = DataContext.GetEntityState(entity).ResolveKey();
+            //var compositeKey = new CompositeKey(key.Properties.Count);
+            //for (var i = 0; i < key.Properties.Count; i++)
+            //{
+            //    var p = key.Properties[i];
+            //    compositeKey.Keys[i] = new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null);
+            //}
 
             var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";
             return entityUri;

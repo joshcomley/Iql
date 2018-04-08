@@ -80,6 +80,16 @@ namespace Iql.Queryable.Data.Tracking.State
         }
 
         public CompositeKey Key { get; set; }
+
+        public CompositeKey ResolveKey()
+        {
+            if (MarkedForAnyDeletion)
+            {
+                return Key;
+            }
+            return EntityConfiguration.GetCompositeKey(Entity);
+        }
+
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
         public T Entity { get; }

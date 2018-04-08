@@ -217,6 +217,7 @@ namespace Iql.Queryable.Data.Relationships
             bool keyOnly = false
             )
         {
+            string targetKey = null;
             if (!keyOnly)
             {
                 var target = relationship.Source.Property.PropertyGetter(entity);
@@ -224,19 +225,31 @@ namespace Iql.Queryable.Data.Relationships
                 {
                     var targetTracking = TrackingSetCollection.TrackingSetByType(relationship.Target.Type);
                     var state = targetTracking.GetEntityState(target);
+                    targetKey = GetTargetKeyString(target, relationship);
                     if (state.IsNew)
                     {
-                        var referenceKey = GetTargetKeyString(target, relationship);
-                        return referenceKey;
+                        return targetKey;
                     }
                 }
             }
 
+            var constraintKey = GetRelationshipKeyStringFromConstraints(entity, relationship, modifyCompositeKey);
+            if (constraintKey == null && !keyOnly)
+            {
+                return targetKey;
+            }
+            return constraintKey;
+        }
+
+        private static string GetRelationshipKeyStringFromConstraints(object entity, IRelationship relationship,
+            Action<CompositeKey> modifyCompositeKey)
+        {
             var key = relationship.Source.GetCompositeKey(entity);
             if (modifyCompositeKey != null)
             {
                 modifyCompositeKey(key);
             }
+
             var keyString = key.HasDefaultValue()
                 ? null
                 : key.AsKeyString(false);
