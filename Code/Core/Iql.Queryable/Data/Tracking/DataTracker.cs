@@ -14,7 +14,7 @@ namespace Iql.Queryable.Data.Tracking
         public bool TrackEntities { get; }
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; set; }
-        public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(DataStore));
+        public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(DataStore, TrackEntities));
 
         private RelationshipObserver _relationshipObserver;
         private TrackingSetCollection _tracking;
@@ -31,17 +31,23 @@ namespace Iql.Queryable.Data.Tracking
             }
         }
 
-        internal static List<DataTracker> AllDataTrackers { get; }
+        public static DataTracker[] AllDataTrackers()
+        {
+            return _allDataTrackers.ToArray();
+
+        }
+        private static List<DataTracker> _allDataTrackers { get; }
             = new List<DataTracker>();
+
         public DataTracker(IDataStore dataStore, bool trackEntities)
         {
-            AllDataTrackers.Add(this);
             TrackEntities = trackEntities;
+            _allDataTrackers.Add(this);
             DataStore = dataStore;
         }
 
         public List<TEntity> TrackResults<TEntity>(
-            Dictionary<Type, IList> responseData, 
+            Dictionary<Type, IList> responseData,
             List<TEntity> responseRoot = null,
             bool mergeExistingOnly = false)
         {
@@ -74,24 +80,15 @@ namespace Iql.Queryable.Data.Tracking
             {
                 newList.Add((TEntity)item.Key);
             }
-            if (TrackEntities)
+            data = new Dictionary<Type, IList>();
+            if (responseRoot != null)
             {
-                data = new Dictionary<Type, IList>();
-                if (responseRoot != null)
-                {
-                    responseRoot = (List<TEntity>) TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly).ToList(typeof(TEntity));
-                }
-                // TODO: Implement tracking
-                foreach (var dataSet in responseData)
-                {
-                    TrackCollection(dataSet.Value, dataSet.Key, data, mergeExistingOnly);
-                }
+                responseRoot = (List<TEntity>)TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly).ToList(typeof(TEntity));
             }
-            else
+            foreach (var dataSet in responseData)
             {
-                data = responseData;
+                TrackCollection(dataSet.Value, dataSet.Key, data, mergeExistingOnly);
             }
-
             if (!mergeExistingOnly)
             {
                 RelationshipObserver.ObserveAll(data);

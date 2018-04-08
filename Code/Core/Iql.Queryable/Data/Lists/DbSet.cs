@@ -26,26 +26,27 @@ namespace Iql.Queryable.Data.Lists
             DataStoreGetter = dataStoreGetter;
         }
 
-        public async Task<T> WithKeyAsync(TKey key)
+        public DbSet<T, TKey> WithKey(TKey key)
         {
-            return (await WithKeyWithResponseAsync(key)).Data;
+            return (DbSet<T, TKey>) WithCompositeKey(CompositeKey.Ensure(key, EntityConfiguration));
         }
 
-        public async Task<GetSingleResult<T>> WithKeyWithResponseAsync(TKey key)
+        public async Task<T> GetWithKeyAsync(TKey key)
         {
-            CompositeKey compositeKey;
-            if (key is CompositeKey)
-            {
-                compositeKey = key as CompositeKey;
-            }
-            else
-            {
-                compositeKey = GetCompositeKeyFromSingularKey(key);
-            }
-            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefaultWithResponseAsync();
+            return (await GetWithKeyWithResponseAsync(key)).Data;
         }
 
-        public new DbSet<T, TKey> WithKeys(IEnumerable<TKey> ids)
+        public async Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(TKey key)
+        {
+            return await WithKey(key).SingleOrDefaultWithResponseAsync();
+        }
+
+        public DbSet<T, TKey> WithKeys(IEnumerable<TKey> ids)
+        {
+            return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
+        }
+
+        public DbSet<T, TKey> WithCompositeKeys(IEnumerable<CompositeKey> ids)
         {
             return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
         }

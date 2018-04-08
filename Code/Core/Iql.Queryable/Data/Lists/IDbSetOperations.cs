@@ -130,8 +130,8 @@ namespace Iql.Queryable.Data.Lists
         Task<DbList<T>> ToListAsync();
         Task<GetDataResult<T>> ToListWithResponseAsync();
         //UpdateEntityResult<T> Update(T entity);
-        Task<T> WithKeyAsync(TKey key);
-        Task<GetSingleResult<T>> WithKeyWithResponseAsync(TKey key);
+        Task<T> GetWithKeyAsync(TKey key);
+        Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(TKey key);
         Task LoadRelationshipPropertyAsync(T entity, IProperty relationship);
         Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> relationship);
     }

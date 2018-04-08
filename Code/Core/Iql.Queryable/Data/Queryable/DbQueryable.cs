@@ -23,7 +23,6 @@ namespace Iql.Queryable.Data.Queryable
         where T : class
     {
         private ITrackingSet _trackingSet;
-        public bool TrackEntities { get; set; } = true;
         public DbQueryable(
             EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)
@@ -56,6 +55,12 @@ namespace Iql.Queryable.Data.Queryable
         {
             return WithKeys(keys);
         }
+
+        IDbSet IDbSet.WithCompositeKeys(IEnumerable<CompositeKey> keys)
+        {
+            return WithKeys(keys);
+        }
+
         IDbSet IDbSet.Search(string search, PropertySearchKind searchKind)
         {
             return Search(search, searchKind);
@@ -107,7 +112,6 @@ namespace Iql.Queryable.Data.Queryable
 
         IDataContext IDbSet.DataContext { get => DataContext; set => DataContext = value; }
         ITrackingSet IDbSet.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
-        bool IDbSet.TrackEntities { get => TrackEntities; set => TrackEntities = value; }
 
         public DbQueryable<T> WithKeys(IEnumerable<object> keys)
         {
@@ -668,24 +672,7 @@ namespace Iql.Queryable.Data.Queryable
 
         public override async Task<object> WithKeyAsync(object key)
         {
-            var compositeKey = GetCompositeKeyFromSingularKey(key);
-            return await Then(new WithKeyOperation(compositeKey)).SingleOrDefaultAsync();
-        }
-
-        protected virtual CompositeKey GetCompositeKeyFromSingularKey(object key)
-        {
-            if (key is CompositeKey)
-            {
-                return key as CompositeKey;
-            }
-            var compositeKey = new CompositeKey(1);
-            var propertyName = DataContext.EntityConfigurationContext.GetEntity<T>().Key.Properties.First().Name;
-            compositeKey.Keys[0] = new KeyValue(
-                propertyName,
-                key,
-                DataContext.EntityConfigurationContext.GetEntity<T>().FindProperty(propertyName).TypeDefinition
-            );
-            return compositeKey;
+            return await Then(new WithKeyOperation(CompositeKey.Ensure(key, EntityConfiguration))).SingleOrDefaultAsync();
         }
 
         public virtual DbQueryable<T> IncludeCount()
@@ -693,10 +680,17 @@ namespace Iql.Queryable.Data.Queryable
             return Then(new IncludeCountOperation());
         }
 
-        public DbQueryable<T> SetTracking(bool enabled)
+        /// <summary>
+        /// Any value here will override the data context's value
+        /// A null value will resort to the data context's value
+        /// </summary>
+        /// <param name="enabled"></param>
+        /// <returns></returns>
+        public DbQueryable<T> SetTracking(bool? enabled)
         {
-            TrackEntities = enabled;
-            return this;
+            var queryable = Copy();
+            queryable.TrackEntities = enabled;
+            return queryable;
         }
 
         public override DbQueryable<T> New()
@@ -711,8 +705,7 @@ namespace Iql.Queryable.Data.Queryable
 
         IDbSet IDbSet.SetTracking(bool enabled)
         {
-            SetTracking(enabled);
-            return this;
+            return SetTracking(enabled);
         }
 
         IDbSet IDbSet.IncludeCount()
@@ -769,5 +762,20 @@ namespace Iql.Queryable.Data.Queryable
         //{
         //    return Then(queryOperation);
         //}
+
+        public DbQueryable<T> WithCompositeKey(CompositeKey key)
+        {
+            return Then(new WithKeyOperation(key));
+        }
+
+        public async Task<T> GetWithCompositeKeyAsync(CompositeKey key)
+        {
+            return (await GetWithCompositeKeyWithResponseAsync(key)).Data;
+        }
+
+        public async Task<GetSingleResult<T>> GetWithCompositeKeyWithResponseAsync(CompositeKey key)
+        {
+            return await WithCompositeKey(key).SingleOrDefaultWithResponseAsync();
+        }
     }
 }

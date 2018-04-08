@@ -110,6 +110,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public EntityValidationResult<T> ValidateEntity(T entity)
         {
             var validationResult = new EntityValidationResult<T>(entity);
+
             foreach (var validation in EntityValidation.All)
             {
                 if (!validation.Validate(entity))
@@ -126,6 +127,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     validationResult.AddPropertyValidationResult(result);
                 }
             }
+
             return validationResult;
         }
 

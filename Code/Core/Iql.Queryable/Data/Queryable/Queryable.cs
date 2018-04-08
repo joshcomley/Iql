@@ -22,6 +22,8 @@ namespace Iql.Queryable.Data.Queryable
             Operations = new List<IQueryOperation>();
         }
 
+        public bool? TrackEntities { get; set; } = null;
+
         public EvaluateContext EvaluateContext { get; set; }
 
         public List<IQueryOperation> Operations { get; }
@@ -203,6 +205,7 @@ namespace Iql.Queryable.Data.Queryable
         {
             var queryable = New();
             queryable.HasDefaults = HasDefaults;
+            queryable.TrackEntities = TrackEntities;
             Operations.ForEach(element => { queryable.Operations.Add(element); });
             return queryable;
         }

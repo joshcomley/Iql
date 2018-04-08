@@ -6,16 +6,20 @@ using Iql.Extensions;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Tracking
 {
     public class TrackingSetCollection
     {
         public IDataStore DataStore { get; }
+        public bool TrackEntities { get; }
         public string Id { get; }
-        public TrackingSetCollection(IDataStore dataStore)
+
+        public TrackingSetCollection(IDataStore dataStore, bool trackEntities = true)
         {
             DataStore = dataStore;
+            TrackEntities = trackEntities;
             SetsMap = new Dictionary<string, ITrackingSet>();
             Sets = new List<ITrackingSet>();
             Id = Guid.NewGuid().ToString();
@@ -108,10 +112,20 @@ namespace Iql.Queryable.Data.Tracking
             return (TrackingSet<T>)SetsMap[type.Name];
         }
 
-        //public bool IsTracked(object entity, Type entityType)
-        //{
-        //    return TrackingSetByType(entityType).IsTracked(entity);
-        //}
+        public bool EntityWithSameKeyIsBeingTracked(object entity, Type entityType)
+        {
+            return TrackingSetByType(entityType).EntityWithSameKeyIsTracked(entity);
+        }
+
+        public bool KeyIsTracked(CompositeKey key, Type entityType)
+        {
+            return TrackingSetByType(entityType).IsTracked(key);
+        }
+
+        public bool IsTracked(object entity, Type entityType)
+        {
+            return TrackingSetByType(entityType).IsTracked(entity);
+        }
 
         public bool IsMarkedForDeletion(object entity, Type entityType)
         {

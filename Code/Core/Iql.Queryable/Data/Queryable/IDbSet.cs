@@ -20,6 +20,7 @@ namespace Iql.Queryable.Data.Queryable
         IDbSet ExpandAllSingleRelationships();
         IDbSet ExpandAllCollectionCounts();
         IDbSet WithKeys(IEnumerable<object> keys);
+        IDbSet WithCompositeKeys(IEnumerable<CompositeKey> keys);
         IDbSet Search(string search, PropertySearchKind searchKind);
         IDbSet SearchProperties(string search, IEnumerable<IProperty> properties);
         Task LoadRelationshipPropertyAsync(object entity, IProperty relationship);
@@ -30,7 +31,6 @@ namespace Iql.Queryable.Data.Queryable
         EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
         IEntityConfiguration EntityConfiguration { get; set; }
         ITrackingSet TrackingSet { get; set; }
-        bool TrackEntities { get; set; }
         //IDbQueryable Copy();
         //IDbQueryable New();
         //IDbQueryable Skip(int skip);

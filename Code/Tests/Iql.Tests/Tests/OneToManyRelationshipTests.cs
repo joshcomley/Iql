@@ -118,7 +118,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, clientType1.Clients.Count);
             Assert.AreEqual(1, clientType2.Clients.Count);
 
-            var updatedClient = await Db.Clients.WithKeyAsync(7);
+            var updatedClient = await Db.Clients.GetWithKeyAsync(7);
             Assert.AreEqual(updatedClient, client);
         }
 

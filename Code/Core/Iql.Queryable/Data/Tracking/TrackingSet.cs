@@ -23,6 +23,27 @@ namespace Iql.Queryable.Data.Tracking
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
+
+        public bool EntityWithSameKeyIsTracked(T entity)
+        {
+            var key = EntityConfiguration.GetCompositeKey(entity);
+            var state = GetEntityStateByKey(key);
+            if (state == null)
+            {
+                return false;
+            }
+            if (state.Entity == entity)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        bool ITrackingSet.EntityWithSameKeyIsTracked(object entity)
+        {
+            return EntityWithSameKeyIsTracked((T) entity);
+        }
+
         public EntityConfiguration<T> EntityConfiguration { get; }
         IEntityConfiguration ITrackingSet.EntityConfiguration => EntityConfiguration;
         public SimplePropertyMerger SimplePropertyMerger { get; }
@@ -136,6 +157,11 @@ namespace Iql.Queryable.Data.Tracking
                 : null;
         }
 
+        public bool KeyIsTracked(CompositeKey key)
+        {
+            return GetEntityStateByKey(key) != null;
+        }
+
         public void MarkForDelete(object entity)
         {
             var entityState = GetEntityState(entity);
@@ -238,28 +264,35 @@ namespace Iql.Queryable.Data.Tracking
 
         private void RelatedListChanged(IRelatedListChangeEvent changeEvent)
         {
-            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
+            if (TrackingSetCollection.TrackEntities)
             {
-                switch (changeEvent.Kind)
+                _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
                 {
-                    case RelatedListChangeKind.Add:
-                        if (changeEvent.Item != null)
-                        {
-                            DataStore.Add(changeEvent.Item);
-                        }
-                        break;
-                    case RelatedListChangeKind.Remove:
-                        if (changeEvent.Item != null)
-                        {
-                            if (!DataStore.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
-                                changeEvent.ItemType))
+                    switch (changeEvent.Kind)
+                    {
+                        case RelatedListChangeKind.Add:
+                            if (changeEvent.Item != null)
                             {
-                                DataStore.Delete(changeEvent.Item);
+                                var state = DataStore.Add(changeEvent.Item);
+                                if (state.Entity != changeEvent.Item)
+                                {
+                                    changeEvent.Disallow = true;
+                                }
                             }
-                        }
-                        break;
-                }
-            }, changeEvent.Item, changeEvent.List.Owner);
+                            break;
+                        case RelatedListChangeKind.Remove:
+                            if (changeEvent.Item != null)
+                            {
+                                if (!DataStore.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
+                                    changeEvent.ItemType))
+                                {
+                                    DataStore.Delete(changeEvent.Item);
+                                }
+                            }
+                            break;
+                    }
+                }, changeEvent.Item, changeEvent.List.Owner);
+            }
         }
 
         private void EntityPropertyChanged(IPropertyChangeEvent propertyChange)
@@ -285,7 +318,7 @@ namespace Iql.Queryable.Data.Tracking
                                     var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
                                     if (!key.HasDefaultValue())
                                     {
-                                        throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+                                        throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelyException();
                                     }
                                 }
                             }
@@ -344,10 +377,18 @@ namespace Iql.Queryable.Data.Tracking
                 _tracking.Add(entity, entity);
             }
             var hadEntityState = HasEntityState(entity);
-            if (!hadEntityState && isNew && !EntityConfiguration.GetCompositeKey(entity).HasDefaultValue())
+            if (!hadEntityState && 
+                isNew && 
+                !EntityConfiguration.GetCompositeKey(entity).HasDefaultValue() &&
+                EntityConfiguration.Key.IsGeneratedRemotely && 
+                !EntityConfiguration.Key.IsPivot())
             {
-                // TODO: Check if entity key is marked as remotely generated
-                throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException();
+
+                //if (nonRelationshipKey)
+                //{
+                //    // TODO: Check if entity key is marked as remotely generated
+                //}
+                throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelyException();
             }
             var entityState = GetEntityState(entity);
             if (!hadEntityState && isNew)

@@ -9,6 +9,7 @@ namespace Iql.Queryable.Events
         where TSource : class
     {
         public Type ItemType => typeof(TRelated);
+        public bool Disallow { get; set; }
         public Type OwnerType => typeof(TSource);
         public TSource Owner { get; set; }
         public TRelated Item { get; set; }

@@ -138,7 +138,7 @@ namespace Iql.Tests.Tests
             var id = 1;
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = id });
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = id + 1 });
-            var clientType = await Db.ClientTypes.WithKeyAsync(id);
+            var clientType = await Db.ClientTypes.GetWithKeyAsync(id);
             Assert.IsNotNull(clientType);
             Assert.AreEqual(clientType.Id, id);
         }
@@ -215,8 +215,8 @@ namespace Iql.Tests.Tests
             var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChangesAsync();
             TestsBlock.Db = new AppDbContext();
-            var entity1 = await Db.ClientTypes.WithKeyAsync(2);
-            var entity2 = await Db.ClientTypes.WithKeyAsync(3);
+            var entity1 = await Db.ClientTypes.GetWithKeyAsync(2);
+            var entity2 = await Db.ClientTypes.GetWithKeyAsync(3);
             Assert.AreNotEqual(entity1, clientTypes.ClientType1);
             Assert.AreNotEqual(entity2, clientTypes.ClientType2);
         }
@@ -226,8 +226,8 @@ namespace Iql.Tests.Tests
         {
             var clientTypes = TestsBlock.AddClientTypes();
             await Db.SaveChangesAsync();
-            var entity1 = await Db.ClientTypes.WithKeyAsync(clientTypes.ClientType1.Id);
-            var entity2 = await Db.ClientTypes.WithKeyAsync(clientTypes.ClientType2.Id);
+            var entity1 = await Db.ClientTypes.GetWithKeyAsync(clientTypes.ClientType1.Id);
+            var entity2 = await Db.ClientTypes.GetWithKeyAsync(clientTypes.ClientType2.Id);
             Assert.AreEqual(entity1, clientTypes.ClientType1);
             Assert.AreEqual(entity2, clientTypes.ClientType2);
         }

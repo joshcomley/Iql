@@ -13,7 +13,7 @@ namespace Iql.Tests.Tests
         {
             var client = new Client();
             client.Id = 7;
-            ShouldThrowException<AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelException>(() =>
+            ShouldThrowException<AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelyException>(() =>
             {
                 Db.Clients.Add(client);
             });

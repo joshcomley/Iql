@@ -155,7 +155,7 @@ namespace Iql.Tests.Tests
 
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
-            var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).WithKeyAsync(62);
+            var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).GetWithKeyAsync(62);
             changes = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, changes.Count);
             queuedOperations = Db.DataStore.GetQueue().ToList();

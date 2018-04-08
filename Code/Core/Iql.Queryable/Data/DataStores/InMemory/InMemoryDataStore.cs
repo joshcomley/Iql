@@ -192,7 +192,8 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                 dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
             }
 
-            lists.Root = lists.Root.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone);
+            var cloned = lists.Root.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone);
+            lists.Root = cloned;
             operation.Result.Data = dictionary;
             operation.Result.Root = (List<TEntity>)lists.Root;
             return Task.FromResult(operation.Result);

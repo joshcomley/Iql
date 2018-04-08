@@ -3,7 +3,6 @@ using System.Linq;
 using Iql.Extensions;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable
 {

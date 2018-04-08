@@ -56,7 +56,14 @@ namespace Iql.Queryable.Data.Lists
 
         private void EmitRelatedListEvent(TTarget item, CompositeKey itemKey, RelatedListChangeKind kind)
         {
-            RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(Owner, item, itemKey, kind, this));
+            RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(Owner, item, itemKey, kind, this),
+                ev =>
+                {
+                    if (ev.Disallow)
+                    {
+                        Remove(item);
+                    }
+                });
         }
     }
 }

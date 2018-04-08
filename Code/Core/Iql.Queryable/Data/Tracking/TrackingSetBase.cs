@@ -21,7 +21,6 @@ namespace Iql.Queryable.Data.Tracking
             {
                 return null;
             }
-
             return TrackedEntities[entity].GetEntityState(entity);
         }
 

@@ -15,10 +15,121 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task ShouldNotBeAbleToAddDifferentEntitiesWithSameKey()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1,
+                TypeId = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            var map1 = new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            };
+            var map2 = new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            };
+            var person = await Db.People.GetWithKeyAsync(1);
+            person.Types.Add(map1);
+            person.Types.Add(map2);
+            Assert.AreEqual(1, person.Types.Count);
+        }
+
+        [TestMethod]
+        public async Task NoTracking()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                Name = "First client"
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 2,
+                Name = "Second client"
+            });
+            var db1 = new AppDbContext();
+
+            var clientsNoTracking1 = await db1.Clients.SetTracking(false).ToListAsync();
+            var clientsNoTracking2 = await db1.Clients.SetTracking(false).ToListAsync();
+            var clientsWithTracking1 = await db1.Clients.ToListAsync();
+            var clientsWithTracking2 = await db1.Clients.ToListAsync();
+
+            Assert.AreEqual(2, clientsNoTracking1.Count);
+            Assert.AreEqual(2, clientsNoTracking2.Count);
+            Assert.AreEqual(2, clientsWithTracking1.Count);
+            Assert.AreEqual(2, clientsWithTracking2.Count);
+
+            Assert.AreNotEqual(clientsNoTracking1[0], clientsNoTracking2[0]);
+            Assert.AreNotEqual(clientsNoTracking1[1], clientsNoTracking2[1]);
+            Assert.AreEqual(clientsWithTracking1[0], clientsWithTracking2[0]);
+            Assert.AreEqual(clientsWithTracking1[1], clientsWithTracking2[1]);
+        }
+
+        [TestMethod]
+        public async Task NoTrackingWithExpands()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1,
+                Title = "First person"
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 2,
+                Title = "Second person"
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1,
+                Title = "First person type"
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 2,
+                TypeId = 1
+            });
+            var db1 = new AppDbContext();
+
+            var peopleNoTracking1 = await db1.People.Expand(p => p.Types)
+                .SetTracking(false)
+                .ToListAsync();
+            var peopleNoTracking2 = await db1.People.Expand(p => p.Types)
+                .SetTracking(false)
+                .ToListAsync();
+
+            Assert.AreEqual(2, peopleNoTracking1.Count);
+            Assert.AreEqual(2, peopleNoTracking2.Count);
+
+            Assert.AreEqual(1, peopleNoTracking1[0].Types.Count);
+            Assert.AreEqual(1, peopleNoTracking1[1].Types.Count);
+            Assert.AreEqual(1, peopleNoTracking2[0].Types.Count);
+            Assert.AreEqual(1, peopleNoTracking2[1].Types.Count);
+
+            Assert.AreNotEqual(peopleNoTracking1[0], peopleNoTracking2[0]);
+            Assert.AreNotEqual(peopleNoTracking1[1], peopleNoTracking2[1]);
+
+            Assert.AreNotEqual(peopleNoTracking1[0].Types[0], peopleNoTracking2[0].Types[0]);
+            Assert.AreNotEqual(peopleNoTracking1[1].Types[0], peopleNoTracking2[1].Types[0]);
+        }
+
+        [TestMethod]
         public async Task AssigningATargetFromSourceShouldSetSourceId()
         {
             PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
-            var person = await Db.People.WithKeyAsync(7);
+            var person = await Db.People.GetWithKeyAsync(7);
             Assert.IsNull(person.Type);
             await Db.People.LoadRelationshipAsync(person, c => c.Type);
             Assert.IsNotNull(person.Type);
@@ -29,7 +140,7 @@ namespace Iql.Tests.Tests
         public async Task LoadingOneToManyTargetRelationshipProperty()
         {
             PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
-            var person = await Db.People.WithKeyAsync(7);
+            var person = await Db.People.GetWithKeyAsync(7);
             Assert.IsNull(person.Type);
             await Db.People.LoadRelationshipAsync(person, c => c.Type);
             Assert.IsNotNull(person.Type);
@@ -40,7 +151,7 @@ namespace Iql.Tests.Tests
         public async Task LoadingOneToManySourceRelationshipProperty()
         {
             PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
-            var type = await Db.PersonTypes.WithKeyAsync(2);
+            var type = await Db.PersonTypes.GetWithKeyAsync(2);
             Assert.AreEqual(0, type.People.Count);
             await Db.PersonTypes.LoadRelationshipAsync(type, c => c.People);
             Assert.AreEqual(3, type.People.Count);
@@ -55,7 +166,7 @@ namespace Iql.Tests.Tests
         public async Task LoadingOneToManyTargetRelationshipPropertyFromDataContext()
         {
             PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
-            var person = await Db.People.WithKeyAsync(7);
+            var person = await Db.People.GetWithKeyAsync(7);
             Assert.IsNull(person.Type);
             await Db.LoadRelationshipAsync(person, c => c.Type);
             Assert.IsNotNull(person.Type);
@@ -66,7 +177,7 @@ namespace Iql.Tests.Tests
         public async Task LoadingOneToManySourceRelationshipPropertyFromDataContext()
         {
             PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
-            var type = await Db.PersonTypes.WithKeyAsync(2);
+            var type = await Db.PersonTypes.GetWithKeyAsync(2);
             Assert.AreEqual(0, type.People.Count);
             await Db.LoadRelationshipAsync(type, c => c.People);
             Assert.AreEqual(3, type.People.Count);
@@ -146,6 +257,10 @@ namespace Iql.Tests.Tests
                 db.Clients.Add(client);
                 await log.InterceptAsync((method, uri, request) =>
                     {
+                        if (uri == "http://localhost:28000/odata/Clients(0)?$count=true")
+                        {
+                            return null;
+                        }
                         return HttpResult.FromString($@"{{
   ""@odata.context"": ""http://josh-pc:58000/odata/$metadata#Clients/$entity"",
   {clientOData}

@@ -33,7 +33,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 return dateTimeOffset.ToString("o");
             }
 
-            return value.ToString();
+            return value == null ? "null" : value.ToString();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Iql.Queryable.Events
 
         private List<Func<TEvent, Task>> SubscriptionActions { get; set; }
 
-        public async Task EmitAsync(Func<TEvent> propertyChangeEvent)
+        public async Task EmitAsync(Func<TEvent> propertyChangeEvent, Func<TEvent, Task> afterEvent = null)
         {
             if (SubscriptionActions != null && SubscriptionActions.Count > 0)
             {
@@ -55,6 +55,10 @@ namespace Iql.Queryable.Events
                 for (var i = 0; i < SubscriptionActions.Count; i++)
                 {
                     await SubscriptionActions[i](ev);
+                }
+                if (afterEvent != null)
+                {
+                    await afterEvent(ev);
                 }
             }
         }

@@ -8,6 +8,7 @@ namespace Iql.Queryable.Events
 {
     public interface IRelatedListChangeEvent
     {
+        bool Disallow { get; set; }
         Type OwnerType { get; }
         object Owner { get; }
         Type ItemType { get; }

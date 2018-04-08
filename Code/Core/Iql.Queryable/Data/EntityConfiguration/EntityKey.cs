@@ -14,11 +14,24 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Properties = new List<IProperty>();
         }
 
-        public bool IsGeneratedRemotely { get; set; }
+        public bool IsGeneratedRemotely { get; set; } = true;
         public Type Type { get; set; }
         public bool HasRelationshipKeys => Properties.Any(p =>
             p.Relationship != null && !p.Relationship.ThisIsTarget);
         public Type KeyType { get; set; }
         public IList<IProperty> Properties { get; set; }
+
+        public bool IsPivot()
+        {
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var property = Properties[i];
+                if (!property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

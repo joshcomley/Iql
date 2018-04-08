@@ -22,7 +22,7 @@ namespace Iql.Tests.Tests.OData
                             .ExpandCollection(results => results.Results, results =>
                                 results.Expand(examResult => examResult.Hazard))
                     )
-                    .WithKeyAsync("2b2b0e44-4579-4965-8e3a-097e6684b767");
+                    .GetWithKeyAsync("2b2b0e44-4579-4965-8e3a-097e6684b767");
             Assert.AreEqual(1, user.ExamResults.Count);
         }
 
@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests.OData
                 db
                     .Users
                     .ExpandCollection(u => u.ExamResults)
-                    .WithKeyAsync("this-will-return-null");
+                    .GetWithKeyAsync("this-will-return-null");
         }
 
     }

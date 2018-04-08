@@ -179,7 +179,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1" });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2" });
 
-            var client1 = await Db.Clients.WithKeyAsync(1);
+            var client1 = await Db.Clients.GetWithKeyAsync(1);
             var sites = await Db.Sites.ToListAsync();
             var site1 = sites.Single(s => s.Id == 1);
 
@@ -225,7 +225,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
-            var site = await Db.Sites.Expand(s => s.Client).WithKeyAsync(1);
+            var site = await Db.Sites.Expand(s => s.Client).GetWithKeyAsync(1);
 
             site.Client.Name = "Client 1 - changed";
 
@@ -257,9 +257,9 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
-            var site = await Db.Sites.Expand(s => s.Client).WithKeyAsync(1);
+            var site = await Db.Sites.Expand(s => s.Client).GetWithKeyAsync(1);
             var client1 = site.Client;
-            var client2 = await Db.Clients.WithKeyAsync(2);
+            var client2 = await Db.Clients.GetWithKeyAsync(2);
 
             site.Client = client2;
 

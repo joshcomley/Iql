@@ -46,7 +46,7 @@ namespace Iql.Queryable.Events
 
         private List<Action<TEvent>> SubscriptionActions { get; set; }
 
-        public void Emit(Func<TEvent> propertyChangeEvent)
+        public void Emit(Func<TEvent> propertyChangeEvent, Action<TEvent> afterEvent = null)
         {
             if (SubscriptionActions != null && SubscriptionActions.Count > 0)
             {
@@ -54,6 +54,10 @@ namespace Iql.Queryable.Events
                 for (var i = 0; i < SubscriptionActions.Count; i++)
                 {
                     SubscriptionActions[i](ev);
+                }
+                if (afterEvent != null)
+                {
+                    afterEvent(ev);
                 }
             }
         }

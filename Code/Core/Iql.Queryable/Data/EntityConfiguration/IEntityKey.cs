@@ -10,5 +10,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
         Type Type { get; set; }
         IList<IProperty> Properties { get; set; }
         bool IsGeneratedRemotely { get; set; }
+        bool IsPivot();
     }
 }

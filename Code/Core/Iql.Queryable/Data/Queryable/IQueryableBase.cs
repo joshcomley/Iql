@@ -10,6 +10,7 @@ namespace Iql.Queryable.Data.Queryable
 {
     public interface IQueryableBase
     {
+        bool? TrackEntities { get; set; }
         bool HasDefaults { get; set; }
         EvaluateContext EvaluateContext { get; }
         Type ItemType { get; }

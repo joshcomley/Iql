@@ -88,6 +88,10 @@ namespace Iql.Queryable.Data.DataStores
             {
                 var state = rootTrackingSet.GetEntityState(entity);
                 state.MarkedForDeletion = false;
+                if (entity != state.Entity)
+                {
+                    int a = 0;
+                }
                 return state;
             }
             var entityType = typeof(T);
@@ -207,6 +211,7 @@ namespace Iql.Queryable.Data.DataStores
             await PerformGet(new QueuedGetDataOperation<TEntity>(
                 operation,
                 response));
+
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
@@ -244,16 +249,20 @@ namespace Iql.Queryable.Data.DataStores
             // tracked data
             if (response.IsSuccessful())
             {
+                var trackResults = dbList.SourceQueryable != null &&
+                                   DataContext.TrackEntities;
+                if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
+                {
+                    trackResults = dbList.SourceQueryable.TrackEntities.Value;
+                }
                 ForAllDataStores(tracker =>
                 {
                     if (tracker == DataTracker)
                     {
-                        if (dbList.SourceQueryable != null && !dbList.SourceQueryable.TrackEntities 
-                            || !DataContext.TrackEntities)
+                        if (!trackResults)
                         {
                             tracker = new DataTracker(this, false);
                         }
-
                         response.Root = tracker.TrackResults(response.Data, response.Root);
                     }
                     else
@@ -271,24 +280,8 @@ namespace Iql.Queryable.Data.DataStores
                                 }
                             }
                         }
-
-                        //tracker.TrackResults(response.Data, root);
                     }
                 });
-                //var tracker = dbList.SourceQueryable.TrackEntities?
-                //    DataTracker : new DataTracker(this, false);
-                //response.Root = tracker.TrackResults(response.Data, response.Root);
-                //
-                //if (!operation.IsSingleResult)
-                //{
-                //    if (data.ContainsKey(typeof(TEntity)))
-                //    {
-                //        dbList.AddRange((List<TEntity>)data[typeof(TEntity)]);
-                //    }
-                //}
-                //else
-                //{
-                //}
                 dbList.AddRange(response.Root);
             }
 
@@ -403,7 +396,8 @@ namespace Iql.Queryable.Data.DataStores
                         addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
                         addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, validationResult);
                     }
-                    else if(CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result))
+                    else if(CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result) &&
+                            await CheckNotAlreadyExistsAsync(addEntityOperation))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
                         result = await PerformAdd(addEntityOperation);
@@ -415,13 +409,12 @@ namespace Iql.Queryable.Data.DataStores
                             trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
                             trackingSet.GetEntityState(localEntity).Reset();
                             trackingSet.GetEntityState(localEntity).IsNew = false;
-                        }
-
-                        await DataContext.RefreshEntity(localEntity
+                            await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                        );
+                            );
+                        }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
                     break;
@@ -506,6 +499,46 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
+        private async Task<bool> CheckNotAlreadyExistsAsync<TEntity>(
+            QueuedAddEntityOperation<TEntity> operation) where TEntity : class
+        {
+            var entityWithKeyAlreadyExists = await EntityWithKeyAlreadyExists(operation.Operation.Entity);
+            if (entityWithKeyAlreadyExists)
+            {
+                operation.Result.EntityValidationResults = operation.Result.EntityValidationResults ??
+                                                           new Dictionary<object, IEntityValidationResult>();
+                operation.Result.EntityValidationResults.Add("",
+                    new EntityValidationResult<TEntity>(operation.Operation.Entity)
+                        .AddFailure("EntityWithKeyAlreadyExists", "An entity with this key already exists"));
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> EntityWithKeyAlreadyExists<TEntity>(TEntity entity) where TEntity : class
+        {
+            var entityWithKeyAlreadyExists =
+                Tracking.EntityWithSameKeyIsBeingTracked(entity, typeof(TEntity));
+            if (!entityWithKeyAlreadyExists)
+            {
+                var compositeKey = DataContext.EntityConfigurationContext.EntityType<TEntity>()
+                    .GetCompositeKey(entity);
+                if (!compositeKey.HasDefaultValue())
+                {
+                    var remoteEntity = await DataContext.GetDbQueryable<TEntity>()
+                        .SetTracking(false)
+                        .GetWithCompositeKeyAsync(compositeKey);
+                    if (remoteEntity != null && remoteEntity != entity)
+                    {
+                        entityWithKeyAlreadyExists = true;
+                    }
+                }
+            }
+
+            return entityWithKeyAlreadyExists;
+        }
+
         private bool CheckPendingDependencies<TEntity, TOperation>(TOperation operation, EntityCrudResult<TEntity, TOperation> result) 
             where TEntity : class
             where TOperation : EntityCrudOperation<TEntity>
@@ -528,7 +561,7 @@ namespace Iql.Queryable.Data.DataStores
         private void ForAllDataStores(Action<DataTracker> action)
         {
             var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
-            foreach (var dataTracker in DataTracker.AllDataTrackers)
+            foreach (var dataTracker in DataTracker.AllDataTrackers())
             {
                 if (!dataTrackersDealtWith.ContainsKey(dataTracker))
                 {
