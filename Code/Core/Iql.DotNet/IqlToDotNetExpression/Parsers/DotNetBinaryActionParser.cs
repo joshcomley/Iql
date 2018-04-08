@@ -59,6 +59,19 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                 }
             }
 
+            var leftIsNullableWrapped = Nullable.GetUnderlyingType(left.Type) != null;
+            var rightIsNullableWrapped = Nullable.GetUnderlyingType(right.Type) != null;
+
+            if (leftIsNullableWrapped && !rightIsNullableWrapped)
+            {
+                right = Expression.Convert(right, left.Type);
+            }
+
+            if (rightIsNullableWrapped && !leftIsNullableWrapped)
+            {
+                left = Expression.Convert(left, right.Type);
+            }
+
             return new IqlFinalExpression<Expression>(
                 Expression.MakeBinary(@operator, left, right, false, method));
         }
