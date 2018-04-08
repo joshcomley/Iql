@@ -403,7 +403,7 @@ namespace Iql.Queryable.Data.DataStores
                         addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
                         addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, validationResult);
                     }
-                    else
+                    else if(CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
                         result = await PerformAdd(addEntityOperation);
@@ -435,7 +435,7 @@ namespace Iql.Queryable.Data.DataStores
                         failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
                         updateEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else if (isEntityNew != null)
+                    else if (isEntityNew != null && CheckPendingDependencies(updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
                         result = await PerformUpdate(updateEntityOperation);
                         var operationEntity = updateEntityOperation
@@ -504,6 +504,25 @@ namespace Iql.Queryable.Data.DataStores
             {
                 saveChangesResult.Results.Add(entityCrudResult);
             }
+        }
+
+        private bool CheckPendingDependencies<TEntity, TOperation>(TOperation operation, EntityCrudResult<TEntity, TOperation> result) 
+            where TEntity : class
+            where TOperation : EntityCrudOperation<TEntity>
+        {
+            if (Tracking.GetPendingDependencyCount(operation.Entity,
+                    operation.EntityType) > 0)
+            {
+                result.Success = false;
+                result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
+                result.EntityValidationResults.Add(operation.Entity,
+                    new EntityValidationResult<TEntity>(operation.Entity)
+                        .AddFailure("PendingDependency",
+                            "Unable to save this entity because it has remaining, unsaved dependencies"));
+                return false;
+            }
+
+            return true;
         }
 
         private void ForAllDataStores(Action<DataTracker> action)

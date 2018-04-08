@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql.Queryable.Data.Validation
 {
-    public class EntityValidationResult<T> : ValidationResult<T>, IEntityValidationResult
+    public class EntityValidationResult<T> : ValidationResult<T, EntityValidationResult<T>>, IEntityValidationResult
     {
         public List<PropertyValidationResult<T>> PropertyValidationResults { get; private set; }
             = new List<PropertyValidationResult<T>>();
@@ -23,13 +23,14 @@ namespace Iql.Queryable.Data.Validation
             AddPropertyValidationResult((PropertyValidationResult<T>) result);
         }
 
-        public void AddPropertyValidationResult(PropertyValidationResult<T> result)
+        public EntityValidationResult<T> AddPropertyValidationResult(PropertyValidationResult<T> result)
         {
             if (PropertyValidationResults == null)
             {
                 PropertyValidationResults = new List<PropertyValidationResult<T>>();
             }
             PropertyValidationResults.Add(result);
+            return this;
         }
 
         public override bool HasValidationFailures()

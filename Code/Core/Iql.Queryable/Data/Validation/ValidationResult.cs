@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace Iql.Queryable.Data.Validation
 {
-    public abstract class ValidationResult<T> : IValidationResult
+    public abstract class ValidationResult<T, TThis> : IValidationResult
+        where TThis : ValidationResult<T, TThis>
     {
         public T Entity { get; set; }
         public Type EntityType => typeof(T);
@@ -15,13 +16,19 @@ namespace Iql.Queryable.Data.Validation
             Entity = entity;
         }
 
-        public void AddFailure(string key, string message)
+        public TThis AddFailure(string key, string message)
         {
             if (ValidationFailures == null)
             {
                 ValidationFailures = new List<ValidationError>();
             }
             ValidationFailures.Add(new ValidationError(key, message));
+            return (TThis)this;
+        }
+
+        IValidationResult IValidationResult.AddFailure(string key, string message)
+        {
+            return AddFailure(key, message);
         }
 
         public virtual bool HasValidationFailures()

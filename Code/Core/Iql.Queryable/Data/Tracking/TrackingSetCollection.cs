@@ -34,28 +34,27 @@ namespace Iql.Queryable.Data.Tracking
             }
 
             inserts = inserts
-                .OrderBy(GetUninsertedDependencyCount)
+                .OrderBy(operation => GetPendingDependencyCount(operation.Entity, operation.EntityType))
                 .ToList();
             return inserts;
         }
 
-        private int GetUninsertedDependencyCount(IEntityCrudOperationBase operation)
+        public int GetPendingDependencyCount(object entity, Type entityType = null)
         {
             var count = 0;
-            //var config = DataStore.DataContext.EntityConfigurationContext.GetEntityByType(operation.EntityType);
             var flattened =
-                DataStore.DataContext.EntityConfigurationContext.FlattenDependencyGraph(operation.Entity,
-                    operation.EntityType);
+                DataStore.DataContext.EntityConfigurationContext.FlattenDependencyGraph(entity,
+                    entityType);
             foreach (var item in flattened)
             {
                 var tracking = DataStore.Tracking.TrackingSetByType(item.Key);
-                foreach (var entity in item.Value)
+                foreach (var dependency in item.Value)
                 {
-                    if (entity == operation.Entity)
+                    if (dependency == entity)
                     {
                         continue;
                     }
-                    if (tracking.GetEntityState(entity).IsNew)
+                    if (tracking.GetEntityState(dependency).IsNew)
                     {
                         count++;
                     }
@@ -63,27 +62,6 @@ namespace Iql.Queryable.Data.Tracking
             }
 
             return count;
-            //for (var i = 0; i < config.Properties.Count; i++)
-            //{
-            //    var relationshipMatches = config.AllRelationships().ToArray();
-            //    for (var j = 0; j < relationshipMatches.Length; j++)
-            //    {
-            //        var relationship = relationshipMatches[j];
-            //        if (!relationship.ThisEnd.IsCollection)
-            //        {
-            //            var value = relationship.ThisEnd.Property.PropertyGetter(operation.Entity);
-            //            if (value != null)
-            //            {
-            //                var tracking = DataStore.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
-            //                if (tracking.GetEntityState(value).IsNew)
-            //                {
-            //                    count++;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //return count;
         }
 
         public List<IEntityCrudOperationBase> GetDeletions()

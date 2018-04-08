@@ -7,7 +7,7 @@ namespace Iql.Queryable.Data.Validation
     {
         Type EntityType { get; }
         List<ValidationError> ValidationFailures { get; set; }
-        void AddFailure(string key, string message);
+        IValidationResult AddFailure(string key, string message);
         bool HasValidationFailures();
     }
 }
