@@ -74,13 +74,16 @@ namespace Iql.Tests.Tests
 
         public static void TestCleanUp()
         {
+            AppDbContext.InMemoryDb.Users.Clear();
             AppDbContext.InMemoryDb.ClientTypes.Clear();
             AppDbContext.InMemoryDb.Clients.Clear();
             AppDbContext.InMemoryDb.Sites.Clear();
+            AppDbContext.InMemoryDb.SiteInspections.Clear();
             AppDbContext.InMemoryDb.People.Clear();
             AppDbContext.InMemoryDb.PeopleTypes.Clear();
             AppDbContext.InMemoryDb.PeopleTypeMap.Clear();
-            AppDbContext.InMemoryDb.SiteInspections.Clear();
+            AppDbContext.InMemoryDb.PersonInspections.Clear();
+            AppDbContext.InMemoryDb.ReportCategories.Clear();
             AppDbContext.InMemoryDb.RiskAssessments.Clear();
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Clear();
             Db = new AppDbContext();

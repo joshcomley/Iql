@@ -30,7 +30,7 @@ namespace Iql.Queryable.Data.Context
         T GetConfiguration<T>()
             where T : class;
 
-        IDbSet AsDbSetByType(Type entityType);
+        IDbQueryable AsDbSetByType(Type entityType);
         DbSet<T, TKey> AsDbSet<T, TKey>() where T : class;
         bool IsIdMatch(object left, object right, Type type);
         bool EntityPropertiesMatch(object entity, CompositeKey key);
@@ -77,16 +77,18 @@ namespace Iql.Queryable.Data.Context
         DbQueryable<T> GetDbQueryable<T>()
             where T : class;
         TDbSet GetDbSetBySet<TDbSet>()
-            where TDbSet : IDbSet;
+            where TDbSet : IDbQueryable;
         string GetDbSetPropertyNameBySet<TDbSet>()
-            where TDbSet : IDbSet;
+            where TDbSet : IDbQueryable;
         string GetDbSetPropertyNameByEntity<T>()
             where T : class;
         string GetDbSetPropertyNameBySetType(Type setType);
         string GetDbSetPropertyNameByEntityType(Type entityType);
-        IDbSet GetDbSetBySetType(Type entityType);
-        IDbSet GetDbSetByEntityType(Type entityType);
-        Task LoadRelationshipPropertyAsync(object entity, IProperty relationship);
-        Task LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship);
+        IDbQueryable GetDbSetBySetType(Type entityType);
+        IDbQueryable GetDbSetByEntityType(Type entityType);
+        Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null);
+        Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships, Type entityType = null);
+        Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
+        Task<IList> LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
     }
 }

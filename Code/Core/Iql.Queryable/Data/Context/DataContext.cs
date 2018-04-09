@@ -91,11 +91,11 @@ namespace Iql.Queryable.Data.Context
         {
             var allProperties = GetType().GetRuntimeProperties().ToArray();
             var properties = allProperties
-                .Where(p => typeof(IDbSet).IsAssignableFrom(p.PropertyType))
+                .Where(p => typeof(IDbQueryable).IsAssignableFrom(p.PropertyType))
                 .ToList();
             foreach (var property in properties)
             {
-                IDbSet asDbSetByType = null;
+                IDbQueryable asDbSetByType = null;
                 var existingValue = this.GetPropertyValueByName(property.Name);
                 Type entityType = null;
                 var dbSetName = nameof(DbSet<object, object>);
@@ -173,12 +173,12 @@ namespace Iql.Queryable.Data.Context
         }
 
         public TDbSet GetDbSetBySet<TDbSet>()
-        where TDbSet : IDbSet
+        where TDbSet : IDbQueryable
         {
             return (TDbSet)GetDbSetBySetType(typeof(TDbSet));
         }
 
-        public string GetDbSetPropertyNameBySet<TDbSet>() where TDbSet : IDbSet
+        public string GetDbSetPropertyNameBySet<TDbSet>() where TDbSet : IDbQueryable
         {
             return GetDbSetPropertyNameBySetType(typeof(TDbSet));
         }
@@ -209,16 +209,16 @@ namespace Iql.Queryable.Data.Context
         }
 
         private readonly Dictionary<Type, PropertyInfo> _dbSetsByEntityType = new Dictionary<Type, PropertyInfo>();
-        public IDbSet GetDbSetByEntityType(Type entityType)
+        public IDbQueryable GetDbSetByEntityType(Type entityType)
         {
             if (!_dbSetsByEntityType.ContainsKey(entityType))
             {
                 foreach (var property in GetType().GetRuntimeProperties())
                 {
                     var value = this.GetPropertyValueByName(property.Name);
-                    if (value is IDbSet)
+                    if (value is IDbQueryable)
                     {
-                        var dbSet = value as IDbSet;
+                        var dbSet = value as IDbQueryable;
                         if (dbSet.ItemType == entityType)
                         {
                             _dbSetsByEntityType.Add(entityType, property);
@@ -229,50 +229,64 @@ namespace Iql.Queryable.Data.Context
             }
             else
             {
-                return this.GetPropertyValueByName(_dbSetsByEntityType[entityType].Name) as IDbSet;
+                return this.GetPropertyValueByName(_dbSetsByEntityType[entityType].Name) as IDbQueryable;
             }
             return null;
         }
 
-        public async Task LoadRelationshipPropertyAsync(object entity, IProperty property)
+        public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null)
         {
-            await GetDbSetByEntityType(property.TypeDefinition.DeclaringType).LoadRelationshipPropertyAsync(entity, property);
+            return GetDbSetByEntityType(entityType ?? entity.GetType())
+                .LoadAllRelationshipsAsync(entity, mode);
         }
 
-        public Task LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship)
+        public Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships, Type entityType = null)
+        {
+            return GetDbSetByEntityType(entityType ?? entity.GetType())
+                .LoadRelationshipsAsync(entity, relationships);
+        }
+
+        public async Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        {
+            return await GetDbSetByEntityType(property.TypeDefinition.DeclaringType)
+                .LoadRelationshipPropertyAsync(entity, property, queryFilter);
+        }
+
+        public Task<IList> LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             return LoadRelationshipPropertyAsync(entity,
-                EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType()).FindPropertyByLambdaExpression(relationship));
+                EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType()).FindPropertyByLambdaExpression(relationship),
+                queryFilter);
         }
 
         private readonly Dictionary<Type, PropertyInfo> _dbSetsBySetType = new Dictionary<Type, PropertyInfo>();
-        public IDbSet GetDbSetBySetType(Type setType)
+        public IDbQueryable GetDbSetBySetType(Type setType)
         {
             if (!_dbSetsBySetType.ContainsKey(setType))
             {
                 foreach (var property in GetType().GetRuntimeProperties())
                 {
                     var value = this.GetPropertyValueByName(property.Name);
-                    if (value != null && value is IDbSet && setType.IsAssignableFrom(value.GetType()))
+                    if (value != null && value is IDbQueryable && setType.IsAssignableFrom(value.GetType()))
                     {
                         _dbSetsBySetType.Add(setType, property);
-                        return value as IDbSet;
+                        return value as IDbQueryable;
                     }
                 }
             }
             else
             {
-                return this.GetPropertyValueByName(_dbSetsBySetType[setType].Name) as IDbSet;
+                return this.GetPropertyValueByName(_dbSetsBySetType[setType].Name) as IDbQueryable;
             }
             return null;
         }
 
-        public IDbSet AsDbSetByType(Type entityType)
+        public IDbQueryable AsDbSetByType(Type entityType)
         {
             Initialize();
             var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
             var keyType = entityKey.KeyType;
-            return (IDbSet)GetType().GetMethod(nameof(AsDbSet))
+            return (IDbQueryable)GetType().GetMethod(nameof(AsDbSet))
                 .InvokeGeneric(
                     this,
                     new object[] { },
@@ -281,12 +295,12 @@ namespace Iql.Queryable.Data.Context
                     );
         }
 
-        public IDbSet AsCustomDbSetByType(Type entityType, Type setType)
+        public IDbQueryable AsCustomDbSetByType(Type entityType, Type setType)
         {
             Initialize();
             var entityKey = EntityConfigurationContext.GetEntityByType(entityType).Key;
             var keyType = entityKey.KeyType;
-            return (IDbSet)GetType().GetMethod(nameof(AsCustomDbSet))
+            return (IDbQueryable)GetType().GetMethod(nameof(AsCustomDbSet))
                 .InvokeGeneric(
                     this,
                     new object[] { },

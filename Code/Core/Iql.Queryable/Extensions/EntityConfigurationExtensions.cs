@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.Context;
+using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Extensions
@@ -8,10 +8,16 @@ namespace Iql.Queryable.Extensions
     public static class EntityConfigurationExtensions
     {
         public static IExpressionQueryOperation BuildExpandOperation(
-            this IEntityConfiguration entityConfiguration,
+            this IDataContext dataContext,
+            Type entityType,
             string propertyName)
         {
-            throw new NotImplementedException();
+            var expandOperation = new ExpandOperation();
+            var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType)
+                .FindProperty(propertyName);
+            expandOperation.QueryExpression = new ExpandQueryExpression(null, q => dataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type));
+            expandOperation.Expression = IqlExpression.GetPropertyExpression(propertyName);
+            return expandOperation;
             //var relationship = entityConfiguration
             //    .Relationships.Single(r =>
             //    {

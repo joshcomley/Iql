@@ -8,7 +8,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
             JavaScriptIqlParserInstance parser)
         {
-            if (action.ReturnType == IqlType.String)
+            if (action.ReturnType == IqlType.String || (action.ReturnType == IqlType.Unknown && action.InferredReturnType == IqlType.String))
             {
                 var str = action.Value as string;
                 if (action.Value != null)

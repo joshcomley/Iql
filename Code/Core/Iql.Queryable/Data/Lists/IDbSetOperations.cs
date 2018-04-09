@@ -13,7 +13,7 @@ using Iql.Parsing;
 
 namespace Iql.Queryable.Data.Lists
 {
-    public interface IDbSetOperations<T, in TKey> where T : class
+    public interface IDbSetOperations<T, TKey> where T : class
     {
         EntityState<T> Add(T entity);
         EntityState<T> Delete(T entity);
@@ -132,7 +132,7 @@ namespace Iql.Queryable.Data.Lists
         //UpdateEntityResult<T> Update(T entity);
         Task<T> GetWithKeyAsync(TKey key);
         Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(TKey key);
-        Task LoadRelationshipPropertyAsync(T entity, IProperty relationship);
-        Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> relationship);
+        //Task LoadRelationshipPropertyAsync(T entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
+        //Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> relationship, Func<IDbSetOperations<T, TKey>, IDbSetOperations<T, TKey>> queryFilter = null);
     }
 }

@@ -1,13 +1,14 @@
 ﻿using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Data.Queryable;
 
 namespace Iql.OData.Extensions
 {
     public static class ODataUri
     {
-        public static string ResolveODataUri(this IDbSet queryable)
+        public static string ResolveODataUri(this IDbQueryable queryable)
         {
             return queryable.ResolveODataUriFromQuery(queryable.DataContext);
         }

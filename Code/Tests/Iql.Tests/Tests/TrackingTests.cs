@@ -5,6 +5,7 @@ using Iql.OData;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Http;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Data.Queryable;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -14,6 +15,42 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class TrackingTests : TestsBase
     {
+        [TestMethod]
+        public async Task SettingARelationshipToAnUnchangedValueShouldHaveNoEffect()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1,
+                CreatedByUserId = "a"
+            });
+            AppDbContext.InMemoryDb.Users.Add(new ApplicationUser
+            {
+                Id = "a"
+            });
+            var person = await Db.People.WithKey(1).Expand(p => p.CreatedByUser).SingleAsync();
+            Assert.AreEqual("a", person.CreatedByUserId);
+            person.CreatedByUserId = "a";
+            Assert.AreEqual("a", person.CreatedByUserId);
+        }
+
+        [TestMethod]
+        public async Task SettingARelationshipKeyToAnUntrackedEntityKeyShouldLeaveTheKeyIntact()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1,
+                CreatedByUserId = "a"
+            });
+            AppDbContext.InMemoryDb.Users.Add(new ApplicationUser
+            {
+                Id = "a"
+            });
+            var person = await Db.People.WithKey(1).Expand(p => p.CreatedByUser).SingleAsync();
+            Assert.AreEqual("a", person.CreatedByUserId);
+            person.CreatedByUserId = "b";
+            Assert.AreEqual("b", person.CreatedByUserId);
+        }
+
         [TestMethod]
         public async Task ShouldNotBeAbleToAddDifferentEntitiesWithSameKey()
         {
@@ -175,6 +212,124 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(2, person.Type.Id);
         }
 
+        public async Task<Client> PrepLoadRelationshipsAsync()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 7,
+                CreatedByUserId = "a"
+            });
+            var dbApplicationUser = new ApplicationUser
+            {
+                Id = "a",
+                FullName = "Dynamically loaded user"
+            };
+            AppDbContext.InMemoryDb.Users.Add(dbApplicationUser);
+            var dbClientType = new ClientType
+            {
+                Id = 7,
+                Name = "Dynamically loaded client type"
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType);
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 11,
+                ClientId = 2,
+                Name = "Site 1"
+            });
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 12,
+                ClientId = 1,
+                Name = "Site 2"
+            });
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 13,
+                ClientId = 1,
+                Name = "Site 3"
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            Assert.AreEqual(1, client.Id);
+            Assert.IsNull(client.Type);
+            Assert.IsNull(client.CreatedByUser);
+            Assert.AreEqual(0, client.Sites.Count);
+            Assert.AreEqual(7, client.TypeId);
+            Assert.AreEqual("a", client.CreatedByUserId);
+            return client;
+        }
+
+        [TestMethod]
+        public async Task LoadAllRelationships()
+        {
+            var client = await PrepLoadRelationshipsAsync();
+            var result = await Db.LoadAllRelationshipsAsync(client);
+            Assert.AreEqual(5, result.Count);
+            var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Users)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Sites)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.CreatedByUser)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Type)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.People)));
+            Assert.IsNotNull(client.Type);
+            Assert.IsNotNull(client.CreatedByUser);
+            Assert.AreEqual(7, client.Type.Id);
+            Assert.AreEqual("a", client.CreatedByUser.Id);
+            Assert.AreEqual("Dynamically loaded client type", client.Type.Name);
+            Assert.AreEqual("Dynamically loaded user", client.CreatedByUser.FullName);
+            Assert.AreEqual(2, client.Sites.Count);
+            Assert.IsTrue(client.Sites.Any(s => s.Id == 12));
+            Assert.IsTrue(client.Sites.Any(s => s.Id == 13));
+        }
+
+        [TestMethod]
+        public async Task LoadCollectionRelationships()
+        {
+            var client = await PrepLoadRelationshipsAsync();
+            var result = await Db.LoadAllRelationshipsAsync(client, LoadRelationshipMode.Collections);
+            Assert.AreEqual(3, result.Count);
+            var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Users)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Sites)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.People)));
+            Assert.IsNull(client.Type);
+            Assert.IsNull(client.CreatedByUser);
+            Assert.AreEqual(2, client.Sites.Count);
+            Assert.IsTrue(client.Sites.Any(s => s.Id == 12));
+            Assert.IsTrue(client.Sites.Any(s => s.Id == 13));
+        }
+
+        [TestMethod]
+        public async Task LoadReferenceRelationships()
+        {
+            var client = await PrepLoadRelationshipsAsync();
+            var result = await Db.LoadAllRelationshipsAsync(client, LoadRelationshipMode.References);
+            Assert.AreEqual(2, result.Count);
+            var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.CreatedByUser)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Type)));
+            Assert.IsNotNull(client.Type);
+            Assert.IsNotNull(client.CreatedByUser);
+            Assert.AreEqual(7, client.Type.Id);
+            Assert.AreEqual("a", client.CreatedByUser.Id);
+            Assert.AreEqual("Dynamically loaded client type", client.Type.Name);
+            Assert.AreEqual("Dynamically loaded user", client.CreatedByUser.FullName);
+            Assert.AreEqual(0, client.Sites.Count);
+        }
+
+        [TestMethod]
+        public async Task LoadingOneToManyTargetRelationshipPropertyWithExpand()
+        {
+            PrepInMemoryDatabaseForLoadRelationshipPropertyTests();
+            var person = await Db.People.GetWithKeyAsync(7);
+            Assert.IsNull(person.Type);
+            await Db.People.LoadRelationshipAsync(person, c => c.Type, q => q.ExpandRelationship(nameof(PersonType.PeopleMap)));
+            Assert.IsNotNull(person.Type);
+            Assert.AreEqual(2, person.Type.Id);
+            Assert.AreEqual(1, person.Types.Count);
+        }
+
         [TestMethod]
         public async Task LoadingOneToManySourceRelationshipProperty()
         {
@@ -218,6 +373,11 @@ namespace Iql.Tests.Tests
 
         private static void PrepInMemoryDatabaseForLoadRelationshipPropertyTests()
         {
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 7,
+                TypeId = 2
+            });
             AppDbContext.InMemoryDb.People.Add(new Person
             {
                 Id = 7,
@@ -255,7 +415,7 @@ namespace Iql.Tests.Tests
             riskAssessment.SiteInspection.CreatedByUser = user;
             var operations = Db.DataStore.Tracking.GetQueue().ToList();
             Assert.AreEqual(3, operations.Count);
-            var order = new object[] {user, siteInspection, riskAssessment};
+            var order = new object[] { user, siteInspection, riskAssessment };
             for (var i = 0; i < operations.Count; i++)
             {
                 var operation = operations[i];

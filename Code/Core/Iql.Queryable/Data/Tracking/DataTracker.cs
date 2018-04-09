@@ -42,7 +42,10 @@ namespace Iql.Queryable.Data.Tracking
         public DataTracker(IDataStore dataStore, bool trackEntities)
         {
             TrackEntities = trackEntities;
-            _allDataTrackers.Add(this);
+            if (trackEntities)
+            {
+                _allDataTrackers.Add(this);
+            }
             DataStore = dataStore;
         }
 

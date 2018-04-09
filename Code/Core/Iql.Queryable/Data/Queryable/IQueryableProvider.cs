@@ -10,7 +10,7 @@ namespace Iql.Queryable.Data.Queryable
 {
     public interface IQueryableProvider<T, out TQueryable> : IQueryable<T>
         where T : class
-        where TQueryable : IQueryable<T>
+        where TQueryable : IQueryableProvider<T, TQueryable>
     {
         TQueryable Where(Expression<Func<T, bool>> expression
 #if TypeScript

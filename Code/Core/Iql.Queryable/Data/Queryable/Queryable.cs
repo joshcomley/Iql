@@ -13,7 +13,7 @@ namespace Iql.Queryable.Data.Queryable
 {
     public abstract class Queryable<T, TQueryable> : IQueryableProvider<T, TQueryable> 
         where T : class
-        where TQueryable : IQueryable<T>
+        where TQueryable : Queryable<T, TQueryable>
     {
         protected Queryable(EvaluateContext evaluateContext = null)
         {

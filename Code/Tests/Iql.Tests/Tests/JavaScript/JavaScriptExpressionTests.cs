@@ -4,15 +4,19 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 #endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
+using Iql.JavaScript.QueryableApplicator;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Expressions;
+using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Queryable.Operations;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.JavaScript
 {
     [TestClass]
-    public class ExpressionTests
+    public class JavaScriptExpressionTests
     {
         [TestMethod]
         public void TestCompileExpressionToJavaScript()
@@ -54,6 +58,26 @@ namespace Iql.Tests.Tests.JavaScript
                 .Expression;
             var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
             Assert.AreEqual(@"entity => ((((entity || {})[""Type""] || {})[""CreatedByUser""] || {})[""Client""] || {})[""Name""]", js);
+        }
+
+        [TestMethod]
+        public void TestCompareStringExpression()
+        {
+            ConverterConfig.Init();
+            var db = new AppDbContext();
+            var js = db.Users.Where(u => u.Id == "a").ToJavaScriptQuery();
+        }
+
+        [TestMethod]
+        public void TestIsEqualToLiteralExpression()
+        {
+            ConverterConfig.Init();
+            var db = new AppDbContext();
+            var iqlExpression = new IqlIsEqualToExpression(
+                IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)), 
+                new IqlLiteralExpression("a"));
+            var js = db.GetJavaScriptWhereQuery(iqlExpression);
+            Assert.AreEqual(js.Expression, @"((q || {})[""Id""] == 'a')");
         }
 
 #if !TypeScript

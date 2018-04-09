@@ -275,7 +275,7 @@ namespace Iql.Queryable.Data.DataStores
                                 if (trackingSet.IsTracked(entity))
                                 {
                                     var state = trackingSet.GetEntityState(entity);
-                                    trackingSet.TrackEntity(state.Entity, entity);
+                                    trackingSet.TrackEntity(state.Entity, entity, isNew: false, onlyMergeWithExisting: true);
                                     state.Reset();
                                 }
                             }

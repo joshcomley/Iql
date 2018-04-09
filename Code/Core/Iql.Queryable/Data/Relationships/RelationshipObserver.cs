@@ -761,28 +761,32 @@ namespace Iql.Queryable.Data.Relationships
                         new[] { relationship.Source.Property }, source);
                     break;
             }
-            foreach (var constraint in relationship.Constraints)
-            {
-                //DataContext.DataStore.DataTracker.
-                _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
-                    () =>
-                    {
-                        object newValue = null;
-                        if (newTarget != null)
-                        {
-                            newValue = newTarget.GetPropertyValue(constraint.TargetKeyProperty);
-                        }
-                        else if (!constraint.SourceKeyProperty.TypeDefinition.Nullable)
-                        {
-                            newValue = constraint.SourceKeyProperty.TypeDefinition.DefaultValue();
-                        }
 
-                        source.SetPropertyValue(
-                            constraint.SourceKeyProperty,
-                            newValue
-                        );
-                    },
-                    new[] { constraint.SourceKeyProperty }, source);
+            if (newTarget != null || newRelationshipKey == null)
+            {
+                foreach (var constraint in relationship.Constraints)
+                {
+                    //DataContext.DataStore.DataTracker.
+                    _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
+                        () =>
+                        {
+                            object newValue = null;
+                            if (newTarget != null)
+                            {
+                                newValue = newTarget.GetPropertyValue(constraint.TargetKeyProperty);
+                            }
+                            else if (!constraint.SourceKeyProperty.TypeDefinition.Nullable)
+                            {
+                                newValue = constraint.SourceKeyProperty.TypeDefinition.DefaultValue();
+                            }
+
+                            source.SetPropertyValue(
+                                constraint.SourceKeyProperty,
+                                newValue
+                            );
+                        },
+                        new[] { constraint.SourceKeyProperty }, source);
+                }
             }
 
             if (removeFromMoving)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -19,7 +20,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbSet
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbQueryable
         where T : class
     {
         private ITrackingSet _trackingSet;
@@ -48,40 +49,41 @@ namespace Iql.Queryable.Data.Queryable
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
-        TrackingSetCollection IDbSet.TrackingSetCollection => TrackingSetCollection;
+        TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
 
-        Func<IDataStore> IDbSet.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
-        IDbSet IDbSet.WithKeys(IEnumerable<object> keys)
+        Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
+        IDbQueryable IDbQueryable.WithKeys(IEnumerable<object> keys)
         {
             return WithKeys(keys);
         }
 
-        IDbSet IDbSet.WithCompositeKeys(IEnumerable<CompositeKey> keys)
+        IDbQueryable IDbQueryable.WithCompositeKeys(IEnumerable<CompositeKey> keys)
         {
             return WithKeys(keys);
         }
 
-        IDbSet IDbSet.Search(string search, PropertySearchKind searchKind)
+        IDbQueryable IDbQueryable.Search(string search, PropertySearchKind searchKind)
         {
             return Search(search, searchKind);
         }
-        IDbSet IDbSet.SearchProperties(string search, IEnumerable<IProperty> properties)
+        IDbQueryable IDbQueryable.SearchProperties(string search, IEnumerable<IProperty> properties)
         {
             return SearchProperties(search, properties);
         }
 
-        public Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> property)
+        public Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             return LoadRelationshipPropertyAsync(
                 entity, DataContext.EntityConfigurationContext.EntityType<T>()
-                    .FindPropertyByExpression(property));
+                    .FindPropertyByExpression(property),
+                queryFilter);
         }
 
-        public async Task LoadRelationshipPropertyAsync(T entity, IProperty property)
+        public async Task<IList> LoadRelationshipPropertyAsync(T entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             if (property.Relationship == null)
             {
-                return;
+                return null;
             }
             var otherDbSet = DataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type);
             var root = new IqlRootReferenceExpression();
@@ -96,22 +98,80 @@ namespace Iql.Queryable.Data.Queryable
                 ));
             }
 
-            await otherDbSet.WhereEquals(expressions.And()).ToList();
+            var query = (IDbQueryable)otherDbSet.WhereEquals(expressions.And());
+            if (queryFilter != null)
+            {
+                query = queryFilter(query);
+            }
+            return await query.ToList();
         }
 
-        Task IDbSet.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship)
+        Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             return LoadRelationshipPropertyAsync((T)entity, DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType())
-                .FindPropertyByExpression(relationship));
+                .FindPropertyByExpression(relationship),
+                queryFilter);
         }
 
-        Task IDbSet.LoadRelationshipPropertyAsync(object entity, IProperty property)
+        public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(T entity, IEnumerable<RelationshipMatch> relationships)
         {
-            return LoadRelationshipPropertyAsync((T) entity, property);
+            var dictionary = new Dictionary<IProperty, IList>();
+            var list = relationships.ToArray();
+            for (var i = 0; i < list.Length; i++)
+            {
+                var relationship = list[i];
+                if (relationship.ThisEnd.Type != typeof(T))
+                {
+                    continue;
+                }
+                if (relationship.ThisEnd.IsCollection)
+                {
+                    var result = await LoadRelationshipPropertyAsync(entity, relationship.ThisEnd.Property);
+                    dictionary.Add(relationship.ThisEnd.Property, result);
+                }
+                else if (relationship.ThisEnd.Property.PropertyGetter(entity) == null &&
+                         !relationship.ThisEnd.GetCompositeKey(entity).HasDefaultValue())
+                {
+                    var result = await LoadRelationshipPropertyAsync(entity, relationship.ThisEnd.Property);
+                    dictionary.Add(relationship.ThisEnd.Property, result);
+                }
+            }
+
+            return dictionary;
         }
 
-        IDataContext IDbSet.DataContext { get => DataContext; set => DataContext = value; }
-        ITrackingSet IDbSet.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
+        public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
+        {
+            IEnumerable<RelationshipMatch> relationships = EntityConfiguration.AllRelationships();
+            switch (mode)
+            {
+                case LoadRelationshipMode.Collections:
+                    relationships = relationships.Where(r => r.ThisEnd.IsCollection);
+                    break;
+                case LoadRelationshipMode.References:
+                    relationships = relationships.Where(r => !r.ThisEnd.IsCollection);
+                    break;
+            }
+            return LoadRelationshipsAsync(entity, relationships);
+        }
+
+        Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships)
+        {
+            return LoadRelationshipsAsync((T)entity, relationships);
+        }
+
+        Task<Dictionary<IProperty, IList>> IDbQueryable.LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
+        {
+            return LoadAllRelationshipsAsync((T)entity, mode);
+        }
+
+        Task<IList> IDbQueryable.LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        {
+            return LoadRelationshipPropertyAsync((T) entity, property, queryFilter);
+        }
+
+        IDataContext IDbQueryable.DataContext { get => DataContext; set => DataContext = value; }
+        ITrackingSet IDbQueryable.TrackingSet { get => TrackingSet; set => TrackingSet = value; }
 
         public DbQueryable<T> WithKeys(IEnumerable<object> keys)
         {
@@ -567,7 +627,7 @@ namespace Iql.Queryable.Data.Queryable
             string propertyName)
         {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
-            var expandOperation = entityConfiguration.BuildExpandOperation(propertyName);
+            var expandOperation = DataContext.BuildExpandOperation(typeof(T), propertyName);
             return Then(expandOperation);
         }
 
@@ -703,32 +763,32 @@ namespace Iql.Queryable.Data.Queryable
             return dbQueryable;
         }
 
-        IDbSet IDbSet.SetTracking(bool enabled)
+        IDbQueryable IDbQueryable.SetTracking(bool enabled)
         {
             return SetTracking(enabled);
         }
 
-        IDbSet IDbSet.IncludeCount()
+        IDbQueryable IDbQueryable.IncludeCount()
         {
             return IncludeCount();
         }
 
-        IDbSet IDbSet.ExpandAll()
+        IDbQueryable IDbQueryable.ExpandAll()
         {
             return ExpandAll();
         }
 
-        IDbSet IDbSet.ExpandRelationship(string name)
+        IDbQueryable IDbQueryable.ExpandRelationship(string name)
         {
             return ExpandRelationship(name);
         }
 
-        IDbSet IDbSet.ExpandAllSingleRelationships()
+        IDbQueryable IDbQueryable.ExpandAllSingleRelationships()
         {
             return ExpandAllSingleRelationships();
         }
 
-        IDbSet IDbSet.ExpandAllCollectionCounts()
+        IDbQueryable IDbQueryable.ExpandAllCollectionCounts()
         {
             return ExpandAllCollectionCounts();
         }

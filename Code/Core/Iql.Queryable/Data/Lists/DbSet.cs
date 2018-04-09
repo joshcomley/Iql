@@ -11,7 +11,6 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Expressions.QueryExpressions;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Lists
 {
@@ -25,6 +24,31 @@ namespace Iql.Queryable.Data.Lists
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
         }
+
+        //Task IDbSetOperations<T, TKey>.LoadRelationshipPropertyAsync(T entity, IProperty relationship,
+        //    Func<IDbSetOperations<T, TKey>, IDbSetOperations<T, TKey>> queryFilter = null)
+        //{
+        //    return LoadRelationshipPropertyAsync(entity, relationship, q =>
+        //    {
+        //        if (queryFilter == null)
+        //        {
+        //            return q;
+        //        }
+        //        return (DbSet<T, TKey>) queryFilter((DbSet<T, TKey>)q);
+        //    });
+        //}
+
+        //Task IDbSetOperations<T, TKey>.LoadRelationshipAsync(T entity, Expression<Func<T, object>> relationship, Func<IDbSetOperations<T, TKey>, IDbSetOperations<T, TKey>> queryFilter = null)
+        //{
+        //    return LoadRelationshipAsync(entity, relationship, q =>
+        //    {
+        //        if (queryFilter == null)
+        //        {
+        //            return q;
+        //        }
+        //        return (DbSet<T, TKey>)queryFilter((DbSet<T, TKey>)q);
+        //    });
+        //}
 
         public DbSet<T, TKey> WithKey(TKey key)
         {
