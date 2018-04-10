@@ -7,17 +7,31 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Events;
+using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.Tracking.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
-    public class EntityState<T> : IEntityState<T>, IEntityStateInternal
+    public class EntityState<T> : IEntityState<T>
     {
         private bool _exists;
         private bool _markedForDeletion;
-        private readonly List<IPropertyState> _changedProperties;
+        private bool _isNew;
 
-        public bool IsNew { get; set; }
+        //private CompositeKey _remoteKey;
+        public bool IsNew
+        {
+            get => _isNew;
+            set
+            {
+                _isNew = value;
+                if (value)
+                {
+                    //_remoteKey = null;
+                    MarkedForDeletion = false;
+                }
+            }
+        }
 
         public EventEmitter<ExistsChangeEvent> ExistsChanged { get; } = new EventEmitter<ExistsChangeEvent>();
         public bool Exists
@@ -77,18 +91,12 @@ namespace Iql.Queryable.Data.Tracking.State
                 var propertyState = Properties[i];
                 propertyState.Reset();
             }
+            //_remoteKey = EntityConfiguration.GetCompositeKey(Entity);
         }
 
-        public CompositeKey Key { get; set; }
+        public CompositeKey CurrentKey { get; set; }
 
-        public CompositeKey ResolveKey()
-        {
-            if (MarkedForAnyDeletion)
-            {
-                return Key;
-            }
-            return EntityConfiguration.GetCompositeKey(Entity);
-        }
+        //public CompositeKey RemoteKey => _remoteKey ?? CurrentKey;
 
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
@@ -104,13 +112,12 @@ namespace Iql.Queryable.Data.Tracking.State
             EntityType = entityType;
             DataContext = dataContext;
             EntityConfiguration = entityConfiguration;
-            _changedProperties = new List<IPropertyState>();
             Properties = new List<IPropertyState>();
             foreach (var property in EntityConfiguration.Properties)
             {
                 Properties.Add(new PropertyState(property, this));
             }
-            Key = entityConfiguration.GetCompositeKey(entity);
+            CurrentKey = entityConfiguration.GetCompositeKey(entity);
         }
 
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
@@ -120,42 +127,81 @@ namespace Iql.Queryable.Data.Tracking.State
                 new object[] { entity, entityType, entityConfiguration });
         }
 
-        public List<IPropertyState> ChangedProperties => _changedProperties;
+        public IPropertyState[] GetChangedProperties()
+        {
+            var propertyStates = PropertyStates.Where(ps =>
+                    ps.HasChanged && (!ps.Property.Kind.HasFlag(PropertyKind.Relationship) ||
+                                      HasRelationshipChanged(ps.Property)))
+                .ToArray();
+            return propertyStates;
+        }
 
+        public bool HasRelationshipChanged(IProperty relationshipProperty)
+        {
+            if (relationshipProperty.Kind.HasFlag(PropertyKind.Relationship))
+            {
+                var relationshipEntity = relationshipProperty.PropertyGetter(Entity);
+                if (relationshipEntity == null)
+                {
+                    return true;
+                }
+                var relationshipEntityState = DataContext.DataStore.Tracking
+                    .TrackingSetByType(relationshipProperty.Relationship.OtherEnd.Type)
+                    .GetEntityState(relationshipEntity);
+
+                if (!relationshipEntityState.IsNew)
+                {
+                    var thisEndConstraints = relationshipProperty.Relationship.ThisEnd.Constraints();
+                    for (var i = 0; i < thisEndConstraints.Length; i++)
+                    {
+                        var constraint = thisEndConstraints[i];
+                        var constraintState = GetPropertyState(constraint.Name);
+                        if (constraintState.HasChanged)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
         private List<IPropertyState> Properties { get; }
+
+        public bool IsInsertable()
+        {
+            if (EntityConfiguration.Key.Properties.All(p => p.ReadOnly))
+            {
+                return true;
+            }
+
+            var isInsertable = true;
+            for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+            {
+                var property = EntityConfiguration.Key.Properties[i];
+                if (property.ReadOnly)
+                {
+                    continue;
+                }
+
+                var value = property.PropertyGetter(Entity);
+                if (value.IsDefaultValue(property.TypeDefinition) && property.Kind.HasFlag(PropertyKind.RelationshipKey) &&
+                    Equals(null, property.Relationship.ThisEnd.Property.PropertyGetter(Entity)))
+                {
+                    isInsertable = false;
+                    break;
+                }
+            }
+
+            return isInsertable;
+        }
+
+        public IPropertyState[] PropertyStates => Properties.ToArray();
 
         public IPropertyState GetPropertyState(string name)
         {
             var state = Properties.SingleOrDefault(p => p.Property.Name == name);
             return state;
         }
-
-        public void SetPropertyState(string name, object oldValue, object newValue)
-        {
-            var propertyState = GetPropertyState(name);
-            propertyState.NewValue = newValue;
-            //propertyState.OldValue = oldValue;
-            UpdateChanged(propertyState);
-        }
-
-        public void UpdateChanged(IPropertyState propertyState)
-        {
-            if (!propertyState.HasChanged)
-            {
-                _changedProperties.Remove(propertyState);
-            }
-            else
-            {
-                if (!_changedProperties.Contains(propertyState))
-                {
-                    _changedProperties.Add(propertyState);
-                }
-            }
-        }
-    }
-
-    internal interface IEntityStateInternal
-    {
-        void UpdateChanged(IPropertyState state);
     }
 }

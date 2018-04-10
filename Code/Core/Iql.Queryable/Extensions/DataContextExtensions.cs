@@ -27,7 +27,7 @@ namespace Iql.Queryable.Extensions
 #if TypeScript
                 , entityType
 #endif
-            ).Key;
+            ).CurrentKey;
         }
 
         public static bool EntityHasKey(this IDataContext dataContext, object entity, Type entityType)

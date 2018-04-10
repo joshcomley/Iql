@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Extensions;
@@ -11,7 +10,6 @@ using Iql.OData.Json;
 using Iql.OData.Methods;
 using Iql.OData.QueryableApplicator;
 using Iql.OData.QueryableApplicator.Applicators;
-using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
@@ -156,7 +154,8 @@ namespace Iql.OData
                     break;
                 case ODataMethodScope.Entity:
                     var bindingParameter = parameters.Single(p => p.Name == bindingParameterName);
-                    baseUri = ResolveEntityUriByType(bindingParameter.Value, bindingParameter.ValueType);
+                    var compositeKey = DataContext.GetEntityState(bindingParameter.Value).CurrentKey;
+                    baseUri = ResolveEntityUriByType(compositeKey, bindingParameter.ValueType);
                     break;
                 case ODataMethodScope.Global:
                     nameSpace = "";
@@ -368,7 +367,7 @@ namespace Iql.OData
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var properties = new List<string>();
-            foreach (var property in operation.Operation.EntityState.ChangedProperties)
+            foreach (var property in operation.Operation.EntityState.GetChangedProperties())
             {
                 properties.Add(property.Property.Name);
             }
@@ -379,7 +378,7 @@ namespace Iql.OData
             var json = JsonSerializer.Serialize(
                 operation.Operation.Entity,
                 DataContext,
-                operation.Operation.EntityState.ChangedProperties.ToArray());
+                operation.Operation.EntityState.GetChangedProperties().ToArray());
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = httpResult.Success;
@@ -392,7 +391,7 @@ namespace Iql.OData
         {
             var configuration = Configuration;
             var http = configuration.HttpProvider;
-            var entityUri = ResolveEntityUri(operation.Operation.Entity);
+            var entityUri = ResolveEntityUriByType(operation.Operation.Key, typeof(TEntity));
             var httpResult = await http.Delete(entityUri);
             operation.Result.Success = httpResult.Success;
             ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
@@ -420,10 +419,11 @@ namespace Iql.OData
 
         public string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class
         {
-            return ResolveEntityUriByType(entity, typeof(TEntity));
+            var compositeKey = DataContext.GetEntityState(entity).CurrentKey;
+            return ResolveEntityUriByType(compositeKey, typeof(TEntity));
         }
 
-        public string ResolveEntityUriByType(object entity, Type entityType)
+        public string ResolveEntityUriByType(CompositeKey compositeKey, Type entityType)
         {
             var configuration = Configuration;
             var entitySetName = configuration.GetEntitySetNameByType(entityType);
@@ -432,8 +432,6 @@ namespace Iql.OData
             {
                 apiUriBase += "/";
             }
-
-            var compositeKey = DataContext.GetEntityState(entity).ResolveKey();
             //var compositeKey = new CompositeKey(key.Properties.Count);
             //for (var i = 0; i < key.Properties.Count; i++)
             //{

@@ -8,11 +8,12 @@ namespace Iql.Queryable.Events
         where TRelated : class 
         where TSource : class
     {
+        public ObservableListChangeEvent<TRelated> ObservableListChangeEvent { get; }
+        IObservableListChangeEvent IRelatedListChangeEvent.ObservableListChangeEvent => ObservableListChangeEvent;
         public Type ItemType => typeof(TRelated);
-        public bool Disallow { get; set; }
         public Type OwnerType => typeof(TSource);
         public TSource Owner { get; set; }
-        public TRelated Item { get; set; }
+        public TRelated Item => (TRelated) ObservableListChangeEvent?.Item;
         public CompositeKey ItemKey { get; }
         public RelatedListChangeKind Kind { get; set; }
         public RelatedList<TSource, TRelated> List { get; set; }
@@ -26,15 +27,15 @@ namespace Iql.Queryable.Events
         IRelatedList IRelatedListChangeEvent.List => List;
 
         public RelatedListChangeEvent(
+            ObservableListChangeEvent<TRelated> observableListChangeEvent,
             TSource owner, 
-            TRelated item,
             CompositeKey itemKey, 
             RelatedListChangeKind kind, 
             RelatedList<TSource, TRelated> list
             )
         {
+            ObservableListChangeEvent = observableListChangeEvent;
             Owner = owner;
-            Item = item;
             ItemKey = itemKey;
             Kind = kind;
             List = list;

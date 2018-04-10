@@ -2,8 +2,10 @@ namespace Iql.Queryable.Events
 {
     public enum RelatedListChangeKind
     {
-        Add,
-        Remove,
+        Adding,
+        Added,
+        Removing,
+        Removed,
         AssignByKey
     }
 }

@@ -22,11 +22,17 @@ namespace Iql.Queryable.Data.Lists
             {
                 switch (e.Kind)
                 {
+                    case ObservableListChangeKind.Adding:
+                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Adding);
+                        break;
                     case ObservableListChangeKind.Added:
-                        EmitRelatedListEvent((TTarget)e.Item, null, RelatedListChangeKind.Add);
+                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Added);
                         break;
                     case ObservableListChangeKind.Removed:
-                        EmitRelatedListEvent((TTarget)e.Item, null, RelatedListChangeKind.Remove);
+                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Removed);
+                        break;
+                    case ObservableListChangeKind.Removing:
+                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Removing);
                         break;
                 }
             });
@@ -40,6 +46,11 @@ namespace Iql.Queryable.Data.Lists
         public Type TargetType => typeof(TTarget);
         public string PropertyName { get; }
 
+        object IRelatedList.Add(object item)
+        {
+            return base.Add(item);
+        }
+
         object IRelatedList.Owner => Owner;
 
         IEventSubscriber<IRelatedListChangeEvent> IRelatedList.RelatedListChange => RelatedListChange;
@@ -51,19 +62,12 @@ namespace Iql.Queryable.Data.Lists
 
         public void RemoveRelationshipByKey(CompositeKey key)
         {
-            EmitRelatedListEvent(null, key, RelatedListChangeKind.Remove);
+            EmitRelatedListEvent(null, key, RelatedListChangeKind.Removed);
         }
 
-        private void EmitRelatedListEvent(TTarget item, CompositeKey itemKey, RelatedListChangeKind kind)
+        private void EmitRelatedListEvent(ObservableListChangeEvent<TTarget> observableListChangeEvent, CompositeKey itemKey, RelatedListChangeKind kind)
         {
-            RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(Owner, item, itemKey, kind, this),
-                ev =>
-                {
-                    if (ev.Disallow)
-                    {
-                        Remove(item);
-                    }
-                });
+            RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(observableListChangeEvent, Owner, itemKey, kind, this));
         }
     }
 }

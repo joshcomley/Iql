@@ -11,7 +11,7 @@ using Tunnel.App.Data.Entities;
 namespace Iql.Tests.Tests.Validation
 {
     [TestClass]
-    public class ValidationTests
+    public class ValidationTests : TestsBase
     {
         [TestMethod]
         public async Task AddingAnEntityWithANonValidatedButNonNullablePropertySetToNullShouldFailAutoValidation()
@@ -61,6 +61,10 @@ namespace Iql.Tests.Tests.Validation
         [TestMethod]
         public async Task EmptyReferenceFieldShouldFailNonNullableTest()
         {
+            // Mark key as generated remotely so our entity will be
+            // attempted to be inserted upon save
+            Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
+                .PrimaryKeyIsGeneratedRemotely();
             var personTypeMap = EntityHelper.NewPersonTypeMap();
             personTypeMap.PersonId = 0;
             personTypeMap.TypeId = 0;

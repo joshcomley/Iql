@@ -297,12 +297,12 @@ namespace Iql.Queryable.Data.Relationships
             {
                 switch (relatedListChangeEvent.Kind)
                 {
-                    case RelatedListChangeKind.Add:
+                    case RelatedListChangeKind.Added:
                         relatedListChangeEvent.Item.SetPropertyValue(
                             sourceProperty,
                             relatedListChangeEvent.Owner);
                         break;
-                    case RelatedListChangeKind.Remove:
+                    case RelatedListChangeKind.Removed:
                         relatedListChangeEvent.Item.SetPropertyValue(
                             sourceProperty,
                             null);

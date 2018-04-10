@@ -114,7 +114,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public bool EntityWithSameKeyIsBeingTracked(object entity, Type entityType)
         {
-            return TrackingSetByType(entityType).EntityWithSameKeyIsTracked(entity);
+            return TrackingSetByType(entityType).DifferentEntityWithSameKeyIsTracked(entity);
         }
 
         public bool KeyIsTracked(CompositeKey key, Type entityType)
@@ -176,7 +176,7 @@ namespace Iql.Queryable.Data.Tracking
             return changes;
         }
 
-        public IEnumerable<IQueuedOperation> GetQueue()
+        public IEnumerable<IQueuedOperation> GetChanges()
         {
             var queue = new List<IQueuedOperation>();
             foreach (var operation in GetQueuedOperations())

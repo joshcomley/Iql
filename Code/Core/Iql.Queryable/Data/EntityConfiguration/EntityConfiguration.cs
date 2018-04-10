@@ -20,6 +20,30 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
+        public bool HasNonKeyFields()
+        {
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var property = Properties[i];
+                if (property.Kind.HasFlag(PropertyKind.Primitive) &&
+                    !property.Kind.HasFlag(PropertyKind.Key) &&
+                    !property.Kind.HasFlag(PropertyKind.Count))
+                {
+                    return true;
+                }
+
+                if (property.Kind.HasFlag(PropertyKind.Relationship))
+                {
+                    var constraints = property.Relationship.ThisEnd.Constraints();
+                    if (constraints.Any(c => !c.Kind.HasFlag(PropertyKind.Key)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public bool HasRelationshipKeys => Key != null && Key.HasRelationshipKeys;
 
         public EntityConfigurationBuilder Builder { get; }
@@ -384,8 +408,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public CompositeKey GetCompositeKey(object entity)
         {
-            var key = new CompositeKey(Key.Properties.Count);
-            for (var i = 0; i < Key.Properties.Count; i++)
+            var key = new CompositeKey(Key.Properties.Length);
+            for (var i = 0; i < Key.Properties.Length; i++)
             {
                 var property = Key.Properties[i];
                 key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
@@ -432,7 +456,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Key = new EntityKey<T, TKey>();
             var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
             iql.ReturnType = iqlType ?? typeof(TKey).ToIqlType();
-            Key.Properties.Add(definedProperty);
+            Key.AddProperty(definedProperty);
             TrySetKey(iql.PropertyName);
             return this;
         }
@@ -460,7 +484,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
                 var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
-                Key.Properties.Add(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType, null));
+                Key.AddProperty(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType, null));
             }
             return this;
         }

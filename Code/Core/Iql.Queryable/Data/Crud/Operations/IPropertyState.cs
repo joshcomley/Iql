@@ -11,5 +11,6 @@ namespace Iql.Queryable.Data.Crud.Operations
         object OldValue { get; set; }
         IProperty Property { get; }
         void Reset();
+        IPropertyState Copy();
     }
 }

@@ -11,6 +11,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IEntityConfiguration : IEntityMetadata
     {
+        bool HasNonKeyFields();
         bool HasRelationshipKeys { get; }
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);

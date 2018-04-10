@@ -8,7 +8,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
         bool HasRelationshipKeys { get; }
         Type KeyType { get; set; }
         Type Type { get; set; }
-        IList<IProperty> Properties { get; set; }
+        IProperty[] Properties { get; }
+        void AddProperty(IProperty property);
         bool IsGeneratedRemotely { get; set; }
         bool IsPivot();
     }

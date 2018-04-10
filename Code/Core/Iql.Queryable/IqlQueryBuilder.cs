@@ -20,7 +20,7 @@ namespace Iql.Queryable
                 {
                     compositeKey = id as CompositeKey;
                 }
-                else if(entityConfiguration.Key.Properties.Count == 1 && id.GetType() == entityConfiguration.Key.Properties[0].TypeDefinition.Type)
+                else if(entityConfiguration.Key.Properties.Length == 1 && id.GetType() == entityConfiguration.Key.Properties[0].TypeDefinition.Type)
                 {
                     var primaryKey = entityConfiguration.Key.Properties[0];
                     compositeKey = new CompositeKey(1);
@@ -28,8 +28,8 @@ namespace Iql.Queryable
                 }
                 else
                 {
-                    compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Count);
-                    for (var i = 0; i < entityConfiguration.Key.Properties.Count; i++)
+                    compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Length);
+                    for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
                     {
                         var keyProperty = entityConfiguration.Key.Properties[i];
                         var value = keyProperty.PropertyGetter(id);

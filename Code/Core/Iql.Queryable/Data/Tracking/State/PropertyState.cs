@@ -9,7 +9,7 @@ namespace Iql.Queryable.Data.Tracking.State
     {
         private bool _hasChanged;
         private object _oldValue;
-        private bool _originalValueSet = false;
+        private bool _originalValueSet;
         private object _newValue;
 
         public PropertyState(
@@ -38,6 +38,7 @@ namespace Iql.Queryable.Data.Tracking.State
             }
             set
             {
+                _originalValueSet = true;
                 _oldValue = value;
                 _hasChanged = !Equals(OldValue, NewValue);
             }
@@ -50,7 +51,6 @@ namespace Iql.Queryable.Data.Tracking.State
             {
                 _newValue = value;
                 _hasChanged = !Equals(OldValue, NewValue);
-                (EntityState as IEntityStateInternal)?.UpdateChanged(this);
             }
         }
 
@@ -60,6 +60,15 @@ namespace Iql.Queryable.Data.Tracking.State
         {
             OldValue = Property.PropertyGetter(EntityState.Entity);
             NewValue = OldValue;
+        }
+
+        public IPropertyState Copy()
+        {
+            return new PropertyState(Property, null)
+            {
+                OldValue = OldValue,
+                NewValue = NewValue
+            };
         }
     }
 }

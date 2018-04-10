@@ -39,14 +39,14 @@ namespace Iql.Queryable.Data.DataStores
 
         public virtual IDataContext DataContext { get; set; }
 
-        public IEnumerable<IQueuedOperation> GetQueue()
+        public IQueuedOperation[] GetChanges()
         {
-            return Tracking.GetQueue();
+            return Tracking.GetChanges().ToArray();
         }
 
-        public IEnumerable<IQueuedOperation> GetChanges()
+        public IQueuedOperation[] GetUpdates()
         {
-            return Tracking.GetQueue().Where(op => op.Type == QueuedOperationType.Update);
+            return Tracking.GetChanges().Where(op => op.Type == QueuedOperationType.Update).ToArray();
         }
 
         static DataStore()
@@ -346,7 +346,7 @@ namespace Iql.Queryable.Data.DataStores
             // so get a copy now
             //var observable = this.Observable<SaveChangesResult>();
             var saveChangesResult = new SaveChangesResult(true);
-            var queue = GetQueue();
+            var queue = GetChanges();
             foreach (var queuedOperation in queue)
             {
                 var task = GetType()

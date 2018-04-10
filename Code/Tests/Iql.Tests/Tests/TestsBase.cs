@@ -8,6 +8,7 @@ using Iql.Queryable;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests
 {
@@ -33,6 +34,13 @@ namespace Iql.Tests.Tests
         public static void CleanUp()
         {
 
+        }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
+                .PrimaryKeyIsGeneratedRemotely(false);
         }
 
         [TestCleanup]

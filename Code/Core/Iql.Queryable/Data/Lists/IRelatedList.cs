@@ -11,6 +11,7 @@ namespace Iql.Queryable.Data.Lists
         //IEnumerable<IRelatedListChange> GetChanges();
         //void AddChange(IRelatedListChange change);
         //void RemoveChange(IRelatedListChange change);
+        object Add(object item);
         IEventSubscriber<IRelatedListChangeEvent> RelatedListChange { get; }
         object Owner { get; }
         Type OwnerType { get; }

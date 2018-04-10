@@ -131,11 +131,11 @@ namespace Iql.Tests.Tests
             Db.RiskAssessments.Add(riskAssessment1);
             Db.RiskAssessments.Add(riskAssessment2);
             await Db.SaveChangesAsync();
-            var queuedOperations = Db.DataStore.GetQueue().ToList();
+            var queuedOperations = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, queuedOperations.Count);
             Assert.IsNull(riskAssessment1.SiteInspection);
             Assert.IsNull(riskAssessment2.SiteInspection);
-            var changes = Db.DataStore.GetChanges().ToList();
+            var changes = Db.DataStore.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
 
             // Externally modify the database
@@ -153,12 +153,12 @@ namespace Iql.Tests.Tests
                     Id = 62
                 });
 
-            changes = Db.DataStore.GetChanges().ToList();
+            changes = Db.DataStore.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
             var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).GetWithKeyAsync(62);
-            changes = Db.DataStore.GetChanges().ToList();
+            changes = Db.DataStore.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
-            queuedOperations = Db.DataStore.GetQueue().ToList();
+            queuedOperations = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, queuedOperations.Count);
             Assert.AreEqual(siteInspection.RiskAssessment.Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessment.SiteInspectionId, siteInspection.Id);

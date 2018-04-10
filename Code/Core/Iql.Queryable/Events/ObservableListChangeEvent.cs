@@ -5,8 +5,29 @@ namespace Iql.Queryable.Events
 {
     public class ObservableListChangeEvent<T> : IObservableListChangeEvent
     {
+        private object _item;
+        private object _originalItem;
+        public bool Disallow { get; set; }
         public Type ItemType => typeof(T);
-        public object Item { get; }
+        public bool ItemHasChanged { get; protected set; }
+
+        public object Item
+        {
+            get => _item;
+            set
+            {
+                if (_item == null)
+                {
+                    _originalItem = value;
+                }
+                else
+                {
+                    ItemHasChanged = value != _originalItem;
+                }
+                _item = value;
+            }
+        }
+
         public ObservableListChangeKind Kind { get; }
         public IObservableList List { get; }
 

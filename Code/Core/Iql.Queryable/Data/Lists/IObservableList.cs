@@ -14,7 +14,7 @@ namespace Iql.Queryable.Data.Lists
         void Insert(int index, object value);
         void RemoveAt(int index);
 #endif
-        void Add(object value);
+        object Add(object value);
         bool Remove(object item);
     }
 }

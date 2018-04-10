@@ -9,7 +9,7 @@ namespace Iql.Queryable.Events
     }
     public interface IAsyncEventEmitter<TEvent>
     {
-        Task EmitAsync(Func<TEvent> propertyChangeEvent, Func<TEvent, Task> afterEventAsync = null);
+        Task<TEvent> EmitAsync(Func<TEvent> propertyChangeEvent, Func<TEvent, Task> afterEventAsync = null);
     }
 
     public interface IAsyncEventSubscriber<out TEvent> : IAsyncEventSubscriberBase
@@ -28,7 +28,7 @@ namespace Iql.Queryable.Events
     }
     public interface IEventEmitter<TEvent>
     {
-        void Emit(Func<TEvent> propertyChangeEvent, Action<TEvent> afterEvent = null);
+        TEvent Emit(Func<TEvent> propertyChangeEvent, Action<TEvent> afterEvent = null);
     }
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase

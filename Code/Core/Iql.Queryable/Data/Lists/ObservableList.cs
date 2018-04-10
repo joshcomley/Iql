@@ -24,25 +24,46 @@ namespace Iql.Queryable.Data.Lists
             return ((IEnumerable)_rootList).GetEnumerator();
         }
 
-        public virtual void Add(T item)
+        public new T Add(T item)
         {
-            Emit(item, ObservableListChangeKind.Adding);
-            _rootList.Add(item);
-            Emit(item, ObservableListChangeKind.Added);
+            return (T)AddItem(item);
+        }
+
+        void ICollection<T>.Add(T item)
+        {
+            AddItem(item);
+        }
+
+        protected virtual T AddItem(T item)
+        {
+            var eventResult = Emit((T)item, ObservableListChangeKind.Adding);
+            if (eventResult == null || !eventResult.Disallow)
+            {
+                item = (T) (eventResult?.Item ?? item);
+                _rootList.Add((T)item);
+                var addedEventResult = Emit((T)item, ObservableListChangeKind.Added);
+                if (addedEventResult != null && addedEventResult.Disallow)
+                {
+                    _rootList.Remove((T) item);
+                    return default(T);
+                }
+                return item;
+            }
+            return default(T);
         }
 
         public void AddRange(IEnumerable<T> list)
         {
             foreach (var item in list)
             {
-                Add(item);
+                AddItem(item);
             }
         }
 
         public int Add(object value)
         {
             var length = Count;
-            Add((T)value);
+            AddItem((T)value);
             return Count - length;
         }
 
@@ -76,9 +97,9 @@ namespace Iql.Queryable.Data.Lists
             return Remove((T)value);
         }
 
-        void IObservableList.Add(object value)
+        object IObservableList.Add(object value)
         {
-            Add((T)value);
+            return AddItem((T)value);
         }
 
         public virtual bool Remove(T item)
@@ -151,9 +172,9 @@ namespace Iql.Queryable.Data.Lists
             set { _rootList[index] = value; }
         }
 
-        private void Emit(T item, ObservableListChangeKind kind)
+        private ObservableListChangeEvent<T> Emit(T item, ObservableListChangeKind kind)
         {
-            Change.Emit(() => new ObservableListChangeEvent<T>(item, kind, this));
+            return Change.Emit(() => new ObservableListChangeEvent<T>(item, kind, this));
         }
     }
 }

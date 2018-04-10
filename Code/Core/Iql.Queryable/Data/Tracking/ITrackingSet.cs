@@ -11,7 +11,7 @@ namespace Iql.Queryable.Data.Tracking
     {
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);
-        bool EntityWithSameKeyIsTracked(object entity);
+        bool DifferentEntityWithSameKeyIsTracked(object entity);
         IEntityConfiguration EntityConfiguration { get; }
         IEntityStateBase GetEntityState(object entity);
         IEntityStateBase GetEntityStateByKey(CompositeKey key);

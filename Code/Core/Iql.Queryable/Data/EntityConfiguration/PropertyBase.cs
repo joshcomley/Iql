@@ -49,6 +49,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         private bool _searchKindSet;
         private PropertyKind _kind;
+        private bool? _readOnly;
 
         public PropertySearchKind SearchKind
         {
@@ -75,7 +76,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public IProperty CountRelationship { get; protected set; }
-        public bool ReadOnly { get; set; }
+
+        public bool ReadOnly
+        {
+            get => _readOnly ?? Kind.HasFlag(PropertyKind.Key);
+            set => _readOnly = value;
+        }
 
         public string Name
         {

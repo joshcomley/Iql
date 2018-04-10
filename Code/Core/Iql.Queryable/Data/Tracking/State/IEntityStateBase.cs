@@ -9,12 +9,16 @@ namespace Iql.Queryable.Data.Tracking.State
 {
     public interface IEntityStateBase
     {
+        bool IsInsertable();
+        IPropertyState[] PropertyStates { get; }
         void Reset();
-        CompositeKey Key { get; set; }
-        CompositeKey ResolveKey();
+        CompositeKey CurrentKey { get; set; }
+        //CompositeKey RemoteKey { get; }
         Guid? PersistenceKey { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
-        List<IPropertyState> ChangedProperties { get; }
+
+        IPropertyState[] GetChangedProperties();
+
         object Entity { get; }
         IEntityConfiguration EntityConfiguration { get; }
         Type EntityType { get; }
@@ -27,7 +31,6 @@ namespace Iql.Queryable.Data.Tracking.State
 
         IPropertyState GetPropertyState(string name);
         void MarkForCascadeDeletion(object from, IRelationship relationship);
-        void SetPropertyState(string name, object oldValue, object newValue);
         void UnmarkForDeletion();
     }
 }

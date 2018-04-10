@@ -34,8 +34,8 @@ namespace Iql.Queryable.Extensions
 #endif
             var configuration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
             var keyDefinition = configuration.Key;
-            var compositeKey = new CompositeKey(keyDefinition.Properties.Count);
-            for (var i = 0; i < keyDefinition.Properties.Count; i++)
+            var compositeKey = new CompositeKey(keyDefinition.Properties.Length);
+            for (var i = 0; i < keyDefinition.Properties.Length; i++)
             {
                 var kp = keyDefinition.Properties[i];
                 compositeKey.Keys[i] = new KeyValue(

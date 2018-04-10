@@ -8,7 +8,7 @@ namespace Iql.Queryable.Data.Lists
     {
         private readonly Dictionary<IEntity, EventSubscription> _entitySubscriptions = new Dictionary<IEntity, EventSubscription>();
 
-        public override void Add(T item)
+        protected override T AddItem(T item)
         {
             if (!Contains(item))
             {
@@ -21,8 +21,10 @@ namespace Iql.Queryable.Data.Lists
                     }
                     _entitySubscriptions.Add(iEntity, iEntity.ExistsChanged.Subscribe(PropertyChangeEvent));
                 }
-                base.Add(item);
+                return base.AddItem(item);
             }
+
+            return default(T);
         }
 
         private void PropertyChangeEvent(ExistsChangeEvent existsChangeEvent)

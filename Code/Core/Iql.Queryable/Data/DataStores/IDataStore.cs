@@ -13,7 +13,8 @@ namespace Iql.Queryable.Data.DataStores
     public interface IDataStore
     {
         DataTracker DataTracker { get; }
-        IEnumerable<IQueuedOperation> GetQueue();
+        IQueuedOperation[] GetChanges();
+        IQueuedOperation[] GetUpdates();
         IDataContext DataContext { get; set; }
         IRelationshipObserver RelationshipObserver { get; }
         TrackingSetCollection Tracking { get; }
@@ -48,7 +49,5 @@ namespace Iql.Queryable.Data.DataStores
             where TEntity : class;
 
         Task<SaveChangesResult> SaveChangesAsync(SaveChangesOperation operation);
-
-        IEnumerable<IQueuedOperation> GetChanges();
     }
 }

@@ -14,6 +14,19 @@ using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.Tracking
 {
+    class RemoteKeyMap
+    {
+        public IEntityStateBase State { get; set; }
+        public IPropertyState[] OldPropertyValues { get; set; }
+
+        public CompositeKey Key { get; set; }
+
+        public RemoteKeyMap(IEntityStateBase state, CompositeKey key)
+        {
+            State = state;
+            Key = key;
+        }
+    }
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
@@ -24,7 +37,7 @@ namespace Iql.Queryable.Data.Tracking
         public IDataStore DataStore { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
 
-        public bool EntityWithSameKeyIsTracked(T entity)
+        public bool DifferentEntityWithSameKeyIsTracked(T entity)
         {
             var key = EntityConfiguration.GetCompositeKey(entity);
             var state = GetEntityStateByKey(key);
@@ -39,9 +52,9 @@ namespace Iql.Queryable.Data.Tracking
             return true;
         }
 
-        bool ITrackingSet.EntityWithSameKeyIsTracked(object entity)
+        bool ITrackingSet.DifferentEntityWithSameKeyIsTracked(object entity)
         {
-            return EntityWithSameKeyIsTracked((T)entity);
+            return DifferentEntityWithSameKeyIsTracked((T)entity);
         }
 
         public EntityConfiguration<T> EntityConfiguration { get; }
@@ -50,6 +63,7 @@ namespace Iql.Queryable.Data.Tracking
 
         private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey { get; }
         private Dictionary<object, IEntityStateBase> EntitiesByObject { get; }
+        private Dictionary<string, RemoteKeyMap> EntitiesByRemoteKey { get; }
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
 
         public TrackingSet(IDataStore dataStore, TrackingSetCollection trackingSetCollection)
@@ -61,6 +75,7 @@ namespace Iql.Queryable.Data.Tracking
             EntitiesByPersistenceKey = new Dictionary<Guid, IEntityStateBase>();
             EntitiesByObject = new Dictionary<object, IEntityStateBase>();
             EntitiesByKey = new Dictionary<string, IEntityStateBase>();
+            EntitiesByRemoteKey = new Dictionary<string, RemoteKeyMap>();
             PersistenceKey = EntityConfiguration.Properties.SingleOrDefault(p => p.Name == "PersistenceKey");
         }
 
@@ -149,6 +164,7 @@ namespace Iql.Queryable.Data.Tracking
             result.State = entityStateByKey;
             return result;
         }
+
         public IEntityStateBase GetEntityStateByKey(CompositeKey key)
         {
             var keyString = key.AsKeyString();
@@ -211,7 +227,7 @@ namespace Iql.Queryable.Data.Tracking
                 _entityObservers[entity].Unobserve();
                 _entityObservers.Remove(entity);
             }
-            EntitiesByKey.Remove(state.Key.AsKeyString());
+            EntitiesByKey.Remove(state.CurrentKey.AsKeyString());
             EntitiesByObject.Remove(entity);
             if (state.PersistenceKey.HasValue)
             {
@@ -270,38 +286,69 @@ namespace Iql.Queryable.Data.Tracking
                 {
                     switch (changeEvent.Kind)
                     {
-                        case RelatedListChangeKind.Add:
+                        case RelatedListChangeKind.Adding:
                             if (changeEvent.Item != null)
                             {
+                                // We need to build a CompositeKey, get the tracked entity, if any
+                                // and if it is not ours, then disallow
+
                                 // Make sure we prep the constraints so we can compare to see if
                                 // an item with a matching key already exists, and if so then 
                                 // reject this change
                                 var relationship =
                                     EntityConfiguration.Builder
-                                    .GetEntityByType(changeEvent.OwnerType)
-                                    .FindProperty(changeEvent.List.PropertyName)
-                                    .Relationship;
+                                        .GetEntityByType(changeEvent.OwnerType)
+                                        .FindProperty(changeEvent.List.PropertyName)
+                                        .Relationship;
+                                var compositeKey = relationship.OtherEnd.Configuration.GetCompositeKey(changeEvent.Item);
+
+                                // If this relationship also defines some key values, make sure they are checked in the
+                                // composite key
                                 var sourceConstraints = relationship.OtherEnd.Constraints();
                                 var targetConstraints = relationship.ThisEnd.Constraints();
                                 for (var i = 0; i < sourceConstraints.Length; i++)
                                 {
                                     var sourceConstraint = sourceConstraints[i];
                                     var targetConstraint = targetConstraints[i];
-                                    if (sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
+                                    if (sourceConstraint.Kind.HasFlag(PropertyKind.Key) && sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
                                     {
-                                        sourceConstraint.PropertySetter(
-                                            changeEvent.Item,
-                                            targetConstraint.PropertyGetter(changeEvent.Owner));
+                                        compositeKey.Keys.Single(key => key.Name == sourceConstraint.Name)
+                                            .Value = targetConstraint.PropertyGetter(changeEvent.Owner);
                                     }
                                 }
-                                var state = DataStore.Add(changeEvent.Item);
-                                if (state.Entity != changeEvent.Item)
+
+                                var trackingSet = DataContext.DataStore.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
+                                var trackedItem = trackingSet.GetEntityStateByKey(compositeKey);
+                                if (trackedItem != null && trackedItem.Entity != changeEvent.Item)
                                 {
-                                    changeEvent.Disallow = true;
+                                    if (changeEvent.List.Contains(trackedItem.Entity))
+                                    {
+                                        changeEvent.ObservableListChangeEvent.Disallow = true;
+                                    }
+                                    //else
+                                    //{
+                                    //    for (var i = 0; i < relationship.OtherEnd.Configuration.Properties.Count; i++)
+                                    //    {
+                                    //        var property = relationship.OtherEnd.Configuration.Properties[i];
+                                    //        property.PropertySetter(trackedItem.Entity,
+                                    //            property.PropertyGetter(changeEvent.Item));
+                                    //    }
+                                    //    changeEvent.ObservableListChangeEvent.Item = trackedItem.Entity;
+                                    //}
                                 }
                             }
                             break;
-                        case RelatedListChangeKind.Remove:
+                        case RelatedListChangeKind.Added:
+                            if (changeEvent.Item != null)
+                            {
+                                var state = DataStore.Add(changeEvent.Item);
+                                if (state.Entity != changeEvent.Item)
+                                {
+                                    changeEvent.ObservableListChangeEvent.Disallow = true;
+                                }
+                            }
+                            break;
+                        case RelatedListChangeKind.Removed:
                             if (changeEvent.Item != null)
                             {
                                 if (!DataStore.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
@@ -318,22 +365,21 @@ namespace Iql.Queryable.Data.Tracking
 
         private void EntityPropertyChanged(IPropertyChangeEvent propertyChange)
         {
-            DataStore.RelationshipObserver.RunIfNotIgnored(() =>
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
+            {
+                if (Equals(propertyChange.OldValue, propertyChange.NewValue))
                 {
-                    _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
-                    {
-                        if (Equals(propertyChange.OldValue, propertyChange.NewValue))
-                        {
-                            return;
-                        }
+                    return;
+                }
 
-                        IEntityStateBase entityState = null;
-                        var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-                        if (property.Kind.HasFlag(PropertyKind.Key))
+                var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
+                if (property.Kind.HasFlag(PropertyKind.Key) && property.ReadOnly)
+                {
+                    DataStore.RelationshipObserver.RunIfNotIgnored(() =>
                         {
                             if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
                             {
-                                entityState = GetEntityState(propertyChange.Entity);
+                                var entityState = GetEntityState(propertyChange.Entity);
                                 if (entityState.IsNew)
                                 {
                                     var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
@@ -343,17 +389,17 @@ namespace Iql.Queryable.Data.Tracking
                                     }
                                 }
                             }
-                        }
+                        },
+                        property,
+                        propertyChange.Entity
+                    );
+                }
 
-                        if (property.Kind.HasFlag(PropertyKind.Key))
-                        {
-                            Reindex(propertyChange.Entity);
-                        }
-                    }, propertyChange.Entity);
-                },
-                EntityConfiguration.FindProperty(propertyChange.PropertyName),
-                propertyChange.Entity
-            );
+                if (property.Kind.HasFlag(PropertyKind.Key))
+                {
+                    Reindex(propertyChange.Entity);
+                }
+            }, propertyChange.Entity);
         }
 
         private void EntityPropertyChanging(IPropertyChangeEvent propertyChange)
@@ -384,11 +430,11 @@ namespace Iql.Queryable.Data.Tracking
         internal override IEntityStateBase TrackEntityInternal(object entity, object mergeWith = null,
             bool isNew = true, bool onlyMergeWithExisting = false)
         {
-            if (!IsEntityTracked(entity))
+            if (!GlobalTracking.IsEntityTracked(entity))
             {
-                TrackedEntities.Add(entity, this);
+                GlobalTracking.RegisterAsTracked(entity, this);
             }
-            else if (TrackedEntities[entity] != this && !onlyMergeWithExisting)
+            else if (GlobalTracking.GetTrackingSet(entity) != this && !onlyMergeWithExisting)
             {
                 throw new Exception("This entity is already tracked by another context.");
             }
@@ -397,6 +443,7 @@ namespace Iql.Queryable.Data.Tracking
             {
                 _tracking.Add(entity, entity);
             }
+
             var hadEntityState = HasEntityState(entity);
             if (!hadEntityState &&
                 isNew &&
@@ -436,6 +483,8 @@ namespace Iql.Queryable.Data.Tracking
                 SilentlyMerge(entityState.Entity, entity);
             }
 
+            TrackRemoteKey(entityState, null);
+
             return entityState;
             //trackingSet.ChangeEntity(localEntity, () =>
             //{
@@ -465,7 +514,8 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var state = EntitiesByObject[entity];
                 var newKey = EntityConfiguration.GetCompositeKey(entity);
-                var oldKeyString = state.Key.AsKeyString();
+                var oldKey = state.CurrentKey;
+                var oldKeyString = oldKey.AsKeyString();
                 var newKeyString = newKey.AsKeyString();
                 if (newKeyString != oldKeyString)
                 {
@@ -473,10 +523,138 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         EntitiesByKey.Remove(oldKeyString);
                     }
-                    EntitiesByKey.Add(newKeyString, state);
-                    state.Key = newKey;
+                    if (!newKey.HasDefaultValue())
+                    {
+                        EntitiesByKey.Add(newKeyString, state);
+                    }
+                    state.CurrentKey = newKey;
+                }
+                TrackRemoteKey(state, oldKey);
+            }
+        }
+
+        private void TrackRemoteKey(IEntityStateBase state, CompositeKey oldKey)
+        {
+            var keyString = state.CurrentKey.AsKeyString();
+            if (!state.IsNew && !state.CurrentKey.HasDefaultValue())
+            {
+                if (EntitiesByRemoteKey.ContainsKey(keyString))
+                {
+                    var map = EntitiesByRemoteKey[keyString];
+                    if (map.State == null)
+                    {
+                        map.State = state;
+                    }
+                    else if (map.State != state)
+                    {
+                        throw new DuplicateKeyException();
+                    }
+                }
+                else
+                {
+                    EntitiesByRemoteKey.Add(keyString, new RemoteKeyMap(state, state.CurrentKey));
+                }
+
+                if (oldKey != null)
+                {
+                    var oldKeyString = oldKey.AsKeyString();
+                    if (oldKeyString != keyString && EntitiesByRemoteKey.ContainsKey(oldKeyString))
+                    {
+                        EntitiesByRemoteKey.Remove(oldKeyString);
+                    }
                 }
             }
+            else if (oldKey != null)
+            {
+                var oldKeyString = oldKey.AsKeyString();
+                if (oldKeyString != keyString && EntitiesByRemoteKey.ContainsKey(oldKeyString))
+                {
+                    var remoteKeyMap = EntitiesByRemoteKey[oldKeyString];
+                    remoteKeyMap.OldPropertyValues = remoteKeyMap.State.PropertyStates.Select(p => p.Copy()).ToArray();
+                    remoteKeyMap.State = null;
+                }
+            }
+
+            if (!state.IsNew && state.CurrentKey.HasDefaultValue())
+            {
+                state.IsNew = true;
+            }
+            else if (state.IsNew)
+            {
+                if (EntitiesByRemoteKey.ContainsKey(keyString))
+                {
+                    var map = EntitiesByRemoteKey[keyString];
+                    if (map.State == null)
+                    {
+                        state.IsNew = false;
+                        foreach (var propertyState in map.OldPropertyValues)
+                        {
+                            var newPropertyState = state.GetPropertyState(propertyState.Property.Name);
+                            newPropertyState.OldValue = propertyState.OldValue;
+                            newPropertyState.NewValue = propertyState.Property.PropertyGetter(state.Entity);
+                        }
+                        map.OldPropertyValues = null;
+                        map.State = state;
+                    }
+                    else
+                    {
+                        throw new DuplicateKeyException();
+                    }
+                }
+            }
+            //var entity = state.Entity;
+            //var hasDefaultValue = false;
+            //for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+            //{
+            //    var property = EntityConfiguration.Key.Properties[i];
+            //    if (property.Kind.HasFlag(PropertyKind.RelationshipKey) &&
+            //        property.PropertyGetter(entity).IsDefaultValue(property.TypeDefinition))
+            //    {
+            //        hasDefaultValue = true;
+            //    }
+            //}
+
+            //if (!hasDefaultValue && state.IsNew)
+            //{
+            //    var remoteKeyString = state.RemoteKey.AsKeyString();
+            //    if (EntitiesByRemoteKey.ContainsKey(remoteKeyString))
+            //    {
+            //        state.IsNew = false;
+            //    }
+            //}
+
+            //if (!state.IsNew)
+            //{
+            //    var remoteKeyString = state.RemoteKey.AsKeyString();
+            //    if (!EntitiesByRemoteKey.ContainsKey(remoteKeyString))
+            //    {
+            //        EntitiesByRemoteKey.Add(remoteKeyString, new RemoteKeyMap(state, state.RemoteKey));
+            //    }
+            //    else if (EntitiesByRemoteKey[remoteKeyString].State != state)
+            //    {
+            //        var oldStateMap = EntitiesByRemoteKey[remoteKeyString];
+            //        if (oldStateMap.State != null)
+            //        {
+            //            oldStateMap.State.IsNew = true;
+            //            state.Reset();
+            //            for (var i = 0; i < oldStateMap.State.PropertyStates.Length; i++)
+            //            {
+            //                var oldPropertyState = oldStateMap.State.PropertyStates[i];
+            //                var newPropertyState = state.GetPropertyState(oldPropertyState.Property.Name);
+            //                if (oldPropertyState.Property.Kind.HasFlag(PropertyKind.Key))
+            //                {
+            //                    newPropertyState.OldValue = newPropertyState.NewValue;
+            //                }
+            //                else
+            //                {
+            //                    newPropertyState.OldValue = oldPropertyState.OldValue;
+            //                }
+            //            }
+            //            oldStateMap.State = state;
+            //            oldStateMap.Key = state.RemoteKey;
+            //        }
+            //    }
+            //}
         }
 
         private Guid? EnsurePersistenceKey(object entity)
@@ -503,7 +681,7 @@ namespace Iql.Queryable.Data.Tracking
             foreach (var entity in EntitiesByObject.Keys)
             {
                 var entityState = GetEntityState(entity);
-                if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
+                if (entityState.IsNew && !entityState.MarkedForAnyDeletion && entityState.IsInsertable())
                 {
                     inserts.Add(new AddEntityOperation<T>((T)entity, DataContext));
                 }
@@ -519,7 +697,17 @@ namespace Iql.Queryable.Data.Tracking
                 var entityState = GetEntityState(entity);
                 if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
                 {
-                    deletions.Add(new DeleteEntityOperation<T>((T)entity, DataContext));
+                    deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, DataContext));
+                }
+            }
+            foreach (var key in EntitiesByRemoteKey)
+            {
+                if (key.Value.State == null)
+                {
+                    deletions.Add(new DeleteEntityOperation<T>(
+                        key.Value.Key,
+                        null,
+                        DataContext));
                 }
             }
             return deletions;
@@ -531,13 +719,18 @@ namespace Iql.Queryable.Data.Tracking
             foreach (var entity in EntitiesByObject.Keys)
             {
                 var entityState = GetEntityState(entity);
-                if (!entityState.IsNew && !entityState.MarkedForAnyDeletion &&
-                    entityState.ChangedProperties.Any())
+                if (!entityState.IsNew &&
+                    !entityState.MarkedForAnyDeletion &&
+                    entityState.GetChangedProperties().Any())
                 {
                     updates.Add(new UpdateEntityOperation<T>((T)entity, DataContext));
                 }
             }
             return updates;
         }
+    }
+
+    internal class DuplicateKeyException : Exception
+    {
     }
 }

@@ -5,6 +5,22 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class CompositeKey
     {
+        public object TryGetValue(string name)
+        {
+            var pair = Keys.SingleOrDefault(k => k.Name == name);
+            if (pair != null)
+            {
+                return pair.Value;
+            }
+
+            return null;
+        }
+
+        public object GetValue(string name)
+        {
+            return Keys.Single(k => k.Name == name).Value;
+        }
+
         public static CompositeKey Ensure(object key, IEntityConfiguration entityConfiguration)
         {
             CompositeKey compositeKey;
