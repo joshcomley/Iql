@@ -212,6 +212,30 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task RemovingAPivotEntity()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
+            Assert.AreEqual(1, person.Types.Count);
+            person.Types.Remove(person.Types[0]);
+            Assert.AreEqual(0, person.Types.Count);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+        }
+
+        [TestMethod]
         public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentShouldCreateNoChangeRequests()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
