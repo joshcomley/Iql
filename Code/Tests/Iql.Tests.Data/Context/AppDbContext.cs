@@ -70,31 +70,6 @@ namespace Iql.Tests.Context
         public override void Configure(EntityConfigurationBuilder builder)
         {
             base.Configure(builder);
-            builder.EntityType<ApplicationUser>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<Client>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ClientType>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<DocumentCategory>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<SiteDocument>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ReportActionsTaken>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ReportCategory>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ReportDefaultRecommendation>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ReportRecommendation>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ReportType>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<Project>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<ReportReceiverEmailAddress>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<RiskAssessment>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<RiskAssessmentSolution>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<RiskAssessmentAnswer>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<RiskAssessmentQuestion>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<Person>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<PersonInspection>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<PersonLoading>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<PersonType>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<PersonTypeMap>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<PersonReport>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<Site>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<SiteInspection>().PrimaryKeyIsGeneratedRemotely();
-            builder.EntityType<UserSite>().PrimaryKeyIsGeneratedRemotely();
         }
     }
 }

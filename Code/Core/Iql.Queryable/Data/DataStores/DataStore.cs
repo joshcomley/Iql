@@ -233,10 +233,10 @@ namespace Iql.Queryable.Data.DataStores
             Type entityType,
             IFlattenedGetDataResult response)
         {
-            return (IDbList) GetType()
+            return (IDbList)GetType()
                 .GetMethod(nameof(TrackGetDataResult))
                 .InvokeGeneric(this,
-                    new object[] {response},
+                    new object[] { response },
                     entityType
                 );
         }
@@ -244,7 +244,7 @@ namespace Iql.Queryable.Data.DataStores
         public DbList<TEntity> TrackGetDataResult<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
         {
             var dbList = new DbList<TEntity>();
-            dbList.SourceQueryable = (DbQueryable<TEntity>) response.Queryable;
+            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             // Flatten before we merge because the merge will update the result data set with
             // tracked data
             if (response.IsSuccessful())
@@ -290,7 +290,7 @@ namespace Iql.Queryable.Data.DataStores
 
         private static void ApplyPaging<TEntity>(DbList<TEntity> dbList, FlattenedGetDataResult<TEntity> response) where TEntity : class
         {
-            dbList.SourceQueryable = (DbQueryable<TEntity>) response.Queryable;
+            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             if (response.TotalCount.HasValue && response.Data.Count != 0)
             {
                 var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
@@ -371,10 +371,21 @@ namespace Iql.Queryable.Data.DataStores
             TEntity clone,
             IList<TEntity> data) where TEntity : class
         {
-            return Entity.FindIndexOfEntityInSetByKey(
+            return Entity.FindIndexOfEntityInSetByEntity(
                 DataContext,
                 clone,
                 data
+            );
+        }
+
+        protected int FindEntityIndexByKey<TEntity>(
+            Type entityType,
+            CompositeKey key,
+            IList<TEntity> data) where TEntity : class
+        {
+            return Entity.FindIndexOfEntityByKey(
+                data,
+                key
             );
         }
 
@@ -396,7 +407,7 @@ namespace Iql.Queryable.Data.DataStores
                         addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
                         addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, validationResult);
                     }
-                    else if(CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result) &&
+                    else if (CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result) &&
                             await CheckNotAlreadyExistsAsync(addEntityOperation))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
@@ -408,7 +419,6 @@ namespace Iql.Queryable.Data.DataStores
                             var trackingSet = Tracking.TrackingSet<TEntity>();
                             trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
                             trackingSet.GetEntityState(localEntity).Reset();
-                            trackingSet.GetEntityState(localEntity).IsNew = false;
                             await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
@@ -441,8 +451,8 @@ namespace Iql.Queryable.Data.DataStores
                             var rootDictionary = new Dictionary<Type, IList>();
                             rootDictionary.Ensure(
                                 typeof(TEntity),
-                                () => new List<TEntity> {updateEntityOperation.Operation.Entity});
-                            ForAnEntityAcrossAllDataStores(operationEntity, (tracker, state) =>
+                                () => new List<TEntity> { updateEntityOperation.Operation.Entity });
+                            ForAnEntityAcrossAllDataStores<TEntity>(updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
                             {
                                 if (state.Entity != operationEntity)
                                 {
@@ -463,7 +473,11 @@ namespace Iql.Queryable.Data.DataStores
                 case OperationType.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
                     var entity = deleteEntityOperation.Operation.Entity;
-                    var entityNew = DataContext.IsEntityNew(entity, typeof(TEntity));
+                    bool? entityNew = null;
+                    if (entity != null)
+                    {
+                        entityNew = DataContext.IsEntityNew(entity, typeof(TEntity));
+                    }
                     if (entityNew == true)
                     {
                         operation.Result.Success = false;
@@ -472,19 +486,18 @@ namespace Iql.Queryable.Data.DataStores
                         failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
                         deleteEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else if (entityNew != null)
+                    else if (entityNew != null || deleteEntityOperation.Key != null)
                     {
                         result = await PerformDelete(deleteEntityOperation);
                         if (result.Success)
                         {
-                            ForAnEntityAcrossAllDataStores(entity, (dataTracker, state) =>
+                            ForAnEntityAcrossAllDataStores<TEntity>(deleteEntityOperation.Operation.Key, (dataTracker, key) =>
                             {
-                                dataTracker.RemoveEntity(entity);
-                                var iEntity = state.Entity as IEntity;
-                                if (iEntity != null && iEntity.ExistsChanged != null)
-                                {
-                                    iEntity.ExistsChanged.Emit(() => new ExistsChangeEvent(state, false));
-                                }
+                                var state = dataTracker.DataStore.Tracking.TrackingSet<TEntity>()
+                                    .GetEntityStateByKey(key);
+                                dataTracker.RemoveEntityByKey<TEntity>(deleteEntityOperation.Operation.Key);
+                                var iEntity = state?.Entity as IEntity;
+                                iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
                             });
                         }
                     }
@@ -539,7 +552,7 @@ namespace Iql.Queryable.Data.DataStores
             return entityWithKeyAlreadyExists;
         }
 
-        private bool CheckPendingDependencies<TEntity, TOperation>(TOperation operation, EntityCrudResult<TEntity, TOperation> result) 
+        private bool CheckPendingDependencies<TEntity, TOperation>(TOperation operation, EntityCrudResult<TEntity, TOperation> result)
             where TEntity : class
             where TOperation : EntityCrudOperation<TEntity>
         {
@@ -561,7 +574,8 @@ namespace Iql.Queryable.Data.DataStores
         private void ForAllDataStores(Action<DataTracker> action)
         {
             var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
-            foreach (var dataTracker in DataTracker.AllDataTrackers())
+            var allDataTrackers = DataTracker.AllDataTrackers();
+            foreach (var dataTracker in allDataTrackers)
             {
                 if (!dataTrackersDealtWith.ContainsKey(dataTracker))
                 {
@@ -576,22 +590,20 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
-        private void ForAnEntityAcrossAllDataStores<TEntity>(TEntity entity, Action<DataTracker, EntityState<TEntity>> action) where TEntity : class
+        private void ForAnEntityAcrossAllDataStores<TEntity>(CompositeKey key, Action<DataTracker, CompositeKey> action) where TEntity : class
         {
+            // This needs to also accept a CompositeKey
             //var sourceEntity = entity as IEntity;
-            var alreadyEmitted = new Dictionary<IEntity, IEntity>();
+            //var alreadyEmitted = new Dictionary<string, string>();
             //var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
             ForAllDataStores(dataTracker =>
             {
-                var entityState = dataTracker.Tracking.TrackingSet<TEntity>().GetEntityState(entity);
-                var iEntity = entityState.Entity as IEntity;
-                if (iEntity != null && !alreadyEmitted.ContainsKey(iEntity))
-                {
-                    alreadyEmitted.Add(iEntity, iEntity);
-                }
-
-                // Find all matching entities across all created datacontexts
-                action(dataTracker, (EntityState<TEntity>)entityState);
+                //var keyString = key.AsKeyString();
+                //if (!alreadyEmitted.ContainsKey(keyString))
+                //{
+                //    alreadyEmitted.Add(keyString, keyString);
+                //}
+                action(dataTracker, key);
             });
             //if (sourceEntity != null && !dataTrackersDealtWith.ContainsKey(DataTracker) &&
             //    !alreadyEmitted.ContainsKey(sourceEntity))

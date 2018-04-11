@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Iql.Extensions;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Extensions;
 
@@ -7,34 +8,51 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public class Entity
     {
-        public static int FindIndexOfEntityInSetByKey<TEntity>(
+        public static int FindIndexOfEntityInSetByEntity<TEntity>(
             IDataContext dataContext,
             TEntity clone,
             IList<TEntity> data) where TEntity : class
         {
-            var key = dataContext.EntityConfigurationContext.GetEntity<TEntity>().Key;
-            if (key == null)
+            if (clone == null)
             {
-                throw new Exception($"No key has been defined for entity \"{typeof(TEntity).Name}\"");
+                return -1;
             }
+            return FindIndexOfEntityByKey(data, dataContext.EntityConfigurationContext.GetEntity<TEntity>().GetCompositeKey(clone));
+        }
+
+        public static int FindIndexOfEntityByKey<TEntity>(
+            IList<TEntity> data, 
+            CompositeKey compositeKey) where TEntity : class
+        {
+            if (compositeKey == null)
+            {
+                return -1;
+            }
+            //if (key == null)
+            //{
+            //    throw new Exception($"No key has been defined for entity \"{typeof(TEntity).Name}\"");
+            //}
+
             for (var i = 0; i < data.Count; i++)
             {
                 var source = data[i];
                 var match = true;
-                for (var j = 0; j < key.Properties.Length; j++)
+                for (var j = 0; j < compositeKey.Keys.Length; j++)
                 {
-                    if (!Equals(source.GetPropertyValue(key.Properties[j]),
-                        clone.GetPropertyValue(key.Properties[j])))
+                    if (!Equals(source.GetPropertyValueByName(compositeKey.Keys[j].Name),
+                        compositeKey.Keys[j].Value))
                     {
                         match = false;
                         break;
                     }
                 }
+
                 if (match)
                 {
                     return i;
                 }
             }
+
             return -1;
         }
     }

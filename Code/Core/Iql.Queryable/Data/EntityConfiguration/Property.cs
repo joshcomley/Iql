@@ -17,7 +17,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             bool isCollection, 
             Type declaringType,
             string convertedFromType,
-            bool readOnly,
+            bool? readOnly,
             IqlType kind,
             IProperty countRelationship,
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
@@ -45,12 +45,15 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Type valueType,
             IqlType kind,
             string convertedFromType,
-            bool readOnly, 
+            bool? readOnly, 
             IProperty countRelationship, 
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
             Name = name;
-            ReadOnly = readOnly;
+            if (readOnly.HasValue)
+            {
+                ReadOnly = readOnly.Value;
+            }
             CountRelationship = countRelationship;
             Kind = 0;
             TypeDefinition = new TypeDetail(

@@ -168,13 +168,23 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         public override Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation)
         {
-            var index = FindEntityIndexFromOperation(operation.Operation);
+            var index = FindEntityIndexFromDeleteOperation(operation.Operation);
             if (index != -1)
             {
                 DataSet<TEntity>(operation.Operation).RemoveAt(index);
                 operation.Result.Success = true;
             }
             return Task.FromResult(operation.Result);
+        }
+
+        private int FindEntityIndexFromDeleteOperation<TEntity>(DeleteEntityOperation<TEntity> operation) where TEntity : class
+        {
+            var index = FindEntityIndexFromOperation(operation);
+            if (index == -1)
+            {
+                return FindEntityIndexByKey(typeof(TEntity), operation.Key, DataSet<TEntity>(operation));
+            }
+            return index;
         }
 
         public override Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)

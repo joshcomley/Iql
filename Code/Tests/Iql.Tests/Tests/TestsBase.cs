@@ -39,8 +39,6 @@ namespace Iql.Tests.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
-                .PrimaryKeyIsGeneratedRemotely(false);
         }
 
         [TestCleanup]

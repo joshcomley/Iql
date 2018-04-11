@@ -249,6 +249,34 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task PersistingAPivotDeleteShouldLeaveNoMoreActionsQueued()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
+            Assert.AreEqual(1, person.Types.Count);
+            var typeMap = person.Types[0];
+            person.Types.Remove(typeMap);
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
+            await Db.SaveChangesAsync();
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+        }
+
+        [TestMethod]
         public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentThenChangingTheEquivalentKeyShouldOnlyCreateAnUpdateRequest()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType

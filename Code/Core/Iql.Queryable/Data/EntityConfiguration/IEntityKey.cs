@@ -10,7 +10,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         Type Type { get; set; }
         IProperty[] Properties { get; }
         void AddProperty(IProperty property);
-        bool IsGeneratedRemotely { get; set; }
         bool IsPivot();
+        void SetReadOnly(bool readOnly = true);
     }
 }

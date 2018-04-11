@@ -5,6 +5,7 @@ using System.Linq;
 using Iql.Extensions;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Relationships;
 
 namespace Iql.Queryable.Data.Tracking
@@ -128,6 +129,25 @@ namespace Iql.Queryable.Data.Tracking
             }
 
             return set;
+        }
+
+        public void RemoveEntityByKey<T>(CompositeKey key)
+            where T : class
+        {
+            if (key == null)
+            {
+                return;
+            }
+            var set = Tracking.TrackingSet<T>();
+            var state = set.GetEntityStateByKey(key);
+            if (state != null)
+            {
+                RemoveEntity((T)state.Entity);
+            }
+            else
+            {
+                set.RemoveEntityByKey(key);
+            }
         }
 
         public void RemoveEntity<T>(T entity)

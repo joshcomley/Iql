@@ -79,7 +79,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public bool ReadOnly
         {
-            get => _readOnly ?? Kind.HasFlag(PropertyKind.Key);
+            get => _readOnly ?? Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey);
             set => _readOnly = value;
         }
 

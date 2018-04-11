@@ -9,6 +9,7 @@ namespace Iql.Queryable.Data.Tracking.State
 {
     public interface IEntityStateBase
     {
+        bool HasRemoteKey();
         bool IsInsertable();
         IPropertyState[] PropertyStates { get; }
         void Reset();

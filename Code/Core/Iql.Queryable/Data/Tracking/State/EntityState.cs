@@ -203,5 +203,31 @@ namespace Iql.Queryable.Data.Tracking.State
             var state = Properties.SingleOrDefault(p => p.Property.Name == name);
             return state;
         }
+
+        public bool HasRemoteKey()
+        {
+            if (EntityConfiguration.Key.Properties.All(p => p.ReadOnly) &&
+                !IsNew)
+            {
+                return true;
+            }
+
+            for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+            {
+                var property = EntityConfiguration.Key.Properties[i];
+                if (property.ReadOnly)
+                {
+                    continue;
+                }
+
+                if (property.PropertyGetter(Entity).IsDefaultValue(
+                    property.TypeDefinition))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

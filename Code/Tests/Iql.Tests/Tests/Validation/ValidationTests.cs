@@ -64,13 +64,17 @@ namespace Iql.Tests.Tests.Validation
             // Mark key as generated remotely so our entity will be
             // attempted to be inserted upon save
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
-                .PrimaryKeyIsGeneratedRemotely();
+                .Key.SetReadOnly();
             var personTypeMap = EntityHelper.NewPersonTypeMap();
             personTypeMap.PersonId = 0;
             personTypeMap.TypeId = 0;
             var db = new AppDbContext();
             db.PersonTypesMap.Add(personTypeMap);
+            var changes = db.DataStore.GetChanges();
+            //Assert.AreEqual(1, changes.Length);
             var saveChangesResult = await db.SaveChangesAsync();
+            changes = db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Length);
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
@@ -85,6 +89,10 @@ namespace Iql.Tests.Tests.Validation
         [TestMethod]
         public async Task NullReferenceFieldShouldFailNonNullableTest()
         {
+            // Mark key as generated remotely so our entity will be
+            // attempted to be inserted upon save
+            Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
+                .Key.SetReadOnly();
             var personTypeMap = EntityHelper.NewPersonTypeMap();
             personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.PersonId), null);
             personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.TypeId), null);

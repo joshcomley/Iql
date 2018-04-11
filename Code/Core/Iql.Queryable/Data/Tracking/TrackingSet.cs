@@ -217,11 +217,20 @@ namespace Iql.Queryable.Data.Tracking
             return TrackEntityInternal(entity, mergeWith, isNew, onlyMergeWithExisting);
         }
 
+        public void RemoveEntityByKey(CompositeKey compositeKey)
+        {
+            var keyString = compositeKey.AsKeyString();
+            if (EntitiesByRemoteKey.ContainsKey(keyString))
+            {
+                EntitiesByRemoteKey.Remove(keyString);
+            }
+        }
+
         public void RemoveEntity(T entity)
         {
             var state = GetEntityState(entity);
+            RemoveEntityByKey(state.CurrentKey);
             entity = (T)state.Entity;
-            var iEntity = entity as IEntity;
             if (_entityObservers.ContainsKey(entity))
             {
                 _entityObservers[entity].Unobserve();
@@ -385,7 +394,7 @@ namespace Iql.Queryable.Data.Tracking
                                     var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
                                     if (!key.HasDefaultValue())
                                     {
-                                        throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelyException();
+                                        throw new AttemptingToAssignRemotelyGeneratedKeyException();
                                     }
                                 }
                             }
@@ -447,16 +456,21 @@ namespace Iql.Queryable.Data.Tracking
             var hadEntityState = HasEntityState(entity);
             if (!hadEntityState &&
                 isNew &&
-                !EntityConfiguration.GetCompositeKey(entity).HasDefaultValue() &&
-                EntityConfiguration.Key.IsGeneratedRemotely &&
-                !EntityConfiguration.Key.IsPivot())
+                !EntityConfiguration.GetCompositeKey(entity).HasDefaultValue())
             {
+                for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+                {
+                    var property = EntityConfiguration.Key.Properties[i];
+                    if (property.ReadOnly && !property.PropertyGetter(entity).IsDefaultValue(property.TypeDefinition))
+                    {
+                        throw new AttemptingToAssignRemotelyGeneratedKeyException();
+                    }
+                }
 
                 //if (nonRelationshipKey)
                 //{
                 //    // TODO: Check if entity key is marked as remotely generated
                 //}
-                throw new AttemptingToAssignKeyToEntityWhoseKeysAreGeneratedRemotelyException();
             }
             var entityState = GetEntityState(entity);
             if (!hadEntityState && isNew)
@@ -517,13 +531,14 @@ namespace Iql.Queryable.Data.Tracking
                 var oldKey = state.CurrentKey;
                 var oldKeyString = oldKey.AsKeyString();
                 var newKeyString = newKey.AsKeyString();
-                if (newKeyString != oldKeyString)
+                if (newKeyString != oldKeyString ||
+                    (!state.IsNew && !EntitiesByKey.ContainsKey(newKeyString)))
                 {
                     if (EntitiesByKey.ContainsKey(oldKeyString))
                     {
                         EntitiesByKey.Remove(oldKeyString);
                     }
-                    if (!newKey.HasDefaultValue())
+                    if (state.HasRemoteKey())
                     {
                         EntitiesByKey.Add(newKeyString, state);
                     }
@@ -536,7 +551,7 @@ namespace Iql.Queryable.Data.Tracking
         private void TrackRemoteKey(IEntityStateBase state, CompositeKey oldKey)
         {
             var keyString = state.CurrentKey.AsKeyString();
-            if (!state.IsNew && !state.CurrentKey.HasDefaultValue())
+            if (!state.IsNew && state.HasRemoteKey())
             {
                 if (EntitiesByRemoteKey.ContainsKey(keyString))
                 {
@@ -596,7 +611,7 @@ namespace Iql.Queryable.Data.Tracking
                         map.OldPropertyValues = null;
                         map.State = state;
                     }
-                    else
+                    else if(map.State != state)
                     {
                         throw new DuplicateKeyException();
                     }

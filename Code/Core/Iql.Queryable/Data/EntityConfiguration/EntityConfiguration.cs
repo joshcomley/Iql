@@ -438,15 +438,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             return FindPropertyByLambdaExpression(expression);
         }
-
-        public EntityConfiguration<T> PrimaryKeyIsGeneratedRemotely(
-            bool isTrue = true
-        )
-        {
-            Key.IsGeneratedRemotely = isTrue;
-            return this;
-        }
-
+        
         public EntityConfiguration<T> HasKey<TKey>(
             Expression<Func<T, TKey>> property,
             IqlType? iqlType = null
@@ -534,7 +526,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                                  false,
                                  typeof(T),
                                  convertedFromType,
-                                 false,
+                                 null,
                                  iqlType ?? typeof(TProperty).ToIqlType(),
                                  null,
                                  property);
@@ -713,7 +705,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             IProperty countRelationship)
         {
             var iql =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property) as IqlPropertyExpression;
+                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
             var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<T, TPropertyType, TElementType>;
             if (definition == null)
