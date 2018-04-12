@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using Iql.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Parsing;
@@ -74,6 +76,30 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             };
             expressionResult.Expression = expression2(null);
             return expressionResult;
+        }
+
+        static JavaScriptExpressionToIqlConverter()
+        {
+            ConvertLambdaExpressionToIqlByTypeMethod = typeof(ExpressionConverterBase)
+                .GetMethod(nameof(ConvertLambdaExpressionToIqlByType));
+        }
+
+        public static MethodInfo ConvertLambdaExpressionToIqlByTypeMethod { get; set; }
+
+        public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
+        {
+            return (ExpressionResult<IqlExpression>)ConvertLambdaExpressionToIqlByTypeMethod
+                .InvokeGeneric(this, new object[]
+                {
+                    filter
+#if TypeScript
+                    , evaluateContext
+#endif
+                }, entityType);
         }
 
         public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter

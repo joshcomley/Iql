@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Iql.Parsing;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.Lists;
@@ -37,11 +38,21 @@ namespace Iql.Queryable.Extensions
 
         public static IExpressionQueryOperation BuildExpandOperationFromLambdaExpression<T, TProperty>(
             this IDataContext dataContext,
-            Expression<Func<T, TProperty>> expression) where T : class
+            Expression<Func<T, TProperty>> expression
+#if TypeScript
+         , EvaluateContext evaluateContext
+#endif
+
+            ) where T : class
         {
             return dataContext.BuildExpandOperationFromIqlExpression(
                 typeof(T),
-                (IqlPropertyExpression) IqlQueryableAdapter.ExpressionConverter().ConvertLambdaExpressionToIql<T>(expression).Expression);
+                (IqlPropertyExpression) IqlQueryableAdapter.ExpressionConverter()
+                    .ConvertLambdaExpressionToIqlByType(expression, typeof(T)
+#if TypeScript
+            , evaluateContext
+#endif
+                    ).Expression);
         }
 
         public static IExpressionQueryOperation BuildExpandOperationFromIqlExpression(
