@@ -22,6 +22,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IPropertyValidationResult ValidateEntityPropertyByName(object entity, string property);
         IPropertyValidationResult ValidateEntityProperty(object entity, IProperty property);
         IProperty FindPropertyByExpression(Expression<Func<object, object>> expression);
+        IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
         IProperty FindPropertyByLambdaExpression(LambdaExpression expression);
         IDisplayFormatting DisplayFormatting { get; }
         IValidationCollection EntityValidation { get; }

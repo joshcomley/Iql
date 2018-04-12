@@ -98,6 +98,20 @@ namespace Iql.Queryable.Data.Tracking.State
 
         //public CompositeKey RemoteKey => _remoteKey ?? CurrentKey;
 
+        public CompositeKey KeyBeforeChanges()
+        {
+            var compositeKey = new CompositeKey(EntityConfiguration.Key.Properties.Length);
+            for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+            {
+                var property = EntityConfiguration.Key.Properties[i];
+                compositeKey.Keys[i] = new KeyValue(
+                    property.Name,
+                    GetPropertyState(property.Name).OldValue,
+                    property.TypeDefinition);
+            }
+            return compositeKey;
+        }
+
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
         public T Entity { get; }
@@ -204,7 +218,7 @@ namespace Iql.Queryable.Data.Tracking.State
             return state;
         }
 
-        public bool HasRemoteKey()
+        public bool HasValidKey()
         {
             if (EntityConfiguration.Key.Properties.All(p => p.ReadOnly) &&
                 !IsNew)

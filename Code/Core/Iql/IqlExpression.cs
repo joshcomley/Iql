@@ -29,8 +29,15 @@ namespace Iql
         public static IqlPropertyExpression GetPropertyExpression(string propertyName)
         {
             var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
-            var propertyExpression = new IqlPropertyExpression(propertyName);
-            propertyExpression.Parent = rootReferenceExpression;
+            var parts = propertyName.Split('/');
+            IqlReferenceExpression parent = rootReferenceExpression;
+            IqlPropertyExpression propertyExpression = null;
+            for (var i = 0; i < parts.Length; i++)
+            {
+                var part = parts[i];
+                propertyExpression = new IqlPropertyExpression(part, parent);
+                parent = propertyExpression;
+            }
             return propertyExpression;
         }
 

@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.OData.QueryableApplicator.Applicators;
-using Iql.Queryable;
-using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Operations;
 using Iql.Queryable.QueryApplicator;
 
 namespace Iql.OData.QueryableApplicator
@@ -16,7 +13,7 @@ namespace Iql.OData.QueryableApplicator
         private Dictionary<ODataQueryPart, List<string>> QueryParts { get; }
             = new Dictionary<ODataQueryPart, List<string>>();
 
-        public ODataQuery(global::Iql.Queryable.Data.Queryable.IQueryable<T> queryable, IDataContext dataContext)
+        public ODataQuery(Queryable.Data.Queryable.IQueryable<T> queryable, IDataContext dataContext)
         {
             DataContext = dataContext;
         }

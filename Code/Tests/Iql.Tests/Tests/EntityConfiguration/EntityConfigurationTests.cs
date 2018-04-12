@@ -3,13 +3,28 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
-using Tunnel.Sets;
 
-namespace Iql.Tests.Tests.DataContext
+namespace Iql.Tests.Tests.EntityConfiguration
 {
     [TestClass]
     public class EntityConfigurationTests : TestsBase
     {
+        [TestMethod]
+        public void GetDeepPropertyFromString()
+        {
+            var propertyPath = string.Join("/", new[]
+            {
+                nameof(Person.Type),
+                nameof(PersonType.CreatedByUser),
+                nameof(ApplicationUser.Client),
+                nameof(Client.AverageSales)
+            });
+            var property = Db.EntityConfigurationContext.EntityType<Person>()
+                .FindProperty(
+                    propertyPath);
+            Assert.AreEqual(nameof(Client.AverageSales), property.Name);
+        }
+
         [TestMethod]
         public void GetPrimarySearchProperties()
         {

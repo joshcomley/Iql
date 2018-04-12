@@ -83,6 +83,8 @@ namespace Iql.Tests.Tests.Validation
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Type),
                     EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
                     EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
+            Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
+                .Key.SetReadOnly(false);
         }
 
 #if TypeScript

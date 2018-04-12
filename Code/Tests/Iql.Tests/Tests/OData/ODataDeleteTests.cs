@@ -16,7 +16,7 @@ namespace Iql.Tests.Tests.OData
         {
             await RequestLog.LogSessionAsync(async log =>
             {
-                var db = NewDb();
+                var db = NewHazDb();
                 var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";

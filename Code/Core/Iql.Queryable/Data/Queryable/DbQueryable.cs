@@ -626,7 +626,6 @@ namespace Iql.Queryable.Data.Queryable
         public DbQueryable<T> ExpandRelationship(
             string propertyName)
         {
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
             var expandOperation = DataContext.BuildExpandOperation(typeof(T), propertyName);
             return Then(expandOperation);
         }

@@ -538,7 +538,7 @@ namespace Iql.Queryable.Data.Tracking
                     {
                         EntitiesByKey.Remove(oldKeyString);
                     }
-                    if (state.HasRemoteKey())
+                    if (state.HasValidKey())
                     {
                         EntitiesByKey.Add(newKeyString, state);
                     }
@@ -551,7 +551,7 @@ namespace Iql.Queryable.Data.Tracking
         private void TrackRemoteKey(IEntityStateBase state, CompositeKey oldKey)
         {
             var keyString = state.CurrentKey.AsKeyString();
-            if (!state.IsNew && state.HasRemoteKey())
+            if (!state.IsNew && state.HasValidKey())
             {
                 if (EntitiesByRemoteKey.ContainsKey(keyString))
                 {

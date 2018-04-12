@@ -14,7 +14,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestPostUpdateDeleteSingleEntity()
         {
-            var db = NewDb();
+            var db = NewHazDb();
             var client = EntityHelper.NewHazClient();
             await RequestLog.LogSessionAsync(async log =>
             {

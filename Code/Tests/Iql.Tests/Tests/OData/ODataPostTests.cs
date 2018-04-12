@@ -26,7 +26,7 @@ namespace Iql.Tests.Tests.OData
                         @"{""error"":{""code"":"""",""message"":"""",""details"":[{""code"":"""",""target"":""Name"",""message"":""Please enter a name""}]}}", success: false),
                     async () =>
                     {
-                        var db = NewDb();
+                        var db = NewHazDb();
                         var client = EntityHelper.NewHazClient();
                         db.Clients.Add(client);
                         client.Name = "New client 123";
@@ -54,7 +54,7 @@ namespace Iql.Tests.Tests.OData
             await RequestLog.LogSessionAsync(async log =>
             {
                 Assert.AreEqual(0, log.Posts.Count);
-                var db = NewDb();
+                var db = NewHazDb();
                 var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";

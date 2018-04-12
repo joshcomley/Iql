@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
@@ -10,46 +14,49 @@ namespace Iql.Queryable.Extensions
         public static IExpressionQueryOperation BuildExpandOperation(
             this IDataContext dataContext,
             Type entityType,
-            string propertyName)
+            string propertyPath)
+        {
+            var entityConfiguration = dataContext
+                .EntityConfigurationContext
+                .GetEntityByType(entityType);
+            var path = IqlPropertyPath.FromString(propertyPath, entityConfiguration).Top;
+
+            var expandOperation = new ExpandOperation();
+            var returnOperation = expandOperation;
+            IDbQueryable expandedDbSet = dataContext.GetDbSetByEntityType(
+                entityConfiguration.FindProperty(path.PropertyName).Relationship.OtherEnd.Type);
+            if (path.Child != null)
+            {
+                expandedDbSet = expandedDbSet.ExpandRelationship(path.Child.PathFromHere);
+            }
+            expandOperation.QueryExpression = new ExpandQueryExpression(null, q => expandedDbSet);
+            path.Expression.Parent = new IqlRootReferenceExpression();
+            expandOperation.Expression = path.Expression;
+            return returnOperation;
+        }
+
+        public static IExpressionQueryOperation BuildExpandOperationFromLambdaExpression<T, TProperty>(
+            this IDataContext dataContext,
+            Expression<Func<T, TProperty>> expression) where T : class
+        {
+            return dataContext.BuildExpandOperationFromIqlExpression(
+                typeof(T),
+                (IqlPropertyExpression) IqlQueryableAdapter.ExpressionConverter().ConvertLambdaExpressionToIql<T>(expression).Expression);
+        }
+
+        public static IExpressionQueryOperation BuildExpandOperationFromIqlExpression(
+            this IDataContext dataContext,
+            Type entityType,
+            IqlPropertyExpression expression)
         {
             var expandOperation = new ExpandOperation();
-            var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType)
-                .FindProperty(propertyName);
+            var property = dataContext
+                .EntityConfigurationContext
+                .GetEntityByType(entityType)
+                .FindPropertyByIqlExpression(expression);
             expandOperation.QueryExpression = new ExpandQueryExpression(null, q => dataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type));
-            expandOperation.Expression = IqlExpression.GetPropertyExpression(propertyName);
+            expandOperation.Expression = expression;
             return expandOperation;
-            //var relationship = entityConfiguration
-            //    .Relationships.Single(r =>
-            //    {
-            //        var thisEnd = r.Source.Configuration == entityConfiguration
-            //            ? r.Source
-            //            : r.Target;
-            //        if (thisEnd.Property.Name == propertyName)
-            //        {
-            //            return true;
-            //        }
-
-            //        return false;
-            //    });
-            //var source = relationship.Source.Configuration == entityConfiguration
-            //    ? relationship.Source
-            //    : relationship.Target;
-            //var target = relationship.Source.Configuration == entityConfiguration
-            //    ? relationship.Target
-            //    : relationship.Source;
-            //var property = entityConfiguration.Properties.Single(p => p.Name == source.Property.Name);
-            //var type = property.Kind == PropertyKind.Count
-            //    ? typeof(ExpandCountOperation<,,>)
-            //    : typeof(ExpandOperation<,,>);
-            //var propertyExpression = IqlExpression.GetPropertyExpression(propertyName);
-            //var expandOperationType = type.MakeGenericType(
-            //    entityConfiguration.Type,
-            //    property.ElementType,
-            //    target.Type);
-            //var expandOperation =
-            //    (IExpressionQueryOperation)Activator.CreateInstance(expandOperationType, new object[] { null });
-            //expandOperation.Expression = propertyExpression;
-            //return expandOperation;
         }
     }
 }

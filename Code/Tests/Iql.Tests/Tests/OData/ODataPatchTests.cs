@@ -5,6 +5,7 @@ using Haz.App.Data.Entities;
 using Iql.Tests.Context;
 using Iql.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.OData
 {
@@ -16,7 +17,7 @@ namespace Iql.Tests.Tests.OData
         {
             await RequestLog.LogSessionAsync(async log =>
             {
-                var db = NewDb();
+                var db = NewHazDb();
                 var client = EntityHelper.NewHazClient();
                 db.Clients.Add(client);
                 client.Name = "New client 123";
@@ -29,6 +30,33 @@ namespace Iql.Tests.Tests.OData
   ""Id"": 0
 }".CompressJson(), request.Body.Body.CompressJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
+            });
+        }
+
+        [TestMethod]
+        public async Task TestUpdatePivotEntityWithNewRelationshipKey()
+        {
+
+            await RequestLog.LogSessionAsync(async log =>
+            {
+                var db = NewDb();
+                var map = new PersonTypeMap
+                {
+                    PersonId = 1,
+                    TypeId = 1,
+                    Description = "Abc",
+                    Notes = "Def"
+                };
+                db.PersonTypesMap.Add(map);
+                var result = await db.SaveChangesAsync();
+                map.PersonId = 2;
+                result = await db.SaveChangesAsync();
+                var request = log.Patches.Pop().Single();
+                Assert.AreEqual(@"http://localhost:28000/odata/PersonTypesMap(PersonId=1,TypeId=1)", request.Uri);
+                Assert.AreEqual(@"{
+  ""PersonId"": 2,
+  ""TypeId"": 1
+}".CompressJson(), request.Body.Body.CompressJson());
             });
         }
     }

@@ -333,7 +333,7 @@ namespace Iql.Queryable.Data.Relationships
                     {
                         ProcessTargetKeyChange(propertyChangeEvent.Entity, entityConfiguration);
                     }
-                    else if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                    if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
                     {
                         ProcessRelationshipKeyChange(
                             propertyChangeEvent.Entity,

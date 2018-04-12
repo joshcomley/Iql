@@ -10,6 +10,7 @@ using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 using Iql.Queryable.Data.Validation;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -419,13 +420,35 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public IProperty FindProperty(string name)
         {
+            if (name.IndexOf("/") != -1)
+            {
+                var parts = name.Split('/');
+                IEntityConfiguration config = this;
+                IProperty property = null;
+                for (var i = 0; i < parts.Length; i++)
+                {
+                    var part = parts[i];
+                    property = config.FindProperty(part);
+                    if (i == parts.Length - 1)
+                    {
+                        break;
+                    }
+                    config = Builder.GetEntityByType(property.TypeDefinition.ElementType);
+                }
+                return property;
+            }
             return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
+        }
+
+        public IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
+        {
+            return IqlPropertyPath.FromPropertyExpression(this, propertyExpression).Property;
         }
 
         public IProperty FindPropertyByLambdaExpression(LambdaExpression property)
         {
             var iql = IqlQueryableAdapter.LambdaExpressionToIqlExpressionTree(property, typeof(T));
-            return FindProperty(iql.PropertyName);
+            return FindPropertyByIqlExpression(iql);
         }
 
         public IProperty FindPropertyByExpression(Expression<Func<T, object>> property)
@@ -438,7 +461,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             return FindPropertyByLambdaExpression(expression);
         }
-        
+
         public EntityConfiguration<T> HasKey<TKey>(
             Expression<Func<T, TKey>> property,
             IqlType? iqlType = null

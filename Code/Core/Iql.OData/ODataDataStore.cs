@@ -419,7 +419,7 @@ namespace Iql.OData
 
         public string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class
         {
-            var compositeKey = DataContext.GetEntityState(entity).CurrentKey;
+            var compositeKey = DataContext.GetEntityState(entity).KeyBeforeChanges();
             return ResolveEntityUriByType(compositeKey, typeof(TEntity));
         }
 

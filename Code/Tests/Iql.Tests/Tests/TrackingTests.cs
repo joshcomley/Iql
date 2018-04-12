@@ -236,6 +236,39 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task ChangingAPivotEntityRelationshipIdShouldChangeTheRelationshipProperty()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var person = await Db.People.WithKey(1).ExpandCollection(p => p.Types, types => types.Expand(t => t.Type)).SingleAsync();
+            var people = await Db.People.ToListAsync();
+            var person1 = people.Single(p => p.Id == 1);
+            var person2 = people.Single(p => p.Id == 2);
+            Assert.AreEqual(1, person.Types.Count);
+            var mapping = person.Types[0];
+            Assert.AreEqual(person1, mapping.Person);
+            mapping.PersonId = 2;
+            Assert.AreEqual(person2, mapping.Person);
+            mapping.PersonId = 3;
+            Assert.AreEqual(null, mapping.Person);
+        }
+
+        [TestMethod]
         public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentShouldCreateNoChangeRequests()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType

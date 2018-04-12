@@ -9,11 +9,13 @@ namespace Iql.Queryable.Data.Tracking.State
 {
     public interface IEntityStateBase
     {
-        bool HasRemoteKey();
+        bool HasValidKey();
         bool IsInsertable();
         IPropertyState[] PropertyStates { get; }
         void Reset();
         CompositeKey CurrentKey { get; set; }
+
+        CompositeKey KeyBeforeChanges();
         //CompositeKey RemoteKey { get; }
         Guid? PersistenceKey { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
