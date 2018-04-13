@@ -26,6 +26,12 @@ namespace Iql
             return Parent != null && Parent.ContainsRootEntity();
         }
 
+        public static IEnumerable<T> FindAll<T>()
+            where T : IqlExpression
+        {
+            throw new NotImplementedException();
+        }
+
         public static IqlPropertyExpression GetPropertyExpression(string propertyName)
         {
             var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
@@ -67,7 +73,7 @@ namespace Iql
                     {
                         type = rootEntityType;
                     }
-                    else if(ancestor is IqlLiteralExpression)
+                    else if (ancestor is IqlLiteralExpression)
                     {
                         type = (ancestor as IqlLiteralExpression).Value?.GetType();
                     }

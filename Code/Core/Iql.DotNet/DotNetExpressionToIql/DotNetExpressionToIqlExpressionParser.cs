@@ -55,9 +55,9 @@ namespace Iql.DotNet.DotNetExpressionToIql
                 root.Type,
                 root.Name,
                 (node, context) => GetIqlExpression(node, parsers, context)));
-            var reducer = new IqlReducer(
-                registry: new IqlReducerRegistry());
-            return reducer.ReduceStaticContent(iql);
+            var reducer = new IqlReducer();
+            var parsed = reducer.ReduceStaticContent(iql);
+            return parsed;
         }
 
         private IqlExpression GetIqlExpression(

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Extensions;
@@ -57,6 +58,12 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                             new IqlLiteralExpression("", IqlType.String)
                         )
                     );
+                case nameof(Enumerable.Any):
+                    return new IqlAnyExpression(context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
+                        context.Parse(node.Arguments[1], context));
+                case nameof(Enumerable.All):
+                    return new IqlAllExpression(context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
+                        context.Parse(node.Arguments[1], context));
             }
             throw new NotImplementedException();
         }

@@ -5,6 +5,11 @@ namespace Iql.Parsing.Reduction
     public class IqlReducerBase<TIqlExpression> : IIqlReducer<TIqlExpression>
         where TIqlExpression : IqlExpression
     {
+        public virtual void Traverse(TIqlExpression expression, IqlTraverser reducer)
+        {
+            reducer.Traverse(expression.Parent);
+        }
+
         public virtual IIqlLiteralExpression Evaluate(TIqlExpression expression, IqlReducer reducer)
         {
             throw new Exception("Method not implemented.");
@@ -17,6 +22,11 @@ namespace Iql.Parsing.Reduction
                 expression.Parent = (IqlExpression)reducer.ReduceStaticContent(expression.Parent);
             }
             return expression;
+        }
+
+        void IIqlReducerBase.Traverse(IqlExpression expression, IqlTraverser reducer)
+        {
+            Traverse((TIqlExpression)expression, reducer);
         }
 
         IIqlLiteralExpression IIqlReducerBase.Evaluate(IqlExpression expression, IqlReducer reducer)

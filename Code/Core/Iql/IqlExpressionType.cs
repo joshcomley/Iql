@@ -43,6 +43,9 @@ namespace Iql
         StringConcat,
         StringLength,
         ToString,
-        Final
+        Final,
+        Now,
+        Any,
+        All
     }
 }

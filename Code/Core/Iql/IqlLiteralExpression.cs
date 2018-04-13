@@ -9,7 +9,7 @@ namespace Iql
             Value = value;
         }
 
-        public IqlLiteralExpression() : this(null, IqlType.Unknown)
+        public IqlLiteralExpression() : this(null)
         {
         }
     }

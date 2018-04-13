@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Iql.Parsing.Reduction.Reducers;
 
 namespace Iql.Parsing.Reduction
@@ -41,7 +42,7 @@ namespace Iql.Parsing.Reduction
         }
 
         public List<IqlExpression> Ancestors { get; set; } = new List<IqlExpression>();
-        
+
         public IIqlLiteralExpression Evaluate(IqlExpression expression)
         {
             var reducer = _registry.Resolve(expression);
@@ -49,6 +50,13 @@ namespace Iql.Parsing.Reduction
             var result = reducer?.Evaluate(expression, this);
             Ancestors.RemoveAt(Ancestors.Count - 1);
             return result;
+        }
+
+        public IqlExpression[] Traverse(IqlExpression expression)
+        {
+            var traverser = new IqlTraverser(_registry);
+            traverser.Traverse(expression);
+            return traverser.Expressions.ToArray();
         }
 
         public IqlExpression ReduceStaticContent(IqlExpression expression)

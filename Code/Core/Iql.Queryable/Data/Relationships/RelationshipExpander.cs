@@ -106,7 +106,7 @@ namespace Iql.Queryable.Data.Relationships
                     }
                 }
             }
-            return new RelationshipMatches(sourceMatches, targetMatches);
+            return new RelationshipMatches(relationship, sourceMatches, targetMatches);
         }
 
         public RelationshipMatches FindOneToManyMatchesTyped<TSource, TTarget>(
@@ -144,7 +144,7 @@ namespace Iql.Queryable.Data.Relationships
                 {
                     var targetEntity = targetDictionary[sourceEntry.Key];
                     targetMatches.Add(targetEntity.Item);
-                    sourceMatches.AddRange((List<TSource>)sourceEntry.Value);
+                    sourceMatches.AddRange((IList<TSource>)sourceEntry.Value);
                     if (assignRelationships)
                     {
                         for (var index = 0; index < sourceEntry.Value.Count; index++)
@@ -154,7 +154,7 @@ namespace Iql.Queryable.Data.Relationships
                                 relationship.Source.Property,
                                 targetEntity.Item
                             );
-                            var list = (List<TSource>)targetEntity.Lists[relationship.Target.Property.Name];
+                            var list = (IList<TSource>)targetEntity.Lists[relationship.Target.Property.Name];
                             list.Add((TSource)sourceEntity);
                         }
                     }
@@ -186,7 +186,7 @@ namespace Iql.Queryable.Data.Relationships
                     }
                 }
             }
-            return new RelationshipMatches(sourceMatches, targetMatches);
+            return new RelationshipMatches(relationship, sourceMatches, targetMatches);
         }
 
         private class EntityRelationships<T>

@@ -4,6 +4,13 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlBinaryExpressionReducer : IqlReducerBase<IqlBinaryExpression>
     {
+        public override void Traverse(IqlBinaryExpression expression, IqlTraverser reducer)
+        {
+            reducer.Traverse(expression.Left);
+            reducer.Traverse(expression.Right);
+            base.Traverse(expression, reducer);
+        }
+
         public override IIqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
         {
             var left = reducer.Evaluate(expression.Left);

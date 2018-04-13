@@ -2,6 +2,12 @@ namespace Iql.Parsing.Reduction.Reducers
 {
     public class IqlParenthesisExpressionReducer : IqlReducerBase<IqlParenthesisExpression>
     {
+        public override void Traverse(IqlParenthesisExpression expression, IqlTraverser reducer)
+        {
+            reducer.Traverse(expression.Expression);
+            base.Traverse(expression, reducer);
+        }
+
         public override IIqlLiteralExpression Evaluate(IqlParenthesisExpression expression, IqlReducer reducer)
         {
             //for (var i = 0; i < expression.Expressions.Count; i++)

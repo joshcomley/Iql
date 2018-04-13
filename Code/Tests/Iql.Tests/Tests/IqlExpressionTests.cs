@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -11,6 +13,114 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class IqlExpressionTests : TestsBase
     {
+        [TestMethod]
+        public async Task FilterCollection()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 3
+            });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 4
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 3,
+                Title = "Test"
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1,
+                Description = "Abc"
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 2,
+                Description = "Abc"
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 2,
+                TypeId = 1,
+                Description = "Abc"
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 2,
+                TypeId = 3,
+                Description = "Kettle"
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 3,
+                TypeId = 4,
+                Description = "Def"
+            });
+            var query = Db.People.Where(p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
+            // OData: https://localhost:44364/odata/SampleData?$expand=ComplexPivots&$filter=ComplexPivots/any(_:(_/Title eq 'Flip flop' or _/SampleDataReferenceId eq 2))
+            var results = await query.ToListAsync();
+        }
+        [TestMethod]
+        public void Last24Hours()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                CreatedDate = DateTimeOffset.Now.AddDays(-30)
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 2,
+                CreatedDate = DateTimeOffset.Now.AddHours(-3)
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 3,
+                CreatedDate = DateTimeOffset.Now.AddHours(-1)
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 4,
+                CreatedDate = DateTimeOffset.Now.AddHours(3)
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 5,
+                CreatedDate = DateTimeOffset.Now.AddDays(30)
+            });
+            var property = IqlExpression.GetPropertyExpression(nameof(Client.CreatedDate));
+            var now = new IqlNowExpression();
+            var eq = 
+                new IqlAndExpression(
+                    new IqlIsGreaterThanExpression(
+                        property,
+                        now),
+                    new IqlIsLessThanExpression(
+                        property,
+                        now)
+                    );
+                ;
+
+        }
         [TestMethod]
         public void TestGetDeepProperty()
         {
