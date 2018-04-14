@@ -31,7 +31,8 @@ namespace Iql.JavaScript.QueryableApplicator
         public void Expand(
             IList source,
             IList target,
-            Guid propertyGuid)
+            Guid propertyGuid,
+            bool assign)
         {
             var property = this.GetRoot().Properties[propertyGuid];
 
@@ -40,7 +41,7 @@ namespace Iql.JavaScript.QueryableApplicator
                     source,
                     target,
                     property.Relationship.Relationship,
-                    false);
+                    assign);
 
             var ourMatches =
                 property.Relationship.ThisIsTarget

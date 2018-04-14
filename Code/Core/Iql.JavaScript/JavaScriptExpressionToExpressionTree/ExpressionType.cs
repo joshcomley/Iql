@@ -12,6 +12,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         Binary,
         Logical,
         Conditional,
-        Array
+        Array,
+        Lambda
     }
 }

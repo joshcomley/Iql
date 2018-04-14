@@ -15,10 +15,10 @@ namespace Iql.JavaScript.QueryableApplicator.Applicators
         {
             var expand = context.Operation;
             var javaScriptQueryResult = context.Data;
-            ApplyExpand<TEntity>(expand, javaScriptQueryResult);
+            ApplyExpand<TEntity>(expand, javaScriptQueryResult, false);
         }
 
-        internal static void ApplyExpand<TEntity>(IExpandOperation expand, IJavaScriptQueryResult javaScriptQueryResult)
+        internal static void ApplyExpand<TEntity>(IExpandOperation expand, IJavaScriptQueryResult javaScriptQueryResult, bool assign)
         {
             var query = "";
             var types = new List<ExpandEntityType>();
@@ -49,7 +49,8 @@ namespace Iql.JavaScript.QueryableApplicator.Applicators
                 //    query += "'" + manyToMany.PivotSourceKeyProperty.PropertyName + "',";
                 //    query += "'" + manyToMany.PivotTargetKeyProperty.PropertyName + "',";
                 //}
-                query += $"\'{property}\'";
+                query += $"\'{property}\',";
+                query += $"{(assign ? "true" : "false")}";
                 //query += "'" + detail.Relationship.Target.Property.Name + "',";
                 //// TODO: Support multiple constraints
                 //var constraint = detail.Relationship.Constraints.First();

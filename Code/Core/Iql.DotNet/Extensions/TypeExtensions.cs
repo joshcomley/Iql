@@ -35,7 +35,7 @@ namespace Iql.DotNet.Extensions
                        baseTypeDefinition != null &&
                        baseTypeDefinition != type)
                 {
-                    foreach (var @interface in baseTypeDefinition.GetInterfaces())
+                    foreach (var @interface in baseType.GetInterfaces())
                     {
                         var interfaceType =
                             @interface.TryGetBaseTypeInternal(type);

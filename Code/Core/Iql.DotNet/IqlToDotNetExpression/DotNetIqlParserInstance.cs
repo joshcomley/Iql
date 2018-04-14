@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
@@ -9,10 +11,32 @@ namespace Iql.DotNet.IqlToDotNetExpression
     {
         public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type rootEntityType) : base(adapter, rootEntityType)
         {
-            RootEntity = System.Linq.Expressions.Expression.Parameter(rootEntityType, "entity");
+            RootEntities.Add(NewRootParameter(rootEntityType));
         }
 
-        public ParameterExpression RootEntity { get; }
+        private ParameterExpression NewRootParameter(Type rootEntityType)
+        {
+            return System.Linq.Expressions.Expression.Parameter(rootEntityType, $"entity{(RootEntities.Count == 0 ? "" : RootEntities.Count.ToString())}");
+        }
+
+        public List<ParameterExpression> RootEntities { get; } = new List<ParameterExpression>();
+        public ParameterExpression RootEntity => RootEntities.Last();
+
+        public DotNetOutput ParseLambda(IqlExpression expression, Type rootEntityType
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
+        {
+            RootEntities.Add(NewRootParameter(rootEntityType));
+            var result = Parse(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            RootEntities.RemoveAt(RootEntities.Count - 1);
+            return result;
+        }
 
         public override DotNetOutput Parse(IqlExpression expression
 #if TypeScript

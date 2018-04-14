@@ -59,10 +59,10 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                         )
                     );
                 case nameof(Enumerable.Any):
-                    return new IqlAnyExpression(context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
+                    return new IqlAnyExpression((node.Arguments[1] as LambdaExpression).Parameters[0].Name, context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
                         context.Parse(node.Arguments[1], context));
                 case nameof(Enumerable.All):
-                    return new IqlAllExpression(context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
+                    return new IqlAllExpression((node.Arguments[1] as LambdaExpression).Parameters[0].Name, context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
                         context.Parse(node.Arguments[1], context));
             }
             throw new NotImplementedException();

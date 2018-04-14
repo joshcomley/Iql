@@ -14,7 +14,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 #endif
             )
         {
-            var adapter = new JavaScriptIqlExpressionAdapter("entity");
+            var adapter = new JavaScriptIqlExpressionAdapter();
             var parser = new JavaScriptIqlParserInstance(adapter);
             parser.IsFilter = true;
             var javascriptExpression = parser.Parse(iql
@@ -22,7 +22,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 , evaluateContext
 #endif
                 );
-            var javascript = new JavaScriptExpression(adapter.RootVariableName, javascriptExpression.ToCodeString());
+            var javascript = new JavaScriptExpression("entity", javascriptExpression.ToCodeString());
             return javascript;
         }
     }

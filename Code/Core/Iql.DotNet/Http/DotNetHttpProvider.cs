@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Iql.Queryable.Data.Http;
-using Newtonsoft.Json;
 
 namespace Iql.DotNet.Http
 {

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using Iql.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
@@ -12,7 +13,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         where T : class
     {
         public override IqlParseResult Parse(
-            JavaScriptExpressionNodeParseContext<T, PropertyIdentifierJavaScriptExpressionNode> context)
+            JavaScriptExpressionNodeParseContext<T> context,
+            PropertyIdentifierJavaScriptExpressionNode expression)
         {
             IqlExpression exp = null;
             if (context.ObjectStack().Count > 0)
@@ -25,7 +27,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 {
                     case IqlExpressionType.RootReference:
                         //entityConfiguration = instance.EntityConfigurationContext.GetEntity<T>();
-                        property = typeof(T).GetProperty(context.Expression.Name);
+                        property = typeof(T).GetProperty(expression.Name);
                         propertyType = property.PropertyType;
                         break;
                     case IqlExpressionType.Variable:
@@ -37,7 +39,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         if (property == null)
                         {
                             throw new Exception(
-                                $"No property \"{context.Expression.Name}\" found on type \"{typeof(T).Name}\"");
+                                $"No property \"{expression.Name}\" found on type \"{typeof(T).Name}\"");
                         }
                         propertyType = property.PropertyType;
                         // var p = new propertyParent.entityType();
@@ -45,14 +47,15 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         break;
                 }
                 //instance.entityConfigurationContext.entity()
-                exp = new IqlPropertyExpression(context.Expression.Name, null, propertyType.ToIqlType());
+                exp = new IqlPropertyExpression(expression.Name, null, propertyType.ToIqlType());
             }
             else
             {
-                var variableName = context.Expression.Name;
+                var variableName = expression.Name;
                 object value = null;
                 var isRootEntity = false;
-                if (variableName == context.RootEntityVariableName)
+                var rootEntityMatch = context.RootEntities.SingleOrDefault(re => re.Name == variableName);
+                if (rootEntityMatch != null)
                 {
                     isRootEntity = true;
                     value = context.RootEntity;
@@ -66,7 +69,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                     exp = new IqlRootReferenceExpression(
                         variableName,
                         value?.ToString(),
-                        typeof(T));
+                        rootEntityMatch.Type);
                 }
                 else
                 {

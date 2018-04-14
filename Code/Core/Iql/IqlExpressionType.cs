@@ -46,6 +46,7 @@ namespace Iql
         Final,
         Now,
         Any,
-        All
+        All,
+//        Lambda
     }
 }

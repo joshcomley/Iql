@@ -3,12 +3,13 @@ namespace Iql
     public class IqlAnyExpression : IqlAnyAllExpression
     {
         public IqlAnyExpression(
+            string rootVariableName,
             IqlReferenceExpression parent,
-            IqlExpression expression) : base(IqlExpressionType.Any, parent, expression)
+            IqlExpression expression) : base(rootVariableName, IqlExpressionType.Any, parent, expression)
         {
         }
 
-        public IqlAnyExpression() : this(null, null)
+        public IqlAnyExpression() : this(null, null, null)
         {
         }
     }

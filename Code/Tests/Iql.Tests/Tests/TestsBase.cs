@@ -23,7 +23,7 @@ namespace Iql.Tests.Tests
 #endif
             new HazceptionDataStore().GetData();
         }
-        protected static AppDbContext Db => TestsBlock.Db;
+        public static AppDbContext Db => TestsBlock.Db;
 
         [ClassInitialize]
         public static void SetUp(TestContext textContext)

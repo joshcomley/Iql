@@ -29,7 +29,6 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
             RegisterApplicator(() => new IqlExpandOperationApplicator());
         }
 
-        //new JavaScriptExpressionToIqlConverter()
         public static Func<IExpressionConverter> ExpressionConverter { get; set; }
 
         public static IqlPropertyExpression ExpressionToIqlExpressionTree<T, TProperty>(

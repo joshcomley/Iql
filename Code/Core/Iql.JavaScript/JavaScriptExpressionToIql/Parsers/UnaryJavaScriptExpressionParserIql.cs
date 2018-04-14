@@ -9,11 +9,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         where T : class
     {
         public override IqlParseResult Parse(
-            JavaScriptExpressionNodeParseContext<T, UnaryJavaScriptExpressionNode>
-                context)
+            JavaScriptExpressionNodeParseContext<T> context,
+            UnaryJavaScriptExpressionNode expression)
         {
-            var value = context.Parse(context.Expression.Argument).Value;
-            switch (context.Expression.Operator)
+            var value = context.Parse(expression.Argument).Value;
+            switch (expression.Operator)
             {
                 case OperatorType.Subtract:
                     return new IqlParseResult(new IqlUnarySubtractExpression(value));

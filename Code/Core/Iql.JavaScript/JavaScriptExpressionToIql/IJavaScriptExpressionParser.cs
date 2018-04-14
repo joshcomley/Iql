@@ -17,6 +17,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         where TExpressionResult : class
     {
         TParseResult Parse(
-            JavaScriptExpressionNodeParseContext<TEntity, TExpression> context);
+            JavaScriptExpressionNodeParseContext<TEntity> context, TExpression expression);
     }
 }

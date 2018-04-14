@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
@@ -14,71 +13,15 @@ namespace Iql.Tests.Tests
     public class IqlExpressionTests : TestsBase
     {
         [TestMethod]
-        public async Task FilterCollection()
+        public async Task FilterCollectionNative()
         {
-            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
-            {
-                Id = 1
-            });
-            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
-            {
-                Id = 2
-            });
-            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
-            {
-                Id = 3
-            });
-            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
-            {
-                Id = 4
-            });
-            AppDbContext.InMemoryDb.People.Add(new Person
-            {
-                Id = 1
-            });
-            AppDbContext.InMemoryDb.People.Add(new Person
-            {
-                Id = 2
-            });
-            AppDbContext.InMemoryDb.People.Add(new Person
-            {
-                Id = 3,
-                Title = "Test"
-            });
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
-            {
-                PersonId = 1,
-                TypeId = 1,
-                Description = "Abc"
-            });
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
-            {
-                PersonId = 1,
-                TypeId = 2,
-                Description = "Abc"
-            });
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
-            {
-                PersonId = 2,
-                TypeId = 1,
-                Description = "Abc"
-            });
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
-            {
-                PersonId = 2,
-                TypeId = 3,
-                Description = "Kettle"
-            });
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
-            {
-                PersonId = 3,
-                TypeId = 4,
-                Description = "Def"
-            });
-            var query = Db.People.Where(p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
-            // OData: https://localhost:44364/odata/SampleData?$expand=ComplexPivots&$filter=ComplexPivots/any(_:(_/Title eq 'Flip flop' or _/SampleDataReferenceId eq 2))
+            var query = TestPrep.PrepFilterCollectionTest();
             var results = await query.ToListAsync();
+            Assert.AreEqual(results.Count, 2);
+            Assert.AreEqual(results[0].Id, 2);
+            Assert.AreEqual(results[1].Id, 3);
         }
+
         [TestMethod]
         public void Last24Hours()
         {
@@ -109,7 +52,7 @@ namespace Iql.Tests.Tests
             });
             var property = IqlExpression.GetPropertyExpression(nameof(Client.CreatedDate));
             var now = new IqlNowExpression();
-            var eq = 
+            var eq =
                 new IqlAndExpression(
                     new IqlIsGreaterThanExpression(
                         property,
@@ -118,9 +61,10 @@ namespace Iql.Tests.Tests
                         property,
                         now)
                     );
-                ;
+            ;
 
         }
+
         [TestMethod]
         public void TestGetDeepProperty()
         {

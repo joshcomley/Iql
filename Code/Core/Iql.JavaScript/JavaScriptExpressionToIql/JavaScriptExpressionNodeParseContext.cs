@@ -8,17 +8,16 @@ using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
-    public class JavaScriptExpressionNodeParseContext<TEntity, TJavaScriptExpressionNode>
+    public class JavaScriptExpressionNodeParseContext<TEntity>
         : IExpressionParserInstance
         where TEntity : class
-        where TJavaScriptExpressionNode : JavaScriptExpressionNode
     {
         private readonly List<object> _objectStack = new List<object>();
         public Func<string, object> Evaluate;
-        public TJavaScriptExpressionNode Expression;
+        public JavaScriptExpressionNode Expression { get; set; }
 
         public JavaScriptExpressionNodeParseContext(
-            JavaScriptExpressionToIqlConverter converter,
+            JavaScriptExpressionConverter converter,
 #if TypeScript
             EvaluateContext evaluateContext,
 #endif
@@ -33,7 +32,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             EvaluateContext = evaluateContext;
 #endif
             RootEntity = rootEntity;
-            RootEntityVariableName = rootEntityVariableName;
+            RootEntities.Add(new RootEntity(rootEntityVariableName, typeof(TEntity)));
             Reducer = new IqlReducer(
 #if TypeScript
                 evaluateContext
@@ -57,20 +56,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public IqlReducer Reducer { get; set; }
 
-        public JavaScriptExpressionToIqlConverter Converter { get; set; }
+        public JavaScriptExpressionConverter Converter { get; set; }
         public JavaScriptQueryExpressionAdapterIql<TEntity> Adapter { get; set; }
         public JavaScriptToIqlExpressionData Data { get; set; }
         public EvaluateContext EvaluateContext { get; set; }
         public TEntity RootEntity { get; set; }
 
-        public string RootEntityVariableName { get; set; }
+        public List<RootEntity> RootEntities { get; } = new List<RootEntity>();
         //public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
-
-        JavaScriptExpressionNode IExpressionParserInstance.Expression
-        {
-            get => Expression;
-            set => Expression = (TJavaScriptExpressionNode) value;
-        }
 
         IJavaScriptExpressionAdapterBase IExpressionParserInstance.Adapter
         {
@@ -124,6 +117,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         //    return Expression as TJavaScriptExpressionNode as T;
         //}
 
+        public IqlParseResult ParseLambda(JavaScriptExpressionNode expression, RootEntity rootEntity)
+        {
+            RootEntities.Add(rootEntity);
+            var result = Parse(expression);
+            RootEntities.RemoveAt(RootEntities.Count - 1);
+            return result;
+        }
+
         public IqlParseResult Parse(JavaScriptExpressionNode expression)
         {
             return Converter.ParseJavaScriptExpressionTree(expression, this) as IqlParseResult;
@@ -149,6 +150,18 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return Converter.ParseJavaScriptExpressionTree(
                     (Expression as JavaScriptExpressionNode as BinaryJavaScriptExpressionNode).Right, this)
                 as IqlParseResult;
+        }
+    }
+
+    public class RootEntity
+    {
+        public string Name { get; set; }
+        public Type Type { get; set; }
+
+        public RootEntity(string name, Type type)
+        {
+            Name = name;
+            Type = type;
         }
     }
 }

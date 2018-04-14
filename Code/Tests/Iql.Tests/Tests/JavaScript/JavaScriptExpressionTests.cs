@@ -3,12 +3,11 @@ using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 #endif
+using System.Linq;
+using System.Threading.Tasks;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.JavaScript.QueryableApplicator;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.QueryExpressions;
-using Iql.Queryable.Operations;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -16,7 +15,7 @@ using Tunnel.App.Data.Entities;
 namespace Iql.Tests.Tests.JavaScript
 {
     [TestClass]
-    public class JavaScriptExpressionTests
+    public class JavaScriptExpressionTests : TestsBase
     {
         [TestMethod]
         public void TestCompileExpressionToJavaScript()
@@ -43,6 +42,33 @@ namespace Iql.Tests.Tests.JavaScript
                 ;
             var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
             Assert.AreEqual(@"entity => ((entity || {})[""Piano""] || {})[""NumberOfKeys""]", js);
+        }
+
+        [TestMethod]
+        public void TestNestedLambdas()
+        {
+            //var iql1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
+            //    "p => p.Title == `Test` || p.Title == `Test2`");
+            //var iql2 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
+            //    "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == `Kettle`).length > 0))");
+            var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
+                "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))");
+            //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
+            //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
+        }
+
+        [TestMethod]
+        public async Task FilterCollectionJavaScriptString()
+        {
+            ConverterConfig.Init();
+            var js = new JavaScriptExpressionConverter().ConvertLambdaToJavaScript<Person>(
+                p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle")
+#if TypeScript
+            , null
+#endif
+                     );
+            Assert.AreEqual(@"entity => (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || ((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length > 0))",
+                js);
         }
 
         [TestMethod]
@@ -77,7 +103,7 @@ namespace Iql.Tests.Tests.JavaScript
                 IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)), 
                 new IqlLiteralExpression("a"));
             var js = db.GetJavaScriptWhereQuery(iqlExpression);
-            Assert.AreEqual(js.Expression, @"((q || {})[""Id""] == 'a')");
+            Assert.AreEqual(js.Expression, @"((entity || {})[""Id""] == 'a')");
         }
 
 #if !TypeScript

@@ -8,12 +8,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         where T : class
     {
         public override IqlParseResult Parse(
-            JavaScriptExpressionNodeParseContext<T, MemberJavaScriptExpressionNode>
-                context)
+            JavaScriptExpressionNodeParseContext<T> context,
+            MemberJavaScriptExpressionNode expression)
         {
-            var owner = context.Parse(context.Expression.Owner).Value;
-            var property = context.ParseWith(context.Expression.Property, owner).Value;
-            property.Parent = (IqlExpression)owner;
+            var owner = context.Parse(expression.Owner).Value;
+            var property = context.ParseWith(expression.Property, owner).Value;
+            property.Parent = owner;
             return new IqlParseResult(property);
         }
     }

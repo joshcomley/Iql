@@ -1,5 +1,6 @@
 ﻿#if !TypeScript
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.DotNet;
 using Iql.DotNet.Extensions;
@@ -107,6 +108,14 @@ namespace Iql.Tests.Tests.Serialization
             AssertCode(
                 c => !(c.Name != "Josh"),
                 @"entity => !((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != ""JOSH""))");
+        }
+
+        [TestMethod]
+        public void TestDeserializeCollectionFilterExpression()
+        {
+            AssertCode(
+                c => c.Sites.Any(s => s.Address == "some address"),
+                @"entity => entity.Sites.Any(entity1 => (((entity1.Address == null) ? entity1.Address : entity1.Address.ToUpper()) == ""SOME ADDRESS""))");
         }
 
         [TestMethod]

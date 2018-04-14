@@ -6,7 +6,8 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
     {
         public static void OperationNotSupported(IqlExpressionType type)
         {
-            throw new Exception("Operation not supported in JavaScript: " + Iql.ExpressionTypes.ResolveName(type));
+            var typeName = type.ToString();
+            throw new Exception("Operation not supported in JavaScript: " + typeName);
         }
     }
 }

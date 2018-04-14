@@ -10,8 +10,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             JavaScriptIqlParserInstance parser)
         {
             IqlExpression parent = null;
-            if (action.Parent != null && (action.Parent.Type != IqlExpressionType.RootReference ||
-                                          !string.IsNullOrWhiteSpace(parser.Adapter.RootVariableName)))
+            if (action.Parent != null)
             {
                 parent = action.Parent;
             }

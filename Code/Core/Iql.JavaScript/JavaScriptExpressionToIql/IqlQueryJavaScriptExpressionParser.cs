@@ -1,20 +1,17 @@
-using System;
-using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public abstract class IqlQueryJavaScriptExpressionParser<TEntity, TExpression>
-        : IJavaScriptExpressionParser<TEntity, TExpression, IqlParseResult, JavaScriptToIqlExpressionData, IqlExpression
-        >
+        : IJavaScriptExpressionParser<TEntity, TExpression, IqlParseResult, JavaScriptToIqlExpressionData, IqlExpression>
         where TExpression : JavaScriptExpressionNode where TEntity : class
     {
         public abstract IqlParseResult Parse(
-            JavaScriptExpressionNodeParseContext<TEntity, TExpression> context);
+            JavaScriptExpressionNodeParseContext<TEntity> context, TExpression expression);
 
-        public IExpressionParseResultBase Parse(IExpressionParserInstance instance)
+        IExpressionParseResultBase IExpressionParserBase.Parse(IExpressionParserInstance instance, JavaScriptExpressionNode expression)
         {
-            throw new NotImplementedException();
+            return Parse((JavaScriptExpressionNodeParseContext<TEntity>) instance, (TExpression) expression);
         }
     }
 }

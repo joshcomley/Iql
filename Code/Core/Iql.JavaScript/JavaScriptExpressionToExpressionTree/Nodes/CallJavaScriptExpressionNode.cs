@@ -9,6 +9,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes
         {
             Args = args;
             Callee = callee;
+            Callee.Parent = this;
+            for (var i = 0; i < args.Count; i++)
+            {
+                var arg = args[i];
+                arg.Parent = this;
+            }
         }
 
         public List<JavaScriptExpressionNode> Args { get; set; }

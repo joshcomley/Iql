@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Iql.JavaScript.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators;
@@ -17,11 +19,20 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         private readonly int _length;
         private readonly JavaScriptParserSettings _settings;
 
-        public JavaScriptExpressionStringToExpressionTreeParser(string expr, JavaScriptParserSettings settings = null)
+        public JavaScriptExpressionStringToExpressionTreeParser(string expr, 
+            JavaScriptParserSettings settings = null,
+            bool extractBody = true)
         {
-            var body = JavaScriptCodeExtractor.ExtractBody(expr);
+            if (extractBody)
+            {
+                var body = JavaScriptCodeExtractor.ExtractBody(expr);
+                _expr = body.Body;
+            }
+            else
+            {
+                _expr = expr;
+            }
             _settings = settings ?? new JavaScriptParserSettings();
-            _expr = body.Body;
             _length = _expr.Length;
         }
 
@@ -54,7 +65,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
                 // Expressions can be separated by semicolons, commas, or just inferred without object
                 // separators
-                if (chI == JavaScriptParserSettings.SemcolCode || chI == JavaScriptParserSettings.CommaCode)
+                if (chI == JavaScriptParserSettings.Semicolon || chI == JavaScriptParserSettings.Comma)
                 {
                     _index++; // ignore separators
                 }
@@ -97,7 +108,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         {
             var test = ReadBinaryExpression();
             ReadSpaces();
-            if (ExprICode(_index) == JavaScriptParserSettings.QumarkCode)
+            if (ExprICode(_index) == JavaScriptParserSettings.QuestionMark)
             {
                 // Ternary expression: test ? consequent : alternate
                 _index++;
@@ -164,6 +175,19 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 return left;
             }
 
+            if (biop == "=>")
+            {
+                var lambda = ReadLambda();
+                var property = left as PropertyIdentifierJavaScriptExpressionNode;
+                //lambda = $"function({property.Name}) {{ return {lambda}; }}";
+                var parser = new JavaScriptExpressionStringToExpressionTreeParser(
+                    lambda, 
+                    _settings,
+                    false);
+                var result = parser.Parse();
+                return new LambdaJavaScriptExpressionNode(property.Name, result);
+            }
+
             // Otherwise, we need to start a stack to properly place the binary operations in their
             // precedence structure
             var biopInfo = new BinaryOperationInfo {Value = biop, Prec = _settings.BinaryPrecedence(biop)};
@@ -219,6 +243,56 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             return node;
         }
 
+        private string ReadLambda()
+        {
+            ReadSpaces();
+            var depth = 0;
+            var lambdaEnd = new[]
+            {
+                JavaScriptParserSettings.CloseArray,
+                JavaScriptParserSettings.CloseParenthesis,
+                JavaScriptParserSettings.CloseScope,
+                JavaScriptParserSettings.Comma,
+            };
+            var depthIncrement = new[]
+            {
+                JavaScriptParserSettings.OpenArray,
+                JavaScriptParserSettings.OpenParenthesis,
+                JavaScriptParserSettings.OpenScope,
+            };
+            var depthDecrement = new[]
+            {
+                JavaScriptParserSettings.CloseArray,
+                JavaScriptParserSettings.CloseParenthesis,
+                JavaScriptParserSettings.CloseScope,
+            };
+            var str = "";
+            while (true)
+            {
+                if (_index >= _expr.Length)
+                {
+                    break;
+                }
+                var ch = _expr[_index];
+                if (depth == 0 && lambdaEnd.Contains(ch))
+                {
+                    break;
+                }
+                if (depthIncrement.Contains(ch))
+                {
+                    depth++;
+                }
+                else if (depthDecrement.Contains(ch))
+                {
+                    depth--;
+                }
+
+                str += ch;
+                _index++;
+            }
+            return str;
+        }
+
         // An individual part of a binary expression:
         // e.g. `foo.bar(baz)`, `1`, `"abc"`, `(a % 2)` (because it's in parenthesis)
         public JavaScriptExpressionNode ReadToken()
@@ -229,23 +303,23 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             ReadSpaces();
             ch = ExprICode(_index);
 
-            if (_settings.IsDecimalDigit(ch) || ch == JavaScriptParserSettings.PeriodCode)
+            if (_settings.IsDecimalDigit(ch) || ch == JavaScriptParserSettings.Period)
             {
                 // Char code 46 is a dot `.` which can start off a numeric literal
                 return ReadNumericLiteral();
             }
-            if (ch == JavaScriptParserSettings.SquoteCode || ch == JavaScriptParserSettings.DquoteCode || ch == JavaScriptParserSettings.XquoteCode)
+            if (ch == JavaScriptParserSettings.SingleQuote || ch == JavaScriptParserSettings.DoubleQuote || ch == JavaScriptParserSettings.DashQuote)
             {
                 // Single or double quotes
                 return ReadStringLiteral();
             }
-            if (_settings.IsIdentifierStart(ch) || ch == JavaScriptParserSettings.OparenCode)
+            if (_settings.IsIdentifierStart(ch) || ch == JavaScriptParserSettings.OpenParenthesis)
             {
                 // open parenthesis
                 // `foo`, `bar.baz`
                 return ReadVariable();
             }
-            if (ch == JavaScriptParserSettings.ObrackCode)
+            if (ch == JavaScriptParserSettings.OpenArray)
             {
                 return ReadArray();
             }
@@ -277,7 +351,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 number += ExprI(_index++);
             }
 
-            if (ExprICode(_index) == JavaScriptParserSettings.PeriodCode)
+            if (ExprICode(_index) == JavaScriptParserSettings.Period)
             {
                 // can start with a decimal marker
                 number += ExprI(_index++);
@@ -318,7 +392,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 JavaScriptParserSettings.ThrowError(_expr, "Variable names cannot start with a number (" +
                                                     number + ExprI(_index) + ')', _index);
             }
-            else if (chCode == JavaScriptParserSettings.PeriodCode)
+            else if (chCode == JavaScriptParserSettings.Period)
             {
                 JavaScriptParserSettings.ThrowError(_expr, "Unexpected period", _index);
             }
@@ -449,7 +523,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                     _index++;
                     break;
                 }
-                if (chI == JavaScriptParserSettings.CommaCode)
+                if (chI == JavaScriptParserSettings.Comma)
                 {
                     // between expressions
                     _index++;
@@ -480,7 +554,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             int chI;
             chI = ExprICode(_index);
 
-            var node = chI == JavaScriptParserSettings.OparenCode ? ReadGroup() : ReadIdentifier();
+            var node = chI == JavaScriptParserSettings.OpenParenthesis ? ReadGroup() : ReadIdentifier();
             ReadSpaces();
             return ReadSubCalls(node);
         }
@@ -488,13 +562,13 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         public JavaScriptExpressionNode ReadSubCalls(JavaScriptExpressionNode node)
         {
             var chI = ExprICode(_index);
-            while (chI == JavaScriptParserSettings.PeriodCode || chI == JavaScriptParserSettings.ObrackCode ||
-                   chI == JavaScriptParserSettings.OparenCode)
+            while (chI == JavaScriptParserSettings.Period || chI == JavaScriptParserSettings.OpenArray ||
+                   chI == JavaScriptParserSettings.OpenParenthesis)
             {
                 _index++;
                 switch (chI)
                 {
-                    case JavaScriptParserSettings.PeriodCode:
+                    case JavaScriptParserSettings.Period:
                         ReadSpaces();
                         node = new MemberJavaScriptExpressionNode(
                             false,
@@ -502,7 +576,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                             ReadIdentifier()
                         );
                         break;
-                    case JavaScriptParserSettings.ObrackCode:
+                    case JavaScriptParserSettings.OpenArray:
                         node = new MemberJavaScriptExpressionNode(
                             true,
                             node,
@@ -510,16 +584,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                         );
                         ReadSpaces();
                         chI = ExprICode(_index);
-                        if (chI != JavaScriptParserSettings.CbrackCode)
+                        if (chI != JavaScriptParserSettings.CloseArray)
                         {
                             JavaScriptParserSettings.ThrowError(_expr, "Unclosed [", _index);
                         }
                         _index++;
                         break;
-                    case JavaScriptParserSettings.OparenCode:
+                    case JavaScriptParserSettings.OpenParenthesis:
                         // A function call is being made; read all the arguments
                         node = new CallJavaScriptExpressionNode(
-                            ReadArguments(JavaScriptParserSettings.CparenCode),
+                            ReadArguments(JavaScriptParserSettings.CloseParenthesis),
                             node);
                         break;
                 }
@@ -539,7 +613,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             _index++;
             var node = ReadExpression();
             ReadSpaces();
-            if (ExprICode(_index) == JavaScriptParserSettings.CparenCode)
+            if (ExprICode(_index) == JavaScriptParserSettings.CloseParenthesis)
             {
                 _index++;
                 return node;
@@ -554,7 +628,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         public JavaScriptExpressionNode ReadArray()
         {
             _index++;
-            return new ArrayJavaScriptExpressionNode(ReadArguments(JavaScriptParserSettings.CbrackCode));
+            return new ArrayJavaScriptExpressionNode(ReadArguments(JavaScriptParserSettings.CloseArray));
         }
 
         private class BinaryOperationInfo

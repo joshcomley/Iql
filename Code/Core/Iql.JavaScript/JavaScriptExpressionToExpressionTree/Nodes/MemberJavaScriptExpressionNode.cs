@@ -11,6 +11,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes
             Computed = computed;
             Owner = owner;
             Property = property;
+            Owner.Parent = this;
+            Property.Parent = Owner;
         }
 
         public bool Computed { get; set; }

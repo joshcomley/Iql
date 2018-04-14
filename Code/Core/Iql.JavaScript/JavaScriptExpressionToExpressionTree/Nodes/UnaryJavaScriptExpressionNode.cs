@@ -17,6 +17,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes
             OperatorName = OperatorMap.OperatorTypes.ResolveName(Operator);
             Argument = argument;
             Prefix = prefix;
+            Argument.Parent = this;
         }
 
         public string OperatorName { get; set; }

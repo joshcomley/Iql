@@ -42,6 +42,10 @@
             .Map(() => IqlExpressionType.StringEndsWith)
             .Map(() => IqlExpressionType.StringStartsWith)
             .Map(() => IqlExpressionType.StringConcat)
-            .Map(() => IqlExpressionType.ToString);
+            .Map(() => IqlExpressionType.ToString)
+            .Map(() => IqlExpressionType.Now)
+            .Map(() => IqlExpressionType.Any)
+            .Map(() => IqlExpressionType.All)
+            ;
     }
 }

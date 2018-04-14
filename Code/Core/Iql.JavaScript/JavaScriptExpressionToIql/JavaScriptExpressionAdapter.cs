@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
+using Iql.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
@@ -26,7 +26,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public virtual IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData,
                 TExpressionResult>
-            ResolveParser<TExpression>(TExpression expression)
+            ResolveParserInternal<TExpression>(TExpression expression)
             where TExpression : JavaScriptExpressionNode
         {
             var fn = _parsers[expression.GetType().Name];
@@ -41,17 +41,22 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return javaScriptExpressionParser;
         }
 
+        IExpressionParserBase IJavaScriptExpressionAdapterBase.ResolveParser(JavaScriptExpressionNode expression)
+        {
+            return (IExpressionParserBase) GetType().GetMethod(nameof(ResolveParserInternal))
+                .InvokeGeneric(this, new object[]
+                    {
+                        expression
+                    },
+                    expression.GetType());
+        }
+
         public virtual void RegisterParser<TExpression>(
             Func<IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData, TExpressionResult>>
                 resolver)
             where TExpression : JavaScriptExpressionNode
         {
             _parsers[typeof(TExpression).Name] = resolver;
-        }
-
-        IExpressionParserBase IJavaScriptExpressionAdapterBase.ResolveParser<TExpression>(TExpression expression)
-        {
-            return ResolveParser(expression);
         }
     }
 }

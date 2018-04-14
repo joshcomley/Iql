@@ -69,6 +69,12 @@ namespace Iql.DotNet.DotNetExpressionToIql
             {
                 return null;
             }
+            if (exp.NodeType == ExpressionType.Lambda)
+            {
+                var parameterExpression = (exp as LambdaExpression).Parameters[0];
+                context.RootVariableNames.Add(parameterExpression.Name);
+                context.RootVariableTypes.Add(parameterExpression.Type);
+            }
             if (!context.ContainsRoot(exp))
             {
                 var value = exp.GetValue();
@@ -84,7 +90,14 @@ namespace Iql.DotNet.DotNetExpressionToIql
             {
                 throw Error.NotSupported("SRResources.UnsupportedExpressionNodeTypeWithName: {0}", exp.NodeType);
             }
-            return parser.Parse(exp, context);
+            var result = parser.Parse(exp, context);
+            if (exp.NodeType == ExpressionType.Lambda)
+            {
+                context.RootVariableNames.RemoveAt(context.RootVariableNames.Count - 1);
+                context.RootVariableTypes.RemoveAt(context.RootVariableTypes.Count - 1);
+            }
+
+            return result;
         }
     }
 }

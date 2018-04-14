@@ -14,6 +14,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes
             Operator = _operator; //OperatorMap.OperatorTypes.ResolveValue(_operator);
             Left = left;
             Right = right;
+            Left.Parent = this;
+            Right.Parent = this;
         }
 
         public JavaScriptExpressionNode Left { get; set; }

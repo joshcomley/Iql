@@ -10,7 +10,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         where T : class
     {
         public override IqlParseResult Parse(
-            JavaScriptExpressionNodeParseContext<T, LiteralJavaScriptExpressionNode> context)
+            JavaScriptExpressionNodeParseContext<T> context, LiteralJavaScriptExpressionNode expression)
         {
             IqlExpression exp = null;
             // If we have a parent, then:
@@ -18,10 +18,10 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             // .. if the value is a string, then we're indexing a property
             if (context.ObjectStack().Count > 0)
             {
-                var type = context.Expression.Value.GetType();
+                var type = expression.Value.GetType();
                 if (type.Name == "string")
                 {
-                    exp = new IqlPropertyExpression(context.Expression.Value.ToString());
+                    exp = new IqlPropertyExpression(expression.Value.ToString());
                 }
                 else if (type.Name == "number")
                 {
@@ -30,8 +30,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             }
             else
             {
-                exp = new IqlLiteralExpression(context.Expression.Value,
-                    context.Expression.Value?.GetType().ToIqlType() ?? IqlType.Unknown);
+                exp = new IqlLiteralExpression(expression.Value,
+                    expression.Value?.GetType().ToIqlType() ?? IqlType.Unknown);
             }
             return new IqlParseResult(exp);
         }

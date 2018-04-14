@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.DotNet.Extensions;
 
@@ -29,9 +30,11 @@ namespace Iql.DotNet.DotNetExpressionToIql
             return Parse(node, this);
         }
 
+        public List<Type> RootVariableTypes { get; } = new List<Type>();
+        public List<string> RootVariableNames { get; } = new List<string>();
         public bool ContainsRoot(Expression node)
         {
-            return node.ContainsRoot(RootType, RootVariableName);
+            return node.ContainsRoot(RootVariableTypes.Last(), RootVariableNames.Last());
         }
     }
 }

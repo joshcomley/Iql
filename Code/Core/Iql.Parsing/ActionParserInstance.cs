@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Iql.Parsing.Reduction;
 
 namespace Iql.Parsing
@@ -20,6 +21,39 @@ namespace Iql.Parsing
 
         public TQueryAdapter Adapter { get; set; }
         public Type RootEntityType { get; }
+        public Dictionary<string, string> _rootEntityNames { get; } = new Dictionary<string, string>();
+        private string _rootEntityName = null;
+        public string GetRootEntityName(IqlRootReferenceExpression rootReferenceExpression)
+        {
+            if (rootReferenceExpression == null)
+            {
+                return _rootEntityName;
+            }
+            var name = rootReferenceExpression.VariableName;
+            return GetRootEntityParameterName(name);
+        }
+
+        public string GetRootEntityParameterName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = "entity";
+            }
+
+            if (!_rootEntityNames.ContainsKey(name))
+            {
+                var index = _rootEntityNames.Count == 0 ? "" : (_rootEntityNames.Count + 1).ToString();
+                var mappedName = $"entity{index}";
+                _rootEntityNames.Add(name, mappedName);
+            }
+
+            if (_rootEntityName == null)
+            {
+                _rootEntityName = _rootEntityNames[name];
+            }
+
+            return _rootEntityNames[name];
+        }
 
         public abstract TParserOutput Parse(IqlExpression expression
 #if TypeScript
@@ -31,7 +65,8 @@ namespace Iql.Parsing
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
-            ){
+            )
+        {
             while (true)
             {
                 if (expression == null)
@@ -88,7 +123,7 @@ namespace Iql.Parsing
             }
         }
 
-    object IActionParserInstance.Parse(IqlExpression expression
+        object IActionParserInstance.Parse(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

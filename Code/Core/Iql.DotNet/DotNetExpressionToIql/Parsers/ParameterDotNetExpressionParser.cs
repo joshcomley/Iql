@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Iql.DotNet.DotNetExpressionToIql.Parsers
@@ -11,7 +12,7 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
 
         public override IqlExpression PerformParse(ParameterExpression node, DotNetExpressionParserContext context)
         {
-            if (node.Name == context.RootVariableName)
+            if (node.Name == context.RootVariableNames.Last())
             {
                 return new IqlRootReferenceExpression(node.Name, null);
             }

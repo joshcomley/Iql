@@ -7,6 +7,10 @@ namespace Iql
             type)
         {
             Value = value;
+            if (value != null && value.GetType().Name.Contains("Func"))
+            {
+                int a = 0;
+            }
         }
 
         public IqlLiteralExpression() : this(null)

@@ -16,8 +16,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 resolver)
             where TExpression : JavaScriptExpressionNode;
 
-        new IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData, TExpressionResult>
-            ResolveParser<TExpression>(TExpression expression)
+        IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData, TExpressionResult>
+            ResolveParserInternal<TExpression>(TExpression expression)
             where TExpression : JavaScriptExpressionNode;
 
         TExpressionData NewData();

@@ -1,4 +1,12 @@
+using System;
+using System.Collections;
+using System.Linq;
+using Iql.Parsing.Reduction;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Data.Relationships;
+using Iql.Queryable.Expressions;
+using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.QueryApplicator.Applicators
@@ -19,5 +27,25 @@ namespace Iql.Queryable.QueryApplicator.Applicators
         // }
         public abstract void Apply<TEntity>(IQueryOperationContext<TOperation, TEntity, TQueryResult, TQueryAdapter> context)
             where TEntity : class;
+
+        public void WithRelationships<TEntity>(IQueryOperationContext<TOperation, TEntity, TQueryResult, TQueryAdapter> context,
+            IqlExpression expression,
+            Action<IqlPropertyPath, IRelationship> expand)
+            where TEntity : class
+        {
+            var reducer = new IqlReducer();
+            var all = reducer.Traverse(expression);
+            var anyAlls = all.Where(_ => _ is IqlAnyAllExpression).ToArray();
+            for (var i = 0; i < anyAlls.Length; i++)
+            {
+                var anyAll = anyAlls[i];
+                var rootEntityConfiguration = context.DataContext.EntityConfigurationContext.GetEntityByType(context.Queryable.ItemType);
+                var iqlPropertyExpression = anyAll.Parent as IqlPropertyExpression;
+                var path = IqlPropertyPath.FromPropertyExpression(
+                    rootEntityConfiguration,
+                    iqlPropertyExpression);
+                expand(path, path.Property.Relationship.Relationship);
+            }
+        }
     }
 }

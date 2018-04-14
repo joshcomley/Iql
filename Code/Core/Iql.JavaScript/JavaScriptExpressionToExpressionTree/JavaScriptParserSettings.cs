@@ -8,17 +8,19 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         // This is the full set of types that object JSEP node can be.
         // Store them here to save space when minified
 
-        public const int PeriodCode = 46; // '.'
-        public const int CommaCode = 44; // ','
-        public const int SquoteCode = 39; // single quote
-        public const int XquoteCode = 96; // ` quote
-        public const int DquoteCode = 34; // double quotes
-        public const int OparenCode = 40; // (
-        public const int CparenCode = 41; // )
-        public const int ObrackCode = 91; // [
-        public const int CbrackCode = 93; // ]
-        public const int QumarkCode = 63; // ?
-        public const int SemcolCode = 59; // ;
+        public const int Period = 46; // '.'
+        public const int Comma = 44; // ','
+        public const int SingleQuote = 39; // single quote
+        public const int DashQuote = 96; // ` quote
+        public const int DoubleQuote = 34; // double quotes
+        public const int OpenParenthesis = 40; // (
+        public const int CloseParenthesis = 41; // )
+        public const int OpenScope = 123; // {
+        public const int CloseScope = 125; // }
+        public const int OpenArray = 91; // [
+        public const int CloseArray = 93; // ]
+        public const int QuestionMark = 63; // ?
+        public const int Semicolon = 59; // ;
 
         public const int ColonCode = 58; // :
 
@@ -74,7 +76,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 {"-", 9},
                 {"*", 10},
                 {"/", 10},
-                {"%", 10}
+                {"%", 10},
+                {"=>", 11}
             };
             MaxUnopLen = GetMaxKeyLen(UnaryOps);
             MaxBinopLen = GetMaxKeyLen(BinaryOps);

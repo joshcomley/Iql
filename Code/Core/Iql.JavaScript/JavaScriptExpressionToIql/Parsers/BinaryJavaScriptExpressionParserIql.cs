@@ -10,12 +10,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         where T : class
     {
         public override IqlParseResult Parse(
-            JavaScriptExpressionNodeParseContext<T, BinaryJavaScriptExpressionNode> context)
+            JavaScriptExpressionNodeParseContext<T> context, BinaryJavaScriptExpressionNode expression)
         {
             var left = context.ParseLeft().Value;
+            if (left.Parent is IqlAnyAllExpression)
+            {
+                return new IqlParseResult(left.Parent);
+            }
             var right = context.ParseRight().Value;
             IqlExpression exp = null;
-            switch (context.Expression.Operator)
+            switch (expression.Operator)
             {
                 case OperatorType.And:
                     exp = new IqlAndExpression(left, right);
@@ -74,9 +78,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             if (exp == null)
             {
                 throw new Exception("No parser found for JavaScript binary expression operator: " +
-                                    OperatorMap.OperatorTypes.ResolveName(context.Expression.Operator) + " (" +
+                                    OperatorMap.OperatorTypes.ResolveName(expression.Operator) + " (" +
                                     OperatorMap.OperatorTypes.ResolveDescription(
-                                        $"{context.Expression.Operator})"));
+                                        $"{expression.Operator})"));
             }
             return new IqlParseResult(
                 exp

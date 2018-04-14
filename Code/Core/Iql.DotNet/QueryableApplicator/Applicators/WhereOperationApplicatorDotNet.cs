@@ -24,27 +24,19 @@ namespace Iql.DotNet.QueryableApplicator.Applicators
                 typeof(TEntity));
             var method = lambda.Compile();
             RelationshipMatches matches = null;
-            var reducer = new IqlReducer();
-            var all = reducer.Traverse(context.Operation.Expression);
-            var anyAlls = all.Where(_ => _ is IqlAnyAllExpression).ToArray();
-            for (var i = 0; i < anyAlls.Length; i++)
-            {
-                var anyAll = anyAlls[i];
-                var rootEntityConfiguration = context.DataContext.EntityConfigurationContext.GetEntityByType(context.Queryable.ItemType);
-                var iqlPropertyExpression = anyAll.Parent as IqlPropertyExpression;
-                var path = IqlPropertyPath.FromPropertyExpression(
-                    rootEntityConfiguration,
-                    iqlPropertyExpression);
-                var rootResult = context.Data.GetRoot();
-                var relationshipExpander = rootResult
-                    .RelationshipExpander;
-                matches = relationshipExpander.FindMatches(
-                    context.Data.GetRoot().DataSetByType(path.Property.Relationship.OtherEnd.Type),
-                    (IList)typedList,
-                    path.Property.Relationship.Relationship,
-                    true);
-            }
-            var result = typedList.Where((Func<TEntity, bool>) method).ToList();
+            var relationshipExpander = context.Data.GetRoot().RelationshipExpander;
+            WithRelationships(
+                context,
+                context.Operation.Expression,
+                (path, relationship) =>
+                {
+                    matches = relationshipExpander.FindMatches(
+                        context.Data.GetRoot().DataSetByType(path.Property.Relationship.OtherEnd.Type),
+                        (IList)typedList,
+                        path.Property.Relationship.Relationship,
+                        true);
+                });
+            var result = typedList.Where((Func<TEntity, bool>)method).ToList();
             if (matches != null)
             {
                 matches.UnassignRelationships();

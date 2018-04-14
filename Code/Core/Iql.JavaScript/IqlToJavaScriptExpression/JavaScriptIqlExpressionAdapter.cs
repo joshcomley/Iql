@@ -5,9 +5,8 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
 {
     public class JavaScriptIqlExpressionAdapter : IqlExpressionAdapter<JavaScriptIqlData>
     {
-        public JavaScriptIqlExpressionAdapter(string rootVariableName)
+        public JavaScriptIqlExpressionAdapter()
         {
-            RootVariableName = rootVariableName;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlExpression), () => new JavaScriptStringSourceActionParser());
             Registry.Register(typeof(IqlNotExpression), () => new JavaScriptNotActionParser());
@@ -23,9 +22,8 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
                 () => new JavaScriptStringLengthParser());
             Registry.Register(typeof(IqlUnaryExpression), () => new JavaScriptUnaryActionParser());
             Registry.Register(typeof(IqlBinaryExpression), () => new JavaScriptBinaryActionParser());
+            Registry.Register(typeof(IqlAnyAllExpression), () => new JavaScriptAnyAllActionParser());
         }
-
-        public string RootVariableName { get; set; }
 
         public override JavaScriptIqlData NewData()
         {

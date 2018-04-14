@@ -42,11 +42,7 @@ namespace Iql.JavaScript.QueryableApplicator
             EntityConfigurationBuilder entityConfigurationContext,
             string rootVariableName = null)
         {
-            var adapter = new JavaScriptIqlExpressionAdapter(
-                //"___" + 
-                rootVariableName ?? "q"
-            // + new Date().getTime()
-            );
+            var adapter = new JavaScriptIqlExpressionAdapter();
             var parser = new JavaScriptIqlParserInstance(
                 adapter);
             parser.IsFilter = isFilter;
@@ -55,7 +51,7 @@ namespace Iql.JavaScript.QueryableApplicator
 , operation.EvaluateContext
 #endif
             );
-            var expression = new JavaScriptExpression(adapter.RootVariableName,
+            var expression = new JavaScriptExpression(parser.GetRootEntityName(null),
                 javaScriptOutput.ToCodeString());
             return expression;
         }
