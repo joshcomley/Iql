@@ -10,9 +10,12 @@ using Iql.DotNet.Serialization;
 #endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.JavaScript.QueryableApplicator;
+using Iql.OData.Json;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Tests.Context;
+using Iql.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.JavaScript
@@ -66,13 +69,28 @@ namespace Iql.Tests.Tests.JavaScript
         }
 
         [TestMethod]
+        public async Task FilterChildCollectionCount()
+        {
+            var db = Db;
+            var js = @"c => c.Types.length > 2";
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
+                js).Expression;
+            Assert.IsTrue(iql is IqlIsGreaterThanExpression);
+            Assert.IsTrue((iql as IqlIsGreaterThanExpression).Left is IqlCountExpression);
+        }
+
+        [TestMethod]
         public async Task FilterCollectionJavaScriptString()
         {
             ConverterConfig.Init();
+            var db = Db;
             var jsString =
                 @"p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == `Kettle`).length > 0))";
             //var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
             //    jsString);
+            //var iqlJson = JsonConvert.SerializeObject(iql.Expression).CompressJson();
+            //Assert.AreEqual(@"{""Left"":{""Left"":{""PropertyName"":""Title"",""Type"":29,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""Test"",""InferredReturnType"":4,""Type"":25,""ReturnType"":4,""Parent"":null},""Type"":9,""ReturnType"":1,""Parent"":null},""Right"":{""Left"":{""RootVariableName"":""t"",""Value"":{""Left"":{""Left"":{""PropertyName"":""TypeId"",""Type"":29,""ReturnType"":5,""Parent"":{""Value"":null,""VariableName"":""t"",""Type"":27,""ReturnType"":1,""Parent"":{""PropertyName"":""Types"",""Type"":29,""ReturnType"":2,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}}}},""Right"":{""Value"":4.0,""InferredReturnType"":6,""Type"":25,""ReturnType"":6,""Parent"":null},""Type"":9,""ReturnType"":1,""Parent"":null},""Right"":{""Left"":{""PropertyName"":""Description"",""Type"":29,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""t"",""Type"":27,""ReturnType"":1,""Parent"":{""PropertyName"":""Types"",""Type"":29,""ReturnType"":2,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}}}},""Right"":{""Value"":""Kettle"",""InferredReturnType"":4,""Type"":25,""ReturnType"":4,""Parent"":null},""Type"":9,""ReturnType"":1,""Parent"":null},""Type"":3,""ReturnType"":1,""Parent"":null},""Type"":45,""ReturnType"":5,""Parent"":{""PropertyName"":""Types"",""Type"":29,""ReturnType"":2,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}}},""Right"":{""Value"":0.0,""InferredReturnType"":6,""Type"":25,""ReturnType"":6,""Parent"":null},""Type"":4,""ReturnType"":1,""Parent"":null},""Type"":3,""ReturnType"":1,""Parent"":null}",
+            //    iqlJson);
             //var xml = IqlSerializer.SerializeToXml(iql.Expression);
             var js1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
                 jsString);

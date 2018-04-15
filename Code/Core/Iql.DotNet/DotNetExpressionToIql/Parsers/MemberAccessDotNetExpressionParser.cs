@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
@@ -18,6 +19,15 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
             {
                 return new IqlStringLengthExpression(
                     context.ToIqlExpression(node.Expression) as IqlReferenceExpression);
+            }
+
+            if (node.Expression.Type.IsEnumerableType() &&
+                (node.Member.Name == nameof(Enumerable.Count) || node.Member.Name == nameof(Enumerable.LongCount)
+                                                              || node.Member.Name == nameof(Array.Length) ||
+                                                              node.Member.Name == nameof(Array.LongLength)))
+            {
+                var path = context.ToIqlExpression(node.Expression) as IqlReferenceExpression;
+                return new IqlCountExpression(path.GetRootEntity().VariableName, path, null);
             }
             if (node.Expression.Type != typeof(T))
             {

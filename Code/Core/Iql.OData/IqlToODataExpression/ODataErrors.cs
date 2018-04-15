@@ -6,7 +6,8 @@ namespace Iql.OData.IqlToODataExpression
     {
         public static void OperationNotSupported(IqlExpressionType type)
         {
-            throw new Exception("Operation not supported in OData: " + Iql.ExpressionTypes.ResolveName(type));
+            var typeName = type.ToString();
+            throw new Exception("Operation not supported in OData: " + typeName);
         }
     }
 }

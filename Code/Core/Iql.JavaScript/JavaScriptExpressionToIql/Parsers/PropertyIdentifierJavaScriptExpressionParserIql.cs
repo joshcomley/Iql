@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using Iql.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Expressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
 {
@@ -45,8 +47,33 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         // var x = p[instance.expression.name].constructor;
                         break;
                 }
+
+                if (propertyType == null)
+                {
+                    var entityConfig = EntityConfigurationBuilder.FindConfigurationForEntityType(typeof(T));
+                    if (entityConfig != null && parent is IqlPropertyExpression)
+                    {
+                        var path = IqlPropertyPath.FromPropertyExpression(entityConfig, parent as IqlPropertyExpression);
+                        if (path != null && path.Property != null && path.Property.TypeDefinition != null)
+                        {
+                            propertyType = path.Property.TypeDefinition.Type;
+                            if (path.Property.TypeDefinition.IsCollection)
+                            {
+                                propertyType = typeof(IEnumerable);
+                            }
+                        }
+                    }
+                }
+
+                if (propertyType != null && propertyType.IsEnumerableType() && expression.Name == "length")
+                {
+                    exp = new IqlCountExpression("", parent as IqlReferenceExpression, null);
+                }
+                else
+                {
+                    exp = new IqlPropertyExpression(expression.Name, null, propertyType.ToIqlType());
+                }
                 //instance.entityConfigurationContext.entity()
-                exp = new IqlPropertyExpression(expression.Name, null, propertyType.ToIqlType());
             }
             else
             {

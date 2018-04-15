@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Iql.OData;
 using Iql.OData.Extensions;
 using Iql.Queryable.Data.Queryable;
@@ -65,6 +67,26 @@ namespace Iql.Tests.Tests.OData
             uri = query.ResolveODataUri();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name&$expand=Type",
+                uri);
+        }
+
+        [TestMethod]
+        public void TestFilteringOnFilteredNestedCollectionResultCount()
+        {
+            var query = Db.People.Where(c => c.Types.Count(t => t.TypeId == 2) > 2);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=(Types/$count(TypeId eq 2) gt 2)",
+                uri);
+        }
+
+        [TestMethod]
+        public void TestFilteringOnNestedCollectionCount()
+        {
+            var query = Db.People.Where(c => c.Types.Count > 2);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=(Types/$count gt 2)",
                 uri);
         }
 

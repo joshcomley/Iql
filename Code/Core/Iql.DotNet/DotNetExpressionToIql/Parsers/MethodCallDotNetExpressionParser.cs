@@ -58,6 +58,12 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                             new IqlLiteralExpression("", IqlType.String)
                         )
                     );
+                case nameof(Enumerable.Count):
+                    return new IqlCountExpression(
+                        (node.Arguments[1] as LambdaExpression).Parameters[0].Name,
+                        context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
+                        context.Parse(node.Arguments[1], context)
+                    );
                 case nameof(Enumerable.Any):
                     return new IqlIsGreaterThanExpression(
                         new IqlCountExpression(

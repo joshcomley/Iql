@@ -61,7 +61,11 @@ namespace Iql.Parsing.Reduction
 
         public IqlExpression ReduceStaticContent(IqlExpression expression)
         {
-            if (expression != null && !expression.ContainsRootEntity())
+            if (expression == null)
+            {
+                return null;
+            }
+            if (!expression.ContainsRootEntity())
             {
                 // We need this initial cast to object in TypeScript because for some reason
                 // TypeScript won't let us cast an interface to another object

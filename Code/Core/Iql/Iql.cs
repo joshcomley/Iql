@@ -46,6 +46,7 @@
             .Map(() => IqlExpressionType.Now)
             .Map(() => IqlExpressionType.Any)
             .Map(() => IqlExpressionType.All)
+            .Map(() => IqlExpressionType.Count)
             ;
     }
 }

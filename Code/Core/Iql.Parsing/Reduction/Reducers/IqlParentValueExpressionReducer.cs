@@ -8,6 +8,11 @@ namespace Iql.Parsing.Reduction.Reducers
             base.Traverse(expression, reducer);
         }
 
+        public override IIqlLiteralExpression Evaluate(IqlParentValueExpression expression, IqlReducer reducer)
+        {
+            return null;
+        }
+
         public override IqlExpression ReduceStaticContent(IqlParentValueExpression expression, IqlReducer reducer)
         {
             expression.Parent = reducer.ReduceStaticContent(expression.Parent);

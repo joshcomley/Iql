@@ -32,6 +32,12 @@ namespace Iql.DotNet.DotNetExpressionToIql
 
         public List<Type> RootVariableTypes { get; } = new List<Type>();
         public List<string> RootVariableNames { get; } = new List<string>();
+
+        private int _throwawayRootVariableIndex;
+        public string GetThrowawayRootVariableName()
+        {
+            return $"_{_throwawayRootVariableIndex++}";
+        }
         public bool ContainsRoot(Expression node)
         {
             return node.ContainsRoot(RootVariableTypes.Last(), RootVariableNames.Last());
