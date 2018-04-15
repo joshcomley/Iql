@@ -21,7 +21,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             {
                 Type propertyType = null;
                 var parent = context.Parent() as IqlExpression;
-                IEntityConfiguration entityConfiguration = null;
                 PropertyInfo property;
                 switch (parent.Type)
                 {
@@ -70,6 +69,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         variableName,
                         value?.ToString(),
                         rootEntityMatch.Type);
+                    exp.Parent = rootEntityMatch.Path;
                 }
                 else
                 {

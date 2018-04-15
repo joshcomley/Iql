@@ -5,6 +5,9 @@ using Iql.Parsing;
 #endif
 using System.Linq;
 using System.Threading.Tasks;
+#if !TypeScript
+using Iql.DotNet.Serialization;
+#endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.JavaScript.QueryableApplicator;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
@@ -51,24 +54,39 @@ namespace Iql.Tests.Tests.JavaScript
             //    "p => p.Title == `Test` || p.Title == `Test2`");
             //var iql2 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
             //    "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == `Kettle`).length > 0))");
+            var configurationContext = Db.EntityConfigurationContext;
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
                 "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))");
+            Assert.AreEqual(
+                @"function(entity) { return (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == (((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()))); }).length) > 0)); }",
+                js);
             //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
             //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
+            // var xml = IqlSerializer.SerializeToXml(iql2.Expression);
         }
 
         [TestMethod]
         public async Task FilterCollectionJavaScriptString()
         {
             ConverterConfig.Init();
-            var js = new JavaScriptExpressionConverter().ConvertLambdaToJavaScript<Person>(
-                p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle")
-#if TypeScript
-            , null
-#endif
-                     );
-            Assert.AreEqual(@"entity => (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || ((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length > 0))",
-                js);
+            var jsString =
+                @"p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == `Kettle`).length > 0))";
+            //var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
+            //    jsString);
+            //var xml = IqlSerializer.SerializeToXml(iql.Expression);
+            var js1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
+                jsString);
+
+//            var js = new JavaScriptExpressionConverter().ConvertLambdaToJavaScript<Person>(
+//                p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle")
+//#if TypeScript
+//            , null
+//#endif
+//                     );
+            Assert.AreEqual(@"function(entity) { return (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length) > 0)); }",
+                js1);
+            //Assert.AreEqual(@"entity => (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length) > 0))",
+            //    js);
         }
 
         [TestMethod]

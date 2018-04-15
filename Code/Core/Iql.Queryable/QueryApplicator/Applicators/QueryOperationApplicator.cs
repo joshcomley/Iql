@@ -35,7 +35,7 @@ namespace Iql.Queryable.QueryApplicator.Applicators
         {
             var reducer = new IqlReducer();
             var all = reducer.Traverse(expression);
-            var anyAlls = all.Where(_ => _ is IqlAnyAllExpression).ToArray();
+            var anyAlls = all.Where(_ => _ is IqlAnyAllExpression || _ is IqlCountExpression).ToArray();
             for (var i = 0; i < anyAlls.Length; i++)
             {
                 var anyAll = anyAlls[i];

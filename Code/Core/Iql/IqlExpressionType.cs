@@ -47,6 +47,7 @@ namespace Iql
         Now,
         Any,
         All,
+        Count
 //        Lambda
     }
 }

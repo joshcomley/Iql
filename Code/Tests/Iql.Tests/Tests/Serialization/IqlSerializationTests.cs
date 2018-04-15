@@ -115,7 +115,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => c.Sites.Any(s => s.Address == "some address"),
-                @"entity => entity.Sites.Any(entity1 => (((entity1.Address == null) ? entity1.Address : entity1.Address.ToUpper()) == ""SOME ADDRESS""))");
+                @"entity => (entity.Sites.LongCount(entity1 => (((entity1.Address == null) ? entity1.Address : entity1.Address.ToUpper()) == ""SOME ADDRESS"")) > 0)");
         }
 
         [TestMethod]

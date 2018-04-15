@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
@@ -98,22 +101,43 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                             if (property.Name == "length")
                             {
                                 if (binary.Operator == OperatorType.GreaterThan &&
-                                    binary.Right is LiteralJavaScriptExpressionNode &&
-                                    Equals(0, Convert.ToInt32((binary.Right as LiteralJavaScriptExpressionNode).Value)) &&
                                     expression.Args.Count == 1 &&
                                     expression.Args[0] is LambdaJavaScriptExpressionNode)
                                 {
                                     var calleeIql = context.Parse((expression.Callee as MemberJavaScriptExpressionNode).Owner);
+                                    var currentRootEntityType = context.RootEntities.Last().Type;
+                                    Type newRootEntityType = null;
+                                    if (currentRootEntityType != null && calleeIql.Value is IqlPropertyExpression)
+                                    {
+                                        var currentRootEntityConfiguration = 
+                                            EntityConfigurationBuilder
+                                            .FindConfigurationForEntityType(currentRootEntityType);
+                                        if (currentRootEntityConfiguration != null)
+                                        {
+                                            var path = IqlPropertyPath.FromPropertyExpression(
+                                                currentRootEntityConfiguration,
+                                                calleeIql.Value as IqlPropertyExpression);
+                                            if (path != null)
+                                            {
+                                                newRootEntityType = path.Property.TypeDefinition.ElementType;
+                                            }
+                                        }
+                                    }
                                     var lambdaJavaScriptExpressionNode = expression.Args[0] as LambdaJavaScriptExpressionNode;
                                     var lambdaFunc = context.ParseLambda(
                                         lambdaJavaScriptExpressionNode.Expression,
-                                        new RootEntity(lambdaJavaScriptExpressionNode.ParameterName, null)).Value;
-                                    var anyExpression = new IqlAnyExpression(
-                                        lambdaJavaScriptExpressionNode.ParameterName,
+                                        new RootEntity(
+                                            lambdaJavaScriptExpressionNode.ParameterName, 
+                                            newRootEntityType,
+                                            calleeIql.Value as IqlPropertyExpression)).Value;
+                                    var countExpression = new IqlCountExpression(lambdaJavaScriptExpressionNode.ParameterName,
                                         null,
                                         lambdaFunc);
-                                    anyExpression.Parent = calleeIql.Value;
-                                    method = anyExpression;
+                                    //lambdaFunc.Parent = countExpression;
+                                    countExpression.Parent = calleeIql.Value;
+                                    method = new IqlIsGreaterThanExpression(
+                                        countExpression,
+                                        context.Parse(binary.Right).Value);
                                     break;
                                 }
                                 else if (

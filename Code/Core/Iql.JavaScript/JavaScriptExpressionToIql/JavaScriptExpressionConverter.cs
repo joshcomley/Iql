@@ -3,11 +3,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
+using Iql.JavaScript.IqlToJavaScriptExpression;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.QueryableApplicator;
+using Iql.Parsing.Reduction;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
@@ -19,6 +22,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
+        public IEntityConfigurationBuilder ConfigurationBuilder { get; set; }
+
+        public JavaScriptExpressionConverter(IEntityConfigurationBuilder entityConfigurationBuilder = null)
+        {
+            ConfigurationBuilder = entityConfigurationBuilder;
+        }
         public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>
         (
             QueryExpression filter
@@ -99,7 +108,35 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 var result = ctx.ParseJavaScriptExpressionTree(expressionTree, instance);
                 return result.ResolveFinalResult() as IqlExpression;
             };
+
             expressionResult.Expression = expression2(null);
+            
+            // Now try to correct any property types
+            var entityConfigurationBuilder = ConfigurationBuilder ??
+                               EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(typeof(TEntity));
+            if (entityConfigurationBuilder != null)
+            {
+                var entityConfig = entityConfigurationBuilder.EntityType<TEntity>();
+                var reducer = new IqlReducer();
+                var flattened = reducer.Traverse(expressionResult.Expression);
+                for (var i = 0; i < flattened.Length; i++)
+                {
+                    var expression = flattened[i];
+                    if (expression is IqlPropertyExpression)
+                    {
+                        var propertyExpression = expression as IqlPropertyExpression;
+                        if (propertyExpression.ContainsRootEntity())
+                        {
+                            var path = IqlPropertyPath.FromPropertyExpression(entityConfig, propertyExpression);
+                            if (path != null && path.Property != null && path.Property.TypeDefinition != null)
+                            {
+                                propertyExpression.ReturnType = path.Property.TypeDefinition.Type.ToIqlType();
+                            }
+                        }
+                    }
+                }
+            }
+
             return expressionResult;
         }
 
@@ -213,17 +250,21 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return $"{javascript.RootVariableName} => {javascript.Expression}";
         }
 
-        private static JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
+        private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
         )
         {
-            var javascript = JavaScriptIqlParser.GetJavaScript(expression
+            var adapter = new JavaScriptIqlExpressionAdapter(ConfigurationBuilder);
+            var parser = new JavaScriptIqlParserInstance(adapter);
+            parser.IsFilter = true;
+            var javascriptExpression = parser.Parse(expression
 #if TypeScript
-            , evaluateContext
+                , evaluateContext
 #endif
             );
+            var javascript = new JavaScriptExpression("entity", javascriptExpression.ToCodeString());
             return javascript;
         }
     }

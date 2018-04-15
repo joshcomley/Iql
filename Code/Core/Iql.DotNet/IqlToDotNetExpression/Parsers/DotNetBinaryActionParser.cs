@@ -72,6 +72,30 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                 left = Expression.Convert(left, right.Type);
             }
 
+            void EnsureCompatibleType(Type from, Type to)
+            {
+                if (left.Type == to && right.Type == from)
+                {
+                    right = Expression.Convert(right, left.Type);
+                }
+                else if (right.Type == to && left.Type == from)
+                {
+                    left = Expression.Convert(left, right.Type);
+                }
+            }
+
+            EnsureCompatibleType(typeof(uint), typeof(int));
+            EnsureCompatibleType(typeof(ulong), typeof(long));
+            EnsureCompatibleType(typeof(ushort), typeof(short));
+
+            EnsureCompatibleType(typeof(int), typeof(long));
+            EnsureCompatibleType(typeof(short), typeof(int));
+            EnsureCompatibleType(typeof(short), typeof(long));
+
+            EnsureCompatibleType(typeof(float), typeof(double));
+            EnsureCompatibleType(typeof(decimal), typeof(float));
+            EnsureCompatibleType(typeof(decimal), typeof(double));
+
             return new IqlFinalExpression<Expression>(
                 Expression.MakeBinary(@operator, left, right, false, method));
         }

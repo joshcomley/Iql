@@ -157,11 +157,13 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
     {
         public string Name { get; set; }
         public Type Type { get; set; }
+        public IqlPropertyExpression Path { get; }
 
-        public RootEntity(string name, Type type)
+        public RootEntity(string name, Type type, IqlPropertyExpression path = null)
         {
             Name = name;
             Type = type;
+            Path = path;
         }
     }
 }

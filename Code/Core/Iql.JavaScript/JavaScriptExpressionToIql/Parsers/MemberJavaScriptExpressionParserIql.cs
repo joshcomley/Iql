@@ -12,6 +12,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             MemberJavaScriptExpressionNode expression)
         {
             var owner = context.Parse(expression.Owner).Value;
+            if (owner is IqlBinaryExpression)
+            {
+                var binary = owner as IqlBinaryExpression;
+                if (binary.Left is IqlCountExpression || binary.Right is IqlCountExpression)
+                {
+                    var iqlParseResult = new IqlParseResult(owner);
+                    iqlParseResult.ReplaceParent = true;
+                    return iqlParseResult;
+                }
+            }
             var property = context.ParseWith(expression.Property, owner).Value;
             property.Parent = owner;
             return new IqlParseResult(property);

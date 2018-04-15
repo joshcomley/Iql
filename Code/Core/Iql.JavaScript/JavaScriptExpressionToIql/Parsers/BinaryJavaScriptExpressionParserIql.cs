@@ -12,7 +12,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
         public override IqlParseResult Parse(
             JavaScriptExpressionNodeParseContext<T> context, BinaryJavaScriptExpressionNode expression)
         {
-            var left = context.ParseLeft().Value;
+            var leftResult = context.ParseLeft();
+            if (leftResult.ReplaceParent)
+            {
+                return new IqlParseResult(leftResult.Value);
+            }
+            var left = leftResult.Value;
             if (left.Parent is IqlAnyAllExpression)
             {
                 return new IqlParseResult(left.Parent);

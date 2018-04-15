@@ -1,8 +1,13 @@
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Expressions;
+
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptBinaryActionParser : JavaScriptActionParserBase<IqlBinaryExpression>
     {
-        public static bool IsString(IqlExpression expression)
+        public static bool IsString(
+            IqlExpression expression,
+            IEntityConfigurationBuilder builder)
         {
             var literalExpression = expression as IqlLiteralExpression;
             if (literalExpression != null)
@@ -22,8 +27,8 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             if (action.Type == IqlExpressionType.IsEqualTo || action.Type == IqlExpressionType.IsNotEqualTo)
             {
                 isStringComparison =
-                    IsString(action.Left) ||
-                    IsString(action.Right);
+                    IsString(action.Left, parser.Adapter.EntityConfigurationBuilder) ||
+                    IsString(action.Right, parser.Adapter.EntityConfigurationBuilder);
                 // We don't need to coalesce to upper case or null if one side is empty
                 if (isStringComparison)
                 {

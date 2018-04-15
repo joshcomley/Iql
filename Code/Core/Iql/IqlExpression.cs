@@ -26,6 +26,15 @@ namespace Iql
             return Parent != null && Parent.ContainsRootEntity();
         }
 
+        public virtual IqlRootReferenceExpression GetRootEntity()
+        {
+            if (this is IqlRootReferenceExpression)
+            {
+                return this as IqlRootReferenceExpression;
+            }
+            return Parent?.GetRootEntity();
+        }
+
         public static IEnumerable<T> FindAll<T>()
             where T : IqlExpression
         {

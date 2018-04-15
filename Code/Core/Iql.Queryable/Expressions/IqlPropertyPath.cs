@@ -102,10 +102,25 @@ namespace Iql.Queryable.Expressions
             var list = new List<IqlPropertyExpression>();
             list.Add(propertyExpression);
             var parent = propertyExpression.Parent;
-            while (parent is IqlPropertyExpression)
+            while (parent is IqlPropertyExpression || parent is IqlRootReferenceExpression)
             {
-                list.Add(parent as IqlPropertyExpression);
-                parent = parent.Parent;
+                if (parent is IqlRootReferenceExpression)
+                {
+                    var rootReference = parent as IqlRootReferenceExpression;
+                    if (rootReference.Parent != null)
+                    {
+                        parent = rootReference.Parent;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    list.Add(parent as IqlPropertyExpression);
+                    parent = parent.Parent;
+                }
             }
 
             var entityConfig = entityConfigurationContext;

@@ -786,6 +786,8 @@ namespace Iql.DotNet.Expressions
                 case ExpressionType.OnesComplement:
                     Out("~(");
                     break;
+                case ExpressionType.Convert:
+                    break;
                 default:
                     Out(node.NodeType.ToString());
                     Out("(");
@@ -802,6 +804,7 @@ namespace Iql.DotNet.Expressions
                 case ExpressionType.PreDecrementAssign:
                 case ExpressionType.PreIncrementAssign:
                 case ExpressionType.Quote:
+                case ExpressionType.Convert:
                     break;
                 case ExpressionType.TypeAs:
                     Out(" As ");

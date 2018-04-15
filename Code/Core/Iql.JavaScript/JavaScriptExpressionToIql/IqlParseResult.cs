@@ -8,6 +8,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             Value = value;
         }
 
+        public bool ReplaceParent { get; set; }
         public IqlExpression Value { get; set; }
 
         public object ResolveFinalResult()
