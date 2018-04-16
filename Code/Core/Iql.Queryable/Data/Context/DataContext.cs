@@ -487,7 +487,7 @@ namespace Iql.Queryable.Data.Context
             //        DataContext.AsDbSetByType(typeof(TEntity));
             //}
             // This will trigger a merge in the tracking store
-            return (T)await queryable.WithKeyAsync(identityWhereOperation.Key);
+            return (T)await queryable.GetWithKeyAsync(identityWhereOperation.Key);
         }
 
         public T EnsureTypedEntity<T>(object entity, bool convertRelationships)

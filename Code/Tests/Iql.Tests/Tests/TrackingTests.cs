@@ -17,6 +17,88 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task
+            AssigningAnEntityAToARelatedListOnEntityBThenRefreshingEntityAShouldClearTheItemFromTheRelatedListOnEntityA()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1,
+            });
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 1
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            var relationship = Db.EntityConfigurationContext.EntityType<Client>()
+                .FindPropertyByExpression(c => c.Type)
+                .Relationship.ThisEnd;
+            var key = relationship.GetCompositeKey(client, true);
+            Assert.AreEqual(1, key.Keys[0].Value);
+            var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
+            clientType2.Clients.Add(client);
+            key = relationship.GetCompositeKey(client, true);
+            Assert.AreEqual(2, key.Keys[0].Value);
+            Assert.AreEqual(1, clientType2.Clients.Count);
+            var refreshedClient = await Db.Clients.GetWithKeyAsync(1);
+            Assert.AreEqual(client, refreshedClient);
+            Assert.AreEqual(1, refreshedClient.TypeId);
+            Assert.AreEqual(0, clientType2.Clients.Count);
+        }
+
+        [TestMethod]
+        public async Task AssigningAnEntityAToARelatedListWithASelfReferentialConstraintOnEntityBThenRefreshingEntityAShouldClearTheItemFromTheRelatedListOnEntityA()
+        {
+            // Now try with a self referential constraint
+            var site = await Db.Sites.GetWithKeyAsync(1);
+            Assert.AreEqual(null, site.ParentId);
+            Assert.AreEqual(0, site.Children.Count);
+            site.Children.Add(site);
+            Assert.AreEqual(1, site.ParentId);
+            Assert.AreEqual(1, site.Children.Count);
+            var refreshedSite = await Db.Sites.GetWithKeyAsync(1);
+            Assert.AreEqual(null, site.ParentId);
+            Assert.AreEqual(0, site.Children.Count);
+            Assert.AreEqual(site, refreshedSite);
+        }
+
+        [TestMethod]
+        public async Task AssigningAnEntityToARelatedListShouldUpdateTheEntitysRelationshipCompositeKeyCache()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            var relationship = Db.EntityConfigurationContext.EntityType<Client>()
+                .FindPropertyByExpression(c => c.Type)
+                .Relationship.ThisEnd;
+            var key = relationship.GetCompositeKey(client, true);
+            Assert.AreEqual(1, key.Keys[0].Value);
+            var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
+            clientType2.Clients.Add(client);
+            key = relationship.GetCompositeKey(client, true);
+            Assert.AreEqual(2, key.Keys[0].Value);
+        }
+
+        [TestMethod]
         public async Task SettingARelationshipToAnUnchangedValueShouldHaveNoEffect()
         {
             AppDbContext.InMemoryDb.People.Add(new Person

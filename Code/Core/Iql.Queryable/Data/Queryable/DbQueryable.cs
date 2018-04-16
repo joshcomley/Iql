@@ -729,7 +729,7 @@ namespace Iql.Queryable.Data.Queryable
             Delete((T)entity);
         }
 
-        public override async Task<object> WithKeyAsync(object key)
+        public override async Task<object> GetWithKeyAsync(object key)
         {
             return await Then(new WithKeyOperation(CompositeKey.Ensure(key, EntityConfiguration))).SingleOrDefaultAsync();
         }

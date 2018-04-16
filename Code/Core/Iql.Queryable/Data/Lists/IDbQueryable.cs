@@ -15,7 +15,7 @@ namespace Iql.Queryable.Data.Lists
     {
         void DeleteEntity(object entity);
         void AddEntity(object entity);
-        Task<object> WithKeyAsync(object key);
+        Task<object> GetWithKeyAsync(object key);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
         Task<IList> LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
         Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both);

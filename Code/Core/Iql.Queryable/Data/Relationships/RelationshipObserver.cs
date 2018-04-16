@@ -787,6 +787,8 @@ namespace Iql.Queryable.Data.Relationships
                         },
                         new[] { constraint.SourceKeyProperty }, source);
                 }
+
+                relationship.Source.MarkDirty(source);
             }
 
             if (removeFromMoving)

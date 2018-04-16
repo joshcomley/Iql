@@ -34,21 +34,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #endif
         public RelationshipMatch Relationship { get; set; }
 
-        public PropertyKind Kind
-        {
-            get => _kind;
-            set
-            {
-                if (value.HasFlag(PropertyKind.RelationshipKey) && Name == "Id")
-                {
-                    int a = 0;
-                }
-                _kind = value;
-            }
-        }
+        public PropertyKind Kind { get; set; }
 
         private bool _searchKindSet;
-        private PropertyKind _kind;
         private bool? _readOnly;
 
         public PropertySearchKind SearchKind

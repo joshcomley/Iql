@@ -19,10 +19,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             Type elementType)
         {
             Relationship = relationship;
-            if (relationship.Kind == RelationshipKind.OneToOne)
-            {
-                int a = 0;
-            }
             RelationshipSide = relationshipSide;
             Configuration = configuration.GetEntity<T>();
             //var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as

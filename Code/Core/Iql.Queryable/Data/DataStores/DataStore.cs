@@ -88,10 +88,6 @@ namespace Iql.Queryable.Data.DataStores
             {
                 var state = rootTrackingSet.GetEntityState(entity);
                 state.MarkedForDeletion = false;
-                if (entity != state.Entity)
-                {
-                    int a = 0;
-                }
                 return state;
             }
             var entityType = typeof(T);

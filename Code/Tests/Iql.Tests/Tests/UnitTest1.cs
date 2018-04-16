@@ -695,7 +695,8 @@ namespace Iql.Tests.Tests
             Assert.IsFalse(property.Kind.HasFlag(PropertyKind.RelationshipKey));
             Assert.IsNull(property.Relationship);
         }
-        [TestMethod]
+
+        //[TestMethod]
         public async Task
             PrintOutAllPropertyKinds()
         {
@@ -711,9 +712,6 @@ namespace Iql.Tests.Tests
 
                 sb.AppendLine();
             }
-
-            var all = sb.ToString();
-            int a = 0;
         }
 
         [TestMethod]
