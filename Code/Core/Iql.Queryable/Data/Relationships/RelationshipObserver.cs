@@ -355,6 +355,15 @@ namespace Iql.Queryable.Data.Relationships
                 new[] { property },
                 propertyChangeEvent.Entity
             );
+            if (property.Relationship != null)
+            {
+                property.Relationship.ThisEnd.MarkDirty(propertyChangeEvent.Entity);
+                if (property.Kind == PropertyKind.Relationship && !property.TypeDefinition.IsCollection)
+                {
+                    property.Relationship.OtherEnd.MarkDirty(propertyChangeEvent.OldValue);
+                    property.Relationship.OtherEnd.MarkDirty(propertyChangeEvent.NewValue);
+                }
+            }
         }
 
         private void ProcessRelationshipReferenceChange(
@@ -409,7 +418,9 @@ namespace Iql.Queryable.Data.Relationships
             property.Relationship.ThisEnd.MarkDirty(entity);
             var newRelationshipKey = GetRelationshipKeyString(
                 entity,
-                relationship);
+                relationship,
+                null,
+                true);
 
             ChangeRelationship(
                 relationship,

@@ -35,6 +35,8 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             }
         }
 
+        public IRelationshipDetail OtherSide =>
+            RelationshipSide == RelationshipSide.Source ? Relationship.Target : Relationship.Source;
         public RelationshipSide RelationshipSide { get; }
         public IRelationship Relationship { get; }
         public Type Type => typeof(T);
@@ -43,12 +45,23 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public IProperty KeyProperty { get; set; }
         public IEntityConfiguration Configuration { get; set; }
 
+        private readonly List<object> _beingMarkedAsDirty = new List<object>();
         public void MarkDirty(object entity)
         {
-            if (entity != null)
+            if (entity != null && !_beingMarkedAsDirty.Contains(entity))
             {
+                _beingMarkedAsDirty.Add(entity);
                 CompositeKeys.Remove(entity);
                 InverseCompositeKeys.Remove(entity);
+                if (!OtherSide.IsCollection)
+                {
+                    var referencedEntity = Property.PropertyGetter(entity);
+                    if (referencedEntity != null)
+                    {
+                        OtherSide.MarkDirty(referencedEntity);
+                    }
+                }
+                _beingMarkedAsDirty.Remove(entity);
             }
         }
 

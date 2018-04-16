@@ -33,10 +33,6 @@ namespace Iql.Tests.Tests
                 Id = 1,
                 TypeId = 1,
             });
-            AppDbContext.InMemoryDb.Sites.Add(new Site
-            {
-                Id = 1
-            });
             var client = await Db.Clients.GetWithKeyAsync(1);
             var relationship = Db.EntityConfigurationContext.EntityType<Client>()
                 .FindPropertyByExpression(c => c.Type)
@@ -57,6 +53,10 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task AssigningAnEntityAToARelatedListWithASelfReferentialConstraintOnEntityBThenRefreshingEntityAShouldClearTheItemFromTheRelatedListOnEntityA()
         {
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 1
+            });
             // Now try with a self referential constraint
             var site = await Db.Sites.GetWithKeyAsync(1);
             Assert.AreEqual(null, site.ParentId);

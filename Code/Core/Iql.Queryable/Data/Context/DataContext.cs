@@ -362,6 +362,11 @@ namespace Iql.Queryable.Data.Context
             return _configurations[entityType.Name] as EntityConfiguration<T>;
         }
 
+        public void AbandonAllChanges()
+        {
+            
+        }
+
         public async Task<SaveChangesResult> SaveChangesAsync()
         {
             return await DataStore.SaveChangesAsync(new SaveChangesOperation(this));

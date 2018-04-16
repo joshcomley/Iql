@@ -5,6 +5,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
     public interface IRelationshipDetail
     {
+        IRelationshipDetail OtherSide { get; }
         RelationshipSide RelationshipSide { get; }
         IRelationship Relationship { get; }
         Type Type { get; }
