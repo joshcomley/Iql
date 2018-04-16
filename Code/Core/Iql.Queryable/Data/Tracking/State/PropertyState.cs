@@ -13,14 +13,30 @@ namespace Iql.Queryable.Data.Tracking.State
         private object _newValue;
 
         public PropertyState(
-            IProperty property, 
+            IProperty property,
             IEntityStateBase entityState)
         {
             Property = property;
             EntityState = entityState;
         }
 
-        public bool HasChanged => _hasChanged;
+        public bool HasChanged
+        {
+            get
+            {
+                if (Property.Kind.HasFlag(PropertyKind.Count))
+                {
+                    return false;
+                }
+
+                if (Property.Kind.HasFlag(PropertyKind.Relationship))
+                {
+                    return RelationshipHasChanged();
+                }
+
+                return _hasChanged;
+            }
+        }
 
         public object OldValue
         {
@@ -42,6 +58,26 @@ namespace Iql.Queryable.Data.Tracking.State
                 _oldValue = value;
                 _hasChanged = !Equals(OldValue, NewValue);
             }
+        }
+
+        private bool RelationshipHasChanged()
+        {
+            if (OldValue != null && NewValue != null && OldValue != NewValue)
+            {
+                return true;
+            }
+
+            var constraints = Property.Relationship.ThisEnd.Constraints();
+            for (var i = 0; i < constraints.Length; i++)
+            {
+                var constraint = constraints[i];
+                if (EntityState.GetPropertyState(constraint.Name).HasChanged)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public object NewValue
@@ -69,6 +105,11 @@ namespace Iql.Queryable.Data.Tracking.State
                 OldValue = OldValue,
                 NewValue = NewValue
             };
+        }
+
+        public void AbandonChange()
+        {
+            NewValue = OldValue;
         }
     }
 }

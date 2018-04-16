@@ -12,5 +12,6 @@ namespace Iql.Queryable.Data.Crud.Operations
         IProperty Property { get; }
         void Reset();
         IPropertyState Copy();
+        void AbandonChange();
     }
 }

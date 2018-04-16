@@ -258,7 +258,11 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
             var site = await Db.Sites.Expand(s => s.Client).GetWithKeyAsync(1);
+            var propertyReferenceState = Db.DataStore.Tracking.TrackingSet<Site>()
+                .GetEntityState(site)
+                .GetPropertyState(nameof(Site.Client));
             var client1 = site.Client;
+            Assert.AreEqual(client1, propertyReferenceState.OldValue);
             var client2 = await Db.Clients.GetWithKeyAsync(2);
 
             site.Client = client2;
@@ -272,12 +276,16 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(site, update.Operation.Entity);
 
                 var propertyChanges = update.Operation.EntityState.GetChangedProperties();
-                Assert.AreEqual(1, propertyChanges.Length);
-                var propertyChange = propertyChanges[0];//.Single(p => p.Property.Name == nameof(Site.ClientId));
+                Assert.AreEqual(2, propertyChanges.Length);
+                var propertyKeyChange = propertyChanges.First(p => p.Property.Name == nameof(Site.ClientId));//.Single(p => p.Property.Name == nameof(Site.ClientId));
+                var propertyReferenceChange = propertyChanges.First(p => p.Property.Name == nameof(Site.Client));//.Single(p => p.Property.Name == nameof(Site.ClientId));
 
-                Assert.AreEqual(nameof(Site.ClientId), propertyChange.Property.Name);
-                Assert.AreEqual(client1.Id, propertyChange.OldValue);
-                Assert.AreEqual(client2.Id, propertyChange.NewValue);
+                Assert.AreEqual(nameof(Site.ClientId), propertyKeyChange.Property.Name);
+                Assert.AreEqual(client1.Id, propertyKeyChange.OldValue);
+                Assert.AreEqual(client2.Id, propertyKeyChange.NewValue);
+                Assert.AreEqual(nameof(Site.Client), propertyReferenceChange.Property.Name);
+                Assert.AreEqual(client1, propertyReferenceChange.OldValue);
+                Assert.AreEqual(client2, propertyReferenceChange.NewValue);
             }
 
             AssertQueue();

@@ -26,5 +26,6 @@ namespace Iql.Queryable.Data.Tracking
         IEnumerable<IEntityCrudOperationBase> GetInserts();
         IEnumerable<IEntityCrudOperationBase> GetDeletions();
         IEnumerable<IUpdateEntityOperation> GetUpdates();
+        void AbandonChanges();
     }
 }

@@ -7,6 +7,7 @@ using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Relationships;
+using Iql.Queryable.Data.Tracking.State;
 
 namespace Iql.Queryable.Data.Tracking
 {
@@ -85,9 +86,12 @@ namespace Iql.Queryable.Data.Tracking
                 newList.Add((TEntity)item.Key);
             }
             data = new Dictionary<Type, IList>();
+            List<IEntityStateBase> states = null;
             if (responseRoot != null)
             {
-                responseRoot = (List<TEntity>)TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly).ToList(typeof(TEntity));
+                var trakcingResult = TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly);
+                states = trakcingResult.States;
+                responseRoot = (List<TEntity>)trakcingResult.Data.ToList(typeof(TEntity));
             }
             foreach (var dataSet in responseData)
             {
@@ -96,20 +100,40 @@ namespace Iql.Queryable.Data.Tracking
             if (!mergeExistingOnly)
             {
                 RelationshipObserver.ObserveAll(data);
+                if (states != null)
+                {
+                    for (var i = 0; i < states.Count; i++)
+                    {
+                        var state = states[i];
+                        state.Reset();
+                    }
+                }
             }
             return responseRoot;
         }
 
-        private IList TrackCollection(
+        class TrackCollectionResult
+        {
+            public IList Data { get; set; }
+            public List<IEntityStateBase> States { get; set; }
+
+            public TrackCollectionResult(IList data, List<IEntityStateBase> states)
+            {
+                Data = data;
+                States = states;
+            }
+        }
+        private TrackCollectionResult TrackCollection(
             IList set, Type type, Dictionary<Type, IList> data, bool mergeExistingOnly)
         {
+            var states = new List<IEntityStateBase>();
             if (set.Count > 0)
             {
 #if TypeScript
                 set = DataContext.EnsureTypedListByType(set, type, null, null, false, true);
 #endif
                 var trackingSet = Tracking.TrackingSetByType(type);
-                var states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
+                states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
                 trackingSet.ResetAll(states);
                 set = states.Select(s => s.Entity).EnumerableToList(type);
                 if (data.ContainsKey(type))
@@ -128,7 +152,7 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
 
-            return set;
+            return new TrackCollectionResult(set, states);
         }
 
         public void RemoveEntityByKey<T>(CompositeKey key)

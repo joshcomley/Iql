@@ -415,6 +415,7 @@ namespace Iql.Queryable.Data.Tracking
         {
             var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
             if (property.Kind.HasFlag(PropertyKind.Key) ||
+               property.Kind.HasFlag(PropertyKind.Relationship) ||
                property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
                property.Kind.HasFlag(PropertyKind.Primitive))
             {
@@ -611,7 +612,7 @@ namespace Iql.Queryable.Data.Tracking
                         map.OldPropertyValues = null;
                         map.State = state;
                     }
-                    else if(map.State != state)
+                    else if (map.State != state)
                     {
                         throw new DuplicateKeyException();
                     }
@@ -742,6 +743,26 @@ namespace Iql.Queryable.Data.Tracking
                 }
             }
             return updates;
+        }
+
+        public void AbandonChanges()
+        {
+            var removedStates = new List<IEntityState<T>>();
+            foreach (var entity in EntitiesByObject)
+            {
+                var state = (IEntityState<T>)entity.Value;
+                state.AbandonChanges();
+                if (state.IsNew)
+                {
+                    removedStates.Add(state);
+                }
+            }
+
+            for (var i = 0; i < removedStates.Count; i++)
+            {
+                var removedState = removedStates[i];
+                RemoveEntity(removedState.Entity);
+            }
         }
     }
 

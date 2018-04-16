@@ -364,7 +364,11 @@ namespace Iql.Queryable.Data.Context
 
         public void AbandonAllChanges()
         {
-            
+            for (var i = 0; i < DataStore.Tracking.Sets.Count; i++)
+            {
+                var set = DataStore.Tracking.Sets[i];
+                set.AbandonChanges();
+            }
         }
 
         public async Task<SaveChangesResult> SaveChangesAsync()

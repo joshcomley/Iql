@@ -66,13 +66,21 @@ namespace Iql.Queryable.Data.Tracking.State
 
         public bool MarkedForCascadeDeletion { get; set; }
 
-        public bool MarkedForAnyDeletion
-        {
-            get { return MarkedForDeletion || MarkedForCascadeDeletion; }
-        }
+        public bool MarkedForAnyDeletion => MarkedForDeletion || MarkedForCascadeDeletion;
 
         public void UnmarkForDeletion()
         {
+            MarkedForDeletion = false;
+            MarkedForCascadeDeletion = false;
+        }
+
+        public void AbandonChanges()
+        {
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var property = Properties[i];
+                property.AbandonChange();
+            }
             MarkedForDeletion = false;
             MarkedForCascadeDeletion = false;
         }

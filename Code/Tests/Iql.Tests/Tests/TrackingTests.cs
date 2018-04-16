@@ -7,6 +7,7 @@ using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Http;
 using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -16,6 +17,125 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class TrackingTests : TestsBase
     {
+        [TestMethod]
+        public async Task PopulatingAnEntityReferenceFromAServerRequestShouldNotResultInAPropertyChangedState()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            var clientType = await Db.ClientTypes.ToListAsync();
+            var propertyState = Db.DataStore.Tracking.TrackingSet<Client>()
+                .GetEntityState(client)
+                .GetPropertyState(nameof(Client.Type));
+            Assert.IsFalse(propertyState.HasChanged);
+        }
+
+        [TestMethod]
+        public async Task ChangingRelationshipViaEntityReferenceShouldUpdatePropertyStateToChanged()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            var clientType1 = await Db.ClientTypes.GetWithKeyAsync(1);
+            var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
+            client.Type = clientType2;
+            var referencePropertyState = Db.DataStore.Tracking.TrackingSet<Client>()
+                .GetEntityState(client)
+                .GetPropertyState(nameof(Client.Type));
+            var referenceKeyPropertyState = Db.DataStore.Tracking.TrackingSet<Client>()
+                .GetEntityState(client)
+                .GetPropertyState(nameof(Client.TypeId));
+            var changes = Db.DataStore.GetChanges();
+            Assert.IsTrue(referencePropertyState.HasChanged);
+        }
+
+        [TestMethod]
+        public async Task AbandonOneChangeViaAbandonAllChanges()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1,
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            var clientTypes = await Db.ClientTypes.ToListAsync();
+            clientTypes[1].Clients.Add(client);
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Length);
+            Db.AbandonAllChanges();
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+        }
+
+        [TestMethod]
+        public async Task AbandonMultipleChangesViaAbandonAllChanges()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1,
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 2,
+                TypeId = 2,
+            });
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 1
+            });
+            var site = await Db.Sites.GetWithKeyAsync(1);
+            site.CreatedByUser = new ApplicationUser();
+            site.Name = "Some new completely changed name";
+            var client1 = await Db.Clients.GetWithKeyAsync(1);
+            var client2 = await Db.Clients.GetWithKeyAsync(2);
+            var clientTypes = await Db.ClientTypes.ToListAsync();
+            clientTypes[1].Clients.Add(client1);
+            Assert.AreEqual(2, clientTypes[1].Clients.Count);
+            clientTypes[0].Clients.Add(client2);
+            Assert.AreEqual(1, clientTypes[0].Clients.Count);
+            Assert.AreEqual(1, clientTypes[1].Clients.Count);
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(4, changes.Length);
+            Db.AbandonAllChanges();
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+        }
+
         [TestMethod]
         public async Task
             AssigningAnEntityAToARelatedListOnEntityBThenRefreshingEntityAShouldClearTheItemFromTheRelatedListOnEntityA()
@@ -458,10 +578,15 @@ namespace Iql.Tests.Tests
             Assert.IsNotNull(updateOperation);
             Assert.AreEqual(OperationType.Update, updateOperation.Type);
             var changedProperties = updateOperation.EntityState.GetChangedProperties();
-            Assert.AreEqual(1, changedProperties.Length);
-            Assert.AreEqual(nameof(PersonTypeMap.PersonId), changedProperties[0].Property.Name);
-            Assert.AreEqual(1, changedProperties[0].OldValue);
-            Assert.AreEqual(4, changedProperties[0].NewValue);
+            Assert.AreEqual(2, changedProperties.Length);
+            var personIdPropertyState = changedProperties.FirstOrDefault(p => p.Property.Name == nameof(PersonTypeMap.PersonId));
+            Assert.IsNotNull(personIdPropertyState);
+            Assert.AreEqual(1, personIdPropertyState.OldValue);
+            Assert.AreEqual(4, personIdPropertyState.NewValue);
+            var personPropertyState = changedProperties.FirstOrDefault(p => p.Property.Name == nameof(PersonTypeMap.PersonId));
+            Assert.IsNotNull(personPropertyState);
+            Assert.AreEqual(1, personPropertyState.OldValue);
+            Assert.AreEqual(4, personPropertyState.NewValue);
         }
 
         [TestMethod]
