@@ -21,6 +21,33 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return Keys.Single(k => k.Name == name).Value;
         }
 
+        public static CompositeKey FromKeyString(string keyString, IEntityConfiguration entityConfiguration)
+        {
+            var parts = keyString.Split(';');
+            var compositeKey = new CompositeKey(parts.Length);
+            for (var i = 0; i < parts.Length; i++)
+            {
+                var part = parts[i];
+                IProperty property;
+                string valueStr;
+                if (part.Contains(":"))
+                {
+                    var keyValue = part.Split(':');
+                    property = entityConfiguration.FindProperty(keyValue[0]);
+                    valueStr = keyValue[1] == "NULL" ? null : keyValue[1];
+                    compositeKey.Keys[i] = new KeyValue(keyValue[0], property.TypeDefinition.EnsureValueType(valueStr), property.TypeDefinition);
+                }
+                else
+                {
+                    property = entityConfiguration.Key.Properties[i];
+                    valueStr = part == "NULL" ? null : part;
+                }
+                compositeKey.Keys[i] = new KeyValue(property.Name, property.TypeDefinition.EnsureValueType(valueStr), property.TypeDefinition);
+            }
+
+            return compositeKey;
+        }
+
         public static CompositeKey Ensure(object key, IEntityConfiguration entityConfiguration)
         {
             CompositeKey compositeKey;

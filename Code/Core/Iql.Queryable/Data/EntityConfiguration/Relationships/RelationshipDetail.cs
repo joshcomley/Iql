@@ -109,7 +109,10 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
-                var value = entity.GetPropertyValue(constraint);
+                var value =
+                    entity is CompositeKey
+                        ? (entity as CompositeKey).Keys.Single(k => k.Name == constraint.Name).Value
+                        : entity.GetPropertyValue(constraint);
                 var keyValue = new KeyValue(
                     inverse
                         ? inverseConstraints[i].Name

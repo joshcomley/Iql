@@ -25,16 +25,6 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 return null;
             }
 
-            if (Type == typeof(String) && !(value is String))
-            {
-                return value.ToString();
-            }
-
-            if (Type == typeof(Int32) && !(value is Int32) && !(value is Double))
-            {
-                return Convert.ToDouble(value.ToString());
-            }
-
             if (Type == typeof(DateTime) && !(value is DateTime))
             {
                 if (value is Int64)
@@ -50,7 +40,21 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 return Boolean.Parse(value.ToString());
             }
 
+#if !TypeScript
+            return Convert.ChangeType(value, Type);
+#else
+            if (Type == typeof(String) && !(value is String))
+            {
+                return value.ToString();
+            }
+
+            if (Type == typeof(Int32) && !(value is Int32) && !(value is Double))
+            {
+                return Convert.ToDouble(value.ToString());
+            }
+
             return value;
+#endif
         }
 
         public string ConvertedFromType { get; }

@@ -17,17 +17,17 @@ namespace Iql.OData.QueryableApplicator.Applicators
 
         public static string FormatKey(CompositeKey key)
         {
-            string ketStr;
+            string keyString;
             if (key.Keys.Length == 1)
             {
-                ketStr = GetKeyValue(key.Keys.Single());
+                keyString = GetKeyValue(key.Keys.Single());
             }
             else
             {
                 var keys = key.Keys.Select(k => k.Name + "=" + GetKeyValue(k));
-                ketStr = string.Join(",", keys);
+                keyString = string.Join(",", keys);
             }
-            return ketStr;
+            return keyString;
         }
 
         private static string GetKeyValue(KeyValue key)

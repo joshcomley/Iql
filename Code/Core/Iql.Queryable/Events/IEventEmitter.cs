@@ -41,8 +41,9 @@ namespace Iql.Queryable.Events
         EventSubscription Subscribe(Action<object> propertyChangeEvent);
     }
 
-    public interface IEventUnsubcriber
+    public interface IEventUnsubcriber : IDisposable
     {
         void Unsubscribe(int subscription);
+        void UnsubscribeAll();
     }
 }

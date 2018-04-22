@@ -33,6 +33,11 @@ namespace Iql.Queryable.Events
             _subscriptions.Remove(subscription);
         }
 
+        public void UnsubscribeAll()
+        {
+            _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
+        }
+
         public EventSubscription SubscribeAsync(Func<TEvent, Task> propertyChangeEvent)
         {
             if (_subscriptions == null)
@@ -65,6 +70,11 @@ namespace Iql.Queryable.Events
             }
 
             return default(TEvent);
+        }
+
+        public void Dispose()
+        {
+            UnsubscribeAll();
         }
     }
 }

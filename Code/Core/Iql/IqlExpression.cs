@@ -41,6 +41,21 @@ namespace Iql
             throw new NotImplementedException();
         }
 
+        public void AddRootReference(string parameter = null)
+        {
+            AddAncestor(new IqlRootReferenceExpression(parameter));
+        }
+
+        public void AddAncestor(IqlExpression expression)
+        {
+            var ancestor = this;
+            while (ancestor.Parent != null)
+            {
+                ancestor = ancestor.Parent;
+            }
+            ancestor.Parent = expression;
+        }
+
         public static IqlPropertyExpression GetPropertyExpression(string propertyName)
         {
             var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");

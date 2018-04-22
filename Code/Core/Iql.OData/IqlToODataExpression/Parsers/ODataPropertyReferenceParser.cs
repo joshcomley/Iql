@@ -8,7 +8,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             ODataIqlParserInstance parser)
         {
             var property = new IqlFinalExpression<string>(action.PropertyName);
-            if (action.Parent != null && action.Parent.Type != IqlExpressionType.RootReference)
+            if (action.Parent != null)
             {
                 return new IqlAggregateExpression(action.Parent, new IqlFinalExpression<string>(Separator), property);
             }

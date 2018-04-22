@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Parsing;
+using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
@@ -15,7 +15,7 @@ namespace Iql.Queryable.Data.Queryable
         EvaluateContext EvaluateContext { get; }
         Type ItemType { get; }
         List<IQueryOperation> Operations { get; }
-        Task<IList> ToList();
+        Task<IDbList> ToListAsync();
         IQueryableBase Copy();
         IQueryableBase New();
         IQueryableBase Skip(int skip);

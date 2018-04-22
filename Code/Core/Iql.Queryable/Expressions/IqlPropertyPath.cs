@@ -32,6 +32,7 @@ namespace Iql.Queryable.Expressions
             {
                 reversed.Add(list[i]);
             }
+
             reversed.Add(this);
             PropertyPath = reversed.ToArray();
         }
@@ -59,10 +60,12 @@ namespace Iql.Queryable.Expressions
 
         public IqlPropertyPath Parent { get; }
         public string PropertyName => Property?.Name;
-        public IProperty Property { get;  }
+        public IProperty Property { get; }
         public IqlPropertyExpression Expression { get; }
 
         public IqlPropertyPath[] PropertyPath { get; }
+
+        public IEntityConfiguration EntityConfiguration { get; set; }
 
         public object Getter(object entity)
         {
@@ -77,6 +80,7 @@ namespace Iql.Queryable.Expressions
                 var pathItem = PropertyPath[i];
                 value = pathItem.Property.PropertyGetter(value);
             }
+
             return value;
         }
 
@@ -88,9 +92,11 @@ namespace Iql.Queryable.Expressions
         }
 
         public static IqlPropertyPath FromString(string path,
-            IEntityConfiguration entityConfigurationContext)
+            IEntityConfiguration entityConfigurationContext,
+            IqlPropertyExpression parent = null)
         {
             var propertyExpression = IqlExpression.GetPropertyExpression(path);
+            propertyExpression.Parent = parent;
             return FromPropertyExpression(entityConfigurationContext, propertyExpression);
         }
 
@@ -124,15 +130,15 @@ namespace Iql.Queryable.Expressions
             }
 
             var entityConfig = entityConfigurationContext;
-            IProperty property;
             for (var i = list.Count - 1; i >= 0; i--)
             {
-                property = entityConfig.FindProperty(list[i].PropertyName);
+                var property = entityConfig.FindProperty(list[i].PropertyName);
                 propertyPath = new IqlPropertyPath(
-                    property, 
+                    property,
                     list[i],
                     propertyPath);
-                
+                propertyPath.EntityConfiguration = entityConfig;
+
                 if (i == 0)
                 {
                     break;

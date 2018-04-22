@@ -287,7 +287,7 @@ namespace Iql.Queryable.Data.DataStores
         private static void ApplyPaging<TEntity>(DbList<TEntity> dbList, FlattenedGetDataResult<TEntity> response) where TEntity : class
         {
             dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
-            if (response.TotalCount.HasValue && response.Data.Count != 0)
+            if (response.TotalCount.HasValue && dbList.Count != 0)
             {
                 var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
                 var skippedSoFar = skipOperations.Sum(o => (o as SkipOperation).Skip);
@@ -296,7 +296,7 @@ namespace Iql.Queryable.Data.DataStores
                 var page = 0;
                 if (skippedSoFar == 0)
                 {
-                    pageSize = response.Data.Count;
+                    pageSize = dbList.Count;
                 }
                 else
                 {

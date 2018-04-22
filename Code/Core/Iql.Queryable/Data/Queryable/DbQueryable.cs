@@ -103,7 +103,7 @@ namespace Iql.Queryable.Data.Queryable
             {
                 query = queryFilter(query);
             }
-            return await query.ToList();
+            return await query.ToListAsync();
         }
 
         Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)

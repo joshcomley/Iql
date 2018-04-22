@@ -194,7 +194,7 @@ namespace Iql.Queryable.Data.Queryable
 
         public abstract Task<DbList<T>> ToListAsync();
 
-        async Task<IList> IQueryableBase.ToList()
+        async Task<IDbList> IQueryableBase.ToListAsync()
         {
             return await ToListAsync();
         }

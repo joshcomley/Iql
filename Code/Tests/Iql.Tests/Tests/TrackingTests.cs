@@ -18,6 +18,30 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task
+            AddingAnEntityToARelatedListWithTheRelationshipReferenceAlreadySetShouldStillPropogateKeyValues()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 7
+            });
+
+            var person = await Db.People.GetWithKeyAsync(7);
+            var map = new PersonTypeMap
+            {
+                Person = person,
+                TypeId = 2
+            };
+            person.Types.Add(map);
+            Assert.AreEqual(2, map.TypeId);
+            Assert.AreEqual(7, map.PersonId);
+        }
+
+        [TestMethod]
         public async Task PopulatingAnEntityReferenceFromAServerRequestShouldNotResultInAPropertyChangedState()
         {
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType

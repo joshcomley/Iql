@@ -65,5 +65,15 @@ namespace Iql.Queryable.Events
 
             return default(TEvent);
         }
+
+        public void UnsubscribeAll()
+        {
+            _subscriptions = new Dictionary<int, Action<TEvent>>();
+        }
+
+        public void Dispose()
+        {
+            UnsubscribeAll();
+        }
     }
 }

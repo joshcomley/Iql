@@ -5,7 +5,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         public override IqlExpression ToQueryString(IqlRootReferenceExpression action,
             ODataIqlParserInstance parser)
         {
-            return new IqlFinalExpression<string>("");
+            return new IqlFinalExpression<string>("$it");
         }
     }
 }

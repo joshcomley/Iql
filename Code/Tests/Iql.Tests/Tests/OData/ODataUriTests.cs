@@ -60,13 +60,13 @@ namespace Iql.Tests.Tests.OData
 
             var uri = query.ResolveODataUri();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')",
                 uri);
 
             query = query.OrderBy(c => c.Name).Expand(c => c.Type);
             uri = query.ResolveODataUri();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name&$expand=Type",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$orderby=$it/Name&$expand=Type",
                 uri);
         }
 
@@ -76,7 +76,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count(t => t.TypeId == 2) > 2);
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=(Types/$count(TypeId eq 2) gt 2)",
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($it/TypeId eq 2) gt 2)",
                 uri);
         }
 
@@ -86,7 +86,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count > 2);
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=(Types/$count gt 2)",
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count gt 2)",
                 uri);
         }
 
@@ -99,7 +99,7 @@ namespace Iql.Tests.Tests.OData
 #endif
             );
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq '10')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions eq '10')",
                 uri);
         }
 
@@ -112,7 +112,7 @@ namespace Iql.Tests.Tests.OData
                     new IqlRootReferenceExpression()), 
                 new IqlEnumLiteralExpression(null).AddValue(10, "")));
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions eq '10')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions eq '10')",
                 uri);
         }
 
@@ -125,7 +125,7 @@ namespace Iql.Tests.Tests.OData
 #endif
             );
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has 'Create,Edit')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions has 'Create,Edit')",
                 uri);
         }
 
@@ -138,7 +138,7 @@ namespace Iql.Tests.Tests.OData
 #endif
             );
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=((Permissions has 'Create,Edit') or (Permissions has 'Delete'))",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
                 uri);
         }
 
@@ -153,7 +153,7 @@ namespace Iql.Tests.Tests.OData
             enumExpression.AddValue((long)UserPermissions.Create, nameof(UserPermissions.Create));
             var query = Db.Users.WhereEquals(expressionRoot);
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(Permissions has 'Create,Edit')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions has 'Create,Edit')",
                 uri);
         }
 
@@ -173,7 +173,7 @@ namespace Iql.Tests.Tests.OData
                 has1,
                 has2));
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=((Permissions has 'Create,Edit') or (Permissions has 'Delete'))",
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
                 uri);
         }
 
@@ -184,7 +184,7 @@ namespace Iql.Tests.Tests.OData
 
             var uri = query.ResolveODataUri();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$expand=Users/$count",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Users/$count",
                 uri);
         }
 
@@ -195,13 +195,13 @@ namespace Iql.Tests.Tests.OData
 
             var uri = query.ResolveODataUriFromQuery(Db);
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
             uri = query.ResolveODataUriFromQuery(Db);
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello')&$orderby=Name",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$orderby=$it/Name",
                 uri);
         }
 
@@ -212,13 +212,13 @@ namespace Iql.Tests.Tests.OData
 
             var uri = query.ResolveODataUriFromQuery(Db);
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
             uri = query.ResolveODataUriFromQuery(Db);
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Name eq 'hello2')&$orderby=Name",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')&$orderby=$it/Name",
                 uri);
         }
     }
