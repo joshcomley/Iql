@@ -412,8 +412,12 @@ namespace Iql.Queryable.Data.DataStores
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
                         {
+#if TypeScript
+                            remoteEntity =
+                                (TEntity) DataContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
+#endif
                             var trackingSet = Tracking.TrackingSet<TEntity>();
-                            trackingSet.TrackEntity(localEntity, addEntityOperation.Result.RemoteEntity, false);
+                            trackingSet.TrackEntity(localEntity, remoteEntity, false);
                             trackingSet.GetEntityState(localEntity).Reset();
                             await DataContext.RefreshEntity(localEntity
 #if TypeScript
