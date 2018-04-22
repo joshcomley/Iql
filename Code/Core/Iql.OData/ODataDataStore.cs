@@ -154,7 +154,10 @@ namespace Iql.OData
                     break;
                 case ODataMethodScope.Entity:
                     var bindingParameter = parameters.Single(p => p.Name == bindingParameterName);
-                    var compositeKey = DataContext.GetEntityState(bindingParameter.Value).CurrentKey;
+                    var entityState = DataContext.GetEntityState(bindingParameter.Value);
+                    var compositeKey = entityState == null
+                        ? DataContext.EntityConfigurationContext.GetEntityByType(entityType).GetCompositeKey(bindingParameter.Value)
+                        : entityState.CurrentKey;
                     baseUri = ResolveEntityUriByType(compositeKey, bindingParameter.ValueType);
                     break;
                 case ODataMethodScope.Global:
