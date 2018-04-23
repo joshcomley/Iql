@@ -734,6 +734,11 @@ namespace Iql.Queryable.Data.Queryable
             return await Then(new WithKeyOperation(CompositeKey.Ensure(key, EntityConfiguration))).SingleOrDefaultAsync();
         }
 
+        public override async Task<IList> GetWithKeysAsync(IEnumerable<object> keys)
+        {
+            return await WithKeys(keys).ToListAsync();
+        }
+
         public virtual DbQueryable<T> IncludeCount()
         {
             return Then(new IncludeCountOperation());
@@ -821,6 +826,21 @@ namespace Iql.Queryable.Data.Queryable
         //{
         //    return Then(queryOperation);
         //}
+
+        public DbQueryable<T> WithCompositeKeys(IEnumerable<CompositeKey> keys)
+        {
+            return WithKeys(keys.Select(c => (object)c));
+        }
+
+        public async Task<DbList<T>> GetWithCompositeKeysAsync(IEnumerable<CompositeKey> keys)
+        {
+            return (await GetWithCompositeKeysWithResponseAsync(keys)).Data;
+        }
+
+        public async Task<GetDataResult<T>> GetWithCompositeKeysWithResponseAsync(IEnumerable<CompositeKey> keys)
+        {
+            return await WithCompositeKeys(keys).ToListWithResponseAsync();
+        }
 
         public DbQueryable<T> WithCompositeKey(CompositeKey key)
         {

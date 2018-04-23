@@ -23,10 +23,11 @@ namespace Iql
             if (string.IsNullOrWhiteSpace(_name))
             {
                 var name = _valueGetter().ToString();
-                name = name.Substring(name.LastIndexOf(".") + 1);
-                var semicolon = name.LastIndexOf(";");
-                name = name.Substring(0, semicolon);
-                _name = name;
+                return name;
+                //name = name.Substring(name.LastIndexOf(".") + 1);
+                //var semicolon = name.LastIndexOf(";");
+                //name = name.Substring(0, semicolon);
+                //_name = name;
             }
             return _name;
         }

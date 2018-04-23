@@ -10,7 +10,14 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         public override IqlExpression ToQueryString(TAction action,
             ODataIqlParserInstance parser)
         {
-            return ODataMethod(ResolveMethodName(action), ResolveMethodArguments(action));
+            var methodArguments = ResolveMethodArguments(action);
+            var methodName = ResolveMethodName(action);
+            if (methodName == "indexof")
+            {
+                methodArguments[0] = new IqlStringToLowerCaseExpression(methodArguments[0] as IqlReferenceExpression);
+                methodArguments[1] = new IqlStringToLowerCaseExpression(methodArguments[1] as IqlReferenceExpression);
+            }
+            return ODataMethod(methodName, methodArguments);
         }
 
         public IqlExpression ODataMethod(string name, IqlExpression[] args)

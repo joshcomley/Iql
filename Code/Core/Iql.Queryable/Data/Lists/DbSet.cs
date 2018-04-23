@@ -60,9 +60,19 @@ namespace Iql.Queryable.Data.Lists
             return (await GetWithKeyWithResponseAsync(key)).Data;
         }
 
+        public async Task<DbList<T>> GetWithKeysAsync(IEnumerable<TKey> keys)
+        {
+            return (await GetWithKeysWithResponseAsync(keys)).Data;
+        }
+
         public async Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(TKey key)
         {
             return await WithKey(key).SingleOrDefaultWithResponseAsync();
+        }
+
+        public async Task<GetDataResult<T>> GetWithKeysWithResponseAsync(IEnumerable<TKey> keys)
+        {
+            return await WithKeys(keys).ToListWithResponseAsync();
         }
 
         public DbSet<T, TKey> WithKeys(IEnumerable<TKey> ids)
@@ -70,7 +80,7 @@ namespace Iql.Queryable.Data.Lists
             return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
         }
 
-        public DbSet<T, TKey> WithCompositeKeys(IEnumerable<CompositeKey> ids)
+        public new DbSet<T, TKey> WithCompositeKeys(IEnumerable<CompositeKey> ids)
         {
             return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
         }

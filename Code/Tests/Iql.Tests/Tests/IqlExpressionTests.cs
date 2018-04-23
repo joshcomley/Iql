@@ -79,6 +79,20 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public void RebasePropertyPath()
+        {
+            var personConfiguration = Db.EntityConfigurationContext.EntityType<Person>();
+            var pathBase = IqlPropertyPath.FromLambda(u => u.Type.CreatedByUser,
+                personConfiguration);
+            Assert.AreEqual($"{nameof(Person.Type)}/{nameof(PersonType.CreatedByUser)}", pathBase.PathToHere);
+            var path = IqlPropertyPath.FromLambda(u => u.Type.CreatedByUser.Client.AverageSales,
+                personConfiguration);
+            Assert.AreEqual($"{nameof(Person.Type)}/{nameof(PersonType.CreatedByUser)}/{nameof(ApplicationUser.Client)}/{nameof(Client.AverageSales)}", path.PathToHere);
+            var subPath = path.RebaseFrom(pathBase);
+            Assert.AreEqual($"{nameof(ApplicationUser.Client)}/{nameof(Client.AverageSales)}", subPath.PathToHere);
+        }
+
+        [TestMethod]
         public void GetPropertyPath()
         {
             var personConfiguration = Db.EntityConfigurationContext.EntityType<Person>();

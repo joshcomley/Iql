@@ -31,6 +31,7 @@ namespace Iql.Queryable.Data.Queryable
         public abstract void AddEntity(object entity);
         public abstract void DeleteEntity(object entity);
         public abstract Task<object> GetWithKeyAsync(object key);
+        public abstract Task<IList> GetWithKeysAsync(IEnumerable<object> key);
 
         public TQueryable Reverse()
         {

@@ -11,6 +11,7 @@ namespace Iql
         Decimal,
         Boolean,
         Date,
-        Enum
+        Enum,
+        TimeSpan
     }
 }

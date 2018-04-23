@@ -96,7 +96,10 @@ namespace Iql.Queryable.Expressions
             IqlPropertyExpression parent = null)
         {
             var propertyExpression = IqlExpression.GetPropertyExpression(path);
-            propertyExpression.Parent = parent;
+            if (parent != null)
+            {
+                propertyExpression.Parent = parent;
+            }
             return FromPropertyExpression(entityConfigurationContext, propertyExpression);
         }
 
@@ -148,6 +151,22 @@ namespace Iql.Queryable.Expressions
             }
 
             return propertyPath;
+        }
+
+        public IqlPropertyPath RebaseFrom(IqlPropertyPath pathBase)
+        {
+            if (!PathToHere.StartsWith(pathBase.PathToHere))
+            {
+                throw new ArgumentException();
+            }
+            var top = pathBase.Top;
+            var ourTop = Top;
+            while (top.Child != null)
+            {
+                top = top.Child;
+                ourTop = ourTop.Child;
+            }
+            return FromString(ourTop.Child.PathFromHere, ourTop.Child.EntityConfiguration);
         }
     }
 }

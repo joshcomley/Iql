@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations.Results;
@@ -131,7 +132,9 @@ namespace Iql.Queryable.Data.Lists
         Task<GetDataResult<T>> ToListWithResponseAsync();
         //UpdateEntityResult<T> Update(T entity);
         Task<T> GetWithKeyAsync(TKey key);
+        Task<DbList<T>> GetWithKeysAsync(IEnumerable<TKey> key);
         Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(TKey key);
+        Task<GetDataResult<T>> GetWithKeysWithResponseAsync(IEnumerable<TKey> key);
         //Task LoadRelationshipPropertyAsync(T entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
         //Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> relationship, Func<IDbSetOperations<T, TKey>, IDbSetOperations<T, TKey>> queryFilter = null);
     }

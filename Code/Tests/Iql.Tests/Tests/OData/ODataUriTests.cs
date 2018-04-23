@@ -76,7 +76,53 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count(t => t.TypeId == 2) > 2);
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($it/TypeId eq 2) gt 2)",
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(TypeId eq 2)) gt 2)",
+                uri);
+        }
+
+        [TestMethod]
+        public void TestStringFilteringOnNestedCollectionResultCount()
+        {
+            var query = Db.People.Where(c => c.Types.Count(t => t.Description.Contains("test")) > 2);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+#if !TypeScript
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=contains(Description,'test')) gt 2)",
+                uri);
+#else
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
+                uri);
+#endif
+        }
+
+        [TestMethod]
+        public void TestStringFilteringOnNestedCollectionWithStringIndexOfResultCount()
+        {
+            var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > 2);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
+                uri);
+        }
+
+        [TestMethod]
+        public void TestMultiply()
+        {
+            var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count * 0.5);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt ($it/Types/$count mul 0.5))",
+                uri);
+        }
+
+        [TestMethod]
+        public void TestDivide()
+        {
+            var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count / 0.5);
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt ($it/Types/$count div 0.5))",
                 uri);
         }
 
@@ -100,6 +146,47 @@ namespace Iql.Tests.Tests.OData
             );
             var uri = Uri.UnescapeDataString(query.ResolveODataUri());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions eq '10')",
+                uri);
+        }
+
+        [TestMethod]
+        public void DateNowExpression()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.CreatedDate),
+                    new IqlRootReferenceExpression()),
+                new IqlNowExpression()));
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt now())",
+                uri);
+        }
+
+        [TestMethod]
+        public void DateNowWithSimpleTimeSpanSubtractionExpression()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.CreatedDate),
+                    new IqlRootReferenceExpression()),
+                new IqlSubtractExpression(new IqlNowExpression(),
+                    new IqlTimeSpanExpression().Set(7))));
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P7D'))",
+                uri);
+        }
+
+        [TestMethod]
+        public void DateNowWithComplexTimeSpanSubtractionExpression()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.CreatedDate),
+                    new IqlRootReferenceExpression()),
+                new IqlSubtractExpression(new IqlNowExpression(),
+                    new IqlTimeSpanExpression().Set(365 * 10, 7, 15, 33, 14))));
+            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P3650DT7H15M33.014S'))",
                 uri);
         }
 

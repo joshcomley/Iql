@@ -74,6 +74,10 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     return "sub";
                 case IqlExpressionType.Has:
                     return "has";
+                case IqlExpressionType.Multiply:
+                    return "mul";
+                case IqlExpressionType.Divide:
+                    return "div";
                 default:
                     ODataErrors.OperationNotSupported(action.Type);
                     break;

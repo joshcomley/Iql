@@ -64,11 +64,23 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 case OperatorType.Subtract:
                     exp = new IqlSubtractExpression(left, right);
                     break;
+                case OperatorType.Multiply:
+                    exp = new IqlMultiplyExpression(left, right);
+                    break;
+                case OperatorType.Divide:
+                    exp = new IqlDivideExpression(left, right);
+                    break;
                 case OperatorType.AddEquals:
                     exp = new IqlAddEqualsExpression(left, right);
                     break;
                 case OperatorType.SubtractEquals:
                     exp = new IqlSubtractEqualsExpression(left, right);
+                    break;
+                case OperatorType.MultiplyEquals:
+                    exp = new IqlMultiplyEqualsExpression(left, right);
+                    break;
+                case OperatorType.DivideEquals:
+                    exp = new IqlDivideEqualsExpression(left, right);
                     break;
                 case OperatorType.BitwiseOr:
                     exp = new IqlBitwiseOrExpression(left, right);

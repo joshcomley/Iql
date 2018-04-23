@@ -65,6 +65,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(2, map.TypeId);
             Assert.AreEqual(7, map.PersonId);
         }
+
         [TestMethod]
         public async Task PopulatingAnEntityReferenceFromAServerRequestShouldNotResultInAPropertyChangedState()
         {

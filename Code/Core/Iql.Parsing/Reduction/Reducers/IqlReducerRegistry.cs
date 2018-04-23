@@ -19,6 +19,7 @@
             Register(typeof(IqlVariableExpression), () => new IqlVariableExpressionReducer());
             Register(typeof(IqlLiteralExpression), () => new IqlLiteralExpressionReducer());
             Register(typeof(IqlAddExpression), () => new IqlAddExpressionReducer());
+            Register(typeof(IqlUnarySubtractExpression), () => new IqlUnarySubtractExpressionReducer());
             Register(typeof(IqlUnaryExpression), () => new IqlUnaryExpressionReducer());
             Register(typeof(IqlBinaryExpression), () => new IqlBinaryExpressionReducer());
             Register(typeof(IqlIsNotEqualToExpression), () => new IqlIsNotEqualToExpressionReducer());
