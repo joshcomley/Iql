@@ -95,6 +95,12 @@ namespace Iql.Queryable.Data.Tracking
 
         public IEntityStateBase GetEntityState(object entity)
         {
+            var result = TryGetEntityState(entity);
+            return result?.State;
+        }
+
+        private IEntityStateBase GetOrSetEntityState(object entity)
+        {
             if (entity is CompositeKey)
             {
                 return GetEntityStateByKey((CompositeKey)entity);
@@ -126,8 +132,7 @@ namespace Iql.Queryable.Data.Tracking
 
         private bool HasEntityState(object entity)
         {
-            var existingEntityState = TryGetEntityState(entity);
-            return existingEntityState != null && existingEntityState.State != null;
+            return GetEntityState(entity) != null;
         }
 
         class TryGetEntityStateResult
@@ -180,7 +185,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public void MarkForDelete(object entity)
         {
-            var entityState = GetEntityState(entity);
+            var entityState = GetOrSetEntityState(entity);
             entityState.MarkedForDeletion = true;
             //if (entityState.MarkedForDeletion || entityState.MarkedForCascadeDeletion || entityState.IsNew)
             //{
@@ -228,7 +233,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public void RemoveEntity(T entity)
         {
-            var state = GetEntityState(entity);
+            var state = GetOrSetEntityState(entity);
             RemoveEntityByKey(state.CurrentKey);
             entity = (T)state.Entity;
             if (_entityObservers.ContainsKey(entity))
@@ -251,7 +256,7 @@ namespace Iql.Queryable.Data.Tracking
 
         public void ResetEntity(object entity)
         {
-            Reset(GetEntityState(entity));
+            Reset(GetOrSetEntityState(entity));
         }
 
         public void Reset(IEntityStateBase state)
@@ -278,7 +283,7 @@ namespace Iql.Queryable.Data.Tracking
 
             if (!_entityObservers.ContainsKey(sourceEntity))
             {
-                var observer = new EntityObserver(GetEntityState(entity));
+                var observer = new EntityObserver(GetOrSetEntityState(entity));
                 _entityObservers.Add(sourceEntity, observer);
                 observer.RegisterMarkForDeletionChanged(MarkedForDeletionChanged);
                 observer.RegisterPropertyChanging(EntityPropertyChanging);
@@ -388,7 +393,7 @@ namespace Iql.Queryable.Data.Tracking
                         {
                             if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
                             {
-                                var entityState = GetEntityState(propertyChange.Entity);
+                                var entityState = GetOrSetEntityState(propertyChange.Entity);
                                 if (entityState.IsNew)
                                 {
                                     var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
@@ -419,7 +424,7 @@ namespace Iql.Queryable.Data.Tracking
                property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
                property.Kind.HasFlag(PropertyKind.Primitive))
             {
-                var entityState = GetEntityState(propertyChange.Entity);
+                var entityState = GetOrSetEntityState(propertyChange.Entity);
                 var propertyState = entityState.GetPropertyState(property.Name);
                 propertyState.NewValue = propertyChange.NewValue;
             }
@@ -473,7 +478,7 @@ namespace Iql.Queryable.Data.Tracking
                 //    // TODO: Check if entity key is marked as remotely generated
                 //}
             }
-            var entityState = GetEntityState(entity);
+            var entityState = GetOrSetEntityState(entity);
             if (!hadEntityState && isNew)
             {
                 entityState.IsNew = true;
@@ -696,7 +701,7 @@ namespace Iql.Queryable.Data.Tracking
             var inserts = new List<AddEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
             {
-                var entityState = GetEntityState(entity);
+                var entityState = GetOrSetEntityState(entity);
                 if (entityState.IsNew && !entityState.MarkedForAnyDeletion && entityState.IsInsertable())
                 {
                     inserts.Add(new AddEntityOperation<T>((T)entity, DataContext));
@@ -710,7 +715,7 @@ namespace Iql.Queryable.Data.Tracking
             var deletions = new List<DeleteEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
             {
-                var entityState = GetEntityState(entity);
+                var entityState = GetOrSetEntityState(entity);
                 if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
                 {
                     deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, DataContext));
@@ -734,7 +739,7 @@ namespace Iql.Queryable.Data.Tracking
             var updates = new List<UpdateEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
             {
-                var entityState = GetEntityState(entity);
+                var entityState = GetOrSetEntityState(entity);
                 if (!entityState.IsNew &&
                     !entityState.MarkedForAnyDeletion &&
                     entityState.GetChangedProperties().Any())
