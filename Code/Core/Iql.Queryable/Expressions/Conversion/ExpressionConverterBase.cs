@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
+using Iql.Queryable.Data.EntityConfiguration;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -11,6 +12,7 @@ namespace Iql.Queryable.Expressions.Conversion
 {
     public abstract class ExpressionConverterBase : IExpressionConverter
     {
+        public IEntityConfigurationBuilder ConfigurationBuilder { get; set; }
         public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter) where TEntity : class;
         public abstract ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression filter
 #if TypeScript
@@ -22,6 +24,16 @@ namespace Iql.Queryable.Expressions.Conversion
         {
             ConvertLambdaExpressionToIqlByTypeMethod = typeof(ExpressionConverterBase)
                 .GetMethod(nameof(ConvertLambdaExpressionToIqlByType));
+        }
+
+        protected ExpressionConverterBase(IEntityConfigurationBuilder entityConfigurationBuilder = null)
+        {
+            ConfigurationBuilder = entityConfigurationBuilder;
+        }
+
+        protected IEntityConfigurationBuilder ResolvEntityConfigurationBuilder(Type type)
+        {
+            return ConfigurationBuilder ?? EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(type);
         }
 
         public static MethodInfo ConvertLambdaExpressionToIqlByTypeMethod { get; set; }
@@ -62,9 +74,23 @@ namespace Iql.Queryable.Expressions.Conversion
             , EvaluateContext evaluateContext
 #endif
         ) where TEntity : class;
-        public abstract string ConvertIqlToExpressionString(IqlExpression expression
+
+        public string ConvertIqlToExpressionString<TEntity>(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return ConvertIqlToExpressionStringByType(expression, typeof(TEntity)
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        public abstract string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEntityType
+#if TypeScript
+            , EvaluateContext evaluateContext = null
 #endif
         );
     }

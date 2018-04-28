@@ -9,9 +9,13 @@ namespace Iql.OData.QueryableApplicator.Applicators
         {
             var orderBy =
                 ODataQueryableAdapter.GetExpression(
-                    context.Operation, 
+                    context.Operation.Expression, 
                     context.DataContext.EntityConfigurationContext,
-                    context.Queryable.ItemType);
+                    context.Queryable.ItemType
+#if TypeScript
+                    , context.Operation.EvaluateContext
+#endif
+                    );
             if (context.Operation.IsDescending())
             {
                 orderBy = orderBy + " desc";

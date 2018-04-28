@@ -50,5 +50,7 @@ namespace Iql
         Count,
         TimeSpan
 //        Lambda
+        ,
+        Expand
     }
 }

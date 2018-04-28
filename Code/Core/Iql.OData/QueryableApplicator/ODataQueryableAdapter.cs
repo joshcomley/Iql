@@ -1,6 +1,9 @@
 ﻿using System;
 using Iql.OData.IqlToODataExpression;
 using Iql.OData.QueryableApplicator.Applicators;
+#if TypeScript
+using Iql.Parsing;
+#endif
 using Iql.Queryable;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Queryable;
@@ -26,17 +29,20 @@ namespace Iql.OData.QueryableApplicator
         }
 
         public static string GetExpression(
-            IExpressionQueryOperation operation,
-            EntityConfigurationBuilder entityConfigurationContext,
+            IqlExpression expression,
+            IEntityConfigurationBuilder entityConfigurationContext,
             Type rootEntityType
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
         )
         {
             return new ODataIqlParserInstance(
                     new ODataIqlExpressionAdapter(),
                     rootEntityType)
-                .Parse(operation.Expression
+                .Parse(expression
 #if TypeScript
-                , operation.EvaluateContext
+                , evaluateContext
 #endif
                 ).ToCodeString();
         }

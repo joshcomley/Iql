@@ -27,7 +27,7 @@ namespace Iql.Tests.Tests.Serialization
             var xml = IqlSerializer.SerializeToXml(
                 expression);
             var iqlExpression = IqlSerializer.DeserializeFromXml(xml);
-            var code = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToExpressionString(iqlExpression);
+            var code = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToExpressionString<Client>(iqlExpression);
             Assert.AreEqual(
                 expected,
                 code

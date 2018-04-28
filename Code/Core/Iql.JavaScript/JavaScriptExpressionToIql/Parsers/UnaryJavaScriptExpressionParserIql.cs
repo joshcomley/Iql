@@ -17,6 +17,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             {
                 case OperatorType.Subtract:
                     return new IqlParseResult(new IqlUnarySubtractExpression(value));
+                case OperatorType.Not:
+                    return new IqlParseResult(new IqlIsEqualToExpression(value, new IqlLiteralExpression(false, IqlType.Boolean)));
             }
             return new IqlParseResult(value);
         }

@@ -22,11 +22,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
-        public IEntityConfigurationBuilder ConfigurationBuilder { get; set; }
-
-        public JavaScriptExpressionConverter(IEntityConfigurationBuilder entityConfigurationBuilder = null)
+        public JavaScriptExpressionConverter(IEntityConfigurationBuilder entityConfigurationBuilder = null) : base(entityConfigurationBuilder)
         {
-            ConfigurationBuilder = entityConfigurationBuilder;
         }
         public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>
         (
@@ -72,7 +69,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         ) where TEntity : class
         {
             var iql = ConvertJavaScriptStringToIql<TEntity>(code);
-            var javascript = ConvertIqlToExpressionString(iql.Expression
+            var javascript = ConvertIqlToExpressionStringByType(iql.Expression, typeof(TEntity)
 #if TypeScript
             , evaluateContext
 #endif
@@ -112,8 +109,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             expressionResult.Expression = expression2(null);
             
             // Now try to correct any property types
-            var entityConfigurationBuilder = ConfigurationBuilder ??
-                               EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(typeof(TEntity));
+            var entityConfigurationBuilder = ResolvEntityConfigurationBuilder(typeof(TEntity));
             if (entityConfigurationBuilder != null)
             {
                 var entityConfig = entityConfigurationBuilder.EntityType<TEntity>();
@@ -222,7 +218,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             ).Expression);
         }
 
-        public override string ConvertIqlToExpressionString(IqlExpression expression
+        public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEntityType
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

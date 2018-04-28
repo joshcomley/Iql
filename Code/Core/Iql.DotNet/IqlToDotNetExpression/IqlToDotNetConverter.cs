@@ -1,8 +1,7 @@
+using System;
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNetString;
-using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
-
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -28,7 +27,8 @@ namespace Iql.DotNet.IqlToDotNetExpression
             return dotNetExpression.ToLambda();
         }
 
-        public string ConvertIqlToExpressionString(IqlExpression iql
+        public string ConvertIqlToExpressionStringByType(IqlExpression iql,
+            Type rootEntityType
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
@@ -43,6 +43,19 @@ namespace Iql.DotNet.IqlToDotNetExpression
 #endif
             );
             return $"{adapter.RootVariableName} => {dotNetExpression.Expression}";
+        }
+
+        public string ConvertIqlToExpressionString<TEntity>(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
+        {
+            return ConvertIqlToExpressionStringByType(expression, typeof(TEntity)
+#if TypeScript
+            , evaluateContext
+#endif
+            );
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Iql.JavaScript.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators;
@@ -308,7 +309,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 // Char code 46 is a dot `.` which can start off a numeric literal
                 return ReadNumericLiteral();
             }
-            if (ch == JavaScriptParserSettings.SingleQuote || ch == JavaScriptParserSettings.DoubleQuote || ch == JavaScriptParserSettings.DashQuote)
+            if (IsQuoteChar(ch))
             {
                 // Single or double quotes
                 return ReadStringLiteral();
@@ -337,6 +338,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             }
 
             return null;
+        }
+
+        private static bool IsQuoteChar(int ch)
+        {
+            return ch == JavaScriptParserSettings.SingleQuote || ch == JavaScriptParserSettings.DoubleQuote || ch == JavaScriptParserSettings.DashQuote;
         }
 
         // Parse simple numeric literals: `12`, `3.4`, `.5`. Do this by using a string to
@@ -515,6 +521,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             while (_index < _length)
             {
                 ReadSpaces();
+                var fromHere = this._expr.Substring(_index);
+                if (fromHere.IndexOf("function") == 0 && Regex.IsMatch(fromHere, "^function\\s*(\\{|[^,])"))
+                {
+                    args.Add(ReadEs5Function());
+                    continue;
+                }
                 var chI = ExprICode(_index);
                 if (chI == termination)
                 {
@@ -543,6 +555,64 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 JavaScriptParserSettings.ThrowError(_expr, "Expected " + termination, _index);
             }
             return args;
+        }
+
+        private JavaScriptExpressionNode ReadEs5Function()
+        {
+            var start = _index;
+            _index += "function".Length;
+            ReadSpaces();
+            
+            _index = FindClose('(', ')', _index);
+            _index++;
+            ReadSpaces();
+            _index = FindClose('{', '}', _index);
+            _index++;
+            var method = _expr.Substring(start, _index - start);
+            var body = JavaScriptCodeExtractor.ExtractBody(method);
+            var subParser = new JavaScriptExpressionStringToExpressionTreeParser(body.Body, _settings, false);
+            var node = subParser.Parse();
+            return new LambdaJavaScriptExpressionNode(body.ParameterNames[0], node);
+        }
+
+        private int FindClose(char open, char close, int index)
+        {
+            int depth = 0;
+            while (true)
+            {
+                var ch = ExprICode(index);
+                if (ch == open)
+                {
+                    depth++;
+                }
+                else if (ch == close)
+                {
+                    depth--;
+                }
+                else if (IsQuoteChar(ch))
+                {
+                    var openString = ch;
+                    var lastChar = ch;
+                    while (true)
+                    {
+                        index++;
+                        ch = ExprICode(index);
+                        if (ch == openString && lastChar != '\\')
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (depth == 0)
+                {
+                    break;
+                }
+
+                index++;
+            }
+
+            return index;
         }
 
         // Read a non-literal variable name. This variable name may include properties

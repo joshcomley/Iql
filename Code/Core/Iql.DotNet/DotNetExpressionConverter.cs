@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Iql.DotNet.DotNetExpressionToIql;
 using Iql.DotNet.IqlToDotNetExpression;
+using Iql.Queryable.Data.EntityConfiguration;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -54,17 +55,21 @@ namespace Iql.DotNet
             );
         }
 
-        public override string ConvertIqlToExpressionString(IqlExpression iql
+        public override string ConvertIqlToExpressionStringByType(IqlExpression iql, Type rootEntityType
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
         )
         {
-            return new IqlToDotNetConverter().ConvertIqlToExpressionString(iql
+            return new IqlToDotNetConverter().ConvertIqlToExpressionStringByType(iql, rootEntityType
 #if TypeScript
                 , evaluateContext
 #endif
             );
+        }
+
+        public DotNetExpressionConverter(IEntityConfigurationBuilder entityConfigurationBuilder = null) : base(entityConfigurationBuilder)
+        {
         }
     }
 }

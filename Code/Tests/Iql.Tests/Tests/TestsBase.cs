@@ -39,6 +39,8 @@ namespace Iql.Tests.Tests
         [TestInitialize]
         public void TestInitialize()
         {
+            // Boot
+            var c = Db.EntityConfigurationContext;
         }
 
         [TestCleanup]

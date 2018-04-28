@@ -33,6 +33,12 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 return dateTimeOffset.ToString("o");
             }
 
+            if (value is bool)
+            {
+                var b = (bool)value;
+                return b ? "true" : "false";
+            }
+
             return value == null ? "null" : value.ToString();
         }
     }

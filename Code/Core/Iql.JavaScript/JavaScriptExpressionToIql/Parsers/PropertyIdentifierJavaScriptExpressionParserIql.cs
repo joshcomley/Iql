@@ -51,13 +51,25 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 if (propertyType == null)
                 {
                     var entityConfig = EntityConfigurationBuilder.FindConfigurationForEntityType(typeof(T));
-                    if (entityConfig != null && parent is IqlPropertyExpression)
+                    if (entityConfig != null)
                     {
-                        var path = IqlPropertyPath.FromPropertyExpression(entityConfig, parent as IqlPropertyExpression);
-                        if (path != null && path.Property != null && path.Property.TypeDefinition != null)
+                        IProperty configuredProperty = null;
+                        if (parent is IqlPropertyExpression)
                         {
-                            propertyType = path.Property.TypeDefinition.Type;
-                            if (path.Property.TypeDefinition.IsCollection)
+                            var path = IqlPropertyPath.FromPropertyExpression(entityConfig, parent as IqlPropertyExpression);
+                            if (path != null && path.Property != null && path.Property.TypeDefinition != null)
+                            {
+                                configuredProperty = path.Property;
+                            }
+                        }
+                        else if (parent is IqlRootReferenceExpression)
+                        {
+                            configuredProperty = entityConfig.FindProperty(expression.Name);
+                        }
+                        if (configuredProperty != null)
+                        {
+                            propertyType = configuredProperty.TypeDefinition.Type;
+                            if (configuredProperty.TypeDefinition.IsCollection)
                             {
                                 propertyType = typeof(IEnumerable);
                             }

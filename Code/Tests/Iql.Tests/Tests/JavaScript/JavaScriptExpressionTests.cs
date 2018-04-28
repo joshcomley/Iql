@@ -3,19 +3,15 @@ using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 #endif
-using System.Linq;
 using System.Threading.Tasks;
 #if !TypeScript
-using Iql.DotNet.Serialization;
 #endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.JavaScript.QueryableApplicator;
-using Iql.OData.Json;
+using Iql.OData;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Tests.Context;
-using Iql.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.JavaScript
@@ -51,13 +47,52 @@ namespace Iql.Tests.Tests.JavaScript
         }
 
         [TestMethod]
+        public void TestMinifiedLambda()
+        {
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
+                "function(t) { return 1 == t.IsLockedOut }");
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression
+#if TypeScript
+            , null
+#endif
+            );
+            Assert.AreEqual(@"(true eq $it/IsLockedOut)", odataFilter);
+        }
+
+        [TestMethod]
+        public void TestEqualsEqualsEquals()
+        {
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
+                "function(t) { return t.IsLockedOut === true }");
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression);
+            Assert.AreEqual(@"($it/IsLockedOut eq true)", odataFilter);
+        }
+
+        [TestMethod]
+        public void TestUnaryNot()
+        {
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
+                "function(t) { return !t.IsLockedOut }");
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression);
+            Assert.AreEqual(@"($it/IsLockedOut eq false)", odataFilter);
+        }
+
+        [TestMethod]
+        public void TestUnarySequenceOfNots()
+        {
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
+                "function(t) { return !!!!!t.IsLockedOut }");
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression);
+            Assert.AreEqual(@"((((($it/IsLockedOut eq false) eq false) eq false) eq false) eq false)", odataFilter);
+        }
+
+        [TestMethod]
         public void TestNestedLambdas()
         {
             //var iql1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
             //    "p => p.Title == `Test` || p.Title == `Test2`");
             //var iql2 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
             //    "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == `Kettle`).length > 0))");
-            var configurationContext = Db.EntityConfigurationContext;
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
                 "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))");
             Assert.AreEqual(
@@ -95,12 +130,12 @@ namespace Iql.Tests.Tests.JavaScript
             var js1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
                 jsString);
 
-//            var js = new JavaScriptExpressionConverter().ConvertLambdaToJavaScript<Person>(
-//                p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle")
-//#if TypeScript
-//            , null
-//#endif
-//                     );
+            //            var js = new JavaScriptExpressionConverter().ConvertLambdaToJavaScript<Person>(
+            //                p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle")
+            //#if TypeScript
+            //            , null
+            //#endif
+            //                     );
             Assert.AreEqual(@"function(entity) { return (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length) > 0)); }",
                 js1);
             //Assert.AreEqual(@"entity => (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length) > 0))",
@@ -136,7 +171,7 @@ namespace Iql.Tests.Tests.JavaScript
             ConverterConfig.Init();
             var db = new AppDbContext();
             var iqlExpression = new IqlIsEqualToExpression(
-                IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)), 
+                IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)),
                 new IqlLiteralExpression("a"));
             var js = db.GetJavaScriptWhereQuery(iqlExpression);
             Assert.AreEqual(js.Expression, @"((entity || {})[""Id""] == 'a')");

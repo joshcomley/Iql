@@ -11,6 +11,8 @@ namespace Iql.Queryable.Expressions.QueryExpressions
     public class ExpandQueryExpression
         : ExpressionQueryExpression, IExpandQueryExpression
     {
+        private Func<IQueryableBase, IQueryableBase> _queryable;
+
         public ExpandQueryExpression(
             LambdaExpression expression,
             Func<IQueryableBase, IQueryableBase> queryable = null
@@ -27,15 +29,10 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             Queryable = queryable;
         }
 
-        public Func<IQueryableBase, IQueryableBase> Queryable { get; set; }
-
-        public Func<IQueryableBase, IQueryableBase> GetQueryable()
+        public Func<IQueryableBase, IQueryableBase> Queryable
         {
-            if (Queryable == null)
-            {
-                return q => q;
-            }
-            return q => Queryable(q);
+            get { return _queryable ?? (_queryable = q => q); }
+            set => _queryable = value;
         }
     }
 }

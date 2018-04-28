@@ -200,7 +200,7 @@ namespace Iql.Queryable.Data.Queryable
             }
             if (expandExpression != null)
             {
-                detail.TargetQueryable = expandExpression.GetQueryable()(detail.TargetQueryable);
+                detail.TargetQueryable = expandExpression.Queryable(detail.TargetQueryable);
             }
 
             return detail.TargetQueryable.ItemType;

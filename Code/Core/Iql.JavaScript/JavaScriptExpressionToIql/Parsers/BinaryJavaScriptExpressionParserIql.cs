@@ -22,7 +22,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             {
                 return new IqlParseResult(left.Parent);
             }
+            // If the javascript has been minified, we might end up with an expression like this:
+            // function(t) { return 1 == t.SomeBooleanField; }
             var right = context.ParseRight().Value;
+            if (left.ReturnType == IqlType.Boolean || right.ReturnType == IqlType.Boolean)
+            {
+                CheckBoolean(left);
+                CheckBoolean(right);
+            }
             IqlExpression exp = null;
             switch (expression.Operator)
             {
@@ -102,6 +109,31 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             return new IqlParseResult(
                 exp
             );
+        }
+
+        private static void CheckBoolean(IqlExpression right)
+        {
+            var iqlExpression = right;
+            if (iqlExpression is IqlLiteralExpression)
+            {
+                var lit = iqlExpression as IqlLiteralExpression;
+                if (Equals(null, lit.Value))
+                {
+                    return;
+                }
+                // Use ToString because in .NET the number might be decimal, int, float etc. so a
+                // typed comparison would be convoluted
+                if (Equals(lit.Value.ToString(), "0"))
+                {
+                    lit.Value = false;
+                    lit.ReturnType = IqlType.Boolean;
+                }
+                else if (Equals(lit.Value.ToString(), "1"))
+                {
+                    lit.Value = true;
+                    lit.ReturnType = IqlType.Boolean;
+                }
+            }
         }
     }
 }

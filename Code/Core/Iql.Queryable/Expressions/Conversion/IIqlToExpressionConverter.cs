@@ -1,6 +1,7 @@
 #if TypeScript
 using Iql.Parsing;    
 #endif
+using System;
 using System.Linq.Expressions;
 
 namespace Iql.Queryable.Expressions.Conversion
@@ -14,7 +15,14 @@ namespace Iql.Queryable.Expressions.Conversion
         )
             where TEntity : class;
 
-        string ConvertIqlToExpressionString(IqlExpression expression
+        string ConvertIqlToExpressionStringByType(IqlExpression expression,
+            Type rootEntityType
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        );
+
+        string ConvertIqlToExpressionString<TEntity>(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

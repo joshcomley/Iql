@@ -5,6 +5,6 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 {
     public interface IExpandQueryExpression
     {
-        Func<IQueryableBase, IQueryableBase> GetQueryable();
+        Func<IQueryableBase, IQueryableBase> Queryable { get; }
     }
 }

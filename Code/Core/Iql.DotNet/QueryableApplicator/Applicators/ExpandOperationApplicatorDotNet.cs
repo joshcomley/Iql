@@ -40,7 +40,7 @@ namespace Iql.DotNet.QueryableApplicator.Applicators
                 // TODO: Support multiple constraints
                 //var targetData = dotNetQueryResult.DataSetByType(targetType);
                 var targetExpression = expand.GetExpression() as IExpandQueryExpression;
-                var targetQueryable = targetExpression.GetQueryable();
+                var targetQueryable = targetExpression.Queryable;
                 var target = targetQueryable(context.DataContext.AsDbSetByType(targetType));
                 var targetQuery = (IDotNetQueryResult)target.ToQueryWithAdapterBase(
                     new DotNetQueryableAdapter(), 
