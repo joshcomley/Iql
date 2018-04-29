@@ -143,25 +143,25 @@ namespace Iql.Queryable.Data.DataStores
             return entityState;
         }
 
-        public virtual async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
+        public virtual async Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
+        public virtual async Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
+        public virtual async Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
+        public virtual async Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class
         {
             if (!operation.Queryable.HasDefaults)
@@ -204,7 +204,7 @@ namespace Iql.Queryable.Data.DataStores
 
             var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
             // perform get and set up tracking on the objects
-            await PerformGet(new QueuedGetDataOperation<TEntity>(
+            await PerformGetAsync(new QueuedGetDataOperation<TEntity>(
                 operation,
                 response));
 
@@ -328,7 +328,7 @@ namespace Iql.Queryable.Data.DataStores
             }
         }
 
-        public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
+        public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
             where TEntity : class
         {
@@ -407,7 +407,7 @@ namespace Iql.Queryable.Data.DataStores
                             await CheckNotAlreadyExistsAsync(addEntityOperation))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
-                        result = await PerformAdd(addEntityOperation);
+                        result = await PerformAddAsync(addEntityOperation);
 
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
@@ -440,7 +440,7 @@ namespace Iql.Queryable.Data.DataStores
                     }
                     else if (isEntityNew != null && CheckPendingDependencies(updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
-                        result = await PerformUpdate(updateEntityOperation);
+                        result = await PerformUpdateAsync(updateEntityOperation);
                         var operationEntity = updateEntityOperation
                             .Operation
                             .Entity;
@@ -460,12 +460,13 @@ namespace Iql.Queryable.Data.DataStores
                                 }
                                 tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
                             });
-                        }
-                        await DataContext.RefreshEntity(operationEntity
+                            // TODO: Should be able to refresh an entity yet maintain existing changes
+                            await DataContext.RefreshEntity(operationEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                        );
+                            );
+                        }
                         //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
                     }
 
@@ -488,7 +489,7 @@ namespace Iql.Queryable.Data.DataStores
                     }
                     else if (entityNew != null || deleteEntityOperation.Key != null)
                     {
-                        result = await PerformDelete(deleteEntityOperation);
+                        result = await PerformDeleteAsync(deleteEntityOperation);
                         if (result.Success)
                         {
                             ForAnEntityAcrossAllDataStores<TEntity>(deleteEntityOperation.Operation.Key, (dataTracker, key) =>

@@ -39,7 +39,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
 
-        public override Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
+        public override Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
             var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
@@ -152,7 +152,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             );
         }
 
-        public override Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
+        public override Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation)
         {
             var index = FindEntityIndexFromOperation(operation.Operation);
@@ -165,7 +165,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             return Task.FromResult(operation.Result);
         }
 
-        public override Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
+        public override Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation)
         {
             var index = FindEntityIndexFromDeleteOperation(operation.Operation);
@@ -187,7 +187,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             return index;
         }
 
-        public override Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        public override Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
             var q = (IInMemoryResult)
                 operation.Operation.Queryable.ToQueryWithAdapterBase(

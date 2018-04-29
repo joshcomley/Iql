@@ -188,7 +188,7 @@ namespace Iql.OData
             return baseUri;
         }
 
-        public override Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(
+        public override Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
             var fullQueryUri = ResolveODataQueryUri(operation.Operation.Queryable);
@@ -348,7 +348,7 @@ namespace Iql.OData
             }
         }
 
-        public override async Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(
+        public override async Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
             var configuration = Configuration;
@@ -363,7 +363,7 @@ namespace Iql.OData
             return operation.Result;
         }
 
-        public override async Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(
+        public override async Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation)
         {
             var configuration = Configuration;
@@ -389,7 +389,7 @@ namespace Iql.OData
             return operation.Result;
         }
 
-        public override async Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(
+        public override async Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation)
         {
             var configuration = Configuration;
@@ -504,27 +504,24 @@ namespace Iql.OData
                                         }
                                         var relationshipCollectionEntityValidationResult =
                                             new EntityValidationResult<TEntity>(entity);
-                                        if (!relationshipCollectionValidationResult.RelationshipValidationResults
-                                            .ContainsKey(index))
+                                        var match = relationshipCollectionValidationResult.RelationshipValidationResults
+                                            .FirstOrDefault(r => r.Index == index);
+                                        if (match == null)
                                         {
                                             var relationshipValidationResult = new RelationshipValidationResult<TEntity>(
                                                 relationshipEntityType, entity,
                                                 relationshipCollectionEntityValidationResult, property);
-                                            relationshipCollectionValidationResult.RelationshipValidationResults.Add(index,
-                                                relationshipValidationResult);
+                                            relationshipCollectionValidationResult.RelationshipValidationResults
+                                            .Add(new RelationshipCollectionValidationResultItem<TEntity>(relationshipValidationResult, index));
                                             currentError = relationshipValidationResult.EntityValidationResult;
                                         }
                                         else
                                         {
-                                            currentError = relationshipCollectionValidationResult
-                                                .RelationshipValidationResults[index].EntityValidationResult;
+                                            currentError = match.ValidationResult.EntityValidationResult;
                                         }
                                         currentEntityType = relationshipEntityType;
                                     }
-                                    else
-                                    {
-                                        AddPropertyError(currentError, property, entity, detail);
-                                    }
+                                    AddPropertyError(currentError, property, entity, detail);
                                 }
                                 else
                                 {
@@ -540,6 +537,7 @@ namespace Iql.OData
                                         currentError.RelationshipValidationResults.Add(relationshipValidationResult);
                                         relationshipValidationResult.EntityValidationResult =
                                             new EntityValidationResult<TEntity>(entity);
+                                        AddPropertyError(currentError, property, entity, detail);
                                         currentError = relationshipValidationResult.EntityValidationResult;
                                         currentEntityType = relationshipEntityType;
                                     }
@@ -569,8 +567,12 @@ namespace Iql.OData
             var propertyError = currentError.PropertyValidationResults.FirstOrDefault(p => p.Property == property);
             if (propertyError == null)
             {
-                propertyError = new PropertyValidationResult<TEntity>(currentEntity, property);
-                currentError.AddPropertyValidationResult(propertyError);
+                propertyError = currentError.RelationshipValidationResults.FirstOrDefault(p => p.Property == property);
+                if (propertyError == null)
+                {
+                    propertyError = new PropertyValidationResult<TEntity>(currentEntity, property);
+                    currentError.AddPropertyValidationResult(propertyError);
+                }
             }
             propertyError.AddFailure(detail.code, detail.message);
         }

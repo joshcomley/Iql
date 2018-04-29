@@ -27,25 +27,25 @@ namespace Iql.Queryable.Data.DataStores
         IEntityStateBase Delete(object entity);
 #endif
 
-        Task<AddEntityResult<TEntity>> PerformAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation)
+        Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation)
             where TEntity : class;
 
         //EntityState<TEntity> Update<TEntity>(TEntity entity)
         //    where TEntity : class;
 
-        Task<UpdateEntityResult<TEntity>> PerformUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation)
+        Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(QueuedUpdateEntityOperation<TEntity> operation)
             where TEntity : class;
 
         EntityState<TEntity> Delete<TEntity>(TEntity entity)
             where TEntity : class;
 
-        Task<DeleteEntityResult<TEntity>> PerformDelete<TEntity>(QueuedDeleteEntityOperation<TEntity> operation)
+        Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation)
             where TEntity : class;
 
-        Task<GetDataResult<TEntity>> Get<TEntity>(GetDataOperation<TEntity> operation)
+        Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class;
 
-        Task<FlattenedGetDataResult<TEntity>> PerformGet<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
             where TEntity : class;
 
         Task<SaveChangesResult> SaveChangesAsync(SaveChangesOperation operation);
