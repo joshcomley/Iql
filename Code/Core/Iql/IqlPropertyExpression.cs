@@ -6,14 +6,14 @@ namespace Iql
             string propertyName = null,
             IqlReferenceExpression parent = null,
             IqlType propertyType = IqlType.Unknown) : base(
-            IqlExpressionType.Property,
+            IqlExpressionKind.Property,
             propertyType,
             parent)
         {
             PropertyName = propertyName;
         }
 
-        public IqlPropertyExpression() : base(IqlExpressionType.Property, IqlType.Unknown)
+        public IqlPropertyExpression() : base(IqlExpressionKind.Property, IqlType.Unknown)
         {
 
         }

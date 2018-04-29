@@ -4,9 +4,9 @@ namespace Iql
     {
         protected IqlParentValueExpression(IqlReferenceExpression parent,
             IqlExpression value,
-            IqlExpressionType type,
+            IqlExpressionKind kind,
             IqlType returnType)
-            : base(type, returnType, parent)
+            : base(kind, returnType, parent)
         {
             Value = value;
         }

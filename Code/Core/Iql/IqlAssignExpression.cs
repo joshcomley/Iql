@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlAssignExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.Assign, left, right)
+            IqlExpression right) : base(IqlExpressionKind.Assign, left, right)
         {
         }
 

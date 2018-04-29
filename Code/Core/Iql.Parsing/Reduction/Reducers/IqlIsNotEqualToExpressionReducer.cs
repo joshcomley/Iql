@@ -13,9 +13,9 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             expression.Left = reducer.ReduceStaticContent(expression.Left);
             expression.Right = reducer.ReduceStaticContent(expression.Right);
-            if (expression.Left.Type == IqlExpressionType.Has)
+            if (expression.Left.Kind == IqlExpressionKind.Has)
             {
-                if (expression.Right.Type == IqlExpressionType.Literal &&
+                if (expression.Right.Kind == IqlExpressionKind.Literal &&
                     expression.Right is IqlLiteralExpression && 
                     Equals((expression.Right as IqlLiteralExpression).Value, 0))
                 {

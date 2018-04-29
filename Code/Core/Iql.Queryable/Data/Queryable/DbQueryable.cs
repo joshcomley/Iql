@@ -9,11 +9,13 @@ using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Data.Tracking.State;
+using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
@@ -451,6 +453,26 @@ namespace Iql.Queryable.Data.Queryable
         public override DbQueryable<T> OrderByDefault(bool descending = false)
         {
             return this.OrderByProperty(EntityConfiguration.ResolveSearchProperties().First().Name, descending);
+        }
+
+        public override async Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
+        {
+            expressionConverter = expressionConverter ?? IqlQueryableAdapter.ExpressionConverter();
+            var queryExpression = new IqlQueryExpression();
+            for (var i = 0; i < Operations.Count; i++)
+            {
+                var operation = Operations[i];
+                if (operation is OrderByOperation ||
+                    operation is WhereOperation ||
+                    operation is IExpandOperation)
+                {
+                    var expressionQueryOperation = operation as IExpressionQueryOperation;
+                    //expressionQueryOperation.Expression = expressionQueryOperation.Expression ?? 
+                    //    expressionQueryOperation.GetExpression();
+                }
+            }
+
+            return queryExpression;
         }
 
         public override async Task<DbList<T>> ToListAsync()

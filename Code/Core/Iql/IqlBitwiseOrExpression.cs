@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlBitwiseOrExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.BitwiseOr, left, right)
+            IqlExpression right) : base(IqlExpressionKind.BitwiseOr, left, right)
         {
         }
 

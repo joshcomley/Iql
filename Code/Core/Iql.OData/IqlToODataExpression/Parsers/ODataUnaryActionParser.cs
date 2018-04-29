@@ -15,12 +15,12 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         public string ResolveOperator(IqlUnaryExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.UnarySubtract:
+                case IqlExpressionKind.UnarySubtract:
                     return "-";
                 default:
-                    ODataErrors.OperationNotSupported(action.Type);
+                    ODataErrors.OperationNotSupported(action.Kind);
                     break;
             }
             return null;

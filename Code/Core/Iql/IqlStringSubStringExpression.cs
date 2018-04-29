@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlStringSubStringExpression(IqlReferenceExpression parent, IqlReferenceExpression value,
             IqlReferenceExpression take) :
-            base(parent, value, IqlExpressionType.StringSubString, IqlType.String)
+            base(parent, value, IqlExpressionKind.StringSubString, IqlType.String)
         {
             Take = take;
         }

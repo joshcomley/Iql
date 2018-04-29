@@ -5,7 +5,7 @@ namespace Iql
     public class IqlQueryExpression : IqlExpression
     {
         public IqlQueryExpression(IqlExpression parent = null)
-            : base(IqlExpressionType.Query, IqlType.Collection, parent) { }
+            : base(IqlExpressionKind.Query, IqlType.Collection, parent) { }
 
         public IqlQueryExpression() : this(null)
         {

@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlDivideEqualsExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.DivideEquals, left, right)
+            IqlExpression right) : base(IqlExpressionKind.DivideEquals, left, right)
         {
         }
 

@@ -1,6 +1,6 @@
 namespace Iql
 {
-    public enum IqlExpressionType
+    public enum IqlExpressionKind
     {
         Aggregate,
         Parenthesis,

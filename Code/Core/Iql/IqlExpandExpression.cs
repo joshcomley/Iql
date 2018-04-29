@@ -8,7 +8,7 @@
             
         }
 #endif
-        public IqlExpandExpression(IqlExpression parent = null) : base(IqlExpressionType.Expand, IqlType.Collection, parent)
+        public IqlExpandExpression(IqlExpression parent = null) : base(IqlExpressionKind.Expand, IqlType.Collection, parent)
         {
         }
 

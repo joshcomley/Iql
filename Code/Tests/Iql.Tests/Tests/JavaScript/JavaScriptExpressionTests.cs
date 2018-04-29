@@ -26,17 +26,17 @@ namespace Iql.Tests.Tests.JavaScript
                     new IqlPropertyExpression
                     {
                         PropertyName = "NumberOfKeys",
-                        Type = IqlExpressionType.Property,
+                        Kind = IqlExpressionKind.Property,
                         ReturnType = IqlType.Unknown,
                         Parent = new IqlPropertyExpression
                         {
                             PropertyName = "Piano",
-                            Type = IqlExpressionType.Property,
+                            Kind = IqlExpressionKind.Property,
                             ReturnType = IqlType.Unknown,
                             Parent = new IqlRootReferenceExpression
                             {
                                 VariableName = "p",
-                                Type = IqlExpressionType.RootReference,
+                                Kind = IqlExpressionKind.RootReference,
                                 ReturnType = IqlType.Unknown
                             }
                         }

@@ -7,7 +7,7 @@ namespace Iql
     {
         public IqlAggregateExpression(
             params IqlExpression[] expressions)
-            : base(IqlExpressionType.Aggregate)
+            : base(IqlExpressionKind.Aggregate)
         {
             Expressions = expressions.ToList();
         }

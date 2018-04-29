@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlAddExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.Add, left, right)
+            IqlExpression right) : base(IqlExpressionKind.Add, left, right)
         {
         }
 

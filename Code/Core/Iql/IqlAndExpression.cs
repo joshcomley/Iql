@@ -5,7 +5,7 @@ namespace Iql
         public IqlAndExpression(
             IqlExpression left,
             IqlExpression right) :
-            base(IqlExpressionType.And, left, right)
+            base(IqlExpressionKind.And, left, right)
         {
         }
 

@@ -32,12 +32,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             var iqlReferenceExpression = callee.Value as IqlReferenceExpression;
             IqlExpression method = null;
             string nativeMethodName = null;
-            switch (iqlReferenceExpression.Type)
+            switch (iqlReferenceExpression.Kind)
             {
-                case IqlExpressionType.Literal:
+                case IqlExpressionKind.Literal:
                     nativeMethodName = (iqlReferenceExpression as IqlLiteralExpression).Value.ToString();
                     break;
-                case IqlExpressionType.Property:
+                case IqlExpressionKind.Property:
                     nativeMethodName = (iqlReferenceExpression as IqlPropertyExpression).PropertyName;
                     break;
                 default:

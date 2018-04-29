@@ -3,7 +3,7 @@ namespace Iql
     public abstract class IqlUnaryExpression : IqlExpression
     {
         protected IqlUnaryExpression(
-            object value, IqlExpressionType type) : base(type)
+            object value, IqlExpressionKind kind) : base(kind)
         {
             Value = value;
         }

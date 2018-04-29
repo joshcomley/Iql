@@ -5,7 +5,7 @@ namespace Iql
         public IqlAllExpression(
             string rootVariableName,
             IqlReferenceExpression parent,
-            IqlExpression expression) : base(rootVariableName, IqlExpressionType.All, parent, expression)
+            IqlExpression expression) : base(rootVariableName, IqlExpressionKind.All, parent, expression)
         {
         }
 

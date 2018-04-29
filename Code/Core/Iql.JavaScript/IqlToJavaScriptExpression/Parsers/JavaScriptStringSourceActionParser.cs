@@ -11,16 +11,16 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
         public override string ResolveMethodName(IqlExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.StringToUpperCase:
+                case IqlExpressionKind.StringToUpperCase:
                     return "toUpperCase";
-                case IqlExpressionType.StringToLowerCase:
+                case IqlExpressionKind.StringToLowerCase:
                     return "toLowerCase";
-                case IqlExpressionType.StringTrim:
+                case IqlExpressionKind.StringTrim:
                     return "trim";
             }
-            JavaScriptErrors.OperationNotSupported(action.Type);
+            JavaScriptErrors.OperationNotSupported(action.Kind);
             return null;
         }
     }

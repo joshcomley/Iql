@@ -5,16 +5,16 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         public override IqlExpression ToQueryString(IqlExpression action,
             JavaScriptIqlParserInstance parser)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.StringToUpperCase:
-                case IqlExpressionType.StringToLowerCase:
-                case IqlExpressionType.StringTrim:
+                case IqlExpressionKind.StringToUpperCase:
+                case IqlExpressionKind.StringToLowerCase:
+                case IqlExpressionKind.StringTrim:
                     return new JavaScriptStringSourceActionParser().ToQueryString(action, parser);
-                case IqlExpressionType.Not:
+                case IqlExpressionKind.Not:
                     return new IqlFinalExpression<string>("not");
             }
-            JavaScriptErrors.OperationNotSupported(action.Type);
+            JavaScriptErrors.OperationNotSupported(action.Kind);
             return null;
         }
     }

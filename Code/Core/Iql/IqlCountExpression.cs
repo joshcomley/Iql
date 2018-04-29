@@ -6,13 +6,13 @@ namespace Iql
         public IqlCountExpression(
             string rootVariableName,
             IqlReferenceExpression parent,
-            IqlExpression expression) : base(parent, expression, IqlExpressionType.Count, IqlType.Integer)
+            IqlExpression expression) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
         {
             RootVariableName = rootVariableName;
         }
 
         public IqlCountExpression()
-        : base(null, null, IqlExpressionType.Count, IqlType.Integer)
+        : base(null, null, IqlExpressionKind.Count, IqlType.Integer)
         {
 
         }

@@ -24,17 +24,17 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 Type propertyType = null;
                 var parent = context.Parent() as IqlExpression;
                 PropertyInfo property;
-                switch (parent.Type)
+                switch (parent.Kind)
                 {
-                    case IqlExpressionType.RootReference:
+                    case IqlExpressionKind.RootReference:
                         //entityConfiguration = instance.EntityConfigurationContext.GetEntity<T>();
                         property = typeof(T).GetProperty(expression.Name);
                         propertyType = property.PropertyType;
                         break;
-                    case IqlExpressionType.Variable:
+                    case IqlExpressionKind.Variable:
                         //debugger;
                         break;
-                    case IqlExpressionType.Property:
+                    case IqlExpressionKind.Property:
                         var propertyParent = parent as IqlPropertyExpression;
                         property = typeof(T).GetProperty(propertyParent.PropertyName);
                         if (property == null)

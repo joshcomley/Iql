@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlModuloEqualsExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.ModuloEquals, left, right)
+            IqlExpression right) : base(IqlExpressionKind.ModuloEquals, left, right)
         {
         }
 

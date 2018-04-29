@@ -9,20 +9,20 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         public override string ResolveMethodName(IqlParentValueExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.StringIndexOf:
+                case IqlExpressionKind.StringIndexOf:
                     return "indexof";
-                case IqlExpressionType.StringIncludes:
+                case IqlExpressionKind.StringIncludes:
                     return "contains";
-                case IqlExpressionType.StringEndsWith:
+                case IqlExpressionKind.StringEndsWith:
                     return "endswith";
-                case IqlExpressionType.StringStartsWith:
+                case IqlExpressionKind.StringStartsWith:
                     return "startswith";
-                case IqlExpressionType.StringConcat:
+                case IqlExpressionKind.StringConcat:
                     return "concat";
                 default:
-                    ODataErrors.OperationNotSupported(action.Type);
+                    ODataErrors.OperationNotSupported(action.Kind);
                     break;
             }
             return null;

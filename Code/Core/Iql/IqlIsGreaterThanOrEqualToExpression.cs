@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlIsGreaterThanOrEqualToExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.IsGreaterThanOrEqualTo, left, right)
+            IqlExpression right) : base(IqlExpressionKind.IsGreaterThanOrEqualTo, left, right)
         {
         }
 

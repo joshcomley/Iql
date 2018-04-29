@@ -5,14 +5,14 @@ namespace Iql
 {
     public abstract class IqlExpression
     {
-        protected IqlExpression(IqlExpressionType type, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null)
+        protected IqlExpression(IqlExpressionKind kind, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null)
         {
-            Type = type;
+            Kind = kind;
             ReturnType = returnType ?? IqlType.Unknown;
             Parent = parent;
         }
 
-        public IqlExpressionType Type { get; set; }
+        public IqlExpressionKind Kind { get; set; }
         public IqlType ReturnType { get; set; }
         public IqlExpression Parent { get; set; }
 

@@ -16,7 +16,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 
         // In JavaScript any variable can be "truthy" so allow a return of any
         protected QueryExpression(
-            QueryExpressionType type
+            QueryExpressionKind kind
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -25,10 +25,10 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 #if TypeScript
             EvaluateContext = evaluateContext;
 #endif
-            Type = type;
+            Kind = kind;
         }
 
-        public QueryExpressionType Type { get; set; }
+        public QueryExpressionKind Kind { get; set; }
 
 #if TypeScript
         public EvaluateContext EvaluateContext { get; set; }
@@ -41,11 +41,11 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 
         public bool CanFlatten()
         {
-            switch (Type)
+            switch (Kind)
             {
-                case QueryExpressionType.Or:
-                case QueryExpressionType.And:
-                case QueryExpressionType.Where:
+                case QueryExpressionKind.Or:
+                case QueryExpressionKind.And:
+                case QueryExpressionKind.Where:
                     return true;
             }
             return false;
@@ -58,14 +58,14 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 
         public WhereQueryExpression Flatten<TEntity>()
         {
-            switch (Type)
+            switch (Kind)
             {
-                case QueryExpressionType.Or:
-                case QueryExpressionType.And:
+                case QueryExpressionKind.Or:
+                case QueryExpressionKind.And:
                     return ResolveBinary<TEntity>(
                         this as BinaryQueryExpression
                     );
-                case QueryExpressionType.Where:
+                case QueryExpressionKind.Where:
                     return this as WhereQueryExpression;
             }
             return null;
@@ -83,9 +83,9 @@ namespace Iql.Queryable.Expressions.QueryExpressions
             {
                 var lastExpression = expressionResolved;
                 var nextExpression = otherExpressions[i].Flatten<TEntity>();
-                switch (filter.Type)
+                switch (filter.Kind)
                 {
-                    case QueryExpressionType.And:
+                    case QueryExpressionKind.And:
                         Expression<Func<TEntity, bool>> andLambda = entity =>
                             ((Func<TEntity, bool>)lastExpression.Expression.Compile())(entity) &&
                             ((Func<TEntity, bool>)nextExpression.Expression.Compile())(entity);
@@ -101,7 +101,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 #endif
                                 );
                         break;
-                    case QueryExpressionType.Or:
+                    case QueryExpressionKind.Or:
                         Expression<Func<TEntity, bool>> orLambda = entity =>
                             ((Func<TEntity, bool>)lastExpression.Expression.Compile())(entity) ||
                             ((Func<TEntity, bool>)nextExpression.Expression.Compile())(entity);

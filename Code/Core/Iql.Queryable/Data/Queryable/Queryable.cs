@@ -307,17 +307,6 @@ namespace Iql.Queryable.Data.Queryable
         //#endif
         //            );
         //        }
-        public async Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
-        {
-            expressionConverter = expressionConverter ?? IqlQueryableAdapter.ExpressionConverter();
-            var queryExpression = new IqlQueryExpression();
-            for (var i = 0; i < Operations.Count; i++)
-            {
-                var operation = Operations[i];
-                //expressionConverter
-            }
-
-            return queryExpression;
-        }
+        public abstract Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
     }
 }

@@ -14,7 +14,7 @@ namespace Iql.Queryable.Expressions.QueryExpressions
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
-        ) : base(expression, QueryExpressionType.Where
+        ) : base(expression, QueryExpressionKind.Where
 #if TypeScript
             , evaluateContext
 #endif

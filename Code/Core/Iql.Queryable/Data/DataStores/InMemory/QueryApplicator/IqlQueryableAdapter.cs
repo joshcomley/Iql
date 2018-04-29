@@ -36,7 +36,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
             where T : class
         {
             return (IqlPropertyExpression)QueryExpressionToIqlExpressionTree<T>(
-                new ExpressionQueryExpression(property, QueryExpressionType.NonBinary)
+                new ExpressionQueryExpression(property, QueryExpressionKind.NonBinary)
             );
         }
 
@@ -46,7 +46,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
         {
             return (IqlPropertyExpression) QueryExpressionToIqlExpressionTreeMethod.InvokeGeneric(
                     null,
-                    new object[] { new ExpressionQueryExpression(property, QueryExpressionType.NonBinary) }, 
+                    new object[] { new ExpressionQueryExpression(property, QueryExpressionKind.NonBinary) }, 
                     entityType);
         }
 

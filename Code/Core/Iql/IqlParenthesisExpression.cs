@@ -3,7 +3,7 @@ namespace Iql
     public class IqlParenthesisExpression : IqlExpression
     {
         public IqlParenthesisExpression(
-            IqlExpression expression) : base(IqlExpressionType.Parenthesis)
+            IqlExpression expression) : base(IqlExpressionKind.Parenthesis)
         {
             Expression = expression;
         }

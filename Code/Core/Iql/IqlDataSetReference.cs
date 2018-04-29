@@ -3,7 +3,7 @@
     public class IqlDataSetReference : IqlExpression
     {
         public IqlDataSetReference(IqlExpression parent = null)
-        : base(IqlExpressionType.DataSetReference, IqlType.Collection, parent)
+        : base(IqlExpressionKind.DataSetReference, IqlType.Collection, parent)
         {
 
         }

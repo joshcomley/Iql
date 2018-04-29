@@ -51,37 +51,6 @@ namespace Iql.Queryable.Data.Queryable
 #endif
             );
 
-        //TQueryable Expand<TTarget>(Expression<Func<T, TTarget>> property)
-        //    where TTarget : class;
-
-        //TQueryable ExpandQuery<TTarget>(
-        //    ExpandQueryExpression<T, TTarget> expression,
-        //    EvaluateContext evaluateContext = null)
-        //    where TTarget : class;
-
-        //TQueryable ExpandSingleWithQuery<TTarget>(
-        //    Expression<Func<T, TTarget>> property,
-        //    Expression<Func<IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>, IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>>> filter = null)
-        //    where TTarget : class;
-
-        //TQueryable ExpandQuerySingleWithQuery<TTarget>(
-        //    ExpandQueryExpression<T, TTarget> expression,
-        //    Expression<Func<IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>, IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>>> filter = null,
-        //    EvaluateContext evaluateContext = null)
-        //    where TTarget : class;
-
-        //TQueryable ExpandCollectionWithQuery<TTarget>(
-        //    Expression<Func<T, IEnumerable<TTarget>>> property,
-        //    Expression<Func<IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>, IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>>> filter = null)
-        //    where TTarget : class;
-
-        //TQueryable ExpandQueryCollectionWithQuery<TTarget>(
-        //    ExpandQueryExpression<T, IEnumerable<TTarget>> expression,
-        //    Expression<Func<IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>, IQueryableProvider<TTarget, IQueryableProvider<TTarget, IQueryable<TTarget>>>>> filter = null,
-        //    EvaluateContext evaluateContext = null)
-        //    where TTarget : class;
-        //TQueryable ExpandOperation<TTarget>(ExpandOperation<T, TTarget> operatioin, EvaluateContext evaluateContext = null) where TTarget : class;
-
         TQueryable Skip(int skip);
 
         TQueryable Take(int take);

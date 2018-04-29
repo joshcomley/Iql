@@ -3,7 +3,7 @@ namespace Iql
     public class IqlStringIncludesExpression : IqlParentValueExpression
     {
         public IqlStringIncludesExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
-            : base(parent, value, IqlExpressionType.StringIncludes, IqlType.Boolean)
+            : base(parent, value, IqlExpressionKind.StringIncludes, IqlType.Boolean)
         {
         }
 

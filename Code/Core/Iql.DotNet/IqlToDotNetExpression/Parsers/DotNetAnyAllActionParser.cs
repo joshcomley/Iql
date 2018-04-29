@@ -12,13 +12,13 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         public override IqlExpression ToQueryString(IqlAnyAllExpression action, DotNetIqlParserInstance parser)
         {
             MethodInfo method = null;
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.Any:
+                case IqlExpressionKind.Any:
                     method = typeof(Enumerable).GetMethods().Single(m =>
                         m.Name == nameof(Enumerable.Any) && m.GetParameters().Length == 2);
                     break;
-                case IqlExpressionType.All:
+                case IqlExpressionKind.All:
                     method = typeof(Enumerable).GetMethods().Single(m =>
                         m.Name == nameof(Enumerable.All) && m.GetParameters().Length == 2);
                     break;

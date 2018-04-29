@@ -15,7 +15,7 @@ namespace Iql
         //}
 
         protected IqlLiteralExpressionBase(
-            TValue value, IqlType type = IqlType.Unknown) : base(IqlExpressionType.Literal,
+            TValue value, IqlType type = IqlType.Unknown) : base(IqlExpressionKind.Literal,
             type)
         {
             Value = value;

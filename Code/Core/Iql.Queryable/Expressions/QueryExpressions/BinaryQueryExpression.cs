@@ -7,12 +7,12 @@ namespace Iql.Queryable.Expressions.QueryExpressions
     public class BinaryQueryExpression : QueryExpression
     {
         public BinaryQueryExpression(
-            QueryExpressionType type,
+            QueryExpressionKind kind,
 #if TypeScript
             EvaluateContext evaluateContext,
 #endif
             QueryExpression left,
-            QueryExpression[] right) : base(type
+            QueryExpression[] right) : base(kind
 #if TypeScript
             , evaluateContext
 #endif

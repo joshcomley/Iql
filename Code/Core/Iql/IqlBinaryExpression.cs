@@ -3,15 +3,15 @@ namespace Iql
     public abstract class IqlBinaryExpression : IqlExpression
     {
         protected IqlBinaryExpression(
-            IqlExpressionType type,
+            IqlExpressionKind kind,
             IqlExpression left,
-            IqlExpression right) : base(type)
+            IqlExpression right) : base(kind)
         {
             Left = left;
             Right = right;
         }
 
-        protected IqlBinaryExpression(IqlExpressionType type) : this(type, null, null)
+        protected IqlBinaryExpression(IqlExpressionKind kind) : this(kind, null, null)
         {
         }
 

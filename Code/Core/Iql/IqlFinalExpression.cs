@@ -3,7 +3,7 @@ namespace Iql
     public class IqlFinalExpression<TValue> : IqlFinalExpressionBase
     {
         public IqlFinalExpression(
-            TValue value) : base(IqlExpressionType.Final, null)
+            TValue value) : base(IqlExpressionKind.Final, null)
         {
             Value = value;
         }

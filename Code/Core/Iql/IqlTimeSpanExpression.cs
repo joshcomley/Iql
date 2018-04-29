@@ -47,7 +47,7 @@ namespace Iql
             return sb.ToString();
         }
 
-        public IqlTimeSpanExpression() : base(IqlExpressionType.TimeSpan, IqlType.TimeSpan, null)
+        public IqlTimeSpanExpression() : base(IqlExpressionKind.TimeSpan, IqlType.TimeSpan, null)
         {
         }
 

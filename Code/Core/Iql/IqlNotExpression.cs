@@ -3,7 +3,7 @@ namespace Iql
     public class IqlNotExpression : IqlExpression
     {
         public IqlNotExpression(
-            IqlExpression expression) : base(IqlExpressionType.Not)
+            IqlExpression expression) : base(IqlExpressionKind.Not)
         {
             Expression = expression;
         }

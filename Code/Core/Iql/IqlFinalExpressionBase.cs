@@ -2,7 +2,7 @@ namespace Iql
 {
     public abstract class IqlFinalExpressionBase : IqlExpression
     {
-        protected IqlFinalExpressionBase(IqlExpressionType type, IqlType? returnType, IqlExpression parent = null) : base(type, returnType, parent)
+        protected IqlFinalExpressionBase(IqlExpressionKind kind, IqlType? returnType, IqlExpression parent = null) : base(kind, returnType, parent)
         {
         }
     }

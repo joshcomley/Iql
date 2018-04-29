@@ -6,9 +6,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             IqlAnyAllExpression action,
             JavaScriptIqlParserInstance parser)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.Any:
+                case IqlExpressionKind.Any:
                     return new IqlParenthesisExpression(
                         new IqlAggregateExpression(
                             action.Parent,
@@ -17,7 +17,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                             new IqlFinalExpression<string>("; }).length > 0")
                         )
                     );
-                case IqlExpressionType.All:
+                case IqlExpressionKind.All:
                     break;
             }
             return action;

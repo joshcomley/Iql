@@ -9,16 +9,16 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         public override string ResolveMethodName(IqlExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.StringToUpperCase:
+                case IqlExpressionKind.StringToUpperCase:
                     return "toupper";
-                case IqlExpressionType.StringToLowerCase:
+                case IqlExpressionKind.StringToLowerCase:
                     return "tolower";
-                case IqlExpressionType.StringTrim:
+                case IqlExpressionKind.StringTrim:
                     return "trim";
                 default:
-                    ODataErrors.OperationNotSupported(action.Type);
+                    ODataErrors.OperationNotSupported(action.Kind);
                     break;
             }
             return null;

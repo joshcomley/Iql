@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlMultiplyEqualsExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.MultiplyEquals, left, right)
+            IqlExpression right) : base(IqlExpressionKind.MultiplyEquals, left, right)
         {
         }
 

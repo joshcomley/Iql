@@ -8,7 +8,7 @@ namespace Iql
         public IqlVariableExpression(
             string variableName,
             string value,
-            Type entityType = null) : base(IqlExpressionType.Variable, entityType.ToIqlType())
+            Type entityType = null) : base(IqlExpressionKind.Variable, entityType.ToIqlType())
         {
             VariableName = variableName;
             Value = value;

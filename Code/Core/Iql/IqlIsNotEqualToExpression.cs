@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlIsNotEqualToExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.IsNotEqualTo, left, right)
+            IqlExpression right) : base(IqlExpressionKind.IsNotEqualTo, left, right)
         {
         }
 

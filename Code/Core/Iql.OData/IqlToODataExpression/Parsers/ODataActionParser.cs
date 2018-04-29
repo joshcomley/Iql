@@ -5,20 +5,20 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         public override IqlExpression ToQueryString(IqlExpression action,
             ODataIqlParserInstance parser)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.Not:
+                case IqlExpressionKind.Not:
                     return new IqlFinalExpression<string>("not");
-                case IqlExpressionType.Now:
+                case IqlExpressionKind.Now:
                     return new IqlFinalExpression<string>("now()");
-                case IqlExpressionType.TimeSpan:
+                case IqlExpressionKind.TimeSpan:
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("duration'"), new IqlFinalExpression<string>((action as IqlTimeSpanExpression).ToXmlString()), new IqlFinalExpression<string>("'"));
-                case IqlExpressionType.StringToLowerCase:
+                case IqlExpressionKind.StringToLowerCase:
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("tolower("), action.Parent, new IqlFinalExpression<string>(")"));
-                case IqlExpressionType.StringToUpperCase:
+                case IqlExpressionKind.StringToUpperCase:
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("toupper("), action.Parent, new IqlFinalExpression<string>(")"));
                 default:
-                    ODataErrors.OperationNotSupported(action.Type);
+                    ODataErrors.OperationNotSupported(action.Kind);
                     break;
             }
             return null;

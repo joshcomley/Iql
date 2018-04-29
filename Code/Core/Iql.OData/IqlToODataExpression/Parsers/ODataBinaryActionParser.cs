@@ -10,7 +10,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         {
             if (action.Left is IqlPropertyExpression &&
                 action.Right is IqlEnumLiteralExpression &&
-                action.Type == IqlExpressionType.Has)
+                action.Kind == IqlExpressionKind.Has)
             {
                 var rightLiteral = action.Right as IqlEnumLiteralExpression;
                 var valueString = string.Join(",", rightLiteral.Value.Select(v => v.Name).OrderBy(o => o));
@@ -20,7 +20,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             }
             else if (action.Left is IqlPropertyExpression && 
                 action.Right is IqlLiteralExpression &&
-                action.Type == IqlExpressionType.Has &&
+                action.Kind == IqlExpressionKind.Has &&
                 (action.Right.ReturnType == IqlType.Integer || (action.Right as IqlLiteralExpression).InferredReturnType == IqlType.Integer))
             {
                 var type = action.Left.ResolveType(parser.RootEntityType);
@@ -48,38 +48,38 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         public string ResolveOperator(IqlBinaryExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.And:
+                case IqlExpressionKind.And:
                     return "and";
-                case IqlExpressionType.Or:
+                case IqlExpressionKind.Or:
                     return "or";
-                case IqlExpressionType.IsGreaterThan:
+                case IqlExpressionKind.IsGreaterThan:
                     return "gt";
-                case IqlExpressionType.IsGreaterThanOrEqualTo:
+                case IqlExpressionKind.IsGreaterThanOrEqualTo:
                     return "ge";
-                case IqlExpressionType.IsLessThan:
+                case IqlExpressionKind.IsLessThan:
                     return "lt";
-                case IqlExpressionType.IsLessThanOrEqualTo:
+                case IqlExpressionKind.IsLessThanOrEqualTo:
                     return "le";
-                case IqlExpressionType.IsEqualTo:
+                case IqlExpressionKind.IsEqualTo:
                     return "eq";
-                case IqlExpressionType.IsNotEqualTo:
+                case IqlExpressionKind.IsNotEqualTo:
                     return "ne";
-                case IqlExpressionType.Modulo:
+                case IqlExpressionKind.Modulo:
                     return "mod";
-                case IqlExpressionType.Add:
+                case IqlExpressionKind.Add:
                     return "add";
-                case IqlExpressionType.Subtract:
+                case IqlExpressionKind.Subtract:
                     return "sub";
-                case IqlExpressionType.Has:
+                case IqlExpressionKind.Has:
                     return "has";
-                case IqlExpressionType.Multiply:
+                case IqlExpressionKind.Multiply:
                     return "mul";
-                case IqlExpressionType.Divide:
+                case IqlExpressionKind.Divide:
                     return "div";
                 default:
-                    ODataErrors.OperationNotSupported(action.Type);
+                    ODataErrors.OperationNotSupported(action.Kind);
                     break;
             }
             return null;

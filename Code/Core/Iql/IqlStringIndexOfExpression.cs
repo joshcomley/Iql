@@ -3,7 +3,7 @@ namespace Iql
     public class IqlStringIndexOfExpression : IqlParentValueExpression
     {
         public IqlStringIndexOfExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
-            : base(parent, value, IqlExpressionType.StringIndexOf, IqlType.Integer)
+            : base(parent, value, IqlExpressionKind.StringIndexOf, IqlType.Integer)
         {
         }
 

@@ -15,9 +15,9 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             var left = reducer.Evaluate(expression.Left);
             var right = reducer.Evaluate(expression.Right);
-            switch (expression.Type)
+            switch (expression.Kind)
             {
-                case IqlExpressionType.BitwiseOr:
+                case IqlExpressionKind.BitwiseOr:
                     {
                         if (left is IqlEnumLiteralExpression)
                         {
@@ -35,13 +35,13 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             expression.Left = reducer.ReduceStaticContent(expression.Left);
             expression.Right = reducer.ReduceStaticContent(expression.Right);
-            if (expression.Type == IqlExpressionType.And &&
-                expression.Left.Type == IqlExpressionType.Property && expression.Right.Type == IqlExpressionType.Literal
+            if (expression.Kind == IqlExpressionKind.And &&
+                expression.Left.Kind == IqlExpressionKind.Property && expression.Right.Kind == IqlExpressionKind.Literal
                                                                    && expression.Right.ReturnType == IqlType.Integer)
             {
                 return new IqlHasExpression(expression.Left, expression.Right);
             }
-            if (expression.Left.Type == IqlExpressionType.Literal && expression.Right.Type == IqlExpressionType.Literal)
+            if (expression.Left.Kind == IqlExpressionKind.Literal && expression.Right.Kind == IqlExpressionKind.Literal)
             {
                 var value = reducer.Evaluate(expression);
                 var type = value?.GetType();

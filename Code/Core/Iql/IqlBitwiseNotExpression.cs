@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlBitwiseNotExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.BitwiseNot, left, right)
+            IqlExpression right) : base(IqlExpressionKind.BitwiseNot, left, right)
         {
         }
 

@@ -26,24 +26,24 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
         public override string ResolveMethodName(IqlParentValueExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.StringIndexOf:
+                case IqlExpressionKind.StringIndexOf:
                     _ignoreCase = true;
                     return "indexOf";
-                case IqlExpressionType.StringIncludes:
+                case IqlExpressionKind.StringIncludes:
                     _ignoreCase = true;
                     return "includes";
-                case IqlExpressionType.StringEndsWith:
+                case IqlExpressionKind.StringEndsWith:
                     _ignoreCase = true;
                     return "endsWith";
-                case IqlExpressionType.StringStartsWith:
+                case IqlExpressionKind.StringStartsWith:
                     _ignoreCase = true;
                     return "startsWith";
-                case IqlExpressionType.StringConcat:
+                case IqlExpressionKind.StringConcat:
                     return "concat";
             }
-            JavaScriptErrors.OperationNotSupported(action.Type);
+            JavaScriptErrors.OperationNotSupported(action.Kind);
             return null;
         }
     }

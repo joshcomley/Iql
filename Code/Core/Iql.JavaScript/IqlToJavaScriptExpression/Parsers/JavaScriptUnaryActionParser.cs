@@ -18,12 +18,12 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
         public string ResolveOperator(IqlUnaryExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.UnarySubtract:
+                case IqlExpressionKind.UnarySubtract:
                     return "-";
             }
-            JavaScriptErrors.OperationNotSupported(action.Type);
+            JavaScriptErrors.OperationNotSupported(action.Kind);
             return null;
         }
     }

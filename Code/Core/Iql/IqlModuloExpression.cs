@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlModuloExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.Modulo, left, right)
+            IqlExpression right) : base(IqlExpressionKind.Modulo, left, right)
         {
         }
 

@@ -20,7 +20,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
             DotNetStringIqlParserInstance parser)
         {
             var isStringComparison =
-                (action.Type == IqlExpressionType.IsEqualTo || action.Type == IqlExpressionType.IsNotEqualTo) &&
+                (action.Kind == IqlExpressionKind.IsEqualTo || action.Kind == IqlExpressionKind.IsNotEqualTo) &&
                 (IsString(action.Left) || IsString(action.Right));
             var left = parser.Parse(action.Left
 #if TypeScript
@@ -55,47 +55,47 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
 
         public string ResolveOperator(IqlBinaryExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.And:
+                case IqlExpressionKind.And:
                     return "&&";
-                case IqlExpressionType.Or:
+                case IqlExpressionKind.Or:
                     return "||";
-                case IqlExpressionType.IsGreaterThan:
+                case IqlExpressionKind.IsGreaterThan:
                     return ">";
-                case IqlExpressionType.IsGreaterThanOrEqualTo:
+                case IqlExpressionKind.IsGreaterThanOrEqualTo:
                     return ">=";
-                case IqlExpressionType.IsLessThan:
+                case IqlExpressionKind.IsLessThan:
                     return "<";
-                case IqlExpressionType.IsLessThanOrEqualTo:
+                case IqlExpressionKind.IsLessThanOrEqualTo:
                     return "<=";
-                case IqlExpressionType.IsEqualTo:
+                case IqlExpressionKind.IsEqualTo:
                     return "==";
-                case IqlExpressionType.IsNotEqualTo:
+                case IqlExpressionKind.IsNotEqualTo:
                     return "!=";
-                case IqlExpressionType.Modulo:
+                case IqlExpressionKind.Modulo:
                     return "%";
-                case IqlExpressionType.Add:
+                case IqlExpressionKind.Add:
                     return "+";
-                case IqlExpressionType.Subtract:
+                case IqlExpressionKind.Subtract:
                     return "-";
-                case IqlExpressionType.Multiply:
+                case IqlExpressionKind.Multiply:
                     return "*";
-                case IqlExpressionType.Divide:
+                case IqlExpressionKind.Divide:
                     return "/";
-                case IqlExpressionType.AddEquals:
+                case IqlExpressionKind.AddEquals:
                     return "+=";
-                case IqlExpressionType.SubtractEquals:
+                case IqlExpressionKind.SubtractEquals:
                     return "-=";
-                case IqlExpressionType.MultiplyEquals:
+                case IqlExpressionKind.MultiplyEquals:
                     return "*=";
-                case IqlExpressionType.DivideEquals:
+                case IqlExpressionKind.DivideEquals:
                     return "/=";
-                case IqlExpressionType.Has:
+                case IqlExpressionKind.Has:
                     return "&";
             }
             throw new NotSupportedException(
-                $"{nameof(IqlExpressionType)} of type {action.Type} is not supported for binary operations");
+                $"{nameof(IqlExpressionKind)} of type {action.Kind} is not supported for binary operations");
 
         }
     }

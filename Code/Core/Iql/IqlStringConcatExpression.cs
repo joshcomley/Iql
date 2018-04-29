@@ -3,7 +3,7 @@ namespace Iql
     public class IqlStringConcatExpression : IqlParentValueExpression
     {
         public IqlStringConcatExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
-            : base(parent, value, IqlExpressionType.StringConcat, IqlType.String)
+            : base(parent, value, IqlExpressionKind.StringConcat, IqlType.String)
         {
         }
 

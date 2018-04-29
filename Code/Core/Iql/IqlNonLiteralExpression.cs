@@ -2,9 +2,9 @@ namespace Iql
 {
     public abstract class IqlNonLiteralExpression : IqlReferenceExpression
     {
-        protected IqlNonLiteralExpression(IqlExpressionType type,
+        protected IqlNonLiteralExpression(IqlExpressionKind kind,
             IqlType returnType)
-            : base(type, returnType)
+            : base(kind, returnType)
         {
         }
 

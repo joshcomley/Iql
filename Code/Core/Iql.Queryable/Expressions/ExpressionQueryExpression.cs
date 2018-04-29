@@ -9,11 +9,11 @@ namespace Iql.Queryable.Expressions
     {
         public ExpressionQueryExpression(
             LambdaExpression expression,
-            QueryExpressionType type
+            QueryExpressionKind kind
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
-            ) : base(type
+            ) : base(kind
 #if TypeScript
                   , evaluateContext
 #endif

@@ -2,7 +2,7 @@ namespace Iql
 {
     public class IqlNowExpression : IqlExpression
     {
-        public IqlNowExpression() : base(IqlExpressionType.Now, IqlType.Date)
+        public IqlNowExpression() : base(IqlExpressionKind.Now, IqlType.Date)
         {
         }
     }

@@ -24,7 +24,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         {
             var spacer = new IqlFinalExpression<string>(" ");
             var isStringComparison = false;
-            if (action.Type == IqlExpressionType.IsEqualTo || action.Type == IqlExpressionType.IsNotEqualTo)
+            if (action.Kind == IqlExpressionKind.IsEqualTo || action.Kind == IqlExpressionKind.IsNotEqualTo)
             {
                 isStringComparison =
                     IsString(action.Left, parser.Adapter.EntityConfigurationBuilder) ||
@@ -36,7 +36,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                     for (var i = 0; i < expressions.Length; i++)
                     {
                         var expression = expressions[i];
-                        if (expression.Type == IqlExpressionType.Literal)
+                        if (expression.Kind == IqlExpressionKind.Literal)
                         {
                             var literal = expression as IqlLiteralExpression;
                             if (
@@ -72,14 +72,14 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         private IqlExpression CoalesceOrUpperCase(IqlExpression left,
             JavaScriptIqlParserInstance parser)
         {
-            if (left.Type == IqlExpressionType.Literal && (left as IqlLiteralExpression).Value != null)
+            if (left.Kind == IqlExpressionKind.Literal && (left as IqlLiteralExpression).Value != null)
             {
                 return new IqlStringToUpperCaseExpression(left as IqlReferenceExpression);
             }
             var checkExpression = new IqlIsEqualToExpression(left, new IqlFinalExpression<string>("null"));
             parser.Data.AlreadyCoalesced.Add(checkExpression);
             var finalExpression =
-                left.Type == IqlExpressionType.Literal && (left as IqlLiteralExpression).Value == null
+                left.Kind == IqlExpressionKind.Literal && (left as IqlLiteralExpression).Value == null
                     ? left
                     : new IqlStringToUpperCaseExpression(left as IqlReferenceExpression);
             return
@@ -96,46 +96,46 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
         public string ResolveOperator(IqlBinaryExpression action)
         {
-            switch (action.Type)
+            switch (action.Kind)
             {
-                case IqlExpressionType.And:
+                case IqlExpressionKind.And:
                     return "&&";
-                case IqlExpressionType.Or:
+                case IqlExpressionKind.Or:
                     return "||";
-                case IqlExpressionType.IsGreaterThan:
+                case IqlExpressionKind.IsGreaterThan:
                     return ">";
-                case IqlExpressionType.IsGreaterThanOrEqualTo:
+                case IqlExpressionKind.IsGreaterThanOrEqualTo:
                     return ">=";
-                case IqlExpressionType.IsLessThan:
+                case IqlExpressionKind.IsLessThan:
                     return "<";
-                case IqlExpressionType.IsLessThanOrEqualTo:
+                case IqlExpressionKind.IsLessThanOrEqualTo:
                     return "<=";
-                case IqlExpressionType.IsEqualTo:
+                case IqlExpressionKind.IsEqualTo:
                     return "==";
-                case IqlExpressionType.IsNotEqualTo:
+                case IqlExpressionKind.IsNotEqualTo:
                     return "!=";
-                case IqlExpressionType.Modulo:
+                case IqlExpressionKind.Modulo:
                     return "%";
-                case IqlExpressionType.Add:
+                case IqlExpressionKind.Add:
                     return "+";
-                case IqlExpressionType.Subtract:
+                case IqlExpressionKind.Subtract:
                     return "-";
-                case IqlExpressionType.Multiply:
+                case IqlExpressionKind.Multiply:
                     return "*";
-                case IqlExpressionType.Divide:
+                case IqlExpressionKind.Divide:
                     return "/";
-                case IqlExpressionType.AddEquals:
+                case IqlExpressionKind.AddEquals:
                     return "+=";
-                case IqlExpressionType.SubtractEquals:
+                case IqlExpressionKind.SubtractEquals:
                     return "-=";
-                case IqlExpressionType.MultiplyEquals:
+                case IqlExpressionKind.MultiplyEquals:
                     return "*=";
-                case IqlExpressionType.DivideEquals:
+                case IqlExpressionKind.DivideEquals:
                     return "/=";
-                case IqlExpressionType.Has:
+                case IqlExpressionKind.Has:
                     return "&";
             }
-            JavaScriptErrors.OperationNotSupported(action.Type);
+            JavaScriptErrors.OperationNotSupported(action.Kind);
             return null;
         }
     }

@@ -4,9 +4,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
 {
     internal class JavaScriptErrors
     {
-        public static void OperationNotSupported(IqlExpressionType type)
+        public static void OperationNotSupported(IqlExpressionKind kind)
         {
-            var typeName = type.ToString();
+            var typeName = kind.ToString();
             throw new Exception("Operation not supported in JavaScript: " + typeName);
         }
     }

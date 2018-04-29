@@ -4,7 +4,7 @@ namespace Iql
     {
         public IqlSubtractEqualsExpression(
             IqlExpression left,
-            IqlExpression right) : base(IqlExpressionType.SubtractEquals, left, right)
+            IqlExpression right) : base(IqlExpressionKind.SubtractEquals, left, right)
         {
         }
 

@@ -5,9 +5,9 @@ namespace Iql
         public string RootVariableName { get; set; }
         protected IqlAnyAllExpression(
             string rootVariableName,
-            IqlExpressionType type,
+            IqlExpressionKind kind,
             IqlReferenceExpression parent,
-            IqlExpression expression) : base(parent, expression, type, IqlType.Boolean)
+            IqlExpression expression) : base(parent, expression, kind, IqlType.Boolean)
         {
             RootVariableName = rootVariableName;
         }

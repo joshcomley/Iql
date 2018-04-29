@@ -1,6 +1,6 @@
 namespace Iql.Queryable.Expressions.QueryExpressions
 {
-    public enum QueryExpressionType
+    public enum QueryExpressionKind
     {
         NonBinary,
         Where,

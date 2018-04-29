@@ -3,7 +3,7 @@ namespace Iql
     public class IqlToStringExpression : IqlReferenceExpression
     {
         public IqlToStringExpression(IqlReferenceExpression parent)
-            : base(IqlExpressionType.ToString, IqlType.String, parent)
+            : base(IqlExpressionKind.ToString, IqlType.String, parent)
         {
         }
 
