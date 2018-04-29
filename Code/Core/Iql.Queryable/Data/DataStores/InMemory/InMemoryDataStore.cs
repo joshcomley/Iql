@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Expressions;
@@ -30,10 +27,6 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         private RelationshipObserver InMemoryRelationshipObserver
         {
             get { return _inMemoryRelationshipObserver = _inMemoryRelationshipObserver ?? new RelationshipObserver(DataContext, InMemoryTrackingSetCollection, true); }
-        }
-
-        public InMemoryDataStore()
-        {
         }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
@@ -114,7 +107,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             InMemoryRelationshipObserver.ObserveAll(flattenObjectGraph);
             data.Add(clone);
             operation.Result.Success = true;
-            operation.Result.RemoteEntity = (TEntity)clone;
+            operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);
         }
 
@@ -189,14 +182,18 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
             var iql = await operation.Operation.Queryable.ToIqlAsync();
-            var expression = IqlConverter.Instance.ConvertIqlToExpression<TEntity>(iql);
-            var func = (Func<IList<TEntity>, IEnumerable<TEntity>>)expression.Compile();
-            var dataSet = DataSet<TEntity>(operation.Operation);
-            var result = func(dataSet).ToList().CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
-            var flattened = this.DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), result);
+            var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TEntity>(iql);
+            var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)expression.Compile();
+            var inMemoryContext = new InMemoryContext<TEntity>(DataContext);
+            var result = func(inMemoryContext).SourceList.ToList().CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
+            var dictionary = new Dictionary<Type, IList>();
+            foreach (var item in inMemoryContext.AllData)
+            {
+                dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
+            }
             operation.Result.Root = result;
             operation.Result.Success = true;
-            operation.Result.Data = flattened;
+            operation.Result.Data = dictionary;
             return operation.Result;
             // Now convert IQL to a native expression
             // Then run that native expression

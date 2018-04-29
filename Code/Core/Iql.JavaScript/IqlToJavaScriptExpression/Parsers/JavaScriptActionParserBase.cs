@@ -1,12 +1,15 @@
+using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptActionParserBase<TIqlExpression> :
-        ActionParser<TIqlExpression, JavaScriptIqlData, JavaScriptIqlExpressionAdapter,
+        ActionParser<TIqlExpression,
+            JavaScriptIqlData,
+            JavaScriptIqlExpressionAdapter,
             string,
-            JavaScriptOutput, JavaScriptIqlParserInstance>
-        where TIqlExpression : IqlExpression
-    {
-    }
+            JavaScriptOutput,
+            JavaScriptIqlParserInstance,
+            JavaScriptExpressionConverter>
+        where TIqlExpression : IqlExpression { }
 }

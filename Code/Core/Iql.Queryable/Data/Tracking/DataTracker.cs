@@ -52,11 +52,16 @@ namespace Iql.Queryable.Data.Tracking
         }
 
         public List<TEntity> TrackResults<TEntity>(
-            Dictionary<Type, IList> responseData,
+            Dictionary<Type, IList> responseDataOrig,
             List<TEntity> responseRoot = null,
             bool mergeExistingOnly = false)
         {
             Dictionary<Type, IList> data;
+            var responseData = new Dictionary<Type, IList>();
+            foreach (var keyValue in responseDataOrig)
+            {
+                responseData.Add(keyValue.Key, keyValue.Value);
+            }
             if (!responseData.ContainsKey(typeof(TEntity)))
             {
                 responseData.Add(typeof(TEntity), new List<TEntity>());

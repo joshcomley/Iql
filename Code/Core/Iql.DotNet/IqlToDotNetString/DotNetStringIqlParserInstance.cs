@@ -1,12 +1,10 @@
-using System;
-using System.Linq.Expressions;
 using Iql.Parsing;
 
 namespace Iql.DotNet.IqlToDotNetString
 {
-    public class DotNetStringIqlParserInstance : ActionParserInstance<DotNetStringIqlData, DotNetStringIqlExpressionAdapter, string, DotNetStringOutput>
+    public class DotNetStringIqlParserInstance : ActionParserInstance<DotNetStringIqlData, DotNetStringIqlExpressionAdapter, string, DotNetStringOutput, DotNetExpressionConverter>
     {
-        public DotNetStringIqlParserInstance(DotNetStringIqlExpressionAdapter adapter) : base(adapter, null)
+        public DotNetStringIqlParserInstance(DotNetStringIqlExpressionAdapter adapter, DotNetExpressionConverter expressionConverter) : base(adapter, null, expressionConverter)
         {
             RootVariableName = adapter.RootVariableName;
         }

@@ -3,11 +3,11 @@ using Iql.Parsing;
 
 namespace Iql.OData.IqlToODataExpression
 {
-    public class ODataIqlParserInstance : ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput>
+    public class ODataIqlParserInstance : ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput, ODataExpressionConverter>
     {
         public bool Nested { get; set; }
 
-        public ODataIqlParserInstance(ODataIqlExpressionAdapter adapter, Type rootEntityType) : base(adapter, rootEntityType)
+        public ODataIqlParserInstance(ODataIqlExpressionAdapter adapter, Type rootEntityType, ODataExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter)
         {
         }
 

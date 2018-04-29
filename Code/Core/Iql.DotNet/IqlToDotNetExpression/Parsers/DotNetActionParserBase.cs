@@ -5,13 +5,12 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {
     public class DotNetActionParserBase<TIqlExpression> :
         ActionParser<
-            TIqlExpression, 
-            DotNetIqlData, 
+            TIqlExpression,
+            DotNetIqlData,
             DotNetIqlExpressionAdapter,
             Expression,
-            DotNetOutput, 
-            DotNetIqlParserInstance>
-        where TIqlExpression : IqlExpression
-    {
-    }
+            DotNetOutput,
+            DotNetIqlParserInstance,
+            DotNetExpressionConverter>
+        where TIqlExpression : IqlExpression { }
 }

@@ -2,16 +2,74 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using ExpressionModifier;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
+using Iql.Queryable.Data.DataStores.InMemory;
 
 namespace Iql.DotNet.IqlToDotNetExpression
 {
-    public class DotNetIqlParserInstance : ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput>
+    /// <summary>
+    /// updates the parameter in the expression
+    /// </summary>
+    class ParameterUpdateVisitor : ExpressionVisitor
     {
-        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type rootEntityType) : base(adapter, rootEntityType)
+        private ParameterExpression _oldParameter;
+        private ParameterExpression _newParameter;
+
+        public ParameterUpdateVisitor(ParameterExpression oldParameter, ParameterExpression newParameter)
+        {
+            _oldParameter = oldParameter;
+            _newParameter = newParameter;
+        }
+
+        protected override Expression VisitParameter(ParameterExpression node)
+        {
+            if (object.ReferenceEquals(node, _oldParameter))
+                return _newParameter;
+
+            return base.VisitParameter(node);
+        }
+    }
+    public class DotNetIqlParserInstance : ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput, DotNetExpressionConverter>
+    {
+        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type rootEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter)
         {
             RootEntities.Add(NewRootParameter(rootEntityType));
+            ContextParameter = System.Linq.Expressions.Expression.Parameter(
+                typeof(InMemoryContext<>).MakeGenericType(rootEntityType), "context");
+        }
+
+        public ParameterExpression ContextParameter { get; set; }
+
+        public Expression Chain<TEntity>(
+            Expression body,
+            Expression<Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>> expression) where TEntity : class
+        {
+            return WithContext(body, expression);
+        }
+
+        public Expression WithContext<TEntity, T>(
+            Expression body,
+            Expression<Func<InMemoryContext<TEntity>, T>> expression) where TEntity : class
+        {
+            //var contextParameter = ContextParameter;
+            //if (body != null)
+            //{
+            //    contextParameter = System.Linq.Expressions.Expression.Parameter(
+            //        contextParameter.Type,
+            //        contextParameter.Name);
+            //}
+            var updated = (LambdaExpression)new ParameterUpdateVisitor(expression.Parameters[0], ContextParameter).Visit(expression);
+            if (body != null)
+            {
+                var methodCall = updated.Body as MethodCallExpression;
+                //var updatedMethodCall = methodCall.Update(body, methodCall.Arguments);
+                var updatedMethodCall = System.Linq.Expressions.Expression.Call(body, methodCall.Method, methodCall.Arguments);
+                return updatedMethodCall;
+            }
+            return updated.Body;
+            //return expression.Substitute<ParameterExpression>(expression.Parameters[0].Name, ContextParameter).Body;
         }
 
         private ParameterExpression NewRootParameter(Type rootEntityType)

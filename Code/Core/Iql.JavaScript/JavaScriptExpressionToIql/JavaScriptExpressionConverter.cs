@@ -8,6 +8,7 @@ using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Parsing.Reduction;
+using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
@@ -20,9 +21,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
-        public JavaScriptExpressionConverter(IEntityConfigurationBuilder entityConfigurationBuilder = null) : base(entityConfigurationBuilder)
-        {
-        }
         public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>
         (
             QueryExpression filter
@@ -250,8 +248,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         )
         {
-            var adapter = new JavaScriptIqlExpressionAdapter(ConfigurationBuilder);
-            var parser = new JavaScriptIqlParserInstance(adapter);
+            var adapter = new JavaScriptIqlExpressionAdapter();
+            var parser = new JavaScriptIqlParserInstance(adapter, this);
             parser.IsFilter = true;
             var javascriptExpression = parser.Parse(expression
 #if TypeScript

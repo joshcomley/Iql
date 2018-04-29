@@ -2,6 +2,8 @@ using System;
 using System.Linq.Expressions;
 using Iql.DotNet.DotNetExpressionToIql;
 using Iql.DotNet.IqlToDotNetExpression;
+using Iql.DotNet.IqlToDotNetString;
+using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.EntityConfiguration;
 #if TypeScript
 using Iql.Parsing;
@@ -44,15 +46,19 @@ namespace Iql.DotNet
 
         public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql
 #if TypeScript
-            , EvaluateContext evaluateContext
+                , EvaluateContext evaluateContext
 #endif
         )
         {
-            return new IqlToDotNetConverter().ConvertIqlToExpression<TEntity>(iql
+            var adapter = new DotNetIqlExpressionAdapter("entity");
+            var parser = new DotNetIqlParserInstance(adapter, typeof(TEntity), this);
+            parser.IsFilter = true;
+            var dotNetExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext
 #endif
             );
+            return parser.ConvertToLambda ? dotNetExpression.ToLambda() : dotNetExpression.Expression as LambdaExpression;
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression iql, Type rootEntityType
@@ -61,15 +67,15 @@ namespace Iql.DotNet
 #endif
         )
         {
-            return new IqlToDotNetConverter().ConvertIqlToExpressionStringByType(iql, rootEntityType
+            var adapter = new DotNetStringIqlExpressionAdapter("entity");
+            var parser = new DotNetStringIqlParserInstance(adapter, this);
+            parser.IsFilter = true;
+            var dotNetExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext
 #endif
             );
-        }
-
-        public DotNetExpressionConverter(IEntityConfigurationBuilder entityConfigurationBuilder = null) : base(entityConfigurationBuilder)
-        {
+            return $"{adapter.RootVariableName} => {dotNetExpression.Expression}";
         }
     }
 }

@@ -23,6 +23,20 @@ namespace Iql.Queryable.Data.Relationships
             GroupByRelationshipLookup = new Dictionary<IList, Dictionary<IRelationshipDetail, Dictionary<string, IList>>>();
         }
 
+        public static T MatchRelationships<T>(
+            T toReturn,
+            IList source,
+            IList target,
+            IRelationship relationship)
+        {
+            new RelationshipExpander().FindMatches(
+                source,
+                target,
+                relationship,
+                true);
+            return toReturn;
+        }
+
         private static MethodInfo OneToOneMethod { get; }
         private static MethodInfo OneToManyMethod { get; }
 

@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-
-namespace Iql.DotNet.IqlToDotNetString.Parsers
+﻿namespace Iql.DotNet.IqlToDotNetString.Parsers
 {
     public class DotNetStringStringLengthExpressionParser : DotNetStringActionParserBase<IqlStringLengthExpression>
     {

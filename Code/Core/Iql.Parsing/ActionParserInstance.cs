@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Iql.Parsing.Reduction;
+using Iql.Queryable.Expressions.Conversion;
 
 namespace Iql.Parsing
 {
-    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput, TParserOutput> : IActionParserInstance
+    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput, TParserOutput, TConverter> : IActionParserInstance
         where TQueryAdapter : IIqlExpressionAdapter<TIqlData>
         where TParserOutput : IParserOutput
+        where TConverter : IExpressionConverter
     {
-        protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType)
+        protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType, TConverter converter)
         {
             Adapter = adapter;
             RootEntityType = rootEntityType;
+            Converter = converter;
             Data = Adapter.NewData();
         }
 
@@ -21,6 +24,7 @@ namespace Iql.Parsing
 
         public TQueryAdapter Adapter { get; set; }
         public Type RootEntityType { get; }
+        public TConverter Converter { get; }
         public Dictionary<string, string> _rootEntityNames { get; } = new Dictionary<string, string>();
         private string _rootEntityName = null;
         public string GetRootEntityName(IqlRootReferenceExpression rootReferenceExpression)
