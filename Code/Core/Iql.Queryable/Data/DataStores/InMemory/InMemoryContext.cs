@@ -63,6 +63,9 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                 true);
             AddMatches(relationship.Source.Type, matches.SourceMatches);
             AddMatches(relationship.Target.Type, matches.TargetMatches);
+            // TODO: Apply expandExpression.Query to target list recursively
+            // This should take into account filters and order by etc.
+            //expandExpression.Query
             return this;
         }
 
