@@ -2,7 +2,6 @@ using System;
 using System.Linq.Expressions;
 using Iql.DotNet.IqlToDotNetExpression;
 using Iql.DotNet.QueryableApplicator.Applicators;
-using Iql.Queryable;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Operations;
