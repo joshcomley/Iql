@@ -17,6 +17,8 @@ namespace Iql.Queryable.Data.Validation
         }
 
         IEnumerable<IPropertyValidationResult> IEntityValidationResult.PropertyValidationResults => PropertyValidationResults;
+        IEnumerable<IRelationshipValidationResult> IEntityValidationResult.RelationshipValidationResults => RelationshipValidationResults;
+        IEnumerable<IRelationshipCollectionValidationResult> IEntityValidationResult.RelationshipCollectionValidationResults => RelationshipCollectionValidationResults;
 
         void IEntityValidationResult.AddPropertyValidationResult(IPropertyValidationResult result)
         {

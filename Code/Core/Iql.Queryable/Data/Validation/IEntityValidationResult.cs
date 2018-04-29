@@ -5,6 +5,8 @@ namespace Iql.Queryable.Data.Validation
     public interface IEntityValidationResult
     {
         IEnumerable<IPropertyValidationResult> PropertyValidationResults { get; }
+        IEnumerable<IRelationshipValidationResult> RelationshipValidationResults { get; }
+        IEnumerable<IRelationshipCollectionValidationResult> RelationshipCollectionValidationResults { get; }
         void AddPropertyValidationResult(IPropertyValidationResult result);
         bool HasValidationFailures();
     }
