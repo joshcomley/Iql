@@ -164,7 +164,7 @@ namespace Iql.Queryable.Data.Queryable
             int depth = 0
         )
         {
-            var expandExpression = operation.GetExpression() as IExpandQueryExpression;
+            var expandExpression = operation.QueryExpession as IExpandQueryExpression;
             if (expression.Parent.Kind != IqlExpressionKind.RootReference)
             {
                 typeConstructor = ResolveExpand(

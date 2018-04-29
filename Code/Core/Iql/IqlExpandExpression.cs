@@ -13,5 +13,6 @@
         }
 
         public IqlPropertyExpression NavigationProperty { get; set; }
+        public IqlCollectitonQueryExpression Query { get; set; }
     }
 }

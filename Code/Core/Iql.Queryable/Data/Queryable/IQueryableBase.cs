@@ -58,6 +58,6 @@ namespace Iql.Queryable.Data.Queryable
 
         IqlPropertyExpression PropertyExpression(string propertyName);
 
-        Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
+        Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
     }
 }

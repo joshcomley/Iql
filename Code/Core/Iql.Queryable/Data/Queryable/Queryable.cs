@@ -7,6 +7,7 @@ using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
@@ -307,6 +308,6 @@ namespace Iql.Queryable.Data.Queryable
         //#endif
         //            );
         //        }
-        public abstract Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
+        public abstract Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
     }
 }

@@ -52,9 +52,12 @@ namespace Iql
 //        Lambda
         ,
         Expand,
-        Query,
+        DataSetQuery,
         DataSetReference,
         Skip,
-        Take
+        Take,
+        PropertyNavigation,
+        CollectionNavigation,
+        CollectionPropertyNavigation
     }
 }

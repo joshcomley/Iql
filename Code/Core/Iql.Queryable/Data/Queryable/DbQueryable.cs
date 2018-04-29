@@ -15,6 +15,7 @@ using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Data.Tracking.State;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
@@ -455,26 +456,6 @@ namespace Iql.Queryable.Data.Queryable
             return this.OrderByProperty(EntityConfiguration.ResolveSearchProperties().First().Name, descending);
         }
 
-        public override async Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
-        {
-            expressionConverter = expressionConverter ?? IqlQueryableAdapter.ExpressionConverter();
-            var queryExpression = new IqlQueryExpression();
-            for (var i = 0; i < Operations.Count; i++)
-            {
-                var operation = Operations[i];
-                if (operation is OrderByOperation ||
-                    operation is WhereOperation ||
-                    operation is IExpandOperation)
-                {
-                    var expressionQueryOperation = operation as IExpressionQueryOperation;
-                    //expressionQueryOperation.Expression = expressionQueryOperation.Expression ?? 
-                    //    expressionQueryOperation.GetExpression();
-                }
-            }
-
-            return queryExpression;
-        }
-
         public override async Task<DbList<T>> ToListAsync()
         {
             var result = await ToListWithResponseAsync();
@@ -877,6 +858,68 @@ namespace Iql.Queryable.Data.Queryable
         public async Task<GetSingleResult<T>> GetWithCompositeKeyWithResponseAsync(CompositeKey key)
         {
             return await WithCompositeKey(key).SingleOrDefaultWithResponseAsync();
+        }
+
+        public override async Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
+        {
+            expressionConverter = expressionConverter ?? IqlQueryableAdapter.ExpressionConverter();
+            var queryExpression = new IqlDataSetQueryExpression();
+            for (var i = 0; i < Operations.Count; i++)
+            {
+                var operation = Operations[i];
+                IqlExpression iql = null;
+                if (operation is IExpressionQueryOperation)
+                {
+                    var expressionQueryOperation = operation as IExpressionQueryOperation;
+                    iql =
+                        expressionQueryOperation.Expression ??
+                            expressionConverter
+                                .ConvertQueryExpressionToIql<T>(expressionQueryOperation.QueryExpession)
+                                .Expression;
+                }
+                if (operation is OrderByOperation)
+                {
+                    queryExpression.OrderBys = queryExpression.OrderBys ?? new List<IqlOrderByExpression>();
+                    var orderByExpression = new IqlOrderByExpression(iql);
+                    queryExpression.OrderBys.Add(orderByExpression);
+                    orderByExpression.Descending = (operation as OrderByOperation).IsDescending();
+                }
+                else if (operation is WhereOperation)
+                {
+                    if (queryExpression.Filter == null)
+                    {
+                        queryExpression.Filter = iql;
+                    }
+                    else
+                    {
+                        queryExpression.Filter = new IqlAndExpression(iql, queryExpression.Filter);
+                    }
+                }
+                else if (operation is IExpandOperation)
+                {
+                    queryExpression.Expands = queryExpression.Expands ?? new List<IqlExpandExpression>();
+                    var iqlExpandExpression = new IqlExpandExpression();
+                    iqlExpandExpression.NavigationProperty = iql as IqlPropertyExpression;
+                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, iqlExpandExpression.NavigationProperty);
+                    var expressionQueryOperatiton = operation as IExpressionQueryOperation;
+                    var expandQueryExpression = expressionQueryOperatiton.QueryExpession as IExpandQueryExpression;
+                    var expandEntityType = propertytPath.Property.Relationship.OtherEnd.Configuration.Type;
+                    var expandDbSett = DataContext.GetDbSetByEntityType(expandEntityType);
+                    var expandQueryable = expandQueryExpression.Queryable(expandDbSett);
+                    var expandQuery = await expandQueryable.ToIqlAsync();
+                    iqlExpandExpression.Query = expandQuery;
+                    queryExpression.Expands.Add(iqlExpandExpression);
+                }
+                else if (operation is SkipOperation)
+                {
+                    queryExpression.Skip = (operation as SkipOperation).Skip;
+                }
+                else if (operation is TakeOperation)
+                {
+                    queryExpression.Skip = (operation as TakeOperation).Take;
+                }
+            }
+            return queryExpression;
         }
     }
 }

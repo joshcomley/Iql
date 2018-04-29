@@ -43,6 +43,16 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                     return new IqlStringIndexOfExpression(
                         parent,
                         context.Parse(node.Arguments[0], context) as IqlReferenceExpression);
+                case nameof(string.StartsWith):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    return new IqlStringStartsWithExpression(
+                        parent,
+                        context.Parse(node.Arguments[0], context) as IqlReferenceExpression);
+                case nameof(string.EndsWith):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    return new IqlStringEndsWithExpression(
+                        parent,
+                        context.Parse(node.Arguments[0], context) as IqlReferenceExpression);
                 case nameof(string.IsNullOrEmpty):
                 case nameof(string.IsNullOrWhiteSpace):
                     parent = context.Parse(node.Arguments.Single(), context) as IqlReferenceExpression;

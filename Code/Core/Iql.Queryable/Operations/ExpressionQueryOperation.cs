@@ -1,5 +1,3 @@
-using System;
-using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations
@@ -7,7 +5,7 @@ namespace Iql.Queryable.Operations
     public class ExpressionQueryOperation<TIqlExpression, TQueryExpression> :
         QueryOperation, IExpressionQueryOperation
         where TIqlExpression : IqlExpression
-        where TQueryExpression : ExpressionQueryExpressionBase
+        where TQueryExpression : QueryExpression
     {
         public TIqlExpression Expression { get; set; }
 
@@ -19,9 +17,15 @@ namespace Iql.Queryable.Operations
             set => Expression = (TIqlExpression) value;
         }
 
-        public virtual QueryExpression GetExpression()
+        QueryExpression IExpressionQueryOperation.QueryExpession
         {
-            throw new Exception("Method not implemented.");
+            get => QueryExpression;
+            set => QueryExpression = (TQueryExpression) value;
+        }
+
+        public ExpressionQueryOperation(TQueryExpression queryExpression)
+        {
+            QueryExpression = queryExpression;
         }
     }
 }

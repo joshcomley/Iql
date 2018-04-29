@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Iql.Queryable;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
@@ -39,7 +38,7 @@ namespace Iql.DotNet.QueryableApplicator.Applicators
                 var targetType = otherEnd.Type;
                 // TODO: Support multiple constraints
                 //var targetData = dotNetQueryResult.DataSetByType(targetType);
-                var targetExpression = expand.GetExpression() as IExpandQueryExpression;
+                var targetExpression = expand.QueryExpession as IExpandQueryExpression;
                 var targetQueryable = targetExpression.Queryable;
                 var target = targetQueryable(context.DataContext.AsDbSetByType(targetType));
                 var targetQuery = (IDotNetQueryResult)target.ToQueryWithAdapterBase(

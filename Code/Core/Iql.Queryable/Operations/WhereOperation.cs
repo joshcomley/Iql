@@ -1,33 +1,14 @@
-using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations
 {
-    public class WhereOperation : ExpressionQueryOperation<IqlExpression, ExpressionQueryExpressionBase>
+    public class WhereOperation : ExpressionQueryOperation<IqlExpression, QueryExpression>
     {
-        private readonly QueryExpression _queryExpression;
-
-        public WhereOperation(QueryExpression queryExpression = null)
+        public WhereOperation(QueryExpression queryExpression = null) : base(queryExpression)
         {
-            _queryExpression = queryExpression;
 #if TypeScript
-            EvaluateContext = _queryExpression?.EvaluateContext;
+            EvaluateContext = QueryExpression?.EvaluateContext;
 #endif
-            //if (queryExpression)
-            //{
-            //    if (QueryExpression.IsQueryExpression(queryExpression))
-            //    {
-            //    }
-            //    else
-            //    {
-            //        this.expression = queryExpression as IqlExpression;
-            //    }
-            //}
-        }
-
-        public override QueryExpression GetExpression()
-        {
-            return _queryExpression;
         }
     }
 }

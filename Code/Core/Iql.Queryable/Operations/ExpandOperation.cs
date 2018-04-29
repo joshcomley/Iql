@@ -6,7 +6,7 @@ namespace Iql.Queryable.Operations
 {
     public class ExpandOperation : ExpressionQueryOperation<IqlPropertyExpression, ExpandQueryExpression>, IExpandOperation
     {
-        public ExpandOperation(ExpandQueryExpression queryExpression = null)
+        public ExpandOperation(ExpandQueryExpression queryExpression = null) : base(queryExpression)
         {
             QueryExpression = queryExpression;
         }
@@ -16,11 +16,6 @@ namespace Iql.Queryable.Operations
         public IQueryableBase ApplyQuery(IQueryableBase queryable)
         {
             return queryable;
-        }
-
-        public override QueryExpression GetExpression()
-        {
-            return QueryExpression;
         }
     }
 }

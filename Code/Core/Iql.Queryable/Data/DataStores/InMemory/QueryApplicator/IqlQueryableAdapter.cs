@@ -56,7 +56,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory.QueryApplicator
         {
             if (operation.Expression == null)
             {
-                var queryExpression = operation.GetExpression();
+                var queryExpression = operation.QueryExpession;
 #if TypeScript
                 queryExpression.EvaluateContext = queryExpression.EvaluateContext ?? operation.EvaluateContext;
 #endif

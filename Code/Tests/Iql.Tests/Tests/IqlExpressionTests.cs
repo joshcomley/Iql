@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Iql.DotNet.Serialization;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
@@ -12,6 +14,22 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class IqlExpressionTests : TestsBase
     {
+        [TestMethod]
+        public async Task SimpleQueryableToIql()
+        {
+            var query = Db.Clients
+                .Where(c => c.Name.StartsWith("abc"))
+                .Where(c => c.AverageIncome > 10)
+                .WhereEquals(new IqlIsGreaterThanOrEqualToExpression(
+                    IqlExpression.GetPropertyExpression(nameof(Client.AverageSales)),
+                    new IqlLiteralExpression(7)))
+                .OrderByDescending(c => c.AverageIncome)
+                .ExpandSingle(c => c.CreatedByUser, queryable => queryable.Where(u => u.FullName == "Hopper").Expand(u => u.ClientsCreated));
+            var iql = await query.ToIqlAsync();
+            var xml = IqlSerializer.SerializeToXml(iql);
+            File.WriteAllText(@"D:\Code\iql-query.xml", xml);
+        }
+
         [TestMethod]
         public async Task FilterCollectionNative()
         {

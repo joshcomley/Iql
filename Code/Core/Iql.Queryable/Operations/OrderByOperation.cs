@@ -1,27 +1,20 @@
-using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations
 {
-    public class OrderByOperation : ExpressionQueryOperation<IqlExpression, ExpressionQueryExpressionBase>
+    public class OrderByOperation : ExpressionQueryOperation<IqlExpression, QueryExpression>
     {
         private readonly bool _descending;
-        private readonly ExpressionQueryExpressionBase _queryExpression;
 
-        public OrderByOperation(ExpressionQueryExpressionBase queryExpression = null, bool descending = false)
+        public OrderByOperation(QueryExpression queryExpression = null, bool descending = false)
+        : base(queryExpression)
         {
-            _queryExpression = queryExpression;
             _descending = descending;
         }
 
         public bool IsDescending()
         {
             return _descending;
-        }
-
-        public override QueryExpression GetExpression()
-        {
-            return _queryExpression;
         }
     }
 }
