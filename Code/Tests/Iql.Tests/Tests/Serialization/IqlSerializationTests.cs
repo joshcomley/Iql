@@ -6,7 +6,6 @@ using Iql.DotNet;
 using Iql.DotNet.Extensions;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,10 +87,10 @@ namespace Iql.Tests.Tests.Serialization
         [TestMethod]
         public void TestDeserializeStringConcatenationFromXmlAndApply()
         {
-            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
             var xml = IqlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id);
             var expression = IqlSerializer.DeserializeFromXml(xml);
-            var query = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToFunction<Client, string>(expression);
+            var query = IqlConverter.Instance.ConvertIqlToFunction<Client, string>(expression);
 
             var client = new Client();
             client.Name = "Brandless";
@@ -165,11 +164,11 @@ namespace Iql.Tests.Tests.Serialization
 
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
         {
-            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
             var xml = IqlSerializer.SerializeToXml(
                 expression);
             var iqlExpression = IqlSerializer.DeserializeFromXml(xml);
-            var query = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToFunction<Client, bool>(iqlExpression);
+            var query = IqlConverter.Instance.ConvertIqlToFunction<Client, bool>(iqlExpression);
             var code = query.ToCSharpString();
             Assert.AreEqual(
                 expected,

@@ -69,6 +69,12 @@ namespace Iql.Queryable.Expressions.Conversion
             );
         }
 
+        public virtual ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaToIql<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> filter) where TEntity : class
+        {
+            return new ExpressionResult<IqlPropertyExpression>(
+                ConvertLambdaExpressionToIql<TEntity>(filter).Expression as IqlPropertyExpression);
+        }
+
         public abstract LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext

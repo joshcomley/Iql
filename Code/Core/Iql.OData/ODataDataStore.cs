@@ -8,8 +8,7 @@ using Iql.OData.Extensions;
 using Iql.OData.IqlToODataExpression.Parsers;
 using Iql.OData.Json;
 using Iql.OData.Methods;
-using Iql.OData.QueryableApplicator;
-using Iql.OData.QueryableApplicator.Applicators;
+using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
@@ -32,13 +31,6 @@ namespace Iql.OData
     public class ODataDataStore : DataStore
     {
         private ODataConfiguration _configuration;
-
-        public ODataDataStore(IQueryableAdapterBase queryableAdapter = null)
-        {
-            QueryableAdapter = queryableAdapter ?? new ODataQueryableAdapter();
-        }
-
-        public IQueryableAdapterBase QueryableAdapter { get; }
 
         public ODataConfiguration Configuration
         {
@@ -290,15 +282,16 @@ namespace Iql.OData
 
         public string ResolveODataQueryUri(IQueryableBase queryable)
         {
-            var oDataQuery =
-                queryable.ToQueryWithAdapterBase(
-                    QueryableAdapter,
-                    DataContext,
-                    null,
-                    null) as IODataQuery;
-            var queryString = oDataQuery.ToODataQuery();
-            var fullQueryUri = $"{ResolveEntitySetUriByType(queryable.ItemType)}{queryString}";
-            return fullQueryUri;
+            throw new NotImplementedException();
+            //var oDataQuery =
+            //    queryable.ToQueryWithAdapterBase(
+            //        QueryableAdapter,
+            //        DataContext,
+            //        null,
+            //        null) as IODataQuery;
+            //var queryString = oDataQuery.ToODataQuery();
+            //var fullQueryUri = $"{ResolveEntitySetUriByType(queryable.ItemType)}{queryString}";
+            //return fullQueryUri;
         }
 
         public static string ResolveODataUri<TEntity>(DbQueryable<TEntity> queryable)
@@ -442,8 +435,34 @@ namespace Iql.OData
             //    compositeKey.Keys[i] = new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null);
             //}
 
-            var entityUri = $"{apiUriBase}{entitySetName}({WithKeyOperationApplicatorOData.FormatKey(compositeKey)})";
+            var entityUri = $"{apiUriBase}{entitySetName}({FormatKey(compositeKey)})";
             return entityUri;
+        }
+        public static string FormatKey(CompositeKey key)
+        {
+            string keyString;
+            if (key.Keys.Length == 1)
+            {
+                keyString = GetKeyValue(key.Keys.Single());
+            }
+            else
+            {
+                var keys = key.Keys.Select(k => k.Name + "=" + GetKeyValue(k));
+                keyString = string.Join(",", keys);
+            }
+            return keyString;
+        }
+
+        private static string GetKeyValue(KeyValue key)
+        {
+            if (key.Value is string || key.Value is Guid || key.Value is Guid? ||
+                (key.ValueType != null &&
+                 (key.ValueType.Type == typeof(string) || key.ValueType.Type == typeof(Guid))))
+            {
+                return $"\'{key.Value}\'";
+            }
+
+            return key.Value.ToString();
         }
 
         #region Validation

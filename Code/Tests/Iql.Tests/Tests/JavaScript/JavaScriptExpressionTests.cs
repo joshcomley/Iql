@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 #if !TypeScript
 #endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
-using Iql.JavaScript.QueryableApplicator;
 using Iql.OData;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -146,7 +145,7 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestTypicalValidationExpression()
         {
             ConverterConfig.Init();
-            var iql = IqlQueryableAdapter.ExpressionConverter()
+            var iql = IqlConverter.Instance
                 .ConvertLambdaToIql<Person>(p => p.Type.CreatedByUser.Client.Name
 #if TypeScript
             , null
@@ -160,9 +159,9 @@ namespace Iql.Tests.Tests.JavaScript
         [TestMethod]
         public void TestCompareStringExpression()
         {
-            ConverterConfig.Init();
-            var db = new AppDbContext();
-            var js = db.Users.Where(u => u.Id == "a").ToJavaScriptQuery();
+            //ConverterConfig.Init();
+            //var db = new AppDbContext();
+            //var js = db.Users.Where(u => u.Id == "a").ToJavaScriptQuery();
         }
 
         [TestMethod]
@@ -173,8 +172,8 @@ namespace Iql.Tests.Tests.JavaScript
             var iqlExpression = new IqlIsEqualToExpression(
                 IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)),
                 new IqlLiteralExpression("a"));
-            var js = db.GetJavaScriptWhereQuery(iqlExpression);
-            Assert.AreEqual(js.Expression, @"((entity || {})[""Id""] == 'a')");
+            var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iqlExpression, typeof(ApplicationUser));
+            Assert.AreEqual(js, @"((entity || {})[""Id""] == 'a')");
         }
 
 #if !TypeScript
@@ -183,7 +182,7 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestModeratelyComplicatedValidationExpression()
         {
             ConverterConfig.Init();
-            var iql = IqlQueryableAdapter.ExpressionConverter()
+            var iql = IqlConverter.Instance
                .ConvertLambdaToIql<Person>(p => string.IsNullOrWhiteSpace(p.CreatedByUserId) && p.CreatedByUser == null
 #if TypeScript
                     , 
@@ -203,7 +202,7 @@ namespace Iql.Tests.Tests.JavaScript
         public void StringIsNullOrWhiteSpaceExpression()
         {
             ConverterConfig.Init();
-            var iql = IqlQueryableAdapter.ExpressionConverter()
+            var iql = IqlConverter.Instance
                 .ConvertLambdaToIql<Person>(p => string.IsNullOrWhiteSpace(p.CreatedByUserId)
 #if TypeScript
                     , 
@@ -224,7 +223,7 @@ namespace Iql.Tests.Tests.JavaScript
         public void SimpleNullCheckExpression()
         {
             ConverterConfig.Init();
-            var iql = IqlQueryableAdapter.ExpressionConverter()
+            var iql = IqlConverter.Instance
                 .ConvertLambdaToIql<Person>(p => p.CreatedByUser == null
 #if TypeScript
                     , null

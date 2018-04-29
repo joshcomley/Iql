@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using Iql.DotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -23,11 +23,11 @@ namespace Iql.Tests.Tests.Serialization
 
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
         {
-            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
             var xml = IqlSerializer.SerializeToXml(
                 expression);
             var iqlExpression = IqlSerializer.DeserializeFromXml(xml);
-            var code = IqlQueryableAdapter.ExpressionConverter().ConvertIqlToExpressionString<Client>(iqlExpression);
+            var code = IqlConverter.Instance.ConvertIqlToExpressionString<Client>(iqlExpression);
             Assert.AreEqual(
                 expected,
                 code

@@ -2,8 +2,9 @@
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
+using Iql.Queryable.Expressions;
+
 #endif
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 
 namespace Iql.Tests.Tests.JavaScript
 {
@@ -12,9 +13,9 @@ namespace Iql.Tests.Tests.JavaScript
         public static void Init()
         {
 #if TypeScript
-            IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new JavaScriptExpressionConverter();
 #else
-            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
 #endif
         }
     }

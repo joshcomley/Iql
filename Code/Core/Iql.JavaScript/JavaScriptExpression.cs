@@ -1,4 +1,4 @@
-﻿namespace Iql.JavaScript.QueryableApplicator
+﻿namespace Iql.JavaScript
 {
     public class JavaScriptExpression
     {

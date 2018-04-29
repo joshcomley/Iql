@@ -8,19 +8,18 @@ using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
-using Iql.Queryable.QueryApplicator.Applicators;
 
 namespace Iql.Queryable.Extensions
 {
     public static class QueryOperationContextExtensions
     {
-        public static WhereOperation ResolveWithKeyWhereOperation(this IQueryOperationContextBase context)
-        {
-            var key = (context.Operation as WithKeyOperation).Key;
-            var dataContext = context.DataContext;
-            var queryable = context.Queryable;
-            return ResolveIdentityWhereOperation(dataContext, queryable.ItemType, key);
-        }
+        //public static WhereOperation ResolveWithKeyWhereOperation(this IQueryOperationContextBase context)
+        //{
+        //    var key = (context.Operation as WithKeyOperation).Key;
+        //    var dataContext = context.DataContext;
+        //    var queryable = context.Queryable;
+        //    return ResolveIdentityWhereOperation(dataContext, queryable.ItemType, key);
+        //}
 
         public static WithKeyOperation ResolveWithKeyOperationFromEntity<TEntity>(this IDataContext dataContext,
             TEntity entity

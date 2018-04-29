@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
@@ -41,10 +41,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             Expression<Func<TSource, TKey>> sourceKeyProperty,
             Expression<Func<TTarget, TKey>> targetKeyProperty)
         {
-            var sourceIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(sourceKeyProperty) as
-                IqlPropertyExpression;
-            var targetIqlProperty = IqlQueryableAdapter.ExpressionToIqlExpressionTree(targetKeyProperty) as
-                IqlPropertyExpression;
+            var expressionConverter = IqlExpressionConversion.DefaultExpressionConverter();
+            var sourceIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(sourceKeyProperty).Expression;
+            var targetIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(targetKeyProperty).Expression;
             ;
             var sourceProperty = Source.Configuration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName, typeof(TKey));
             if (sourceProperty != null && sourceProperty.Kind.HasFlag(PropertyKind.Primitive))

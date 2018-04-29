@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Iql.Extensions;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
@@ -295,7 +294,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType, IqlType? iqlType)
         {
             var expression = (Expression<Func<T, TProperty>>)lambda;
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression);
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(expression).Expression;
             var property = FindProperty(iql.PropertyName);
             if (property == null)
             {
@@ -447,7 +446,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public IProperty FindPropertyByLambdaExpression(LambdaExpression property)
         {
-            var iql = IqlQueryableAdapter.LambdaExpressionToIqlExpressionTree(property, typeof(T));
+            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIql<T>(property).Expression as IqlPropertyExpression;
             return FindPropertyByIqlExpression(iql);
         }
 
@@ -469,7 +468,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             var definedProperty = DefineAndGetProperty(property, null, false, iqlType);
             Key = new EntityKey<T, TKey>();
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
             iql.ReturnType = iqlType ?? typeof(TKey).ToIqlType();
             Key.AddProperty(definedProperty);
             TrySetKey(iql.PropertyName);
@@ -496,7 +495,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Key = new EntityKey<T, CompositeKey>();
             foreach (var property in properties)
             {
-                var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+                var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
                 var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
                 Key.AddProperty(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType, null));
@@ -540,7 +539,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 throw new Exception($"Please use {nameof(DefineCollectionProperty)} to define collection properties.");
             }
 #endif
-            var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
             var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<T, TProperty, TProperty>
                              ?? new Property<T, TProperty, TProperty>(
@@ -627,8 +626,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, long?>> countProperty = null
             )
         {
-            var iql =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
             var propertyInfo = typeof(T).GetProperty(iql.PropertyName);
             var propertyRuntimeType = propertyInfo.PropertyType;
             var propertyName = iql.PropertyName;
@@ -677,8 +675,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var collection = MapProperty<TElementType, TValueType>(property, true, false, IqlType.Collection, null);
             if (countProperty != null)
             {
-                var countPropertyIql =
-                    IqlQueryableAdapter.ExpressionToIqlExpressionTree(countProperty);
+                var countPropertyIql = IqlConverter.Instance.ConvertPropertyLambdaToIql(countProperty).Expression;
                 var countPropertyDefinition = typeof(T).GetProperty(countPropertyIql.PropertyName);
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {
@@ -728,7 +725,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             IProperty countRelationship)
         {
             var iql =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(property);
+                IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
             var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<T, TPropertyType, TElementType>;
             if (definition == null)

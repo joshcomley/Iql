@@ -5,7 +5,7 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.DotNet;
 #endif
 using Iql.Queryable;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -17,9 +17,9 @@ namespace Iql.Tests.Tests
         static TestsBase()
         {
 #if TypeScript
-            IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new JavaScriptExpressionConverter();
 #else
-            IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+            IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
 #endif
             new HazceptionDataStore().GetData();
         }

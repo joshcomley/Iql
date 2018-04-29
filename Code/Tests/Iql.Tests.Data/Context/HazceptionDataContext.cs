@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using Hazception.ApiContext.Base;
-using Iql.JavaScript.QueryableApplicator;
+﻿using Hazception.ApiContext.Base;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
-using Iql.DotNet.QueryableApplicator;
 #endif
 using Iql.Queryable;
 using Iql.Queryable.Data.DataStores;
 using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Expressions;
 
 namespace Iql.Tests.Context
 {
@@ -20,12 +16,12 @@ namespace Iql.Tests.Context
         public static InMemoryDataStoreConfiguration InMemoryDataStoreConfiguration { get; set; }
         static HazceptionDataContext()
         {
-            if (IqlQueryableAdapter.ExpressionConverter == null)
+            if (IqlExpressionConversion.DefaultExpressionConverter == null)
             {
 #if TypeScript
-                IqlQueryableAdapter.ExpressionConverter = () => new JavaScriptExpressionConverter();
+                IqlExpressionConversion.DefaultExpressionConverter = () => new JavaScriptExpressionConverter();
 #else
-                IqlQueryableAdapter.ExpressionConverter = () => new DotNetExpressionConverter();
+                IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
 #endif
             }
             InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();
@@ -50,7 +46,7 @@ namespace Iql.Tests.Context
             base(dataStore ?? new InMemoryDataStore(new JavaScriptQueryableAdapter()))
 #else
             //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
-            base(dataStore ?? new InMemoryDataStore(new DotNetQueryableAdapter()))
+            base(dataStore ?? new InMemoryDataStore())
 #endif
         {
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";

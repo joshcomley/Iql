@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Expressions
@@ -87,7 +86,7 @@ namespace Iql.Queryable.Expressions
         public static IqlPropertyPath FromLambda<T>(Expression<Func<T, object>> field,
             EntityConfiguration<T> entityConfigurationContext) where T : class
         {
-            var propertyExpression = IqlQueryableAdapter.LambdaExpressionToIqlExpressionTree(field, typeof(T));
+            var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter().ConvertPropertyLambdaToIql(field).Expression;
             return FromPropertyExpression(entityConfigurationContext, propertyExpression);
         }
 

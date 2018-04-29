@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
+using Iql.Queryable.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {
@@ -28,11 +28,9 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         {
             PivotType = typeof(TPivot);
             PivotSourceKeyProperty =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(pivotSourceKeyProperty) as
-                    IqlPropertyExpression;
+                IqlConverter.Instance.ConvertPropertyLambdaToIql(pivotSourceKeyProperty).Expression;
             PivotTargetKeyProperty =
-                IqlQueryableAdapter.ExpressionToIqlExpressionTree(pivotTargetKeyProperty) as
-                    IqlPropertyExpression;
+                IqlConverter.Instance.ConvertPropertyLambdaToIql(pivotTargetKeyProperty).Expression;
         }
 
         public IqlPropertyExpression PivotTargetKeyProperty { get; }

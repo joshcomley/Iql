@@ -30,12 +30,9 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             get { return _inMemoryRelationshipObserver = _inMemoryRelationshipObserver ?? new RelationshipObserver(DataContext, InMemoryTrackingSetCollection, true); }
         }
 
-        public InMemoryDataStore(IQueryableAdapterBase queryableAdapter)
+        public InMemoryDataStore()
         {
-            QueryableAdapter = queryableAdapter;
         }
-
-        public IQueryableAdapterBase QueryableAdapter { get; }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
 
@@ -189,24 +186,25 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public override Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
-            var q = (IInMemoryResult)
-                operation.Operation.Queryable.ToQueryWithAdapterBase(
-                QueryableAdapter,
-                DataContext,
-                null,
-                null);
-            var lists = q.GetResults();
-            var dictionary = new Dictionary<Type, IList>();
-            foreach (var item in lists.AllData)
-            {
-                dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
-            }
+            throw new NotImplementedException();
+            //var q = (IInMemoryResult)
+            //    operation.Operation.Queryable.ToQueryWithAdapterBase(
+            //    QueryableAdapter,
+            //    DataContext,
+            //    null,
+            //    null);
+            //var lists = q.GetResults();
+            //var dictionary = new Dictionary<Type, IList>();
+            //foreach (var item in lists.AllData)
+            //{
+            //    dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
+            //}
 
-            var cloned = lists.Root.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone);
-            lists.Root = cloned;
-            operation.Result.Data = dictionary;
-            operation.Result.Root = (List<TEntity>)lists.Root;
-            return Task.FromResult(operation.Result);
+            //var cloned = lists.Root.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone);
+            //lists.Root = cloned;
+            //operation.Result.Data = dictionary;
+            //operation.Result.Root = (List<TEntity>)lists.Root;
+            //return Task.FromResult(operation.Result);
         }
     }
 }

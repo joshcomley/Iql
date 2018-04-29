@@ -7,9 +7,7 @@ using Iql.JavaScript.IqlToJavaScriptExpression;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
-using Iql.JavaScript.QueryableApplicator;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
@@ -195,7 +193,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         ) where TEntity : class
         {
-            var iql = IqlQueryableAdapter.ExpressionConverter()
+            var iql = IqlConverter.Instance
                 .ConvertLambdaToIql(lambdaExpression
 #if TypeScript
             , null

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Parsing;
+using Iql.Parsing.Reduction;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
@@ -862,7 +862,7 @@ namespace Iql.Queryable.Data.Queryable
 
         public override async Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
         {
-            expressionConverter = expressionConverter ?? IqlQueryableAdapter.ExpressionConverter();
+            expressionConverter = expressionConverter ?? IqlExpressionConversion.DefaultExpressionConverter();
             var queryExpression = new IqlDataSetQueryExpression();
             for (var i = 0; i < Operations.Count; i++)
             {
@@ -919,7 +919,15 @@ namespace Iql.Queryable.Data.Queryable
                     queryExpression.Skip = (operation as TakeOperation).Take;
                 }
             }
-            return queryExpression;
+            return (IqlDataSetQueryExpression) new IqlReducer(
+#if TypeScript
+                    operation.EvaluateContext ?? Queryable.EvaluateContext ?? dataContext.EvaluateContext
+#endif
+                    // TODO: Add reducer registry
+
+                    //queryOperation.getExpression().evaluateContext || this.evaluateContext
+                )
+                .ReduceStaticContent(queryExpression);
         }
     }
 }

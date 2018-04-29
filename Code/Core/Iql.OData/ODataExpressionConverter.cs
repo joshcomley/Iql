@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Iql.OData.QueryableApplicator;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -41,14 +40,15 @@ namespace Iql.OData
 #endif
         )
         {
-            var expressionString = ODataQueryableAdapter.GetExpression(expression,
-                ResolvEntityConfigurationBuilder(rootEnityType),
-                rootEnityType
-#if TypeScript
-                , evaluateContext
-#endif
-                );
-            return expressionString;
+            throw new NotImplementedException();
+//            var expressionString = ODataQueryableAdapter.GetExpression(expression,
+//                ResolvEntityConfigurationBuilder(rootEnityType),
+//                rootEnityType
+//#if TypeScript
+//                , evaluateContext
+//#endif
+//                );
+//            return expressionString;
         }
     }
 }

@@ -1,19 +1,13 @@
-﻿using Iql.JavaScript.QueryableApplicator;
-using Iql.Queryable;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.DataStores;
+﻿using Iql.Queryable.Data.DataStores;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
-using Iql.DotNet.QueryableApplicator;
 #endif
 using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Queryable;
+using Iql.Queryable.Expressions;
 using Tunnel.ApiContext.Base;
-using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Context
 {
@@ -24,9 +18,9 @@ namespace Iql.Tests.Context
             InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();
             var inMemoryDb = new InMemoryDataBase();
             InMemoryDb = inMemoryDb;
-            if (IqlQueryableAdapter.ExpressionConverter == null)
+            if (IqlExpressionConversion.DefaultExpressionConverter == null)
             {
-                IqlQueryableAdapter.ExpressionConverter = () =>
+                IqlExpressionConversion.DefaultExpressionConverter = () =>
 #if TypeScript
                     new JavaScriptExpressionConverter();
 #else
@@ -38,12 +32,7 @@ namespace Iql.Tests.Context
         public static InMemoryDataStoreConfiguration InMemoryDataStoreConfiguration { get; set; }
 
         public AppDbContext(IDataStore dataStore = null) :
-#if TypeScript
-            base(dataStore ?? new InMemoryDataStore(new JavaScriptQueryableAdapter()))
-#else
-            //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
-            base(dataStore ?? new InMemoryDataStore(new DotNetQueryableAdapter()))
-#endif
+            base(dataStore ?? new InMemoryDataStore())
         {
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
