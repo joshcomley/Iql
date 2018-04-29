@@ -21,6 +21,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
 
         public List<ParameterExpression> RootEntities { get; } = new List<ParameterExpression>();
         public ParameterExpression RootEntity => RootEntities.Last();
+        public bool ConvertToLambda { get; set; } = true;
 
         public DotNetOutput ParseLambda(IqlExpression expression, Type rootEntityType
 #if TypeScript

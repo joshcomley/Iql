@@ -58,6 +58,7 @@ namespace Iql
         Take,
         PropertyNavigation,
         CollectionNavigation,
-        CollectionPropertyNavigation
+        CollectionPropertyNavigation,
+        WithKey
     }
 }

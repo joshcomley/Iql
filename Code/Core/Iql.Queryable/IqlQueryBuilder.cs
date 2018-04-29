@@ -95,7 +95,11 @@ namespace Iql.Queryable
 
         private static IqlExpression AndOr(this IEnumerable<IqlExpression> expressionsEnumerable, bool isAnd)
         {
-            var expressions = expressionsEnumerable.ToArray();
+            if (expressionsEnumerable == null)
+            {
+                return null;
+            }
+            var expressions = expressionsEnumerable.Where(e => e != null).ToArray();
             if (expressions.Length <= 0)
             {
                 return null;

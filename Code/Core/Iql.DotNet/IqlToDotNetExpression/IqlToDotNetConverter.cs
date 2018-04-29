@@ -24,7 +24,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
                 , evaluateContext
 #endif
             );
-            return dotNetExpression.ToLambda();
+            return parser.ConvertToLambda ? dotNetExpression.ToLambda() : dotNetExpression.Expression as LambdaExpression;
         }
 
         public string ConvertIqlToExpressionStringByType(IqlExpression iql,

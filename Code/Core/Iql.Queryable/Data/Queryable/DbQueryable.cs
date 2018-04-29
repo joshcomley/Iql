@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
 using Iql.Queryable.Data.Context;
@@ -917,6 +918,26 @@ namespace Iql.Queryable.Data.Queryable
                 else if (operation is TakeOperation)
                 {
                     queryExpression.Skip = (operation as TakeOperation).Take;
+                }
+                else if (operation is WithKeyOperation)
+                {
+                    var withKey = operation as WithKeyOperation;
+                    var isEqualToOperations = new List<IqlIsEqualToExpression>();
+                    for (var index = 0; index < withKey.Key.Keys.Length; index++)
+                    {
+                        var keyPart = withKey.Key.Keys[index];
+                        isEqualToOperations.Add(new IqlIsEqualToExpression(
+                            IqlExpression.GetPropertyExpression(keyPart.Name), 
+                            // TODO: Use configuratiton context and property path to resolve type
+                            new IqlLiteralExpression(keyPart.Value, keyPart.ValueType?.Type.ToIqlType() ?? IqlType.Unknown)));
+                    }
+
+                    queryExpression.Filter = new[]
+                    {
+                        queryExpression.Filter,
+                        new IqlWithKeyExpression(
+                            isEqualToOperations)
+                    }.And();
                 }
             }
             return (IqlDataSetQueryExpression) new IqlReducer(

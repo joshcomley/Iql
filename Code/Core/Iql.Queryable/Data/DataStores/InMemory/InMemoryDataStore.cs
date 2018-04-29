@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
@@ -11,6 +12,7 @@ using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Data.Tracking;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
@@ -184,9 +186,20 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             return index;
         }
 
-        public override Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
-            throw new NotImplementedException();
+            var iql = await operation.Operation.Queryable.ToIqlAsync();
+            var expression = IqlConverter.Instance.ConvertIqlToExpression<TEntity>(iql);
+            var func = (Func<IList<TEntity>, IEnumerable<TEntity>>)expression.Compile();
+            var dataSet = DataSet<TEntity>(operation.Operation);
+            var result = func(dataSet).ToList().CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
+            var flattened = this.DataContext.EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), result);
+            operation.Result.Root = result;
+            operation.Result.Success = true;
+            operation.Result.Data = flattened;
+            return operation.Result;
+            // Now convert IQL to a native expression
+            // Then run that native expression
             //var q = (IInMemoryResult)
             //    operation.Operation.Queryable.ToQueryWithAdapterBase(
             //    QueryableAdapter,

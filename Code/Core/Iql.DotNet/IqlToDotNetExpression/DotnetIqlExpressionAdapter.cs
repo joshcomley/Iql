@@ -8,6 +8,8 @@ namespace Iql.DotNet.IqlToDotNetExpression
         public DotNetIqlExpressionAdapter(string rootVariableName)
         {
             RootVariableName = rootVariableName;
+            Registry.Register(typeof(IqlDataSetQueryExpression), () => new DotNetDataSetQueryExpressionParser());
+            Registry.Register(typeof(IqlWithKeyExpression), () => new DotNetWithKeyExpressionParser());
             Registry.Register(typeof(IqlNotExpression), () => new DotNetNotExpressionParser());
             Registry.Register(typeof(IqlStringTrimExpression), () => new DotNetStringTrimExpressionParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new DotNetPropertyReferenceParser());
