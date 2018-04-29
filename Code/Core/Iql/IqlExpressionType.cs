@@ -51,6 +51,10 @@ namespace Iql
         TimeSpan
 //        Lambda
         ,
-        Expand
+        Expand,
+        Query,
+        DataSetReference,
+        Skip,
+        Take
     }
 }

@@ -167,7 +167,7 @@ namespace Iql.Queryable.Data.Queryable
 
         Task<IList> IDbQueryable.LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return LoadRelationshipPropertyAsync((T) entity, property, queryFilter);
+            return LoadRelationshipPropertyAsync((T)entity, property, queryFilter);
         }
 
         IDataContext IDbQueryable.DataContext { get => DataContext; set => DataContext = value; }
@@ -461,7 +461,7 @@ namespace Iql.Queryable.Data.Queryable
 
         public async Task<GetDataResult<T>> ToListWithResponseAsync()
         {
-            return await DataContext.DataStore.Get(new GetDataOperation<T>(this, DataContext));
+            return await DataContext.DataStore.GetAsync(new GetDataOperation<T>(this, DataContext));
         }
 
         public EntityState<T> Add(T entity)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
@@ -56,5 +57,7 @@ namespace Iql.Queryable.Data.Queryable
         //        );
 
         IqlPropertyExpression PropertyExpression(string propertyName);
+
+        Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
     }
 }

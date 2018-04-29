@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Extensions;
 using Iql.Parsing;
+using Iql.Queryable.Data.DataStores.InMemory.QueryApplicator;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
@@ -293,7 +295,7 @@ namespace Iql.Queryable.Data.Queryable
             );
         }
 
-//        IQueryableBase IQueryableBase.ExpandProperty(string propetyName
+        //        IQueryableBase IQueryableBase.ExpandProperty(string propetyName
         //#if TypeScript
         //            , EvaluateContext evaluateContext = null
         //#endif
@@ -305,5 +307,17 @@ namespace Iql.Queryable.Data.Queryable
         //#endif
         //            );
         //        }
+        public async Task<IqlQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
+        {
+            expressionConverter = expressionConverter ?? IqlQueryableAdapter.ExpressionConverter();
+            var queryExpression = new IqlQueryExpression();
+            for (var i = 0; i < Operations.Count; i++)
+            {
+                var operation = Operations[i];
+                //expressionConverter
+            }
+
+            return queryExpression;
+        }
     }
 }
