@@ -26,9 +26,10 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             var isStringComparison = false;
             if (action.Kind == IqlExpressionKind.IsEqualTo || action.Kind == IqlExpressionKind.IsNotEqualTo)
             {
+                var configurationContext = parser.Adapter.ResolveEntityConfigurationBuilder(parser.RootEntityType);
                 isStringComparison =
-                    IsString(action.Left, parser.Adapter.DataContext.EntityConfigurationContext) ||
-                    IsString(action.Right, parser.Adapter.DataContext.EntityConfigurationContext);
+                    IsString(action.Left, configurationContext) ||
+                    IsString(action.Right, configurationContext);
                 // We don't need to coalesce to upper case or null if one side is empty
                 if (isStringComparison)
                 {

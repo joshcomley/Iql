@@ -11,6 +11,24 @@ namespace Iql.OData.IqlToODataExpression
         {
         }
 
+        public string ParseAsStringNested(IqlExpression expression)
+        {
+            var wasNested = Nested;
+            Nested = true;
+            var result = ParseAsString(expression);
+            Nested = wasNested;
+            return result;
+        }
+
+        public ODataOutput ParseNested(IqlExpression expression)
+        {
+            var wasNested = Nested;
+            Nested = true;
+            var result = Parse(expression);
+            Nested = wasNested;
+            return result;
+        }
+
         public override ODataOutput Parse(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null

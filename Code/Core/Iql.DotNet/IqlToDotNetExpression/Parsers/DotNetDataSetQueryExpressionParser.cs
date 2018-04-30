@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {
-    public class DotNetDataSetQueryExpressionParser : DotNetActionParserBase<IqlDataSetQueryExpression>
+    public class DotNetDataSetQueryExpressionParser : DotNetActionParserBase<IqlCollectitonQueryExpression>
     {
         static DotNetDataSetQueryExpressionParser()
         {
@@ -15,7 +15,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
         internal static MethodInfo EnumerableWhereMethod { get; set; }
 
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlDataSetQueryExpression action, DotNetIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, DotNetIqlParserInstance parser)
         {
             var filter = parser.Parse(action.Filter);
             var orderBys = action.OrderBys?.Select(parser.Parse);
@@ -38,10 +38,16 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                 body = parser.Chain<TEntity>(
                     body,
                     e =>
-                    e.Where((Expression<Func<TEntity, bool>>)filter.ToLambda()));
-                //body = Expression.Call(EnumerableWhereMethod.MakeGenericMethod(parser.RootEntityType),
-                //    parser.WithContext<TEntity, IList<TEntity>>(e => e.SourceList),
-                //    filter.ToLambda());
+                        e.Where((Expression<Func<TEntity, bool>>)filter.ToLambda(), action.Filter));
+            }
+
+            if (action.WithKey != null)
+            {
+                var withKeyExpression = parser.Parse(action.WithKey);
+                body = parser.Chain<TEntity>(
+                    body,
+                    e =>
+                        e.Where((Expression<Func<TEntity, bool>>)withKeyExpression.ToLambda(), action.WithKey));
             }
 
             var orderBysArray = orderBys?.ToArray();

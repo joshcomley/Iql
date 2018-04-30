@@ -180,11 +180,11 @@ namespace Iql.OData
             return baseUri;
         }
 
-        public override Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
+        public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
-            var fullQueryUri = ResolveODataQueryUri(operation.Operation.Queryable);
-            return PerformGetInternalAsync(operation, fullQueryUri);
+            var fullQueryUri = await ResolveODataQueryUriAsync(operation.Operation.Queryable);
+            return await PerformGetInternalAsync(operation, fullQueryUri);
         }
 
         private async Task<FlattenedGetDataResult<TEntity>> PerformGetInternalAsync<TEntity>(
@@ -280,9 +280,18 @@ namespace Iql.OData
             return new ODataCollectionResult<TEntity>(values, count);
         }
 
-        public string ResolveODataQueryUri(IQueryableBase queryable)
+        public async Task<string> ResolveODataQueryUriAsync(IQueryableBase queryable)
         {
-            throw new NotImplementedException();
+            var iql = await queryable.ToIqlAsync();
+            var odataQuery = new ODataExpressionConverter(Configuration).ConvertIqlToExpressionStringByType(iql, queryable.ItemType);
+            var baseUri = ResolveEntitySetUriByType(queryable.ItemType);
+            if (!string.IsNullOrWhiteSpace(odataQuery))
+            {
+                baseUri = $"{baseUri}{odataQuery}";
+            }
+            //            //http://localhost:58000/odata/Users('2b2b0e44-4579-4965-8e3a-097e6684b767')?$expand=ExamResults($expand=Exam,Video,Results($expand=Hazard))&$count=true
+
+            return baseUri;
             //var oDataQuery =
             //    queryable.ToQueryWithAdapterBase(
             //        QueryableAdapter,
@@ -294,16 +303,16 @@ namespace Iql.OData
             //return fullQueryUri;
         }
 
-        public static string ResolveODataUri<TEntity>(DbQueryable<TEntity> queryable)
+        public static async Task<string> ResolveODataUriAsync<TEntity>(DbQueryable<TEntity> queryable)
             where TEntity : class
         {
-            return queryable.ResolveODataUri();
+            return await queryable.ResolveODataUriAsync();
         }
 
-        public static string ResolveODataUriFromQuery<TEntity>(Queryable.Data.Queryable.IQueryable<TEntity> queryable, IDataContext dataContext)
+        public static async Task<string> ResolveODataUriFromQuery<TEntity>(Queryable.Data.Queryable.IQueryable<TEntity> queryable, IDataContext dataContext)
             where TEntity : class
         {
-            return queryable.ResolveODataUriFromQuery(dataContext);
+            return await queryable.ResolveODataUriFromQueryAsync(dataContext);
         }
 
         private static void ParseObj(object jvalue)

@@ -59,6 +59,7 @@ namespace Iql
         PropertyNavigation,
         CollectionNavigation,
         CollectionPropertyNavigation,
-        WithKey
+        WithKey,
+        OrderBy
     }
 }

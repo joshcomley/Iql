@@ -1,16 +1,24 @@
+using System;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.Parsing;
 using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression
 {
     public class JavaScriptIqlExpressionAdapter : IqlExpressionAdapter<JavaScriptIqlData>
     {
-        public IDataContext DataContext { get; }
+        protected IEntityConfigurationBuilder EntityConfigurationContext { get; }
 
-        public JavaScriptIqlExpressionAdapter(IDataContext dataContext = null)
+        public IEntityConfigurationBuilder ResolveEntityConfigurationBuilder(Type entityType)
         {
-            DataContext = dataContext;
+            return EntityConfigurationContext ??
+                   EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(entityType);
+        }
+
+        public JavaScriptIqlExpressionAdapter(IEntityConfigurationBuilder entityConfigurationContext = null)
+        {
+            EntityConfigurationContext = entityConfigurationContext;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlExpression), () => new JavaScriptStringSourceActionParser());
             Registry.Register(typeof(IqlNotExpression), () => new JavaScriptNotActionParser());

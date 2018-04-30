@@ -2,7 +2,7 @@
 {
     public class IqlOrderByExpression : IqlExpression
     {
-        public IqlOrderByExpression(IqlExpression orderExpression, IqlExpression parent = null) : base(IqlExpressionKind.Expand, IqlType.Collection, parent)
+        public IqlOrderByExpression(IqlExpression orderExpression, IqlExpression parent = null) : base(IqlExpressionKind.OrderBy, IqlType.Collection, parent)
         {
             OrderExpression = orderExpression;
         }

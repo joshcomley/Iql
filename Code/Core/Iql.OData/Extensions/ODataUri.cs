@@ -1,4 +1,5 @@
-﻿using Iql.Queryable;
+﻿using System.Threading.Tasks;
+using Iql.Queryable;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Lists;
@@ -8,16 +9,16 @@ namespace Iql.OData.Extensions
 {
     public static class ODataUri
     {
-        public static string ResolveODataUri(this IDbQueryable queryable)
+        public static async Task<string> ResolveODataUriAsync(this IDbQueryable queryable)
         {
-            return queryable.ResolveODataUriFromQuery(queryable.DataContext);
+            return await queryable.ResolveODataUriFromQueryAsync(queryable.DataContext);
         }
 
-        public static string ResolveODataUriFromQuery(this IQueryableBase queryable, IDataContext dataContext)
+        public static async Task<string> ResolveODataUriFromQueryAsync(this IQueryableBase queryable, IDataContext dataContext)
         {
             var oDataDataStore = new ODataDataStore();
             oDataDataStore.DataContext = dataContext;
-            return oDataDataStore.ResolveODataQueryUri(queryable);
+            return await oDataDataStore.ResolveODataQueryUriAsync(queryable);
         }
     }
 }

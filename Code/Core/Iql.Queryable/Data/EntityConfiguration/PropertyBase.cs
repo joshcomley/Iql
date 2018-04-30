@@ -32,12 +32,24 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #if !TypeScript
         public PropertyInfo PropertyInfo { get; set; }
 #endif
-        public RelationshipMatch Relationship { get; set; }
+        public RelationshipMatch Relationship
+        {
+            get
+            {
+                if (_relationship != null)
+                {
+                    return _relationship;
+                }
+                return CountRelationship?.Relationship;
+            }
+            set => _relationship = value;
+        }
 
         public PropertyKind Kind { get; set; }
 
         private bool _searchKindSet;
         private bool? _readOnly;
+        private RelationshipMatch _relationship;
 
         public PropertySearchKind SearchKind
         {

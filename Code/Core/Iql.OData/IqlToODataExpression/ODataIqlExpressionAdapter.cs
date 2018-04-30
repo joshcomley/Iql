@@ -8,6 +8,10 @@ namespace Iql.OData.IqlToODataExpression
         public ODataIqlExpressionAdapter()
         {
             Registry.Register(typeof(IqlExpression), () => new ODataActionParser());
+            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new ODataCollectionQueryActionParser());
+            Registry.Register(typeof(IqlExpandExpression), () => new ODataExpandActionParser());
+            Registry.Register(typeof(IqlOrderByExpression), () => new ODataOrderByActionParser());
+            Registry.Register(typeof(IqlWithKeyExpression), () => new ODataWithKeyActionParser());
             Registry.Register(typeof(IqlCountExpression), () => new ODataCountActionParser());
             Registry.Register(typeof(IqlParenthesisExpression), () => new ODataParenthesisParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new ODataPropertyReferenceParser());

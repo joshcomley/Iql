@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.OData;
 using Iql.OData.Extensions;
 using Iql.Queryable.Data.Queryable;
@@ -54,37 +55,37 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-        public void TestResolveUri()
+        public async Task TestResolveUri()
         {
             var query = Db.Clients.Where(c => c.Name == "hello");
 
-            var uri = query.ResolveODataUri();
+            var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')",
                 uri);
 
             query = query.OrderBy(c => c.Name).Expand(c => c.Type);
-            uri = query.ResolveODataUri();
+            uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$orderby=$it/Name&$expand=Type",
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Type&$orderby=$it/Name",
                 uri);
         }
 
         [TestMethod]
-        public void TestFilteringOnFilteredNestedCollectionResultCount()
+        public async Task TestFilteringOnFilteredNestedCollectionResultCount()
         {
             var query = Db.People.Where(c => c.Types.Count(t => t.TypeId == 2) > 2);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(TypeId eq 2)) gt 2)",
                 uri);
         }
 
         [TestMethod]
-        public void TestStringFilteringOnNestedCollectionResultCount()
+        public async Task TestStringFilteringOnNestedCollectionResultCount()
         {
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.Contains("test")) > 2);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
 #if !TypeScript
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=contains(Description,'test')) gt 2)",
@@ -97,73 +98,73 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-        public void TestStringFilteringOnNestedCollectionWithStringIndexOfResultCount()
+        public async Task TestStringFilteringOnNestedCollectionWithStringIndexOfResultCount()
         {
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > 2);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
                 uri);
         }
 
         [TestMethod]
-        public void TestMultiply()
+        public async Task TestMultiply()
         {
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count * 0.5);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt ($it/Types/$count mul 0.5))",
                 uri);
         }
 
         [TestMethod]
-        public void TestDivide()
+        public async Task TestDivide()
         {
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count / 0.5);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt ($it/Types/$count div 0.5))",
                 uri);
         }
 
         [TestMethod]
-        public void TestFilteringOnNestedCollectionCount()
+        public async Task TestFilteringOnNestedCollectionCount()
         {
             var query = Db.People.Where(c => c.Types.Count > 2);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=($it/Types/$count gt 2)",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsExactCheck()
+        public async Task EnumFlagsExactCheck()
         {
             var query = Db.Users.Where(c => c.Permissions == (UserPermissions.Edit | UserPermissions.Create)
 #if TypeScript
     , new EvaluateContext(code => Evaluator.Eval(code))
 #endif
             );
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions eq '10')",
                 uri);
         }
 
         [TestMethod]
-        public void DateNowExpression()
+        public async Task DateNowExpression()
         {
             var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
                 new IqlPropertyExpression(
                     nameof(Client.CreatedDate),
                     new IqlRootReferenceExpression()),
                 new IqlNowExpression()));
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt now())",
                 uri);
         }
 
         [TestMethod]
-        public void DateNowWithSimpleTimeSpanSubtractionExpression()
+        public async Task DateNowWithSimpleTimeSpanSubtractionExpression()
         {
             var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
                 new IqlPropertyExpression(
@@ -171,13 +172,13 @@ namespace Iql.Tests.Tests.OData
                     new IqlRootReferenceExpression()),
                 new IqlSubtractExpression(new IqlNowExpression(),
                     new IqlTimeSpanExpression().Set(7))));
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P7D'))",
                 uri);
         }
 
         [TestMethod]
-        public void DateNowWithComplexTimeSpanSubtractionExpression()
+        public async Task DateNowWithComplexTimeSpanSubtractionExpression()
         {
             var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
                 new IqlPropertyExpression(
@@ -185,52 +186,52 @@ namespace Iql.Tests.Tests.OData
                     new IqlRootReferenceExpression()),
                 new IqlSubtractExpression(new IqlNowExpression(),
                     new IqlTimeSpanExpression().Set(365 * 10, 7, 15, 33, 14))));
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P3650DT7H15M33.014S'))",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsExactConstructedManuallyCheck()
+        public async Task EnumFlagsExactConstructedManuallyCheck()
         {
             var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.Permissions),
                     new IqlRootReferenceExpression()), 
                 new IqlEnumLiteralExpression(null).AddValue(10, "")));
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions eq '10')",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsContainsCheck()
+        public async Task EnumFlagsContainsCheck()
         {
             var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0
 #if TypeScript
     , new EvaluateContext(code => Evaluator.Eval(code))
 #endif
             );
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions has 'Create,Edit')",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsContainsOrCheck()
+        public async Task EnumFlagsContainsOrCheck()
         {
             var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0 || (c.Permissions & (UserPermissions.Delete)) != 0
 #if TypeScript
     , new EvaluateContext(code => Evaluator.Eval(code))
 #endif
             );
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsContainsCheckConstructedManually()
+        public async Task EnumFlagsContainsCheckConstructedManually()
         {
             var enumExpression = new IqlEnumLiteralExpression(typeof(UserPermissions));
             var expressionRoot = new IqlHasExpression(
@@ -239,13 +240,13 @@ namespace Iql.Tests.Tests.OData
             enumExpression.AddValue((long)UserPermissions.Edit, nameof(UserPermissions.Edit));
             enumExpression.AddValue((long)UserPermissions.Create, nameof(UserPermissions.Create));
             var query = Db.Users.WhereEquals(expressionRoot);
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions has 'Create,Edit')",
                 uri);
         }
 
         [TestMethod]
-        public void EnumFlagsContainsOrCheckConstructedManually()
+        public async Task EnumFlagsContainsOrCheckConstructedManually()
         {
             var has1 = new IqlHasExpression(
                 new IqlPropertyExpression(nameof(ApplicationUser.Permissions), new IqlRootReferenceExpression()),
@@ -259,51 +260,51 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Users.WhereEquals(new IqlOrExpression(
                 has1,
                 has2));
-            var uri = Uri.UnescapeDataString(query.ResolveODataUri());
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
                 uri);
         }
 
         [TestMethod]
-        public void TestResolveCountUri()
+        public async Task TestResolveCountUri()
         {
             var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);
 
-            var uri = query.ResolveODataUri();
+            var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Users/$count",
                 uri);
         }
 
         [TestMethod]
-        public void TestResolveUriFromIQueryable()
+        public async Task TestResolveUriFromIQueryable()
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello");
 
-            var uri = query.ResolveODataUriFromQuery(Db);
+            var uri = await query.ResolveODataUriFromQueryAsync(Db);
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
-            uri = query.ResolveODataUriFromQuery(Db);
+            uri = await query.ResolveODataUriFromQueryAsync(Db);
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$orderby=$it/Name",
                 uri);
         }
 
         [TestMethod]
-        public void TestResolveUriFromIQueryable2()
+        public async Task TestResolveUriFromIQueryable2()
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello2");
 
-            var uri = query.ResolveODataUriFromQuery(Db);
+            var uri = await query.ResolveODataUriFromQueryAsync(Db);
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
-            uri = query.ResolveODataUriFromQuery(Db);
+            uri = await query.ResolveODataUriFromQueryAsync(Db);
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')&$orderby=$it/Name",
                 uri);

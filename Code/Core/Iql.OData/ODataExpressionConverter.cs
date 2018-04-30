@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Iql.OData.IqlToODataExpression;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -11,6 +12,13 @@ namespace Iql.OData
 {
     public class ODataExpressionConverter : ExpressionConverterBase
     {
+        public ODataConfiguration Configuration { get; }
+
+        public ODataExpressionConverter(ODataConfiguration configuration = null)
+        {
+            Configuration = configuration;
+        }
+
         public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter)
         {
             throw new NotImplementedException();
@@ -40,15 +48,15 @@ namespace Iql.OData
 #endif
         )
         {
-            throw new NotImplementedException();
-//            var expressionString = ODataQueryableAdapter.GetExpression(expression,
-//                ResolvEntityConfigurationBuilder(rootEnityType),
-//                rootEnityType
-//#if TypeScript
-//                , evaluateContext
-//#endif
-//                );
-//            return expressionString;
+            var adapter = new ODataIqlExpressionAdapter();
+            var parser = new ODataIqlParserInstance(adapter, rootEnityType, this);
+            var result = parser.Parse(
+                expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            return result.ToCodeString();
         }
     }
 }

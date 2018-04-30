@@ -14,5 +14,6 @@
 
         public IqlPropertyExpression NavigationProperty { get; set; }
         public IqlCollectitonQueryExpression Query { get; set; }
+        public bool Count { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace Iql
         protected IqlNavigationExpression(IqlExpressionKind kind, IqlType type, IqlExpression parent = null) : base(kind, IqlType.Class, parent) { }
         public List<IqlExpandExpression> Expands { get; set; }
         public IqlExpression Filter { get; set; }
+        public IqlWithKeyExpression WithKey { get; set; }
     }
 
     //public interface IIqlPropertyNavigationExpression
@@ -27,8 +28,8 @@ namespace Iql
     public abstract class IqlCollectitonQueryExpression : IqlNavigationExpression
     {
         protected IqlCollectitonQueryExpression(IqlExpressionKind kind, IqlExpression parent = null) : base(kind, IqlType.Class, parent) { }
-
         public List<IqlOrderByExpression> OrderBys { get; set; }
+        public bool? IncludeCount { get; set; }
         public int? Skip { get; set; }
         public int? Take { get; set; }
     }

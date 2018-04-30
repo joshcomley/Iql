@@ -904,9 +904,16 @@ namespace Iql.Queryable.Data.Queryable
                     var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, iqlExpandExpression.NavigationProperty);
                     var expressionQueryOperatiton = operation as IExpressionQueryOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpession as IExpandQueryExpression;
-                    var expandEntityType = propertytPath.Property.Relationship.OtherEnd.Configuration.Type;
-                    var expandDbSett = DataContext.GetDbSetByEntityType(expandEntityType);
-                    var expandQueryable = expandQueryExpression.Queryable(expandDbSett);
+                    var property = propertytPath.Property;
+                    if (property.Kind.HasFlag(PropertyKind.Count))
+                    {
+                        iqlExpandExpression.Count = true;
+                        property = property.CountRelationship;
+                        iqlExpandExpression.NavigationProperty.PropertyName = property.Name;
+                    }
+                    var expandEntityType = property.Relationship.OtherEnd.Configuration.Type;
+                    var expandDbSet = DataContext.GetDbSetByEntityType(expandEntityType);
+                    var expandQueryable = expandQueryExpression.Queryable(expandDbSet);
                     var expandQuery = await expandQueryable.ToIqlAsync();
                     iqlExpandExpression.Query = expandQuery;
                     queryExpression.Expands.Add(iqlExpandExpression);
@@ -919,6 +926,10 @@ namespace Iql.Queryable.Data.Queryable
                 {
                     queryExpression.Skip = (operation as TakeOperation).Take;
                 }
+                else if (operation is IncludeCountOperation)
+                {
+                    queryExpression.IncludeCount = true;
+                }
                 else if (operation is WithKeyOperation)
                 {
                     var withKey = operation as WithKeyOperation;
@@ -927,26 +938,20 @@ namespace Iql.Queryable.Data.Queryable
                     {
                         var keyPart = withKey.Key.Keys[index];
                         isEqualToOperations.Add(new IqlIsEqualToExpression(
-                            IqlExpression.GetPropertyExpression(keyPart.Name), 
+                            IqlExpression.GetPropertyExpression(keyPart.Name),
                             // TODO: Use configuratiton context and property path to resolve type
                             new IqlLiteralExpression(keyPart.Value, keyPart.ValueType?.Type.ToIqlType() ?? IqlType.Unknown)));
                     }
-
-                    queryExpression.Filter = new[]
-                    {
-                        queryExpression.Filter,
-                        new IqlWithKeyExpression(
-                            isEqualToOperations)
-                    }.And();
+                    queryExpression.WithKey = new IqlWithKeyExpression(isEqualToOperations);
                 }
             }
-            return (IqlDataSetQueryExpression) new IqlReducer(
+            return (IqlDataSetQueryExpression)new IqlReducer(
 #if TypeScript
                     operation.EvaluateContext ?? Queryable.EvaluateContext ?? dataContext.EvaluateContext
 #endif
-                    // TODO: Add reducer registry
+                // TODO: Add reducer registry
 
-                    //queryOperation.getExpression().evaluateContext || this.evaluateContext
+                //queryOperation.getExpression().evaluateContext || this.evaluateContext
                 )
                 .ReduceStaticContent(queryExpression);
         }

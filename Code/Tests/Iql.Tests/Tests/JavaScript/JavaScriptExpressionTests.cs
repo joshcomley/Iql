@@ -173,7 +173,7 @@ namespace Iql.Tests.Tests.JavaScript
                 IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)),
                 new IqlLiteralExpression("a"));
             var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iqlExpression, typeof(ApplicationUser));
-            Assert.AreEqual(js, @"((entity || {})[""Id""] == 'a')");
+            Assert.AreEqual(@"function(entity) { return ((entity || {})[""Id""] == 'a'); }", js);
         }
 
 #if !TypeScript

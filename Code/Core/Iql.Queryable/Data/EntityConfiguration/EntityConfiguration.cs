@@ -673,13 +673,14 @@ namespace Iql.Queryable.Data.EntityConfiguration
         )
         {
             var collection = MapProperty<TElementType, TValueType>(property, true, false, IqlType.Collection, null);
+            IProperty countDefinition = null;
             if (countProperty != null)
             {
                 var countPropertyIql = IqlConverter.Instance.ConvertPropertyLambdaToIql(countProperty).Expression;
                 var countPropertyDefinition = typeof(T).GetProperty(countPropertyIql.PropertyName);
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {
-                    var countDefinition = MapProperty<long?, long?>(countProperty, false, true, IqlType.Integer, collection);
+                    countDefinition = MapProperty<long?, long?>(countProperty, false, true, IqlType.Integer, collection);
                     countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
                     countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
                 }
@@ -689,7 +690,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     if (countPropertyDefinition.PropertyType == typeof(Int32))
                     {
                         var lambda = (Expression<Func<T, int>>)lambdaExpression;
-                        var countDefinition = MapProperty<int, int>(lambda, false, true, IqlType.Integer, collection);
+                        countDefinition = MapProperty<int, int>(lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
@@ -698,7 +699,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                     else
                     {
                         var lambda = (Expression<Func<T, long>>)lambdaExpression;
-                        var countDefinition = MapProperty<long, long>(lambda, false, true, IqlType.Integer, collection);
+                        countDefinition = MapProperty<long, long>(lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);

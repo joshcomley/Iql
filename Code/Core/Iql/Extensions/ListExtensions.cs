@@ -24,7 +24,7 @@ namespace Iql.Extensions
             return (IList)ToListTypedMethod.InvokeGeneric(null, new object[] { enumerable }, type);
         }
 
-        public static IList ToList(this IList enumerable, Type type)
+        public static IList ToList(this IEnumerable enumerable, Type type)
         {
             return (IList)ToListTypedMethod.InvokeGeneric(null, new object[] { enumerable }, type);
         }

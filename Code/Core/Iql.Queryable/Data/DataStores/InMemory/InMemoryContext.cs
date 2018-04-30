@@ -5,17 +5,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
+using Iql.Parsing.Reduction;
 using Iql.Queryable.Data.Context;
+using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Expressions;
 
 namespace Iql.Queryable.Data.DataStores.InMemory
 {
-    public interface IInMemoryContext
-    {
-        IEnumerable SourceList { get; set; }
-        IEnumerable ResolveSource(Type entityType);
-    }
 
     public class InMemoryContext<TEntity> : IInMemoryContext where TEntity : class
     {
@@ -28,11 +26,23 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                                                 GetType().GetMethod(nameof(AddMatchesTyped));
             }
         }
-        public IDataContext DataContext { get; }
+        private MethodInfo _expandInternalMethod;
+        private MethodInfo ExpandInternalMethod
+        {
+            get
+            {
+                return _expandInternalMethod = _expandInternalMethod ??
+                                               GetType().GetMethod(nameof(ExpandInternal), BindingFlags.NonPublic | BindingFlags.Instance);
+            }
+        }
 
-        public InMemoryContext(IDataContext dataContext)
+        public IDataContext DataContext { get; }
+        public IInMemoryContext Parent { get; }
+
+        public InMemoryContext(IDataContext dataContext, IInMemoryContext parent = null)
         {
             DataContext = dataContext;
+            Parent = parent;
             SourceList =
                 DataContext.GetConfiguration<InMemoryDataStoreConfiguration>().GetSource<TEntity>();
         }
@@ -44,21 +54,86 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             return this;
         }
 
-        public InMemoryContext<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
+        public InMemoryContext<TEntity> Where(Expression<Func<TEntity, bool>> predicate, IqlExpression actionFilter)
         {
+            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity));
+            RelationshipMatches matches = null;
+            var relationshipExpander = new RelationshipExpander();
+            WithRelationships(
+                actionFilter,
+                entityConfiguration,
+                (path, relationship) =>
+                {
+                    matches = relationshipExpander.FindMatches(
+                        ResolveSource(path.Property.Relationship.OtherEnd.Type).ToList(path.Property.Relationship.OtherEnd.Type),
+                        SourceList.ToList(),
+                        path.Property.Relationship.Relationship,
+                        true);
+                });
             SourceList = SourceList.Where(predicate.Compile());
+            if (matches != null)
+            {
+                matches.UnassignRelationships();
+            }
             return this;
+        }
+
+        private static void WithRelationships(
+            IqlExpression expression,
+            IEntityConfiguration entityConfiguration,
+            Action<IqlPropertyPath, IRelationship> expand
+            )
+        {
+            var reducer = new IqlReducer();
+            var all = reducer.Traverse(expression);
+            var anyAlls = all.Where(_ => _ is IqlAnyAllExpression || _ is IqlCountExpression).ToArray();
+            for (var i = 0; i < anyAlls.Length; i++)
+            {
+                var anyAll = anyAlls[i];
+                var rootEntityConfiguration = entityConfiguration;
+                var iqlPropertyExpression = anyAll.Parent as IqlPropertyExpression;
+                var path = IqlPropertyPath.FromPropertyExpression(
+                    rootEntityConfiguration,
+                    iqlPropertyExpression);
+                expand(path, path.Property.Relationship.Relationship);
+            }
         }
 
         public InMemoryContext<TEntity> Expand(IqlExpandExpression expandExpression)
         {
             var path = IqlPropertyPath.FromPropertyExpression(DataContext.EntityConfigurationContext.EntityType<TEntity>(), expandExpression.NavigationProperty);
+            var otherSideType = path.Property.Relationship.OtherEnd.Configuration.Type;
+            return (InMemoryContext<TEntity>) ExpandInternalMethod.InvokeGeneric(
+                this,
+                new object[] {expandExpression, path},
+                otherSideType);
+        }
+
+        private InMemoryContext<TEntity> ExpandInternal<TTarget>(
+            IqlExpandExpression expandExpression,
+            IqlPropertyPath path) where TTarget : class
+        {
             var relationship = path.Property.Relationship.Relationship;
-            var source = (IList)ResolveSource(relationship.Source.Type);
-            var target = (IList)ResolveSource(relationship.Target.Type);
+            var source = ResolveSource(relationship.Source.Type);
+            var target = ResolveSource(relationship.Target.Type);
+            var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TTarget>(
+                expandExpression.Query);
+            var expandContext = (InMemoryContext<TTarget>)typeof(InMemoryContext<>).ActivateGeneric(
+                new object[] { DataContext, this },
+                typeof(TTarget));
+            var func = expression.Compile();
+            expandContext = (InMemoryContext<TTarget>)func.DynamicInvoke(expandContext);
+            if (path.Property.Relationship.ThisIsTarget)
+            {
+                source = expandContext.SourceList;
+            }
+            else
+            {
+                target = expandContext.SourceList;
+            }
             var matches = new RelationshipExpander().FindMatches(
-                source,
-                target,
+                source.ToList(relationship.Source.Type),
+                target.ToList(relationship.Target.Type),
                 relationship,
                 true);
             AddMatches(relationship.Source.Type, matches.SourceMatches);
@@ -71,10 +146,17 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public void AddMatches(Type type, IList matches)
         {
-            AddMatchesTypedMethod.InvokeGeneric(
-                this,
-                new[] { matches },
-                type);
+            if (Parent != null)
+            {
+                Parent.AddMatches(type, matches);
+            }
+            else
+            {
+                AddMatchesTypedMethod.InvokeGeneric(
+                    this,
+                    new[] { matches },
+                    type);
+            }
         }
 
         private readonly Dictionary<object, bool> _matched = new Dictionary<object, bool>();
@@ -113,8 +195,8 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         IEnumerable IInMemoryContext.SourceList
         {
-            get => (IList) SourceList;
-            set => SourceList = (IList<TEntity>) value;
+            get => (IList)SourceList;
+            set => SourceList = (IList<TEntity>)value;
         }
     }
 }

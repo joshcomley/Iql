@@ -186,6 +186,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)expression.Compile();
             var inMemoryContext = new InMemoryContext<TEntity>(DataContext);
             var result = func(inMemoryContext).SourceList.ToList().CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
+            inMemoryContext.AddMatches(typeof(TEntity), result);
             var dictionary = new Dictionary<Type, IList>();
             foreach (var item in inMemoryContext.AllData)
             {
