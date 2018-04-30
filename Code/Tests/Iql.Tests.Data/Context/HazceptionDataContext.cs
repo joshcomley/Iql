@@ -42,12 +42,7 @@ namespace Iql.Tests.Context
         public static HazceptionInMemoryDataBase InMemoryDb { get; set; }
 
         public HazceptionDataContext(IDataStore dataStore = null) :
-#if TypeScript
-            base(dataStore ?? new InMemoryDataStore(new JavaScriptQueryableAdapter()))
-#else
-            //base(new InMemoryDataStore(new JavaScriptQueryableAdapter()))
             base(dataStore ?? new InMemoryDataStore())
-#endif
         {
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);

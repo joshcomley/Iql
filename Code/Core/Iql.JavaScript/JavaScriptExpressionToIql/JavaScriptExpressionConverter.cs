@@ -47,7 +47,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambdaExpression
 #if TypeScript
-                , EvaluateContext evaluateContext
+                , EvaluateContext evaluateContext = null
 #endif
             )
         {
@@ -142,7 +142,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {
@@ -158,7 +158,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         ) where TEntity : class
         {
@@ -187,7 +187,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public string ConvertLambdaToJavaScript<TEntity>(Expression<Func<TEntity, object>> lambdaExpression
 #if TypeScript
-, EvaluateContext evaluateContext
+, EvaluateContext evaluateContext = null
 #endif
         ) where TEntity : class
         {
@@ -203,7 +203,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {
@@ -216,7 +216,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEntityType
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {
@@ -244,7 +244,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {

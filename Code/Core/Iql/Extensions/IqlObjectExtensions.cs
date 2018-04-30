@@ -2,7 +2,7 @@
 
 namespace Iql.Extensions
 {
-    public static class ObjectExtensions
+    public static class IqlObjectExtensions
     {
         public static object GetPropertyValueByName<T>(this T obj, string propertyName)
         {

@@ -12,13 +12,13 @@ namespace Iql.Tests.Tests.EntityConfiguration
         [TestMethod]
         public void GetDeepPropertyFromString()
         {
-            var propertyPath = string.Join("/", new[]
-            {
-                nameof(Person.Type),
-                nameof(PersonType.CreatedByUser),
-                nameof(ApplicationUser.Client),
-                nameof(Client.AverageSales)
-            });
+                var propertyPath = string.Join("/", new[]
+                {
+                    nameof(Person.Type),
+                    nameof(PersonType.CreatedByUser),
+                    nameof(ApplicationUser.Client),
+                    nameof(Client.AverageSales)
+                });
             var property = Db.EntityConfigurationContext.EntityType<Person>()
                 .FindProperty(
                     propertyPath);

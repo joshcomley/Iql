@@ -2,9 +2,8 @@
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
-using Iql.Queryable.Expressions;
-
 #endif
+using Iql.Queryable.Expressions;
 
 namespace Iql.Tests.Tests.JavaScript
 {

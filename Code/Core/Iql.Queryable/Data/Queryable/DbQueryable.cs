@@ -861,7 +861,12 @@ namespace Iql.Queryable.Data.Queryable
             return await WithCompositeKey(key).SingleOrDefaultWithResponseAsync();
         }
 
-        public override async Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null)
+        public override async Task<IqlDataSetQueryExpression> ToIqlAsync(
+            IExpressionToIqlConverter expressionConverter = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
             expressionConverter = expressionConverter ?? IqlExpressionConversion.DefaultExpressionConverter();
             var queryExpression = new IqlDataSetQueryExpression();
@@ -947,7 +952,7 @@ namespace Iql.Queryable.Data.Queryable
             }
             return (IqlDataSetQueryExpression)new IqlReducer(
 #if TypeScript
-                    operation.EvaluateContext ?? Queryable.EvaluateContext ?? dataContext.EvaluateContext
+                    evaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext
 #endif
                 // TODO: Add reducer registry
 

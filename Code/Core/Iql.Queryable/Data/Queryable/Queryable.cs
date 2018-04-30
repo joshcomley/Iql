@@ -306,6 +306,10 @@ namespace Iql.Queryable.Data.Queryable
         //#endif
         //            );
         //        }
-        public abstract Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
+        public abstract Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
     }
 }

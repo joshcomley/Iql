@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Iql.DotNet.Serialization;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
@@ -26,8 +25,8 @@ namespace Iql.Tests.Tests
                 .OrderByDescending(c => c.AverageIncome)
                 .ExpandSingle(c => c.CreatedByUser, queryable => queryable.Where(u => u.FullName == "Hopper").Expand(u => u.ClientsCreated));
             var iql = await query.ToIqlAsync();
-            var xml = IqlSerializer.SerializeToXml(iql);
-            File.WriteAllText(@"D:\Code\iql-query.xml", xml);
+            //var xml = IqlSerializer.SerializeToXml(iql);
+            //File.WriteAllText(@"D:\Code\iql-query.xml", xml);
         }
 
         [TestMethod]

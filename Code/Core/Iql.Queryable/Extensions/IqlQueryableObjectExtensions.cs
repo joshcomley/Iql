@@ -1,17 +1,30 @@
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
-using Iql.Queryable.Data;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Extensions
 {
-    public static class IqlObjectExtensions
+    public static class IqlQueryableObjectExtensions
     {
+        public static PropertyInfo[] GetProperties(this object value)
+        {
+            return value == null
+                ? new PropertyInfo[] { }
+                : value.GetType().GetProperties().ToArray();
+        }
+
+        public static bool IsDefaultValue(this object value, ITypeDefinition type)
+        {
+            return Equals(value, null) ||
+                   Equals(type.DefaultValue(), value);
+        }
+
         public static object[] GetPropertyValues<T>(this T obj, IProperty[] properties)
         {
             var arr = new object[properties.Length];
-            for(var i = 0; i < properties.Length; i++)
+            for (var i = 0; i < properties.Length; i++)
             {
                 //arr[i] = property.PropertyInfo.GetValue(obj);
                 arr[i] = properties[i].PropertyGetter(obj);

@@ -67,7 +67,7 @@ namespace Iql.Parsing
 
         public virtual string ParseAsString(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
             )
         {

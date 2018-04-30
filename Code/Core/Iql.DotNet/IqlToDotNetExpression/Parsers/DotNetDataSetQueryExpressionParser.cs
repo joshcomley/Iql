@@ -18,18 +18,20 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, DotNetIqlParserInstance parser)
         {
             var filter = parser.Parse(action.Filter);
-            var orderBys = action.OrderBys?.Select(parser.Parse);
-            var expands = action.Expands?.Select(parser.Parse);
+            var orderBys = action.OrderBys?.Select(o => parser.Parse(o));
+            var expands = action.Expands?.Select(o => parser.Parse(o));
             Expression body = parser.ContextParameter;
             var expandsArray = expands?.ToArray();
             if (expandsArray != null && expandsArray.Any())
             {
                 foreach (var expand in expandsArray)
                 {
+#if !TypeScript
                     body = parser.Chain<TEntity>(
                         body,
                         e =>
                         e.Run((MethodCallExpression)expand.Expression));
+#endif
                 }
             }
 

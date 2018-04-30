@@ -99,7 +99,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
 
         public override DotNetOutput Parse(IqlExpression expression
 #if TypeScript
-                , EvaluateContext evaluateContext
+                , EvaluateContext evaluateContext = null
 #endif
         )
         {
@@ -112,7 +112,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
 
         private Expression ParseAsExpression(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {

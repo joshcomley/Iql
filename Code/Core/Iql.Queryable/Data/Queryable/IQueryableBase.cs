@@ -58,6 +58,10 @@ namespace Iql.Queryable.Data.Queryable
 
         IqlPropertyExpression PropertyExpression(string propertyName);
 
-        Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null);
+        Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
     }
 }

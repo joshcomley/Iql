@@ -35,7 +35,7 @@ namespace Iql.OData
 
         public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {
@@ -44,7 +44,7 @@ namespace Iql.OData
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEnityType
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {

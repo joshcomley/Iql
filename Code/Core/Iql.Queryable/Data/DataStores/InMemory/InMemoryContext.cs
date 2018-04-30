@@ -47,12 +47,14 @@ namespace Iql.Queryable.Data.DataStores.InMemory
                 DataContext.GetConfiguration<InMemoryDataStoreConfiguration>().GetSource<TEntity>();
         }
 
+#if !TypeScript
         public InMemoryContext<TEntity> Run(MethodCallExpression run)
         {
             var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)Expression.Lambda(run, run.Object as ParameterExpression).Compile();
             func(this);
             return this;
         }
+#endif
 
         public InMemoryContext<TEntity> Where(Expression<Func<TEntity, bool>> predicate, IqlExpression actionFilter)
         {

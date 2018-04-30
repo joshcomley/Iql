@@ -10,7 +10,7 @@ namespace Iql.Queryable.Expressions.Conversion
     {
         LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
@@ -18,13 +18,13 @@ namespace Iql.Queryable.Expressions.Conversion
         string ConvertIqlToExpressionStringByType(IqlExpression expression,
             Type rootEntityType
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         );
 
         string ConvertIqlToExpressionString<TEntity>(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         );
     }
