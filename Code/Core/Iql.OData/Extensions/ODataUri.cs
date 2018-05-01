@@ -9,16 +9,28 @@ namespace Iql.OData.Extensions
 {
     public static class ODataUri
     {
-        public static async Task<string> ResolveODataUriAsync(this IDbQueryable queryable)
+        public static ODataConfiguration ODataConfiguration(this IDataContext dataContext)
         {
-            return await queryable.ResolveODataUriFromQueryAsync(queryable.DataContext);
+            return dataContext.GetConfiguration<ODataConfiguration>();
         }
 
-        public static async Task<string> ResolveODataUriFromQueryAsync(this IQueryableBase queryable, IDataContext dataContext)
+        public static async Task<string> ResolveODataUriAsync(this IDbQueryable queryable)
+        {            
+            return await queryable.ResolveODataUriFromQueryAsync();
+        }
+
+        public static async Task<string> ResolveODataUriFromQueryAsync(this IQueryableBase queryable, ODataConfiguration oDataConfiguration = null)
         {
-            var oDataDataStore = new ODataDataStore();
-            oDataDataStore.DataContext = dataContext;
-            return await oDataDataStore.ResolveODataQueryUriAsync(queryable);
+            if (oDataConfiguration == null && queryable is IDbQueryable)
+            {
+                var dbQueryable = queryable as IDbQueryable;
+                var dataContext = dbQueryable.DataContext;
+                oDataConfiguration = dataContext.ODataConfiguration();
+            }
+            var iql = await queryable.ToIqlAsync();
+            var expressionConverter = new ODataExpressionConverter(oDataConfiguration);
+            var expressionString = expressionConverter.ConvertIqlToExpressionStringByType(iql, queryable.ItemType);
+            return expressionString;
         }
     }
 }

@@ -145,7 +145,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
                 }
                 var oldExpression = Expression;
                 Expression = expression;
-                var parser = Adapter.Registry.Resolve(Expression);
+                var parser = Adapter.Registry.Resolve(Expression.GetType());
                 if (parser == null)
                 {
                     throw new Exception("No parser found for " + expression.GetType().Name);

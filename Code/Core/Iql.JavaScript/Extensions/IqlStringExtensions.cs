@@ -2,10 +2,15 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Iql.Tests.Extensions
+namespace Iql.JavaScript.Extensions
 {
-    public static class StringExtensions
+    public static class IqlStringExtensions
     {
+        public static string Clean(this string str)
+        {
+            return str.Replace("\r", "");
+        }
+
         public static string CompressJson(this string json)
         {
 #if TypeScript
@@ -14,7 +19,7 @@ namespace Iql.Tests.Extensions
             JsonReader reader = new JsonTextReader(new StringReader(json));
             reader.DateParseHandling = DateParseHandling.None;
             var jObject = JObject.Load(reader);
-            return jObject.ToString(Formatting.None);
+            return jObject.ToString(Formatting.None).Clean();
 #endif
         }
     }

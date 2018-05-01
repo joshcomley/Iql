@@ -45,7 +45,7 @@ namespace Iql.Parsing.Reduction
 
         public IIqlLiteralExpression Evaluate(IqlExpression expression)
         {
-            var reducer = _registry.Resolve(expression);
+            var reducer = _registry.Resolve(IqlExpression.ResolveExpressionType(expression));
             Ancestors.Add(expression);
             var result = reducer?.Evaluate(expression, this);
             Ancestors.RemoveAt(Ancestors.Count - 1);
@@ -73,7 +73,7 @@ namespace Iql.Parsing.Reduction
                 return (IqlExpression)value ?? expression;
             }
             Ancestors.Add(expression);
-            var reducer = _registry.Resolve(expression);
+            var reducer = _registry.Resolve(IqlExpression.ResolveExpressionType(expression));
             var result = reducer != null ? reducer.ReduceStaticContent(expression, this) : expression;
             Ancestors.RemoveAt(Ancestors.Count - 1);
             return result;

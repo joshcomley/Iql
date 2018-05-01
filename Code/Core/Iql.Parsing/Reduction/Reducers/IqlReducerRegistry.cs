@@ -4,6 +4,7 @@
     {
         public IqlReducerRegistry()
         {
+            Register(typeof(IqlCollectitonQueryExpression), () => new IqlCollectitonQueryExpressionReducer());
             Register(typeof(IqlParentValueExpression), () => new IqlParentValueExpressionReducer());
             Register(typeof(IqlToStringExpression), () => new IqlToStringExpressionReducer());
             Register(typeof(IqlStringIncludesExpression), () => new IqlStringIncludesExpressionReducer());

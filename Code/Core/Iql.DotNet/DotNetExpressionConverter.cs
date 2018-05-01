@@ -16,7 +16,11 @@ namespace Iql.DotNet
 {
     public class DotNetExpressionConverter : ExpressionConverterBase
     {
-        public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter)
+        public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
             var lambdaExpression = whereQueryExpression.GetExpression();

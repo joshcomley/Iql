@@ -60,18 +60,21 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         {
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity));
             RelationshipMatches matches = null;
-            var relationshipExpander = new RelationshipExpander();
-            WithRelationships(
-                actionFilter,
-                entityConfiguration,
-                (path, relationship) =>
-                {
-                    matches = relationshipExpander.FindMatches(
-                        ResolveSource(path.Property.Relationship.OtherEnd.Type).ToList(path.Property.Relationship.OtherEnd.Type),
-                        SourceList.ToList(),
-                        path.Property.Relationship.Relationship,
-                        true);
-                });
+            if (actionFilter != null)
+            {
+                var relationshipExpander = new RelationshipExpander();
+                WithRelationships(
+                    actionFilter,
+                    entityConfiguration,
+                    (path, relationship) =>
+                    {
+                        matches = relationshipExpander.FindMatches(
+                            ResolveSource(path.Property.Relationship.OtherEnd.Type).ToList(path.Property.Relationship.OtherEnd.Type),
+                            SourceList.ToList(),
+                            path.Property.Relationship.Relationship,
+                            true);
+                    });
+            }
             SourceList = SourceList.Where(predicate.Compile());
             if (matches != null)
             {
@@ -88,12 +91,12 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         {
             var reducer = new IqlReducer();
             var all = reducer.Traverse(expression);
-            var anyAlls = all.Where(_ => _ is IqlAnyAllExpression || _ is IqlCountExpression).ToArray();
+            var anyAlls = all.Where(_ => _.Kind == IqlExpressionKind.Any || _.Kind == IqlExpressionKind.All || _.Kind == IqlExpressionKind.Count).ToArray();
             for (var i = 0; i < anyAlls.Length; i++)
             {
                 var anyAll = anyAlls[i];
                 var rootEntityConfiguration = entityConfiguration;
-                var iqlPropertyExpression = anyAll.Parent as IqlPropertyExpression;
+                var iqlPropertyExpression = (IqlPropertyExpression)anyAll.Parent;
                 var path = IqlPropertyPath.FromPropertyExpression(
                     rootEntityConfiguration,
                     iqlPropertyExpression);
@@ -103,12 +106,20 @@ namespace Iql.Queryable.Data.DataStores.InMemory
 
         public InMemoryContext<TEntity> Expand(IqlExpandExpression expandExpression)
         {
-            var path = IqlPropertyPath.FromPropertyExpression(DataContext.EntityConfigurationContext.EntityType<TEntity>(), expandExpression.NavigationProperty);
+            var path = IqlPropertyPath.FromPropertyExpression(
+                DataContext.EntityConfigurationContext.EntityType<TEntity>(),
+                expandExpression.NavigationProperty);
             var otherSideType = path.Property.Relationship.OtherEnd.Configuration.Type;
-            return (InMemoryContext<TEntity>) ExpandInternalMethod.InvokeGeneric(
+            return (InMemoryContext<TEntity>)ExpandInternalMethod.InvokeGeneric(
                 this,
-                new object[] {expandExpression, path},
+                new object[] { expandExpression, path },
                 otherSideType);
+        }
+
+        public InMemoryContext<TEntity> OrderBy<TKey>(Func<TEntity, TKey> orderByExpression, bool descending)
+        {
+            SourceList = descending ? SourceList.OrderByDescending(orderByExpression) : SourceList.OrderBy(orderByExpression);
+            return this;
         }
 
         private InMemoryContext<TEntity> ExpandInternal<TTarget>(
@@ -164,9 +175,9 @@ namespace Iql.Queryable.Data.DataStores.InMemory
         private readonly Dictionary<object, bool> _matched = new Dictionary<object, bool>();
 
         public readonly Dictionary<Type, IList> AllData = new Dictionary<Type, IList>();
-        public void AddMatchesTyped<TEntity>(List<TEntity> matches)
+        public void AddMatchesTyped<TEntityMatch>(List<TEntityMatch> matches)
         {
-            var type = typeof(TEntity);
+            var type = typeof(TEntityMatch);
             if (!AllData.ContainsKey(type))
             {
                 AllData.Add(type, matches);
@@ -177,7 +188,7 @@ namespace Iql.Queryable.Data.DataStores.InMemory
             }
             else
             {
-                var list = (List<TEntity>)AllData[type];
+                var list = (List<TEntityMatch>)AllData[type];
                 foreach (var match in matches)
                 {
                     if (!_matched.ContainsKey(match))

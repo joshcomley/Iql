@@ -12,5 +12,18 @@
 
         public string RootVariableName { get; }
         public string Expression { get; }
+
+        public string AsFunction(bool typeScript = false)
+        {
+            if (Expression.StartsWith("function("))
+            {
+                return Expression;
+            }
+            if (typeScript)
+            {
+                return $"{RootVariableName} => {Expression}";
+            }
+            return $"function({RootVariableName}) {{ return {Expression}; }}";
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 
@@ -5,8 +6,15 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptIqlParserInstance : ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter, string, JavaScriptOutput, JavaScriptExpressionConverter>
     {
-        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, JavaScriptExpressionConverter expressionConverter) : base(adapter, null, expressionConverter)
+        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, Type rootEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter)
         {
+        }
+
+        public string ToLambda(string code)
+        {
+            var rootEntityName = RootEntityParameterName();
+            var lambda = $"function({rootEntityName}) {{ return {code}; }}";
+            return lambda;
         }
 
         public override JavaScriptOutput Parse(IqlExpression expression
@@ -19,7 +27,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 #if TypeScript
             , evaluateContext
 #endif
-                ));
+                ), RootEntityParameterName());
         }
     }
 }

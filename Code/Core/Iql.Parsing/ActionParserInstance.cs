@@ -10,6 +10,9 @@ namespace Iql.Parsing
         where TParserOutput : IParserOutput
         where TConverter : IExpressionConverter
     {
+        public int Depth { get; private set; }
+        public bool Nested => Depth > 0;
+
         protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType, TConverter converter)
         {
             Adapter = adapter;
@@ -25,8 +28,17 @@ namespace Iql.Parsing
         public TQueryAdapter Adapter { get; set; }
         public Type RootEntityType { get; }
         public TConverter Converter { get; }
-        public Dictionary<string, string> _rootEntityNames { get; } = new Dictionary<string, string>();
-        private string _rootEntityName = null;
+        private readonly Dictionary<string, string> _rootEntityNames = new Dictionary<string, string>();
+        private string _rootEntityName;
+
+        public T Nest<T>(Func<T> actiton)
+        {
+            Depth++;
+            var result = actiton();
+            Depth--;
+            return result;
+        }
+
         public string GetRootEntityName(IqlRootReferenceExpression rootReferenceExpression)
         {
             if (rootReferenceExpression == null)
@@ -35,6 +47,17 @@ namespace Iql.Parsing
             }
             var name = rootReferenceExpression.VariableName;
             return GetRootEntityParameterName(name);
+        }
+
+        public string RootEntityParameterName()
+        {
+            return _rootEntityName;
+            //var name = "entity";
+            //if (Depth > 0)
+            //{
+            //    name = $"{name}{Depth + 1}";
+            //}
+            //return GetRootEntityParameterName(name);
         }
 
         public string GetRootEntityParameterName(string name)
@@ -59,9 +82,41 @@ namespace Iql.Parsing
             return _rootEntityNames[name];
         }
 
+        public TParserOutput[] ParseAll(IEnumerable<IqlExpression> expressions)
+        {
+            return ParseAllInternal(expressions, false);
+        }
+
+        public TParserOutput[] ParseAllNested(IEnumerable<IqlExpression> expressions)
+        {
+            return ParseAllInternal(expressions, true);
+        }
+
+        private TParserOutput[] ParseAllInternal(IEnumerable<IqlExpression> expressions, bool nested)
+        {
+            if (expressions == null)
+            {
+                return new TParserOutput[] { };
+            }
+            var result = new List<TParserOutput>();
+            foreach (var expression in expressions)
+            {
+                result.Add(nested ? ParseNested(expression) : Parse(expression));
+            }
+            return result.ToArray();
+        }
+
+        public TParserOutput ParseNested(IqlExpression expression)
+        {
+            Depth++;
+            var result = Parse(expression);
+            Depth--;
+            return result;
+        }
+
         public abstract TParserOutput Parse(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         );
 
@@ -99,7 +154,7 @@ namespace Iql.Parsing
                 }
                 var oldExpression = Expression;
                 Expression = expression;
-                var parser = Adapter.Registry.Resolve(Expression);
+                var parser = Adapter.Registry.Resolve(IqlExpression.ResolveExpressionType(Expression));
                 if (parser == null)
                 {
                     throw new Exception("No parser found for " + expression.GetType().Name);

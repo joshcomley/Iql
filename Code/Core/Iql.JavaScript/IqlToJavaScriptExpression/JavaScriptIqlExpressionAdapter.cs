@@ -1,7 +1,6 @@
 using System;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.Parsing;
-using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression
@@ -21,6 +20,10 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
             EntityConfigurationContext = entityConfigurationContext;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlExpression), () => new JavaScriptStringSourceActionParser());
+            Registry.Register(typeof(IqlWithKeyExpression), () => new JavaScriptWithKeyQueryParser());
+            Registry.Register(typeof(IqlExpandExpression), () => new JavaScriptExpandQueryParser());
+            Registry.Register(typeof(IqlOrderByExpression), () => new JavaScriptOrderByQueryParser());
+            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new JavaScriptCollectionQueryParser());
             Registry.Register(typeof(IqlNotExpression), () => new JavaScriptNotActionParser());
             Registry.Register(typeof(IqlParenthesisExpression), () => new JavaScriptParenthesisParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new JavaScriptPropertyReferenceParser());

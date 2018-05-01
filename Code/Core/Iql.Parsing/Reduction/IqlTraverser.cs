@@ -17,7 +17,7 @@ namespace Iql.Parsing.Reduction
                 return;
             }
             Expressions.Add(expression);
-            var reducer = _registry.Resolve(expression);
+            var reducer = _registry.Resolve(IqlExpression.ResolveExpressionType(expression));
             reducer?.Traverse(expression, this);
         }
     }

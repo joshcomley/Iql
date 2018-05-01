@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Iql.OData.Extensions;
 using Iql.Queryable.Data;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
@@ -78,6 +79,11 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             if (query == "?")
             {
                 query = "";
+            }
+            var baseUri = parser.Converter.Configuration.ResolveEntitySetUriByType(parser.RootEntityType);
+            if (!parser.Nested && !string.IsNullOrWhiteSpace(query) && !string.IsNullOrWhiteSpace(baseUri))
+            {
+                query = $"{baseUri}{query}";
             }
             return new IqlFinalExpression<string>(query);
         }

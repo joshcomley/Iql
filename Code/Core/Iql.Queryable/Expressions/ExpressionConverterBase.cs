@@ -13,7 +13,12 @@ namespace Iql.Queryable.Expressions.Conversion
 {
     public abstract class ExpressionConverterBase : IExpressionConverter
     {
-        public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter) where TEntity : class;
+        public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        ) where TEntity : class;
+
         public abstract ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression filter
 #if TypeScript
             , EvaluateContext evaluateContext

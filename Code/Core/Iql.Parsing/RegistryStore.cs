@@ -14,21 +14,23 @@ namespace Iql.Parsing
             _registry[type] = reducerType;
         }
 
-        public TResolveTo Resolve(TInstance expression)
+        public TResolveTo Resolve(Type type)
         {
-            var type = expression.GetType();
             while (true)
             {
                 if (type == null)
                 {
                     break;
                 }
+
                 if (_registry.ContainsKey(type))
                 {
                     return _registry[type]();
                 }
+
                 type = type.BaseType;
             }
+
             return null;
         }
     }

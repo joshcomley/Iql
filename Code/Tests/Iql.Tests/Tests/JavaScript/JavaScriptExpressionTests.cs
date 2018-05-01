@@ -4,10 +4,12 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 #endif
 using System.Threading.Tasks;
+using Iql.JavaScript.Extensions;
 #if !TypeScript
 #endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.OData;
+using Iql.OData.Extensions;
 using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +20,68 @@ namespace Iql.Tests.Tests.JavaScript
     [TestClass]
     public class JavaScriptExpressionTests : TestsBase
     {
+        [TestMethod]
+        public async Task TestFullQuery()
+        {
+            IqlExpressionExtensions.NormalizeJson = true;
+            var query = Db
+                .Clients
+                .Where(c => c.Name == "a")
+                .OrderByDescending(c => c.AverageSales)
+                .Expand(c => c.Type)
+                .ExpandCollection(c => c.Sites, sites => sites.Expand(s => s.CreatedByUser))
+                ;
+
+            var iql = await query.ToIqlAsync();
+            var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
+                iql,
+                typeof(Client));
+
+#if !TypeScript
+            var expected = @"function(context) { return context.Where(function(entity) { return ((((entity || {})[""Name""] == null) ? null : ((entity || {})[""Name""] || """").toUpperCase()) == 'A'); }, JSON.parse('{""Left"":{""PropertyName"":""Name"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""Kind"":26,""ReturnType"":4,""Parent"":null},""Kind"":10,""ReturnType"":1,""Parent"":null}'))
+		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Type"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":null,""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""Expands"":null,""Filter"":null,""WithKey"":null,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
+		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Sites"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":null,""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""Expands"":[{""NavigationProperty"":{""PropertyName"":""CreatedByUser"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""s"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":null,""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""Expands"":null,""Filter"":null,""WithKey"":null,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""Kind"":48,""ReturnType"":2,""Parent"":null}],""Filter"":null,""WithKey"":null,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
+		.OrderBy(function(entity) { return (entity || {})[""AverageSales""]; }, true); }";
+#else
+            var expected = @"function(context) { return context.Where(function(entity) { return ((((entity || {})[""Name""] == null) ? null : ((entity || {})[""Name""] || """").toUpperCase()) == 'A'); }, JSON.parse('{""Left"":{""PropertyName"":""Name"",""Kind"":30,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""c"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""Kind"":26,""ReturnType"":4,""Parent"":null},""Kind"":10,""ReturnType"":1,""Parent"":null}'))
+		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Type"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
+		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Sites"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""Expands"":[{""NavigationProperty"":{""PropertyName"":""CreatedByUser"",""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""s"",""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""Kind"":48,""ReturnType"":2,""Parent"":null}],""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
+		.OrderBy(function(entity) { return (entity || {})[""AverageSales""]; }, true); }";
+#endif
+            Assert.AreEqual(expected.Clean(), javaScript);
+            IqlExpressionExtensions.NormalizeJson = false;
+        }
+
+        [TestMethod]
+        public async Task TestWithKey()
+        {
+            var query = Db
+                .Clients
+                .WithKey(7);
+            var iql = await query.ToIqlAsync();
+            var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
+                iql,
+                typeof(Client));
+            Assert.AreEqual(
+                @"function(context) { return context.Where(function(entity) { return ((entity || {})[""Id""] == 7); }); }",
+                javaScript);
+        }
+
+        [TestMethod]
+        public async Task TestOrderBy()
+        {
+            var query = Db
+                .Clients
+                .OrderBy(c => c.Name);
+            var iql = await query.ToIqlAsync();
+            var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
+                iql,
+                typeof(Client));
+            Assert.AreEqual(
+                @"function(context) { return context.OrderBy(function(entity) { return (entity || {})[""Name""]; }, false); }",
+                javaScript);
+        }
+
         [TestMethod]
         public void TestCompileExpressionToJavaScript()
         {

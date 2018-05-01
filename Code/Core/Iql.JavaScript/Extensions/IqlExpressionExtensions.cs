@@ -1,7 +1,20 @@
-﻿namespace Iql.JavaScript.Extensions
+﻿using Newtonsoft.Json;
+
+namespace Iql.JavaScript.Extensions
 {
     public static class IqlExpressionExtensions
     {
+        public static bool NormalizeJson { get; set; } = false;
+        public static string SerializeDeserialize(this IqlExpression expression)
+        {
+            var json = JsonConvert.SerializeObject(expression);
+            if (NormalizeJson)
+            {
+                json = json.CompressJson();
+            }
+            return $"JSON.parse('{json}')";
+        }
+
         public static IqlAggregateExpression DotAccess(this IqlExpression parent, IqlExpression action)
         {
             var accessorExpression = new IqlAggregateExpression(

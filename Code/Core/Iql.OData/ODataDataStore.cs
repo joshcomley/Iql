@@ -142,7 +142,7 @@ namespace Iql.OData
             switch (methodScope)
             {
                 case ODataMethodScope.Collection:
-                    baseUri = ResolveEntitySetUriByType(entityType);
+                    baseUri = Configuration.ResolveEntitySetUriByType(entityType);
                     break;
                 case ODataMethodScope.Entity:
                     var bindingParameter = parameters.Single(p => p.Name == bindingParameterName);
@@ -183,7 +183,7 @@ namespace Iql.OData
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
-            var fullQueryUri = await ResolveODataQueryUriAsync(operation.Operation.Queryable);
+            var fullQueryUri = await operation.Operation.Queryable.ResolveODataUriFromQueryAsync(Configuration);
             return await PerformGetInternalAsync(operation, fullQueryUri);
         }
 
@@ -280,41 +280,6 @@ namespace Iql.OData
             return new ODataCollectionResult<TEntity>(values, count);
         }
 
-        public async Task<string> ResolveODataQueryUriAsync(IQueryableBase queryable)
-        {
-            var iql = await queryable.ToIqlAsync();
-            var odataQuery = new ODataExpressionConverter(Configuration).ConvertIqlToExpressionStringByType(iql, queryable.ItemType);
-            var baseUri = ResolveEntitySetUriByType(queryable.ItemType);
-            if (!string.IsNullOrWhiteSpace(odataQuery))
-            {
-                baseUri = $"{baseUri}{odataQuery}";
-            }
-            //            //http://localhost:58000/odata/Users('2b2b0e44-4579-4965-8e3a-097e6684b767')?$expand=ExamResults($expand=Exam,Video,Results($expand=Hazard))&$count=true
-
-            return baseUri;
-            //var oDataQuery =
-            //    queryable.ToQueryWithAdapterBase(
-            //        QueryableAdapter,
-            //        DataContext,
-            //        null,
-            //        null) as IODataQuery;
-            //var queryString = oDataQuery.ToODataQuery();
-            //var fullQueryUri = $"{ResolveEntitySetUriByType(queryable.ItemType)}{queryString}";
-            //return fullQueryUri;
-        }
-
-        public static async Task<string> ResolveODataUriAsync<TEntity>(DbQueryable<TEntity> queryable)
-            where TEntity : class
-        {
-            return await queryable.ResolveODataUriAsync();
-        }
-
-        public static async Task<string> ResolveODataUriFromQuery<TEntity>(Queryable.Data.Queryable.IQueryable<TEntity> queryable, IDataContext dataContext)
-            where TEntity : class
-        {
-            return await queryable.ResolveODataUriFromQueryAsync(dataContext);
-        }
-
         private static void ParseObj(object jvalue)
         {
             if (jvalue is JArray)
@@ -355,7 +320,7 @@ namespace Iql.OData
         {
             var configuration = Configuration;
             var http = configuration.HttpProvider;
-            var entitySetUri = ResolveEntitySetUri<TEntity>();
+            var entitySetUri = Configuration.ResolveEntitySetUri<TEntity>();
             var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
@@ -401,25 +366,6 @@ namespace Iql.OData
             operation.Result.Success = httpResult.Success;
             ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
-        }
-
-        public string ResolveEntitySetUri<TEntity>()
-        {
-            return ResolveEntitySetUriByType(typeof(TEntity));
-        }
-
-        public string ResolveEntitySetUriByType(Type type)
-        {
-            var configuration = Configuration;
-            var entitySetName = configuration.GetEntitySetNameByType(type);
-            var apiUriBase = configuration.ApiUriBase;
-            if (!apiUriBase.EndsWith("/"))
-            {
-                apiUriBase += "/";
-            }
-
-            var entitySetUri = $"{apiUriBase}{entitySetName}";
-            return entitySetUri;
         }
 
         public string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class

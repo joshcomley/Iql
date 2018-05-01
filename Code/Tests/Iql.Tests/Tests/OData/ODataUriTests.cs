@@ -281,13 +281,13 @@ namespace Iql.Tests.Tests.OData
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello");
 
-            var uri = await query.ResolveODataUriFromQueryAsync(Db);
+            var uri = await query.ResolveODataUriFromQueryAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
-            uri = await query.ResolveODataUriFromQueryAsync(Db);
+            uri = await query.ResolveODataUriFromQueryAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$orderby=$it/Name",
                 uri);
@@ -298,13 +298,13 @@ namespace Iql.Tests.Tests.OData
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello2");
 
-            var uri = await query.ResolveODataUriFromQueryAsync(Db);
+            var uri = await query.ResolveODataUriFromQueryAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')",
                 uri);
 
             query = query.OrderByProperty(nameof(Client.Name));
-            uri = await query.ResolveODataUriFromQueryAsync(Db);
+            uri = await query.ResolveODataUriFromQueryAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')&$orderby=$it/Name",
                 uri);

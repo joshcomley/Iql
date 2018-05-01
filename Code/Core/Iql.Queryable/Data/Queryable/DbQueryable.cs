@@ -880,7 +880,11 @@ namespace Iql.Queryable.Data.Queryable
                     iql =
                         expressionQueryOperation.Expression ??
                             expressionConverter
-                                .ConvertQueryExpressionToIql<T>(expressionQueryOperation.QueryExpession)
+                                .ConvertQueryExpressionToIql<T>(expressionQueryOperation.QueryExpession
+#if TypeScript
+                                    , operation.EvaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext
+#endif
+                                )
                                 .Expression;
                 }
                 if (operation is OrderByOperation)

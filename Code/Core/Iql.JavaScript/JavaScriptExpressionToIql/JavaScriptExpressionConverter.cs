@@ -24,6 +24,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>
         (
             QueryExpression filter
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
         )
         {
             ExpressionQueryExpressionBase expression;
@@ -40,7 +43,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             var lambdaExpression = expression.GetExpression();
             return ConvertLambdaExpressionToIql<TEntity>(lambdaExpression
 #if TypeScript
-                , expression.EvaluateContext ?? filter.EvaluateContext
+                , expression.EvaluateContext ?? filter.EvaluateContext ?? evaluateContext
 #endif
                   );
         }
@@ -95,9 +98,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             var expressionResult = new ExpressionResult<IqlExpression>();
             var jsp = new JavaScriptExpressionStringToExpressionTreeParser(body.CleanedCode);
             var expressionTree = jsp.Parse();
-            Func<TEntity, IqlExpression> expression2 = entity =>
+            Func<TEntity, IqlExpression> expression2 = entityx =>
             {
-                instance.RootEntity = entity;
+                instance.RootEntity = entityx;
                 var result = ctx.ParseJavaScriptExpressionTree(expressionTree, instance);
                 return result.ResolveFinalResult() as IqlExpression;
             };
@@ -129,6 +132,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 }
             }
 
+            var iqlRedudcer = new IqlReducer(
+#if TypeScript
+                    evaluateContext
+#endif
+                );
+            expressionResult.Expression = iqlRedudcer.ReduceStaticContent(expressionResult.Expression);
             return expressionResult;
         }
 
@@ -207,11 +216,18 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         )
         {
-            return (LambdaExpression)Evaluator.Eval(ConvertIqlToJavaScript(expression
+            var exp = ConvertIqlToJavaScript(expression, typeof(TEntity)
 #if TypeScript
-            , evaluateContext
+                , evaluateContext            
 #endif
-            ).Expression);
+                ).Expression;
+            var id = Guid.NewGuid().ToString();
+            id = id.Replace("-", "");
+            id = $"fn_{id}";
+            exp = $"var {id} = {exp}";
+            exp += $";{id}";
+            var result = (LambdaExpression)Evaluator.Eval(exp);
+            return result;
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEntityType
@@ -220,38 +236,41 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         )
         {
-            var javascript = ConvertIqlToJavaScript(expression
+            var javascript = ConvertIqlToJavaScript(expression, rootEntityType
 #if TypeScript
             , evaluateContext
 #endif
                 );
-            return $"function({javascript.RootVariableName}) {{ return {javascript.Expression}; }}";
+            return javascript.AsFunction();
         }
 
-        public string ConvertIqlToTypeScriptExpressionString(IqlExpression expression
+        public string ConvertIqlToTypeScriptExpressionString(IqlExpression expression,
+            Type rootEntityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            var javascript = ConvertIqlToJavaScript(expression
+            var javascript = ConvertIqlToJavaScript(expression, rootEntityType
 #if TypeScript
             , evaluateContext
 #endif
             );
-            return $"{javascript.RootVariableName} => {javascript.Expression}";
+            return javascript.AsFunction(true);
         }
 
-        private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
+        private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression,
+            Type rootEntityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
             var adapter = new JavaScriptIqlExpressionAdapter();
-            var parser = new JavaScriptIqlParserInstance(adapter, this);
+            var parser = new JavaScriptIqlParserInstance(adapter, rootEntityType, this);
             parser.IsFilter = true;
-            var javascriptExpression = parser.Parse(expression
+            var javascriptExpression = parser.Parse(
+                expression
 #if TypeScript
                 , evaluateContext
 #endif
