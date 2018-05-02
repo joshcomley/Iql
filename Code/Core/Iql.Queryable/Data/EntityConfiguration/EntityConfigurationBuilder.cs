@@ -18,6 +18,27 @@ namespace Iql.Queryable.Data.EntityConfiguration
             _entityConfigurationBuilders.Add(this);
         }
 
+        public static Type FindEntityTypeFromName(string entityTypeName)
+        {
+            return FindConfigurationForEntityTypeName(entityTypeName)?.Type;
+        }
+
+        public static IEntityConfiguration FindConfigurationForEntityTypeName(string entityTypeName)
+        {
+            foreach (var builder in _entityConfigurationBuilders)
+            {
+                foreach (var config in builder._entities)
+                {
+                    if (config.Key.Name == entityTypeName)
+                    {
+                        return config.Value;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public static IEntityConfiguration FindConfigurationForEntityType(Type entityType)
         {
             foreach (var builder in _entityConfigurationBuilders)
