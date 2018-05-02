@@ -57,7 +57,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
             if (action.Take.HasValue)
             {
-                odataParts.Add($"$take={action.Skip}");
+                odataParts.Add($"$top={action.Take}");
             }
 
             if (action.IncludeCount.HasValue)
@@ -65,7 +65,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 odataParts.Add($"$count={(action.IncludeCount.Value ? "true" : "false")}");
             }
 
-            var query = string.Join(parser.Nested ? "," : "&", odataParts);
+            var query = string.Join(parser.Nested ? ";" : "&", odataParts);
             if (!parser.Nested)
             {
                 query = $"?{query}";
