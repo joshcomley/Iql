@@ -74,6 +74,46 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestFilteringOnFilteredNestedCollectionResultCount()
         {
+            var query = Db.People.ExpandCollection(c => c.Types, tq => tq.Where(c => c.Description == "a").Expand(c => c.Type));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$expand=Types($filter=(Description eq 'a');$expand=Type)",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task TestSkip()
+        {
+            var query = Db.People.Skip(10);
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$skip=10",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task TestTake()
+        {
+            var query = Db.People.Take(10);
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$top=10",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task TestSkipAndTake()
+        {
+            var query = Db.People.Skip(7).Take(10);
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$skip=7&$top=10",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task TestFilteringOnFilteredNestedCollectionWithExpandUsesSemicolonS()
+        {
             var query = Db.People.Where(c => c.Types.Count(t => t.TypeId == 2) > 2);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
@@ -197,7 +237,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.Permissions),
-                    new IqlRootReferenceExpression()), 
+                    new IqlRootReferenceExpression()),
                 new IqlEnumLiteralExpression(null).AddValue(10, "")));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Permissions eq '10')",

@@ -933,7 +933,7 @@ namespace Iql.Queryable.Data.Queryable
                 }
                 else if (operation is TakeOperation)
                 {
-                    queryExpression.Skip = (operation as TakeOperation).Take;
+                    queryExpression.Take = (operation as TakeOperation).Take;
                 }
                 else if (operation is IncludeCountOperation)
                 {
