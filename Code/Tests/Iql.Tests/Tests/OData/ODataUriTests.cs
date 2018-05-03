@@ -19,6 +19,24 @@ namespace Iql.Tests.Tests.OData
     public class ODataUriTests : TestsBase
     {
         [TestMethod]
+        public async Task TestOrderByCount()
+        {
+            var query = Db.Clients.OrderBy(c => c.SitesCount);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$orderby=$it/Sites/$count", uri);
+        }
+
+        [TestMethod]
+        public async Task TestNestedOrderByCount()
+        {
+            var query = Db.Clients.ExpandCollection(c => c.Sites, sq => sq.OrderBy(c => c.ChildrenCount));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=Sites($orderby=Children/$count)", uri);
+        }
+
+        [TestMethod]
         public void TestResolveEntitySetMethodUriWithNoParameters()
         {
             var db = new AppDbContext(new ODataDataStore());

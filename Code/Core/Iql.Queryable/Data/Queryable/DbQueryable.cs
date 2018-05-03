@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Iql.Extensions;
 using Iql.Parsing;
@@ -20,6 +22,7 @@ using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Extensions;
+using Iql.Queryable.IqlToIql;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Queryable
@@ -954,15 +957,20 @@ namespace Iql.Queryable.Data.Queryable
                     queryExpression.WithKey = new IqlWithKeyExpression(isEqualToOperations);
                 }
             }
-            return (IqlDataSetQueryExpression)new IqlReducer(
+
+            var result = (IqlDataSetQueryExpression)new IqlReducer(
 #if TypeScript
                     evaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext
 #endif
-                // TODO: Add reducer registry
+                    // TODO: Add reducer registry
 
-                //queryOperation.getExpression().evaluateContext || this.evaluateContext
+                    //queryOperation.getExpression().evaluateContext || this.evaluateContext
                 )
                 .ReduceStaticContent(queryExpression);
+
+            var parser = new IqlToIqlParserInstance(EntityConfiguration);
+            parser.Parse(result);
+            return result;
         }
     }
 }
