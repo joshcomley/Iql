@@ -26,8 +26,11 @@ namespace Iql.Queryable.Data.QueryContainer
         public EventEmitter<QueryPipeChangedEvent<T>> ResultsLoadingChanged { get; } =
             new EventEmitter<QueryPipeChangedEvent<T>>();
 
-        public EventEmitter<QueryPipeChangedEvent<T>> Pipe { get; } =
-            new EventEmitter<QueryPipeChangedEvent<T>>();
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> Pipe { get; } =
+            new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+
+        public AsyncEventEmitter<QueryPipeInspectorEvent<T>> Inspector { get; } =
+            new AsyncEventEmitter<QueryPipeInspectorEvent<T>>();
 
         public DbQueryable<T> Query
         {
@@ -62,7 +65,8 @@ namespace Iql.Queryable.Data.QueryContainer
         IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.QueryChanged => QueryChanged;
         IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.ResultsChanged => ResultsChanged;
         IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.ResultsLoadingChanged => ResultsLoadingChanged;
-        IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.Pipe => Pipe;
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.Pipe => Pipe;
+        IAsyncEventSubscriber<IQueryPipeInspectorEvent> IQueryPipe.Inspector => Inspector;
 
         public bool DisableAutoEvents { get; set; }
 
@@ -96,7 +100,8 @@ namespace Iql.Queryable.Data.QueryContainer
         public async Task RefreshResultsAsync()
         {
             ResultsLoading = true;
-            Pipe.Emit(() => new QueryPipeEvent<T>(this));
+            await Pipe.EmitAsync(() => new QueryPipeEvent<T>(this));
+            await Inspector.EmitAsync(() => new QueryPipeInspectorEvent<T>(Query));
             Results = await Query.ToListAsync();
             ResultsLoading = false;
         }
@@ -115,6 +120,11 @@ namespace Iql.Queryable.Data.QueryContainer
         private void EmitEvent(EventEmitter<QueryPipeChangedEvent<T>> emitter)
         {
             emitter.Emit(() => new QueryPipeChangedEvent<T>(this));
+        }
+
+        private async Task EmitEventAsync(AsyncEventEmitter<QueryPipeChangedEvent<T>> emitter)
+        {
+            await emitter.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
         }
     }
 }

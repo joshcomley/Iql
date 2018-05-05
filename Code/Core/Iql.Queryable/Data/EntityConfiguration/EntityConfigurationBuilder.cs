@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -10,12 +11,12 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();
 
-        private static readonly List<EntityConfigurationBuilder> _entityConfigurationBuilders =
+        private static readonly List<EntityConfigurationBuilder> EntityConfigurationBuilders =
             new List<EntityConfigurationBuilder>();
 
         public EntityConfigurationBuilder()
         {
-            _entityConfigurationBuilders.Add(this);
+            EntityConfigurationBuilders.Add(this);
         }
 
         public static Type FindEntityTypeFromName(string entityTypeName)
@@ -25,7 +26,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public static IEntityConfiguration FindConfigurationForEntityTypeName(string entityTypeName)
         {
-            foreach (var builder in _entityConfigurationBuilders)
+            foreach (var builder in EntityConfigurationBuilders)
             {
                 foreach (var config in builder._entities)
                 {
@@ -41,7 +42,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public static IEntityConfiguration FindConfigurationForEntityType(Type entityType)
         {
-            foreach (var builder in _entityConfigurationBuilders)
+            foreach (var builder in EntityConfigurationBuilders)
             {
                 foreach (var config in builder._entities)
                 {

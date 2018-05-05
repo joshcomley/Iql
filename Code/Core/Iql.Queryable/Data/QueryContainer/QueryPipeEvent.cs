@@ -19,7 +19,28 @@ namespace Iql.Queryable.Data.QueryContainer
         IDbQueryable IQueryPipeEvent.Query
         {
             get => Query;
-            set => Query = (DbQueryable<T>) value;
+            set => Query = (DbQueryable<T>)value;
+        }
+    }
+
+    public class QueryPipeInspectorEvent<T> : IQueryPipeInspectorEvent
+        where T : class
+    {
+        private readonly DbQueryable<T> _query;
+
+        public QueryPipeInspectorEvent(DbQueryable<T> query)
+        {
+            _query = query;
+        }
+
+        public DbQueryable<T> Query
+        {
+            get => _query;
+        }
+
+        IDbQueryable IQueryPipeInspectorEvent.Query
+        {
+            get => Query;
         }
     }
 }

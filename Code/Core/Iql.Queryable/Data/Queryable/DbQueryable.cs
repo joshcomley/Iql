@@ -873,6 +873,10 @@ namespace Iql.Queryable.Data.Queryable
         {
             expressionConverter = expressionConverter ?? IqlExpressionConversion.DefaultExpressionConverter();
             var queryExpression = new IqlDataSetQueryExpression();
+            queryExpression.DataSet = new IqlDataSetReference
+            {
+                Name = DataContext.GetDbSetPropertyNameByEntityType(EntityConfiguration.Type)
+            };
             for (var i = 0; i < Operations.Count; i++)
             {
                 var operation = Operations[i];

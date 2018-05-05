@@ -10,4 +10,8 @@ namespace Iql.Queryable.Data.QueryContainer
     {
         IDbQueryable Query { get; set; }
     }
+    public interface IQueryPipeInspectorEvent
+    {
+        IDbQueryable Query { get; }
+    }
 }

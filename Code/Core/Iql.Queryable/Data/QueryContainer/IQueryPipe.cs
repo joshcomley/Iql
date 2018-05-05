@@ -15,7 +15,8 @@ namespace Iql.Queryable.Data.QueryContainer
         IEventSubscriber<IQueryPipeChangedEvent> QueryChanged { get; }
         IEventSubscriber<IQueryPipeChangedEvent> ResultsChanged { get; }
         IEventSubscriber<IQueryPipeChangedEvent> ResultsLoadingChanged { get; }
-        IEventSubscriber<IQueryPipeChangedEvent> Pipe { get; }
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> Pipe { get; }
+        IAsyncEventSubscriber<IQueryPipeInspectorEvent> Inspector { get; }
 
         void NotifyQueryableChanged();
         void NotifyResultsChanged();
