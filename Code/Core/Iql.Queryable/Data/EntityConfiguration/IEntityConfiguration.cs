@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.EntityConfiguration.Rules;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Operations;
@@ -25,7 +26,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
         IProperty FindPropertyByLambdaExpression(LambdaExpression expression);
         IDisplayFormatting DisplayFormatting { get; }
-        IValidationCollection EntityValidation { get; }
+        IRuleCollection EntityValidation { get; }
         List<IProperty> Properties { get; }
         List<IRelationship> Relationships { get; set; }
         IEntityKey Key { get; }

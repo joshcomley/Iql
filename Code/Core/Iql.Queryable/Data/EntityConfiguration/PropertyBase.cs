@@ -8,6 +8,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
     public abstract class PropertyBase : IPropertyMetadata
     {
         public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
+        public bool Searchable { get; set; }
+
         public virtual bool? Nullable
         {
             get => TypeDefinition?.Nullable;
@@ -79,8 +81,26 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public bool ReadOnly
         {
-            get => _readOnly ?? Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey);
+            get => _readOnly ?? ResolveAutoReadOnly();
             set => _readOnly = value;
+        }
+
+        public bool Hidden { get; set; } = false;
+        public bool Sortable { get; set; } = true;
+
+        private bool ResolveAutoReadOnly()
+        {
+            if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
+            {
+                return true;
+            }
+
+            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public string Name

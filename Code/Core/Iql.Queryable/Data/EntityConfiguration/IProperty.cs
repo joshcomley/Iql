@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Iql.Queryable.Data.EntityConfiguration.Rules;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -10,7 +11,8 @@ namespace Iql.Queryable.Data.EntityConfiguration
 #if !TypeScript
         PropertyInfo PropertyInfo { get; set; }
 #endif
-        IValidationCollection Validation { get; }
+        IRuleCollection ValidationRules { get; }
+        IRuleCollection DisplayRules { get; }
         RelationshipMatch Relationship { get; set; }
         List<RelationshipMatch> RelationshipSources { get; set; }
         //IProperty CountRelationship { get; }

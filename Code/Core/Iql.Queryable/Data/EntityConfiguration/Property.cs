@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using Iql.Queryable.Data.EntityConfiguration.Rules;
+using Iql.Queryable.Data.EntityConfiguration.Rules.Display;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -87,8 +89,11 @@ namespace Iql.Queryable.Data.EntityConfiguration
             PropertySetter = (o, v) => PropertySetterTyped((TOwner) o, (TProperty) v);
         }
 
-        public ValidationCollection<TOwner> Validation { get; } = new ValidationCollection<TOwner>();
-        IValidationCollection IProperty.Validation => Validation;
+        public ValidationCollection<TOwner> ValidationRules { get; } = new ValidationCollection<TOwner>();
+        IRuleCollection IProperty.ValidationRules => ValidationRules;
+
+        public DisplayRuleCollection<TOwner> DisplayRules { get; } = new DisplayRuleCollection<TOwner>();
+        IRuleCollection IProperty.DisplayRules => DisplayRules;
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }

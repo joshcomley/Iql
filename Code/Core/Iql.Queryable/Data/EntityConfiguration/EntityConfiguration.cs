@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using Iql.Extensions;
 using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Queryable.Data.EntityConfiguration.Rules;
+using Iql.Queryable.Data.EntityConfiguration.Rules.Display;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Expressions;
@@ -54,7 +56,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public DisplayFormatting<T> DisplayFormatting { get; }
 
         IDisplayFormatting IEntityConfiguration.DisplayFormatting => DisplayFormatting;
-        IValidationCollection IEntityConfiguration.EntityValidation => EntityValidation;
+        IRuleCollection IEntityConfiguration.EntityValidation => EntityValidation;
 
         public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
         {
@@ -137,7 +139,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
             foreach (var validation in EntityValidation.All)
             {
-                if (!validation.Validate(entity))
+                if (!validation.Run(entity))
                 {
                     validationResult.AddFailure(validation.Key, validation.Message);
                 }
@@ -173,9 +175,9 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public PropertyValidationResult<T> ValidateEntityPropertyInternal(T entity, IProperty property, bool hasSetDefaultValue)
         {
             var validationResult = new PropertyValidationResult<T>(entity, property);
-            foreach (var validation in property.Validation.All)
+            foreach (var validation in property.ValidationRules.All)
             {
-                if (!validation.Validate(entity))
+                if (!validation.Run(entity))
                 {
                     validationResult.AddFailure(validation.Key, validation.Message);
                 }
@@ -607,8 +609,22 @@ namespace Iql.Queryable.Data.EntityConfiguration
             string message)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
-            var validationCollection = (ValidationCollection<T>)propertyDefinition.Validation;
+            var validationCollection = (ValidationCollection<T>)propertyDefinition.ValidationRules;
             validationCollection.Add(validation, key, message);
+            return this;
+        }
+
+        public EntityConfiguration<T> DefinePropertyDisplayRule<TProperty>(
+            Expression<Func<T, TProperty>> property,
+            Expression<Func<T, bool>> displayRule,
+            string key,
+            string message,
+            DisplayRuleKind kind = DisplayRuleKind.NewAndEdit)
+        {
+            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
+            var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
+            var rule = ruleCollection.Add(displayRule, key, message);
+            rule.Kind = kind;
             return this;
         }
 
@@ -672,7 +688,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             Expression<Func<T, long?>> countProperty = null
         )
         {
-            var collection = MapProperty<TElementType, TValueType>(property, true, false, IqlType.Collection, null);
+            var collection = MapProperty<TElementType, TValueType>(property, true, null, IqlType.Collection, null);
             IProperty countDefinition = null;
             if (countProperty != null)
             {
@@ -721,7 +737,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         private Property<T, TPropertyType, TElementType> MapProperty<TElementType, TPropertyType>(
             Expression<Func<T, TPropertyType>> property,
             bool isCollection,
-            bool readOnly,
+            bool? readOnly,
             IqlType kind,
             IProperty countRelationship)
         {
