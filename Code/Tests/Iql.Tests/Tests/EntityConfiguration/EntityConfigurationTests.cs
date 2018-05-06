@@ -10,6 +10,24 @@ namespace Iql.Tests.Tests.EntityConfiguration
     public class EntityConfigurationTests : TestsBase
     {
         [TestMethod]
+        public void CountPropertyShouldHaveCountKind()
+        {
+            var property = Db.EntityConfigurationContext.EntityType<Client>()
+                .FindPropertyByExpression(p => p.SitesCount);
+            Assert.IsTrue(property.Kind.HasFlag(PropertyKind.Count));
+        }
+
+        [TestMethod]
+        public void CountPropertyShouldBeSet()
+        {
+            var clientsCreated = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(p => p.ClientsCreated);
+            var clientCreatedBy = Db.EntityConfigurationContext.EntityType<Client>().FindPropertyByExpression(p => p.CreatedByUser);
+            var clientsCreatedCount = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(p => p.ClientsCreatedCount);
+            Assert.AreEqual(clientsCreatedCount, clientsCreated.Relationship.ThisEnd.CountProperty);
+            Assert.AreEqual(clientsCreatedCount, clientCreatedBy.Relationship.ThisEnd.CountProperty);
+        }
+
+        [TestMethod]
         public void ResolveTypeFromTypeName()
         {
             var type = EntityConfigurationBuilder.FindEntityTypeFromName(nameof(ApplicationUser));
@@ -19,8 +37,8 @@ namespace Iql.Tests.Tests.EntityConfiguration
         [TestMethod]
         public void GetDeepPropertyFromString()
         {
-                var propertyPath = string.Join("/", new[]
-                {
+            var propertyPath = string.Join("/", new[]
+            {
                     nameof(Person.Type),
                     nameof(PersonType.CreatedByUser),
                     nameof(ApplicationUser.Client),

@@ -42,6 +42,25 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         public Type Type => typeof(T);
         public bool IsCollection { get; }
         public IProperty Property { get; set; }
+
+        public IProperty CountProperty
+        {
+            get
+            {
+                var property = Property as PropertyBase;
+                if (property != null)
+                {
+                    if (RelationshipSide == RelationshipSide.Target)
+                    {
+                        return property.CountRelationship;
+                    }
+                    return OtherSide.CountProperty;
+                }
+
+                return null;
+            }
+        }
+
         public IProperty KeyProperty { get; set; }
         public IEntityConfiguration Configuration { get; set; }
 

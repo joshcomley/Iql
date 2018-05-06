@@ -8,13 +8,10 @@ namespace Iql.Queryable.Data.QueryContainer
     {
         public QueryPipeEvent(QueryPipe<T> queryPipe) : base(queryPipe)
         {
+            Query = queryPipe.SourceQuery.Copy();
         }
 
-        public DbQueryable<T> Query
-        {
-            get => QueryPipe.Query;
-            set => QueryPipe.Query = value;
-        }
+        public DbQueryable<T> Query { get; set; }
 
         IDbQueryable IQueryPipeEvent.Query
         {

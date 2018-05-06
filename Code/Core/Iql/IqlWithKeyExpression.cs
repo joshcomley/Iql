@@ -11,7 +11,7 @@ namespace Iql
             IqlExpression parent = null)
             : base(IqlExpressionKind.WithKey, IqlType.Class, parent)
         {
-            KeyEqualToExpressions = keyEqualToExpressions.ToList();
+            KeyEqualToExpressions = keyEqualToExpressions?.ToList();
         }
 
         public IqlWithKeyExpression() : this(null)

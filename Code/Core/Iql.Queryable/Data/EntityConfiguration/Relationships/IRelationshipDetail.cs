@@ -11,6 +11,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
         Type Type { get; }
         bool IsCollection { get; }
         IProperty Property { get; set; }
+        IProperty CountProperty { get; }
         IEntityConfiguration Configuration { get; set; }
         CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false);
         void MarkDirty(object entity);

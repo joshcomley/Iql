@@ -17,7 +17,7 @@ namespace Iql.Queryable.Operations
             set => Expression = (TIqlExpression) value;
         }
 
-        QueryExpression IExpressionQueryOperation.QueryExpession
+        QueryExpression IExpressionQueryOperation.QueryExpression
         {
             get => QueryExpression;
             set => QueryExpression = (TQueryExpression) value;

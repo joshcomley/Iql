@@ -15,13 +15,13 @@ namespace Iql
         //}
 
         protected IqlLiteralExpressionBase(
-            TValue value, IqlType type = IqlType.Unknown) : base(IqlExpressionKind.Literal,
+            TValue value, IqlType type = IqlType.Unknown, IqlExpressionKind kind = IqlExpressionKind.Literal) : base(kind,
             type)
         {
             Value = value;
         }
 
-        protected IqlLiteralExpressionBase() : this(default(TValue), IqlType.Unknown)
+        protected IqlLiteralExpressionBase() : this(default(TValue))
         {
         }
 

@@ -96,6 +96,16 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             EnsureCompatibleType(typeof(decimal), typeof(float));
             EnsureCompatibleType(typeof(decimal), typeof(double));
 
+            if (right is ConstantExpression)
+            {
+                var constant = right as ConstantExpression;
+                if (constant.Value is DateTime)
+                {
+                    var dateTime = (DateTime)constant.Value;
+                    DateTimeOffset dateTimeOffset = dateTime;
+                    right = Expression.Constant(dateTimeOffset);
+                }
+            }
             return new IqlFinalExpression<Expression>(
                 Expression.MakeBinary(@operator, left, right, false, method));
         }

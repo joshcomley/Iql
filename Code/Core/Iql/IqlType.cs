@@ -12,6 +12,7 @@ namespace Iql
         Boolean,
         Date,
         Enum,
-        TimeSpan
+        TimeSpan,
+        EnumValue
     }
 }

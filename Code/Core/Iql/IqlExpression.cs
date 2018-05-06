@@ -5,6 +5,8 @@ namespace Iql
 {
     public abstract class IqlExpression
     {
+        public bool IsIqlExpression => true;
+
         protected IqlExpression(IqlExpressionKind kind, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null)
         {
             Kind = kind;
@@ -15,11 +17,6 @@ namespace Iql
         public IqlExpressionKind Kind { get; set; }
         public IqlType ReturnType { get; set; }
         public IqlExpression Parent { get; set; }
-
-        public static bool IsIqlExpression(object obj)
-        {
-            return obj is IqlExpression;
-        }
 
         public virtual bool ContainsRootEntity()
         {
@@ -235,12 +232,18 @@ namespace Iql
                     return typeof(IqlExpandExpression);
                 case IqlExpressionKind.DataSetQuery:
                     return typeof(IqlDataSetQueryExpression);
+                case IqlExpressionKind.DataSetReference:
+                    return typeof(IqlDataSetReferenceExpression);
                 case IqlExpressionKind.WithKey:
                     return typeof(IqlWithKeyExpression);
                 case IqlExpressionKind.OrderBy:
                     return typeof(IqlOrderByExpression);
+                case IqlExpressionKind.EnumLiteral:
+                    return typeof(IqlEnumLiteralExpression);
+                case IqlExpressionKind.EnumValue:
+                    return typeof(IqlEnumValueExpression);
             }
-            return null;
+            throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             }
         }
 
-        public IProperty CountRelationship { get; protected set; }
+        internal IProperty CountRelationship { get; set; }
 
         public bool ReadOnly
         {

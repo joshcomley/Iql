@@ -873,7 +873,7 @@ namespace Iql.Queryable.Data.Queryable
         {
             expressionConverter = expressionConverter ?? IqlExpressionConversion.DefaultExpressionConverter();
             var queryExpression = new IqlDataSetQueryExpression();
-            queryExpression.DataSet = new IqlDataSetReference
+            queryExpression.DataSet = new IqlDataSetReferenceExpression
             {
                 Name = DataContext.GetDbSetPropertyNameByEntityType(EntityConfiguration.Type)
             };
@@ -887,7 +887,7 @@ namespace Iql.Queryable.Data.Queryable
                     iql =
                         expressionQueryOperation.Expression ??
                             expressionConverter
-                                .ConvertQueryExpressionToIql<T>(expressionQueryOperation.QueryExpession
+                                .ConvertQueryExpressionToIql<T>(expressionQueryOperation.QueryExpression
 #if TypeScript
                                     , operation.EvaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext
 #endif
@@ -919,12 +919,12 @@ namespace Iql.Queryable.Data.Queryable
                     iqlExpandExpression.NavigationProperty = iql as IqlPropertyExpression;
                     var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, iqlExpandExpression.NavigationProperty);
                     var expressionQueryOperatiton = operation as IExpressionQueryOperation;
-                    var expandQueryExpression = expressionQueryOperatiton.QueryExpession as IExpandQueryExpression;
+                    var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;
                     var property = propertytPath.Property;
                     if (property.Kind.HasFlag(PropertyKind.Count))
                     {
                         iqlExpandExpression.Count = true;
-                        property = property.CountRelationship;
+                        property = property.Relationship.ThisEnd.CountProperty;
                         iqlExpandExpression.NavigationProperty.PropertyName = property.Name;
                     }
                     var expandEntityType = property.Relationship.OtherEnd.Configuration.Type;
@@ -962,6 +962,7 @@ namespace Iql.Queryable.Data.Queryable
                 }
             }
 
+            queryExpression = queryExpression.CloneIql();
             var result = (IqlDataSetQueryExpression)new IqlReducer(
 #if TypeScript
                     evaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext

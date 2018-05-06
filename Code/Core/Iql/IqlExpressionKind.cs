@@ -53,6 +53,8 @@ namespace Iql
         DataSetQuery = 49,
         DataSetReference = 50,
         WithKey = 51,
-        OrderBy = 52
+        OrderBy = 52,
+        EnumLiteral = 53,
+        EnumValue = 54
     }
 }

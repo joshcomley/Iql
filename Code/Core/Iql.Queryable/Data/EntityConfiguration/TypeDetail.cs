@@ -1,4 +1,5 @@
 using System;
+using Iql.Serialization;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {
@@ -11,50 +12,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public object EnsureValueType(object value)
         {
-            if (Equals(value, null))
-            {
-                if (Nullable)
-                {
-                    return null;
-                }
-
-                //if (!property.Nullable)
-                //{
-                //    return property.Type.DefaultValue();
-                //}
-                return null;
-            }
-
-            if (Type == typeof(DateTime) && !(value is DateTime))
-            {
-                if (value is Int64)
-                {
-                    return new DateTime((long)value);
-                }
-
-                return DateTime.Parse(value.ToString());
-            }
-
-            if (Type == typeof(Boolean) && !(value is Boolean))
-            {
-                return Boolean.Parse(value.ToString());
-            }
-
-#if !TypeScript
-            return Convert.ChangeType(value, Type);
-#else
-            if (Type == typeof(String) && !(value is String))
-            {
-                return value.ToString();
-            }
-
-            if (Type == typeof(Int32) && !(value is Int32) && !(value is Double))
-            {
-                return Convert.ToDouble(value.ToString());
-            }
-
-            return value;
-#endif
+            return IqlJsonDeserializer.EnsureValueType(value, Type, Nullable);
         }
 
         public string ConvertedFromType { get; }

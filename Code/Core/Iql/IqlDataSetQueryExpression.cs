@@ -57,6 +57,6 @@ namespace Iql
 
         }
 
-        public IqlDataSetReference DataSet { get; set; }
+        public IqlDataSetReferenceExpression DataSet { get; set; }
     }
 }

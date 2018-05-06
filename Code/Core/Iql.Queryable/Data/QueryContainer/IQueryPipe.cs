@@ -7,20 +7,17 @@ namespace Iql.Queryable.Data.QueryContainer
     public interface IQueryPipe
     {
         bool DisableAutoEvents { get; set; }
-        bool ResultsLoading { get; set; }
+        bool ResultsLoading { get; }
 
-        IDbQueryable Query { get; set; }
-        IDbList Results { get; set; }
+        IDbQueryable SourceQuery { get; set; }
+        IDbList Results { get; }
 
-        IEventSubscriber<IQueryPipeChangedEvent> QueryChanged { get; }
-        IEventSubscriber<IQueryPipeChangedEvent> ResultsChanged { get; }
-        IEventSubscriber<IQueryPipeChangedEvent> ResultsLoadingChanged { get; }
-        IAsyncEventSubscriber<IQueryPipeChangedEvent> Pipe { get; }
-        IAsyncEventSubscriber<IQueryPipeInspectorEvent> Inspector { get; }
-
-        void NotifyQueryableChanged();
-        void NotifyResultsChanged();
-        void NotifyResultsLoadingChanged();
+        IEventSubscriber<IQueryPipeChangedEvent> SourceQueryChanged { get; }
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> ResultsLoadingChanged { get; }
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> ResultsLoaded { get; }
+        IAsyncEventSubscriber<IQueryPipeEvent> Pipe { get; }
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> QueryBuildingChanged { get; }
+        IAsyncEventSubscriber<IQueryPipeInspectorEvent> QueryBuilt { get; }
 
         Task RefreshResultsAsync();
 

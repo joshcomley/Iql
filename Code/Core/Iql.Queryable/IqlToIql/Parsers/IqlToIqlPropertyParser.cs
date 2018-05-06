@@ -100,7 +100,7 @@ namespace Iql.Queryable.IqlToIql
     {
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlDataSetQueryExpression action, IqlToIqlParserInstance parser)
         {
-            action.DataSet = (IqlDataSetReference)parser.Parse(action.DataSet).Expression;
+            action.DataSet = (IqlDataSetReferenceExpression)parser.Parse(action.DataSet).Expression;
             if (action.OrderBys != null)
             {
                 for (var i = 0; i < action.OrderBys.Count; i++)
@@ -128,7 +128,11 @@ namespace Iql.Queryable.IqlToIql
     {
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlExpandExpression action, IqlToIqlParserInstance parser)
         {
-            action.NavigationProperty = (IqlPropertyExpression)parser.Parse(action.NavigationProperty).Expression;
+            var property = parser.Parse(action.NavigationProperty).Expression;
+            if (property is IqlPropertyExpression)
+            {
+                action.NavigationProperty = (IqlPropertyExpression)property;
+            }
             if (action.Query != null)
             {
                 var path = IqlPropertyPath.FromPropertyExpression(
@@ -138,6 +142,11 @@ namespace Iql.Queryable.IqlToIql
                         parser.Adapter.EntityConfigurationContext.GetEntityByType(
                             path.Property.TypeDefinition.ElementType))
                     .Parse(action.Query).Expression;
+            }
+
+            if (property is IqlCountExpression)
+            {
+                action.Count = true;
             }
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
 

@@ -8,114 +8,100 @@ namespace Iql.Queryable.Data.QueryContainer
 {
     public class QueryPipe<T> : IDisposable, IQueryPipe where T : class
     {
-        private DbQueryable<T> _query;
-        private DbList<T> _results;
-        private bool _resultsLoading;
+        private DbQueryable<T> _sourceQuery;
 
-        public QueryPipe(DbQueryable<T> query)
+        public QueryPipe(DbQueryable<T> sourceQuery)
         {
-            Query = query;
+            SourceQuery = sourceQuery;
         }
 
-        public EventEmitter<QueryPipeChangedEvent<T>> QueryChanged { get; } =
+        public EventEmitter<QueryPipeChangedEvent<T>> SourceQueryChanged { get; } =
             new EventEmitter<QueryPipeChangedEvent<T>>();
 
-        public EventEmitter<QueryPipeChangedEvent<T>> ResultsChanged { get; } =
-            new EventEmitter<QueryPipeChangedEvent<T>>();
-
-        public EventEmitter<QueryPipeChangedEvent<T>> ResultsLoadingChanged { get; } =
-            new EventEmitter<QueryPipeChangedEvent<T>>();
-
-        public AsyncEventEmitter<QueryPipeChangedEvent<T>> Pipe { get; } =
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoaded { get; } =
             new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
 
-        public AsyncEventEmitter<QueryPipeInspectorEvent<T>> Inspector { get; } =
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoadingChanged { get; } =
+            new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+
+        public AsyncEventEmitter<QueryPipeEvent<T>> Pipe { get; } =
+            new AsyncEventEmitter<QueryPipeEvent<T>>();
+
+        public AsyncEventEmitter<QueryPipeInspectorEvent<T>> QueryBuilt { get; } =
             new AsyncEventEmitter<QueryPipeInspectorEvent<T>>();
 
-        public DbQueryable<T> Query
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> QueryBuildingChanged { get; } =
+            new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+
+        public DbQueryable<T> SourceQuery
         {
-            get => _query;
-            set
+            get => _sourceQuery;
+            private set
             {
-                var hasChanged = value != _query;
-                _query = value;
-                if (hasChanged && !DisableAutoEvents) NotifyQueryableChanged();
+                var hasChanged = value != _sourceQuery;
+                _sourceQuery = value;
+                if (hasChanged)
+                {
+                    EmitEvent(SourceQueryChanged);
+                }
             }
         }
 
-        public DbList<T> Results
-        {
-            get => _results;
-            set
-            {
-                var hasChanged = value != _results;
-                _results = value;
-                if (hasChanged && !DisableAutoEvents) NotifyResultsChanged();
-            }
-        }
+        public DbList<T> Results { get; private set; }
 
         public void Dispose()
         {
-            QueryChanged.UnsubscribeAll();
-            ResultsChanged.UnsubscribeAll();
+            SourceQueryChanged.UnsubscribeAll();
+            ResultsLoaded.UnsubscribeAll();
             ResultsLoadingChanged.UnsubscribeAll();
             Pipe.UnsubscribeAll();
+            QueryBuilt.UnsubscribeAll();
+            QueryBuildingChanged.UnsubscribeAll();
         }
 
-        IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.QueryChanged => QueryChanged;
-        IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.ResultsChanged => ResultsChanged;
-        IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.ResultsLoadingChanged => ResultsLoadingChanged;
-        IAsyncEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.Pipe => Pipe;
-        IAsyncEventSubscriber<IQueryPipeInspectorEvent> IQueryPipe.Inspector => Inspector;
+        IEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.SourceQueryChanged => SourceQueryChanged;
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.ResultsLoadingChanged => ResultsLoadingChanged;
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.ResultsLoaded => ResultsLoaded;
+        IAsyncEventSubscriber<IQueryPipeEvent> IQueryPipe.Pipe => Pipe;
+        IAsyncEventSubscriber<IQueryPipeChangedEvent> IQueryPipe.QueryBuildingChanged => QueryBuildingChanged;
+        IAsyncEventSubscriber<IQueryPipeInspectorEvent> IQueryPipe.QueryBuilt => QueryBuilt;
 
         public bool DisableAutoEvents { get; set; }
 
-        public void NotifyQueryableChanged()
+        IDbQueryable IQueryPipe.SourceQuery
         {
-            EmitEvent(QueryChanged);
+            get => SourceQuery;
+            set => SourceQuery = (DbQueryable<T>) value;
         }
 
-        public void NotifyResultsChanged()
-        {
-            EmitEvent(ResultsChanged);
-        }
-
-        public void NotifyResultsLoadingChanged()
-        {
-            EmitEvent(ResultsLoadingChanged);
-        }
-
-        IDbQueryable IQueryPipe.Query
-        {
-            get => Query;
-            set => Query = (DbQueryable<T>) value;
-        }
-
-        IDbList IQueryPipe.Results
-        {
-            get => Results;
-            set => Results = (DbList<T>) value;
-        }
+        IDbList IQueryPipe.Results => Results;
 
         public async Task RefreshResultsAsync()
         {
+            // Build the query
+            QueryBuilding = true;
+            await QueryBuildingChanged.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            var pipe = new QueryPipeEvent<T>(this);
+            await Pipe.EmitAsync(() => pipe);
+            QueryBuilding = false;
+            await QueryBuildingChanged.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+
+            // Broadcast the final query
+            await QueryBuilt.EmitAsync(() => new QueryPipeInspectorEvent<T>(pipe.Query));
+
+            // Load the results
             ResultsLoading = true;
-            await Pipe.EmitAsync(() => new QueryPipeEvent<T>(this));
-            await Inspector.EmitAsync(() => new QueryPipeInspectorEvent<T>(Query));
-            Results = await Query.ToListAsync();
+            await EmitEventAsync(ResultsLoadingChanged);
+            Results = await pipe.Query.ToListAsync();
             ResultsLoading = false;
+            await EmitEventAsync(ResultsLoadingChanged);
+
+            // Broadcast the final results
+            await ResultsLoaded.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
         }
 
-        public bool ResultsLoading
-        {
-            get => _resultsLoading;
-            set
-            {
-                var hasChanged = value != _resultsLoading;
-                _resultsLoading = value;
-                if (hasChanged && !DisableAutoEvents) NotifyResultsLoadingChanged();
-            }
-        }
+        public bool ResultsLoading { get; private set; }
+        public bool QueryBuilding { get; private set; }
 
         private void EmitEvent(EventEmitter<QueryPipeChangedEvent<T>> emitter)
         {

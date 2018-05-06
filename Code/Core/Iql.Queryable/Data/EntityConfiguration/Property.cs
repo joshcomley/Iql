@@ -55,6 +55,10 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 ReadOnly = readOnly.Value;
             }
             CountRelationship = countRelationship;
+            if (countRelationship != null)
+            {
+                ((PropertyBase)countRelationship).CountRelationship = this;
+            }
             Kind = 0;
             TypeDefinition = new TypeDetail(
                 propertyType,

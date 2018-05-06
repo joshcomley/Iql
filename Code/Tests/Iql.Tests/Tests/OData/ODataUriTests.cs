@@ -37,6 +37,45 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestExpandCount()
+        {
+            var query = Db.Clients.ExpandRelationship(nameof(Client.SitesCount));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=Sites/$count", uri);
+        }
+
+        [TestMethod]
+        public async Task TestExpandCountWithMultipleCallsToGetODataUri()
+        {
+            var query = Db.Clients.ExpandRelationship(nameof(Client.SitesCount));
+            var uri = await query.ResolveODataUriAsync();
+            uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=Sites/$count", uri);
+            uri = await query.ResolveODataUriAsync();
+            uri = await query.ResolveODataUriAsync();
+            uri = await query.ResolveODataUriAsync();
+            uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=Sites/$count", uri);
+        }
+
+        [TestMethod]
+        public async Task DuplicateExpandsShouldOnlyResultInOneExpandInstance()
+        {
+            var initialExpand = Db
+                .Clients
+                .ExpandRelationship(nameof(Client.SitesCount));
+            var query = initialExpand
+                .ExpandRelationship(nameof(Client.SitesCount))
+                ;
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=Sites/$count", uri);
+        }
+
+        [TestMethod]
         public void TestResolveEntitySetMethodUriWithNoParameters()
         {
             var db = new AppDbContext(new ODataDataStore());

@@ -2,7 +2,7 @@
 
 namespace Iql.JavaScript.Extensions
 {
-    public static class IqlExpressionExtensions
+    public static class IqlJavaScriptIqlExpressionExtensions
     {
         public static bool NormalizeJson { get; set; } = false;
         public static string SerializeDeserialize(this IqlExpression expression)

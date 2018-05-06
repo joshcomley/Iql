@@ -5,7 +5,7 @@ namespace Iql.Queryable.Operations
 {
     public interface IExpressionQueryOperation : IQueryOperation
     {
-        QueryExpression QueryExpession { get; set; }
+        QueryExpression QueryExpression { get; set; }
         IqlExpression Expression { get; set; }
     }
 }

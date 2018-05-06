@@ -26,7 +26,11 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 for (var i = 0; i < action.Expands.Count; i++)
                 {
                     var expand = action.Expands[i];
-                    expands.Add(parser.ParseNested(expand).ToCodeString());
+                    var codeString = parser.ParseNested(expand).ToCodeString();
+                    if (!string.IsNullOrWhiteSpace(codeString))
+                    {
+                        expands.Add(codeString);
+                    }
                 }
             }
 
@@ -136,12 +140,18 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 {
                     expandProperty = $"{expandProperty}({expandDetails})";
                 }
-
-                if (action.Count)
-                {
-                    expandProperty = $"{expandProperty}/$count";
-                }
             }
+
+            if (action.Count)
+            {
+                expandProperty = $"{expandProperty}/$count";
+            }
+
+            if (parser.Data.Expands.ContainsKey(expandProperty))
+            {
+                return null;
+            }
+            parser.Data.Expands.Add(expandProperty, expandProperty);
             return new IqlFinalExpression<string>(
                 expandProperty);
         }

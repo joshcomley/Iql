@@ -5,12 +5,12 @@ using Iql.Extensions;
 
 namespace Iql
 {
-    public class IqlEnumLiteralExpression : IqlLiteralExpressionBase<IqlEnumValue[]>
+    public class IqlEnumLiteralExpression : IqlLiteralExpressionBase<IqlEnumValueExpression[]>
     {
         private readonly object _enumType;
 
         public IqlEnumLiteralExpression(object enumType, string nameSpace = null)
-            : base(null, IqlType.Enum)
+            : base(null, IqlType.Enum, IqlExpressionKind.EnumLiteral)
         {
             _enumType = enumType;
             Namespace = nameSpace;
@@ -23,8 +23,8 @@ namespace Iql
 
         public IqlEnumLiteralExpression AddValue(long value, string name)
         {
-            var values = Value == null ? new List<IqlEnumValue>() : Value.ToList();
-            values.Add(new IqlEnumValue(value, name));
+            var values = Value == null ? new List<IqlEnumValueExpression>() : Value.ToList();
+            values.Add(new IqlEnumValueExpression(value, name));
             Value = values.ToArray();
             return this;
         }
