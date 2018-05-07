@@ -20,7 +20,26 @@ namespace Iql.Tests.Tests.Serialization
         [TestMethod]
         public void TestSerializeSinglePropertyToXml()
         {
-            var xml = IqlSerializer.SerializeToXml<Client, string>(client => client.Name);
+            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name);
+            Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<IqlPropertyExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Kind>Property</Kind>
+  <ReturnType>Unknown</ReturnType>
+  <Parent xsi:type=""IqlRootReferenceExpression"">
+    <Kind>RootReference</Kind>
+    <ReturnType>Unknown</ReturnType>
+    <VariableName>client</VariableName>
+  </Parent>
+  <PropertyName>Name</PropertyName>
+</IqlPropertyExpression>", xml);
+        }
+
+        [TestMethod]
+        public void TestSerializeSinglePropertyToXmlFromLambdaWithoutKnownType()
+        {
+            Expression<Func<Client, string>> exp = client => client.Name;
+            LambdaExpression lambda = exp;
+            var xml = IqlXmlSerializer.SerializeToXml(lambda);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlPropertyExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Property</Kind>
@@ -37,7 +56,7 @@ namespace Iql.Tests.Tests.Serialization
         [TestMethod]
         public void TestSerializePropertyStringConcatenationToXml()
         {
-            var xml = IqlSerializer.SerializeToXml<Client, string>(client => client.Name + " (" + client.Description + ")");
+            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name + " (" + client.Description + ")");
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlAddExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Add</Kind>
@@ -89,8 +108,8 @@ namespace Iql.Tests.Tests.Serialization
         public void TestDeserializeStringConcatenationFromXmlAndApply()
         {
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id);
-            var expression = IqlSerializer.DeserializeFromXml(xml);
+            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id);
+            var expression = IqlXmlSerializer.DeserializeFromXml(xml);
             var query = IqlConverter.Instance.ConvertIqlToFunction<Client, string>(expression);
 
             var client = new Client();
@@ -166,9 +185,9 @@ namespace Iql.Tests.Tests.Serialization
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
         {
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlSerializer.SerializeToXml(
+            var xml = IqlXmlSerializer.SerializeToXml(
                 expression);
-            var iqlExpression = IqlSerializer.DeserializeFromXml(xml);
+            var iqlExpression = IqlXmlSerializer.DeserializeFromXml(xml);
             var query = IqlConverter.Instance.ConvertIqlToFunction<Client, bool>(iqlExpression);
             var code = query.ToCSharpString();
             Assert.AreEqual(

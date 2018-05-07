@@ -6,11 +6,11 @@ using Iql.DotNet.DotNetExpressionToIql;
 
 namespace Iql.DotNet.Serialization
 {
-    public class IqlSerializer
+    public class IqlXmlSerializer
     {
         private static readonly Type[] IqlTypes;
 
-        static IqlSerializer()
+        static IqlXmlSerializer()
         {
             var allTypes = typeof(IqlExpression).GetTypeInfo().Assembly.GetTypes();
             IqlTypes = allTypes.Where(t =>
@@ -24,7 +24,12 @@ namespace Iql.DotNet.Serialization
 
         public static string SerializeToXml<TEntity, TOut>(Expression<Func<TEntity, TOut>> expression)
         {
-            return SerializeToXml(DotNetExpressionToIqlExpressionParser<TEntity>.Parse(expression));
+            return SerializeToXml(DotNetExpressionToIqlExpressionConverter.Parse(expression));
+        }
+
+        public static string SerializeToXml(LambdaExpression expression)
+        {
+            return SerializeToXml(DotNetExpressionToIqlExpressionConverter.Parse(expression));
         }
 
         public static string SerializeToXml(IqlExpression expression)

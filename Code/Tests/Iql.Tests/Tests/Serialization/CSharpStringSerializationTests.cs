@@ -24,9 +24,9 @@ namespace Iql.Tests.Tests.Serialization
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
         {
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlSerializer.SerializeToXml(
+            var xml = IqlXmlSerializer.SerializeToXml(
                 expression);
-            var iqlExpression = IqlSerializer.DeserializeFromXml(xml);
+            var iqlExpression = IqlXmlSerializer.DeserializeFromXml(xml);
             var code = IqlConverter.Instance.ConvertIqlToExpressionString<Client>(iqlExpression);
             Assert.AreEqual(
                 expected,

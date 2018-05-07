@@ -11,5 +11,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Rules.Display
         }
 
         public DisplayRuleKind Kind { get; set; }
+        protected override bool InverseResult => false;
     }
 }

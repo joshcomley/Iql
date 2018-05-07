@@ -95,7 +95,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
                 return true;
             }
 
-            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true)
+            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.Configuration.Key.IsPivot())
             {
                 return true;
             }
