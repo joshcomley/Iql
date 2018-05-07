@@ -7,7 +7,7 @@ namespace Iql.Queryable.Data.EntityConfiguration.Rules
     {
         string Key { get; }
         string Message { get; }
-        Expression<Func<object, bool>> Expression { get; }
+        LambdaExpression Expression { get; }
         Func<object, bool> Run { get; }
     }
 }
