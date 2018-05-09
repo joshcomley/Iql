@@ -12,5 +12,12 @@ namespace Iql
         public IqlLiteralExpression() : this(null)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

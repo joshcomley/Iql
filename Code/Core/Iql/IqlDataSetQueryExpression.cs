@@ -1,4 +1,4 @@
-﻿namespace Iql
+namespace Iql
 {
     //public interface IIqlPropertyNavigationExpression
     //{
@@ -40,5 +40,12 @@
         }
 
         public IqlDataSetReferenceExpression DataSet { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

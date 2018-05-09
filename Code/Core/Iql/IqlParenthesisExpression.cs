@@ -18,5 +18,12 @@ namespace Iql
         {
             return Expression.ContainsRootEntity();
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

@@ -90,5 +90,12 @@ namespace Iql
             Milliseconds = milliseconds;
             return this;
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

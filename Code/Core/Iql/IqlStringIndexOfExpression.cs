@@ -10,5 +10,12 @@ namespace Iql
         public IqlStringIndexOfExpression() : this(null, null)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

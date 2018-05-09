@@ -14,5 +14,12 @@ namespace Iql
         }
 
         public IqlReferenceExpression Take { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

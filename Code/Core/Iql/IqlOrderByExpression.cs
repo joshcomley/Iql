@@ -1,4 +1,4 @@
-﻿namespace Iql
+namespace Iql
 {
     public class IqlOrderByExpression : IqlExpression
     {
@@ -14,5 +14,12 @@
 
         public IqlExpression OrderExpression { get; set; }
         public bool Descending { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

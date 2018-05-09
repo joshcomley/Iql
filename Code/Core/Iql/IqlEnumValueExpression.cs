@@ -16,5 +16,12 @@ namespace Iql
         {
         }
 #endif
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

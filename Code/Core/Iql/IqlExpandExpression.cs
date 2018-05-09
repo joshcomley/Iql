@@ -1,4 +1,4 @@
-﻿namespace Iql
+namespace Iql
 {
     public class IqlExpandExpression : IqlExpression
     {
@@ -15,5 +15,12 @@
         public IqlPropertyExpression NavigationProperty { get; set; }
         public IqlCollectitonQueryExpression Query { get; set; }
         public bool Count { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Iql
+namespace Iql
 {
     public class IqlDataSetReferenceExpression : IqlExpression
     {
@@ -13,5 +13,12 @@
         {
 
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

@@ -19,5 +19,12 @@ namespace Iql
         }
 
         public string PropertyName { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

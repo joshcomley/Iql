@@ -11,5 +11,12 @@ namespace Iql
         public IqlMultiplyEqualsExpression() : this(null, null)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

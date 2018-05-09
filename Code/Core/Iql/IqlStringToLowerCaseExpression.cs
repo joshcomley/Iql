@@ -10,5 +10,12 @@ namespace Iql
         public IqlStringToLowerCaseExpression() : this(null)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

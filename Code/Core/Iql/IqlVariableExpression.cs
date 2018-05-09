@@ -21,5 +21,12 @@ namespace Iql
         public string Value { get; set; }
 
         public string VariableName { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

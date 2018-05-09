@@ -13,5 +13,12 @@ namespace Iql
         }
 
         public TValue Value { get; set; }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

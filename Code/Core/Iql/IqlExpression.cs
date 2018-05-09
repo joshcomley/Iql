@@ -245,5 +245,7 @@ namespace Iql
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }
+
+        public abstract IqlExpression Clone();
     }
 }

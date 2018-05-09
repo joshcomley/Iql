@@ -5,5 +5,12 @@ namespace Iql
         public IqlNowExpression() : base(IqlExpressionKind.Now, IqlType.Date)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

@@ -12,5 +12,12 @@ namespace Iql
         public IqlAllExpression() : this(null, null, null)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }

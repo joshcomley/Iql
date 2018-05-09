@@ -11,5 +11,12 @@ namespace Iql
         public IqlIsNotEqualToExpression() : this(null, null)
         {
         }
+
+		public override IqlExpression Clone()
+		{
+			// #CloneStart
+			return null;
+			// #CloneEnd
+		}
     }
 }
