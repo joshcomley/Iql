@@ -69,6 +69,7 @@ namespace Iql.Queryable.Events
         public void UnsubscribeAll()
         {
             _subscriptions = new Dictionary<int, Action<TEvent>>();
+            SubscriptionActions = new List<Action<TEvent>>();
         }
 
         public void Dispose()

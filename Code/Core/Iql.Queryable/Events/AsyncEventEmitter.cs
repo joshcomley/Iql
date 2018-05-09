@@ -36,6 +36,7 @@ namespace Iql.Queryable.Events
         public void UnsubscribeAll()
         {
             _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
+            SubscriptionActions = new List<Func<TEvent, Task>>();
         }
 
         public EventSubscription SubscribeAsync(Func<TEvent, Task> propertyChangeEvent)

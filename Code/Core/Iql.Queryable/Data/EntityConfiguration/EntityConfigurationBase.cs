@@ -22,6 +22,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public List<string> Hints { get; set; } = new List<string>();
         public string Name { get; set; }
         public string Title { get; set; }
+        public EntityManageKind ManageKind { get; set; } = EntityManageKind.Full;
         public string SetFriendlyName { get; set; }
         public string SetName { get; set; }
 

@@ -187,7 +187,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             {
                 var propertyValue = property.PropertyGetter(entity);
                 if (!validationResult.HasValidationFailures() &&
-                PropertyValueIsEmpty(property, entity, propertyValue)
+                PropertyValueIsIllegallyEmpty(property, entity, propertyValue)
             )
                 {
                     if (!hasSetDefaultValue)
@@ -214,7 +214,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             return validationResult;
         }
 
-        private static bool PropertyValueIsEmpty(IProperty property, object entity, object propertyValue)
+        private static bool PropertyValueIsIllegallyEmpty(IProperty property, object entity, object propertyValue)
         {
             if (property.ReadOnly)
             {

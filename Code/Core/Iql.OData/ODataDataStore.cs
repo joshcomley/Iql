@@ -324,7 +324,10 @@ namespace Iql.OData
             var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
-            operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(responseData);
+            if (httpResult.Success)
+            {
+                operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(responseData);
+            }
             operation.Result.Success = httpResult.Success;
             ParseValidation(operation.Result, operation.Operation.Entity, responseData);
             return operation.Result;
@@ -425,7 +428,17 @@ namespace Iql.OData
         {
             if (!result.Success)
             {
-                var errorResult = JsonConvert.DeserializeObject<ODataErrorResult>(responseData);
+                ODataErrorResult errorResult = null;
+                try
+                {
+                    errorResult = JsonConvert.DeserializeObject<ODataErrorResult>(responseData);
+                }
+                catch (Exception e)
+                {
+                    var entityValidationResult = new EntityValidationResult<TEntity>(entity);
+                    entityValidationResult.ValidationFailures.Add(new ValidationError("", responseData));
+                    result.EntityValidationResults.Add("", entityValidationResult);
+                }
                 var error = errorResult?.error;
                 if (error != null)
                 {
