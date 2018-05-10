@@ -70,8 +70,8 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             if (entity != null && !_beingMarkedAsDirty.Contains(entity))
             {
                 _beingMarkedAsDirty.Add(entity);
-                CompositeKeys.Remove(entity);
-                InverseCompositeKeys.Remove(entity);
+                //CompositeKeys.Remove(entity);
+                //InverseCompositeKeys.Remove(entity);
                 if (!OtherSide.IsCollection)
                 {
                     var referencedEntity = Property.PropertyGetter(entity);
@@ -100,24 +100,26 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             throw new NotSupportedException();
         }
 
-        internal Dictionary<object, CompositeKey> CompositeKeys { get; }
-            = new Dictionary<object, CompositeKey>();
-        internal Dictionary<object, CompositeKey> InverseCompositeKeys { get; }
-            = new Dictionary<object, CompositeKey>();
+        //internal Dictionary<object, CompositeKey> CompositeKeys { get; }
+        //    = new Dictionary<object, CompositeKey>();
+        //internal Dictionary<object, CompositeKey> InverseCompositeKeys { get; }
+        //    = new Dictionary<object, CompositeKey>();
 
         public CompositeKey GetCompositeKey(object entity, bool inverse = false)
         {
-            var dic = inverse
-                ? InverseCompositeKeys
-                : CompositeKeys;
-            if (dic.ContainsKey(entity))
-            {
-                return dic[entity];
-            }
-            return GetCompositeKeyInternal(entity, inverse, dic);
+            //var dic = inverse
+            //    ? InverseCompositeKeys
+            //    : CompositeKeys;
+            //if (dic.ContainsKey(entity))
+            //{
+            //    return dic[entity];
+            //}
+            return GetCompositeKeyInternal(entity, inverse);
         }
 
-        private CompositeKey GetCompositeKeyInternal(object entity, bool inverse, Dictionary<object, CompositeKey> dic)
+        private CompositeKey GetCompositeKeyInternal(object entity, bool inverse
+            //, Dictionary<object, CompositeKey> dic
+            )
         {
             var constraints = Constraints();
             var inverseConstraints = RelationshipSide == RelationshipSide.Source
@@ -141,10 +143,10 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
                 compositeKey.Keys[i] = keyValue;
             }
 
-            if (!dic.ContainsKey(entity))
-            {
-                dic.Add(entity, compositeKey);
-            }
+            //if (!dic.ContainsKey(entity))
+            //{
+            //    dic.Add(entity, compositeKey);
+            //}
 
             return compositeKey;
         }
