@@ -137,7 +137,33 @@ namespace Iql.Tests.Tests
             clientTypes[1].Clients.Add(client);
             var changes = Db.DataStore.GetChanges();
             Assert.AreEqual(1, changes.Length);
-            Db.AbandonAllChanges();
+            Db.AbandonChanges();
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+        }
+
+        [TestMethod]
+        public async Task AbandonOneChangeViaAbandonChangesForEntity()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 1,
+                TypeId = 1,
+            });
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            var clientTypes = await Db.ClientTypes.ToListAsync();
+            clientTypes[1].Clients.Add(client);
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Length);
+            Db.AbandonChangesForEntity(client);
             changes = Db.DataStore.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
@@ -180,7 +206,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, clientTypes[1].Clients.Count);
             var changes = Db.DataStore.GetChanges();
             Assert.AreEqual(4, changes.Length);
-            Db.AbandonAllChanges();
+            Db.AbandonChanges();
             changes = Db.DataStore.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }

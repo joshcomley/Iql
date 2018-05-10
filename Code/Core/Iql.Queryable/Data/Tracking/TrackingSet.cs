@@ -750,12 +750,55 @@ namespace Iql.Queryable.Data.Tracking
             return updates;
         }
 
+        public void AbandonChangesForEntity(T entity)
+        {
+            var state = GetEntityState(entity);
+            if (state != null)
+            {
+                AbandonChangesForEntityState((IEntityState<T>) state);
+            }
+        }
+
+        void ITrackingSet.AbandonChangesForEntity(object entity)
+        {
+            if (entity is T)
+            {
+                AbandonChangesForEntity((T)entity);
+            }
+        }
+
         public void AbandonChanges()
         {
-            var removedStates = new List<IEntityState<T>>();
+            var allStates = new List<IEntityState<T>>();
             foreach (var entity in EntitiesByObject)
             {
-                var state = (IEntityState<T>)entity.Value;
+                allStates.Add((IEntityState<T>) entity.Value); 
+            }
+            AbandonChangesForEntityStates(allStates);
+        }
+
+        public void AbandonChangesForEntities(IEnumerable<object> entities)
+        {
+            var allStates = new List<IEntityState<T>>();
+            foreach (var entity in entities)
+            {
+                var state = GetEntityState(entity);
+                if (state != null)
+                {
+                    allStates.Add((IEntityState<T>) state);
+                }
+            }
+
+            AbandonChangesForEntityStates(allStates);
+        }
+
+        public void AbandonChangesForEntityStates(IEnumerable<IEntityState<T>> allStates)
+        {
+            var removedStates = new List<IEntityState<T>>();
+            var allStatesArr = allStates.ToList();
+            for (var i = 0; i < allStatesArr.Count; i++)
+            {
+                var state = allStatesArr[i];
                 state.AbandonChanges();
                 if (state.IsNew)
                 {
@@ -767,6 +810,38 @@ namespace Iql.Queryable.Data.Tracking
             {
                 var removedState = removedStates[i];
                 RemoveEntity(removedState.Entity);
+            }
+        }
+
+        void ITrackingSet.AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states)
+        {
+            foreach (var state in states)
+            {
+                if (state != null && state.Entity is T)
+                {
+                    state.AbandonChanges();
+                    if (state.IsNew)
+                    {
+                        RemoveEntity((T)state.Entity);
+                    }
+                }
+            }
+        }
+
+        public void AbandonChangesForEntityState(IEntityState<T> state)
+        {
+            state.AbandonChanges();
+            if (state.IsNew)
+            {
+                RemoveEntity(state.Entity);
+            }
+        }
+
+        void ITrackingSet.AbandonChangesForEntityState(IEntityStateBase state)
+        {
+            if (state.Entity is T)
+            {
+                AbandonChangesForEntityState((IEntityState<T>) state);
             }
         }
     }

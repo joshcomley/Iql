@@ -379,12 +379,40 @@ namespace Iql.Queryable.Data.Context
             return _configurations[entityType.Name] as EntityConfiguration<T>;
         }
 
-        public void AbandonAllChanges()
+        public void AbandonChanges()
         {
             for (var i = 0; i < DataStore.Tracking.Sets.Count; i++)
             {
                 var set = DataStore.Tracking.Sets[i];
                 set.AbandonChanges();
+            }
+        }
+
+        public void AbandonChangesForEntity(object entity)
+        {
+            var set = DataStore.Tracking.TrackingSetByType(entity.GetType());
+            set?.AbandonChangesForEntity(entity);
+        }
+
+        public void AbandonChangesForEntities(IEnumerable<object> entities)
+        {
+            foreach (var entity in entities)
+            {
+                AbandonChangesForEntity(entity);
+            }
+        }
+
+        public void AbandonChangesForEntityState(IEntityStateBase state)
+        {
+            var set = DataStore.Tracking.TrackingSetByType(state.EntityType);
+            set.AbandonChangesForEntityState(state);
+        }
+
+        public void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states)
+        {
+            foreach (var state in states)
+            {
+                AbandonChangesForEntityState(state);
             }
         }
 

@@ -16,7 +16,11 @@ namespace Iql.Queryable.Data.Context
 {
     public interface IDataContext
     {
-        void AbandonAllChanges();
+        void AbandonChanges();
+        void AbandonChangesForEntity(object entity);
+        void AbandonChangesForEntities(IEnumerable<object> entities);
+        void AbandonChangesForEntityState(IEntityStateBase state);
+        void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states);
         Task<SaveChangesResult> SaveChangesAsync();
         bool TrackEntities { get; set; }
         string SynchronicityKey { get; set; }
