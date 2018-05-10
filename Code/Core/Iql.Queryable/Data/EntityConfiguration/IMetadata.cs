@@ -4,6 +4,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 {
     public interface IMetadata
     {
+        string GroupPath { get; set; }
         string Description { get; set; }
         string FriendlyName { get; set; }
         List<string> Hints { get; set; }

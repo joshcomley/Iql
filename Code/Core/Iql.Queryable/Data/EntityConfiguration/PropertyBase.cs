@@ -137,6 +137,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             }
         }
 
+        public string GroupPath { get; set; }
         public string Description { get; set; }
         public List<object> Helpers { get; set; }
         public List<string> Hints { get; set; }
