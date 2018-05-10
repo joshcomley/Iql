@@ -23,7 +23,14 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlPropertyExpression();
+			expression.PropertyName = PropertyName;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

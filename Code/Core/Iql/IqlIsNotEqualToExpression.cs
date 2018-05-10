@@ -15,7 +15,15 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlIsNotEqualToExpression(null, null);
+			expression.Left = Left?.Clone();
+			expression.Right = Right?.Clone();
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

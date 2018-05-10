@@ -26,7 +26,26 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlAggregateExpression(null);
+			if(Expressions == null)
+			{
+				expression.Expressions = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlExpression>();
+				for(var i = 0; i < Expressions.Count; i++)
+				{
+					listCopy.Add(Expressions[i]?.Clone());
+				}
+				expression.Expressions = listCopy;
+			}
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

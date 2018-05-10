@@ -20,7 +20,15 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlCountExpression(null, null, null);
+			expression.RootVariableName = RootVariableName;
+			expression.Value = Value?.Clone();
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

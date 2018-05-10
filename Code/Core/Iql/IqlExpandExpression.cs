@@ -19,7 +19,16 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlExpandExpression();
+			expression.NavigationProperty = (IqlPropertyExpression)NavigationProperty?.Clone();
+			expression.Query = (IqlCollectitonQueryExpression)Query?.Clone();
+			expression.Count = Count;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

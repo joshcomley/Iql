@@ -40,12 +40,15 @@ namespace Iql.Queryable.Data.Context
         }
 
         public DataContext(
-            IDataStore dataStore,
+            IDataStore dataStore = null,
             EvaluateContext evaluateContext = null
         )
         {
             DataStore = dataStore;
-            DataStore.DataContext = this;
+            if (DataStore != null)
+            {
+                DataStore.DataContext = this;
+            }
             EvaluateContext = evaluateContext;
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
@@ -132,7 +135,19 @@ namespace Iql.Queryable.Data.Context
             }
         }
 
-        public IDataStore DataStore { get; set; }
+        public IDataStore DataStore
+        {
+            get => _dataStore;
+            set
+            {
+                _dataStore = value;
+                if (_dataStore != null)
+                {
+                    _dataStore.DataContext = this;
+                }
+            }
+        }
+
         public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
         public EvaluateContext EvaluateContext { get; set; }
@@ -311,6 +326,8 @@ namespace Iql.Queryable.Data.Context
         }
 
         private bool _initialized;
+        private IDataStore _dataStore;
+
         public DbSet<T, TKey> AsDbSet<T, TKey>() where T : class
         {
             Initialize();

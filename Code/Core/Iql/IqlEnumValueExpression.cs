@@ -11,16 +11,23 @@ namespace Iql
             Value = value;
         }
 
-#if !TypeScript
         public IqlEnumValueExpression() : this(0, null)
         {
         }
-#endif
 
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlEnumValueExpression(0, null);
+			expression.Name = Name;
+			expression.Value = Value;
+			expression.InferredReturnType = InferredReturnType;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

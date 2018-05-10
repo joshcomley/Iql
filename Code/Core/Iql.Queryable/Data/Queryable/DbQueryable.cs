@@ -460,6 +460,11 @@ namespace Iql.Queryable.Data.Queryable
             return this.OrderByProperty(EntityConfiguration.ResolveSearchProperties().First().Name, descending);
         }
 
+        public override IqlPropertyExpression PropertyExpression(string propertyName)
+        {
+            return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration).Expression;
+        }
+
         public override async Task<DbList<T>> ToListAsync()
         {
             var result = await ToListWithResponseAsync();
@@ -967,9 +972,9 @@ namespace Iql.Queryable.Data.Queryable
 #if TypeScript
                     evaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext
 #endif
-                    // TODO: Add reducer registry
+                // TODO: Add reducer registry
 
-                    //queryOperation.getExpression().evaluateContext || this.evaluateContext
+                //queryOperation.getExpression().evaluateContext || this.evaluateContext
                 )
                 .ReduceStaticContent(queryExpression);
 

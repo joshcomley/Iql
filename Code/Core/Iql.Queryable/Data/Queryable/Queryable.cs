@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Queryable.Data.Lists;
+using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;

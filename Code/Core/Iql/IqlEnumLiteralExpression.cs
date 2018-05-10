@@ -29,11 +29,9 @@ namespace Iql
             return this;
         }
 
-#if !TypeScript
         public IqlEnumLiteralExpression()
         {
         }
-#endif
 
         public static IqlEnumLiteralExpression Combine(params IqlEnumLiteralExpression[] expressions)
         {
@@ -56,7 +54,28 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlEnumLiteralExpression(null);
+			expression.Namespace = Namespace;
+			if(Value == null)
+			{
+				expression.Value = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlEnumValueExpression>();
+				for(var i = 0; i < Value.Length; i++)
+				{
+					listCopy.Add((IqlEnumValueExpression)Value[i]?.Clone());
+				}
+				expression.Value = listCopy.ToArray();
+			}
+			expression.InferredReturnType = InferredReturnType;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

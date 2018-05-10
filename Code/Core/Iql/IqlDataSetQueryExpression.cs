@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql
 {
     //public interface IIqlPropertyNavigationExpression
@@ -44,7 +46,45 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlDataSetQueryExpression();
+			expression.DataSet = (IqlDataSetReferenceExpression)DataSet?.Clone();
+			if(OrderBys == null)
+			{
+				expression.OrderBys = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlOrderByExpression>();
+				for(var i = 0; i < OrderBys.Count; i++)
+				{
+					listCopy.Add((IqlOrderByExpression)OrderBys[i]?.Clone());
+				}
+				expression.OrderBys = listCopy;
+			}
+			expression.IncludeCount = IncludeCount;
+			expression.Skip = Skip;
+			expression.Take = Take;
+			if(Expands == null)
+			{
+				expression.Expands = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlExpandExpression>();
+				for(var i = 0; i < Expands.Count; i++)
+				{
+					listCopy.Add((IqlExpandExpression)Expands[i]?.Clone());
+				}
+				expression.Expands = listCopy;
+			}
+			expression.Filter = Filter?.Clone();
+			expression.WithKey = (IqlWithKeyExpression)WithKey?.Clone();
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }

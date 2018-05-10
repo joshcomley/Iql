@@ -22,7 +22,26 @@ namespace Iql
 		public override IqlExpression Clone()
 		{
 			// #CloneStart
-			return null;
+
+			var expression = new IqlWithKeyExpression(null);
+			if(KeyEqualToExpressions == null)
+			{
+				expression.KeyEqualToExpressions = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlIsEqualToExpression>();
+				for(var i = 0; i < KeyEqualToExpressions.Count; i++)
+				{
+					listCopy.Add((IqlIsEqualToExpression)KeyEqualToExpressions[i]?.Clone());
+				}
+				expression.KeyEqualToExpressions = listCopy;
+			}
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
 			// #CloneEnd
 		}
     }
