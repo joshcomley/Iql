@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.Queryable.Data.Extensions
@@ -8,11 +7,17 @@ namespace Iql.Queryable.Data.Extensions
     {
         public static string[] GroupPathParts(this IMetadata metadata)
         {
-            if (string.IsNullOrWhiteSpace(metadata.GroupPath))
+            var groupPath = metadata.GroupPath;
+            return GetGroupPathParts(groupPath);
+        }
+
+        public static string[] GetGroupPathParts(string groupPath)
+        {
+            if (string.IsNullOrWhiteSpace(groupPath))
             {
                 return new string[] { };
             }
-            var parts = metadata.GroupPath.Split('/');
+            var parts = groupPath.Split('/');
             return parts.Where(part => !string.IsNullOrWhiteSpace(part)).ToArray();
         }
     }
