@@ -53,13 +53,13 @@ namespace Iql.OData
             Type responseElementType
         )
         {
-            var uri = GetMethodUri(parameters, methodScope, nameSpace, name, entityType);
+            var uri = GetMethodUri(parameters, methodScope, methodType, nameSpace, name, entityType);
             var request = new ODataDataMethodRequest<TResult>(
                 this,
                 uri,
                 async () =>
                 {
-                    var httpResult = await GetMethodHttpResult(methodType, uri);
+                    var httpResult = await GetMethodHttpResult(methodType, uri, parameters);
                     var dataMethodResult = new DataMethodResult<TResult>(httpResult.Success);
                     var isCollectionResult = typeof(TResult).IsEnumerableType();
                     if (DataContext.EntityConfigurationContext.IsEntityType(responseElementType))
@@ -99,13 +99,13 @@ namespace Iql.OData
             Type entityType
         )
         {
-            var uri = GetMethodUri(parameters, methodScope, nameSpace, name, entityType);
+            var uri = GetMethodUri(parameters, methodScope, methodType, nameSpace, name, entityType);
             var request = new ODataMethodRequest(
                 this,
                 uri,
                 async () =>
                 {
-                    var httpResult = await GetMethodHttpResult(methodType, uri);
+                    var httpResult = await GetMethodHttpResult(methodType, uri, parameters);
                     //var flattenedResponse = ParseODataResponseByType(responseType, httpResult, false);
                     //var dbList = TrackGetDataResultByType(responseType, flattenedResponse);
                     return new MethodResult(httpResult.Success);
@@ -113,14 +113,35 @@ namespace Iql.OData
             return request;
         }
 
-        private async Task<IHttpResult> GetMethodHttpResult(ODataMethodType methodType, string uri)
+        private async Task<IHttpResult> GetMethodHttpResult(ODataMethodType methodType, string uri, IEnumerable<ODataParameter> parameters)
         {
             var http = GetHttp();
             IHttpResult httpResult = null;
             switch (methodType)
             {
                 case ODataMethodType.Action:
-                    httpResult = await http.Post(uri);
+                    HttpRequest httpRequest = null;
+                    if (parameters != null && parameters.Any())
+                    {
+                        var jobject = new JObject();
+                        foreach (var parameter in parameters)
+                        {
+                            if (parameter.Value != null)
+                            {
+                                jobject[parameter.Name] =
+                                    DataContext.EntityConfigurationContext.GetEntityByType(parameter.ValueType) == null
+                                        ? JToken.FromObject(parameter.Value)
+                                        : JToken.Parse(JsonSerializer.Serialize(parameter.Value, DataContext, DataContext.EntityNonNullProperties(parameter.Value).ToArray()));
+                            }
+                            else
+                            {
+                                jobject[parameter.Name] = null;
+                            }
+                        }
+                        var body = JsonConvert.SerializeObject(jobject);
+                        httpRequest = new HttpRequest(body);
+                    }
+                    httpResult = await http.Post(uri, httpRequest);
                     break;
                 case ODataMethodType.Function:
                     httpResult = await http.Get(uri);
@@ -133,6 +154,7 @@ namespace Iql.OData
         public string GetMethodUri(
             IEnumerable<ODataParameter> parameters,
             ODataMethodScope methodScope,
+            ODataMethodType methodType,
             string nameSpace,
             string name,
             Type entityType)
@@ -169,12 +191,15 @@ namespace Iql.OData
             }
 
             baseUri += name;
-            var otherParameters = parameters.Where(p => p.Name != bindingParameterName).ToArray();
-            if (otherParameters.Any())
+            if (methodType == ODataMethodType.Function)
             {
-                baseUri += "(";
-                baseUri += string.Join(",", otherParameters.Select(p => $"{p.Name}={ODataLiteralParser.ODataEncode(p.Value)}"));
-                baseUri += ")";
+                var otherParameters = parameters.Where(p => p.Name != bindingParameterName).ToArray();
+                if (otherParameters.Any())
+                {
+                    baseUri += "(";
+                    baseUri += string.Join(",", otherParameters.Select(p => $"{p.Name}={ODataLiteralParser.ODataEncode(p.Value)}"));
+                    baseUri += ")";
+                }
             }
 
             return baseUri;
