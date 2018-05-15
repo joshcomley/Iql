@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.DataStores.NestedSets;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
@@ -16,6 +17,8 @@ namespace Iql.Queryable.Data.Context
 {
     public interface IDataContext
     {
+        INestedSetsProviderBase NestedSetsProviderForType(Type type);
+        INestedSetsProvider<T> NestedSetsProviderFor<T>();
         void AbandonChanges();
         void AbandonChangesForEntity(object entity);
         void AbandonChangesForEntities(IEnumerable<object> entities);

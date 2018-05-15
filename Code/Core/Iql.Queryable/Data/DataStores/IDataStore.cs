@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.DataStores.NestedSets;
 using Iql.Queryable.Data.Relationships;
 using Iql.Queryable.Data.Tracking;
 using Iql.Queryable.Data.Tracking.State;
@@ -12,6 +14,8 @@ namespace Iql.Queryable.Data.DataStores
 {
     public interface IDataStore
     {
+        INestedSetsProviderBase NestedSetsProviderForType(Type type);
+        INestedSetsProvider<T> NestedSetsProviderFor<T>();
         DataTracker DataTracker { get; }
         IQueuedOperation[] GetChanges();
         IQueuedOperation[] GetUpdates();

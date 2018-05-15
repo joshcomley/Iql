@@ -10,6 +10,7 @@ using Iql.Queryable.Data.Crud;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Queued;
 using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Queryable.Data.DataStores.NestedSets;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Data.Paging;
@@ -28,6 +29,16 @@ namespace Iql.Queryable.Data.DataStores
     {
         private DataTracker _dataTracker;
         public static MethodInfo ToListTypedMethod { get; set; }
+
+        public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
+        {
+            return null;
+        }
+
+        public virtual INestedSetsProvider<T> NestedSetsProviderFor<T>()
+        {
+            return (INestedSetsProvider<T>) NestedSetsProviderForType(typeof(T));
+        }
 
         public DataTracker DataTracker
         {

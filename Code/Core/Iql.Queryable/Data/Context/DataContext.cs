@@ -10,6 +10,7 @@ using Iql.Parsing;
 using Iql.Queryable.Data.Crud.Operations;
 using Iql.Queryable.Data.Crud.Operations.Results;
 using Iql.Queryable.Data.DataStores;
+using Iql.Queryable.Data.DataStores.NestedSets;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.Lists;
@@ -377,6 +378,16 @@ namespace Iql.Queryable.Data.Context
         public EntityConfiguration<T> GetConfig<T>(Type entityType) where T : class
         {
             return _configurations[entityType.Name] as EntityConfiguration<T>;
+        }
+
+        public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
+        {
+            return DataStore.NestedSetsProviderForType(type);
+        }
+
+        public virtual INestedSetsProvider<T> NestedSetsProviderFor<T>()
+        {
+            return (INestedSetsProvider<T>) NestedSetsProviderForType(typeof(T));
         }
 
         public void AbandonChanges()
