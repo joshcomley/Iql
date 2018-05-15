@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,9 +19,9 @@ namespace Iql
 
         public List<IqlExpression> Expressions { get; set; }
 
-        public override bool ContainsRootEntity()
+        public override bool IsOrHas(Func<IqlExpression, bool> matches)
         {
-            return Expressions.Any(e => e != null && e.ContainsRootEntity());
+            return Expressions.Any(e => e != null && e.IsOrHas(matches));
         }
 
 		public override IqlExpression Clone()

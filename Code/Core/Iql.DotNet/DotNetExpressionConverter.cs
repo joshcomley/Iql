@@ -62,7 +62,7 @@ namespace Iql.DotNet
                 , evaluateContext
 #endif
             );
-            return parser.ConvertToLambda ? dotNetExpression.ToLambda() : dotNetExpression.Expression as LambdaExpression;
+            return dotNetExpression.Expression as LambdaExpression;
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression iql, Type rootEntityType
@@ -79,7 +79,7 @@ namespace Iql.DotNet
                 , evaluateContext
 #endif
             );
-            return $"{adapter.RootVariableName} => {dotNetExpression.Expression}";
+            return dotNetExpression.ToCodeString();
         }
     }
 }

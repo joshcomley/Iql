@@ -34,9 +34,9 @@ namespace Iql.Tests.Tests
         {
             var query = TestPrep.PrepFilterCollectionTest();
             var results = await query.ToListAsync();
-            Assert.AreEqual(results.Count, 2);
-            Assert.AreEqual(results[0].Id, 2);
-            Assert.AreEqual(results[1].Id, 3);
+            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual(2, results[0].Id);
+            Assert.AreEqual(3, results[1].Id);
         }
 
         [TestMethod]

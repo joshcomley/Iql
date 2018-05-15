@@ -24,6 +24,58 @@ namespace Iql.Tests.Tests.Serialization
             Expression<Func<RelationshipFilterContext<Person>, Func<PersonLoading, bool>>> filterExpression
                 = context => loading => loading.Name == context.Owner.Title;
             var iql = IqlXmlSerializer.SerializeToXml(filterExpression);
+            Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Kind>Lambda</Kind>
+  <ReturnType>Unknown</ReturnType>
+  <Parameters>
+    <IqlRootReferenceExpression>
+      <Kind>RootReference</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <VariableName>context</VariableName>
+    </IqlRootReferenceExpression>
+  </Parameters>
+  <Body xsi:type=""IqlLambdaExpression"">
+    <Kind>Lambda</Kind>
+    <ReturnType>Unknown</ReturnType>
+    <Parameters>
+      <IqlRootReferenceExpression>
+        <Kind>RootReference</Kind>
+        <ReturnType>Unknown</ReturnType>
+        <VariableName>loading</VariableName>
+      </IqlRootReferenceExpression>
+    </Parameters>
+    <Body xsi:type=""IqlIsEqualToExpression"">
+      <Kind>IsEqualTo</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <Left xsi:type=""IqlPropertyExpression"">
+        <Kind>Property</Kind>
+        <ReturnType>Unknown</ReturnType>
+        <Parent xsi:type=""IqlRootReferenceExpression"">
+          <Kind>RootReference</Kind>
+          <ReturnType>Unknown</ReturnType>
+          <VariableName>loading</VariableName>
+        </Parent>
+        <PropertyName>Name</PropertyName>
+      </Left>
+      <Right xsi:type=""IqlPropertyExpression"">
+        <Kind>Property</Kind>
+        <ReturnType>Unknown</ReturnType>
+        <Parent xsi:type=""IqlPropertyExpression"">
+          <Kind>Property</Kind>
+          <ReturnType>Unknown</ReturnType>
+          <Parent xsi:type=""IqlVariableExpression"">
+            <Kind>Variable</Kind>
+            <ReturnType>Unknown</ReturnType>
+            <VariableName>context</VariableName>
+          </Parent>
+          <PropertyName>Owner</PropertyName>
+        </Parent>
+        <PropertyName>Title</PropertyName>
+      </Right>
+    </Body>
+  </Body>
+</IqlLambdaExpression>", iql);
         }
 
         [TestMethod]
@@ -31,16 +83,27 @@ namespace Iql.Tests.Tests.Serialization
         {
             var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<IqlPropertyExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <Kind>Property</Kind>
+<IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Kind>Lambda</Kind>
   <ReturnType>Unknown</ReturnType>
-  <Parent xsi:type=""IqlRootReferenceExpression"">
-    <Kind>RootReference</Kind>
+  <Parameters>
+    <IqlRootReferenceExpression>
+      <Kind>RootReference</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <VariableName>client</VariableName>
+    </IqlRootReferenceExpression>
+  </Parameters>
+  <Body xsi:type=""IqlPropertyExpression"">
+    <Kind>Property</Kind>
     <ReturnType>Unknown</ReturnType>
-    <VariableName>client</VariableName>
-  </Parent>
-  <PropertyName>Name</PropertyName>
-</IqlPropertyExpression>", xml);
+    <Parent xsi:type=""IqlRootReferenceExpression"">
+      <Kind>RootReference</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <VariableName>client</VariableName>
+    </Parent>
+    <PropertyName>Name</PropertyName>
+  </Body>
+</IqlLambdaExpression>", xml);
         }
 
         [TestMethod]
@@ -50,16 +113,27 @@ namespace Iql.Tests.Tests.Serialization
             LambdaExpression lambda = exp;
             var xml = IqlXmlSerializer.SerializeToXml(lambda);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<IqlPropertyExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <Kind>Property</Kind>
+<IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Kind>Lambda</Kind>
   <ReturnType>Unknown</ReturnType>
-  <Parent xsi:type=""IqlRootReferenceExpression"">
-    <Kind>RootReference</Kind>
+  <Parameters>
+    <IqlRootReferenceExpression>
+      <Kind>RootReference</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <VariableName>client</VariableName>
+    </IqlRootReferenceExpression>
+  </Parameters>
+  <Body xsi:type=""IqlPropertyExpression"">
+    <Kind>Property</Kind>
     <ReturnType>Unknown</ReturnType>
-    <VariableName>client</VariableName>
-  </Parent>
-  <PropertyName>Name</PropertyName>
-</IqlPropertyExpression>", xml);
+    <Parent xsi:type=""IqlRootReferenceExpression"">
+      <Kind>RootReference</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <VariableName>client</VariableName>
+    </Parent>
+    <PropertyName>Name</PropertyName>
+  </Body>
+</IqlLambdaExpression>", xml);
         }
 
         [TestMethod]
@@ -67,16 +141,43 @@ namespace Iql.Tests.Tests.Serialization
         {
             var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name + " (" + client.Description + ")");
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<IqlAddExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <Kind>Add</Kind>
+<IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Kind>Lambda</Kind>
   <ReturnType>Unknown</ReturnType>
-  <Left xsi:type=""IqlAddExpression"">
+  <Parameters>
+    <IqlRootReferenceExpression>
+      <Kind>RootReference</Kind>
+      <ReturnType>Unknown</ReturnType>
+      <VariableName>client</VariableName>
+    </IqlRootReferenceExpression>
+  </Parameters>
+  <Body xsi:type=""IqlAddExpression"">
     <Kind>Add</Kind>
     <ReturnType>Unknown</ReturnType>
     <Left xsi:type=""IqlAddExpression"">
       <Kind>Add</Kind>
       <ReturnType>Unknown</ReturnType>
-      <Left xsi:type=""IqlPropertyExpression"">
+      <Left xsi:type=""IqlAddExpression"">
+        <Kind>Add</Kind>
+        <ReturnType>Unknown</ReturnType>
+        <Left xsi:type=""IqlPropertyExpression"">
+          <Kind>Property</Kind>
+          <ReturnType>Unknown</ReturnType>
+          <Parent xsi:type=""IqlRootReferenceExpression"">
+            <Kind>RootReference</Kind>
+            <ReturnType>Unknown</ReturnType>
+            <VariableName>client</VariableName>
+          </Parent>
+          <PropertyName>Name</PropertyName>
+        </Left>
+        <Right xsi:type=""IqlLiteralExpression"">
+          <Kind>Literal</Kind>
+          <ReturnType>String</ReturnType>
+          <Value xsi:type=""xsd:string""> (</Value>
+          <InferredReturnType>String</InferredReturnType>
+        </Right>
+      </Left>
+      <Right xsi:type=""IqlPropertyExpression"">
         <Kind>Property</Kind>
         <ReturnType>Unknown</ReturnType>
         <Parent xsi:type=""IqlRootReferenceExpression"">
@@ -84,33 +185,17 @@ namespace Iql.Tests.Tests.Serialization
           <ReturnType>Unknown</ReturnType>
           <VariableName>client</VariableName>
         </Parent>
-        <PropertyName>Name</PropertyName>
-      </Left>
-      <Right xsi:type=""IqlLiteralExpression"">
-        <Kind>Literal</Kind>
-        <ReturnType>String</ReturnType>
-        <Value xsi:type=""xsd:string""> (</Value>
-        <InferredReturnType>String</InferredReturnType>
+        <PropertyName>Description</PropertyName>
       </Right>
     </Left>
-    <Right xsi:type=""IqlPropertyExpression"">
-      <Kind>Property</Kind>
-      <ReturnType>Unknown</ReturnType>
-      <Parent xsi:type=""IqlRootReferenceExpression"">
-        <Kind>RootReference</Kind>
-        <ReturnType>Unknown</ReturnType>
-        <VariableName>client</VariableName>
-      </Parent>
-      <PropertyName>Description</PropertyName>
+    <Right xsi:type=""IqlLiteralExpression"">
+      <Kind>Literal</Kind>
+      <ReturnType>String</ReturnType>
+      <Value xsi:type=""xsd:string"">)</Value>
+      <InferredReturnType>String</InferredReturnType>
     </Right>
-  </Left>
-  <Right xsi:type=""IqlLiteralExpression"">
-    <Kind>Literal</Kind>
-    <ReturnType>String</ReturnType>
-    <Value xsi:type=""xsd:string"">)</Value>
-    <InferredReturnType>String</InferredReturnType>
-  </Right>
-</IqlAddExpression>", xml);
+  </Body>
+</IqlLambdaExpression>", xml);
         }
 
         [TestMethod]

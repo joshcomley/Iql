@@ -17,6 +17,10 @@ namespace Iql.DotNet.IqlToDotNetExpression
 
         public LambdaExpression ToLambda()
         {
+            if (Expression is LambdaExpression)
+            {
+                return Expression as LambdaExpression;
+            }
             return Expression.Lambda(Expression, RootEntity);
         }
 

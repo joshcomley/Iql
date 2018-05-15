@@ -18,9 +18,18 @@ namespace Iql
         public IqlType ReturnType { get; set; }
         public IqlExpression Parent { get; set; }
 
-        public virtual bool ContainsRootEntity()
+        public bool IsOrHasRootEntity()
         {
-            return Parent != null && Parent.ContainsRootEntity();
+            return IsOrHas(e => e is IqlRootReferenceExpression);
+        }
+
+        public virtual bool IsOrHas(Func<IqlExpression, bool> matches)
+        {
+            if (matches(this))
+            {
+                return true;
+            }
+            return Parent != null && Parent.IsOrHas(matches);
         }
 
         public virtual IqlRootReferenceExpression GetRootEntity()
@@ -30,12 +39,6 @@ namespace Iql
                 return this as IqlRootReferenceExpression;
             }
             return Parent?.GetRootEntity();
-        }
-
-        public static IEnumerable<T> FindAll<T>()
-            where T : IqlExpression
-        {
-            throw new NotImplementedException();
         }
 
         public void AddRootReference(string parameter = null)

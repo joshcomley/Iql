@@ -22,5 +22,14 @@ namespace Iql.Extensions
 //            return IqlJsonDeserializer.DeserializeJson<TIql>(json);
 //#endif
         }
+
+        public static IqlPropertyExpression TryGetPropertyExpression(this IqlExpression expression)
+        {
+            if (expression is IqlLambdaExpression)
+            {
+                return (expression as IqlLambdaExpression).Body as IqlPropertyExpression;
+            }
+            return expression as IqlPropertyExpression;
+        }
     }
 }

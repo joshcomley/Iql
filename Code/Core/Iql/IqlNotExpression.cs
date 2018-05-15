@@ -1,3 +1,5 @@
+using System;
+
 namespace Iql
 {
     public class IqlNotExpression : IqlExpression
@@ -14,9 +16,9 @@ namespace Iql
 
         public IqlExpression Expression { get; set; }
 
-        public override bool ContainsRootEntity()
+        public override bool IsOrHas(Func<IqlExpression, bool> matches)
         {
-            return Expression.ContainsRootEntity();
+            return Expression.IsOrHas(matches);
         }
 
 		public override IqlExpression Clone()

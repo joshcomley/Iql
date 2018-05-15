@@ -10,12 +10,12 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         {
         }
 
-        public string ToLambda(string code)
-        {
-            var rootEntityName = RootEntityParameterName();
-            var lambda = $"function({rootEntityName}) {{ return {code}; }}";
-            return lambda;
-        }
+        //public string ToLambda(string code)
+        //{
+        //    var rootEntityName = RootEntityParameterName();
+        //    var lambda = $"function({rootEntityName}) {{ return {code}; }}";
+        //    return lambda;
+        //}
 
         public override JavaScriptOutput Parse(IqlExpression expression
 #if TypeScript

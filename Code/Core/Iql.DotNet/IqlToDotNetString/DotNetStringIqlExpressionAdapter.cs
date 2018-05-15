@@ -10,6 +10,7 @@ namespace Iql.DotNet.IqlToDotNetString
             RootVariableName = rootVariableName;
             Registry.Register(typeof(IqlNotExpression), () => new DotNetStringNotExpressionParser());
             Registry.Register(typeof(IqlStringTrimExpression), () => new DotNetStringStringTrimExpressionParser());
+            Registry.Register(typeof(IqlLambdaExpression), () => new DotNetStringLambdaParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new DotNetStringPropertyReferenceParser());
             Registry.Register(typeof(IqlRootReferenceExpression), () => new DotNetStringRootReferenceParser());
             Registry.Register(typeof(IqlLiteralExpression), () => new DotNetStringLiteralParser());

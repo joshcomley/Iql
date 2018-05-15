@@ -105,7 +105,13 @@ namespace Iql.Queryable.Data.Queryable
                 ));
             }
 
-            var query = (IDbQueryable)otherDbSet.WhereEquals(expressions.And());
+            var iqlLambdaExpression = new IqlLambdaExpression
+            {
+                Body = expressions.And(),
+                Parameters = new List<IqlRootReferenceExpression>()
+            };
+            iqlLambdaExpression.Parameters.Add(new IqlRootReferenceExpression());
+            var query = (IDbQueryable)otherDbSet.WhereEquals(iqlLambdaExpression);
             if (queryFilter != null)
             {
                 query = queryFilter(query);
@@ -921,7 +927,7 @@ namespace Iql.Queryable.Data.Queryable
                 {
                     queryExpression.Expands = queryExpression.Expands ?? new List<IqlExpandExpression>();
                     var iqlExpandExpression = new IqlExpandExpression();
-                    iqlExpandExpression.NavigationProperty = iql as IqlPropertyExpression;
+                    iqlExpandExpression.NavigationProperty = iql.TryGetPropertyExpression();
                     var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, iqlExpandExpression.NavigationProperty);
                     var expressionQueryOperatiton = operation as IExpressionQueryOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;

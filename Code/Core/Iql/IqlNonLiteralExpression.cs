@@ -1,3 +1,5 @@
+using System;
+
 namespace Iql
 {
     public abstract class IqlNonLiteralExpression : IqlReferenceExpression
@@ -8,9 +10,9 @@ namespace Iql
         {
         }
 
-        public override bool ContainsRootEntity()
+        public override bool IsOrHas(Func<IqlExpression, bool> matches)
         {
-            return Parent.ContainsRootEntity();
+            return Parent.IsOrHas(matches);
         }
     }
 }

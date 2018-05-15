@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Parsing.Reduction.Reducers;
 
 namespace Iql.Parsing.Reduction
@@ -65,7 +66,21 @@ namespace Iql.Parsing.Reduction
             {
                 return null;
             }
-            if (!expression.ContainsRootEntity())
+
+            // TODO: Only update this when an IqlLambdaExpression is added or removed from the ancestors
+            var ancestralParameters = new List<string>();
+            var lambdaAncestors = Ancestors.Where(a => a is IqlLambdaExpression);
+            foreach (var lambda in lambdaAncestors)
+            {
+                foreach (var parameter in (lambda as IqlLambdaExpression).Parameters)
+                {
+                    if (!ancestralParameters.Contains(parameter.VariableName))
+                    {
+                        ancestralParameters.Add(parameter.VariableName);
+                    }
+                }
+            }
+            if (!expression.IsOrHas(i => i is IqlRootReferenceExpression || i is IqlVariableExpression && ancestralParameters.Contains((i as IqlVariableExpression).VariableName)))
             {
                 // We need this initial cast to object in TypeScript because for some reason
                 // TypeScript won't let us cast an interface to another object

@@ -16,7 +16,7 @@ namespace Iql
         {
         }
 
-        public override bool ContainsRootEntity()
+        public override bool IsOrHas(Func<IqlExpression, bool> matches)
         {
             return true;
         }

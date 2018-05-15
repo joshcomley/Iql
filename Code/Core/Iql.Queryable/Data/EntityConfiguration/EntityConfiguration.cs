@@ -449,7 +449,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public IProperty FindPropertyByLambdaExpression(LambdaExpression property)
         {
-            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIql<T>(property).Expression as IqlPropertyExpression;
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property).Expression;
             return FindPropertyByIqlExpression(iql);
         }
 

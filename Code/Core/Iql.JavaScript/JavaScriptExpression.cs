@@ -17,6 +17,21 @@
         {
             if (Expression.StartsWith("function("))
             {
+                if (typeScript)
+                {
+                    var body = JavaScriptCodeExtractor.ExtractBody(Expression);
+                    var parameters = "";
+                    if (body.ParameterNames != null)
+                    {
+                        parameters = string.Join(", ", body.ParameterNames);
+                        if (body.ParameterNames.Length > 1)
+                        {
+                            parameters = $"({parameters})";
+                        }
+                    }
+
+                    return $"{parameters} => {body.Body}";
+                }
                 return Expression;
             }
             if (typeScript)

@@ -40,14 +40,13 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                         , null
 #endif
             );
-            var lambda = Expression.Lambda(predicate.Expression, predicate.RootEntity);
             method = method.MakeGenericMethod(entityType);
             var methodCallExpression =
                 Expression.Call(
                     null,
                     method,
                     parentExpression.Expression,
-                    lambda);
+                    predicate.Expression);
             var expression =
                 new IqlFinalExpression<Expression>(
                     methodCallExpression

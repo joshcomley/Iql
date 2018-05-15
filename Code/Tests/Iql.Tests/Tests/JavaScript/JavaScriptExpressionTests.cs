@@ -21,6 +21,24 @@ namespace Iql.Tests.Tests.JavaScript
     public class JavaScriptExpressionTests : TestsBase
     {
         [TestMethod]
+        public async Task TestConvertPropertyExpression()
+        {
+            var javaScriptExpressionConverter = new JavaScriptExpressionConverter();
+            var result = javaScriptExpressionConverter.ConvertJavaScriptStringToIql<ApplicationUser>(
+                $"p => p.{nameof(ApplicationUser.Id)}");
+            Assert.AreEqual(typeof(IqlLambdaExpression), result.Expression.GetType());
+        }
+
+        //[TestMethod]
+        //public async Task TestFilterExpression()
+        //{
+        //    var javaScriptExpressionConverter = new JavaScriptExpressionConverter();
+        //    var result = javaScriptExpressionConverter.ConvertJavaScriptStringToIql<ApplicationUser>(
+        //        $"p => p.{nameof(ApplicationUser.ClientsCreated)}.filter(c => c.{nameof(Client.Name)} == 'abc')");
+        //    Assert.AreEqual(typeof(IqlLambdaExpression), result.Expression.GetType());
+        //}
+
+        [TestMethod]
         public async Task TestFullQuery()
         {
             IqlJavaScriptIqlExpressionExtensions.NormalizeJson = true;
@@ -38,12 +56,12 @@ namespace Iql.Tests.Tests.JavaScript
                 typeof(Client));
 
 #if !TypeScript
-            var expected = @"function(context) { return context.Where(function(entity) { return ((((entity || {})[""Name""] == null) ? null : ((entity || {})[""Name""] || """").toUpperCase()) == 'A'); }, JSON.parse('{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Kind"":10,""ReturnType"":1,""Parent"":null}'))
+            var expected = @"function(context) { return context.Where(function(entity) { return ((((entity || {})[""Name""] == null) ? null : ((entity || {})[""Name""] || """").toUpperCase()) == 'A'); }, JSON.parse('{""Parameters"":[{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""Body"":{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Kind"":10,""ReturnType"":1,""Parent"":null},""IsIqlExpression"":true,""Kind"":55,""ReturnType"":1,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Type"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""ClientTypes"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""Expands"":null,""Filter"":null,""WithKey"":null,""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Sites"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Sites"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""Expands"":[{""NavigationProperty"":{""PropertyName"":""CreatedByUser"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""s"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Users"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""Expands"":null,""Filter"":null,""WithKey"":null,""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}],""Filter"":null,""WithKey"":null,""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.OrderBy(function(entity) { return (entity || {})[""AverageSales""]; }, true); }";
 #else
-            var expected = @"function(context) { return context.Where(function(entity) { return ((((entity || {})[""Name""] == null) ? null : ((entity || {})[""Name""] || """").toUpperCase()) == 'A'); }, JSON.parse('{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Kind"":10,""ReturnType"":1,""Parent"":null}'))
+            var expected = @"function(context) { return context.Where(function(entity) { return ((((entity || {})[""Name""] == null) ? null : ((entity || {})[""Name""] || """").toUpperCase()) == 'A'); }, JSON.parse('{""Parameters"":[{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""Body"":{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Kind"":10,""ReturnType"":1,""Parent"":null},""IsIqlExpression"":true,""Kind"":55,""ReturnType"":1,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Type"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""ClientTypes"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""Expands"":null,""Filter"":null,""WithKey"":null,""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Sites"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""c"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Sites"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""Expands"":[{""NavigationProperty"":{""PropertyName"":""CreatedByUser"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""Value"":null,""VariableName"":""s"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Users"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""Expands"":null,""Filter"":null,""WithKey"":null,""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}],""Filter"":null,""WithKey"":null,""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.OrderBy(function(entity) { return (entity || {})[""AverageSales""]; }, true); }";
@@ -173,8 +191,11 @@ namespace Iql.Tests.Tests.JavaScript
             var js = @"c => c.Types.length > 2";
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
                 js).Expression;
-            Assert.IsTrue(iql is IqlIsGreaterThanExpression);
-            Assert.IsTrue((iql as IqlIsGreaterThanExpression).Left is IqlCountExpression);
+            Assert.IsTrue(iql is IqlLambdaExpression);
+            var body = (iql as IqlLambdaExpression).Body;
+            Assert.IsTrue(body is IqlIsGreaterThanExpression);
+            var gtExpression = body as IqlIsGreaterThanExpression;
+            Assert.IsTrue(gtExpression.Left is IqlCountExpression);
         }
 
         [TestMethod]

@@ -3,6 +3,23 @@ using Iql.Queryable.Expressions;
 
 namespace Iql.Queryable.IqlToIql
 {
+    public class IqlToIqlLambdaParser : IqlToIqlActionParserBase<IqlLambdaExpression>
+    {
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlLambdaExpression action, IqlToIqlParserInstance parser)
+        {
+            action.Body = parser.Parse(action.Body).Expression;
+            if (action.Parameters != null)
+            {
+                for (var i = 0; i < action.Parameters.Count; i++)
+                {
+                    action.Parameters[i] = (IqlRootReferenceExpression) parser.Parse(action.Parameters[i]).Expression;
+                }
+            }
+            action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
+            return action;
+        }
+    }
+
     public class IqlToIqlPropertyParser : IqlToIqlActionParserBase<IqlPropertyExpression>
     {
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlPropertyExpression action, IqlToIqlParserInstance parser)
@@ -14,6 +31,7 @@ namespace Iql.Queryable.IqlToIql
                 action.PropertyName = property.Relationship.ThisEnd.Property.Name;
                 return new IqlCountExpression(null, action, null);
             }
+            action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
             return action;
         }
     }

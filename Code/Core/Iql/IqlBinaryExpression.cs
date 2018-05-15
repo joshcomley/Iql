@@ -1,3 +1,5 @@
+using System;
+
 namespace Iql
 {
     public abstract class IqlBinaryExpression : IqlExpression
@@ -18,9 +20,9 @@ namespace Iql
         public IqlExpression Left { get; set; }
         public IqlExpression Right { get; set; }
 
-        public override bool ContainsRootEntity()
+        public override bool IsOrHas(Func<IqlExpression, bool> matches)
         {
-            return Left?.ContainsRootEntity() == true || Right?.ContainsRootEntity() == true;
+            return Left?.IsOrHas(matches) == true || Right?.IsOrHas(matches) == true;
         }
     }
 }

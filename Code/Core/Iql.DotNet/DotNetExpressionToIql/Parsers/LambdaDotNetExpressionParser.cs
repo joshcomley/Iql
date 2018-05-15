@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,7 +23,15 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
 
         protected IqlExpression VisitLambda<TLambda>(Expression<TLambda> lambda, DotNetExpressionParserContext context)
         {
-            return context.ToIqlExpression(lambda.Body);
+            var dotNetLambda = lambda as LambdaExpression;
+            var iqlLambda = new IqlLambdaExpression();
+            foreach (var parameter in dotNetLambda.Parameters)
+            {
+                iqlLambda.Parameters = iqlLambda.Parameters ?? new List<IqlRootReferenceExpression>();
+                iqlLambda.Parameters.Add((IqlRootReferenceExpression) context.ToIqlExpression(parameter));
+            }
+            iqlLambda.Body = context.ToIqlExpression(lambda.Body);
+            return iqlLambda;
         }
     }
 }

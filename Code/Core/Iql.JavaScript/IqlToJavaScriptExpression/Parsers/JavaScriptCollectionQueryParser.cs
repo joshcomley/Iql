@@ -21,7 +21,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     {
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlOrderByExpression action, JavaScriptIqlParserInstance parser)
         {
-            var js = parser.ToLambda(parser.Parse(action.OrderExpression).ToCodeString());
+            var js = parser.Parse(action.OrderExpression).ToCodeString();
             return new IqlFinalExpression<string>(
                 $".{nameof(InMemoryContext<TEntity>.OrderBy)}({js}, {(action.Descending ? "true" : "false")})"
             );
@@ -33,9 +33,10 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlWithKeyExpression action, JavaScriptIqlParserInstance parser)
         {
             var iqlAnd = action.KeyEqualToExpressions.And();
-            var js = parser.ToLambda(parser.Parse(iqlAnd).ToCodeString());
+            var javaScriptOutput = parser.Parse(iqlAnd);
+            var js = javaScriptOutput.ToCodeString();
             return new IqlFinalExpression<string>(
-                $".{nameof(InMemoryContext<TEntity>.Where)}({js})"
+                $".{nameof(InMemoryContext<TEntity>.Where)}(function({javaScriptOutput.RootEntityParameterName}) {{ return {js}; }})"
             );
         }
     }
@@ -50,7 +51,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 var filter = parser.Parse(action.Filter).ToCodeString();
                 if (!string.IsNullOrWhiteSpace(filter))
                 {
-                    var filterCall = $".{nameof(InMemoryContext<TEntity>.Where)}({parser.ToLambda(filter)}, {action.Filter.SerializeDeserialize()})";
+                    var filterCall = $".{nameof(InMemoryContext<TEntity>.Where)}({filter}, {action.Filter.SerializeDeserialize()})";
                     queryParts.Add(filterCall);
                 }
             }

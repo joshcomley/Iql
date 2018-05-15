@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -120,7 +121,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                     if (expression is IqlPropertyExpression)
                     {
                         var propertyExpression = expression as IqlPropertyExpression;
-                        if (propertyExpression.ContainsRootEntity())
+                        if (propertyExpression.IsOrHasRootEntity())
                         {
                             var path = IqlPropertyPath.FromPropertyExpression(entityConfig, propertyExpression);
                             if (path != null && path.Property != null && path.Property.TypeDefinition != null)
@@ -138,6 +139,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
                 );
             expressionResult.Expression = iqlRedudcer.ReduceStaticContent(expressionResult.Expression);
+            var lambdaExpression = new IqlLambdaExpression(IqlType.Unknown);
+            lambdaExpression.Body = expressionResult.Expression;
+            for (var i = 0; i < body.ParameterNames.Length; i++)
+            {
+                var parameter = body.ParameterNames[i];
+                lambdaExpression.Parameters = lambdaExpression.Parameters ?? new List<IqlRootReferenceExpression>();
+                lambdaExpression.Parameters.Add(new IqlRootReferenceExpression(parameter));
+            }
+
+            expressionResult.Expression = lambdaExpression;
             return expressionResult;
         }
 
