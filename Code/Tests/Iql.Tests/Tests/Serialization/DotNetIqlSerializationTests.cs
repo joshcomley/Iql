@@ -6,6 +6,7 @@ using Iql.DotNet;
 using Iql.DotNet.Extensions;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
+using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Extensions;
 using Iql.Serialization;
@@ -17,6 +18,14 @@ namespace Iql.Tests.Tests.Serialization
     [TestClass]
     public class DotNetIqlSerializationTests
     {
+        [TestMethod]
+        public void TestNestedLambda()
+        {
+            Expression<Func<RelationshipFilterContext<Person>, Func<PersonLoading, bool>>> filterExpression
+                = context => loading => loading.Name == context.Owner.Title;
+            var iql = IqlXmlSerializer.SerializeToXml(filterExpression);
+        }
+
         [TestMethod]
         public void TestSerializeSinglePropertyToXml()
         {

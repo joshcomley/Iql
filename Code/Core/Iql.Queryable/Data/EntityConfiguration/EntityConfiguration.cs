@@ -9,6 +9,7 @@ using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.EntityConfiguration.Rules;
 using Iql.Queryable.Data.EntityConfiguration.Rules.Display;
+using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 using Iql.Queryable.Data.Validation;
 using Iql.Queryable.Expressions;
@@ -625,6 +626,35 @@ namespace Iql.Queryable.Data.EntityConfiguration
             var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
             var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
             rule.Kind = kind;
+            return this;
+        }
+
+        private static void AddRelationshipFilterRule<TProperty>(Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule, string key, string message,
+            IProperty propertyDefinition)
+        {
+            var ruleCollection = (RelationshipRuleCollection<T, TProperty>)propertyDefinition.RelationshipFilterRules;
+            ruleCollection.Add(new RelationshipFilterRule<T, TProperty>(filterRule, key, message));
+        }
+
+        public EntityConfiguration<T> DefineRelationshipFilterRule<TProperty>(
+            Expression<Func<T, TProperty>> property,
+            Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
+            string key,
+            string message)
+        {
+            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
+            AddRelationshipFilterRule(filterRule, key, message, propertyDefinition);
+            return this;
+        }
+
+        public EntityConfiguration<T> DefineRelationshipCollectionFilterRule<TProperty>(
+            Expression<Func<T, IEnumerable<TProperty>>> property,
+            Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
+            string key,
+            string message)
+        {
+            var propertyDefinition = FindOrDefineProperty<IEnumerable<TProperty>>(property, typeof(TProperty), null);
+            AddRelationshipFilterRule(filterRule, key, message, propertyDefinition);
             return this;
         }
 

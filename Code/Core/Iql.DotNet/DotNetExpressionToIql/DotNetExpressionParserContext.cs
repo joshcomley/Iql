@@ -40,7 +40,16 @@ namespace Iql.DotNet.DotNetExpressionToIql
         }
         public bool ContainsRoot(Expression node)
         {
-            return node.ContainsRoot(RootVariableTypes.Last(), RootVariableNames.Last());
+            for (var i = 0; i < RootVariableTypes.Count; i++)
+            {
+                var rootType = RootVariableTypes[i];
+                var rootName = RootVariableNames[i];
+                if (node.ContainsRoot(rootType, rootName))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

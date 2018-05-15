@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Iql.Queryable.Data.EntityConfiguration.Rules
 {
     //public abstract class BinaryRuleCollection
-    public abstract class RuleCollection<TEntity, TRule> : IRuleCollection<TRule>
+    public abstract class RuleCollection<TRule> : IRuleCollection<TRule>
     where TRule : IRule
     {
         private readonly Dictionary<string, TRule> _rulesDictionary
