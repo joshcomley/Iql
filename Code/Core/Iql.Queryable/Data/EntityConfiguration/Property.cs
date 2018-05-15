@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using Iql.Queryable.Data.EntityConfiguration.Rules;
 using Iql.Queryable.Data.EntityConfiguration.Rules.Display;
+using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
 using Iql.Queryable.Data.EntityConfiguration.Validation;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -90,10 +91,13 @@ namespace Iql.Queryable.Data.EntityConfiguration
         }
 
         public ValidationCollection<TOwner> ValidationRules { get; } = new ValidationCollection<TOwner>();
-        IRuleCollection IProperty.ValidationRules => ValidationRules;
+        IRuleCollection<IBinaryRule> IProperty.ValidationRules => ValidationRules;
 
         public DisplayRuleCollection<TOwner> DisplayRules { get; } = new DisplayRuleCollection<TOwner>();
-        IRuleCollection IProperty.DisplayRules => DisplayRules;
+        IRuleCollection<IBinaryRule> IProperty.DisplayRules => DisplayRules;
+
+        public RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; } = new RelationshipRuleCollection<TOwner, TElementType>();
+        IRuleCollection<IRelationshipRule> IProperty.RelationshipFilterRules => RelationshipFilterRules;
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }

@@ -56,7 +56,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         public DisplayFormatting<T> DisplayFormatting { get; }
 
         IDisplayFormatting IEntityConfiguration.DisplayFormatting => DisplayFormatting;
-        IRuleCollection IEntityConfiguration.EntityValidation => EntityValidation;
+        IRuleCollection<IBinaryRule> IEntityConfiguration.EntityValidation => EntityValidation;
 
         public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
         {
@@ -598,7 +598,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
             string key,
             string message)
         {
-            EntityValidation.Add(validation, key, message);
+            EntityValidation.Add(new ValidationRule<T>(validation, key, message));
             return this;
         }
 
@@ -610,7 +610,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
             var validationCollection = (ValidationCollection<T>)propertyDefinition.ValidationRules;
-            validationCollection.Add(validation, key, message);
+            validationCollection.Add(new ValidationRule<T>(validation, key, message));
             return this;
         }
 
@@ -623,7 +623,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
             var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
-            var rule = ruleCollection.Add(displayRule, key, message);
+            var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
             rule.Kind = kind;
             return this;
         }

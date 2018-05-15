@@ -3,29 +3,28 @@ using System.Linq.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Rules
 {
-    public abstract class Rule<TEntity> : IRule
+    public abstract class Rule<TContext, TResult> : IRuleBase<TResult>
     {
-        private readonly Func<object, bool> _untypedInvoker;
-        protected abstract bool InverseResult { get; }
-        private readonly LambdaExpression _lambdaExpression;
-        private readonly Func<TEntity, bool> _typedInvoker;
+        protected readonly Func<object, TResult> UntypedInvoker;
+        protected readonly LambdaExpression LambdaExpression;
+        protected readonly Func<TContext, TResult> TypedInvoker;
 
-        public Rule(Expression<Func<TEntity, bool>> expression, string key, string message)
+        protected Rule(Expression<Func<TContext, TResult>> expression, string key, string message)
         {
             Key = key;
             Message = message;
             Expression = expression;
-            _typedInvoker = expression.Compile();
-            Expression<Func<object, bool>> untypedExpression = _ => Run((TEntity)_);
-            _untypedInvoker = untypedExpression.Compile();
-            _lambdaExpression = expression;
+            TypedInvoker = expression.Compile();
+            Expression<Func<object, TResult>> untypedExpression = _ => Run((TContext)_);
+            UntypedInvoker = untypedExpression.Compile();
+            LambdaExpression = expression;
         }
 
-        public Expression<Func<TEntity, bool>> Expression { get; }
-        public Func<TEntity, bool> Run => _ => InverseResult ? !_typedInvoker(_) : _typedInvoker(_);
-        public string Key { get; }
-        public string Message { get; }
-        LambdaExpression IRule.Expression => _lambdaExpression;
-        Func<object, bool> IRule.Run => _untypedInvoker;
+        public virtual Expression<Func<TContext, TResult>> Expression { get; }
+        public abstract Func<TContext, TResult> Run { get; }
+        public virtual string Key { get; }
+        public virtual string Message { get; }
+        LambdaExpression IRule.Expression => LambdaExpression;
+        Func<object, TResult> IRuleBase<TResult>.Run => UntypedInvoker;
     }
 }

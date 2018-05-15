@@ -26,7 +26,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
         IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
         IProperty FindPropertyByLambdaExpression(LambdaExpression expression);
         IDisplayFormatting DisplayFormatting { get; }
-        IRuleCollection EntityValidation { get; }
+        IRuleCollection<IBinaryRule> EntityValidation { get; }
         List<IProperty> Properties { get; }
         List<IRelationship> Relationships { get; set; }
         IEntityKey Key { get; }

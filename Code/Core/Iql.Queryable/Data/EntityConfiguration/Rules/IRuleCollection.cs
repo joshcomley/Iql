@@ -4,11 +4,12 @@ using System.Linq.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Rules
 {
-    public interface IRuleCollection
+    public interface IRuleCollection<out TRule>
+        where TRule : IRule
     {
-        IEnumerable<IRule> All { get; }
-        IRule Get(string key);
-        IRule Add(Expression<Func<object, bool>> expression, string key, string message);
+        IEnumerable<TRule> All { get; }
+        TRule Get(string key);
+        TRule Add(object rule);
         void Remove(string key);
     }
 }

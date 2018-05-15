@@ -1,4 +1,3 @@
-using System;
 using System.Linq.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Rules
@@ -8,6 +7,5 @@ namespace Iql.Queryable.Data.EntityConfiguration.Rules
         string Key { get; }
         string Message { get; }
         LambdaExpression Expression { get; }
-        Func<object, bool> Run { get; }
     }
 }

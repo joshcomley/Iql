@@ -1,64 +1,61 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Rules
 {
-    public abstract class RuleCollection<TEntity, TRule> : IRuleCollection
-    where TRule : Rule<TEntity>
+    //public abstract class BinaryRuleCollection
+    public abstract class RuleCollection<TEntity, TRule> : IRuleCollection<TRule>
+    where TRule : IRule
     {
-        private readonly Dictionary<string, TRule> _validationsDictionary
+        private readonly Dictionary<string, TRule> _rulesDictionary
             = new Dictionary<string, TRule>();
 
         public TRule Get(string key)
         {
-            if (_validationsDictionary.ContainsKey(key))
+            if (_rulesDictionary.ContainsKey(key))
             {
-                return _validationsDictionary[key];
+                return _rulesDictionary[key];
             }
 
-            return null;
+            return default(TRule);
         }
 
         public List<TRule> All { get; } = new List<TRule>();
 
-        IEnumerable<IRule> IRuleCollection.All => All;
+        IEnumerable<TRule> IRuleCollection<TRule>.All => All;
 
-        public TRule Add(Expression<Func<TEntity, bool>> expression, string key, string message)
+        public TRule Add(TRule rule)
         {
-            var validation = NewRule(expression, key, message);
-            if (_validationsDictionary.ContainsKey(key))
+            if (_rulesDictionary.ContainsKey(rule.Key))
             {
-                var old = _validationsDictionary[key];
-                _validationsDictionary[key] = validation;
+                var old = _rulesDictionary[rule.Key];
+                _rulesDictionary[rule.Key] = rule;
                 All.Remove(old);
             }
             else
             {
-                _validationsDictionary.Add(key, validation);
+                _rulesDictionary.Add(rule.Key, rule);
             }
 
-            All.Add(validation);
-            return validation;
+            All.Add(rule);
+            return rule;
         }
-
-        protected abstract TRule NewRule(Expression<Func<TEntity, bool>> expression, string key, string message);
 
         public void Remove(string key)
         {
-            if (_validationsDictionary.ContainsKey(key))
+            if (_rulesDictionary.ContainsKey(key))
             {
-                var old = _validationsDictionary[key];
-                _validationsDictionary.Remove(key);
+                var old = _rulesDictionary[key];
+                _rulesDictionary.Remove(key);
                 All.Remove(old);
             }
         }
-        IRule IRuleCollection.Get(string key) => Get(key);
+        TRule IRuleCollection<TRule>.Get(string key) => Get(key);
 
-        IRule IRuleCollection.Add(Expression<Func<object, bool>> expression, string key, string message)
+        TRule IRuleCollection<TRule>.Add(object rule)
         {
-            var compiled = expression.Compile();
-            return Add(e => compiled(e), key, message);
+            return Add((TRule) rule);
+            //var compiled = (Func<object, bool> )expression.Compile();
+            //return Add(e => compiled(e), key, message);
         }
     }
 }
