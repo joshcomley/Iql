@@ -55,6 +55,7 @@ namespace Iql
         WithKey = 51,
         OrderBy = 52,
         EnumLiteral = 53,
-        EnumValue = 54
+        EnumValue = 54,
+        Lambda = 55
     }
 }
