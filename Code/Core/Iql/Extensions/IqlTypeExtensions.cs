@@ -6,6 +6,73 @@ namespace Iql.Extensions
 {
     public static class IqlTypeExtensions
     {
+        public static string GetFullName(this Type type)
+        {
+            if (type == typeof(int))
+            {
+                return "int";
+            }
+
+            if (type == typeof(short))
+            {
+                return "short";
+            }
+
+            if (type == typeof(byte))
+            {
+                return "byte";
+            }
+
+            if (type == typeof(bool))
+            {
+                return "bool";
+            }
+
+            if (type == typeof(long))
+            {
+                return "long";
+            }
+
+            if (type == typeof(float))
+            {
+                return "float";
+            }
+
+            if (type == typeof(double))
+            {
+                return "double";
+            }
+
+            if (type == typeof(decimal))
+            {
+                return "decimal";
+            }
+
+            if (type == typeof(string))
+            {
+                return "string";
+            }
+
+            if (type.IsGenericType)
+            {
+                return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(x => GetFullName(x)).ToArray()) + ">";
+            }
+
+            return type.Name;
+        }
+
+        public static object ActivateGeneric(
+            this Type type,
+            object[] parameters,
+            params Type[] types)
+        {
+            return Activator.CreateInstance(type.MakeGenericType(types), parameters
+#if TypeScript
+                .Concat(types)
+#endif
+            );
+        }
+
         public static bool IsEnumerable<TProperty>()
         {
             return IsEnumerableType(typeof(TProperty));

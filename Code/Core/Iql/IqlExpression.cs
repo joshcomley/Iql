@@ -245,6 +245,8 @@ namespace Iql
                     return typeof(IqlEnumLiteralExpression);
                 case IqlExpressionKind.EnumValue:
                     return typeof(IqlEnumValueExpression);
+                case IqlExpressionKind.Lambda:
+                    return typeof(IqlLambdaExpression);
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }

@@ -34,8 +34,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             //{
             //    elementType = type.Type.GenericTypeArguments[0];
             //});
-            var predicate = parser.ParseLambda(action.Value,
-                entityType
+            var predicate = parser.Parse(action.Value
 #if TypeScript
                         , null
 #endif

@@ -14,7 +14,7 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
         {
             if (node.Name == context.RootVariableNames.Last())
             {
-                return new IqlRootReferenceExpression(node.Name, null);
+                return new IqlRootReferenceExpression(node.Name, null, node.Type);
             }
             var expression = new IqlVariableExpression(node.Name, null, node.Type);
             context.VariableValues.Add(expression, node);

@@ -46,13 +46,12 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             //{
             //    elementType = type.Type.GenericTypeArguments[0];
             //});
-            var predicate = parser.ParseLambda(action.Value,
-                entityType
+            var predicate = parser.Parse(action.Value
 #if TypeScript
                         , null
 #endif
             );
-            var lambda = Expression.Lambda(predicate.Expression, predicate.RootEntity);
+            var lambda = Expression.Lambda(predicate.Expression, null);
             method = method.MakeGenericMethod(entityType);
             var methodCallExpression =
                 Expression.Call(

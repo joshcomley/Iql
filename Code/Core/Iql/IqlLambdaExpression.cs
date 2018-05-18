@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlLambdaExpression : IqlExpression
     {
-        public List<IqlRootReferenceExpression> Parameters { get; set; }
+        public List<IqlRootReferenceExpression> Parameters { get; set; } = new List<IqlRootReferenceExpression>();
         public IqlExpression Body { get; set; }
 
         public IqlLambdaExpression(IqlType? returnType = IqlType.Unknown, IqlExpression parent = null) : base(IqlExpressionKind.Lambda, returnType, parent)

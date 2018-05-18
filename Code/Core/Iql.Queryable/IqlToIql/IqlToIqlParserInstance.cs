@@ -3,14 +3,16 @@ using Iql.JavaScript.IqlToJavaScriptExpression;
 using Iql.Parsing;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions.Conversion;
+using Iql.Queryable.Types;
 
 namespace Iql.Queryable.IqlToIql
 {
     public class IqlToIqlParserInstance : ActionParserInstance<IqlToIqlIqlData, IqlToIqlExpressionAdapter,
         string, IqlToIqlIqlOutput, IExpressionConverter>
     {
-        public IqlToIqlParserInstance(IEntityConfiguration entityConfiguration) : base(new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null) { }
-        public override IqlToIqlIqlOutput Parse(IqlExpression expression
+        public IqlToIqlParserInstance(IEntityConfiguration entityConfiguration) : base(
+            new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver()) { }
+        public override IqlToIqlIqlOutput ParseExpression(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

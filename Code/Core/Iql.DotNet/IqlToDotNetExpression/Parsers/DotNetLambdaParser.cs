@@ -12,7 +12,8 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             foreach (var parameter in action.Parameters)
             {
                 var dotNetOutput = parser.Parse(parameter);
-                parameters.Add((ParameterExpression) dotNetOutput.Expression);
+                var parameterExpression = (ParameterExpression) dotNetOutput.Expression;
+                parameters.Add(parameterExpression);
             }
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(

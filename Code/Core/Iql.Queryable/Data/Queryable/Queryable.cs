@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Extensions;
 using Iql.Parsing;
+using Iql.Parsing.Reduction;
 using Iql.Queryable.Data.Lists;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
@@ -13,7 +15,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Queryable
 {
-    public abstract class Queryable<T, TQueryable> : IQueryableProvider<T, TQueryable> 
+    public abstract class Queryable<T, TQueryable> : IQueryableProvider<T, TQueryable>
         where T : class
         where TQueryable : Queryable<T, TQueryable>
     {
@@ -79,6 +81,18 @@ namespace Iql.Queryable.Data.Queryable
 #if TypeScript
             whereOperation.EvaluateContext = evaluateContext;
 #endif
+            if (expression.Kind != IqlExpressionKind.Lambda)
+            {
+                var iqlLambdaExpression = new IqlLambdaExpression
+                {
+                    Body = expression
+                };
+                var flattener = new IqlReducer();
+                // Try to find the first root reference used in the expression
+                var root = flattener.Traverse(expression).FirstOrDefault(e => e.Kind == IqlExpressionKind.RootReference) as IqlRootReferenceExpression;
+                iqlLambdaExpression.Parameters.Add(new IqlRootReferenceExpression(root?.VariableName ?? "root"));
+                expression = iqlLambdaExpression;
+            }
             whereOperation.Expression = expression;
             return Then(whereOperation);
         }
@@ -95,7 +109,7 @@ namespace Iql.Queryable.Data.Queryable
 #endif
             return Then(new WhereOperation(expression));
         }
-        
+
         public TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -139,7 +153,7 @@ namespace Iql.Queryable.Data.Queryable
 
         public abstract TQueryable OrderByDefault(bool descending = false);
 
-//        public TQueryable ExpandProperty(string propetyName
+        //        public TQueryable ExpandProperty(string propetyName
         //#if TypeScript
         //            , EvaluateContext evaluateContext = null
         //#endif

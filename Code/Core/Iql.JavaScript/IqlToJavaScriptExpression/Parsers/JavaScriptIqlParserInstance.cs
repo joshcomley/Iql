@@ -1,12 +1,13 @@
 using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
+using Iql.Queryable.Types;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptIqlParserInstance : ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter, string, JavaScriptOutput, JavaScriptExpressionConverter>
     {
-        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, Type rootEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter)
+        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, Type rootEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter, new TypeResolver())
         {
         }
 
@@ -17,7 +18,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         //    return lambda;
         //}
 
-        public override JavaScriptOutput Parse(IqlExpression expression
+        public override JavaScriptOutput ParseExpression(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

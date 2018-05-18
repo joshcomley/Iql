@@ -12,11 +12,15 @@ namespace Iql
         {
             VariableName = variableName;
             Value = value;
+            EntityTypeName = entityType?.GetFullName();
         }
+
 
         public IqlVariableExpression() : this(null, null)
         {
         }
+
+        public string EntityTypeName { get; set; }
 
         public string Value { get; set; }
 

@@ -10,6 +10,7 @@ using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Extensions;
 using Iql.Serialization;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -21,9 +22,12 @@ namespace Iql.Tests.Tests.Serialization
         [TestMethod]
         public void TestNestedLambda()
         {
-            Expression<Func<RelationshipFilterContext<Person>, Func<PersonLoading, bool>>> filterExpression
+            var db = new AppDbContext();
+            Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>> filterExpression
                 = context => loading => loading.Name == context.Owner.Title;
-            var iql = IqlXmlSerializer.SerializeToXml(filterExpression);
+            var iqlXml = IqlXmlSerializer.SerializeToXml(filterExpression);
+            var iql = IqlXmlSerializer.DeserializeFromXml(iqlXml);
+            var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>
@@ -75,7 +79,7 @@ namespace Iql.Tests.Tests.Serialization
       </Right>
     </Body>
   </Body>
-</IqlLambdaExpression>", iql);
+</IqlLambdaExpression>", iqlXml);
         }
 
         [TestMethod]

@@ -6,6 +6,7 @@ using ExpressionModifier;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
 using Iql.Queryable.Data.DataStores.InMemory;
+using Iql.Queryable.Types;
 
 namespace Iql.DotNet.IqlToDotNetExpression
 {
@@ -33,11 +34,29 @@ namespace Iql.DotNet.IqlToDotNetExpression
     }
     public class DotNetIqlParserInstance : ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput, DotNetExpressionConverter>
     {
-        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type rootEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter)
+        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type rootEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter, new TypeResolver())
         {
-            RootEntities.Add(NewRootParameter(rootEntityType));
             ContextParameter = System.Linq.Expressions.Expression.Parameter(
                 typeof(InMemoryContext<>).MakeGenericType(rootEntityType), "context");
+        }
+
+        public Dictionary<IqlLambdaExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlLambdaExpression, Dictionary<string, ParameterExpression>>();
+
+        public ParameterExpression GetParameterExpression(IqlLambdaExpression lambda,
+            IqlRootReferenceExpression parameter)
+        {
+            if (!ParameterExpressions.ContainsKey(lambda))
+            {
+                ParameterExpressions.Add(lambda, new Dictionary<string, ParameterExpression>());
+            }
+
+            var lookup = ParameterExpressions[lambda];
+            if (!lookup.ContainsKey(parameter.VariableName))
+            {
+                lookup.Add(parameter.VariableName, System.Linq.Expressions.Expression.Parameter(ResolveParameterType(parameter), parameter.VariableName));
+            }
+
+            return lookup[parameter.VariableName];
         }
 
         public ParameterExpression ContextParameter { get; set; }
@@ -72,42 +91,58 @@ namespace Iql.DotNet.IqlToDotNetExpression
             //return expression.Substitute<ParameterExpression>(expression.Parameters[0].Name, ContextParameter).Body;
         }
 
-        private ParameterExpression NewRootParameter(Type rootEntityType)
-        {
-            return System.Linq.Expressions.Expression.Parameter(rootEntityType, $"entity{(RootEntities.Count == 0 ? "" : RootEntities.Count.ToString())}");
-        }
+        //private ParameterExpression NewRootParameter(Type rootEntityType)
+        //{
+        //    return System.Linq.Expressions.Expression.Parameter(rootEntityType, $"entity{(RootEntities.Count == 0 ? "" : RootEntities.Count.ToString())}");
+        //}
 
-        public List<ParameterExpression> RootEntities { get; } = new List<ParameterExpression>();
-        public ParameterExpression RootEntity => RootEntities.Last();
+        //public List<ParameterExpression> RootEntities { get; } = new List<ParameterExpression>();
+        //public ParameterExpression RootEntity => RootEntities.Last();
         public bool ConvertToLambda { get; set; } = true;
 
-        public DotNetOutput ParseLambda(IqlExpression expression, Type rootEntityType
-#if TypeScript
-            , EvaluateContext evaluateContext
-#endif
-        )
-        {
-            RootEntities.Add(NewRootParameter(rootEntityType));
-            var result = Parse(expression
-#if TypeScript
-                , evaluateContext
-#endif
-            );
-            RootEntities.RemoveAt(RootEntities.Count - 1);
-            return result;
-        }
+//        public DotNetOutput ParseLambda(IqlExpression expression, Type rootEntityType
+//#if TypeScript
+//            , EvaluateContext evaluateContext
+//#endif
+//        )
+//        {
+//            RootEntities.Add(NewRootParameter(rootEntityType));
+//            var result = Parse(expression
+//#if TypeScript
+//                , evaluateContext
+//#endif
+//            );
+//            RootEntities.RemoveAt(RootEntities.Count - 1);
+//            return result;
+//        }
 
-        public override DotNetOutput Parse(IqlExpression expression
+        public override DotNetOutput ParseExpression(IqlExpression expression
 #if TypeScript
                 , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return new DotNetOutput(RootEntity, ParseAsExpression(expression
+            return new DotNetOutput(ParseAsExpression(expression
 #if TypeScript
                 , evaluateContext
 #endif
-            ));
+            ),
+                ResolveParentParameters());
+        }
+
+        private IEnumerable<ParameterExpression> ResolveParentParameters()
+        {
+            var parameters = new List<ParameterExpression>();
+            var lambda = GetNearestAncestor<IqlLambdaExpression>();
+            if (lambda.Parameters != null)
+            {
+                foreach (var parameter in lambda.Parameters)
+                {
+                    parameters.Add(GetParameterExpression(lambda, parameter));
+                }
+            }
+
+            return parameters;
         }
 
         private Expression ParseAsExpression(IqlExpression expression
