@@ -7,7 +7,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             ODataOutput filter = null;
             if (action.Value != null)
             {
-                filter = parser.ParseNested(action.Value);
+                filter = parser.Parse(action.Value);
             }
 
             var filterString = filter?.ToCodeString();

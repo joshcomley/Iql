@@ -12,8 +12,7 @@ namespace Iql.Parsing
         where TParserOutput : IParserOutput
         where TConverter : IExpressionConverter
     {
-        public int Depth { get; private set; }
-        public bool Nested => Depth > 0;
+        public bool Nested => false;
 
         protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType, TConverter converter, ITypeResolver typeResolver)
         {
@@ -26,22 +25,12 @@ namespace Iql.Parsing
 
         public IqlExpression Expression { get; set; }
         public TIqlData Data { get; set; }
-        public bool IsFilter { get; set; } = false;
-
         public TQueryAdapter Adapter { get; set; }
         public Type RootEntityType { get; }
         public TConverter Converter { get; }
         public ITypeResolver TypeResolver { get; }
         private readonly Dictionary<string, string> _rootEntityNames = new Dictionary<string, string>();
         private string _rootEntityName;
-
-        public T Nest<T>(Func<T> actiton)
-        {
-            Depth++;
-            var result = actiton();
-            Depth--;
-            return result;
-        }
 
         public string GetRootEntityName(IqlRootReferenceExpression rootReferenceExpression)
         {
@@ -56,12 +45,6 @@ namespace Iql.Parsing
         public string RootEntityParameterName()
         {
             return _rootEntityName;
-            //var name = "entity";
-            //if (Depth > 0)
-            //{
-            //    name = $"{name}{Depth + 1}";
-            //}
-            //return GetRootEntityParameterName(name);
         }
 
         public string GetRootEntityParameterName(string name)
@@ -88,16 +71,6 @@ namespace Iql.Parsing
 
         public TParserOutput[] ParseAll(IEnumerable<IqlExpression> expressions)
         {
-            return ParseAllInternal(expressions, false);
-        }
-
-        public TParserOutput[] ParseAllNested(IEnumerable<IqlExpression> expressions)
-        {
-            return ParseAllInternal(expressions, true);
-        }
-
-        private TParserOutput[] ParseAllInternal(IEnumerable<IqlExpression> expressions, bool nested)
-        {
             if (expressions == null)
             {
                 return new TParserOutput[] { };
@@ -105,17 +78,9 @@ namespace Iql.Parsing
             var result = new List<TParserOutput>();
             foreach (var expression in expressions)
             {
-                result.Add(nested ? ParseNested(expression) : Parse(expression));
+                result.Add(Parse(expression));
             }
             return result.ToArray();
-        }
-
-        public TParserOutput ParseNested(IqlExpression expression)
-        {
-            Depth++;
-            var result = Parse(expression);
-            Depth--;
-            return result;
         }
 
         public List<IqlExpression> Ancestors { get; } = new List<IqlExpression>();
@@ -123,14 +88,15 @@ namespace Iql.Parsing
         public T[] GetAncestors<T>()
         where T : IqlExpression
         {
-            return Ancestors.Where(a => a is T).Select(a => a as T)
+            return Ancestors
+                .Where(a => a is T).Select(a => a as T)
                 .ToArray();
         }
 
         public T GetNearestAncestor<T>()
             where T : IqlExpression
         {
-            for (var i = 0; i <= Ancestors.Count - 2; i--)
+            for (var i = Ancestors.Count - 1; i >= 0; i--)
             {
                 if (Ancestors[i] is T)
                 {
@@ -141,9 +107,9 @@ namespace Iql.Parsing
             return null;
         }
 
-        public Type ResolveParameterType(IqlRootReferenceExpression parameter)
+        public Type ResolveParameterType(string name)
         {
-            var typeName = ResolveParameterTypeName(parameter);
+            var typeName = ResolveParameterTypeName(name);
             if (string.IsNullOrWhiteSpace(typeName))
             {
                 return RootEntityType;
@@ -157,31 +123,31 @@ namespace Iql.Parsing
             return TypeResolver.ResolveTypeFromTypeName(typeName);
         }
 
-        public string ResolveParameterTypeName(IqlRootReferenceExpression parameter)
+        public string ResolveParameterTypeName(string name)
         {
-            var lambda = ResolveLambdaExpressionForParameter(parameter);
-            return lambda.Parameters.First(p => p.VariableName == parameter.VariableName).EntityTypeName;
+            var lambda = ResolveLambdaExpressionForParameter(name);
+            return lambda.ParameterExpression?.EntityTypeName;
         }
 
-        public IqlLambdaExpression ResolveLambdaExpressionForParameter(IqlRootReferenceExpression parameter)
+        public LambdaAndParameter ResolveLambdaExpressionForParameter(string name)
         {
             //if (!string.IsNullOrWhiteSpace(parameter.EntityTypeName))
             //{
             //    return parameter.EntityTypeName;
             //}
 
-            var lambdaExpressions = GetAncestors<IqlLambdaExpression>();
+            var lambdaExpressions = GetAncestors<IqlParameteredExpression>();
 
-            for (var i = lambdaExpressions.Length - 1; i >= 0; i++)
+            for (var i = lambdaExpressions.Length - 1; i >= 0; i--)
             {
-                var iqlLambdaExpression = lambdaExpressions[i];
-                if (iqlLambdaExpression.Parameters != null)
+                var iqlParameteredExpression = lambdaExpressions[i];
+                if (iqlParameteredExpression.Parameters != null)
                 {
-                    var lambdaParameter = iqlLambdaExpression.Parameters
-                        .SingleOrDefault(p => p.VariableName == parameter.VariableName);
+                    var lambdaParameter = iqlParameteredExpression.Parameters
+                        .SingleOrDefault(p => (p.VariableName ?? "") == name);
                     if (lambdaParameter != null)
                     {
-                        return iqlLambdaExpression;
+                        return new LambdaAndParameter(iqlParameteredExpression, lambdaParameter);
                         // && !string.IsNullOrWhiteSpace(lambdaParameter.EntityTypeName)
                         //return lambdaParameter.EntityTypeName;
                     }
@@ -198,16 +164,58 @@ namespace Iql.Parsing
 #endif
         )
         {
+            // Here: figure out the path from the root entity
             Ancestors.Add(expression);
+            IncrementPath(expression);
             var index = Ancestors.Count - 1;
             var result = ParseExpression(expression);
-            if (!OutputMap.ContainsKey(expression))
+            if (expression != null)
             {
-                OutputMap.Add(expression, new List<TParserOutput>());
+                if (!OutputMap.ContainsKey(expression))
+                {
+                    OutputMap.Add(expression, new List<TParserOutput>());
+                }
+                OutputMap[expression].Add(result);
             }
-            OutputMap[expression].Add(result);
             Ancestors.RemoveAt(index);
+            DecrementPath(expression);
             return result;
+        }
+
+        private void DecrementPath(IqlExpression expression)
+        {
+            switch (expression.Kind)
+            {
+                case IqlExpressionKind.Count:
+                    break;
+                case IqlExpressionKind.Any:
+                    break;
+                case IqlExpressionKind.All:
+                    break;
+                case IqlExpressionKind.Lambda:
+                    break;
+                case IqlExpressionKind.DataSetQuery:
+                    break;
+            }
+        }
+
+        protected string Path { get; set; }
+        private void IncrementPath(IqlExpression expression)
+        {
+            switch (expression.Kind)
+            {
+                case IqlExpressionKind.Count:
+                    break;
+                case IqlExpressionKind.Any:
+                    break;
+                case IqlExpressionKind.All:
+                    break;
+                case IqlExpressionKind.Lambda:
+                    break;
+                case IqlExpressionKind.DataSetQuery:
+                    
+                    break;
+            }
         }
 
         public IqlExpression Parent()
@@ -303,5 +311,16 @@ namespace Iql.Parsing
         //         return "";
 
         //    public void parse<TAction extends IqlExpression>(action: TAction): string {
+    }
+
+    public class LambdaAndParameter
+    {
+        public IqlParameteredExpression LambdaExpression { get; set; }
+        public IqlRootReferenceExpression ParameterExpression { get; set; }
+        public LambdaAndParameter(IqlParameteredExpression lambdaExpression, IqlRootReferenceExpression parameterExpression)
+        {
+            LambdaExpression = lambdaExpression;
+            ParameterExpression = parameterExpression;
+        }
     }
 }

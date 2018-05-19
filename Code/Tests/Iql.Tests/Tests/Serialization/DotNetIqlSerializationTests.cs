@@ -28,6 +28,8 @@ namespace Iql.Tests.Tests.Serialization
             var iqlXml = IqlXmlSerializer.SerializeToXml(filterExpression);
             var iql = IqlXmlSerializer.DeserializeFromXml(iqlXml);
             var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql);
+            var expCast
+                = (Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>>) exp;
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>

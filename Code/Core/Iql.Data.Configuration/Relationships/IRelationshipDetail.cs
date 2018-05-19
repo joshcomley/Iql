@@ -1,5 +1,4 @@
 using System;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {

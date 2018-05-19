@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Iql.Data.Extensions;
 using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
@@ -27,7 +28,7 @@ using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Queryable
 {
-    public class DbQueryable<T> : Queryable<T, DbQueryable<T>>, IDbQueryable
+    public class DbQueryable<T> : Queryable<T, DbQueryable<T>, DbList<T>>, IDbQueryable
         where T : class
     {
         private ITrackingSet _trackingSet;
@@ -116,7 +117,7 @@ namespace Iql.Queryable.Data.Queryable
             {
                 query = queryFilter(query);
             }
-            return await query.ToListAsync();
+            return (IList)await query.ToListAsync();
         }
 
         Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
@@ -883,7 +884,7 @@ namespace Iql.Queryable.Data.Queryable
             )
         {
             expressionConverter = expressionConverter ?? IqlExpressionConversion.DefaultExpressionConverter();
-            var queryExpression = new IqlDataSetQueryExpression();
+            var queryExpression = new IqlDataSetQueryExpression(typeof(T).GetFullName());
             queryExpression.DataSet = new IqlDataSetReferenceExpression
             {
                 Name = DataContext.GetDbSetPropertyNameByEntityType(EntityConfiguration.Type)

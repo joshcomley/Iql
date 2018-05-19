@@ -7,13 +7,14 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
             DotNetIqlParserInstance parser)
         {
-            IqlExpression expression =
-                new IqlFinalExpression<Expression>(
-                    Expression.PropertyOrField(parser.Parse(action.Parent
+            var dotNetOutput = parser.Parse(action.Parent
 #if TypeScript
                         , null
 #endif
-                    ).Expression, action.PropertyName)
+            );
+            IqlExpression expression =
+                new IqlFinalExpression<Expression>(
+                    Expression.PropertyOrField(dotNetOutput.Expression, action.PropertyName)
                 );
             return expression;
         }

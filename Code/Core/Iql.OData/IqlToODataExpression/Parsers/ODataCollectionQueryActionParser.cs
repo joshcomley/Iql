@@ -26,7 +26,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 for (var i = 0; i < action.Expands.Count; i++)
                 {
                     var expand = action.Expands[i];
-                    var codeString = parser.ParseNested(expand).ToCodeString();
+                    var codeString = parser.Parse(expand).ToCodeString();
                     if (!string.IsNullOrWhiteSpace(codeString))
                     {
                         expands.Add(codeString);
@@ -76,7 +76,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             }
             if (action.WithKey != null)
             {
-                var withKey = parser.ParseNested(action.WithKey).ToCodeString();
+                var withKey = parser.Parse(action.WithKey).ToCodeString();
                 query = $"({withKey}){query}";
             }
 
@@ -108,8 +108,8 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 var right = propertyExpressionIsLeft
                     ? keyPart.Right
                     : keyPart.Left;
-                compositeKey.Keys[i] = new KeyValue(parser.ParseNested(left).ToCodeString(),
-                    parser.ParseNested(right).ToCodeString(),
+                compositeKey.Keys[i] = new KeyValue(parser.Parse(left).ToCodeString(),
+                    parser.Parse(right).ToCodeString(),
                     null);
             }
 
@@ -132,7 +132,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     {
         public override IqlExpression ToQueryString(IqlExpandExpression action, ODataIqlParserInstance parser)
         {
-            var expandProperty = parser.ParseNested(action.NavigationProperty).ToCodeString();
+            var expandProperty = parser.Parse(action.NavigationProperty).ToCodeString();
             if (action.Query != null)
             {
                 var expandDetails = parser.Parse(action.Query).ToCodeString();

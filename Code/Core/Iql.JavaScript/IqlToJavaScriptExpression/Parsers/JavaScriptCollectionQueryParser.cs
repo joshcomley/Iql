@@ -55,9 +55,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                     queryParts.Add(filterCall);
                 }
             }
-            var expands = parser.ParseAllNested(action.Expands)
+            var expands = parser.ParseAll(action.Expands)
                 .Select(s => s.ToCodeString());
-            var orderBys = parser.ParseAllNested(action.OrderBys)
+            var orderBys = parser.ParseAll(action.OrderBys)
                 .Select(s => s.ToCodeString());
             queryParts.AddRange(expands);
             queryParts.AddRange(orderBys);

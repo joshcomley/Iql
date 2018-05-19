@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Iql.DotNet.IqlToDotNetExpression.Parsers
@@ -15,9 +16,11 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                 var parameterExpression = (ParameterExpression) dotNetOutput.Expression;
                 parameters.Add(parameterExpression);
             }
+
+            var expession = Expression.Lambda(parser.Parse(action.Body).Expression, parameters);
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(
-                    Expression.Lambda(parser.Parse(action.Body).Expression, parameters)
+                    parser.Ancestors.Any() ? (Expression) Expression.Quote(expession) : expession
                 );
             return expression;
         }

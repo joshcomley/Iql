@@ -44,7 +44,6 @@ namespace Iql.Queryable.Data.EntityConfiguration.Relationships
             var expressionConverter = IqlExpressionConversion.DefaultExpressionConverter();
             var sourceIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(sourceKeyProperty).Expression;
             var targetIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(targetKeyProperty).Expression;
-            ;
             var sourceProperty = Source.Configuration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName, typeof(TKey));
             if (sourceProperty != null && sourceProperty.Kind.HasFlag(PropertyKind.Primitive))
             {

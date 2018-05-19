@@ -33,12 +33,13 @@ namespace Iql
 
     public class IqlDataSetQueryExpression : IqlCollectitonQueryExpression
     {
-        public IqlDataSetQueryExpression(IqlExpression parent = null)
-            : base(IqlExpressionKind.DataSetQuery, parent) { }
+        public IqlDataSetQueryExpression(string entityTypeName, IqlExpression parent = null)
+            : base(entityTypeName, IqlExpressionKind.DataSetQuery, parent)
+        {
+        }
 
         public IqlDataSetQueryExpression() : this(null)
         {
-
         }
 
         public IqlDataSetReferenceExpression DataSet { get; set; }

@@ -2,22 +2,19 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
 #if TypeScript
 using Iql.Parsing;
 #endif
-using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Expressions.Conversion
 {
     public abstract class ExpressionConverterBase : IExpressionConverter
     {
-        public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
-#if TypeScript
-            , EvaluateContext evaluateContext
-#endif
-        ) where TEntity : class;
+//        public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
+//#if TypeScript
+//            , EvaluateContext evaluateContext
+//#endif
+//        ) where TEntity : class;
 
         public abstract ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression filter
 #if TypeScript
@@ -29,11 +26,6 @@ namespace Iql.Queryable.Expressions.Conversion
         {
             ConvertLambdaExpressionToIqlByTypeMethod = typeof(ExpressionConverterBase)
                 .GetMethod(nameof(ConvertLambdaExpressionToIqlByType));
-        }
-
-        public IEntityConfigurationBuilder ResolvEntityConfigurationBuilder(Type type)
-        {
-            return EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(type);
         }
 
         public static MethodInfo ConvertLambdaExpressionToIqlByTypeMethod { get; set; }

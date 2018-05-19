@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
 using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.Queryable
 {
-    public abstract class Queryable<T, TQueryable> : IQueryableProvider<T, TQueryable>
+    public abstract class Queryable<T, TQueryable, TResult> : IQueryableProvider<T, TQueryable>
         where T : class
-        where TQueryable : Queryable<T, TQueryable>
+        where TQueryable : Queryable<T, TQueryable, TResult>
+        where TResult : IList
     {
         protected Queryable(EvaluateContext evaluateContext = null)
         {
@@ -209,9 +208,9 @@ namespace Iql.Queryable.Data.Queryable
 
         public Type ItemType { get; }
 
-        public abstract Task<DbList<T>> ToListAsync();
+        public abstract Task<TResult> ToListAsync();
 
-        async Task<IDbList> IQueryableBase.ToListAsync()
+        async Task<IEnumerable> IQueryableBase.ToListAsync()
         {
             return await ToListAsync();
         }

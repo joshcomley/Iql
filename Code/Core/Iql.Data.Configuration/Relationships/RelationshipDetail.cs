@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Queryable.Extensions;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration.Relationships
 {

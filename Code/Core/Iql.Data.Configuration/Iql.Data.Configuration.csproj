@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.0</TargetFrameworks>
+    <Configurations>Debug;Release;TypeScript Debug</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
+    <ProjectReference Include="..\Iql\Iql.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -6,16 +6,15 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             IqlCountExpression action,
             JavaScriptIqlParserInstance parser)
         {
-            return parser.Nest(
-                () => new IqlParenthesisExpression(
-                    new IqlAggregateExpression(
-                        action.Parent,
-                        new IqlFinalExpression<string>(
-                            $".filter(function({parser.GetRootEntityParameterName(action.RootVariableName)}) {{ return "),
-                        new IqlFinalExpression<string>(parser.Parse(action.Value).ToCodeString()),
-                        new IqlFinalExpression<string>("; }).length")
-                    )
-                ));
+            return new IqlParenthesisExpression(
+                new IqlAggregateExpression(
+                    action.Parent,
+                    new IqlFinalExpression<string>(
+                        $".filter(function({parser.GetRootEntityParameterName(action.RootVariableName)}) {{ return "),
+                    new IqlFinalExpression<string>(parser.Parse(action.Value).ToCodeString()),
+                    new IqlFinalExpression<string>("; }).length")
+                )
+            );
         }
     }
 }

@@ -40,12 +40,17 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 #endif
             );
             method = method.MakeGenericMethod(entityType);
+            var predicateExpression = predicate.Expression;
+            if (predicateExpression is UnaryExpression)
+            {
+                predicateExpression = (predicateExpression as UnaryExpression).Operand;
+            }
             var methodCallExpression =
                 Expression.Call(
                     null,
                     method,
                     parentExpression.Expression,
-                    predicate.Expression);
+                    predicateExpression);
             var expression =
                 new IqlFinalExpression<Expression>(
                     methodCallExpression

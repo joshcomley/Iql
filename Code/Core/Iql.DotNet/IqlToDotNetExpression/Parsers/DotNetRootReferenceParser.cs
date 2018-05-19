@@ -7,8 +7,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         public override IqlExpression ToQueryString(IqlRootReferenceExpression action,
             DotNetIqlParserInstance parser)
         {
-            var lambda = parser.ResolveLambdaExpressionForParameter(action);
-            var parameter = parser.GetParameterExpression(lambda, action);
+            var parameter = parser.GetParameterExpression(action.VariableName);
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(
                     parameter

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Context;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Queryable.Data.EntityConfiguration
@@ -45,7 +44,7 @@ namespace Iql.Queryable.Data.EntityConfiguration
 
         public string ResolveSetName()
         {
-            var dataContextType = DataContext.FindDataContextTypeForEntityType(Type);
+            //var dataContextType = DataContext.FindDataContextTypeForEntityType(Type);
             return SetName ?? Name ?? Type.Name;
         }
 

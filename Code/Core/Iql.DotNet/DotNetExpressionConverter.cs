@@ -3,8 +3,6 @@ using System.Linq.Expressions;
 using Iql.DotNet.DotNetExpressionToIql;
 using Iql.DotNet.IqlToDotNetExpression;
 using Iql.DotNet.IqlToDotNetString;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -16,22 +14,6 @@ namespace Iql.DotNet
 {
     public class DotNetExpressionConverter : ExpressionConverterBase
     {
-        public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
-        {
-            var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
-            var lambdaExpression = whereQueryExpression.GetExpression();
-            return ConvertLambdaExpressionToIql<TEntity>(
-                    lambdaExpression
-#if TypeScript
-                    , filter.EvaluateContext
-#endif
-                    );
-        }
-
         public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambdaExpression
 #if TypeScript
 , EvaluateContext evaluateContext
@@ -56,7 +38,6 @@ namespace Iql.DotNet
         {
             var adapter = new DotNetIqlExpressionAdapter("entity");
             var parser = new DotNetIqlParserInstance(adapter, typeof(TEntity), this);
-            parser.IsFilter = true;
             var dotNetExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext
@@ -73,7 +54,6 @@ namespace Iql.DotNet
         {
             var adapter = new DotNetStringIqlExpressionAdapter("entity");
             var parser = new DotNetStringIqlParserInstance(adapter, this);
-            parser.IsFilter = true;
             var dotNetExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext

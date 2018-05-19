@@ -9,11 +9,9 @@ using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.Context;
 using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -22,33 +20,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
-        public override ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>
-        (
-            QueryExpression filter
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
-        {
-            ExpressionQueryExpressionBase expression;
-            if (filter.CanFlatten())
-            {
-                expression = filter.Flatten<TEntity>();
-            }
-            else
-            {
-                expression = filter as ExpressionQueryExpressionBase;
-            }
-            //var whereExpression = filter.CanFlatten();
-
-            var lambdaExpression = expression.GetExpression();
-            return ConvertLambdaExpressionToIql<TEntity>(lambdaExpression
-#if TypeScript
-                , expression.EvaluateContext ?? filter.EvaluateContext ?? evaluateContext
-#endif
-                  );
-        }
-
         public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambdaExpression
 #if TypeScript
                 , EvaluateContext evaluateContext = null
@@ -109,7 +80,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             expressionResult.Expression = expression2(null);
             
             // Now try to correct any property types
-            var entityConfigurationBuilder = ResolvEntityConfigurationBuilder(typeof(TEntity));
+            
+            var entityConfigurationBuilder = EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(typeof(TEntity));
             if (entityConfigurationBuilder != null)
             {
                 var entityConfig = entityConfigurationBuilder.EntityType<TEntity>();
@@ -279,7 +251,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         {
             var adapter = new JavaScriptIqlExpressionAdapter();
             var parser = new JavaScriptIqlParserInstance(adapter, rootEntityType, this);
-            parser.IsFilter = true;
             var javascriptExpression = parser.Parse(
                 expression
 #if TypeScript

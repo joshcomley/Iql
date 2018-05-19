@@ -40,23 +40,39 @@ namespace Iql.DotNet.IqlToDotNetExpression
                 typeof(InMemoryContext<>).MakeGenericType(rootEntityType), "context");
         }
 
-        public Dictionary<IqlLambdaExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlLambdaExpression, Dictionary<string, ParameterExpression>>();
+        public Dictionary<IqlParameteredExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlParameteredExpression, Dictionary<string, ParameterExpression>>();
 
-        public ParameterExpression GetParameterExpression(IqlLambdaExpression lambda,
+        public ParameterExpression GetParameterExpression(string name)
+        {
+            var lambda = ResolveLambdaExpressionForParameter(name) ?? ResolveLambdaExpressionForParameter("");
+            if (lambda != null && lambda.ParameterExpression != null)
+            {
+                return GetParameterExpression(lambda.LambdaExpression, lambda.ParameterExpression);
+            }
+            return null;
+        }
+
+        private ParameterExpression GetParameterExpression(IqlParameteredExpression lambda,
             IqlRootReferenceExpression parameter)
         {
+            if (lambda == null)
+            {
+                return null;
+            }
+
             if (!ParameterExpressions.ContainsKey(lambda))
             {
                 ParameterExpressions.Add(lambda, new Dictionary<string, ParameterExpression>());
             }
 
             var lookup = ParameterExpressions[lambda];
-            if (!lookup.ContainsKey(parameter.VariableName))
+            var parameterVariableName = parameter.VariableName ?? "";
+            if (!lookup.ContainsKey(parameterVariableName))
             {
-                lookup.Add(parameter.VariableName, System.Linq.Expressions.Expression.Parameter(ResolveParameterType(parameter), parameter.VariableName));
+                lookup.Add(parameterVariableName, System.Linq.Expressions.Expression.Parameter(ResolveParameterType(parameterVariableName), parameterVariableName));
             }
 
-            return lookup[parameter.VariableName];
+            return lookup[parameterVariableName];
         }
 
         public ParameterExpression ContextParameter { get; set; }
@@ -100,21 +116,21 @@ namespace Iql.DotNet.IqlToDotNetExpression
         //public ParameterExpression RootEntity => RootEntities.Last();
         public bool ConvertToLambda { get; set; } = true;
 
-//        public DotNetOutput ParseLambda(IqlExpression expression, Type rootEntityType
-//#if TypeScript
-//            , EvaluateContext evaluateContext
-//#endif
-//        )
-//        {
-//            RootEntities.Add(NewRootParameter(rootEntityType));
-//            var result = Parse(expression
-//#if TypeScript
-//                , evaluateContext
-//#endif
-//            );
-//            RootEntities.RemoveAt(RootEntities.Count - 1);
-//            return result;
-//        }
+        //        public DotNetOutput ParseLambda(IqlExpression expression, Type rootEntityType
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext
+        //#endif
+        //        )
+        //        {
+        //            RootEntities.Add(NewRootParameter(rootEntityType));
+        //            var result = Parse(expression
+        //#if TypeScript
+        //                , evaluateContext
+        //#endif
+        //            );
+        //            RootEntities.RemoveAt(RootEntities.Count - 1);
+        //            return result;
+        //        }
 
         public override DotNetOutput ParseExpression(IqlExpression expression
 #if TypeScript
@@ -133,8 +149,8 @@ namespace Iql.DotNet.IqlToDotNetExpression
         private IEnumerable<ParameterExpression> ResolveParentParameters()
         {
             var parameters = new List<ParameterExpression>();
-            var lambda = GetNearestAncestor<IqlLambdaExpression>();
-            if (lambda.Parameters != null)
+            var lambda = GetNearestAncestor<IqlParameteredExpression>();
+            if (lambda != null && lambda.Parameters != null)
             {
                 foreach (var parameter in lambda.Parameters)
                 {
@@ -166,17 +182,17 @@ namespace Iql.DotNet.IqlToDotNetExpression
                 if (aggregateExpression != null)
                 {
                     throw new NotSupportedException($"{nameof(IqlAggregateExpression)} is not supported in DotNet");
-//                    var aggregate = aggregateExpression;
-//                    var str1 = "";
-//                    aggregate.Expressions.ForEach(element =>
-//                    {
-//                        str1 += Parse(element
-//#if TypeScript
-//                        , evaluateContext
-//#endif
-//                        );
-//                    });
-//                    return str1;
+                    //                    var aggregate = aggregateExpression;
+                    //                    var str1 = "";
+                    //                    aggregate.Expressions.ForEach(element =>
+                    //                    {
+                    //                        str1 += Parse(element
+                    //#if TypeScript
+                    //                        , evaluateContext
+                    //#endif
+                    //                        );
+                    //                    });
+                    //                    return str1;
                 }
                 var oldExpression = Expression;
                 Expression = expression;

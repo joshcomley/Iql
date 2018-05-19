@@ -4,9 +4,7 @@ using System.Linq.Expressions;
 using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
 using Iql.Queryable.Data.EntityConfiguration.Relationships;
 using Iql.Queryable.Data.EntityConfiguration.Rules;
-using Iql.Queryable.Data.EntityConfiguration.Validation;
 using Iql.Queryable.Data.Validation;
-using Iql.Queryable.Operations;
 
 namespace Iql.Queryable.Data.EntityConfiguration
 {

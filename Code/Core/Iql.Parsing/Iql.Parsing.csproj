@@ -14,7 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
     <ProjectReference Include="..\Iql\Iql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Expressions\Conversion\" />
   </ItemGroup>
 
 </Project>
