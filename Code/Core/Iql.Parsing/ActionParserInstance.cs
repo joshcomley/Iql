@@ -184,7 +184,7 @@ namespace Iql.Parsing
 
         private void DecrementPath(IqlExpression expression)
         {
-            switch (expression.Kind)
+            switch (expression?.Kind)
             {
                 case IqlExpressionKind.Count:
                     break;
@@ -202,7 +202,7 @@ namespace Iql.Parsing
         protected string Path { get; set; }
         private void IncrementPath(IqlExpression expression)
         {
-            switch (expression.Kind)
+            switch (expression?.Kind)
             {
                 case IqlExpressionKind.Count:
                     break;
