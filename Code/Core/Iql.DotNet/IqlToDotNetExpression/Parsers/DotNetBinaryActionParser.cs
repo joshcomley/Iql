@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.DotNet.Extensions;
 using Iql.Queryable.Extensions;
 
 namespace Iql.DotNet.IqlToDotNetExpression.Parsers
@@ -43,6 +44,8 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                 right = CoalesceOrUpperCase(right);
             }
 
+            left = left.GetBody();
+            right = right.GetBody();
             MethodInfo method = null;
             // Deal with string concatenation
             var @operator = ResolveOperator(action);

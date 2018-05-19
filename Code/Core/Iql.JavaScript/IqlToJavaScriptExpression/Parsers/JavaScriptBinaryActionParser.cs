@@ -25,7 +25,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             var isStringComparison = false;
             if (action.Kind == IqlExpressionKind.IsEqualTo || action.Kind == IqlExpressionKind.IsNotEqualTo)
             {
-                var configurationContext = parser.Adapter.ResolveEntityConfigurationBuilder(parser.RootEntityType);
+                var configurationContext = parser.Adapter.ResolveEntityConfigurationBuilder(parser.CurrentEntityType);
                 isStringComparison =
                     IsString(action.Left, configurationContext) ||
                     IsString(action.Right, configurationContext);

@@ -31,6 +31,7 @@ namespace Iql
 			// #CloneStart
 
 			var expression = new IqlVariableExpression(null, null);
+			expression.EntityTypeName = EntityTypeName;
 			expression.Value = Value;
 			expression.VariableName = VariableName;
 			expression.Kind = Kind;

@@ -8,6 +8,8 @@ namespace Iql.Data.Configuration
 {
     public class IqlPropertyPath
     {
+        public bool IsEmpty => string.IsNullOrWhiteSpace(PathToHere);
+
         public IqlPropertyPath(IProperty property, IqlPropertyExpression expression, IqlPropertyPath parent)
         {
             Property = property;
@@ -65,6 +67,9 @@ namespace Iql.Data.Configuration
         public IqlPropertyPath[] PropertyPath { get; }
 
         public IEntityConfiguration EntityConfiguration { get; set; }
+
+        public IEntityConfiguration PropertyEntityConfiguration =>
+            Property?.Relationship.OtherEnd.Configuration;
 
         public object Getter(object entity)
         {

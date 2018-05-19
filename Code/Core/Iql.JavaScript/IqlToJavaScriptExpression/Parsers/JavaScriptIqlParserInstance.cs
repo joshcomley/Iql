@@ -7,7 +7,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptIqlParserInstance : ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter, string, JavaScriptOutput, JavaScriptExpressionConverter>
     {
-        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, Type rootEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, rootEntityType, expressionConverter, new TypeResolver())
+        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, Type currentEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
         {
         }
 

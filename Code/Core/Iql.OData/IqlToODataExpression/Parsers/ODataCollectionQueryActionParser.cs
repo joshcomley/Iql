@@ -82,7 +82,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             {
                 query = "";
             }
-            var baseUri = parser.Converter.Configuration.ResolveEntitySetUriByType(parser.RootEntityType);
+            var baseUri = parser.Converter.Configuration.ResolveEntitySetUriByType(parser.CurrentEntityType);
             if (!parser.Nested && !string.IsNullOrWhiteSpace(query) && !string.IsNullOrWhiteSpace(baseUri))
             {
                 query = $"{baseUri}{query}";

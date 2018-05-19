@@ -41,7 +41,7 @@ namespace Iql.DotNet
                 , evaluateContext
 #endif
             );
-            return dotNetExpression.Expression as LambdaExpression;
+            return dotNetExpression.ToLambda();
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression iql, Type rootEntityType

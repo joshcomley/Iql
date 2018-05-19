@@ -7,6 +7,20 @@ namespace Iql.DotNet.Extensions
 {
     public static class ExpressionExtensions
     {
+        public static Expression GetBody(this Expression expression)
+        {
+            if (expression is UnaryExpression)
+            {
+                expression = (expression as UnaryExpression).Operand;
+            }
+
+            if (expression is LambdaExpression)
+            {
+                expression = (expression as LambdaExpression).Body;
+            }
+
+            return expression;
+        }
         public static bool ContainsRoot(this Expression member,
             Type rootType, string rootVariableName)
         {

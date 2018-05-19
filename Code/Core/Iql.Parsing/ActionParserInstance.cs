@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Conversion;
 using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
 
@@ -13,12 +14,17 @@ namespace Iql.Parsing
         where TParserOutput : IParserOutput
         where TConverter : IExpressionConverter
     {
-        public bool Nested => false;
+        public bool Nested => TypeStack.Count > 1 || Ancestors.Any(a => 
+                                  a.Kind == IqlExpressionKind.Expand ||
+                                  a.Kind == IqlExpressionKind.Count ||
+                                  a.Kind == IqlExpressionKind.Any ||
+                                  a.Kind == IqlExpressionKind.All
+                                  );
 
-        protected ActionParserInstance(TQueryAdapter adapter, Type rootEntityType, TConverter converter, ITypeResolver typeResolver)
+        protected ActionParserInstance(TQueryAdapter adapter, Type currentEntityType, TConverter converter, ITypeResolver typeResolver)
         {
             Adapter = adapter;
-            RootEntityType = rootEntityType;
+            SetEntityType(currentEntityType);
             Converter = converter;
             TypeResolver = typeResolver;
             Data = Adapter.NewData();
@@ -27,7 +33,21 @@ namespace Iql.Parsing
         public IqlExpression Expression { get; set; }
         public TIqlData Data { get; set; }
         public TQueryAdapter Adapter { get; set; }
+        public Type CurrentEntityType => TypeStack.LastOrDefault();
+        public List<Type> TypeStack { get; } = new List<Type>();
         public Type RootEntityType { get; }
+        private void SetEntityType(Type type)
+        {
+            if (IsRoot)
+            {
+                if (TypeStack.Count == 1)
+                {
+                    TypeStack[0] = type;
+                    return;
+                }
+            }
+            TypeStack.Add(type);
+        }
         public TConverter Converter { get; }
         public ITypeResolver TypeResolver { get; }
         private readonly Dictionary<string, string> _rootEntityNames = new Dictionary<string, string>();
@@ -113,7 +133,7 @@ namespace Iql.Parsing
             var typeName = ResolveParameterTypeName(name);
             if (string.IsNullOrWhiteSpace(typeName))
             {
-                return RootEntityType;
+                return CurrentEntityType;
             }
 
             return ResolveTypeFromTypeName(typeName);
@@ -183,12 +203,22 @@ namespace Iql.Parsing
             return result;
         }
 
-        private void DecrementPath(IqlExpression expression)
+        //protected IqlPropertyPath Path { get; } = new IqlPropertyPath();
+        protected string EntityPath { get; } = "";
+        private void IncrementPath(IqlExpression expression)
         {
-            //EntityConfigurationBuilder.FindConfigurationBuilderForEntityType()
+            //if (Path == null || Path.IsEmpty)
+            //{
+            //    EntityConfigurationBuilder.FindConfigurationBuilderForEntityType()
+            //}
             switch (expression?.Kind)
             {
                 case IqlExpressionKind.Count:
+                    var path = IqlPropertyPath.FromPropertyExpression(
+                            EntityConfigurationBuilder.FindConfigurationForEntityType(CurrentEntityType),
+                            (expression as IqlCountExpression).Parent as IqlPropertyExpression)
+                        ;
+                    SetEntityType(path.PropertyEntityConfiguration.Type);
                     break;
                 case IqlExpressionKind.Any:
                     break;
@@ -197,27 +227,32 @@ namespace Iql.Parsing
                 case IqlExpressionKind.Lambda:
                     break;
                 case IqlExpressionKind.DataSetQuery:
+                    SetEntityType((expression as IqlDataSetQueryExpression).ResolveEntityConfiguration().Type);
                     break;
             }
         }
 
-        protected string Path { get; set; }
-        private void IncrementPath(IqlExpression expression)
+        private bool IsRoot => Ancestors.Count == 1;
+        private void DecrementPath(IqlExpression expression)
         {
             switch (expression?.Kind)
             {
-                case IqlExpressionKind.Count:
-                    break;
                 case IqlExpressionKind.Any:
                     break;
                 case IqlExpressionKind.All:
                     break;
                 case IqlExpressionKind.Lambda:
                     break;
+                case IqlExpressionKind.Count:
                 case IqlExpressionKind.DataSetQuery:
-                    
+                    RemoveLastEntityType();
                     break;
             }
+        }
+
+        private void RemoveLastEntityType()
+        {
+            TypeStack.RemoveAt(TypeStack.Count - 1);
         }
 
         public IqlExpression Parent()

@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Configuration.Rules.Relationship;
 using Iql.DotNet;
@@ -19,6 +20,21 @@ namespace Iql.Tests.Tests.Serialization
     [TestClass]
     public class DotNetIqlSerializationTests
     {
+        [ClassInitialize]
+        public static void SetUp(TestContext textContext)
+        {
+            var db = new AppDbContext();
+        }
+
+        [TestMethod]
+        public async Task TestMultipleConditionsWithDifferingParameterNames()
+        {
+            var db = new AppDbContext();
+            var query = db.Clients.Where(c => c.Name == "a").Where(d => d.Name == "b");
+            var iql = await query.ToIqlAsync();
+            var dotNetQuery = new DotNetExpressionConverter().ConvertIqlToExpression<Client>(iql);
+        }
+
         [TestMethod]
         public void TestNestedLambda()
         {
@@ -29,7 +45,7 @@ namespace Iql.Tests.Tests.Serialization
             var iql = IqlXmlSerializer.DeserializeFromXml(iqlXml);
             var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql);
             var expCast
-                = (Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>>) exp;
+                = (Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>>)exp;
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>
@@ -38,6 +54,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>
       <VariableName>context</VariableName>
     </IqlRootReferenceExpression>
   </Parameters>
@@ -48,6 +65,7 @@ namespace Iql.Tests.Tests.Serialization
       <IqlRootReferenceExpression>
         <Kind>RootReference</Kind>
         <ReturnType>Unknown</ReturnType>
+        <EntityTypeName>PersonLoading</EntityTypeName>
         <VariableName>loading</VariableName>
       </IqlRootReferenceExpression>
     </Parameters>
@@ -60,6 +78,7 @@ namespace Iql.Tests.Tests.Serialization
         <Parent xsi:type=""IqlRootReferenceExpression"">
           <Kind>RootReference</Kind>
           <ReturnType>Unknown</ReturnType>
+          <EntityTypeName>PersonLoading</EntityTypeName>
           <VariableName>loading</VariableName>
         </Parent>
         <PropertyName>Name</PropertyName>
@@ -73,6 +92,7 @@ namespace Iql.Tests.Tests.Serialization
           <Parent xsi:type=""IqlVariableExpression"">
             <Kind>Variable</Kind>
             <ReturnType>Unknown</ReturnType>
+            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>
             <VariableName>context</VariableName>
           </Parent>
           <PropertyName>Owner</PropertyName>
@@ -96,6 +116,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </IqlRootReferenceExpression>
   </Parameters>
@@ -105,6 +126,7 @@ namespace Iql.Tests.Tests.Serialization
     <Parent xsi:type=""IqlRootReferenceExpression"">
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </Parent>
     <PropertyName>Name</PropertyName>
@@ -126,6 +148,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </IqlRootReferenceExpression>
   </Parameters>
@@ -135,6 +158,7 @@ namespace Iql.Tests.Tests.Serialization
     <Parent xsi:type=""IqlRootReferenceExpression"">
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </Parent>
     <PropertyName>Name</PropertyName>
@@ -154,6 +178,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </IqlRootReferenceExpression>
   </Parameters>
@@ -172,6 +197,7 @@ namespace Iql.Tests.Tests.Serialization
           <Parent xsi:type=""IqlRootReferenceExpression"">
             <Kind>RootReference</Kind>
             <ReturnType>Unknown</ReturnType>
+            <EntityTypeName>Client</EntityTypeName>
             <VariableName>client</VariableName>
           </Parent>
           <PropertyName>Name</PropertyName>
@@ -189,6 +215,7 @@ namespace Iql.Tests.Tests.Serialization
         <Parent xsi:type=""IqlRootReferenceExpression"">
           <Kind>RootReference</Kind>
           <ReturnType>Unknown</ReturnType>
+          <EntityTypeName>Client</EntityTypeName>
           <VariableName>client</VariableName>
         </Parent>
         <PropertyName>Description</PropertyName>
@@ -226,7 +253,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => !(c.Name != "Josh"),
-                @"entity => !((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != ""JOSH""))");
+                @"c => !((((c.Name == null) ? c.Name : c.Name.ToUpper()) != ""JOSH""))");
         }
 
         [TestMethod]
@@ -234,7 +261,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => c.Sites.Any(s => s.Address == "some address"),
-                @"entity => (entity.Sites.LongCount(entity1 => (((entity1.Address == null) ? entity1.Address : entity1.Address.ToUpper()) == ""SOME ADDRESS"")) > 0)");
+                @"c => (c.Sites.LongCount(s => (((s.Address == null) ? s.Address : s.Address.ToUpper()) == ""SOME ADDRESS"")) > 0)");
         }
 
         [TestMethod]
@@ -242,7 +269,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => !string.IsNullOrWhiteSpace(c.Name) || !string.IsNullOrWhiteSpace(c.Description),
-                @"entity => (!(((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) == null) || (((entity.Name.Trim() == null) ? entity.Name.Trim() : entity.Name.Trim().ToUpper()) == """"))) || !(((((entity.Description == null) ? entity.Description : entity.Description.ToUpper()) == null) || (((entity.Description.Trim() == null) ? entity.Description.Trim() : entity.Description.Trim().ToUpper()) == """"))))");
+                @"c => (((((c.Name == null) ? c.Name : c.Name.ToUpper()) == null) || (((c.Name.Trim() == null) ? c.Name.Trim() : c.Name.Trim().ToUpper()) == """")) || ((((c.Description == null) ? c.Description : c.Description.ToUpper()) == null) || (((c.Description.Trim() == null) ? c.Description.Trim() : c.Description.Trim().ToUpper()) == """")))");
         }
 
         [TestMethod]
@@ -250,15 +277,15 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 s => s.Name != null && s.Name.Length > 50,
-                @"entity => ((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != null) && (entity.Name.Length > 50))");
+                @"s => ((((s.Name == null) ? s.Name : s.Name.ToUpper()) != null) && (s.Name.Length > 50))");
         }
 
         [TestMethod]
         public void TestDeserializeParenthesisExpression()
         {
             AssertCode(
-                s => (s.Name == null || s.Name.Length > 50) && (s.Name == "Jim") ,
-                @"entity => (((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) == null) || (entity.Name.Length > 50)) && (((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) == ""JIM""))");
+                s => (s.Name == null || s.Name.Length > 50) && (s.Name == "Jim"),
+                @"s => (((((s.Name == null) ? s.Name : s.Name.ToUpper()) == null) || (s.Name.Length > 50)) && (((s.Name == null) ? s.Name : s.Name.ToUpper()) == ""JIM""))");
         }
 
 
@@ -268,7 +295,7 @@ namespace Iql.Tests.Tests.Serialization
             //
             AssertCode(
                 s => s.Name != null && s.Name.Substring(2) == "hi",
-                @"entity => ((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != null) && (((entity.Name.Substring(2) == null) ? entity.Name.Substring(2) : entity.Name.Substring(2).ToUpper()) == ""HI""))"
+                @"s => ((((s.Name == null) ? s.Name : s.Name.ToUpper()) != null) && (((s.Name.Substring(2) == null) ? s.Name.Substring(2) : s.Name.Substring(2).ToUpper()) == ""HI""))"
             );
         }
 
@@ -278,7 +305,7 @@ namespace Iql.Tests.Tests.Serialization
             //
             AssertCode(
                 s => s.Name != null && s.Name.Substring(2, 3) == "hi",
-                @"entity => ((((entity.Name == null) ? entity.Name : entity.Name.ToUpper()) != null) && (((entity.Name.Substring(2, 3) == null) ? entity.Name.Substring(2, 3) : entity.Name.Substring(2, 3).ToUpper()) == ""HI""))"
+                @"s => ((((s.Name == null) ? s.Name : s.Name.ToUpper()) != null) && (((s.Name.Substring(2, 3) == null) ? s.Name.Substring(2, 3) : s.Name.Substring(2, 3).ToUpper()) == ""HI""))"
             );
         }
 

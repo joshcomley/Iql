@@ -24,7 +24,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.OrderBy(c => c.SitesCount);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$orderby=$it/Sites/$count", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$orderby=Sites/$count", uri);
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count(t => t.TypeId == 2) > 2);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(TypeId eq 2)) gt 2)",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(TypeId eq 2)) gt 2)",
                 uri);
         }
 
@@ -185,11 +185,11 @@ namespace Iql.Tests.Tests.OData
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
 #if !TypeScript
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=contains(Description,'test')) gt 2)",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=contains(Description,'test')) gt 2)",
                 uri);
 #else
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
                 uri);
 #endif
         }
@@ -200,7 +200,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > 2);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt 2)",
                 uri);
         }
 
@@ -210,7 +210,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count * 0.5);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt ($it/Types/$count mul 0.5))",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt (Types/$count mul 0.5))",
                 uri);
         }
 
@@ -220,7 +220,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count / 0.5);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt ($it/Types/$count div 0.5))",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt (Types/$count div 0.5))",
                 uri);
         }
 
@@ -230,7 +230,7 @@ namespace Iql.Tests.Tests.OData
             var query = Db.People.Where(c => c.Types.Count > 2);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
-                @"http://localhost:28000/odata/People?$filter=($it/Types/$count gt 2)",
+                @"http://localhost:28000/odata/People?$filter=(Types/$count gt 2)",
                 uri);
         }
 

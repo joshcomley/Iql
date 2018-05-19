@@ -24,7 +24,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             }
 
             var accessors = ResolveAccessors(action.Parent as IqlPropertyExpression);
-            var entityType = parser.RootEntityType;
+            var entityType = parser.CurrentEntityType;
             foreach (var accessor in accessors)
             {
                 entityType = entityType.GetProperty(accessor).PropertyType;

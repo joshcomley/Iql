@@ -22,7 +22,7 @@ namespace Iql.Parsing
         public virtual IqlExpression ToQueryString(TAction action, TParserInstance parser)
         {
             return (IqlExpression)GetType().GetMethod(nameof(ToQueryStringTyped))
-                .InvokeGeneric(this, new object[] {action, parser}, parser.RootEntityType);
+                .InvokeGeneric(this, new object[] {action, parser}, parser.CurrentEntityType);
         }
 
         IqlExpression IActionParserBase.ToQueryString(IqlExpression action, IActionParserInstance parser)

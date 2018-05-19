@@ -20,11 +20,16 @@ namespace Iql.DotNet.IqlToDotNetExpression
 
         public LambdaExpression ToLambda()
         {
-            if (Expression is LambdaExpression)
+            var expression = Expression;
+            if (expression is UnaryExpression)
             {
-                return Expression as LambdaExpression;
+                expression = (expression as UnaryExpression).Operand;
             }
-            return Expression.Lambda(Expression, Parameters);
+            if (expression is LambdaExpression)
+            {
+                return expression as LambdaExpression;
+            }
+            return Expression.Lambda(expression, Parameters);
         }
 
         public string ToCodeString()

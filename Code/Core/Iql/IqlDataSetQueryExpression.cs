@@ -48,7 +48,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlDataSetQueryExpression();
+			var expression = new IqlDataSetQueryExpression(null);
 			expression.DataSet = (IqlDataSetReferenceExpression)DataSet?.Clone();
 			if(OrderBys == null)
 			{
@@ -81,6 +81,19 @@ namespace Iql
 			}
 			expression.Filter = Filter?.Clone();
 			expression.WithKey = (IqlWithKeyExpression)WithKey?.Clone();
+			if(Parameters == null)
+			{
+				expression.Parameters = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlRootReferenceExpression>();
+				for(var i = 0; i < Parameters.Count; i++)
+				{
+					listCopy.Add((IqlRootReferenceExpression)Parameters[i]?.Clone());
+				}
+				expression.Parameters = listCopy;
+			}
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

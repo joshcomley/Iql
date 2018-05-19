@@ -36,11 +36,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Tests.ConsoleApp", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Tests.Data", "Tests\Iql.Tests.Data\Iql.Tests.Data.csproj", "{6A7B51DF-5CD4-4F46-B673-F9AC1C8BAB16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.Data", "Core\Iql.Data\Iql.Data.csproj", "{05C5859A-E58C-41AE-B194-CB36BEB71A73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Data", "Core\Iql.Data\Iql.Data.csproj", "{05C5859A-E58C-41AE-B194-CB36BEB71A73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.Data.Configuration", "Core\Iql.Data.Configuration\Iql.Data.Configuration.csproj", "{57B047A0-8076-4120-8D3F-3860E8DA6081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Data.Configuration", "Core\Iql.Data.Configuration\Iql.Data.Configuration.csproj", "{57B047A0-8076-4120-8D3F-3860E8DA6081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.Conversion", "Core\Iql.Conversion\Iql.Conversion.csproj", "{8E83E48E-7B4A-4B4C-99D3-CE696FF464BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Conversion", "Core\Iql.Conversion\Iql.Conversion.csproj", "{8E83E48E-7B4A-4B4C-99D3-CE696FF464BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.CloneMethodGenerator.ConsoleApp", "Tools\Iql.CloneMethodGenerator.ConsoleApp\Iql.CloneMethodGenerator.ConsoleApp.csproj", "{D900FC63-7CC8-4393-9751-7F1797BCC24E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,12 @@ Global
 		{8E83E48E-7B4A-4B4C-99D3-CE696FF464BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E83E48E-7B4A-4B4C-99D3-CE696FF464BA}.TypeScript Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E83E48E-7B4A-4B4C-99D3-CE696FF464BA}.TypeScript Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.TypeScript Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.TypeScript Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

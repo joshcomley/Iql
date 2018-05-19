@@ -23,7 +23,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 action.Kind == IqlExpressionKind.Has &&
                 (action.Right.ReturnType == IqlType.Integer || (action.Right as IqlLiteralExpression).InferredReturnType == IqlType.Integer))
             {
-                var type = action.Left.ResolveType(parser.RootEntityType);
+                var type = action.Left.ResolveType(parser.CurrentEntityType);
                 if (type.IsDefined(typeof(FlagsAttribute), true))
                 {
                     var rightLiteral = action.Right as IqlLiteralExpression;

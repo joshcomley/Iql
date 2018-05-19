@@ -12,17 +12,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         {
             var method = typeof(Enumerable).GetMethods().Single(m =>
                 m.Name == nameof(Enumerable.LongCount) && m.GetParameters().Length == 2);
-            var accessors = ResolveAccessors(action.Parent as IqlPropertyExpression);
-            var entityType = parser.RootEntityType;
-            foreach (var accessor in accessors)
-            {
-                entityType = entityType.GetProperty(accessor).PropertyType;
-            }
-            entityType.TryGetBaseType(typeof(IEnumerable<>), type =>
-            {
-                entityType = type.Type.GenericTypeArguments[0];
-            });
-
+            var entityType = parser.CurrentEntityType;
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript
                         , null
@@ -58,18 +48,18 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             return expression;
         }
 
-        private static string[] ResolveAccessors(IqlPropertyExpression propertyExpression)
-        {
-            var accessors = new List<string>();
-            var expression = propertyExpression;
-            accessors.Add(expression.PropertyName);
-            while (expression.Parent is IqlPropertyExpression)
-            {
-                expression = expression.Parent as IqlPropertyExpression;
-                accessors.Add(expression.PropertyName);
-            }
-            accessors.Reverse();
-            return accessors.ToArray();
-        }
+        //private static string[] ResolveAccessors(IqlPropertyExpression propertyExpression)
+        //{
+        //    var accessors = new List<string>();
+        //    var expression = propertyExpression;
+        //    accessors.Add(expression.PropertyName);
+        //    while (expression.Parent is IqlPropertyExpression)
+        //    {
+        //        expression = expression.Parent as IqlPropertyExpression;
+        //        accessors.Add(expression.PropertyName);
+        //    }
+        //    accessors.Reverse();
+        //    return accessors.ToArray();
+        //}
     }
 }

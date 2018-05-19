@@ -26,6 +26,7 @@ namespace Iql
 			// #CloneStart
 
 			var expression = new IqlRootReferenceExpression();
+			expression.EntityTypeName = EntityTypeName;
 			expression.Value = Value;
 			expression.VariableName = VariableName;
 			expression.Kind = Kind;

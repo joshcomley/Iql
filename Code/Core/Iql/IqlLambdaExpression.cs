@@ -26,6 +26,7 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlLambdaExpression();
+			expression.Body = Body?.Clone();
 			if(Parameters == null)
 			{
 				expression.Parameters = null;
@@ -39,7 +40,6 @@ namespace Iql
 				}
 				expression.Parameters = listCopy;
 			}
-			expression.Body = Body?.Clone();
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();
