@@ -1,6 +1,7 @@
-using Iql.Queryable.Events;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Events;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data
 {
     public interface IEntity
     {

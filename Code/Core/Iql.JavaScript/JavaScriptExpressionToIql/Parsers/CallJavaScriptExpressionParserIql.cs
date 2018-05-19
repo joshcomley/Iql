@@ -1,11 +1,10 @@
 using System;
 using System.Linq;
+using Iql.Data.Configuration;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
 {

@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Crud.Operations.Results
+namespace Iql.Data.Crud.Operations.Results
 {
     public class GetSingleResult<T> : DataResult<T, T> where T : class
     {

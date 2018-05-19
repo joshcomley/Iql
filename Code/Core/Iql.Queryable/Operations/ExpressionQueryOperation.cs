@@ -1,4 +1,4 @@
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 
 namespace Iql.Queryable.Operations
 {

@@ -2,11 +2,12 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Extensions;
+
 #if TypeScript
 using Iql.Parsing;
 #endif
 
-namespace Iql.Queryable.Expressions.Conversion
+namespace Iql.Conversion
 {
     public abstract class ExpressionConverterBase : IExpressionConverter
     {

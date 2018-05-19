@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Extensions;
-using Iql.Queryable.Data.EntityConfiguration;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Configuration.Extensions
 {
     public static class IqlQueryableTypeExtensions
     {

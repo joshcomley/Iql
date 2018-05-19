@@ -1,7 +1,6 @@
 using System;
-using Iql.Queryable.Data.Queryable;
 
-namespace Iql.Queryable.Expressions.QueryExpressions
+namespace Iql.Queryable.Expressions
 {
     public interface IExpandQueryExpression
     {

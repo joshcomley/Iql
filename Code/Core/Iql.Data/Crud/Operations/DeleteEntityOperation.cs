@@ -1,7 +1,7 @@
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public class DeleteEntityOperation<T> : EntityCrudOperation<T>
     {

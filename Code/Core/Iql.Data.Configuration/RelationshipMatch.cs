@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Data.Configuration.Relationships;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public class RelationshipMatch
     {

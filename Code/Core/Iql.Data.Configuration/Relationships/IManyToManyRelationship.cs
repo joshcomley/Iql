@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Relationships
+namespace Iql.Data.Configuration.Relationships
 {
     public interface IManyToManyRelationship
     {

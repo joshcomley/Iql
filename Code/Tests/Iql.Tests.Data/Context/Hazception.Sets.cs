@@ -1,15 +1,16 @@
-using Iql.Queryable.Data.Context;
 using Hazception.Sets;
 using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.DataStores;
 using Iql.OData;
 using Iql.Parsing;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Lists;
 using Iql.OData.Methods;
 using System;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.DataStores;
+using Iql.Data.Lists;
+
 namespace Hazception.Sets
 {
 	public class HazClientTypeSet : DbSet<HazClientType, int>

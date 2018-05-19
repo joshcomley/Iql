@@ -1,8 +1,8 @@
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Queryable;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Relationships;
+using Iql.Queryable;
 
-namespace Iql.Queryable.Operations
+namespace Iql.Data.Operations
 {
     public class ExpandDetail
     {

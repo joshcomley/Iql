@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Tracking.State;
-using Iql.Queryable.Extensions;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Events;
+using Iql.Data.Lists;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Events
+namespace Iql.Data
 {
     public class EntityObserver
     {

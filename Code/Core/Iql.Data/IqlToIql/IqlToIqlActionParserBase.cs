@@ -1,8 +1,7 @@
-using Iql.JavaScript.IqlToJavaScriptExpression;
+using Iql.Conversion;
 using Iql.Parsing;
-using Iql.Queryable.Expressions.Conversion;
 
-namespace Iql.Queryable.IqlToIql
+namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlActionParserBase<TIqlExpression> :
         ActionParser<TIqlExpression,

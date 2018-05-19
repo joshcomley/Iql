@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Http;
+using Iql.Data.Http;
 
 namespace Iql.Tests.Context
 {

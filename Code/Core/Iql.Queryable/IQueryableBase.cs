@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Iql.Conversion;
 using Iql.Parsing;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
-using Iql.Queryable.Operations;
+using Iql.Parsing.Expressions.QueryExpressions;
 
-namespace Iql.Queryable.Data.Queryable
+namespace Iql.Queryable
 {
     public interface IQueryableBase
     {

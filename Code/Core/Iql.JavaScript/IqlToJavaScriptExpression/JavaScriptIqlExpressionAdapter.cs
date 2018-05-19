@@ -1,7 +1,7 @@
 using System;
+using Iql.Data.Configuration;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.Parsing;
-using Iql.Queryable.Data.EntityConfiguration;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression
 {

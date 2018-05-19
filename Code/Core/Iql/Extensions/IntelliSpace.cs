@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Extensions
 {
     public static class StringExtensions
     {

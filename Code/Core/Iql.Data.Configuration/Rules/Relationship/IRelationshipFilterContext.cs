@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.EntityConfiguration.Rules.Relationship
+namespace Iql.Data.Configuration.Rules.Relationship
 {
     public interface IRelationshipFilterContext
     {

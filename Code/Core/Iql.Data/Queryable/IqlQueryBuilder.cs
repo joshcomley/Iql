@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.Configuration;
 using Iql.Extensions;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
 
-namespace Iql.Queryable
+namespace Iql.Data.Queryable
 {
     public static class IqlQueryBuilder
     {

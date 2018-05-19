@@ -1,7 +1,7 @@
 using System;
+using Iql.Data.Types;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
-using Iql.Queryable.Types;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {

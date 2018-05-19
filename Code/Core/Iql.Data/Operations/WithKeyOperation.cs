@@ -1,7 +1,7 @@
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
+using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Operations
+namespace Iql.Data.Operations
 {
     public class WithKeyOperation : QueryOperation
     {

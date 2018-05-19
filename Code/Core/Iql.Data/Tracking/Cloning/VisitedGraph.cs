@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TypeSharp.Extensions;
 
-namespace Iql.Queryable.Data.Tracking.Cloning
+namespace Iql.Data.Tracking.Cloning
 {
     [DoNotConvert]
     internal class VisitedGraph : Dictionary<object, object>

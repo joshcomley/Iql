@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Events;
-using Iql.Queryable.Extensions;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Context;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Events;
 
-namespace Iql.Queryable.Data.Tracking.State
+namespace Iql.Data.Tracking.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
     public class EntityState<T> : IEntityState<T>

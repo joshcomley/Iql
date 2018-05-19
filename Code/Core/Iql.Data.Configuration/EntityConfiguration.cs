@@ -4,18 +4,18 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Iql.Conversion;
+using Iql.Data.Configuration.DisplayFormatting;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Configuration.Rules;
+using Iql.Data.Configuration.Rules.Display;
+using Iql.Data.Configuration.Rules.Relationship;
+using Iql.Data.Configuration.Validation;
+using Iql.Data.Configuration.Validation.Validation;
 using Iql.Extensions;
-using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.EntityConfiguration.Rules;
-using Iql.Queryable.Data.EntityConfiguration.Rules.Display;
-using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
-using Iql.Queryable.Data.EntityConfiguration.Validation;
-using Iql.Queryable.Data.Validation;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Extensions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {

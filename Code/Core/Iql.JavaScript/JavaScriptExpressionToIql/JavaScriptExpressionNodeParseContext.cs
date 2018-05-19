@@ -4,8 +4,8 @@ using Iql.Data.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Parsing;
+using Iql.Parsing.Expressions.QueryExpressions;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {

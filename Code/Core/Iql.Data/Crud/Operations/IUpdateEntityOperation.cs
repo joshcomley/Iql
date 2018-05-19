@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.Tracking.State;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public interface IUpdateEntityOperation : IEntityCrudOperationBase
     {

@@ -1,10 +1,11 @@
 using System;
 using System.Linq.Expressions;
+
 #if TypeScript
 using Iql.Parsing;
 #endif
 
-namespace Iql.Queryable.Expressions.Conversion
+namespace Iql.Conversion
 {
     public interface IExpressionToIqlConverter
     {

@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using ExpressionModifier;
+using Iql.Data.DataStores.InMemory;
+using Iql.Data.Types;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Types;
 
 namespace Iql.DotNet.IqlToDotNetExpression
 {

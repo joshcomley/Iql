@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Data.Crud.Operations.Results;
 
-namespace Iql.Queryable.Data.Crud.Operations.Queued
+namespace Iql.Data.Crud.Operations.Queued
 {
     public class QueuedAddEntityOperation<T> : QueuedOperation<AddEntityOperation<T>, AddEntityResult<T>>
     {

@@ -1,7 +1,7 @@
 using System;
 using Iql.Parsing;
 
-namespace Iql.Queryable.IqlToIql
+namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlIqlOutput : IParserOutput
     {

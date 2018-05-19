@@ -1,12 +1,14 @@
-﻿using Iql.Queryable.Data.DataStores;
+﻿
+using Iql.Conversion;
+using Iql.Data.Configuration;
+using Iql.Data.DataStores;
+using Iql.Data.DataStores.InMemory;
+using Iql.Data.Queryable;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
 #endif
-using Iql.Queryable.Data.DataStores.InMemory;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
 using Tunnel.ApiContext.Base;
 
 namespace Iql.Tests.Context

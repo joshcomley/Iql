@@ -1,4 +1,5 @@
-﻿using Iql.Queryable.Extensions;
+﻿using Iql.Extensions;
+using Iql.Queryable.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.Utilities

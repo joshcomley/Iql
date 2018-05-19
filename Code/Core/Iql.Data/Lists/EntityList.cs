@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Events;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Events;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public class EntityList<T> : ObservableList<T>
     {

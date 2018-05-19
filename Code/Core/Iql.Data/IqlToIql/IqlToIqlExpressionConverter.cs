@@ -1,10 +1,4 @@
-using System;
-using System.Linq.Expressions;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
-
-namespace Iql.Queryable.IqlToIql
+namespace Iql.Data.IqlToIql
 {
     //public class IqlToIqlExpressionConverter : IExpressionConverter
     //{

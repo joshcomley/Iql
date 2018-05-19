@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using Haz.App.Data.Entities;
-using Iql.Queryable.Data.Crud.Operations.Results;
+using Iql.Data.Crud.Operations.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Events;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Events;
 
-namespace Iql.Queryable.Data.Tracking.State
+namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase
     {

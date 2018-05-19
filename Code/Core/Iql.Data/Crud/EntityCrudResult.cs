@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Validation;
+using Iql.Data.Configuration.Validation.Validation;
+using Iql.Data.Crud.Operations;
 
-namespace Iql.Queryable.Data.Crud
+namespace Iql.Data.Crud
 {
     public class EntityCrudResult<T, TOperation> : CrudResult<T, TOperation>, IEntityCrudResult
         where TOperation : IEntitySetCrudOperationBase

@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Conversion;
 using Iql.Extensions;
 using Iql.Parsing;
+using Iql.Parsing.Expressions.QueryExpressions;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Data.Queryable
+namespace Iql.Queryable
 {
     public abstract class Queryable<T, TQueryable, TResult> : IQueryableProvider<T, TQueryable>
         where T : class

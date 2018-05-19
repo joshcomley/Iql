@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Queryable
+namespace Iql.Data.Context
 {
     public enum LoadRelationshipMode
     {

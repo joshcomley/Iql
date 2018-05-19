@@ -1,14 +1,12 @@
 using System;
 using System.Linq.Expressions;
+using Iql.Conversion;
 using Iql.DotNet.DotNetExpressionToIql;
 using Iql.DotNet.IqlToDotNetExpression;
 using Iql.DotNet.IqlToDotNetString;
 #if TypeScript
 using Iql.Parsing;
 #endif
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.DotNet
 {

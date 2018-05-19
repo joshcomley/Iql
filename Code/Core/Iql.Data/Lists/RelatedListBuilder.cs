@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public static class RelatedListBuilder
     {

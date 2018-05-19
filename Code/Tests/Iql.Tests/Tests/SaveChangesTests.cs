@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Queued;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

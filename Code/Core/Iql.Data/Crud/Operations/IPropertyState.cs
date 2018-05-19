@@ -1,7 +1,7 @@
-﻿using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Tracking.State;
+﻿using Iql.Data.Configuration;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public interface IPropertyState
     {

@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Iql.Data.Context;
+using Iql.Data.Lists;
 using Iql.Queryable;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Queryable;
 
 namespace Iql.OData.Extensions
 {

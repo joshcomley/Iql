@@ -1,4 +1,4 @@
-﻿namespace Iql.Queryable.Data.Validation
+﻿namespace Iql.Data.Configuration.Validation.Validation
 {
     public class RelationshipCollectionValidationResultItem<T> : IRelationshipCollectionValidationResultItem
     {

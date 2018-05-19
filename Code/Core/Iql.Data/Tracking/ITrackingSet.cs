@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Tracking.State;
+using Iql.Data.Configuration;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Data.Tracking
 {
     public interface ITrackingSet
     {

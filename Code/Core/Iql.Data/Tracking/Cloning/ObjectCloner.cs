@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using TypeSharp.Extensions;
 
-namespace Iql.Queryable.Data.Tracking.Cloning
+namespace Iql.Data.Tracking.Cloning
 {
     /// <summary>
     ///     This class defines all the extension methods provided by the Copyable framework

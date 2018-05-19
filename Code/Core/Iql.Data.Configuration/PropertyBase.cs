@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Iql.Queryable.Extensions;
+using Iql.Data.Configuration.Extensions;
+using Iql.Extensions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public abstract class PropertyBase : IPropertyMetadata
     {

@@ -1,6 +1,6 @@
 using System;
+using Iql.Conversion;
 using Iql.Extensions;
-using Iql.Queryable.Expressions.Conversion;
 
 namespace Iql.Parsing
 {

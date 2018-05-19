@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Iql.Queryable.Data.EntityConfiguration.Rules;
-using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
+using Iql.Data.Configuration.Rules;
+using Iql.Data.Configuration.Rules.Relationship;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public interface IProperty : IPropertyMetadata
     {

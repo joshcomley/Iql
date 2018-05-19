@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Relationships
+namespace Iql.Data.Configuration.Relationships
 {
     public class OneToRelationship<TSource, TTarget, TSourceProperty, TTargetProperty>
         : Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> 

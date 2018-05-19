@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Data.Crud
+namespace Iql.Data.Crud
 {
     public class TypedCrudResult : CrudResultBase
     {

@@ -1,7 +1,7 @@
-﻿using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Queryable;
+﻿using Iql.Data.Context;
+using Iql.Data.Lists;
 
-namespace Iql.Queryable.Data.QueryContainer
+namespace Iql.Data.QueryContainer
 {
     public class QueryPipeEvent<T> : QueryPipeChangedEvent<T>, IQueryPipeEvent
         where T : class

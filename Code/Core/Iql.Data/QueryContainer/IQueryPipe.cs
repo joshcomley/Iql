@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Events;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Lists;
 
-namespace Iql.Queryable.Data.QueryContainer
+namespace Iql.Data.QueryContainer
 {
     public interface IQueryPipe
     {

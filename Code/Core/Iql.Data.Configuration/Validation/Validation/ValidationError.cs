@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Iql.Queryable.Data.Validation
+namespace Iql.Data.Configuration.Validation.Validation
 {
     [DebuggerDisplay("{Message} - {Key}")]
     public class ValidationError

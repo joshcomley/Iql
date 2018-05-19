@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     //public interfacce IEntityS
     public interface IEntitySetCrudOperationBase : ICrudOperation

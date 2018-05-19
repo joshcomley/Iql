@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Iql.Queryable.Events;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Events;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public class ObservableList<T> : IList<T>, IObservableList
     {

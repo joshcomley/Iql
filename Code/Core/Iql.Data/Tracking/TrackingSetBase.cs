@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.Tracking.State;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Data.Tracking
 {
     public abstract class TrackingSetBase
     {

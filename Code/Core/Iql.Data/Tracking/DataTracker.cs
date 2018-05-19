@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.DataStores;
+using Iql.Data.Relationships;
+using Iql.Data.Tracking.State;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Relationships;
-using Iql.Queryable.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Data.Tracking
 {
     public class DataTracker
     {

@@ -1,14 +1,15 @@
-using Iql.Queryable.Data.EntityConfiguration;
 using Tunnel.Sets;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
 using Iql.OData;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.DataStores;
 using System;
 using System.Collections.Generic;
 using Iql.OData.Methods;
 using Iql;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.DataStores;
+
 namespace Tunnel.ApiContext.Base
 {
 	public class TunnelDataContextBase : DataContext

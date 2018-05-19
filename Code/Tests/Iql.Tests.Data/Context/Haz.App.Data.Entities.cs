@@ -1,10 +1,11 @@
-using Iql.Queryable.Data.EntityConfiguration;
 using Hazception.Sets;
 using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Events;
 using System;
+using Iql.Data;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Events;
+using Iql.Data.Lists;
 
 
 namespace Haz.App.Data.Entities

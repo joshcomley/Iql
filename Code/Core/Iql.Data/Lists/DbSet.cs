@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Context;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.DataStores;
 using Iql.Parsing;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Queryable;
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Queryable.Expressions;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public class DbSet<T, TKey> : DbQueryable<T>, IDbSetOperations<T, TKey> where T : class
     {

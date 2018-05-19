@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Conversion;
 
-namespace Iql.Queryable.Expressions
+namespace Iql.Data.Configuration
 {
     public class IqlPropertyPath
     {

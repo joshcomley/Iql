@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Iql.Conversion;
 using Iql.OData.IqlToODataExpression;
 #if TypeScript
 using Iql.Parsing;
 #endif
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
 
 namespace Iql.OData
 {

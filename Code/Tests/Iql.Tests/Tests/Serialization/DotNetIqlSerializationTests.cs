@@ -2,12 +2,12 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Iql.Conversion;
+using Iql.Data.Configuration.Rules.Relationship;
 using Iql.DotNet;
 using Iql.DotNet.Extensions;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
-using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
-using Iql.Queryable.Expressions;
 using Iql.Queryable.Extensions;
 using Iql.Serialization;
 using Iql.Tests.Context;

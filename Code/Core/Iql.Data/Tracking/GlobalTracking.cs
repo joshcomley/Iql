@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Iql.Queryable.Data.Tracking.State;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Data.Tracking
 {
     public class GlobalTracking
     {

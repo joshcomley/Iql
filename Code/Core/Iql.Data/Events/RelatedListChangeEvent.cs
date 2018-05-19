@@ -1,8 +1,8 @@
 using System;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Lists;
+using Iql.Data.Configuration;
+using Iql.Data.Lists;
 
-namespace Iql.Queryable.Events
+namespace Iql.Data.Events
 {
     public class RelatedListChangeEvent<TSource, TRelated> : IRelatedListChangeEvent
         where TRelated : class 

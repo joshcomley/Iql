@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Operations;
 using Iql.Extensions;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Parsing.Expressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Context
 {
     public static class QueryOperationContextExtensions
     {

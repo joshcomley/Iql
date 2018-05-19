@@ -1,4 +1,4 @@
-﻿namespace Iql.Queryable.Data.QueryContainer
+﻿namespace Iql.Data.QueryContainer
 {
     public class QueryPipeChangedEvent<T> : IQueryPipeChangedEvent
         where T : class

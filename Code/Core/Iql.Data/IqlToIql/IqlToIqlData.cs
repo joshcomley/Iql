@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace Iql.JavaScript.IqlToJavaScriptExpression
+namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlIqlData
     {

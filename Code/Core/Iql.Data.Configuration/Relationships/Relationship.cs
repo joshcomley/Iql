@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Queryable.Expressions;
+using Iql.Conversion;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Relationships
+namespace Iql.Data.Configuration.Relationships
 {
     public class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : IRelationship
         where TSource : class where TTarget : class

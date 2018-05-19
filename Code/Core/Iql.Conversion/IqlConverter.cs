@@ -1,6 +1,4 @@
-using Iql.Queryable.Expressions.Conversion;
-
-namespace Iql.Queryable.Expressions
+namespace Iql.Conversion
 {
     /// <summary>
     /// This is merely short-hand for IqlExpressionConversion.DefaultExpressionConverterInstance

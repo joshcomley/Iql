@@ -1,7 +1,7 @@
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Events;
+using Iql.Data.Configuration;
+using Iql.Data.Events;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public interface IRelatedListChange
     {

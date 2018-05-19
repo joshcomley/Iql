@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
 using Iql.Queryable.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

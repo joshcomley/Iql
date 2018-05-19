@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Extensions
 {
     static class ExtendedListExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
 
-namespace Iql.Queryable.Data.Extensions
+namespace Iql.Data.Extensions
 {
     public static class MetadataExtensions
     {

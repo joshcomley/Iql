@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Iql.Queryable.Events
+namespace Iql.Data.Configuration.Events
 {
     public class AsyncEventEmitter<TEvent> : IAsyncEventManager<TEvent>
     {

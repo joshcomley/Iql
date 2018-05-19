@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Queryable;
-using Iql.Queryable.Data.Tracking;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.DataStores;
+using Iql.Data.Tracking;
+using Iql.Queryable;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public interface IDbQueryable : IQueryableBase
     {

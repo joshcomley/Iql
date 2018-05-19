@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Iql.Queryable.Data.Validation
+namespace Iql.Data.Configuration.Validation.Validation
 {
     public interface IValidationResult
     {

@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
+using Iql.Data.Crud.Operations;
 
-namespace Iql.Queryable.Data.Tracking.State
+namespace Iql.Data.Tracking.State
 {
     [DebuggerDisplay("{Property.Name}")]
     public class PropertyState : IPropertyState

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Iql.OData;
 using Iql.OData.Extensions;
-using Iql.Queryable.Data.Queryable;
+using Iql.Queryable;
 #if TypeScript
 using Iql.Parsing;
 using Iql.Queryable.Expressions;

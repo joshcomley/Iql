@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Queryable;
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Queryable;
+using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Operations
+namespace Iql.Data.Operations
 {
     public interface IExpandOperation : IExpressionQueryOperation
     {

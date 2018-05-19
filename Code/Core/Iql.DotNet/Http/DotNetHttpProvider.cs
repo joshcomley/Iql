@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using Iql.Queryable.Data.Http;
+using Iql.Data.Http;
 
 namespace Iql.DotNet.Http
 {

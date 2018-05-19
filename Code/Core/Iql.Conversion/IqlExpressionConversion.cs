@@ -1,7 +1,6 @@
 using System;
-using Iql.Queryable.Expressions.Conversion;
 
-namespace Iql.Queryable.Expressions
+namespace Iql.Conversion
 {
     public class IqlExpressionConversion
     {

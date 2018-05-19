@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.EntityConfiguration.Relationships
+namespace Iql.Data.Configuration.Relationships
 {
     public enum RelationshipMapType
     {

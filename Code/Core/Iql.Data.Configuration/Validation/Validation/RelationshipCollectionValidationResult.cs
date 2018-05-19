@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.EntityConfiguration;
 
-namespace Iql.Queryable.Data.Validation
+namespace Iql.Data.Configuration.Validation.Validation
 {
     public class RelationshipCollectionValidationResult<T> : PropertyValidationResult<T>, IRelationshipCollectionValidationResult
     {

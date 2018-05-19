@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Rules
+namespace Iql.Data.Configuration.Rules
 {
     //public abstract class BinaryRuleCollection
     public abstract class RuleCollection<TRule> : IRuleCollection<TRule>

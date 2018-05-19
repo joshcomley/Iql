@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Http
+namespace Iql.Data.Http
 {
     public class HttpRequest : HttpRequestBase
     {

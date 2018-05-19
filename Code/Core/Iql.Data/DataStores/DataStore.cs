@@ -4,26 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Validation.Validation;
+using Iql.Data.Context;
+using Iql.Data.Crud;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Events;
+using Iql.Data.Extensions;
+using Iql.Data.Lists;
+using Iql.Data.Operations;
+using Iql.Data.Paging;
+using Iql.Data.Queryable;
+using Iql.Data.Relationships;
+using Iql.Data.Tracking;
+using Iql.Data.Tracking.State;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Crud;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Queued;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.DataStores.NestedSets;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Paging;
-using Iql.Queryable.Data.Queryable;
-using Iql.Queryable.Data.Relationships;
-using Iql.Queryable.Data.Tracking;
-using Iql.Queryable.Data.Tracking.State;
-using Iql.Queryable.Data.Validation;
-using Iql.Queryable.Events;
 using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Data.DataStores
+namespace Iql.Data.DataStores
 {
     public class DataStore : IDataStore
     {
@@ -187,7 +189,7 @@ namespace Iql.Queryable.Data.DataStores
                 var queryableGetter = getConfiguration.GetQueryable<TEntity>();
                 if (queryableGetter != null)
                 {
-                    var queryable = queryableGetter() as Queryable.IQueryable<TEntity>;
+                    var queryable = queryableGetter() as global::Iql.Queryable.IQueryable<TEntity>;
                     queryable.Operations.AddRange(operation.Queryable.Operations);
                     operation.Queryable = queryable;
                 }
@@ -221,7 +223,7 @@ namespace Iql.Queryable.Data.DataStores
 
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
-            response.Queryable = (Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
+            response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
 
             var dbList = TrackGetDataResult(response);
 

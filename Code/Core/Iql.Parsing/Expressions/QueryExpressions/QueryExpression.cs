@@ -1,11 +1,11 @@
 using System;
 using System.Linq.Expressions;
+using Iql.Parsing.Extensions;
 #if TypeScript
 using Iql.Parsing;
 #endif
-using Iql.Parsing.Extensions;
 
-namespace Iql.Queryable.Expressions.QueryExpressions
+namespace Iql.Parsing.Expressions.QueryExpressions
 {
     public abstract class QueryExpression
     {

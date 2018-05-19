@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Iql.Queryable.Data.Validation
+namespace Iql.Data.Configuration.Validation.Validation
 {
     public abstract class ValidationResult<T, TThis> : IValidationResult
         where TThis : ValidationResult<T, TThis>

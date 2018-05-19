@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Rules
+namespace Iql.Data.Configuration.Rules
 {
     public interface IRuleCollection<out TRule>
         where TRule : IRule

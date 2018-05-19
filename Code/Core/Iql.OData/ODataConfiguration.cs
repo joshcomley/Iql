@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Http;
+using Iql.Data.Http;
 
 namespace Iql.OData
 {

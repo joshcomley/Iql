@@ -2,11 +2,11 @@ using Iql.OData;
 using Hazception.Sets;
 using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.DataStores;
 using System;
 using System.Collections.Generic;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.DataStores;
 using Iql.OData.Methods;
 namespace Hazception.ApiContext.Base
 {

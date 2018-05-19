@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Extensions;
+using Iql.Extensions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public abstract class EntityConfigurationBase : IEntityMetadata
     {

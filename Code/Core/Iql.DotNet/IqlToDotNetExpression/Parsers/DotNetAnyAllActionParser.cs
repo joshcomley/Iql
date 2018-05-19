@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.DotNet.Extensions;
-using Iql.Queryable.Expressions;
 
 namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Iql.Queryable.Data.Http
+namespace Iql.Data.Http
 {
     public interface IHttpRequest
     {

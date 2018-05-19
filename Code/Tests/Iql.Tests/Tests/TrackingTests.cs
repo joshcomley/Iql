@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Data.Context;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Http;
+using Iql.Data.Lists;
 using Iql.OData;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Http;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Queryable;
 using Iql.Queryable.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

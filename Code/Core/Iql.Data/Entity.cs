@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Extensions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data
 {
     public class Entity
     {

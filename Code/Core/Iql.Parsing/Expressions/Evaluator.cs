@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Expressions
+namespace Iql.Parsing.Expressions
 {
     public class Evaluator
     {

@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Expressions.QueryExpressions
+namespace Iql.Parsing.Expressions.QueryExpressions
 {
     public enum QueryExpressionKind
     {

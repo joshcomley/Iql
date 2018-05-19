@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Data.Configuration;
+using Iql.Data.Crud.Operations.Results;
 using Iql.Extensions;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.EntityConfiguration;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

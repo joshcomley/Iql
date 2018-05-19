@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace Iql.Queryable.Data.DataStores.InMemory
+namespace Iql.Data.DataStores.InMemory
 {
     public interface IInMemoryContext
     {

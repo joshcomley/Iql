@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Methods;
+using Iql.Data.Methods;
 
 namespace Iql.OData.Methods
 {

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 #if TypeScript
 using Iql.Parsing;
 #endif
-using Iql.Queryable.Expressions.QueryExpressions;
-using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Data.Queryable
+namespace Iql.Queryable
 {
     public interface IQueryableProvider<T, out TQueryable> : IQueryable<T>
         where T : class

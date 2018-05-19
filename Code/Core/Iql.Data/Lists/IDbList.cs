@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Paging;
+using Iql.Data.Paging;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public interface IDbList : IList
     {

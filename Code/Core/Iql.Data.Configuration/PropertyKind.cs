@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     [Flags]
     public enum PropertyKind

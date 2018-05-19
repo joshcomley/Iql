@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Crud
+namespace Iql.Data.Crud
 {
     public interface ICrudResult
     {

@@ -1,6 +1,6 @@
-﻿using Iql.Queryable.Data.Crud.Operations.Results;
+﻿using Iql.Data.Crud.Operations.Results;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Extensions
 {
     // ReSharper disable once InconsistentNaming
     public static class IFlattenedGetDataResultExtensions

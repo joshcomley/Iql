@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Conversion;
+using Iql.Data.Configuration;
 using Iql.Extensions;
 using Iql.JavaScript.IqlToJavaScriptExpression;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
+using Iql.Parsing.Expressions;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.Conversion;
+
 #if TypeScript
 using Iql.Parsing;
 #endif

@@ -1,11 +1,10 @@
 using System;
-using Iql.JavaScript.IqlToJavaScriptExpression;
+using Iql.Conversion;
+using Iql.Data.Configuration;
+using Iql.Data.Types;
 using Iql.Parsing;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Types;
 
-namespace Iql.Queryable.IqlToIql
+namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlParserInstance : ActionParserInstance<IqlToIqlIqlData, IqlToIqlExpressionAdapter,
         string, IqlToIqlIqlOutput, IExpressionConverter>

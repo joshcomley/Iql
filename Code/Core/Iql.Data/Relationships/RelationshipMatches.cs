@@ -1,7 +1,7 @@
 using System.Collections;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Data.Configuration.Relationships;
 
-namespace Iql.Queryable.Data.Relationships
+namespace Iql.Data.Relationships
 {
     public class RelationshipMatches
     {

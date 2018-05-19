@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Iql.Queryable.Extensions;
+using Iql.Data.Configuration.Extensions;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public class EntityConfigurationBuilder : IEntityConfigurationBuilder
     {

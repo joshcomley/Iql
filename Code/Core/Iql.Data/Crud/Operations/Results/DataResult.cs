@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Iql.Queryable.Data.Queryable;
+using Iql.Queryable;
 
-namespace Iql.Queryable.Data.Crud.Operations.Results
+namespace Iql.Data.Crud.Operations.Results
 {
     public class DataResult<T, TResult> : CrudResult<T, GetDataOperation<T>> where T : class
     {

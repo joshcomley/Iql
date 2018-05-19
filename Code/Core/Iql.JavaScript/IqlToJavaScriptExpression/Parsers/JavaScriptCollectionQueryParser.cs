@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.DataStores.InMemory;
+using Iql.Data.Queryable;
 using Iql.JavaScript.Extensions;
 using Iql.Queryable;
-using Iql.Queryable.Data.DataStores.InMemory;
 using Newtonsoft.Json;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers

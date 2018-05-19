@@ -1,7 +1,6 @@
 using Iql.Extensions;
-using Iql.Queryable.Data.EntityConfiguration;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Configuration.Extensions
 {
     public static class CompositeKeyExtensions
     {

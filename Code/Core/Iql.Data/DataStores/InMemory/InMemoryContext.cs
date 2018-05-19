@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Conversion;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Context;
+using Iql.Data.Relationships;
 using Iql.Extensions;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Relationships;
-using Iql.Queryable.Expressions;
 
-namespace Iql.Queryable.Data.DataStores.InMemory
+namespace Iql.Data.DataStores.InMemory
 {
 
     public class InMemoryContext<TEntity> : IInMemoryContext where TEntity : class

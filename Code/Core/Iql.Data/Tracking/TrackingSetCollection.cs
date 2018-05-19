@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Data.Configuration;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.DataStores;
 using Iql.Extensions;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Queued;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Data.Tracking
 {
     public class TrackingSetCollection
     {

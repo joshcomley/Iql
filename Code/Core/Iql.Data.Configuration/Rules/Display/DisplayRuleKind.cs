@@ -1,4 +1,4 @@
-﻿namespace Iql.Queryable.Data.EntityConfiguration.Rules.Display
+﻿namespace Iql.Data.Configuration.Rules.Display
 {
     public enum DisplayRuleKind
     {

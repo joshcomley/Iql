@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Queryable
+namespace Iql.Queryable
 {
     public interface IQueryable<out T> : IQueryableBase
     {

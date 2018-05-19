@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Parsing;
 
-namespace Iql.Queryable.Expressions.QueryExpressions
+namespace Iql.Parsing.Expressions.QueryExpressions
 {
     public class BinaryQueryExpression : QueryExpression
     {

@@ -1,4 +1,4 @@
-﻿using Iql.Queryable.Expressions.Conversion;
+﻿using Iql.Conversion;
 
 namespace Iql.Parsing
 {

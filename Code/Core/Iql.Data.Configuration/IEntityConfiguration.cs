@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.EntityConfiguration.DisplayFormatting;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.EntityConfiguration.Rules;
-using Iql.Queryable.Data.Validation;
+using Iql.Data.Configuration.DisplayFormatting;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Configuration.Rules;
+using Iql.Data.Configuration.Validation.Validation;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Configuration
 {
     public interface IEntityConfiguration : IEntityMetadata
     {

@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using Iql.Queryable.Expressions.Conversion;
+using Iql.Conversion;
 
 #if TypeScript
 using Iql.Parsing;

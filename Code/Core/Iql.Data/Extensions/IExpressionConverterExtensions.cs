@@ -1,7 +1,6 @@
-﻿using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
+﻿using Iql.Conversion;
+using Iql.Parsing.Expressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 
 namespace Iql.Data.Extensions
 {

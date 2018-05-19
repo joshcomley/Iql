@@ -1,7 +1,7 @@
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Tracking.State;
+using Iql.Data.Context;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation
     {

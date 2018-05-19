@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Context;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Tracking.State;
 using Iql.Extensions;
 using Iql.OData.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Tracking.State;
 using Iql.Queryable.Extensions;
 using Newtonsoft.Json.Linq;
 

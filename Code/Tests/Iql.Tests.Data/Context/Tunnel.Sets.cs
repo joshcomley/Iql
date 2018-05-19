@@ -1,15 +1,16 @@
-using Iql.Queryable.Data.EntityConfiguration;
 using Tunnel.Sets;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.DataStores;
 using Iql.OData;
 using Iql.Parsing;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Lists;
 using Iql.OData.Methods;
 using System;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.DataStores;
+using Iql.Data.Lists;
+
 namespace Tunnel.Sets
 {
 	public class ApplicationUserSet : DbSet<ApplicationUser, string>

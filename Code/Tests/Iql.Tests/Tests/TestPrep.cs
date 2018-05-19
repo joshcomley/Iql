@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Iql.Queryable.Data.Queryable;
+using Iql.Data.Context;
 using Iql.Tests.Context;
 using Tunnel.App.Data.Entities;
 

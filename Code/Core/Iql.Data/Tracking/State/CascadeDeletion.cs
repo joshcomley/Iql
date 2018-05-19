@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
+using Iql.Data.Configuration.Relationships;
 
-namespace Iql.Queryable.Data.Tracking.State
+namespace Iql.Data.Tracking.State
 {
     public class CascadeDeletion
     {

@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public enum OperationType
     {

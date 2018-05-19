@@ -4,7 +4,7 @@ using Iql.Parsing;
 using System;
 using System.Linq.Expressions;
 
-namespace Iql.Queryable.Expressions.Conversion
+namespace Iql.Conversion
 {
     public interface IIqlToExpressionConverter
     {

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
 
-namespace ExpressionModifier
+namespace Iql.DotNet.IqlToDotNetExpression
 {
     public class SubstExpressionVisitor : ExpressionVisitor
     {

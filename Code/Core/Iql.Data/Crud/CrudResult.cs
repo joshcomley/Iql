@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.Crud.Operations;
+using Iql.Data.Crud.Operations;
 
-namespace Iql.Queryable.Data.Crud
+namespace Iql.Data.Crud
 {
     public class CrudResult<TResult, TOperation> : TypedCrudResult
         where TOperation : IEntitySetCrudOperationBase

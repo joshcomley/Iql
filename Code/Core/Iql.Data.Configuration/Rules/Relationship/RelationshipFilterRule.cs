@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Rules.Relationship
+namespace Iql.Data.Configuration.Rules.Relationship
 {
     public class RelationshipFilterRule<TEntity, TRelationship> : Rule<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>>, IRelationshipRule
     {

@@ -1,6 +1,6 @@
-﻿using Iql.Queryable.Data.Tracking.State;
+﻿using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Events
+namespace Iql.Data.Events
 {
     public class MarkedForDeletionChangeEvent
     {

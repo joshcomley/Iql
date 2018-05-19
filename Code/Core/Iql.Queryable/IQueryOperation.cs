@@ -1,6 +1,4 @@
-using Iql.Parsing;
-
-namespace Iql.Queryable.Operations
+namespace Iql.Queryable
 {
     public interface IQueryOperation
     {

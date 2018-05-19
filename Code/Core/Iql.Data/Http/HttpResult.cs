@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Iql.Queryable.Data.Http
+namespace Iql.Data.Http
 {
     public class HttpResult : IHttpResult
     {

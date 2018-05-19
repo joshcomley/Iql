@@ -1,7 +1,7 @@
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Extensions;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
 
-namespace Iql.Queryable.Data
+namespace Iql.Data
 {
     public class SimplePropertyMerger
     {

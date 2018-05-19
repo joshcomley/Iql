@@ -1,9 +1,7 @@
-using System;
 using System.Linq.Expressions;
-using Iql.Parsing;
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 
-namespace Iql.Queryable.Expressions
+namespace Iql.Parsing.Expressions
 {
     public class ExpressionQueryExpression : ExpressionQueryExpressionBase
     {

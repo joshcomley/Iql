@@ -1,6 +1,6 @@
-﻿using Iql.Queryable.Data.Lists;
+﻿using Iql.Data.Lists;
 
-namespace Iql.Queryable.Data.QueryContainer
+namespace Iql.Data.QueryContainer
 {
     public interface IQueryPipeChangedEvent
     {

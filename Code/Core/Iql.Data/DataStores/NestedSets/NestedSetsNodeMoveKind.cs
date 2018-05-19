@@ -1,4 +1,4 @@
-﻿namespace Iql.Queryable.Data.DataStores.NestedSets
+﻿namespace Iql.Data.DataStores.NestedSets
 {
     public enum NestedSetsNodeMoveKind
     {

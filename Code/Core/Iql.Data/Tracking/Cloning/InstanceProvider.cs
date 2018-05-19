@@ -1,7 +1,7 @@
 ﻿using System;
 using TypeSharp.Extensions;
 
-namespace Iql.Queryable.Data.Tracking.Cloning
+namespace Iql.Data.Tracking.Cloning
 {
     [DoNotConvert]
     /// <summary>

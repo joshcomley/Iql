@@ -1,6 +1,6 @@
-using Iql.Queryable.Data.Context;
+using Iql.Data.Context;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public class EntityCrudOperation<T> : EntitySetCrudOperation<T>, IEntityCrudOperation<T>
     {

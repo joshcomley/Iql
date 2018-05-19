@@ -1,11 +1,11 @@
 ﻿using System;
+using Iql.Conversion;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
 #endif
 using Iql.Queryable;
-using Iql.Queryable.Expressions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

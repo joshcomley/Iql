@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Rules.Relationship;
 using Iql.Parsing.Types;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Rules.Relationship;
 
-namespace Iql.Queryable.Types
+namespace Iql.Data.Types
 {
     public class TypeResolver : ITypeResolver
     {

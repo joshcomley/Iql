@@ -3,30 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
+using Iql.Conversion;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.DataStores;
 using Iql.Data.Extensions;
+using Iql.Data.IqlToIql;
+using Iql.Data.Lists;
+using Iql.Data.Operations;
+using Iql.Data.Queryable;
+using Iql.Data.Tracking;
+using Iql.Data.Tracking.State;
 using Iql.Extensions;
 using Iql.Parsing;
+using Iql.Parsing.Expressions.QueryExpressions;
 using Iql.Parsing.Reduction;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Tracking;
-using Iql.Queryable.Data.Tracking.State;
+using Iql.Queryable;
 using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.Conversion;
-using Iql.Queryable.Expressions.QueryExpressions;
-using Iql.Queryable.Extensions;
-using Iql.Queryable.IqlToIql;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Data.Queryable
+namespace Iql.Data.Context
 {
     public class DbQueryable<T> : Queryable<T, DbQueryable<T>, DbList<T>>, IDbQueryable
         where T : class

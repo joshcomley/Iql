@@ -5,20 +5,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.DataStores;
+using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Lists;
+using Iql.Data.Tracking.State;
 using Iql.Extensions;
 using Iql.Parsing;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.DataStores.NestedSets;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Queryable;
-using Iql.Queryable.Data.Tracking.State;
-using Iql.Queryable.Extensions;
 
-namespace Iql.Queryable.Data.Context
+namespace Iql.Data.Context
 {
     public class DataContext : IDataContext
     {

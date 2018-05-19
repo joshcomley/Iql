@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Expressions.Conversion
+namespace Iql.Conversion
 {
     public interface IExpressionConverter : IExpressionToIqlConverter, IIqlToExpressionConverter
     {

@@ -1,7 +1,6 @@
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
+using Iql.Data.Configuration;
 
-namespace Iql.Queryable.IqlToIql
+namespace Iql.Data.IqlToIql.Parsers
 {
     public class IqlToIqlLambdaParser : IqlToIqlActionParserBase<IqlLambdaExpression>
     {

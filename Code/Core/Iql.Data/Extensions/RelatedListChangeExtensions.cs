@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Operations;
+using Iql.Data.Configuration;
+using Iql.Data.Lists;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Extensions
 {
     public static class RelatedListChangeExtensions
     {

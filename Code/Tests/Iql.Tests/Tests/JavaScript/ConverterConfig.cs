@@ -1,9 +1,9 @@
-﻿#if TypeScript
+﻿using Iql.Conversion;
+#if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
 #endif
-using Iql.Queryable.Expressions;
 
 namespace Iql.Tests.Tests.JavaScript
 {

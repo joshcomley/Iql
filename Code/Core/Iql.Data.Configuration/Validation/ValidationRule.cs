@@ -1,8 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.EntityConfiguration.Rules;
+using Iql.Data.Configuration.Rules;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Validation
+namespace Iql.Data.Configuration.Validation
 {
     public class ValidationRule<TEntity> : BinaryRule<TEntity>, IValidationRule
     {

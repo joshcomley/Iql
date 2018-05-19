@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Paging;
-using Iql.Queryable.Data.Queryable;
-using Iql.Queryable.Extensions;
+using Iql.Data.Context;
+using Iql.Data.Extensions;
+using Iql.Data.Paging;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public class DbList<T> : EntityList<T>, IDbList where T : class
     {

@@ -1,5 +1,4 @@
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
+using Iql.Data.Configuration;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {

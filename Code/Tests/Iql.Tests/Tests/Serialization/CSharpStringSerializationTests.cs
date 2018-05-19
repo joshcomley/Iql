@@ -1,10 +1,10 @@
 ﻿#if !TypeScript
 using System;
 using System.Linq.Expressions;
+using Iql.Conversion;
 using Iql.DotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
-using Iql.Queryable.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 

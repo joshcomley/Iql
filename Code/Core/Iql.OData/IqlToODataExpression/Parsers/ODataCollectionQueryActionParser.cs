@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Iql.Data.Configuration;
 using Iql.OData.Extensions;
-using Iql.Queryable.Data;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Expressions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
 {

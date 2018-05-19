@@ -2,17 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.DataStores;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Relationships;
-using Iql.Queryable.Data.Tracking.State;
-using Iql.Queryable.Events;
-using Iql.Queryable.Exceptions;
-using Iql.Queryable.Extensions;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Context;
+using Iql.Data.Crud.Operations;
+using Iql.Data.DataStores;
+using Iql.Data.Events;
+using Iql.Data.Exceptions;
+using Iql.Data.Relationships;
+using Iql.Data.Tracking.State;
 
-namespace Iql.Queryable.Data.Tracking
+namespace Iql.Data.Tracking
 {
     class RemoteKeyMap
     {

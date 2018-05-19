@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Crud.Operations;
+using Iql.Data.Crud.Operations;
 
-namespace Iql.Queryable.Data.Context
+namespace Iql.Data.Context
 {
     public class DataContextEventsConfiguration
     {

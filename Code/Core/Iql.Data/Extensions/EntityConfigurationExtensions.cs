@@ -1,11 +1,12 @@
 ﻿using System;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.Lists;
+using Iql.Data.Configuration;
+using Iql.Data.Context;
+using Iql.Data.Lists;
+using Iql.Data.Operations;
 using Iql.Queryable.Expressions;
-using Iql.Queryable.Expressions.QueryExpressions;
 using Iql.Queryable.Operations;
 
-namespace Iql.Queryable.Extensions
+namespace Iql.Data.Extensions
 {
     public static class EntityConfigurationExtensions
     {

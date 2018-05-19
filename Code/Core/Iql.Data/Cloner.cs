@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Context;
+using Iql.Data.Lists;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Extensions;
+
 #if !TypeScript
 
 #endif
 
-namespace Iql.Queryable.Data
+namespace Iql.Data
 {
     public enum RelationshipCloneMode
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Iql.Queryable.Data.EntityConfiguration.Rules
+namespace Iql.Data.Configuration.Rules
 {
     public abstract class BinaryRule<TContext> : Rule<TContext, bool>, IBinaryRule
     {

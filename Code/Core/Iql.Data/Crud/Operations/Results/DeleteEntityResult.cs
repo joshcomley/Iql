@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Crud.Operations.Results
+namespace Iql.Data.Crud.Operations.Results
 {
     public class DeleteEntityResult<T> : EntityCrudResult<T, DeleteEntityOperation<T>>, IDeleteEntityResult
     {

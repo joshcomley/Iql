@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
 using Iql.Queryable.Extensions;
 
-namespace Iql.Queryable.Data.Relationships
+namespace Iql.Data.Relationships
 {
     public class PropertyChangeIgnorer
     {

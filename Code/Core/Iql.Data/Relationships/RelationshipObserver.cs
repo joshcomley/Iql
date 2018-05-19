@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Configuration.Relationships;
+using Iql.Data.Context;
+using Iql.Data.Events;
+using Iql.Data.Lists;
+using Iql.Data.Tracking;
+using Iql.Data.Tracking.State;
 using Iql.Extensions;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Tracking;
-using Iql.Queryable.Data.Tracking.State;
-using Iql.Queryable.Events;
 using Iql.Queryable.Extensions;
 
-namespace Iql.Queryable.Data.Relationships
+namespace Iql.Data.Relationships
 {
     public class RelationshipObserver : IRelationshipObserver
     {

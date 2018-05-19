@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using TypeSharp.Extensions;
 
-namespace Iql.Queryable.Data.Tracking.Cloning
+namespace Iql.Data.Tracking.Cloning
 {
     /// <summary>
     ///     This class is an abstract base class that can be used as a really simple way of making an object

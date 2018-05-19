@@ -1,4 +1,4 @@
-﻿namespace Iql.Queryable.Expressions
+﻿namespace Iql.Conversion
 {
     public class ExpressionResult<T>
     {

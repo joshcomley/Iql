@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Queryable.Exceptions
+namespace Iql.Data.Exceptions
 {
     public class NullNotAllowedException : Exception
     {

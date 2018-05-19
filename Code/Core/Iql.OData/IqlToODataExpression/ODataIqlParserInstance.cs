@@ -1,6 +1,6 @@
 using System;
+using Iql.Data.Types;
 using Iql.Parsing;
-using Iql.Queryable.Types;
 
 namespace Iql.OData.IqlToODataExpression
 {

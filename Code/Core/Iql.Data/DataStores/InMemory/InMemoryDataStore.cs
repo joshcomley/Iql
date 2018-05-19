@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Queued;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.Relationships;
-using Iql.Queryable.Data.Tracking;
-using Iql.Queryable.Expressions;
-using Iql.Queryable.Extensions;
+using Iql.Conversion;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.Relationships;
+using Iql.Data.Tracking;
 
-namespace Iql.Queryable.Data.DataStores.InMemory
+namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryDataStore : DataStore
     {

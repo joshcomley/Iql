@@ -1,12 +1,13 @@
 using System;
 using System.Linq.Expressions;
-using Iql.Queryable.Data.Queryable;
+using Iql.Parsing.Expressions;
+using Iql.Parsing.Expressions.QueryExpressions;
 
 #if TypeScript
 using Iql.Parsing;
 #endif
 
-namespace Iql.Queryable.Expressions.QueryExpressions
+namespace Iql.Queryable.Expressions
 {
     public class ExpandQueryExpression
         : ExpressionQueryExpression, IExpandQueryExpression

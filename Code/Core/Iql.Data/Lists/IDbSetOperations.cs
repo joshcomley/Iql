@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Data.Tracking.State;
-using Iql.Queryable.Expressions.QueryExpressions;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.Tracking.State;
+using Iql.Parsing.Expressions.QueryExpressions;
 
 #if TypeScript
 using Iql.Parsing;
 #endif
 
-namespace Iql.Queryable.Data.Lists
+namespace Iql.Data.Lists
 {
     public interface IDbSetOperations<T, TKey> where T : class
     {

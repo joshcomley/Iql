@@ -1,4 +1,4 @@
-﻿using Iql.Queryable.Data.Http;
+﻿using Iql.Data.Http;
 
 namespace Iql.Tests.Context
 {

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Data.Configuration;
+using Iql.Data.Configuration.Extensions;
+using Iql.Data.Configuration.Relationships;
 using Iql.Extensions;
-using Iql.Queryable.Data.EntityConfiguration;
-using Iql.Queryable.Data.EntityConfiguration.Relationships;
-using Iql.Queryable.Extensions;
 
-namespace Iql.Queryable.Data.Relationships
+namespace Iql.Data.Relationships
 {
     public class RelationshipExpander
     {

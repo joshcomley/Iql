@@ -1,10 +1,11 @@
-using Iql.Queryable.Data.EntityConfiguration;
 using Tunnel.Sets;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
-using Iql.Queryable.Events;
-using Iql.Queryable.Data.Lists;
 using System;
+using Iql.Data;
+using Iql.Data.Configuration.Events;
+using Iql.Data.Events;
+using Iql.Data.Lists;
 
 
 namespace Tunnel.App.Data.Entities

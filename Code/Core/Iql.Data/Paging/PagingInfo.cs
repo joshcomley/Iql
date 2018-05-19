@@ -1,4 +1,4 @@
-namespace Iql.Queryable.Data.Paging
+namespace Iql.Data.Paging
 {
     public class PagingInfo
     {

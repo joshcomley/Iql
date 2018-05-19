@@ -1,20 +1,20 @@
 using System.Linq;
-using Iql.Queryable.Data.Context;
-using Iql.Queryable.Operations;
+using Iql.Data.Context;
+using Iql.Data.Operations;
 
-namespace Iql.Queryable.Data.Crud.Operations
+namespace Iql.Data.Crud.Operations
 {
     public class GetDataOperation<T> : EntitySetCrudOperation<T> where T : class
     {
-        private Queryable.IQueryable<T> _queryable;
+        private global::Iql.Queryable.IQueryable<T> _queryable;
         public bool IsSingleResult { get; private set; }
-        public GetDataOperation(Queryable.IQueryable<T> queryable, IDataContext dataContext) : base(OperationType.Get,
+        public GetDataOperation(global::Iql.Queryable.IQueryable<T> queryable, IDataContext dataContext) : base(OperationType.Get,
             dataContext)
         {
             Queryable = queryable;
         }
 
-        public Queryable.IQueryable<T> Queryable
+        public global::Iql.Queryable.IQueryable<T> Queryable
         {
             get => _queryable;
             set

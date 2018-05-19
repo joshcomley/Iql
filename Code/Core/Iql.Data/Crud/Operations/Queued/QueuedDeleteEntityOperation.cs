@@ -1,7 +1,7 @@
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.EntityConfiguration;
+using Iql.Data.Configuration;
+using Iql.Data.Crud.Operations.Results;
 
-namespace Iql.Queryable.Data.Crud.Operations.Queued
+namespace Iql.Data.Crud.Operations.Queued
 {
     public class QueuedDeleteEntityOperation<T> : QueuedOperation<DeleteEntityOperation<T>, DeleteEntityResult<T>>
     {

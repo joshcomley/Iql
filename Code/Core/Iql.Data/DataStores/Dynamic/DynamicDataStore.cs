@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using Iql.Queryable.Data.Crud.Operations;
-using Iql.Queryable.Data.Crud.Operations.Queued;
-using Iql.Queryable.Data.Crud.Operations.Results;
-using Iql.Queryable.Data.Tracking;
+using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.Crud.Operations.Results;
+using Iql.Data.Tracking;
 
-namespace Iql.Queryable.Data.DataStores.Dynamic
+namespace Iql.Data.DataStores.Dynamic
 {
     public class DynamicDataStore : DataStore
     {

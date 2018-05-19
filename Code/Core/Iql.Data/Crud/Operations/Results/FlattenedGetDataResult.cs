@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Iql.Queryable.Data.Crud.Operations.Results
+namespace Iql.Data.Crud.Operations.Results
 {
     public class FlattenedGetDataResult<T> : DataResult<T, Dictionary<Type, IList>>, IFlattenedGetDataResult
         where T : class

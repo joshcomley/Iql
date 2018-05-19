@@ -1,9 +1,9 @@
 using System;
-using Iql.JavaScript.IqlToJavaScriptExpression;
+using Iql.Data.Configuration;
+using Iql.Data.IqlToIql.Parsers;
 using Iql.Parsing;
-using Iql.Queryable.Data.EntityConfiguration;
 
-namespace Iql.Queryable.IqlToIql
+namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlExpressionAdapter : IqlExpressionAdapter<IqlToIqlIqlData>
     {

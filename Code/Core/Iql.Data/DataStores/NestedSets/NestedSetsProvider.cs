@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Iql.Queryable.Data.DataStores.NestedSets
+namespace Iql.Data.DataStores.NestedSets
 {
     public abstract class NestedSetsProvider<T> : INestedSetsProvider<T>
     {

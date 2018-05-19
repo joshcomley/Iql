@@ -1,4 +1,4 @@
-﻿namespace Iql.Queryable.Data.Methods
+﻿namespace Iql.Data.Methods
 {
     public class DataMethodResult<T> : MethodResult
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using TypeSharp.Extensions;
 
-namespace Iql.Queryable.Data.Tracking.Cloning
+namespace Iql.Data.Tracking.Cloning
 {
     /// <summary>
     ///     An interface defining an instance provider, i.e. an object that can create instances of a specific type.

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Iql.Queryable.Data.Lists;
-using Iql.Queryable.Data.Queryable;
+using Iql.Data.Context;
+using Iql.Data.Lists;
 
-namespace Iql.Queryable.Data.EntityConfiguration
+namespace Iql.Data.Queryable
 {
     public class EntityDefaultQueryConfiguration
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Iql.Queryable.Data.DataStores.NestedSets;
-using Iql.Queryable.Data.Http;
+using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Http;
 
 namespace Iql.OData.NestedSets
 {
