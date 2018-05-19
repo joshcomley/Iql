@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Tests.Data", "Tests\Iql
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Data", "Core\Iql.Data\Iql.Data.csproj", "{05C5859A-E58C-41AE-B194-CB36BEB71A73}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Data.Configuration", "Core\Iql.Data.Configuration\Iql.Data.Configuration.csproj", "{57B047A0-8076-4120-8D3F-3860E8DA6081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Entities", "Core\Iql.Entities\Iql.Entities.csproj", "{57B047A0-8076-4120-8D3F-3860E8DA6081}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Conversion", "Core\Iql.Conversion\Iql.Conversion.csproj", "{8E83E48E-7B4A-4B4C-99D3-CE696FF464BA}"
 EndProject

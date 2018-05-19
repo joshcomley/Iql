@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
-    <ProjectReference Include="..\Iql.Data.Configuration\Iql.Data.Configuration.csproj" />
+    <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql\Iql.csproj" />
   </ItemGroup>
 

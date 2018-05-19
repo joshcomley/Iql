@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Iql.Data.Configuration\Iql.Data.Configuration.csproj" />
+    <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql.Parsing\Iql.Parsing.csproj" />
     <ProjectReference Include="..\Iql.Queryable\Iql.Queryable.csproj" />
   </ItemGroup>
