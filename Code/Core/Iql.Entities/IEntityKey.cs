@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public interface IEntityKey
     {

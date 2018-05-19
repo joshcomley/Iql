@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Conversion;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.Extensions;
 using Iql.JavaScript.IqlToJavaScriptExpression;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;

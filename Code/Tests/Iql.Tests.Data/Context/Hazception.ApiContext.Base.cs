@@ -4,9 +4,9 @@ using Hazception.ApiContext.Base;
 using Haz.App.Data.Entities;
 using System;
 using System.Collections.Generic;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
+using Iql.Entities;
 using Iql.OData.Methods;
 namespace Hazception.ApiContext.Base
 {

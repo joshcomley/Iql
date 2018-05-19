@@ -1,4 +1,4 @@
-namespace Iql.Data.Configuration.Rules
+namespace Iql.Entities.Rules
 {
     public interface IBinaryRule : IRuleBase<bool>
     {

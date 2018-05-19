@@ -2,7 +2,7 @@
 using Iql.JavaScript;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iql.Tests.Tests
+namespace Iql.Tests.Tests.JavaScript
 {
     [TestClass]
     public class JavaScriptCodeExtractorTests

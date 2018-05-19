@@ -1,4 +1,4 @@
-﻿namespace Iql.Data.Configuration.Events
+﻿namespace Iql.Entities.Events
 {
     public class EventSubscription
     {

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Iql.Data.Configuration;
+using Iql.Entities;
 
 namespace Iql.Data.Extensions
 {

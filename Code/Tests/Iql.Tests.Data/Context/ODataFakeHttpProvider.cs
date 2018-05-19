@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Iql.Data.Http;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Iql.Tests.Context
+namespace Iql.Tests.Data.Context
 {
     public class ODataFakeHttpProvider : IHttpProvider
     {

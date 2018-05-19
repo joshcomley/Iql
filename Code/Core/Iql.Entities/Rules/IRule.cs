@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.Rules
+namespace Iql.Entities.Rules
 {
     public interface IRule
     {

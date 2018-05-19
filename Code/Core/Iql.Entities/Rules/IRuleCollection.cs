@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Iql.Data.Configuration.Rules
+namespace Iql.Entities.Rules
 {
     public interface IRuleCollection<out TRule>
         where TRule : IRule

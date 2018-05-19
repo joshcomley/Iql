@@ -1,5 +1,5 @@
-using Iql.Data.Configuration;
 using Iql.Data.Context;
+using Iql.Entities;
 
 namespace Iql.Data.Crud.Operations
 {

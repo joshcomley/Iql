@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Tunnel.App.Data.Entities;
 
-namespace Iql.Tests.Context
+namespace Iql.Tests.Data.Context
 {
     public class InMemoryDataBase
     {

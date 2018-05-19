@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using Iql.OData.Methods;
 using Iql;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
+using Iql.Entities;
 
 namespace Tunnel.ApiContext.Base
 {

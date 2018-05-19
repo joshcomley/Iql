@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Iql.Data.Configuration.Validation.Validation
+namespace Iql.Entities.Validation.Validation
 {
     public class EntityValidationResult<T> : ValidationResult<T, EntityValidationResult<T>>, IEntityValidationResult
     {

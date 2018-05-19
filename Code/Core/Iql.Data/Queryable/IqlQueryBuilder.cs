@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.Extensions;
 
 namespace Iql.Data.Queryable

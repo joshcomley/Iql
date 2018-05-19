@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
 using Iql.Extensions;
 
 namespace Iql.Data.Tracking

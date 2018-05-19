@@ -1,5 +1,5 @@
-using Iql.Data.Configuration;
 using Iql.Data.Crud.Operations.Results;
+using Iql.Entities;
 
 namespace Iql.Data.Crud.Operations.Queued
 {

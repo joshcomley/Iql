@@ -1,7 +1,7 @@
 using System;
 using Iql.Conversion;
-using Iql.Data.Configuration;
 using Iql.Data.Types;
+using Iql.Entities;
 using Iql.Parsing;
 
 namespace Iql.Data.IqlToIql

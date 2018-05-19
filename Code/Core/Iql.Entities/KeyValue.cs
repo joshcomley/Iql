@@ -1,6 +1,6 @@
-using Iql.Data.Configuration.Extensions;
+using Iql.Entities.Extensions;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public class KeyValue
     {

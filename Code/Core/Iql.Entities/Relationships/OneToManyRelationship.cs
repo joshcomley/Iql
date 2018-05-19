@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.Relationships
+namespace Iql.Entities.Relationships
 {
     public class OneToManyRelationship<TSource, TTarget, TCollection>
         : OneToRelationship<TSource, TTarget, TTarget, TCollection>

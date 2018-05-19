@@ -1,4 +1,4 @@
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.Queryable.Operations;
 
 namespace Iql.Data.Operations

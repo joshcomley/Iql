@@ -1,5 +1,5 @@
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Relationships;
+using Iql.Entities;
+using Iql.Entities.Relationships;
 using Iql.Queryable;
 
 namespace Iql.Data.Operations

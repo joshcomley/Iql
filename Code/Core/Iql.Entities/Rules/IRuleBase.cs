@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Data.Configuration.Rules
+namespace Iql.Entities.Rules
 {
     public interface IRuleBase<out TResult> : IRule
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Events;
-using Iql.Data.Configuration.Relationships;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
+using Iql.Entities;
+using Iql.Entities.Events;
+using Iql.Entities.Relationships;
 
 namespace Iql.Data.Tracking.State
 {

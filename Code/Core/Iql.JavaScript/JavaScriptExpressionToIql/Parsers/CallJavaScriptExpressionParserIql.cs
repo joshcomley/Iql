@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators;

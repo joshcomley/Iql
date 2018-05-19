@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.Rules.Display
+namespace Iql.Entities.Rules.Display
 {
     public class DisplayRule<TEntity> : BinaryRule<TEntity>, IDisplayRule
     {

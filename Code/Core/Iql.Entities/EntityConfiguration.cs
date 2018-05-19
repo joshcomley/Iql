@@ -5,17 +5,17 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Iql.Conversion;
-using Iql.Data.Configuration.DisplayFormatting;
-using Iql.Data.Configuration.Extensions;
-using Iql.Data.Configuration.Relationships;
-using Iql.Data.Configuration.Rules;
-using Iql.Data.Configuration.Rules.Display;
-using Iql.Data.Configuration.Rules.Relationship;
-using Iql.Data.Configuration.Validation;
-using Iql.Data.Configuration.Validation.Validation;
+using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Extensions;
+using Iql.Entities.Relationships;
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Validation;
+using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {

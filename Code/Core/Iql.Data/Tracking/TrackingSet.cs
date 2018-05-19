@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Events;
-using Iql.Data.Configuration.Extensions;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
@@ -12,6 +9,9 @@ using Iql.Data.Events;
 using Iql.Data.Exceptions;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
+using Iql.Entities.Events;
+using Iql.Entities.Extensions;
 
 namespace Iql.Data.Tracking
 {

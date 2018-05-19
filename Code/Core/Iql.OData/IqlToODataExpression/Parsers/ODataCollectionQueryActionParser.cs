@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.OData.Extensions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers

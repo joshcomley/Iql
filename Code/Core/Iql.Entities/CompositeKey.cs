@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public class CompositeKey
     {

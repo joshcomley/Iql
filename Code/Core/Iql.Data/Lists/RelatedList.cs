@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Events;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
+using Iql.Entities;
+using Iql.Entities.Events;
 
 namespace Iql.Data.Lists
 {

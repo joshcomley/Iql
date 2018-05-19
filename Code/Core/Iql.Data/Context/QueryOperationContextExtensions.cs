@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
 using Iql.Data.Operations;
+using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Iql.Parsing.Expressions;
 using Iql.Parsing.Expressions.QueryExpressions;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Rules.Relationship;
+using Iql.Entities;
+using Iql.Entities.Rules.Relationship;
 using Iql.Parsing.Types;
 
 namespace Iql.Data.Types

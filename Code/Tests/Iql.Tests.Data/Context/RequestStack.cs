@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Iql.Tests.Context
+namespace Iql.Tests.Data.Context
 {
     public class RequestStack
     {

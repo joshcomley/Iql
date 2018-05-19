@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Iql.Extensions;
 
-namespace Iql.Data.Configuration.Extensions
+namespace Iql.Entities.Extensions
 {
     public static class IqlQueryableTypeExtensions
     {

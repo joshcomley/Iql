@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Iql.Data.Configuration.Extensions;
+using Iql.Entities.Extensions;
 using Iql.Extensions;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public abstract class PropertyBase : IPropertyMetadata
     {

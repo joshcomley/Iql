@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using Iql.Data.Configuration.Extensions;
 
 namespace Iql.CloneMethodGenerator.ConsoleApp
 {

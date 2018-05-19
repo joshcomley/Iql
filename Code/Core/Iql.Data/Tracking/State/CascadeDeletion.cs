@@ -1,4 +1,4 @@
-using Iql.Data.Configuration.Relationships;
+using Iql.Entities.Relationships;
 
 namespace Iql.Data.Tracking.State
 {

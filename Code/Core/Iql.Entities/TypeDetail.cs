@@ -1,7 +1,7 @@
 using System;
 using Iql.Serialization;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public class TypeDetail : ITypeDefinition
     {

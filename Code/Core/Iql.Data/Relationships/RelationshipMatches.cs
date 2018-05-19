@@ -1,5 +1,5 @@
 using System.Collections;
-using Iql.Data.Configuration.Relationships;
+using Iql.Entities.Relationships;
 
 namespace Iql.Data.Relationships
 {

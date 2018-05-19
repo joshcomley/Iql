@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Iql.Data.Configuration.Extensions
+namespace Iql.Entities.Extensions
 {
     public static class IqlDataSetReferenceExpressionExtensions
     {

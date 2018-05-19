@@ -1,4 +1,4 @@
-﻿namespace Iql.Data.Configuration
+﻿namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {

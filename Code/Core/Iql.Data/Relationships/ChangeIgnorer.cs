@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.Queryable.Extensions;
 
 namespace Iql.Data.Relationships

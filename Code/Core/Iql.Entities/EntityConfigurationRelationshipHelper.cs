@@ -1,4 +1,4 @@
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     internal class EntityConfigurationRelationshipHelper
     {

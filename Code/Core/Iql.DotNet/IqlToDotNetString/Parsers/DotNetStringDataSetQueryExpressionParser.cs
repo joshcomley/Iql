@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
+using Iql.DotNet.IqlToDotNetExpression;
+using Iql.DotNet.IqlToDotNetExpression.Parsers;
 
-namespace Iql.DotNet.IqlToDotNetExpression.Parsers
+namespace Iql.DotNet.IqlToDotNetString.Parsers
 {
     public class DotNetStringDataSetQueryExpressionParser : DotNetActionParserBase<IqlCollectitonQueryExpression>
     {

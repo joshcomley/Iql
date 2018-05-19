@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Events;
-using Iql.Data.Configuration.Extensions;
-using Iql.Data.Configuration.Relationships;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
+using Iql.Entities;
+using Iql.Entities.Events;
+using Iql.Entities.Extensions;
+using Iql.Entities.Relationships;
 
 namespace Iql.Data.Tracking.State
 {

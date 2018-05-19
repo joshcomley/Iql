@@ -1,6 +1,6 @@
 ﻿using Iql.Data.Http;
 
-namespace Iql.Tests.Context
+namespace Iql.Tests.Data.Context
 {
     public class FakeHttpRequest
     {

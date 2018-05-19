@@ -7,6 +7,7 @@ using Haz.App.Data.Entities;
 using Iql.Data.Http;
 using Iql.JavaScript.Extensions;
 using Iql.Tests.Context;
+using Iql.Tests.Data.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

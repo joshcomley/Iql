@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Iql.Data.Configuration.Validation.Validation
+namespace Iql.Entities.Validation.Validation
 {
     public interface IRelationshipCollectionValidationResult
     {

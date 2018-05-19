@@ -3,9 +3,9 @@ using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
 using System;
 using Iql.Data;
-using Iql.Data.Configuration.Events;
 using Iql.Data.Events;
 using Iql.Data.Lists;
+using Iql.Entities.Events;
 
 
 namespace Tunnel.App.Data.Entities

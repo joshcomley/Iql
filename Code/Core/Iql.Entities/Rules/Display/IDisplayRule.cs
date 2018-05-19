@@ -1,4 +1,4 @@
-namespace Iql.Data.Configuration.Rules.Display
+namespace Iql.Entities.Rules.Display
 {
     public interface IDisplayRule : IBinaryRule
     {

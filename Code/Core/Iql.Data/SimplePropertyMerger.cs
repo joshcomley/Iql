@@ -1,5 +1,5 @@
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
+using Iql.Entities;
+using Iql.Entities.Extensions;
 
 namespace Iql.Data
 {

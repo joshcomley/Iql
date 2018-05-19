@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.DisplayFormatting
+namespace Iql.Entities.DisplayFormatting
 {
     public class EntityDisplayTextFormatter<TEntity> : IEntityDisplayTextFormatter
     {

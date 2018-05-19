@@ -1,6 +1,6 @@
 using System;
-using Iql.Data.Configuration;
 using Iql.Data.IqlToIql.Parsers;
+using Iql.Entities;
 using Iql.Parsing;
 
 namespace Iql.Data.IqlToIql

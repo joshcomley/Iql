@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Iql.OData.Extensions;
 using Iql.Queryable.Extensions;

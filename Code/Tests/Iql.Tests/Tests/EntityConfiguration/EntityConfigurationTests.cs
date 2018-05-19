@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;

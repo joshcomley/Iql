@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Iql.Data.Configuration.Relationships
+namespace Iql.Entities.Relationships
 {
     public interface IRelationship
     {

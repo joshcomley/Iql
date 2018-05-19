@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
+using Iql.Entities;
 using Iql.Extensions;
 
 namespace Iql.Data

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.DisplayFormatting
+namespace Iql.Entities.DisplayFormatting
 {
     public class DisplayFormatting<TEntity> : IDisplayFormatting 
         where TEntity : class

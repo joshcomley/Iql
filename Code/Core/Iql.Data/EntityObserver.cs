@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Iql.Data.Configuration.Events;
-using Iql.Data.Configuration.Extensions;
 using Iql.Data.Events;
 using Iql.Data.Lists;
 using Iql.Data.Tracking.State;
+using Iql.Entities.Events;
+using Iql.Entities.Extensions;
 
 namespace Iql.Data
 {

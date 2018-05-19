@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Conversion;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking;
+using Iql.Entities;
+using Iql.Entities.Extensions;
 
 namespace Iql.Data.DataStores.InMemory
 {

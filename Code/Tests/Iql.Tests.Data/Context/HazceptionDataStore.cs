@@ -2,6 +2,8 @@ using Haz.App.Data.Entities;
 using Iql.Tests.Context;
 using System;
 using System.Collections.Generic;
+using Iql.Tests.Data.Context;
+
 public class HazceptionDataStore {
 	public HazceptionInMemoryDataBase GetData() {
 		var instance = new HazceptionInMemoryDataBase {

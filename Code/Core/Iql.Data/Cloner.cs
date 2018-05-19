@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
 using Iql.Data.Context;
 using Iql.Data.Lists;
+using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Extensions;
 
 #if !TypeScript

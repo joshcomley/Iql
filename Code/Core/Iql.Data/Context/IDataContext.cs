@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Relationships;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Lists;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
+using Iql.Entities.Relationships;
 using Iql.Parsing;
 
 namespace Iql.Data.Context

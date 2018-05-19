@@ -1,8 +1,8 @@
 ﻿using System;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
 using Iql.Data.Lists;
 using Iql.Data.Operations;
+using Iql.Entities;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Operations;
 

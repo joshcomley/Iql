@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Conversion;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
+using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
 

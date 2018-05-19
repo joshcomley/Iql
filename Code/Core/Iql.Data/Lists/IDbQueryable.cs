@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Tracking;
+using Iql.Entities;
 using Iql.Queryable;
 
 namespace Iql.Data.Lists

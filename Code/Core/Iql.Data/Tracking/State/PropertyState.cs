@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using Iql.Data.Configuration;
 using Iql.Data.Crud.Operations;
+using Iql.Entities;
 
 namespace Iql.Data.Tracking.State
 {

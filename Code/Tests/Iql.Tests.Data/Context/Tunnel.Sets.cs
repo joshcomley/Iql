@@ -6,10 +6,10 @@ using Iql.Parsing;
 using System.Collections.Generic;
 using Iql.OData.Methods;
 using System;
-using Iql.Data.Configuration;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Lists;
+using Iql.Entities;
 
 namespace Tunnel.Sets
 {

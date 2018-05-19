@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Data.Configuration.Validation.Validation
+namespace Iql.Entities.Validation.Validation
 {
     public interface IRelationshipValidationResult: IPropertyValidationResult
     {

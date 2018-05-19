@@ -1,6 +1,6 @@
-using Iql.Data.Configuration.Rules;
+using Iql.Entities.Rules;
 
-namespace Iql.Data.Configuration.Validation
+namespace Iql.Entities.Validation
 {
 
     public class ValidationCollection<TEntity> : RuleCollection<ValidationRule<TEntity>>

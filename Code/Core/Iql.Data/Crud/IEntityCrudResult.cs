@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Iql.Data.Configuration.Validation.Validation;
 using Iql.Data.Crud.Operations;
+using Iql.Entities.Validation.Validation;
 
 namespace Iql.Data.Crud
 {

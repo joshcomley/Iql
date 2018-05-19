@@ -5,15 +5,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
-using Iql.Data.Configuration.Relationships;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Lists;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
+using Iql.Entities.Extensions;
+using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Parsing;
 

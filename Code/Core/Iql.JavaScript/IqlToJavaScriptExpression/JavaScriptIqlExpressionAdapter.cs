@@ -1,5 +1,5 @@
 using System;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.Parsing;
 

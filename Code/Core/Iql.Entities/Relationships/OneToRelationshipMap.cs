@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.Relationships
+namespace Iql.Entities.Relationships
 {
     public class OneToRelationshipMap<TSource, TTarget> where TSource : class where TTarget : class
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Relationships;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
+using Iql.Entities;
+using Iql.Entities.Relationships;
 using Iql.Parsing;
 using Iql.Queryable.Expressions;
 

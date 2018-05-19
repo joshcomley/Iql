@@ -1,9 +1,10 @@
 ﻿
 using Iql.Conversion;
-using Iql.Data.Configuration;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.InMemory;
 using Iql.Data.Queryable;
+using Iql.Entities;
+using Iql.Tests.Data.Context;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Extensions;
-using Iql.Data.Configuration.Relationships;
+using Iql.Entities;
+using Iql.Entities.Extensions;
+using Iql.Entities.Relationships;
 using Iql.Extensions;
 
 namespace Iql.Data.Relationships

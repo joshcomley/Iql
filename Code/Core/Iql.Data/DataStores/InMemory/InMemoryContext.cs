@@ -5,10 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Conversion;
-using Iql.Data.Configuration;
-using Iql.Data.Configuration.Relationships;
 using Iql.Data.Context;
 using Iql.Data.Relationships;
+using Iql.Entities;
+using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Parsing.Reduction;
 

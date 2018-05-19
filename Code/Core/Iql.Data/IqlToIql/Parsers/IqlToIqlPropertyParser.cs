@@ -1,4 +1,4 @@
-using Iql.Data.Configuration;
+using Iql.Entities;
 
 namespace Iql.Data.IqlToIql.Parsers
 {

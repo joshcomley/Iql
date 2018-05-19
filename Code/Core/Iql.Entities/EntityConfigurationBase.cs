@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Iql.Extensions;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : IEntityMetadata
     {

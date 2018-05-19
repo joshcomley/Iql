@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Iql.Data.Configuration.Rules.Relationship
+namespace Iql.Entities.Rules.Relationship
 {
     public interface IRelationshipRule : IRuleBase<LambdaExpression>
     {

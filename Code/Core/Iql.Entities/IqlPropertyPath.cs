@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public class IqlPropertyPath
     {

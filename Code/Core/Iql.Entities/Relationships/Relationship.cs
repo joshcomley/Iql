@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
 
-namespace Iql.Data.Configuration.Relationships
+namespace Iql.Entities.Relationships
 {
     public class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : IRelationship
         where TSource : class where TTarget : class

@@ -1,4 +1,4 @@
-﻿namespace Iql.Data.Configuration.Validation.Validation
+﻿namespace Iql.Entities.Validation.Validation
 {
     public class PropertyValidationResult<T> : ValidationResult<T, PropertyValidationResult<T>>, IPropertyValidationResult
     {

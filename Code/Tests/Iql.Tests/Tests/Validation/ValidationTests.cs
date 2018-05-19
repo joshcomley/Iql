@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Data.Configuration;
 using Iql.Data.Crud.Operations.Results;
+using Iql.Entities;
 using Iql.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

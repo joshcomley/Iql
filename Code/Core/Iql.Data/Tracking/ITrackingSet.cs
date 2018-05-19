@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Iql.Data.Configuration;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
 
 namespace Iql.Data.Tracking
 {

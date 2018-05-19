@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
-using Iql.Data.Configuration.Rules;
-using Iql.Data.Configuration.Rules.Display;
-using Iql.Data.Configuration.Rules.Relationship;
-using Iql.Data.Configuration.Validation;
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Validation;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     [DebuggerDisplay("{Name} - {Kind}")]
     public class Property<TOwner, TProperty, TElementType> : PropertyBase, IProperty

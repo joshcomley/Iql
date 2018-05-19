@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using System.Reflection;
 
-namespace Iql.Data.Configuration.Extensions
+namespace Iql.Entities.Extensions
 {
     public static class IqlQueryableObjectExtensions
     {

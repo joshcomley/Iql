@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Iql.Data.Configuration.Events
+namespace Iql.Entities.Events
 {
     public class EventEmitter<TEvent> : IEventManager<TEvent>
     {

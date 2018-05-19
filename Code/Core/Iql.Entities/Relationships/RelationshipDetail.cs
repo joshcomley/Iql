@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Data.Configuration.Extensions;
+using Iql.Entities.Extensions;
 
-namespace Iql.Data.Configuration.Relationships
+namespace Iql.Entities.Relationships
 {
     public class RelationshipDetail<T, TProperty> : IRelationshipDetail where T : class
     {

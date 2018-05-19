@@ -1,4 +1,4 @@
-﻿namespace Iql.Tests.Context
+﻿namespace Iql.Tests.Data.Context
 {
     public enum HttpMethod
     {

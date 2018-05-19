@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
-using Iql.Data.Configuration;
+using Iql.Entities;
 using Iql.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Iql.Data.Configuration
+namespace Iql.Entities
 {
     public static class HintHelper
     {

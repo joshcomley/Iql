@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Iql.Data.Configuration.Events;
 using Iql.Data.Lists;
+using Iql.Entities.Events;
 
 namespace Iql.Data.QueryContainer
 {

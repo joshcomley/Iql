@@ -8,6 +8,7 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.DotNet;
 #endif
 using Iql.Queryable;
+using Iql.Tests.Data.Context;
 
 namespace Iql.Tests.Context
 {
