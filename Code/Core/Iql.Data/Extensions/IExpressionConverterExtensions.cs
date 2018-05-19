@@ -1,4 +1,7 @@
 ﻿using Iql.Conversion;
+#if TypeScript
+using Iql.Parsing;
+#endif
 using Iql.Parsing.Expressions;
 using Iql.Parsing.Expressions.QueryExpressions;
 
@@ -19,7 +22,7 @@ namespace Iql.Data.Extensions
             return converter.ConvertLambdaExpressionToIql<TEntity>(
                 lambdaExpression
 #if TypeScript
-                    , filter.EvaluateContext
+                    , filter.EvaluateContext ?? evaluateContext
 #endif
             );
         }

@@ -5,6 +5,10 @@
     <Configurations>Debug;Release;TypeScript Debug</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
+    <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql.Parsing\Iql.Parsing.csproj" />

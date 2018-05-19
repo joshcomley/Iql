@@ -1,3 +1,7 @@
+#if TypeScript
+using Iql.Parsing;
+#endif
+
 namespace Iql.Queryable
 {
     public interface IQueryOperation

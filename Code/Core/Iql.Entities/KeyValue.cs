@@ -1,3 +1,6 @@
+#if TypeScript
+using System;
+#endif
 using Iql.Entities.Extensions;
 
 namespace Iql.Entities

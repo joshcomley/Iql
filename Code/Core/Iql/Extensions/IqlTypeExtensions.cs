@@ -53,10 +53,12 @@ namespace Iql.Extensions
                 return "string";
             }
 
+#if !TypeScript
             if (type.IsGenericType)
             {
                 return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(x => GetFullName(x)).ToArray()) + ">";
             }
+#endif
 
             return type.Name;
         }

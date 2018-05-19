@@ -35,11 +35,7 @@ namespace Iql.DotNet.DotNetExpressionToIql
                 .ToIqlExpression(exp);
         }
 
-        public static IqlExpression Parse(LambdaExpression exp
-#if TypeScript
-            , EvaluateContext evaluateContext
-#endif
-            )
+        public static IqlExpression Parse(LambdaExpression exp)
         {
             return new DotNetExpressionToIqlExpressionParser<T>()
                 .ToIqlExpression(exp);

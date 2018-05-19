@@ -21,9 +21,6 @@ namespace Iql.DotNet
             return new ExpressionResult<IqlExpression>(
                 DotNetExpressionToIqlExpressionParser<TEntity>.Parse(
                     lambdaExpression
-#if TypeScript
-                    , evaluateContext
-#endif
                 )
             );
         }

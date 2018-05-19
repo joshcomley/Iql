@@ -15,8 +15,7 @@ namespace Iql.Entities.Extensions
 
         public static bool IsDefaultValue(this object value, ITypeDefinition type)
         {
-            return Equals(value, null) ||
-                   Equals(type.DefaultValue(), value);
+            return Equals(value, null) || Equals(type.DefaultValue(), value);
         }
 
         public static object[] GetPropertyValues<T>(this T obj, IProperty[] properties)

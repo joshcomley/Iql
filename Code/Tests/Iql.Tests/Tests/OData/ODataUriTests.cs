@@ -7,6 +7,7 @@ using Iql.OData.Extensions;
 using Iql.Queryable;
 #if TypeScript
 using Iql.Parsing;
+using Iql.Parsing.Expressions;
 using Iql.Queryable.Expressions;
 #endif
 using Iql.Tests.Context;
