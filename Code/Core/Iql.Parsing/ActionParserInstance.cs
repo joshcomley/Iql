@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Conversion;
+using Iql.Data.Configuration;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
 
@@ -184,6 +185,7 @@ namespace Iql.Parsing
 
         private void DecrementPath(IqlExpression expression)
         {
+            //EntityConfigurationBuilder.FindConfigurationBuilderForEntityType()
             switch (expression?.Kind)
             {
                 case IqlExpressionKind.Count:
