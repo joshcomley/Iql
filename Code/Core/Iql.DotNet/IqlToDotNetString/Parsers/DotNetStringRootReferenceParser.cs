@@ -7,11 +7,8 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
         public override IqlExpression ToQueryString(IqlRootReferenceExpression action,
             DotNetStringIqlParserInstance parser)
         {
-            IqlExpression expression =
-                new IqlFinalExpression<string>(
-                    parser.RootVariableName
-                );
-            return expression;
+            var rootEntityName = parser.GetRootEntityName(action);
+            return new IqlFinalExpression<string>(rootEntityName);
         }
     }
 }

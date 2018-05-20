@@ -200,11 +200,24 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         )
         {
-            var exp = ConvertIqlToJavaScript(expression, typeof(TEntity)
+            return ConvertIql(expression, typeof(TEntity)
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        public LambdaExpression ConvertIql(IqlExpression expression, Type type = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var exp = ConvertIqlToJavaScript(expression, type
 #if TypeScript
                 , evaluateContext            
 #endif
-                ).Expression;
+            ).Expression;
             var id = Guid.NewGuid().ToString();
             id = id.Replace("-", "");
             id = $"fn_{id}";
@@ -212,6 +225,18 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             exp += $";{id}";
             var result = (LambdaExpression)Evaluator.Eval(exp);
             return result;
+        }
+        public override LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return ConvertIql(expression, null
+#if TypeScript
+            , evaluateContext
+#endif
+                );
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEntityType

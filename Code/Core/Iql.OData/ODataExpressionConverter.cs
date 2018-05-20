@@ -35,6 +35,15 @@ namespace Iql.OData
             throw new NotImplementedException();
         }
 
+        public override LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext
+#endif
+        )
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEnityType
 #if TypeScript
             , EvaluateContext evaluateContext = null

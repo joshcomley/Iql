@@ -3,15 +3,18 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Brandless.ObjectSerializer;
 using Iql.Conversion;
 using Iql.DotNet;
 using Iql.DotNet.Extensions;
 using Iql.DotNet.Serialization;
 using Iql.Entities.Rules.Relationship;
+using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Queryable;
 using Iql.Queryable.Extensions;
 using Iql.Serialization;
 using Iql.Tests.Context;
+using Iql.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -27,12 +30,41 @@ namespace Iql.Tests.Tests.Serialization
         }
 
         [TestMethod]
+        public void TestLambdaGeneratingLambdaString()
+        {
+            var instance = RelationshipFilterContextExpressions.Get();
+            var converter = new DotNetExpressionConverter();
+            var expression = converter.ConvertIqlToExpressionString(instance);
+            Assert.AreEqual(@"entity => entity2 => (entity2.ClientId == entity.Owner.ClientId)",
+                expression);
+        }
+
+        [TestMethod]
+        public void TestLambdaGeneratingLambda()
+        {
+            var instance = RelationshipFilterContextExpressions.Get();
+            var converter = new DotNetExpressionConverter();
+            var expression = converter.ConvertIqlToLambdaExpression(instance);
+        }
+
+        [TestMethod]
         public async Task TestMultipleConditionsWithDifferingParameterNames()
         {
             var db = new AppDbContext();
             var query = db.Clients.Where(c => c.Name == "a").Where(d => d.Name == "b");
             var iql = await query.ToIqlAsync();
             var dotNetQuery = new DotNetExpressionConverter().ConvertIqlToExpression<Client>(iql);
+        }
+
+        [TestMethod]
+        public async Task TestConvertLambdaToDotNetString()
+        {
+            var db = new AppDbContext();
+            Expression<Func<Client, bool>> exp = c => c.Name == "abc";
+            var converter = new DotNetExpressionConverter();
+            var iql = converter.ConvertLambdaExpressionToIql<Client>(exp);
+            var fnString = converter.ConvertIqlToExpressionStringAs<object>(iql.Expression);
+            Assert.AreEqual(@"entity => ((entity.Name == null ? null : entity.Name.ToUpper()) == (""abc"" == null ? null : ""abc"".ToUpper()))", fnString);
         }
 
         [TestMethod]

@@ -31,14 +31,28 @@ namespace Iql.DotNet
 #endif
         )
         {
+            return ConvertIql(iql, typeof(TEntity));
+        }
+
+        public LambdaExpression ConvertIql(IqlExpression expression, Type type = null)
+        {
             var adapter = new DotNetIqlExpressionAdapter("entity");
-            var parser = new DotNetIqlParserInstance(adapter, typeof(TEntity), this);
-            var dotNetExpression = parser.Parse(iql
+            var parser = new DotNetIqlParserInstance(adapter, type, this);
+            var dotNetExpression = parser.Parse(expression
 #if TypeScript
-                , evaluateContext
+                , null
 #endif
             );
             return dotNetExpression.ToLambda();
+        }
+
+        public override LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return ConvertIql(expression);
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression iql, Type rootEntityType

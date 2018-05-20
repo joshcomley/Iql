@@ -95,11 +95,26 @@ namespace Iql.Conversion
 
         public abstract LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         ) where TEntity : class;
 
-        public string ConvertIqlToExpressionString<TEntity>(IqlExpression expression
+        public abstract LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
+        public string ConvertIqlToExpressionString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return ConvertIqlToExpressionStringByType(expression, null);
+        }
+
+        public string ConvertIqlToExpressionStringAs<TEntity>(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

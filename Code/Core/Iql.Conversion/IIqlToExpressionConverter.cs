@@ -15,6 +15,12 @@ namespace Iql.Conversion
         )
             where TEntity : class;
 
+        LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
         string ConvertIqlToExpressionStringByType(IqlExpression expression,
             Type rootEntityType
 #if TypeScript
@@ -22,7 +28,13 @@ namespace Iql.Conversion
 #endif
         );
 
-        string ConvertIqlToExpressionString<TEntity>(IqlExpression expression
+        string ConvertIqlToExpressionString(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
+        string ConvertIqlToExpressionStringAs<TEntity>(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

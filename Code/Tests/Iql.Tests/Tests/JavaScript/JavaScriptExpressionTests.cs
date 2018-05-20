@@ -3,8 +3,10 @@ using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
 #endif
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Entities.Rules.Relationship;
 using Iql.JavaScript.Extensions;
 #if !TypeScript
 #endif
@@ -12,6 +14,7 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.OData;
 using Iql.OData.Extensions;
 using Iql.Tests.Context;
+using Iql.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -20,6 +23,16 @@ namespace Iql.Tests.Tests.JavaScript
     [TestClass]
     public class JavaScriptExpressionTests : TestsBase
     {
+        [TestMethod]
+        public void TestLambdaGeneratingLambda()
+        {
+            var instance = RelationshipFilterContextExpressions.Get();
+            var converter = new JavaScriptExpressionConverter();
+            var expression = converter.ConvertIqlToExpressionString(instance);
+            Assert.AreEqual(@"function(entity) { return function(entity2) { return ((entity2 || {})[""ClientId""] == ((entity || {})[""Owner""] || {})[""ClientId""]); }; }",
+                expression);
+        }
+
         [TestMethod]
         public async Task TestConvertPropertyExpression()
         {
@@ -133,7 +146,7 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
                 "function(t) { return 1 == t.IsLockedOut }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression
 #if TypeScript
             , null
 #endif
@@ -146,7 +159,7 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
                 "function(t) { return t.IsLockedOut === true }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression);
             Assert.AreEqual(@"($it/IsLockedOut eq true)", odataFilter);
         }
 
@@ -155,7 +168,7 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
                 "function(t) { return !t.IsLockedOut }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression);
             Assert.AreEqual(@"($it/IsLockedOut eq false)", odataFilter);
         }
 
@@ -164,7 +177,7 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
                 "function(t) { return !!!!!t.IsLockedOut }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionString<ApplicationUser>(iql.Expression);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression);
             Assert.AreEqual(@"((((($it/IsLockedOut eq false) eq false) eq false) eq false) eq false)", odataFilter);
         }
 

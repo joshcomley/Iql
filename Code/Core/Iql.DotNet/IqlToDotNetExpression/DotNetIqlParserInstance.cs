@@ -35,8 +35,16 @@ namespace Iql.DotNet.IqlToDotNetExpression
     {
         public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type currentEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
         {
-            ContextParameter = System.Linq.Expressions.Expression.Parameter(
-                typeof(InMemoryContext<>).MakeGenericType(currentEntityType), "context");
+        }
+
+        protected override void SetEntityType(Type type)
+        {
+            base.SetEntityType(type);
+            if (CurrentEntityType != null)
+            {
+                ContextParameter = ContextParameter ?? System.Linq.Expressions.Expression.Parameter(
+                                       typeof(InMemoryContext<>).MakeGenericType(CurrentEntityType), "context");
+            }
         }
 
         public Dictionary<IqlParameteredExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlParameteredExpression, Dictionary<string, ParameterExpression>>();

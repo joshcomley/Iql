@@ -36,7 +36,7 @@ namespace Iql.Parsing
         public Type CurrentEntityType => TypeStack.LastOrDefault();
         public List<Type> TypeStack { get; } = new List<Type>();
         public Type RootEntityType { get; }
-        private void SetEntityType(Type type)
+        protected virtual void SetEntityType(Type type)
         {
             if (IsRoot)
             {
@@ -66,6 +66,11 @@ namespace Iql.Parsing
         public string RootEntityParameterName()
         {
             return _rootEntityName;
+        }
+
+        public bool IsParameterName(string name)
+        {
+            return _rootEntityNames.ContainsKey(name);
         }
 
         public string GetRootEntityParameterName(string name)
@@ -316,6 +321,7 @@ namespace Iql.Parsing
                             evaluateContext
 #endif
                 );
+                reducer.Ancestors = Ancestors.ToList();
                 result = reducer.ReduceStaticContent(result);
 
                 if (result != null)

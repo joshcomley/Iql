@@ -37,7 +37,7 @@ namespace Iql.Data.IqlToIql
     //        throw new NotImplementedException();
     //    }
 
-    //    public string ConvertIqlToExpressionString<TEntity>(IqlExpression expression)
+    //    public string ConvertIqlToExpressionStringAs<TEntity>(IqlExpression expression)
     //    {
     //        throw new NotImplementedException();
     //    }
