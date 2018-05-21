@@ -620,12 +620,13 @@ namespace Iql.Entities
             Expression<Func<T, bool>> displayRule,
             string key,
             string message,
-            DisplayRuleKind kind = DisplayRuleKind.NewAndEdit)
+            DisplayRuleKind kind = DisplayRuleKind.DisplayIf,
+            DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
             var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
             var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
-            rule.Kind = kind;
+            rule.AppliesToKind = appliesToKind;
             return this;
         }
 
@@ -823,15 +824,22 @@ namespace Iql.Entities
                 property);
         }
 
-        public ManyToRelationshipMap<T, TTarget> HasMany<TTarget>(
-            Expression<Func<T, IEnumerable<TTarget>>> property) where TTarget : class
+        //public ManyToRelationshipMap<T, TTarget> HasMany<TTarget>(
+        //    Expression<Func<T, IEnumerable<TTarget>>> property) where TTarget : class
+        //{
+        //    return new ManyToRelationshipMap<T, TTarget>(
+        //        Builder,
+        //        this,
+        //        Builder.EntityType<TTarget>(),
+        //        RelationshipMapType.Many,
+        //        property);
+        //}
+
+        public EntityConfiguration<T> SetPropertyOrder(params Expression<Func<T, object>>[] properties)
         {
-            return new ManyToRelationshipMap<T, TTarget>(
-                Builder,
-                this,
-                Builder.EntityType<TTarget>(),
-                RelationshipMapType.Many,
-                property);
+            var propertyNames = properties.Select(p => IqlConverter.Instance.GetPropertyName(p));
+            PropertyOrder = propertyNames.ToList();
+            return this;
         }
     }
 }

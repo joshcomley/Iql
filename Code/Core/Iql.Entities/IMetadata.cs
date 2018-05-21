@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Iql.Entities.Metadata;
 
 namespace Iql.Entities
 {
@@ -16,5 +17,6 @@ namespace Iql.Entities
         bool HasHint(string name);
         void SetHint(string name, string value = null);
         void RemoveHint(string name);
+        List<HelpText> HelpTexts { get; set; }
     }
 }

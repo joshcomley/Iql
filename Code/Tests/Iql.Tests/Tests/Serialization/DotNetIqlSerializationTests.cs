@@ -3,16 +3,12 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Brandless.ObjectSerializer;
 using Iql.Conversion;
 using Iql.DotNet;
 using Iql.DotNet.Extensions;
 using Iql.DotNet.Serialization;
 using Iql.Entities.Rules.Relationship;
-using Iql.JavaScript.JavaScriptExpressionToIql;
-using Iql.Queryable;
 using Iql.Queryable.Extensions;
-using Iql.Serialization;
 using Iql.Tests.Context;
 using Iql.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,6 +23,15 @@ namespace Iql.Tests.Tests.Serialization
         public static void SetUp(TestContext textContext)
         {
             var db = new AppDbContext();
+        }
+
+        [TestMethod]
+        public void TestGetPropertyName()
+        {
+            Expression<Func<Site, object>> exp = s => s.CreatedByUser;
+            var converter = new DotNetExpressionConverter();
+            var name = converter.GetPropertyName(exp);
+            Assert.AreEqual(nameof(Site.CreatedByUser), name);
         }
 
         [TestMethod]

@@ -10,6 +10,7 @@ namespace Iql.Entities.Rules.Display
         }
 
         public DisplayRuleKind Kind { get; set; }
+        public DisplayRuleAppliesToKind AppliesToKind { get; set; }
         protected override bool InverseResult => false;
     }
 }

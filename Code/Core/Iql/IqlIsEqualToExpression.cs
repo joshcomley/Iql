@@ -3,8 +3,8 @@ namespace Iql
     public class IqlIsEqualToExpression : IqlBinaryExpression
     {
         public IqlIsEqualToExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.IsEqualTo, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.IsEqualTo, left, right)
         {
         }
 

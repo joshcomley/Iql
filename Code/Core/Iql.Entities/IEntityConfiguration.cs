@@ -36,6 +36,6 @@ namespace Iql.Entities
         List<RelationshipMatch> AllRelationships();
         bool EntityHasKey(object entity, CompositeKey key);
         bool KeysMatch(object left, object right);
-        CompositeKey GetCompositeKey(object entity);
+        CompositeKey GetCompositeKey(object entity);        
     }
 }

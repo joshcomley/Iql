@@ -6,16 +6,15 @@ namespace Iql
     public class IqlVariableExpression : IqlReferenceExpression
     {
         public IqlVariableExpression(
-            string variableName,
-            string value,
+            string variableName = null,
+            string value = null,
             Type entityType = null) : base(IqlExpressionKind.Variable, entityType.ToIqlType())
         {
             VariableName = variableName;
             Value = value;
             EntityTypeName = entityType?.GetFullName();
         }
-
-
+        
         public IqlVariableExpression() : this(null, null)
         {
         }

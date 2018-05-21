@@ -2,9 +2,7 @@
 {
     public enum DisplayRuleKind
     {
-        NewAndEdit = 1,
-        New = 2,
-        Edit = 3,
-        Display = 4
+        DisplayIf = 1,
+        DisplayIfNot = 2
     }
 }

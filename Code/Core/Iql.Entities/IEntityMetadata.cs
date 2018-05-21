@@ -1,4 +1,6 @@
-﻿namespace Iql.Entities
+﻿using System.Collections.Generic;
+
+namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {
@@ -7,5 +9,6 @@
         string SetName { get; set; }
         string ResolveSetFriendlyName();
         string ResolveSetName();
+        List<string> PropertyOrder { get; set; }
     }
 }

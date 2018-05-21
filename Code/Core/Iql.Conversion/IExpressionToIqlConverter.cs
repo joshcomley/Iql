@@ -22,7 +22,7 @@ namespace Iql.Conversion
         )
             where TEntity : class;
         ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter,
-            Type entityType
+            Type entityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
