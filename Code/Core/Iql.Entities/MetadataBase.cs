@@ -30,6 +30,7 @@ namespace Iql.Entities
                 _titleSet = true;
             }
         }
+
         public string FriendlyName
         {
             get => _friendlyNameSet ? _friendlyName : Title;
@@ -40,6 +41,7 @@ namespace Iql.Entities
                 _resolvedFriendlyName = null;
             }
         }
+
         public string ResolveFriendlyName()
         {
             return _resolvedFriendlyName ?? (_resolvedFriendlyName =

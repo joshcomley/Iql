@@ -23,6 +23,10 @@ namespace Iql.Entities
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
+        /// <summary>
+        /// Determines whether this entity type has any fields that aren't key fields
+        /// </summary>
+        /// <returns></returns>
         public bool HasNonKeyFields()
         {
             for (var i = 0; i < Properties.Count; i++)
