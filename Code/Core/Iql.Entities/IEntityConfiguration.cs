@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
@@ -10,10 +11,15 @@ namespace Iql.Entities
 {
     public interface IEntityConfiguration : IEntityMetadata
     {
+        /// <summary>
+        /// Determines whether this entity type has any fields that aren't key fields
+        /// </summary>
+        /// <returns></returns>
         bool HasNonKeyFields();
         bool HasRelationshipKeys { get; }
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
+        IProperty[] OrderedProperties();
         IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
         IEntityValidationResult ValidateEntity(object entity);
         IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity,
@@ -21,10 +27,14 @@ namespace Iql.Entities
         IPropertyValidationResult ValidateEntityPropertyByName(object entity, string property);
         IPropertyValidationResult ValidateEntityProperty(object entity, IProperty property);
         IProperty FindPropertyByExpression(Expression<Func<object, object>> expression);
+        IProperty[] FindPropertiesByHint(string hint);
         IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
         IProperty FindPropertyByLambdaExpression(LambdaExpression expression);
         IDisplayFormatting DisplayFormatting { get; }
         IRuleCollection<IBinaryRule> EntityValidation { get; }
+        IEntityConfiguration AddSanitizer(Action<object> expression, string key = null);
+        IEntityConfiguration SetGeographyResolver(Func<object, Task<Geography.Geography>> expression);
+        Task<Geography.Geography> ResolveGeographyAsync(object entity);
         List<IProperty> Properties { get; }
         List<IRelationship> Relationships { get; set; }
         IEntityKey Key { get; }

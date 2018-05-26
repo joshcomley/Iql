@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Iql.Data.Types;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
@@ -29,6 +30,11 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             , evaluateContext
 #endif
                 ), RootEntityParameterName());
+        }
+
+        public bool AllowTranspilation()
+        {
+            return Ancestors.Count < 2 || !(Ancestors[0].Kind == IqlExpressionKind.Lambda && Ancestors[1].Kind == IqlExpressionKind.Lambda);
         }
     }
 }

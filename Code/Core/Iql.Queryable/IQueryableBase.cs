@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Parsing;
@@ -22,6 +23,12 @@ namespace Iql.Queryable
         IQueryableBase Take(int take);
         IQueryableBase Reverse();
         IQueryableBase Then(IQueryOperation operation);
+
+        IQueryableBase Where(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
 
         IQueryableBase WherePropertyEquals(string propertyName, object value
 #if TypeScript

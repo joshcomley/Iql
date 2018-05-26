@@ -15,6 +15,7 @@ namespace Iql.Entities
         private Dictionary<string, object> _customInformation;
 
         public Property(
+            IEntityConfiguration entityConfiguration,
             string name, 
             bool nullable,
             bool isCollection, 
@@ -26,6 +27,7 @@ namespace Iql.Entities
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
             ConfigureProperty(
+                entityConfiguration,
                 name,
                 nullable,
                 isCollection, 
@@ -40,6 +42,7 @@ namespace Iql.Entities
         }
 
         internal void ConfigureProperty(
+            IEntityConfiguration entityConfiguration,
             string name, 
             bool nullable,
             bool isCollection, 
@@ -52,6 +55,7 @@ namespace Iql.Entities
             IProperty countRelationship, 
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
+            EntityConfiguration = entityConfiguration;
             Name = name;
             if (readOnly.HasValue)
             {

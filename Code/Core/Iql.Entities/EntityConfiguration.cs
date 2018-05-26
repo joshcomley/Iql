@@ -4,13 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Extensions;
+using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Sanitization;
 using Iql.Entities.Validation;
 using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
@@ -57,6 +60,60 @@ namespace Iql.Entities
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
         public ValidationCollection<T> EntityValidation { get; } = new ValidationCollection<T>();
+
+        private readonly Dictionary<string, EntitySanitizer<T>> _sanitizers = new Dictionary<string, EntitySanitizer<T>>();
+        public IEntityConfiguration AddSanitizer(Action<T> expression, string key = null)
+        {
+            key = key ?? Guid.NewGuid().ToString();
+            if (!_sanitizers.ContainsKey(key))
+            {
+                _sanitizers.Add(key, new EntitySanitizer<T>());
+            }
+
+            var sanitizer = _sanitizers[key];
+            sanitizer.Key = key;
+            sanitizer.Run = expression;
+            return this;
+        }
+
+        IEntityConfiguration IEntityConfiguration.AddSanitizer(Action<object> expression, string key = null)
+        {
+            return AddSanitizer(expression, key);
+        }
+
+        public IEnumerable<EntitySanitizer<T>> Sanitizers()
+        {
+            return _sanitizers.Values;
+        }
+
+        private GeographyResolver<T> _geographyResolver = null;
+        public async Task<Geography.Geography> ResolveGeographyAsync(T entity)
+        {
+            if (_geographyResolver == null)
+            {
+                return null;
+            }
+
+            return await _geographyResolver.ResolveAsync(entity);
+        }
+
+        Task<Geography.Geography> IEntityConfiguration.ResolveGeographyAsync(object entity)
+        {
+            return ResolveGeographyAsync((T) entity);
+        }
+
+        public IEntityConfiguration SetGeographyResolver(Func<T, Task<Geography.Geography>> expression)
+        {
+            _geographyResolver = new GeographyResolver<T>(expression);
+            return this;
+        }
+
+        IEntityConfiguration IEntityConfiguration.SetGeographyResolver(
+            Func<object, Task<Geography.Geography>> expression)
+        {
+            SetGeographyResolver(expression);
+            return this;
+        }
 
         public DisplayFormatting<T> DisplayFormatting { get; }
 
@@ -446,6 +503,11 @@ namespace Iql.Entities
             return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
         }
 
+        public IProperty[] FindPropertiesByHint(string hint)
+        {
+            return Properties.Where(p => p.HasHint(hint)).ToArray();
+        }
+
         public IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(this, propertyExpression).Property;
@@ -550,6 +612,7 @@ namespace Iql.Entities
             var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<T, TProperty, TProperty>
                              ?? new Property<T, TProperty, TProperty>(
+                                 this,
                                  name,
                                  nullable,
                                  false,
@@ -783,6 +846,7 @@ namespace Iql.Entities
             if (definition == null)
             {
                 definition = new Property<T, TPropertyType, TElementType>(
+                    this,
                     name,
                     false,
                     isCollection,
@@ -796,6 +860,7 @@ namespace Iql.Entities
             else
             {
                 definition.ConfigureProperty(
+                    this,
                     name,
                     false,
                     isCollection,

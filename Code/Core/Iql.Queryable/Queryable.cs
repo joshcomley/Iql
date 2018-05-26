@@ -55,6 +55,19 @@ namespace Iql.Queryable
                 );
         }
 
+        IQueryableBase IQueryableBase.Where(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return Where((Expression<Func<T, bool>>) expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
         public TQueryable WherePropertyEquals(string propertyName, object value
 #if TypeScript
             , EvaluateContext evaluateContext = null

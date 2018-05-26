@@ -22,5 +22,6 @@ namespace Iql.Entities
         Func<object, object> PropertyGetter { get; }
         Func<object, object, object> PropertySetter { get; }
         Dictionary<string, object> CustomInformation { get; }
+        IEntityConfiguration EntityConfiguration { get; }
     }
 }

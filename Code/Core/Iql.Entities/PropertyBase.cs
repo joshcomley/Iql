@@ -9,6 +9,7 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : MetadataBase, IPropertyMetadata
     {
+        public IEntityConfiguration EntityConfiguration { get; set; }
         public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
         public bool Searchable { get; set; }
 

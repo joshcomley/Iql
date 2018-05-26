@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Extensions;
 
 namespace Iql.Entities
@@ -9,6 +10,23 @@ namespace Iql.Entities
         private IEntityKey _key;
         public List<IProperty> Properties { get; set; }
 
+        public IProperty[] OrderedProperties()
+        {
+            if (PropertyOrder == null || !PropertyOrder.Any())
+            {
+                return Properties.ToArray();
+            }
+            return Properties.OrderBy(t =>
+                {
+                    var index = PropertyOrder.IndexOf(t.Name);
+                    if (index == -1)
+                    {
+                        return 99999;
+                    }
+                    return index;
+                })
+                .ToArray();
+        }
         public IEntityKey Key
         {
             get => _key;

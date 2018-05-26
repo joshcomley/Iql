@@ -12,12 +12,14 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             JavaScriptIqlParserInstance parser)
         {
             return JavaScriptMethod(
+                parser,
                 ResolveMethodName(action),
                 ResolveMethodCaller(action),
                 ResolveMethodArguments(action).ToArray());
         }
 
-        public IqlExpression JavaScriptMethod(string name, IqlExpression caller, IqlExpression[] args)
+        public IqlExpression JavaScriptMethod(JavaScriptIqlParserInstance parser, string name, IqlExpression caller,
+            IqlExpression[] args)
         {
             var arr = new List<IqlExpression>();
             if (caller != null)
@@ -36,10 +38,17 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             }
             arr.Add(new IqlFinalExpression<string>(")"));
             var invocation = new IqlAggregateExpression(arr.ToArray());
-            return 
-                caller == null
-                ? invocation
-                : caller.Coalesce(invocation, new[]{"trim", "toUpperCase", "toLowerCase"}.Contains(name) ? @"""""" : null);
+            if (caller == null)
+            {
+                return invocation;
+            }
+
+            if (parser.AllowTranspilation())
+            {
+                return caller.Coalesce(invocation, new[] { "trim", "toUpperCase", "toLowerCase" }.Contains(name) ? @"""""" : null);
+            }
+
+            return caller.DotAccess(invocation);
         }
 
         public virtual IqlExpression ResolveMethodCaller(TAction action)

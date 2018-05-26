@@ -19,8 +19,13 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             //}
             if (parent != null)
             {
-                return parent.Coalesce(
-                    propertyName);
+                if (parser.AllowTranspilation())
+                {
+                    return parent.Coalesce(
+                        propertyName);
+                }
+
+                return parent.DotAccess(propertyName);
             }
             return new IqlFinalExpression<string>(action.PropertyName);
             //var accessorExpression =

@@ -29,8 +29,19 @@ namespace Iql.Tests.Tests.JavaScript
             var instance = RelationshipFilterContextExpressions.Get();
             var converter = new JavaScriptExpressionConverter();
             var expression = converter.ConvertIqlToExpressionString(instance);
-            Assert.AreEqual(@"function(entity) { return function(entity2) { return ((entity2 || {})[""ClientId""] == ((entity || {})[""Owner""] || {})[""ClientId""]); }; }",
+            Assert.AreEqual(@"function(entity) { return function(entity2) { return (entity2.ClientId == entity.Owner.ClientId); }; }",
                 expression);
+        }
+
+        [TestMethod]
+        public void TestLambda()
+        {
+            var converter = new JavaScriptExpressionConverter();
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(entity2) { return (entity2.ClientId == 1); }");
+            var javascript =
+                converter.ConvertIqlToExpressionStringByType(expression.Expression, typeof(ApplicationUser));
+            Assert.AreEqual(@"function(entity) { return ((entity || {})[""ClientId""] == 1); }",
+                javascript);
         }
 
         [TestMethod]
