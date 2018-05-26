@@ -101,7 +101,7 @@ namespace Iql.Data.Context
             {
                 expressions.Add(new IqlIsEqualToExpression(
                     new IqlPropertyExpression(otherEndConstraints[i].Name, root),
-                    new IqlLiteralExpression(thisEndConstraints[i].PropertyGetter(entity))
+                    new IqlLiteralExpression(thisEndConstraints[i].GetValue(entity))
                 ));
             }
 
@@ -142,7 +142,7 @@ namespace Iql.Data.Context
                     var result = await LoadRelationshipPropertyAsync(entity, relationship.ThisEnd.Property);
                     dictionary.Add(relationship.ThisEnd.Property, result);
                 }
-                else if (relationship.ThisEnd.Property.PropertyGetter(entity) == null &&
+                else if (relationship.ThisEnd.Property.GetValue(entity) == null &&
                          !relationship.ThisEnd.GetCompositeKey(entity).HasDefaultValue())
                 {
                     var result = await LoadRelationshipPropertyAsync(entity, relationship.ThisEnd.Property);

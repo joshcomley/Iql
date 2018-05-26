@@ -24,7 +24,7 @@ namespace Iql.Entities.Extensions
             for (var i = 0; i < properties.Length; i++)
             {
                 //arr[i] = property.PropertyInfo.GetValue(obj);
-                arr[i] = properties[i].PropertyGetter(obj);
+                arr[i] = properties[i].GetValue(obj);
                 i++;
             }
 
@@ -34,19 +34,19 @@ namespace Iql.Entities.Extensions
         public static object GetPropertyValue<T>(this T obj, IProperty property)
         {
             //return property.PropertyInfo.GetValue(obj);
-            return property.PropertyGetter(obj);
+            return property.GetValue(obj);
         }
 
         public static T GetPropertyValueAs<T>(this object obj, IProperty property)
         {
             //return (T) property.PropertyInfo.GetValue(obj);
-            return (T)property.PropertyGetter(obj);
+            return (T)property.GetValue(obj);
         }
 
         public static void SetPropertyValue<T>(this T obj, IProperty property, object value)
         {
             //property.PropertyInfo.SetValue(obj, value);
-            property.PropertySetter(obj, value);
+            property.SetValue(obj, value);
         }
 
         public static void SetPropertyValues<T>(this T obj, CompositeKey compositeKey)

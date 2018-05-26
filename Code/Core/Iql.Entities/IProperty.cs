@@ -19,8 +19,8 @@ namespace Iql.Entities
         //IProperty CountRelationship { get; }
         ITypeDefinition TypeDefinition { get; set; }
         List<object> Helpers { get; set; }
-        Func<object, object> PropertyGetter { get; }
-        Func<object, object, object> PropertySetter { get; }
+        Func<object, object> GetValue { get; }
+        Func<object, object, object> SetValue { get; }
         Dictionary<string, object> CustomInformation { get; }
         IEntityConfiguration EntityConfiguration { get; }
     }

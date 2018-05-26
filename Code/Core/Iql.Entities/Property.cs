@@ -81,7 +81,7 @@ namespace Iql.Entities
 #endif
             PropertyGetterExpressionTyped = propertyGetterExpression;
             PropertyGetterTyped = propertyGetterExpression.Compile();
-            PropertyGetter = o =>
+            GetValue = o =>
             {
                 var t = (TOwner) o;
                 var propertyGetterTyped = PropertyGetterTyped;
@@ -91,7 +91,7 @@ namespace Iql.Entities
 
             PropertySetterExpressionTyped = GetAssignmentLambda<TOwner, TProperty>(name);
             PropertySetterTyped = PropertySetterExpressionTyped.Compile();
-            PropertySetter = (o, v) => PropertySetterTyped((TOwner) o, (TProperty) v);
+            SetValue = (o, v) => PropertySetterTyped((TOwner) o, (TProperty) v);
         }
 
         public ValidationCollection<TOwner> ValidationRules { get; } = new ValidationCollection<TOwner>();
@@ -107,8 +107,8 @@ namespace Iql.Entities
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }
         public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
         public Func<TOwner, TProperty, TProperty> PropertySetterTyped { get; set; }
-        public override Func<object, object> PropertyGetter { get; set; }
-        public override Func<object, object, object> PropertySetter { get; set; }
+        public override Func<object, object> GetValue { get; set; }
+        public override Func<object, object, object> SetValue { get; set; }
 
         public Dictionary<string, object> CustomInformation => _customInformation = _customInformation ?? new Dictionary<string, object>();
 

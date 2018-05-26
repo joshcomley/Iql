@@ -81,7 +81,7 @@ namespace Iql.Entities.DisplayFormatting
                     for (var i = 0; i < titleProperties.Length; i++)
                     {
                         var property = titleProperties[i];
-                        var value = property.PropertyGetter(entity);
+                        var value = property.GetValue(entity);
                         if (value != null)
                         {
                             parts.Add("" + value);
@@ -94,7 +94,7 @@ namespace Iql.Entities.DisplayFormatting
                 var firstSearchProperty = EntityConfiguration.Properties.FirstOrDefault(p => p.SearchKind == PropertySearchKind.Primary);
                 if (firstSearchProperty != null)
                 {
-                    return "" + (firstSearchProperty.PropertyGetter(entity) ?? "");
+                    return "" + (firstSearchProperty.GetValue(entity) ?? "");
                 }
 
                 var firstNameProperty =
@@ -105,7 +105,7 @@ namespace Iql.Entities.DisplayFormatting
                 if (firstNameProperty != null && lastNameProperty != null)
                 {
                     return
-                        $"{firstNameProperty.PropertyGetter(entity) ?? ""} {lastNameProperty.PropertyGetter(entity) ?? ""}";
+                        $"{firstNameProperty.GetValue(entity) ?? ""} {lastNameProperty.GetValue(entity) ?? ""}";
                 }
 
                 var formatterProperty =
@@ -114,7 +114,7 @@ namespace Iql.Entities.DisplayFormatting
 
                 if (formatterProperty != null)
                 {
-                    return "" + (formatterProperty.PropertyGetter(entity) ?? "");
+                    return "" + (formatterProperty.GetValue(entity) ?? "");
                 }
                 return "";
             }

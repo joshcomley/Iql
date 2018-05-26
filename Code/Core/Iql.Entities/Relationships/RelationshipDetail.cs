@@ -73,7 +73,7 @@ namespace Iql.Entities.Relationships
                 //InverseCompositeKeys.Remove(entity);
                 if (!OtherSide.IsCollection)
                 {
-                    var referencedEntity = Property.PropertyGetter(entity);
+                    var referencedEntity = Property.GetValue(entity);
                     if (referencedEntity != null)
                     {
                         OtherSide.MarkDirty(referencedEntity);

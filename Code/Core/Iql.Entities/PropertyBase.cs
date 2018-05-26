@@ -101,8 +101,8 @@ namespace Iql.Entities
         }
 
         public string Placeholder { get; set; }
-        public abstract Func<object, object> PropertyGetter { get; set; }
-        public abstract Func<object, object, object> PropertySetter { get; set; }
+        public abstract Func<object, object> GetValue { get; set; }
+        public abstract Func<object, object, object> SetValue { get; set; }
 
         public List<object> Helpers { get; set; }
     }

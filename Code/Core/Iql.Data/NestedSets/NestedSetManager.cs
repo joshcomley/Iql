@@ -57,8 +57,8 @@ namespace Iql.Data.NestedSets
 
         public bool HasLocation(T entity)
         {
-            var left = LeftProperty.PropertyGetter(entity);
-            var right = RightProperty.PropertyGetter(entity);
+            var left = LeftProperty.GetValue(entity);
+            var right = RightProperty.GetValue(entity);
             return !Equals(left, 0) && !Equals(left, null) && !Equals(right, 0) && !Equals(right, null);
         }
 
@@ -99,15 +99,15 @@ namespace Iql.Data.NestedSets
                         {
                             var gt = new IqlIsGreaterThanExpression(
                                 IqlExpression.GetPropertyExpression(LeftProperty.Name),
-                                new IqlLiteralExpression(LeftProperty.PropertyGetter(entity), IqlType.Integer)
+                                new IqlLiteralExpression(LeftProperty.GetValue(entity), IqlType.Integer)
                             );
                             var lt = new IqlIsLessThanExpression(
                                 IqlExpression.GetPropertyExpression(RightProperty.Name),
-                                new IqlLiteralExpression(RightProperty.PropertyGetter(entity), IqlType.Integer)
+                                new IqlLiteralExpression(RightProperty.GetValue(entity), IqlType.Integer)
                             );
                             var key = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                                new IqlLiteralExpression(KeyProperty.PropertyGetter(entity), IqlType.String)
+                                new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
                             );
                             filter = new IqlExpression[] { gt, lt, key }.And();
                         }
@@ -116,11 +116,11 @@ namespace Iql.Data.NestedSets
                         {
                             var keyCheck = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                                new IqlLiteralExpression(KeyProperty.PropertyGetter(entity), IqlType.String)
+                                new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
                             );
                             var parentIdCheck = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(ParentIdProperty.Name),
-                                new IqlLiteralExpression(IdProperty.PropertyGetter(entity), IqlType.Integer)
+                                new IqlLiteralExpression(IdProperty.GetValue(entity), IqlType.Integer)
                             );
                             filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
                         }
@@ -129,11 +129,11 @@ namespace Iql.Data.NestedSets
                         {
                             var keyCheck = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                                new IqlLiteralExpression(KeyProperty.PropertyGetter(entity), IqlType.String)
+                                new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
                             );
                             var parentIdCheck = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(IdProperty.Name),
-                                new IqlLiteralExpression(ParentIdProperty.PropertyGetter(entity), IqlType.Integer)
+                                new IqlLiteralExpression(ParentIdProperty.GetValue(entity), IqlType.Integer)
                             );
                             filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
                         }

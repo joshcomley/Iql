@@ -222,7 +222,7 @@ namespace Iql.Data.Relationships
             string targetKey = null;
             if (!keyOnly)
             {
-                var target = relationship.Source.Property.PropertyGetter(entity);
+                var target = relationship.Source.Property.GetValue(entity);
                 if (target != null)
                 {
                     var targetTracking = TrackingSetCollection.TrackingSetByType(relationship.Target.Type);

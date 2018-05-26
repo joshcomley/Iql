@@ -47,7 +47,7 @@ namespace Iql.Data.Tracking.State
                     _originalValueSet = true;
                     if (EntityState != null)
                     {
-                        _oldValue = Property.PropertyGetter(EntityState.Entity);
+                        _oldValue = Property.GetValue(EntityState.Entity);
                     }
                 }
                 return _oldValue;
@@ -94,7 +94,7 @@ namespace Iql.Data.Tracking.State
         public IProperty Property { get; }
         public void Reset()
         {
-            OldValue = Property.PropertyGetter(EntityState.Entity);
+            OldValue = Property.GetValue(EntityState.Entity);
             NewValue = OldValue;
         }
 

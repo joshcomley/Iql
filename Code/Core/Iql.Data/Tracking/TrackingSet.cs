@@ -328,7 +328,7 @@ namespace Iql.Data.Tracking
                                     if (sourceConstraint.Kind.HasFlag(PropertyKind.Key) && sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
                                     {
                                         compositeKey.Keys.Single(key => key.Name == sourceConstraint.Name)
-                                            .Value = targetConstraint.PropertyGetter(changeEvent.Owner);
+                                            .Value = targetConstraint.GetValue(changeEvent.Owner);
                                     }
                                 }
 
@@ -345,8 +345,8 @@ namespace Iql.Data.Tracking
                                     //    for (var i = 0; i < relationship.OtherEnd.Configuration.Properties.Count; i++)
                                     //    {
                                     //        var property = relationship.OtherEnd.Configuration.Properties[i];
-                                    //        property.PropertySetter(trackedItem.Entity,
-                                    //            property.PropertyGetter(changeEvent.Item));
+                                    //        property.SetValue(trackedItem.Entity,
+                                    //            property.GetValue(changeEvent.Item));
                                     //    }
                                     //    changeEvent.ObservableListChangeEvent.Item = trackedItem.Entity;
                                     //}
@@ -468,7 +468,7 @@ namespace Iql.Data.Tracking
                 for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
                 {
                     var property = EntityConfiguration.Key.Properties[i];
-                    if (property.ReadOnly && !property.PropertyGetter(entity).IsDefaultValue(property.TypeDefinition))
+                    if (property.ReadOnly && !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {
                         throw new AttemptingToAssignRemotelyGeneratedKeyException();
                     }
@@ -613,7 +613,7 @@ namespace Iql.Data.Tracking
                         {
                             var newPropertyState = state.GetPropertyState(propertyState.Property.Name);
                             newPropertyState.OldValue = propertyState.OldValue;
-                            newPropertyState.NewValue = propertyState.Property.PropertyGetter(state.Entity);
+                            newPropertyState.NewValue = propertyState.Property.GetValue(state.Entity);
                         }
                         map.OldPropertyValues = null;
                         map.State = state;
@@ -630,7 +630,7 @@ namespace Iql.Data.Tracking
             //{
             //    var property = EntityConfiguration.Key.Properties[i];
             //    if (property.Kind.HasFlag(PropertyKind.RelationshipKey) &&
-            //        property.PropertyGetter(entity).IsDefaultValue(property.TypeDefinition))
+            //        property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
             //    {
             //        hasDefaultValue = true;
             //    }

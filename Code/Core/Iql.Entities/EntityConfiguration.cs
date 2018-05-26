@@ -247,7 +247,7 @@ namespace Iql.Entities
 
             if (!property.Kind.HasFlag(PropertyKind.Count) && !property.Kind.HasFlag(PropertyKind.Key))
             {
-                var propertyValue = property.PropertyGetter(entity);
+                var propertyValue = property.GetValue(entity);
                 if (!validationResult.HasValidationFailures() &&
                 PropertyValueIsIllegallyEmpty(property, entity, propertyValue)
             )
@@ -264,7 +264,7 @@ namespace Iql.Entities
                         }
                         if (!Equals(newValue, DefaultValuePlaceholderInstance))
                         {
-                            property.PropertySetter(entity, newValue);
+                            property.SetValue(entity, newValue);
                             return ValidateEntityPropertyInternal(entity, property, true);
                         }
                     }
@@ -297,7 +297,7 @@ namespace Iql.Entities
                     for (var i = 0; i < properties.Length; i++)
                     {
                         var constraint = properties[i];
-                        var constraintValue = constraint.PropertyGetter(entity);
+                        var constraintValue = constraint.GetValue(entity);
                         if (Equals(null, constraintValue) ||
                             Equals(constraint.TypeDefinition.DefaultValue(), constraintValue))
                         {
@@ -630,7 +630,7 @@ namespace Iql.Entities
                 definition.TypeDefinition = definition.TypeDefinition.ChangeKind(iqlType.Value);
             }
 
-            //definition.PropertyGetter = property.Compile();
+            //definition.GetValue = property.Compile();
             //definition.PropertyGetterExpression = property;
             if (!Properties.Contains(definition))
             {

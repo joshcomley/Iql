@@ -31,7 +31,7 @@ namespace Iql.Data.Queryable
                     for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
                     {
                         var keyProperty = entityConfiguration.Key.Properties[i];
-                        var value = keyProperty.PropertyGetter(id);
+                        var value = keyProperty.GetValue(id);
                         if (value != null)
                         {
                             compositeKey.Keys[i] = new KeyValue(keyProperty.Name, value, keyProperty.TypeDefinition);

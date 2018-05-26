@@ -163,7 +163,7 @@ namespace Iql.Data.Tracking.State
         {
             if (relationshipProperty.Kind.HasFlag(PropertyKind.Relationship))
             {
-                var relationshipEntity = relationshipProperty.PropertyGetter(Entity);
+                var relationshipEntity = relationshipProperty.GetValue(Entity);
                 if (relationshipEntity == null)
                 {
                     return true;
@@ -207,9 +207,9 @@ namespace Iql.Data.Tracking.State
                     continue;
                 }
 
-                var value = property.PropertyGetter(Entity);
+                var value = property.GetValue(Entity);
                 if (value.IsDefaultValue(property.TypeDefinition) && property.Kind.HasFlag(PropertyKind.RelationshipKey) &&
-                    Equals(null, property.Relationship.ThisEnd.Property.PropertyGetter(Entity)))
+                    Equals(null, property.Relationship.ThisEnd.Property.GetValue(Entity)))
                 {
                     isInsertable = false;
                     break;
@@ -243,7 +243,7 @@ namespace Iql.Data.Tracking.State
                     continue;
                 }
 
-                if (property.PropertyGetter(Entity).IsDefaultValue(
+                if (property.GetValue(Entity).IsDefaultValue(
                     property.TypeDefinition))
                 {
                     return false;

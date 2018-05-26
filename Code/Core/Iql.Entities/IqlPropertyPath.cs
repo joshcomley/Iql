@@ -82,7 +82,7 @@ namespace Iql.Entities
             for (var i = 0; i < PropertyPath.Length; i++)
             {
                 var pathItem = PropertyPath[i];
-                value = pathItem.Property.PropertyGetter(value);
+                value = pathItem.Property.GetValue(value);
             }
 
             return value;
