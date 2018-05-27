@@ -93,6 +93,10 @@ namespace Iql.Data.NestedSets
             IqlExpression filter = null;
             if (EntityConfig.HasHint(KnownHints.NestedSet))
             {
+                var keyCheck = new IqlIsEqualToExpression(
+                    IqlExpression.GetPropertyExpression(KeyProperty.Name),
+                    new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
+                );
                 switch (kind)
                 {
                     case NestedSetQueryKind.Descendents:
@@ -105,19 +109,11 @@ namespace Iql.Data.NestedSets
                                 IqlExpression.GetPropertyExpression(RightProperty.Name),
                                 new IqlLiteralExpression(RightProperty.GetValue(entity), IqlType.Integer)
                             );
-                            var key = new IqlIsEqualToExpression(
-                                IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                                new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
-                            );
-                            filter = new IqlExpression[] { gt, lt, key }.And();
+                            filter = new IqlExpression[] { gt, lt, keyCheck }.And();
                         }
                         break;
                     case NestedSetQueryKind.Children:
                         {
-                            var keyCheck = new IqlIsEqualToExpression(
-                                IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                                new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
-                            );
                             var parentIdCheck = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(ParentIdProperty.Name),
                                 new IqlLiteralExpression(IdProperty.GetValue(entity), IqlType.Integer)
@@ -127,15 +123,24 @@ namespace Iql.Data.NestedSets
                         break;
                     case NestedSetQueryKind.Parent:
                         {
-                            var keyCheck = new IqlIsEqualToExpression(
-                                IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                                new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
-                            );
                             var parentIdCheck = new IqlIsEqualToExpression(
                                 IqlExpression.GetPropertyExpression(IdProperty.Name),
                                 new IqlLiteralExpression(ParentIdProperty.GetValue(entity), IqlType.Integer)
                             );
                             filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
+                        }
+                        break;
+                    case NestedSetQueryKind.Ancestors:
+                        {
+                            var leftCheck = new IqlIsLessThanExpression(
+                                IqlExpression.GetPropertyExpression(LeftProperty.Name),
+                                new IqlLiteralExpression(LeftProperty.GetValue(entity), IqlType.Integer)
+                            );
+                            var rightCheck = new IqlIsGreaterThanExpression(
+                                IqlExpression.GetPropertyExpression(RightProperty.Name),
+                                new IqlLiteralExpression(RightProperty.GetValue(entity), IqlType.Integer)
+                            );
+                            filter = new IqlExpression[] { leftCheck, rightCheck, keyCheck }.And();
                         }
                         break;
                 }
