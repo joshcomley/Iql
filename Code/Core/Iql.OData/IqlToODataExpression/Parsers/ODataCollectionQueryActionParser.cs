@@ -43,7 +43,11 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 for (var i = 0; i < action.OrderBys.Count; i++)
                 {
                     var orderBy = action.OrderBys[i];
-                    orderBys.Add(parser.Parse(orderBy).ToCodeString());
+                    var orderByExpression = parser.Parse(orderBy).ToCodeString();
+                    if (!orderBys.Contains(orderByExpression))
+                    {
+                        orderBys.Add(orderByExpression);
+                    }
                 }
             }
 

@@ -93,6 +93,7 @@ namespace Iql.Data.Context
         string GetDbSetPropertyNameByEntityType(Type entityType);
         IDbQueryable GetDbSetBySetType(Type entityType);
         IDbQueryable GetDbSetByEntityType(Type entityType);
+        IDbQueryable GetDbSetBySetName(string name);
         Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null);
         Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships, Type entityType = null);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);

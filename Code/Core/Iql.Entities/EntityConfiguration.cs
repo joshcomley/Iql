@@ -26,36 +26,6 @@ namespace Iql.Entities
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
-        /// <summary>
-        /// Determines whether this entity type has any fields that aren't key fields
-        /// </summary>
-        /// <returns></returns>
-        public bool HasNonKeyFields()
-        {
-            for (var i = 0; i < Properties.Count; i++)
-            {
-                var property = Properties[i];
-                if (property.Kind.HasFlag(PropertyKind.Primitive) &&
-                    !property.Kind.HasFlag(PropertyKind.Key) &&
-                    !property.Kind.HasFlag(PropertyKind.Count))
-                {
-                    return true;
-                }
-
-                if (property.Kind.HasFlag(PropertyKind.Relationship))
-                {
-                    var constraints = property.Relationship.ThisEnd.Constraints();
-                    if (constraints.Any(c => !c.Kind.HasFlag(PropertyKind.Key)))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public bool HasRelationshipKeys => Key != null && Key.HasRelationshipKeys;
-
         public EntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
@@ -308,7 +278,25 @@ namespace Iql.Entities
             }
             else if (Equals(null, propertyValue))
             {
-                return true;
+                object defaultValue;
+                switch (property.TypeDefinition.Kind)
+                {
+                    case IqlType.Integer:
+                    case IqlType.Decimal:
+                    case IqlType.Enum:
+                        defaultValue = 0;
+                        break;
+                    case IqlType.Boolean:
+                        defaultValue = false;
+                        break;
+                    case IqlType.Date:
+                        defaultValue = new DateTime(0, 0, 0);
+                        break;
+                    default:
+                        return true;
+                }
+                property.SetValue(entity, defaultValue);
+                propertyValue = defaultValue;
             }
 
             if (property.TypeDefinition.Kind == IqlType.Enum)

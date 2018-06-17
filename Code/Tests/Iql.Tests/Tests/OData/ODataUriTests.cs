@@ -20,12 +20,30 @@ namespace Iql.Tests.Tests.OData
     public class ODataUriTests : TestsBase
     {
         [TestMethod]
+        public async Task TestFilterOnChildCollection()
+        {
+            var query = Db.Clients.Where(c => c.Sites.Where(s => s.AdditionalSendReportsTo.Count > 22).Count() > 3);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", uri);
+        }
+
+        [TestMethod]
         public async Task TestOrderByCount()
         {
             var query = Db.Clients.OrderBy(c => c.SitesCount);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$orderby=Sites/$count", uri);
+        }
+
+        [TestMethod]
+        public async Task TestOrderByNestedProperty()
+        {
+            var query = Db.Clients.OrderBy(c => c.Type.Name);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$orderby=$it/Type/Name", uri);
         }
 
         [TestMethod]

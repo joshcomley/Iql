@@ -130,9 +130,9 @@ namespace Iql.Tests.Tests
                     }
                 }
             };
-            var averageSalesFound = path.Getter(person);
+            var averageSalesFound = path.GetValue(person);
             Assert.AreEqual(client.AverageSales, averageSalesFound);
-            var clientFound = path.Parent.Getter(person);
+            var clientFound = path.Parent.GetValue(person);
             Assert.AreEqual(client, clientFound);
             var pathPartsExpected = new List<IProperty>();
             pathPartsExpected.Add(personConfiguration.FindProperty(nameof(Person.Type)));

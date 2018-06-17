@@ -15,6 +15,7 @@ namespace Iql.Entities
         /// Determines whether this entity type has any fields that aren't key fields
         /// </summary>
         /// <returns></returns>
+        object GetVersion(object entity);
         bool HasNonKeyFields();
         bool HasRelationshipKeys { get; }
         EntityConfigurationBuilder Builder { get; }

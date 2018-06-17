@@ -249,6 +249,24 @@ namespace Iql.Data.Context
             return null;
         }
 
+        public IDbQueryable GetDbSetBySetName(string name)
+        {
+            name = name.ToLower();
+            foreach (var property in GetType().GetRuntimeProperties())
+            {
+                if (property.Name.ToLower() == name)
+                {
+                    var value = this.GetPropertyValueByName(property.Name);
+                    if (value is IDbQueryable)
+                    {
+                        return value as IDbQueryable;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null)
         {
             return GetDbSetByEntityType(entityType ?? entity.GetType())
@@ -386,7 +404,7 @@ namespace Iql.Data.Context
 
         public virtual INestedSetsProvider<T> NestedSetsProviderFor<T>()
         {
-            return (INestedSetsProvider<T>) NestedSetsProviderForType(typeof(T));
+            return (INestedSetsProvider<T>)NestedSetsProviderForType(typeof(T));
         }
 
         public void AbandonChanges()

@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="TypeSharp.Extensions" Version="0.0.1-preview1" />
+    <PackageReference Include="TypeSharp.Extensions" Version="0.0.5-preview5" />
   </ItemGroup>
 
   <ItemGroup>

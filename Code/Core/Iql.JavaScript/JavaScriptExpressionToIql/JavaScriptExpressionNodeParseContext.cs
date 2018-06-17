@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Data.Extensions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
@@ -64,6 +65,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         public TEntity RootEntity { get; set; }
 
         public List<RootEntity> RootEntities { get; } = new List<RootEntity>();
+
+        public RootEntity CurrentRootEntity => RootEntities.LastOrDefault();
         //public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
         IJavaScriptExpressionAdapterBase IExpressionParserInstance.Adapter

@@ -33,5 +33,10 @@
         public const string Latitude = Geographic + ":Latitude";
         public const string Longitude = Geographic + ":Longitude";
         public const string Title = Prefix + "Title";
+        public const string Image = Prefix + "Image";
+        public const string Video = Prefix + "Video";
+        public const string File = Prefix + "File";
+        public const string FileType = Prefix + "FileType";
+        public const string Version = Prefix + "Version";
     }
 }

@@ -74,7 +74,23 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                         )
                     );
                 case nameof(Enumerable.Count):
+                    if (node.Arguments.Count == 1)
+                    {
+                        var countParent = context.Parse(node.Arguments[0], context) as IqlFilterExpression;
+                        var iqlCountExpression = new IqlCountExpression(
+                            countParent.RootVariableName,
+                            countParent.Parent as IqlReferenceExpression, 
+                            countParent.Value
+                        );
+                        return iqlCountExpression;
+                    }
                     return new IqlCountExpression(
+                        (node.Arguments[1] as LambdaExpression).Parameters[0].Name,
+                        context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
+                        context.Parse(node.Arguments[1], context)
+                    );
+                case nameof(Enumerable.Where):
+                    return new IqlFilterExpression(
                         (node.Arguments[1] as LambdaExpression).Parameters[0].Name,
                         context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
                         context.Parse(node.Arguments[1], context)

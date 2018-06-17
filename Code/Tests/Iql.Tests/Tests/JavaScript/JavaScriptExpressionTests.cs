@@ -96,6 +96,15 @@ namespace Iql.Tests.Tests.JavaScript
         }
 
         [TestMethod]
+        public void TestFilterOnChildCollectionToOData()
+        {
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Client>(
+                "function(t) { return t.Sites.filter(s => s.AdditionalSendReportsTo.length > 22).length > 3; }");
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression);
+            Assert.AreEqual(@"(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", odataFilter);
+        }
+
+        [TestMethod]
         public async Task TestWithKey()
         {
             var query = Db
@@ -207,6 +216,39 @@ namespace Iql.Tests.Tests.JavaScript
             //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
             //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
             // var xml = IqlSerializer.SerializeToXml(iql2.Expression);
+        }
+
+        [TestMethod]
+        public void TestCompressedJavaScript()
+        {
+            var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
+                "function(n){return n.Sites.filter(function(n){return n.UsersCount>0}).length>0}");
+            Assert.AreEqual(
+                @"function(entity) { return (((entity || {})[""Sites""].filter(function(entity) { return ((entity || {})[""UsersCount""] > 0); }).length) > 0); }",
+                js);
+            //function(n){return n.CandidateResults.filter(function(n){return!n.Exam.IsTraining}).length>0}
+        }
+
+        [TestMethod]
+        public void TestCompressedCompoundJavaScript()
+        {
+            var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
+                "function(n){return n.Sites.filter(function(n){return!n.CreatedByUser.EmailConfirmed}).length>0}");
+            Assert.AreEqual(
+                @"function(entity) { return (((entity || {})[""Sites""].filter(function(entity) { return (((entity || {})[""CreatedByUser""] || {})[""EmailConfirmed""] == false); }).length) > 0); }",
+                js);
+            //function(n){return n.CandidateResults.filter(function(n){return!n.Exam.IsTraining}).length>0}
+        }
+
+        [TestMethod]
+        public void TestConvertingCompressedBooleanAsDigitExpression()
+        {
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Site>(
+                "function(n){return 0==n.CreatedByUser.EmailConfirmed}");
+            var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iql.Expression, typeof(Client));
+            Assert.AreEqual(@"function(entity) { return (false == ((entity || {})[""CreatedByUser""] || {})[""EmailConfirmed""]); }", js);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression);
+            Assert.AreEqual(@"(false eq $it/CreatedByUser/EmailConfirmed)", odataFilter);
         }
 
         [TestMethod]

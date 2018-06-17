@@ -19,7 +19,7 @@ namespace Iql.Data.QueryContainer
         IAsyncEventSubscriber<IQueryPipeChangedEvent> QueryBuildingChanged { get; }
         IAsyncEventSubscriber<IQueryPipeInspectorEvent> QueryBuilt { get; }
 
-        Task RefreshResultsAsync();
+        Task<bool> RefreshResultsAsync(bool force = false);
 
         void Dispose();
     }

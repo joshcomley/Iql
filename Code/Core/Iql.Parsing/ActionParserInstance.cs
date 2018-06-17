@@ -221,7 +221,8 @@ namespace Iql.Parsing
                 case IqlExpressionKind.Count:
                     var path = IqlPropertyPath.FromPropertyExpression(
                             EntityConfigurationBuilder.FindConfigurationForEntityType(CurrentEntityType),
-                            (IqlPropertyExpression)((IqlCountExpression)expression).Parent)
+                            (IqlPropertyExpression)((IqlCountExpression)expression).Parent,
+                            false)
                         ;
                     SetEntityType(path.PropertyEntityConfiguration.Type);
                     break;

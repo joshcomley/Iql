@@ -23,10 +23,18 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                     );
                 }
                 return new IqlFinalExpression<string>("null");
-            }else if (action.ReturnType == IqlType.Date ||
+            }
+
+            if (action.ReturnType == IqlType.Date ||
                       action.Value is DateTime)
             {
                 return new IqlFinalExpression<string>($"new Date(\'{action.Value}\')");
+            }
+
+            if (action.ReturnType == IqlType.Boolean ||
+                      action.Value is bool)
+            {
+                return new IqlFinalExpression<string>(action.Value == null ? "null" : ((bool)action.Value ? "true" : "false"));
             }
             return new IqlFinalExpression<string>(action.Value == null ? "null" : action.Value?.ToString());
         }

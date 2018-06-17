@@ -10,6 +10,48 @@ namespace Iql.Entities
         private IEntityKey _key;
         public List<IProperty> Properties { get; set; }
 
+        public object GetVersion(object entity)
+        {
+            var versionProperty = Properties.FirstOrDefault(p => p.HasHint(KnownHints.Version));
+            if (versionProperty != null)
+            {
+                return versionProperty.GetValue(entity);
+            }
+
+            return null;
+        }
+
+
+        /// <summary>
+        /// Determines whether this entity type has any fields that aren't key fields
+        /// </summary>
+        /// <returns></returns>
+        public bool HasNonKeyFields()
+        {
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var property = Properties[i];
+                if (property.Kind.HasFlag(PropertyKind.Primitive) &&
+                    !property.Kind.HasFlag(PropertyKind.Key) &&
+                    !property.Kind.HasFlag(PropertyKind.Count))
+                {
+                    return true;
+                }
+
+                if (property.Kind.HasFlag(PropertyKind.Relationship))
+                {
+                    var constraints = property.Relationship.ThisEnd.Constraints();
+                    if (constraints.Any(c => !c.Kind.HasFlag(PropertyKind.Key)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool HasRelationshipKeys => Key != null && Key.HasRelationshipKeys;
+
         public IProperty[] OrderedProperties()
         {
             if (PropertyOrder == null || !PropertyOrder.Any())

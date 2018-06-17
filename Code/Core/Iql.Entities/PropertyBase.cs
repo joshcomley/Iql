@@ -11,7 +11,7 @@ namespace Iql.Entities
     {
         public IEntityConfiguration EntityConfiguration { get; set; }
         public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
-        public bool Searchable { get; set; }
+        public bool Searchable { get; set; } = true;
 
         public virtual bool? Nullable
         {

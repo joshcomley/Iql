@@ -29,12 +29,12 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             ResolveParserInternal<TExpression>(TExpression expression)
             where TExpression : JavaScriptExpressionNode
         {
-            var fn = _parsers[expression.GetType().Name];
-            if (fn == null)
+            var name = expression.GetType().Name;
+            if (!_parsers.ContainsKey(name))
             {
                 return null;
             }
-
+            var fn = _parsers[name];
             var expressionParserBase = fn();
             var javaScriptExpressionParser = expressionParserBase as IJavaScriptExpressionParser<TEntity, TExpression, TParseResult, TExpressionData,
                 TExpressionResult>;

@@ -22,12 +22,22 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             {
                 Type propertyType = null;
                 var parent = context.Parent() as IqlExpression;
+                var root = parent;
+                while (root != null && root.Kind != IqlExpressionKind.RootReference)
+                {
+                    root = root.Parent;
+                }
+
+                var rootReference = root as IqlRootReferenceExpression;
                 PropertyInfo property;
+                var rootEntityType = rootReference == null 
+                    ? null 
+                    : context.RootEntities.Last(r => r.Name == rootReference.VariableName).Type;
                 switch (parent.Kind)
                 {
                     case IqlExpressionKind.RootReference:
                         //entityConfiguration = instance.EntityConfigurationContext.GetEntity<T>();
-                        property = typeof(T).GetProperty(expression.Name);
+                        property = rootEntityType.GetProperty(expression.Name);
                         propertyType = property.PropertyType;
                         break;
                     case IqlExpressionKind.Variable:
@@ -35,11 +45,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         break;
                     case IqlExpressionKind.Property:
                         var propertyParent = parent as IqlPropertyExpression;
-                        property = typeof(T).GetProperty(propertyParent.PropertyName);
+                        property = rootEntityType.GetProperty(propertyParent.PropertyName);
                         if (property == null)
                         {
                             throw new Exception(
-                                $"No property \"{expression.Name}\" found on type \"{typeof(T).Name}\"");
+                                $"No property \"{expression.Name}\" found on type \"{rootEntityType.Name}\"");
                         }
                         propertyType = property.PropertyType;
                         // var p = new propertyParent.entityType();
@@ -49,13 +59,13 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
 
                 if (propertyType == null)
                 {
-                    var entityConfig = EntityConfigurationBuilder.FindConfigurationForEntityType(typeof(T));
+                    var entityConfig = EntityConfigurationBuilder.FindConfigurationForEntityType(rootEntityType);
                     if (entityConfig != null)
                     {
                         IProperty configuredProperty = null;
                         if (parent is IqlPropertyExpression)
                         {
-                            var path = IqlPropertyPath.FromPropertyExpression(entityConfig, parent as IqlPropertyExpression);
+                            var path = IqlPropertyPath.FromPropertyExpression(entityConfig, parent as IqlPropertyExpression, false);
                             if (path != null && path.Property != null && path.Property.TypeDefinition != null)
                             {
                                 configuredProperty = path.Property;
@@ -91,7 +101,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 var variableName = expression.Name;
                 object value = null;
                 var isRootEntity = false;
-                var rootEntityMatch = context.RootEntities.SingleOrDefault(re => re.Name == variableName);
+                var rootEntityMatch = context.RootEntities.LastOrDefault(re => re.Name == variableName);
                 if (rootEntityMatch != null)
                 {
                     isRootEntity = true;

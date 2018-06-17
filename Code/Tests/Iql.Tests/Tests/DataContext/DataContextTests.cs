@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
 using Tunnel.Sets;
 
@@ -18,6 +19,13 @@ namespace Iql.Tests.Tests.DataContext
         public void GetDbSet()
         {
             var someSet = Db.GetDbSet<PersonInspection, int>();
+            Assert.AreEqual(Db.PersonInspections, someSet);
+        }
+
+        [TestMethod]
+        public void GetDbSetByLowerCaseName()
+        {
+            var someSet = Db.GetDbSetBySetName(nameof(TunnelDataContextBase.PersonInspections).ToLower());
             Assert.AreEqual(Db.PersonInspections, someSet);
         }
 

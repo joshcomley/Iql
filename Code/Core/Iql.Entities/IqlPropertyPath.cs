@@ -71,7 +71,7 @@ namespace Iql.Entities
         public IEntityConfiguration PropertyEntityConfiguration =>
             Property == null ? null : Property.Relationship.OtherEnd.Configuration;
 
-        public object Getter(object entity)
+        public object GetValue(object entity)
         {
             if (entity == null)
             {
@@ -86,6 +86,23 @@ namespace Iql.Entities
             }
 
             return value;
+        }
+
+        public void SetValue(object entity, object valueToSet)
+        {
+            if (entity == null)
+            {
+                return;
+            }
+
+            var value = entity;
+            for (var i = 0; i < PropertyPath.Length - 1; i++)
+            {
+                var pathItem = PropertyPath[i];
+                value = pathItem.Property.GetValue(value);
+            }
+
+            Property.SetValue(value, valueToSet);
         }
 
         public static IqlPropertyPath FromLambda<T>(Expression<Func<T, object>> field,
@@ -107,9 +124,15 @@ namespace Iql.Entities
             return FromPropertyExpression(entityConfigurationContext, propertyExpression);
         }
 
+        public static IqlPropertyPath FromProperty(IProperty property)
+        {
+            return FromString(property.Name, property.EntityConfiguration);
+        }
+
         public static IqlPropertyPath FromPropertyExpression(
             IEntityConfiguration entityConfigurationContext,
-            IqlPropertyExpression propertyExpression)
+            IqlPropertyExpression propertyExpression,
+            bool traverseNestedRootReferences = true)
         {
             IqlPropertyPath propertyPath = null;
             var list = new List<IqlPropertyExpression>();
@@ -120,7 +143,7 @@ namespace Iql.Entities
                 if (parent is IqlRootReferenceExpression)
                 {
                     var rootReference = parent as IqlRootReferenceExpression;
-                    if (rootReference.Parent != null)
+                    if (rootReference.Parent != null && traverseNestedRootReferences)
                     {
                         parent = rootReference.Parent;
                     }
@@ -140,6 +163,13 @@ namespace Iql.Entities
             for (var i = list.Count - 1; i >= 0; i--)
             {
                 var property = entityConfig.FindProperty(list[i].PropertyName);
+
+                // We might be trying to get a path from a method on a property, like:
+                // t.Description.ToString()
+                if (property == null)
+                {
+                    continue;
+                }
                 propertyPath = new IqlPropertyPath(
                     property,
                     list[i],
@@ -149,6 +179,11 @@ namespace Iql.Entities
                 if (i == 0)
                 {
                     break;
+                }
+
+                if (property.Relationship == null)
+                {
+                    continue;
                 }
 
                 entityConfig = entityConfigurationContext.Builder.GetEntityByType(property.Relationship.OtherEnd.Type);

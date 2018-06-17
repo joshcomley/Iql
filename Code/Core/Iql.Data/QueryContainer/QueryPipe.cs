@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Lists;
 using Iql.Entities.Events;
+using Newtonsoft.Json;
 
 namespace Iql.Data.QueryContainer
 {
     public class QueryPipe<T> : IDisposable, IQueryPipe where T : class
     {
         private DbQueryable<T> _sourceQuery;
+        private string _lastIql;
 
         public QueryPipe(DbQueryable<T> sourceQuery)
         {
@@ -71,12 +73,17 @@ namespace Iql.Data.QueryContainer
         IDbQueryable IQueryPipe.SourceQuery
         {
             get => SourceQuery;
-            set => SourceQuery = (DbQueryable<T>) value;
+            set => SourceQuery = (DbQueryable<T>)value;
         }
 
         IDbList IQueryPipe.Results => Results;
 
-        public async Task RefreshResultsAsync()
+        /// <summary>
+        /// Refreshed the results, asynchronously.
+        /// </summary>
+        /// <param name="force">Force a request, even if the query has not changed since the last refresh.</param>
+        /// <returns></returns>
+        public async Task<bool> RefreshResultsAsync(bool force = false)
         {
             // Build the query
             QueryBuilding = true;
@@ -90,14 +97,23 @@ namespace Iql.Data.QueryContainer
             await QueryBuilt.EmitAsync(() => new QueryPipeInspectorEvent<T>(pipe.Query));
 
             // Load the results
-            ResultsLoading = true;
-            await EmitEventAsync(ResultsLoadingChanged);
-            Results = await pipe.Query.ToListAsync();
-            ResultsLoading = false;
-            await EmitEventAsync(ResultsLoadingChanged);
+            var iql = await pipe.Query.ToIqlAsync();
+            var iqljson = JsonConvert.SerializeObject(iql);
+            var canUpdate = force || iqljson != _lastIql;
+            if (canUpdate)
+            {
+                ResultsLoading = true;
+                await EmitEventAsync(ResultsLoadingChanged);
+                _lastIql = iqljson;
+                Results = await pipe.Query.ToListAsync();
+                ResultsLoading = false;
+                await EmitEventAsync(ResultsLoadingChanged);
 
-            // Broadcast the final results
-            await ResultsLoaded.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+                // Broadcast the final results
+                await ResultsLoaded.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            }
+
+            return canUpdate;
         }
 
         public bool ResultsLoading { get; private set; }
