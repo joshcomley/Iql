@@ -8,7 +8,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             switch (action.Kind)
             {
                 case IqlExpressionKind.Not:
-                    return new IqlFinalExpression<string>("not");
+                    return new IqlAggregateExpression(new IqlFinalExpression<string>("not("), (action as IqlNotExpression).Expression, new IqlFinalExpression<string>(")"));
                 case IqlExpressionKind.Now:
                     return new IqlFinalExpression<string>("now()");
                 case IqlExpressionKind.TimeSpan:

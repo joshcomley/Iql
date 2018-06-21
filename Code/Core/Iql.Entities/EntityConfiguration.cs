@@ -109,6 +109,12 @@ namespace Iql.Entities
             return GetDisplayText((T)entity, key);
         }
 
+        public IEntityConfiguration SetDefaultSortExpression(string expression)
+        {
+            DefaultSortExpression = expression;
+            return this;
+        }
+
         public IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary)
         {
             var result = new List<IProperty>();
@@ -226,7 +232,7 @@ namespace Iql.Entities
                     {
                         // Mimic default values for 
                         object newValue = DefaultValuePlaceholderInstance;
-                        if (property.TypeDefinition.ConvertedFromType == nameof(Guid) ||
+                        if (property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid ||
                             property.TypeDefinition.Kind == IqlType.Date ||
                             property.TypeDefinition.Kind == IqlType.Enum)
                         {
@@ -613,6 +619,7 @@ namespace Iql.Entities
 
             definition.TypeDefinition = definition.TypeDefinition.ChangeType(typeof(TProperty));
             definition.TypeDefinition = definition.TypeDefinition.ChangeNullable(nullable);
+            definition.TypeDefinition = definition.TypeDefinition.ChangeConvertedFromType(convertedFromType);
             if (iqlType != null && iqlType != IqlType.Unknown)
             {
                 definition.TypeDefinition = definition.TypeDefinition.ChangeKind(iqlType.Value);

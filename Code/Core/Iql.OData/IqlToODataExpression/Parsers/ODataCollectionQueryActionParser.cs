@@ -72,7 +72,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             }
 
             var query = string.Join(parser.Nested ? ";" : "&", odataParts);
-            if (!parser.Nested)
+            if (!parser.Nested && !string.IsNullOrWhiteSpace(query))
             {
                 query = $"?{query}";
             }

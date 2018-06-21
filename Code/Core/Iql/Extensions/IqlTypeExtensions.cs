@@ -98,6 +98,13 @@ namespace Iql.Extensions
                 type = underlyingType;
             }
 
+#if !TypeScript
+            if (type == typeof(Guid))
+            {
+                return IqlType.Guid;
+            }
+#endif
+
             if (type.IsEnumerableType())
             {
                 return IqlType.Collection;

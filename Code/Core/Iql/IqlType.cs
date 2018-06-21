@@ -13,6 +13,7 @@ namespace Iql
         Date,
         Enum,
         TimeSpan,
-        EnumValue
+        EnumValue,
+        Guid
     }
 }

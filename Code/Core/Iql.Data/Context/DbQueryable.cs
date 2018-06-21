@@ -967,7 +967,7 @@ namespace Iql.Data.Context
                         isEqualToOperations.Add(new IqlIsEqualToExpression(
                             IqlExpression.GetPropertyExpression(keyPart.Name),
                             // TODO: Use configuratiton context and property path to resolve type
-                            new IqlLiteralExpression(keyPart.Value, keyPart.ValueType?.Type.ToIqlType() ?? IqlType.Unknown)));
+                            new IqlLiteralExpression(keyPart.Value, keyPart.ValueType?.ToIqlType() ?? IqlType.Unknown)));
                     }
                     queryExpression.WithKey = new IqlWithKeyExpression(isEqualToOperations);
                 }

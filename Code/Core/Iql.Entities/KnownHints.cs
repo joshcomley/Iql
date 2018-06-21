@@ -36,7 +36,20 @@
         public const string Image = Prefix + "Image";
         public const string Video = Prefix + "Video";
         public const string File = Prefix + "File";
-        public const string FileType = Prefix + "FileType";
+
+        public static string FileTypeFor(string propertyName)
+        {
+            return $"{Prefix}FileTypeFor:{propertyName}";
+        }
+        public static string PreviewFor(string propertyName)
+        {
+            return $"{Prefix}PreviewFor:{propertyName}";
+        }
+        public static string FileRevisionFor(string propertyName)
+        {
+            return $"{Prefix}FileRevisionFor:{propertyName}";
+        }
+
         public const string Version = Prefix + "Version";
     }
 }

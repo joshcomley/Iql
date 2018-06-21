@@ -9,6 +9,8 @@ namespace Iql.Entities
         string SetName { get; set; }
         string ResolveSetFriendlyName();
         string ResolveSetName();
+        string DefaultSortExpression { get; set; }
+        bool DefaultSortDescending { get; set; }
         List<string> PropertyOrder { get; set; }
     }
 }

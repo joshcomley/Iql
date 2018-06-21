@@ -9,11 +9,16 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             ODataIqlParserInstance parser)
         {
             var value = action.Value;
-            return new IqlFinalExpression<string>(ODataEncode(value));
+            return new IqlFinalExpression<string>(ODataEncode(value, action.ReturnType));
         }
 
-        public static string ODataEncode(object value)
+        public static string ODataEncode(object value, IqlType type = IqlType.Unknown)
         {
+            if (type == IqlType.Guid)
+            {
+                return (value ?? "").ToString();
+            }
+
             if (value is string)
             {
                 var str = value as string;

@@ -40,5 +40,16 @@ namespace Iql.Entities.Extensions
                 typeDefinition.Kind);
         }
 
+        public static ITypeDefinition ChangeConvertedFromType(this ITypeDefinition typeDefinition, string convertedFromType)
+        {
+            return new TypeDetail(
+                typeDefinition.Type,
+                typeDefinition.Nullable,
+                typeDefinition.DeclaringType,
+                convertedFromType,
+                typeDefinition.ElementType,
+                typeDefinition.IsCollection,
+                typeDefinition.Kind);
+        }
     }
 }

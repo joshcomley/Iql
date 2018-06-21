@@ -20,6 +20,7 @@ namespace Iql.Entities
         bool HasRelationshipKeys { get; }
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
+        IEntityConfiguration SetDefaultSortExpression(string expression);
         IProperty[] OrderedProperties();
         IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
         IEntityValidationResult ValidateEntity(object entity);

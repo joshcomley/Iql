@@ -107,7 +107,7 @@ namespace Iql.OData.Json
                             obj[property.Property.Name] = new JValue(((DateTimeOffset)propertyValue).NormalizeDate());
                         }
                     }
-                    else if (property.Property.TypeDefinition.ConvertedFromType == nameof(Guid) && !property.Property.TypeDefinition.Nullable && propertyValue == null)
+                    else if (property.Property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid && !property.Property.TypeDefinition.Nullable && propertyValue == null)
                     {
                         obj[property.Property.Name] = "00000000-0000-0000-0000-000000000000";
                     }

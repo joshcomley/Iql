@@ -20,12 +20,30 @@ namespace Iql.Tests.Tests.OData
     public class ODataUriTests : TestsBase
     {
         [TestMethod]
+        public async Task TestGetGuidKey()
+        {
+            var query = Db.ApplicationLogs.WithKey(new Guid("4e9dcf61-4abf-458e-abfc-07c20d5ef248"));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/ApplicationLogs(4e9dcf61-4abf-458e-abfc-07c20d5ef248)", uri);
+        }
+
+        [TestMethod]
         public async Task TestFilterOnChildCollection()
         {
             var query = Db.Clients.Where(c => c.Sites.Where(s => s.AdditionalSendReportsTo.Count > 22).Count() > 3);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", uri);
+        }
+
+        [TestMethod]
+        public async Task TestWithKey()
+        {
+            var query = Db.Clients.WithKey(7);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients(7)", uri);
         }
 
         [TestMethod]
@@ -292,6 +310,34 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P7D'))",
                 uri);
         }
+
+        [TestMethod]
+        public async Task NegationExpression()
+        {
+            var query = Db.Users.WhereEquals(new IqlNotExpression(new IqlIsGreaterThanExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.CreatedDate),
+                    new IqlRootReferenceExpression()),
+                new IqlSubtractExpression(new IqlNowExpression(),
+                    new IqlTimeSpanExpression().Set(7)))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=not(($it/CreatedDate gt (now() sub duration'P7D')))",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task StringIncludesExpression()
+        {
+            var query = Db.Users.WhereEquals(new IqlStringIncludesExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.Name),
+                    new IqlRootReferenceExpression()),
+                new IqlLiteralExpression("abc", IqlType.String)));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=contains($it/Name,'abc')",
+                uri);
+        }
+
 
         [TestMethod]
         public async Task DateNowWithComplexTimeSpanSubtractionExpression()

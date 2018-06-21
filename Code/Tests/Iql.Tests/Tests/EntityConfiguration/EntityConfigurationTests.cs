@@ -64,10 +64,11 @@ namespace Iql.Tests.Tests.EntityConfiguration
         {
             var searchProperties = Db.EntityConfigurationContext.EntityType<Person>()
                 .ResolveSearchProperties(PropertySearchKind.Secondary);
-            Assert.AreEqual(3, searchProperties.Length);
+            Assert.AreEqual(4, searchProperties.Length);
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Key)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Title)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Description)));
+            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.RevisionKey)));
         }
 
         [TestMethod]

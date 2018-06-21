@@ -97,6 +97,9 @@ namespace Iql.Entities
             return SetName ?? Name ?? Type.Name;
         }
 
+        public string DefaultSortExpression { get; set; }
+        public bool DefaultSortDescending { get; set; }
+
         public static string DefaultRequiredAutoValidationFailureMessage { get; set; } = "This field is required";
         public static string DefaultRequiredAutoValidationFailureKey { get; set; } = "Auto";
     }

@@ -35,7 +35,7 @@ namespace Iql.Entities.Extensions
         public static object DefaultValue(this ITypeDefinition type)
         {
 #if TypeScript
-            if (type.ConvertedFromType == nameof(Guid))
+            if (type.ConvertedFromType == KnownPrimitiveTypes.Guid)
             {
                 return Guid.Empty;
             }

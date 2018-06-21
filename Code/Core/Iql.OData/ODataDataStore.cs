@@ -420,6 +420,7 @@ namespace Iql.OData
             var entityUri = $"{apiUriBase}{entitySetName}({FormatKey(compositeKey)})";
             return entityUri;
         }
+
         public static string FormatKey(CompositeKey key)
         {
             string keyString;
@@ -437,9 +438,11 @@ namespace Iql.OData
 
         private static string GetKeyValue(KeyValue key)
         {
-            if (key.Value is string || key.Value is Guid || key.Value is Guid? ||
-                (key.ValueType != null &&
-                 (key.ValueType.Type == typeof(string) || key.ValueType.Type == typeof(Guid))))
+            if (key.ValueType.ConvertedFromType != KnownPrimitiveTypes.Guid &&
+                (key.Value is string ||
+                key.ValueType != null &&
+                key.ValueType.Type == typeof(string))
+                )
             {
                 return $"\'{key.Value}\'";
             }
