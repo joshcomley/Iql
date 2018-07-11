@@ -14,7 +14,7 @@ namespace Iql.Parsing
         where TParserOutput : IParserOutput
         where TConverter : IExpressionConverter
     {
-        public bool Nested => TypeStack.Count > 1 || Ancestors.Any(a => 
+        public bool Nested => TypeStack.Count > 1 || Ancestors.Any(a =>
                                   a.Kind == IqlExpressionKind.Expand ||
                                   a.Kind == IqlExpressionKind.Count ||
                                   a.Kind == IqlExpressionKind.Any ||
@@ -184,6 +184,22 @@ namespace Iql.Parsing
         }
 
         public Dictionary<IqlExpression, List<TParserOutput>> OutputMap { get; } = new Dictionary<IqlExpression, List<TParserOutput>>();
+
+        public TParserOutput ReplaceAndParse(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            Ancestors[Ancestors.Count - 1] = expression;
+            return ParseInternal(expression,
+                false
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+
         public TParserOutput Parse(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -191,9 +207,27 @@ namespace Iql.Parsing
         )
         {
             // Here: figure out the path from the root entity
-            Ancestors.Add(expression);
+            return ParseInternal(expression, true
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+
+        protected virtual TParserOutput ParseInternal(IqlExpression expression,
+            bool appendToAncestors
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            // Here: figure out the path from the root entity
+            if (appendToAncestors)
+            {
+                Ancestors.Add(expression);
+            }
             IncrementPath(expression);
-            var index = Ancestors.Count - 1;
+            var index = appendToAncestors ? Ancestors.Count - 1 : -1;
             var result = ParseExpression(expression);
             if (expression != null)
             {
@@ -203,7 +237,11 @@ namespace Iql.Parsing
                 }
                 OutputMap[expression].Add(result);
             }
-            Ancestors.RemoveAt(index);
+
+            if (index != -1)
+            {
+                Ancestors.RemoveAt(index);
+            }
             DecrementPath(expression);
             return result;
         }

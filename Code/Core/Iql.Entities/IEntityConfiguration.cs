@@ -11,6 +11,8 @@ namespace Iql.Entities
 {
     public interface IEntityConfiguration : IEntityMetadata
     {
+        IProperty TitleProperty { get; }
+        IProperty PreviewProperty { get; }
         /// <summary>
         /// Determines whether this entity type has any fields that aren't key fields
         /// </summary>

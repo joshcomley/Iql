@@ -8,6 +8,10 @@ namespace Iql.Entities
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
         private IEntityKey _key;
+        private IProperty _titleProperty;
+        private IProperty _previewProperty;
+        private string _titlePropertyName;
+        private string _previewPropertyName;
         public List<IProperty> Properties { get; set; }
 
         public object GetVersion(object entity)
@@ -76,6 +80,56 @@ namespace Iql.Entities
         }
 
         public Type Type { get; set; }
+
+        private bool _titlePropertyNameChanged = false;
+        private bool _previewPropertyNameChanged = false;
+        public IProperty TitleProperty
+        {
+            get
+            {
+                if (_titlePropertyNameChanged)
+                {
+                    _titlePropertyNameChanged = false;
+                    _titleProperty = Properties.SingleOrDefault(p => p.Name == TitlePropertyName);
+                }
+
+                return _titleProperty;
+            }
+        }
+        public IProperty PreviewProperty
+        {
+            get
+            {
+                if (_previewPropertyNameChanged)
+                {
+                    _previewPropertyNameChanged = false;
+                    _previewProperty = Properties.SingleOrDefault(p => p.Name == PreviewPropertyName);
+                }
+
+                return _previewProperty;
+            }
+        }
+
+        public string TitlePropertyName
+        {
+            get => _titlePropertyName;
+            set
+            {
+                _titlePropertyName = value;
+                _titlePropertyNameChanged = true;
+            }
+        }
+
+        public string PreviewPropertyName
+        {
+            get => _previewPropertyName;
+            set
+            {
+                _previewPropertyName = value;
+                _previewPropertyNameChanged = true;
+            }
+        }
+
         public EntityManageKind ManageKind { get; set; } = EntityManageKind.Full;
         public string SetFriendlyName { get; set; }
         public string SetName { get; set; }

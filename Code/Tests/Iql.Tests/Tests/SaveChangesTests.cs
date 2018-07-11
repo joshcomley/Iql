@@ -33,8 +33,8 @@ namespace Iql.Tests.Tests
         public async Task ChangeSinglePropertyAndRevertAndChangeAgainAndSave()
         {
             // Set up
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test" });
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2" });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test", TypeId = 1});
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2", TypeId = 1 });
 
             var clients = await Db.Clients.ToListAsync();
             var client1 = clients.Single(c => c.Id == 1);
@@ -81,7 +81,7 @@ namespace Iql.Tests.Tests
             // Should have one change now
             AssertQueue("A new name 2");
 
-            await Db.SaveChangesAsync();
+            var saveChangesResult = await Db.SaveChangesAsync();
 
             AssertQueueEmpty();
 
@@ -93,8 +93,8 @@ namespace Iql.Tests.Tests
         public async Task ChangeTwoPropertiesAndRevertOneAndAndSave()
         {
             // Set up
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test" });
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2" });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test", TypeId = 1 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2", TypeId = 1 });
 
             var clients = await Db.Clients.ToListAsync();
             var client1 = clients.Single(c => c.Id == 1);
@@ -174,8 +174,8 @@ namespace Iql.Tests.Tests
         public async Task ChangeTwoUnrelatedEntitiesAndSave()
         {
             // Set up
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Client 1" });
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Client 2" });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Client 1", TypeId = 1 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Client 2", TypeId = 1 });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1" });
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2" });
 

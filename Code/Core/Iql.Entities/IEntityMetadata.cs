@@ -4,6 +4,8 @@ namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {
+        string TitlePropertyName { get; set; }
+        string PreviewPropertyName { get; set; }
         EntityManageKind ManageKind { get; set; }
         string SetFriendlyName { get; set; }
         string SetName { get; set; }

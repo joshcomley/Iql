@@ -8,7 +8,7 @@ namespace Iql.Data.Crud
         where TOperation : IEntitySetCrudOperationBase
     {
         public T LocalEntity { get; }
-        public Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; }
+        public Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; } = new Dictionary<object, IEntityValidationResult>();
         public OperationType Type => Operation.Type;
         object IEntityCrudResult.LocalEntity => LocalEntity;
         public EntityValidationResult<T> RootEntityValidationResult { get; set; }

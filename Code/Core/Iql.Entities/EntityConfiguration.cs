@@ -259,7 +259,7 @@ namespace Iql.Entities
                 return false;
             }
 
-            if (property.TypeDefinition.Nullable)
+            if (property.TypeDefinition.Nullable && property.Nullable != false)
             {
                 return false;
             }
@@ -282,7 +282,7 @@ namespace Iql.Entities
                     }
                 }
             }
-            else if (Equals(null, propertyValue))
+            else if (Equals(null, propertyValue) && property.TypeDefinition.Nullable == false)
             {
                 object defaultValue;
                 switch (property.TypeDefinition.Kind)
@@ -290,13 +290,9 @@ namespace Iql.Entities
                     case IqlType.Integer:
                     case IqlType.Decimal:
                     case IqlType.Enum:
-                        defaultValue = 0;
-                        break;
                     case IqlType.Boolean:
-                        defaultValue = false;
-                        break;
                     case IqlType.Date:
-                        defaultValue = new DateTime(0, 0, 0);
+                        defaultValue = property.TypeDefinition.DefaultValue();
                         break;
                     default:
                         return true;
@@ -618,7 +614,7 @@ namespace Iql.Entities
                                  property);
 
             definition.TypeDefinition = definition.TypeDefinition.ChangeType(typeof(TProperty));
-            definition.TypeDefinition = definition.TypeDefinition.ChangeNullable(nullable);
+            definition.Nullable = nullable;
             definition.TypeDefinition = definition.TypeDefinition.ChangeConvertedFromType(convertedFromType);
             if (iqlType != null && iqlType != IqlType.Unknown)
             {

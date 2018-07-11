@@ -39,6 +39,13 @@ namespace Iql.Entities
             return null;
         }
 
+        public static IEntityConfiguration FindConfigurationForEntity(object entity)
+        {
+            return entity == null 
+                ? null 
+                : FindConfigurationForEntityType(entity.GetType());
+        }
+
         public static IEntityConfiguration FindConfigurationForEntityType(Type entityType)
         {
             foreach (var builder in EntityConfigurationBuilders)

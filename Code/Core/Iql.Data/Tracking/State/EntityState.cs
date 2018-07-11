@@ -17,7 +17,7 @@ namespace Iql.Data.Tracking.State
     {
         private bool _exists;
         private bool _markedForDeletion;
-        private bool _isNew;
+        private bool _isNew = true;
 
         //private CompositeKey _remoteKey;
         public bool IsNew

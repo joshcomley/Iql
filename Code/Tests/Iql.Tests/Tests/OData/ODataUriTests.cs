@@ -37,6 +37,54 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", uri);
         }
 
+#if !TypeScript
+        // TypeScript translation converts this to ".indexOf(..)"
+        [TestMethod]
+        public async Task StringNotContainsShouldIncludeNullAndEmptyCheck()
+        {
+            var query = Db.Clients.Where(c => !c.Name.Contains("xyz"));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=((not(contains($it/Name,'xyz')) or ($it/Name eq null)) or ($it/Name eq ''))", uri);
+        }
+
+#endif
+        [TestMethod]
+        public async Task StringNegatedIndexOfShouldIncludeNullAndEmptyCheck()
+        {
+            var query = Db.Clients.Where(c => c.Name.IndexOf("xyz") == -1);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(((indexof(tolower($it/Name),'xyz') eq -1) or ($it/Name eq null)) or ($it/Name eq ''))", uri);
+        }
+
+        [TestMethod]
+        public async Task StringDoubleNegatedIndexOfShouldIncludeNullAndEmptyCheck()
+        {
+            var query = Db.Clients.Where(c => !!(c.Name.IndexOf("xyz") == -1));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=not(not((((indexof(tolower($it/Name),'xyz') eq -1) or ($it/Name eq null)) or ($it/Name eq ''))))", uri);
+        }
+
+        [TestMethod]
+        public async Task StringTripleNegatedIndexOfShouldNotIncludeNullAndEmptyCheck()
+        {
+            var query = Db.Clients.Where(c => !!!(c.Name.IndexOf("xyz") == -1));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=not(not(not((indexof(tolower($it/Name),'xyz') eq -1))))", uri);
+        }
+
+        [TestMethod]
+        public async Task StringTripleNegatedIndexOfShouldNotIncludeNullAndEmptyCheck2()
+        {
+            var query = Db.Clients.Where(c => (((c.Name.IndexOf("xyz") == -1) == false) == false) == false);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=not(not(not((indexof(tolower($it/Name),'xyz') eq -1))))", uri);
+        }
+
         [TestMethod]
         public async Task TestWithKey()
         {

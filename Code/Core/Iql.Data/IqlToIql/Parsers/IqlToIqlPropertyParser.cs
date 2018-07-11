@@ -1,3 +1,5 @@
+using System.Linq;
+using Iql.Data.Queryable;
 using Iql.Entities;
 
 namespace Iql.Data.IqlToIql.Parsers
@@ -11,7 +13,7 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.Parameters.Count; i++)
                 {
-                    action.Parameters[i] = (IqlRootReferenceExpression) parser.Parse(action.Parameters[i]).Expression;
+                    action.Parameters[i] = (IqlRootReferenceExpression)parser.Parse(action.Parameters[i]).Expression;
                 }
             }
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
@@ -57,9 +59,53 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlBinaryExpression action, IqlToIqlParserInstance parser)
         {
+            var lr = new[] { action.Left, action.Right };
+            var literal = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Literal) as IqlLiteralExpression;
+            action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
+
+            if (literal != null &&
+                (action.Kind == IqlExpressionKind.IsEqualTo && Equals(literal.Value, false)) ||
+                (action.Kind == IqlExpressionKind.IsNotEqualTo && Equals(literal.Value, true)))
+            {
+                return parser.ReplaceAndParse(new IqlNotExpression(lr.SingleOrDefault(l => l != literal) ?? literal)).Expression;
+            }
+
             action.Left = (IqlExpression)parser.Parse(action.Left).Expression;
             action.Right = (IqlExpression)parser.Parse(action.Right).Expression;
-            action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
+
+            lr = new[] { action.Left, action.Right };
+            literal = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Literal) as IqlLiteralExpression;
+
+            var isEqualTo = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.IsEqualTo);
+            var isNotEqualTo = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.IsNotEqualTo);
+
+            var indexOf = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.StringIndexOf);
+
+            if (indexOf != null && literal != null && Equals(literal.Value, -1))
+            {
+                var negationCount = 0;
+                for (var i = parser.Ancestors.Count - 1; i >= 0; i--)
+                {
+                    if (parser.Ancestors[i] == action)
+                    {
+                        continue;
+                    }
+
+                    if (parser.Ancestors[i].Kind == IqlExpressionKind.Not)
+                    {
+                        negationCount++;
+                        continue;
+                    }
+
+                    break;
+                }
+
+                if ((action.Kind == IqlExpressionKind.IsNotEqualTo && negationCount % 2 != 0) ||
+                    (action.Kind == IqlExpressionKind.IsEqualTo && negationCount % 2 == 0))
+                {
+                    return IqlToIqlNotParser.AppendStringIsNullOrEmptyCheck(action, indexOf.Parent);
+                }
+            }
 
             return action;
         }
@@ -155,7 +201,7 @@ namespace Iql.Data.IqlToIql.Parsers
                 var path = IqlPropertyPath.FromPropertyExpression(
                     parser.Adapter.EntityConfigurationContext.EntityType<TEntity>(),
                     action.NavigationProperty);
-                action.Query = (IqlCollectitonQueryExpression) new IqlToIqlParserInstance(
+                action.Query = (IqlCollectitonQueryExpression)new IqlToIqlParserInstance(
                         parser.Adapter.EntityConfigurationContext.GetEntityByType(
                             path.Property.TypeDefinition.ElementType))
                     .Parse(action.Query).Expression;
@@ -190,7 +236,24 @@ namespace Iql.Data.IqlToIql.Parsers
             action.Expression = (IqlExpression)parser.Parse(action.Expression).Expression;
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
 
+            if (action.Expression.Kind == IqlExpressionKind.StringIncludes)
+            {
+                return AppendStringIsNullOrEmptyCheck(action, action.Expression.Parent);
+            }
+
             return action;
+        }
+
+        public static IqlExpression AppendStringIsNullOrEmptyCheck(IqlExpression action, IqlExpression parent)
+        {
+            return new[]
+            {
+                action,
+                new IqlIsEqualToExpression(parent,
+                    new IqlLiteralExpression(null, IqlType.String)),
+                new IqlIsEqualToExpression(parent,
+                    new IqlLiteralExpression("", IqlType.String))
+            }.Or();
         }
     }
 

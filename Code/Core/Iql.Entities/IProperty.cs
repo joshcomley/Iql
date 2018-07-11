@@ -8,6 +8,9 @@ namespace Iql.Entities
 {
     public interface IProperty : IPropertyMetadata
     {
+        bool IsTitleProperty { get; }
+        bool IsPreviewProperty { get; }
+        bool IsSubTitleProperty { get; }
 #if !TypeScript
         PropertyInfo PropertyInfo { get; set; }
 #endif

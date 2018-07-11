@@ -36,10 +36,16 @@
         public const string Image = Prefix + "Image";
         public const string Video = Prefix + "Video";
         public const string File = Prefix + "File";
+        public const string EntityPreview = Prefix + "EntityPreview";
+        public const string SubTitle = Prefix + "SubTitle";
 
         public static string FileTypeFor(string propertyName)
         {
             return $"{Prefix}FileTypeFor:{propertyName}";
+        }
+        public static string FileNameFor(string propertyName)
+        {
+            return $"{Prefix}FileNameFor:{propertyName}";
         }
         public static string PreviewFor(string propertyName)
         {

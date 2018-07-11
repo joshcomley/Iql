@@ -9,6 +9,9 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : MetadataBase, IPropertyMetadata
     {
+        public bool IsTitleProperty => EntityConfiguration != null && EntityConfiguration.TitlePropertyName == Name;
+        public bool IsPreviewProperty => EntityConfiguration != null && EntityConfiguration.PreviewPropertyName == Name;
+        public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public IEntityConfiguration EntityConfiguration { get; set; }
         public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
         public bool Searchable { get; set; } = true;

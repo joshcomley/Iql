@@ -404,17 +404,17 @@ namespace Iql.Data.DataStores
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             ICrudResult result = null;
+            var entityConfig = DataContext.EntityConfigurationContext.EntityType<TEntity>();
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    var entityConfig = DataContext.EntityConfigurationContext.EntityType<TEntity>();
-                    var validationResult = entityConfig.ValidateEntity(addEntityOperation.Operation.Entity);
-                    if (validationResult.HasValidationFailures())
+                    var addEntityValidationResult = entityConfig.ValidateEntity(addEntityOperation.Operation.Entity);
+                    if (addEntityValidationResult.HasValidationFailures())
                     {
                         addEntityOperation.Result.Success = false;
                         addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
-                        addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, validationResult);
+                        addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, addEntityValidationResult);
                     }
                     else if (CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result) &&
                             await CheckNotAlreadyExistsAsync(addEntityOperation))
@@ -453,32 +453,42 @@ namespace Iql.Data.DataStores
                     }
                     else if (isEntityNew != null && CheckPendingDependencies(updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
-                        result = await PerformUpdateAsync(updateEntityOperation);
-                        var operationEntity = updateEntityOperation
-                            .Operation
-                            .Entity;
-                        if (result.Success)
+                        var updateEntityValidationResult = entityConfig.ValidateEntity(updateEntityOperation.Operation.Entity);
+                        if (updateEntityValidationResult.HasValidationFailures())
                         {
-                            //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                            //    operationEntity, typeof(TEntity));
-                            var rootDictionary = new Dictionary<Type, IList>();
-                            rootDictionary.Ensure(
-                                typeof(TEntity),
-                                () => new List<TEntity> { updateEntityOperation.Operation.Entity });
-                            ForAnEntityAcrossAllDataStores<TEntity>(updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
+                            updateEntityOperation.Result.Success = false;
+                            updateEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
+                            updateEntityOperation.Result.EntityValidationResults.Add(updateEntityOperation.Operation.Entity, updateEntityValidationResult);
+                        }
+                        else
+                        {
+                            result = await PerformUpdateAsync(updateEntityOperation);
+                            var operationEntity = updateEntityOperation
+                                .Operation
+                                .Entity;
+                            if (result.Success)
                             {
-                                if (state.Entity != operationEntity)
+                                //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                                //    operationEntity, typeof(TEntity));
+                                var rootDictionary = new Dictionary<Type, IList>();
+                                rootDictionary.Ensure(
+                                    typeof(TEntity),
+                                    () => new List<TEntity> { updateEntityOperation.Operation.Entity });
+                                ForAnEntityAcrossAllDataStores<TEntity>(updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
                                 {
-                                    tracker.TrackResults<TEntity>(rootDictionary, null, true);
-                                }
-                                tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
-                            });
-                            // TODO: Should be able to refresh an entity yet maintain existing changes
-                            await DataContext.RefreshEntity(operationEntity
+                                    if (state.Entity != operationEntity)
+                                    {
+                                        tracker.TrackResults<TEntity>(rootDictionary, null, true);
+                                    }
+                                    tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
+                                });
+                                // TODO: Should be able to refresh an entity yet maintain existing changes
+                                await DataContext.RefreshEntity(operationEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                            );
+                                );
+                            }
                         }
                         //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
                     }
