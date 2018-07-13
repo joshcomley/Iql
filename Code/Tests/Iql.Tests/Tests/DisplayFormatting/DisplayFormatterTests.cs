@@ -12,7 +12,7 @@ namespace Iql.Tests.Tests.DisplayFormatting
             var person = new Person();
             person.Id = 7;
             person.Title = "Some guy";
-            var personFormatted = Db.EntityConfigurationContext.EntityType<Person>().DisplayFormatting.Get("Report").Format(person);
+            var personFormatted = Db.EntityConfigurationContext.EntityType<Person>().GetDisplayFormatting().Get("Report").Format(person);
             Assert.AreEqual($"{person.Title} ({person.Id})", personFormatted);
         }
     }

@@ -136,6 +136,9 @@ namespace Iql.Entities.DisplayFormatting
         }
 
         IEntityDisplayTextFormatter IDisplayFormatting.Default => Default;
+
+        IEnumerable<IEntityDisplayTextFormatter> IDisplayFormatting.All => All.ToArray();
+
         IEntityDisplayTextFormatter IDisplayFormatting.Get(string key) => Get(key);
 
         private Func<object, string> _nonTypedExpression = null;

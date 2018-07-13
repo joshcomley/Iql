@@ -726,7 +726,7 @@ namespace Iql.Data.Context
         public DbQueryable<T> AllRelationships(Func<DbQueryable<T>, IRelationship, IRelationshipDetail, DbQueryable<T>> action)
         {
             var set = this;
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
+            var entityConfiguration = DataContext.EntityConfigurationContext.EntityType<T>();
             foreach (var relationship in entityConfiguration.Relationships)
             {
                 var thisEnd = relationship.Source.Configuration == entityConfiguration

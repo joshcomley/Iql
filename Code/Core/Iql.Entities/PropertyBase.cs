@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Iql.Entities.Extensions;
 using Iql.Entities.Metadata;
+using Iql.Entities.Relationships;
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
 using Iql.Extensions;
 
 namespace Iql.Entities
@@ -28,6 +33,10 @@ namespace Iql.Entities
             }
         }
 
+        public virtual IRuleCollection<IBinaryRule> ValidationRules { get; set; }
+        public virtual IRuleCollection<IDisplayRule> DisplayRules { get; set; }
+        public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
+        public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
 
         private PropertySearchKind _searchKind;
@@ -60,7 +69,7 @@ namespace Iql.Entities
                 if (!_searchKindSet)
                 {
                     _searchKindSet = true;
-                    _searchKind = Kind.HasFlag(PropertyKind.Primitive) && 
+                    _searchKind = Kind.HasFlag(PropertyKind.Primitive) &&
                                   !Kind.HasFlag(PropertyKind.RelationshipKey) &&
                                   !Kind.HasFlag(PropertyKind.Key) &&
                                   TypeDefinition.Type == typeof(string) && string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType)
@@ -108,5 +117,29 @@ namespace Iql.Entities
         public abstract Func<object, object, object> SetValue { get; set; }
 
         public List<object> Helpers { get; set; }
+
+        public IProperty SetReadOnlyAndHidden(bool readOnlyAndHidden = true)
+        {
+            SetReadOnly(readOnlyAndHidden).SetHidden(readOnlyAndHidden);
+            return (IProperty)this;
+        }
+
+        public IProperty SetReadOnly(bool readOnly = true)
+        {
+            ReadOnly = readOnly;
+            return (IProperty)this;
+        }
+
+        public IProperty SetHidden(bool hidden = true)
+        {
+            Hidden = hidden;
+            return (IProperty)this;
+        }
+
+        public IProperty SetNullable(bool nullable = true)
+        {
+            Nullable = nullable;
+            return (IProperty)this;
+        }
     }
 }

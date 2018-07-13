@@ -705,7 +705,7 @@ namespace Iql.Tests.Tests
             PrintOutAllPropertyKinds()
         {
             var sb = new StringBuilder();
-            foreach (var config in Db.EntityConfigurationContext.AllConfigurations())
+            foreach (var config in Db.EntityConfigurationContext.EntityTypes())
             {
                 sb.AppendLine(config.Type.Name);
                 for (var i = 0; i < config.Properties.Count; i++)

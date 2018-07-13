@@ -6,11 +6,44 @@ using Iql.Conversion;
 
 namespace Iql.Entities.Relationships
 {
-    public class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : IRelationship
-        where TSource : class where TTarget : class
+    public abstract class RelationshipBase : IRelationship
     {
-        private readonly EntityConfigurationBuilder _configuration;
+        protected EntityConfigurationBuilder Builder;
 
+        protected RelationshipBase()
+        {
+            Constraints = new List<IRelationshipConstraint>();
+        }
+
+        public void Configure(
+            EntityConfigurationBuilder builder,
+            Func<IRelationshipDetail> source,
+            Func<IRelationshipDetail> target,
+            RelationshipKind kind)
+        {
+            Builder = builder;
+            Kind = kind;
+            Source = source();
+            Target = target();
+        }
+
+        public List<IRelationshipConstraint> Constraints { get; private set; }
+        public RelationshipKind Kind { get; private set; }
+        public IRelationshipDetail Source { get; private set; }
+        public IRelationshipDetail Target { get; private set; }
+        public string ConstraintKey { get; private set; }
+        public string QualifiedConstraintKey { get; private set; }
+
+        protected void UpdateConstraintKey()
+        {
+            ConstraintKey = string.Join(",", Constraints.Select(c => c.TargetKeyProperty.Name));
+            QualifiedConstraintKey = $"{Target.Type.Name}:{ConstraintKey}";
+        }
+    }
+    public class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : RelationshipBase
+        where TSource : class
+        where TTarget : class
+    {
         public Relationship(
             EntityConfigurationBuilder configuration,
             Expression<Func<TSource, TSourceProperty>> sourceProperty,
@@ -19,23 +52,16 @@ namespace Iql.Entities.Relationships
             Type targetElementType,
             RelationshipKind kind)
         {
-            _configuration = configuration;
             SourceElementType = sourceElementType;
             TargetElementType = targetElementType;
-            Kind = kind;
-            Constraints = new List<IRelationshipConstraint>();
-            Source = new RelationshipDetail<TSource, TSourceProperty>(this, RelationshipSide.Source, configuration, sourceProperty, targetElementType);
-            Target = new RelationshipDetail<TTarget, TTargetProperty>(this, RelationshipSide.Target, configuration, targetProperty, sourceElementType);
+            Configure(configuration,
+                () => new RelationshipDetail<TSource, TSourceProperty>(this, RelationshipSide.Source, configuration, sourceProperty, targetElementType),
+                () => new RelationshipDetail<TTarget, TTargetProperty>(this, RelationshipSide.Target, configuration, targetProperty, sourceElementType),
+                kind);
         }
 
-        public List<IRelationshipConstraint> Constraints { get; }
         public Type SourceElementType { get; }
         public Type TargetElementType { get; }
-        public RelationshipKind Kind { get; set; }
-        public IRelationshipDetail Source { get; }
-        public IRelationshipDetail Target { get; }
-        public string ConstraintKey { get; private set; }
-        public string QualifiedConstraintKey { get; private set; }
 
         public Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> WithConstraint<TKey>(
             Expression<Func<TSource, TKey>> sourceKeyProperty,
@@ -59,16 +85,10 @@ namespace Iql.Entities.Relationships
                 targetProperty.RelationshipSources.Add(Target.Configuration.FindRelationship(Target.Property.Name));
             }
             Constraints.Add(new RelationshipConstraint(
-                _configuration.EntityType<TSource>().FindProperty(sourceIqlProperty.PropertyName),
-                _configuration.EntityType<TTarget>().FindProperty(targetIqlProperty.PropertyName)));
+                Builder.EntityType<TSource>().FindProperty(sourceIqlProperty.PropertyName),
+                Builder.EntityType<TTarget>().FindProperty(targetIqlProperty.PropertyName)));
             UpdateConstraintKey();
             return this;
-        }
-
-        private void UpdateConstraintKey()
-        {
-            ConstraintKey = string.Join(",", Constraints.Select(c => c.TargetKeyProperty.Name));
-            QualifiedConstraintKey = $"{Target.Type.Name}:{ConstraintKey}";
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Iql.Entities.Relationships
         {
             Relationship = relationship;
             RelationshipSide = relationshipSide;
-            Configuration = configuration.GetEntity<T>();
+            Configuration = configuration.EntityType<T>();
             //var iql = IqlQueryableAdapter.ExpressionToIqlExpressionTree(expression) as
             //    IqlPropertyExpression;
             Property = Configuration.FindOrDefineProperty<TProperty>(expression, elementType);

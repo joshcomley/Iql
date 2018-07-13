@@ -1,25 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Configurations>Debug;Release;TypeScript Debug</Configurations>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="TypeSharp.Extensions" Version="0.0.5-preview5" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
     <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql\Iql.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Expressions\Conversion\" />
   </ItemGroup>
-
 </Project>

@@ -1,26 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <LangVersion>7.1</LangVersion>
     <Configurations>Debug;Release;TypeScript Debug</Configurations>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETCOREAPP2_0;TypeScript</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10008" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\Iql.Tests\Iql.Tests.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-
 </Project>

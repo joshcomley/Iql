@@ -12,7 +12,7 @@ namespace Iql.Tests.Tests.Properties
             var config = Db.EntityConfigurationContext.EntityType<Client>();
             var property = config.FindPropertyByExpression(c => c.CreatedDate);
             Assert.AreEqual(nameof(Client.CreatedDate), property.Name);
-            Assert.AreEqual("Created Date", property.ResolveFriendlyName());
+            Assert.AreEqual("Created Date", property.FriendlyName);
         }
 
         [TestMethod]

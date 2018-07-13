@@ -16,7 +16,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlIsEqualToExpression(null, null);
+			var expression = new IqlIsEqualToExpression();
 			expression.Left = Left?.Clone();
 			expression.Right = Right?.Clone();
 			expression.Kind = Kind;

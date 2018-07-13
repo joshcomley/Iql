@@ -4,56 +4,122 @@ using Iql.Extensions;
 
 namespace Iql.Entities
 {
-    public class MetadataBase : IMetadata
+    public class MetadataBase : IConfiguration
     {
         private string _friendlyName;
         private bool _friendlyNameSet;
-        private string _resolvedFriendlyName;
         private string _name;
+        private bool _nameSet;
         private string _title;
         private bool _titleSet;
         public string Name
         {
-            get => _name;
+            get
+            {
+                if (!_nameSet && string.IsNullOrWhiteSpace(_name))
+                {
+                    if (_titleSet)
+                    {
+                        _name = _title;
+                    }
+                    else if (_friendlyNameSet)
+                    {
+                        _name = _friendlyName;
+                    }
+                    else
+                    {
+                        _name = ResolveName();
+                    }
+                }
+                return _name;
+            }
             set
             {
+                _nameSet = true;
                 _name = value;
-                _resolvedFriendlyName = null;
+                Reset();
             }
         }
+
+        private void Reset()
+        {
+            if (!_nameSet)
+            {
+                _name = null;
+            }
+            if (!_friendlyNameSet)
+            {
+                _friendlyName = null;
+            }
+            if (!_titleSet)
+            {
+                _title = null;
+            }
+        }
+
         public string Title
         {
-            get => _titleSet ? _title : Name;
+            get
+            {
+                if (!_titleSet && string.IsNullOrWhiteSpace(_title))
+                {
+                    if (_friendlyNameSet)
+                    {
+                        _title = _friendlyName;
+                    }
+                    else if (_nameSet)
+                    {
+                        _title = _name;
+                    }
+                    else
+                    {
+                        _title = IntelliSpace.Parse(ResolveName());
+                    }
+                }
+                return _title;
+            }
             set
             {
-                _title = value;
                 _titleSet = true;
+                _title = value;
+                Reset();
             }
+        }
+
+        protected virtual string ResolveName()
+        {
+            return null;
         }
 
         public string FriendlyName
         {
-            get => _friendlyNameSet ? _friendlyName : Title;
+            get
+            {
+                if (!_friendlyNameSet && string.IsNullOrWhiteSpace(_friendlyName))
+                {
+                    if (_titleSet)
+                    {
+                        _friendlyName = _title;
+                    }
+                    else if (_nameSet)
+                    {
+                        _friendlyName = IntelliSpace.Parse(_name);
+                    }
+                    else
+                    {
+                        _friendlyName = IntelliSpace.Parse(ResolveName());
+                    }
+                }
+                return _friendlyName;
+            }
             set
             {
                 _friendlyName = value;
                 _friendlyNameSet = true;
-                _resolvedFriendlyName = null;
+                Reset();
             }
         }
 
-        public string ResolveFriendlyName()
-        {
-            return _resolvedFriendlyName ?? (_resolvedFriendlyName =
-                       string.IsNullOrWhiteSpace(FriendlyName) || !_friendlyNameSet
-                           ? IntelliSpace.Parse(ResolveName())
-                           : FriendlyName);
-        }
-
-        public virtual string ResolveName()
-        {
-            return Name ?? Title ?? "Unknown";
-        }
         public string GroupPath { get; set; }
         public string Description { get; set; }
         public List<string> Hints { get; set; } = new List<string>();
@@ -70,16 +136,18 @@ namespace Iql.Entities
             return HintHelper.HasHint(this, name);
         }
 
-        public void RemoveHint(string name)
+        public IConfiguration RemoveHint(string name)
         {
             HintHelper.RemoveHint(this, name);
+            return this;
         }
 
         public List<HelpText> HelpTexts { get; set; } = new List<HelpText>();
 
-        public void SetHint(string name, string value = null)
+        public IConfiguration SetHint(string name, string value = null)
         {
             HintHelper.SetHint(this, name, value);
+            return this;
         }
     }
 }

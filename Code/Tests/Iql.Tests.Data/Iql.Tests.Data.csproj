@@ -1,18 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Configurations>Debug;Release;TypeScript Debug</Configurations>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETCOREAPP2_0;TypeScript</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
     <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
     <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
   </ItemGroup>
-
 </Project>

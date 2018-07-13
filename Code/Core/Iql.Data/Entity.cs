@@ -16,7 +16,7 @@ namespace Iql.Data
             {
                 return -1;
             }
-            return FindIndexOfEntityByKey(data, dataContext.EntityConfigurationContext.GetEntity<TEntity>().GetCompositeKey(clone));
+            return FindIndexOfEntityByKey(data, dataContext.EntityConfigurationContext.EntityType<TEntity>().GetCompositeKey(clone));
         }
 
         public static int FindIndexOfEntityByKey<TEntity>(

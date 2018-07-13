@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
 
 namespace Iql.Entities
@@ -73,6 +75,24 @@ namespace Iql.Entities
             return _entities.ContainsKey(type);
         }
 
+        private readonly Dictionary<string, IEnumConfiguration> _enumTypes = new Dictionary<string, IEnumConfiguration>();
+        public IEnumerable<IEnumConfiguration> EnumTypes()
+        {
+            return _enumTypes.Values.ToArray();
+        }
+
+        public void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action)
+        {
+            var all = EntityTypes().ToList();
+            foreach (var config in all)
+            {
+                if (filter(config))
+                {
+                    action(config);
+                }
+            }
+        }
+
         public EntityConfiguration<T> EntityType<T>() where T : class
         {
             var entityType = typeof(T);
@@ -83,20 +103,25 @@ namespace Iql.Entities
             }
             else
             {
-                entityConfiguration = new EntityConfiguration<T>(entityType, this);
+                entityConfiguration = new EntityConfiguration<T>(this);
                 _entities[entityType] = entityConfiguration;
             }
             return entityConfiguration;
         }
 
-        public IEnumerable<IEntityConfiguration> AllConfigurations()
+        public IEnumConfiguration EnumType<T>()
         {
-            return _entities.Values;
+            var name = typeof(T).Name;
+            if (!_enumTypes.ContainsKey(name))
+            {
+                _enumTypes.Add(name, new EnumConfiguration(name));
+            }
+            return _enumTypes[name];
         }
 
-        public EntityConfiguration<T> GetEntity<T>() where T : class
+        public IEnumerable<IEntityConfiguration> EntityTypes()
         {
-            return GetEntityByType(typeof(T)) as EntityConfiguration<T>;
+            return _entities.Values;
         }
 
         public IEntityConfiguration GetEntityByType(Type type)

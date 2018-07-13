@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
   </ItemGroup>
-
 </Project>

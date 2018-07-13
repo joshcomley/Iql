@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
     <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
@@ -11,5 +9,4 @@
     <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
     <ProjectReference Include="..\Iql.TestBed\Iql.TestBed.csproj" />
   </ItemGroup>
-
 </Project>

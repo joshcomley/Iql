@@ -19,6 +19,7 @@ namespace Iql.DotNet.DotNetExpressionToIql
         {
             Parsers.Add(() => new BinaryDotNetExpressionParser<T>());
             Parsers.Add(() => new ConstantDotNetExpressionParser<T>());
+            Parsers.Add(() => new ConditionalDotNetExpressionParser<T>());
             Parsers.Add(() => new LambdaDotNetExpressionParser<T>());
             Parsers.Add(() => new MemberAccessDotNetExpressionParser<T>());
             Parsers.Add(() => new MethodCallDotNetExpressionParser<T>());

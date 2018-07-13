@@ -71,7 +71,7 @@ namespace Iql.Data.Tracking
         {
             DataStore = dataStore;
             TrackingSetCollection = trackingSetCollection;
-            EntityConfiguration = DataContext.EntityConfigurationContext.GetEntity<T>();
+            EntityConfiguration = DataContext.EntityConfigurationContext.EntityType<T>();
             SimplePropertyMerger = new SimplePropertyMerger(EntityConfiguration);
             EntitiesByPersistenceKey = new Dictionary<Guid, IEntityStateBase>();
             EntitiesByObject = new Dictionary<object, IEntityStateBase>();

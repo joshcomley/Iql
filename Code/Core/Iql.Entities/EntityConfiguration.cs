@@ -26,10 +26,14 @@ namespace Iql.Entities
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
+        public IEntityConfiguration SetManageKind(EntityManageKind manageKind)
+        {
+            ManageKind = manageKind;
+            return this;
+        }
+
         public EntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
-
-        public ValidationCollection<T> EntityValidation { get; } = new ValidationCollection<T>();
 
         private readonly Dictionary<string, EntitySanitizer<T>> _sanitizers = new Dictionary<string, EntitySanitizer<T>>();
         public IEntityConfiguration AddSanitizer(Action<T> expression, string key = null)
@@ -85,23 +89,30 @@ namespace Iql.Entities
             return this;
         }
 
-        public DisplayFormatting<T> DisplayFormatting { get; }
-
-        IDisplayFormatting IEntityConfiguration.DisplayFormatting => DisplayFormatting;
-        IRuleCollection<IBinaryRule> IEntityConfiguration.EntityValidation => EntityValidation;
-
-        public EntityConfiguration(Type type, EntityConfigurationBuilder builder)
+        public DisplayFormatting<T> GetDisplayFormatting()
         {
-            Type = type;
+            return (DisplayFormatting<T>) DisplayFormatting;
+        }
+
+        public ValidationCollection<T> GetEntityValidation()
+        {
+            return (ValidationCollection<T>) EntityValidation;
+        }
+
+        public EntityConfiguration(EntityConfigurationBuilder builder = null)
+        {
+            Type = typeof(T);
             Builder = builder;
             DisplayFormatting = new DisplayFormatting<T>(this);
+            EntityValidation = new ValidationCollection<T>();
             Relationships = new List<IRelationship>();
             Properties = new List<IProperty>();
+            Name = Type.Name;
         }
 
         public string GetDisplayText(T entity, string key = null)
         {
-            return DisplayFormatting.TryFormat(entity, key);
+            return GetDisplayFormatting().TryFormat(entity, key);
         }
 
         string IEntityConfiguration.GetDisplayText(object entity, string key = null)
@@ -175,7 +186,7 @@ namespace Iql.Entities
         {
             var validationResult = new EntityValidationResult<T>(entity);
 
-            foreach (var validation in EntityValidation.All)
+            foreach (var validation in GetEntityValidation().All)
             {
                 if (!validation.Run(entity))
                 {
@@ -325,8 +336,6 @@ namespace Iql.Entities
 
             return false;
         }
-
-        public List<IRelationship> Relationships { get; set; }
 
         private IProperty FindOrDefinePropertyInternal(
             LambdaExpression lambda,
@@ -649,23 +658,23 @@ namespace Iql.Entities
         public EntityConfiguration<T> DefineDisplayFormatter(Expression<Func<T, string>> formatter,
             string key = null)
         {
-            DisplayFormatting.Set(formatter, key);
+            GetDisplayFormatting().Set(formatter, key);
             return this;
         }
 
         public EntityConfiguration<T> DefineEntityValidation(Expression<Func<T, bool>> validation,
-            string key,
-            string message)
+            string key = null,
+            string message = null)
         {
-            EntityValidation.Add(new ValidationRule<T>(validation, key, message));
+            GetEntityValidation().Add(new ValidationRule<T>(validation, key, message));
             return this;
         }
 
         public EntityConfiguration<T> DefinePropertyValidation<TProperty>(
             Expression<Func<T, TProperty>> property,
             Expression<Func<T, bool>> validation,
-            string key,
-            string message)
+            string key = null,
+            string message = null)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
             var validationCollection = (ValidationCollection<T>)propertyDefinition.ValidationRules;
@@ -676,8 +685,8 @@ namespace Iql.Entities
         public EntityConfiguration<T> DefinePropertyDisplayRule<TProperty>(
             Expression<Func<T, TProperty>> property,
             Expression<Func<T, bool>> displayRule,
-            string key,
-            string message,
+            string key = null,
+            string message = null,
             DisplayRuleKind kind = DisplayRuleKind.DisplayIf,
             DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
         {
@@ -685,11 +694,15 @@ namespace Iql.Entities
             var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
             var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
             rule.AppliesToKind = appliesToKind;
+            rule.Kind = kind;
             return this;
         }
 
-        private static void AddRelationshipFilterRule<TProperty>(Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule, string key, string message,
-            IProperty propertyDefinition)
+        private static void AddRelationshipFilterRule<TProperty>(Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule, 
+            IProperty propertyDefinition,
+            string key = null,
+            string message = null
+            )
         {
             var ruleCollection = (RelationshipRuleCollection<T, TProperty>)propertyDefinition.RelationshipFilterRules;
             ruleCollection.Add(new RelationshipFilterRule<T, TProperty>(filterRule, key, message));
@@ -698,22 +711,22 @@ namespace Iql.Entities
         public EntityConfiguration<T> DefineRelationshipFilterRule<TProperty>(
             Expression<Func<T, TProperty>> property,
             Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
-            string key,
-            string message)
+            string key = null,
+            string message = null)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
-            AddRelationshipFilterRule(filterRule, key, message, propertyDefinition);
+            AddRelationshipFilterRule(filterRule, propertyDefinition, key, message);
             return this;
         }
 
         public EntityConfiguration<T> DefineRelationshipCollectionFilterRule<TProperty>(
             Expression<Func<T, IEnumerable<TProperty>>> property,
             Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
-            string key,
-            string message)
+            string key = null,
+            string message = null)
         {
             var propertyDefinition = FindOrDefineProperty<IEnumerable<TProperty>>(property, typeof(TProperty), null);
-            AddRelationshipFilterRule(filterRule, key, message, propertyDefinition);
+            AddRelationshipFilterRule(filterRule, propertyDefinition, key, message);
             return this;
         }
 
@@ -768,8 +781,7 @@ namespace Iql.Entities
                     {
                         lambda, countProperty
                     },
-                    propertyRuntimeType, propertyType)
-                ;
+                    propertyRuntimeType, propertyType);
         }
 
         private EntityConfiguration<T> DefineCollectionPropertyInternal<TValueType, TElementType>(

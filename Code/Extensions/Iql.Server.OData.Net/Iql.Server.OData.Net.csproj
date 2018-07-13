@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <ItemGroup>
+        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10213-0-Release" />
+      </ItemGroup>
+    </When>
+    <When Condition="'$(Configuration)' == 'Debug'">
+      <ItemGroup>
+        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10213-1-Debug" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
+    <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
+    <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />
+  </ItemGroup>
+</Project>

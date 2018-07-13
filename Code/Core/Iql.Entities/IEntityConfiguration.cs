@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Iql.Entities.DisplayFormatting;
-using Iql.Entities.Relationships;
-using Iql.Entities.Rules;
 using Iql.Entities.Validation.Validation;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfiguration : IEntityMetadata
+    public interface IEntityConfiguration : IEntityMetadata, IConfiguration
     {
         IProperty TitleProperty { get; }
         IProperty PreviewProperty { get; }
+        IEntityConfiguration SetManageKind(EntityManageKind manageKind);
         /// <summary>
         /// Determines whether this entity type has any fields that aren't key fields
         /// </summary>
@@ -34,14 +32,9 @@ namespace Iql.Entities
         IProperty[] FindPropertiesByHint(string hint);
         IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
         IProperty FindPropertyByLambdaExpression(LambdaExpression expression);
-        IDisplayFormatting DisplayFormatting { get; }
-        IRuleCollection<IBinaryRule> EntityValidation { get; }
         IEntityConfiguration AddSanitizer(Action<object> expression, string key = null);
         IEntityConfiguration SetGeographyResolver(Func<object, Task<Geography.Geography>> expression);
         Task<Geography.Geography> ResolveGeographyAsync(object entity);
-        List<IProperty> Properties { get; }
-        List<IRelationship> Relationships { get; set; }
-        IEntityKey Key { get; }
         Type Type { get; }
         IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null);
         IProperty FindProperty(string name);
@@ -50,6 +43,6 @@ namespace Iql.Entities
         List<RelationshipMatch> AllRelationships();
         bool EntityHasKey(object entity, CompositeKey key);
         bool KeysMatch(object left, object right);
-        CompositeKey GetCompositeKey(object entity);        
+        CompositeKey GetCompositeKey(object entity);
     }
 }

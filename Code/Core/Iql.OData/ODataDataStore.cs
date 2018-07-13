@@ -368,7 +368,7 @@ namespace Iql.OData
             {
                 properties.Add(property.Property.Name);
             }
-            foreach (var key in DataContext.EntityConfigurationContext.GetEntity<TEntity>().Key.Properties)
+            foreach (var key in DataContext.EntityConfigurationContext.EntityType<TEntity>().Key.Properties)
             {
                 properties.Add(key.Name);
             }

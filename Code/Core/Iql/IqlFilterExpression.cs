@@ -21,13 +21,13 @@ namespace Iql
         {
             // #CloneStart
 
-            var expression = new IqlFilterExpression(null, null, null);
-            expression.RootVariableName = RootVariableName;
-            expression.Value = Value?.Clone();
-            expression.Kind = Kind;
-            expression.ReturnType = ReturnType;
-            expression.Parent = Parent?.Clone();
-            return expression;
+			var expression = new IqlFilterExpression(null, null, null);
+			expression.RootVariableName = RootVariableName;
+			expression.Value = Value?.Clone();
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }

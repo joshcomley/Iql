@@ -28,12 +28,12 @@ namespace Iql.Entities
             return null;
         }
 
-        public static bool HasHint(IMetadata metadata, string name)
+        public static bool HasHint(IConfiguration metadata, string name)
         {
             return metadata.FindHint(name) != null;
         }
 
-        public static void SetHint(IMetadata metadata, string name, string value = null)
+        public static void SetHint(IConfiguration metadata, string name, string value = null)
         {
             var hint = FindHint(metadata, name);
             if (hint != null)

@@ -16,9 +16,9 @@ namespace Iql.Entities
 
         public Property(
             IEntityConfiguration entityConfiguration,
-            string name, 
+            string name,
             bool nullable,
-            bool isCollection, 
+            bool isCollection,
             Type declaringType,
             string convertedFromType,
             bool? readOnly,
@@ -30,29 +30,29 @@ namespace Iql.Entities
                 entityConfiguration,
                 name,
                 nullable,
-                isCollection, 
-                declaringType, 
+                isCollection,
+                declaringType,
                 typeof(TProperty),
                 typeof(TElementType),
                 kind,
-                convertedFromType, 
-                readOnly, 
-                countRelationship, 
+                convertedFromType,
+                readOnly,
+                countRelationship,
                 propertyGetterExpression);
         }
 
         internal void ConfigureProperty(
             IEntityConfiguration entityConfiguration,
-            string name, 
+            string name,
             bool nullable,
-            bool isCollection, 
+            bool isCollection,
             Type declaringType,
             Type propertyType,
             Type valueType,
             IqlType kind,
             string convertedFromType,
-            bool? readOnly, 
-            IProperty countRelationship, 
+            bool? readOnly,
+            IProperty countRelationship,
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
             EntityConfiguration = entityConfiguration;
@@ -83,7 +83,7 @@ namespace Iql.Entities
             PropertyGetterTyped = propertyGetterExpression.Compile();
             GetValue = o =>
             {
-                var t = (TOwner) o;
+                var t = (TOwner)o;
                 var propertyGetterTyped = PropertyGetterTyped;
                 var value = propertyGetterTyped(t);
                 return value;
@@ -91,19 +91,31 @@ namespace Iql.Entities
 
             PropertySetterExpressionTyped = GetAssignmentLambda<TOwner, TProperty>(name);
             PropertySetterTyped = PropertySetterExpressionTyped.Compile();
-            SetValue = (o, v) => PropertySetterTyped((TOwner) o, (TProperty) v);
+            SetValue = (o, v) => PropertySetterTyped((TOwner)o, (TProperty)v);
         }
 
-        public ValidationCollection<TOwner> ValidationRules { get; } = new ValidationCollection<TOwner>();
-        IRuleCollection<IBinaryRule> IProperty.ValidationRules => ValidationRules;
+        public new ValidationCollection<TOwner> ValidationRules { get; private set; } = new ValidationCollection<TOwner>();
+        IRuleCollection<IBinaryRule> IPropertyMetadata.ValidationRules
+        {
+            get => ValidationRules;
+            set => ValidationRules = (ValidationCollection<TOwner>)value;
+        }
 
-        public DisplayRuleCollection<TOwner> DisplayRules { get; } = new DisplayRuleCollection<TOwner>();
-        IRuleCollection<IBinaryRule> IProperty.DisplayRules => DisplayRules;
+        public new DisplayRuleCollection<TOwner> DisplayRules { get; private set; } = new DisplayRuleCollection<TOwner>();
+        IRuleCollection<IDisplayRule> IPropertyMetadata.DisplayRules
+        {
+            get => DisplayRules;
+            set => DisplayRules = (DisplayRuleCollection<TOwner>)value;
+        }
 
-        public RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; } = new RelationshipRuleCollection<TOwner, TElementType>();
-        IRuleCollection<IRelationshipRule> IProperty.RelationshipFilterRules => RelationshipFilterRules;
+        public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; private set; } = new RelationshipRuleCollection<TOwner, TElementType>();
+        IRuleCollection<IRelationshipRule> IPropertyMetadata.RelationshipFilterRules
+        {
+            get => RelationshipFilterRules;
+            set => RelationshipFilterRules = (RelationshipRuleCollection<TOwner, TElementType>) value;
+        }
 
-        public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
+    public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }
         public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
         public Func<TOwner, TProperty, TProperty> PropertySetterTyped { get; set; }

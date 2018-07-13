@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Relationships;
+using Iql.Entities.Rules;
 using Iql.Extensions;
 
 namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
-        private IEntityKey _key;
         private IProperty _titleProperty;
         private IProperty _previewProperty;
         private string _titlePropertyName;
         private string _previewPropertyName;
-        public List<IProperty> Properties { get; set; }
+        public IList<IProperty> Properties { get; set; }
+        public List<IRelationship> Relationships { get; set; }
 
         public object GetVersion(object entity)
         {
@@ -73,16 +76,17 @@ namespace Iql.Entities
                 })
                 .ToArray();
         }
-        public IEntityKey Key
-        {
-            get => _key;
-            set => _key = value;
-        }
+
+        public IDisplayFormatting DisplayFormatting { get; set; }
+        public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
+        public IEntityKey Key { get; set; }
 
         public Type Type { get; set; }
 
         private bool _titlePropertyNameChanged = false;
         private bool _previewPropertyNameChanged = false;
+        private string _setFriendlyName;
+
         public IProperty TitleProperty
         {
             get
@@ -131,24 +135,65 @@ namespace Iql.Entities
         }
 
         public EntityManageKind ManageKind { get; set; } = EntityManageKind.Full;
-        public string SetFriendlyName { get; set; }
-        public string SetName { get; set; }
 
-        public override string ResolveName()
+        private bool _setFriendlyNameSet = false;
+        private string _setName;
+
+        public string SetFriendlyName
         {
-            var name = Name ?? Title ?? Type?.Name ?? ResolveSetName();
-            return name ?? "Unknown";
+            get
+            {
+                if (!_setFriendlyNameSet && _setFriendlyName == null)
+                {
+                    _setFriendlyName = IntelliSpace.Parse(SetName);
+                }
+                return _setFriendlyName;
+            }
+            set
+            {
+                if (!SetNameSet)
+                {
+                    _setName = null;
+                }
+                _setFriendlyNameSet = true;
+                _setFriendlyName = value;
+            }
         }
 
-        public string ResolveSetFriendlyName()
+        public bool SetNameSet { get; private set; }
+
+        public string SetName
         {
-            return SetFriendlyName ?? IntelliSpace.Parse(ResolveSetName());
+            get
+            {
+                if (!SetNameSet && _setName == null)
+                {
+                    if (_setFriendlyNameSet)
+                    {
+                        _setName = _setFriendlyName;
+                    }
+                    else
+                    {
+                        _setName = ResolveName();
+                    }
+                }
+
+                return _setName;
+            }
+            set
+            {
+                if (!_setFriendlyNameSet)
+                {
+                    _setFriendlyName = null;
+                }
+                SetNameSet = true;
+                _setName = value;
+            }
         }
 
-        public string ResolveSetName()
+        protected override string ResolveName()
         {
-            //var dataContextType = DataContext.FindDataContextTypeForEntityType(Type);
-            return SetName ?? Name ?? Type.Name;
+            return Type?.Name ?? _setName ?? _setFriendlyName;
         }
 
         public string DefaultSortExpression { get; set; }

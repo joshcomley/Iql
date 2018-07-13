@@ -4,15 +4,13 @@ using System.Linq;
 
 namespace Iql.Entities
 {
-    public class EntityKey<T, TKey> : IEntityKey
+    public class EntityKeyBase : IEntityKey
     {
-        private IList<IProperty> _propertiesInternal;
+        private readonly IList<IProperty> _propertiesInternal;
         private IProperty[] _properties;
 
-        public EntityKey()
+        public EntityKeyBase()
         {
-            Type = typeof(T);
-            KeyType = typeof(TKey);
             _propertiesInternal = new List<IProperty>();
             UpdateProperties();
         }
@@ -28,10 +26,8 @@ namespace Iql.Entities
             _properties = _propertiesInternal.ToArray();
         }
 
-        public Type Type { get; set; }
         public bool HasRelationshipKeys => Properties.Any(p =>
             p.Relationship != null && !p.Relationship.ThisIsTarget);
-        public Type KeyType { get; set; }
 
         public IProperty[] Properties
         {
@@ -58,6 +54,17 @@ namespace Iql.Entities
                 var property = Properties[i];
                 property.ReadOnly = readOnly;
             }
+        }
+
+        public Type Type { get; set; }
+        public Type KeyType { get; set; }
+    }
+    public class EntityKey<T, TKey> : EntityKeyBase, IEntityKey
+    {
+        public EntityKey()
+        {
+            Type = typeof(T);
+            KeyType = typeof(TKey);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Iql.Entities.Rules
 
         protected Rule(Expression<Func<TContext, TResult>> expression, string key, string message)
         {
-            Key = key;
+            Key = key ?? (++RuleCounter.Count).ToString();
             Message = message;
             Expression = expression;
             TypedInvoker = expression.Compile();

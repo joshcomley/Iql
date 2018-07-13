@@ -78,11 +78,11 @@ namespace Iql.Data.Context
 
         private void InitializeSetNames()
         {
-            var allConfigs = EntityConfigurationContext.AllConfigurations().ToArray();
+            var allConfigs = EntityConfigurationContext.EntityTypes().ToArray();
             for (var i = 0; i < allConfigs.Length; i++)
             {
                 var config = allConfigs[i];
-                if (config.SetName == null)
+                if (!config.SetNameSet)
                 {
                     var propertyName = GetDbSetPropertyNameByEntityType(config.Type);
                     config.SetName = propertyName;
@@ -131,7 +131,10 @@ namespace Iql.Data.Context
                     property.SetValue(this, asDbSetByType);
                 }
                 var configuration = EntityConfigurationContext.GetEntityByType(entityType);
-                configuration.SetName = configuration.SetName ?? property.Name;
+                if (!configuration.SetNameSet)
+                {
+                    configuration.SetName = property.Name;
+                }
             }
         }
 

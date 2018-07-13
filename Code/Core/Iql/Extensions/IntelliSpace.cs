@@ -30,8 +30,14 @@ namespace Iql.Extensions
         public static string Parse(string str)
         {
             if (str == null)
+            {
                 return null;
-            if (str.ToUpper() == str) return str;
+            }
+
+            if (str.ToUpper() == str)
+            {
+                return str;
+            }
             str = str.Replace('_', ' ');
             var sb = new StringBuilder();
             for (var i = 0; i < str.Length; i++)

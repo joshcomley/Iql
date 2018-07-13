@@ -27,6 +27,16 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                     parent = context.Parse(node.Object, context) as IqlReferenceExpression;
                     return new IqlStringTrimExpression(
                         parent);
+                case nameof(string.ToUpper):
+                case nameof(string.ToUpperInvariant):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    return new IqlStringToUpperCaseExpression(
+                        parent);
+                case nameof(string.ToLower):
+                case nameof(string.ToLowerInvariant):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    return new IqlStringToLowerCaseExpression(
+                        parent);
                 case nameof(string.Substring):
                     parent = context.Parse(node.Object, context) as IqlReferenceExpression;
                     return new IqlStringSubStringExpression(
