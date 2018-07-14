@@ -85,7 +85,10 @@ namespace Iql.Data.Context
                 if (!config.SetNameSet)
                 {
                     var propertyName = GetDbSetPropertyNameByEntityType(config.Type);
-                    config.SetName = propertyName;
+                    if (!string.IsNullOrWhiteSpace(propertyName))
+                    {
+                        config.SetName = propertyName;
+                    }
                 }
             }
         }
