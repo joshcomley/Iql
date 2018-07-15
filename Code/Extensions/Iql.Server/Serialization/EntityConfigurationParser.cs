@@ -90,6 +90,12 @@ namespace Iql.Server.Serialization
         public override Func<object, object> GetValue { get; set; }
         public override Func<object, object, object> SetValue { get; set; }
         public Dictionary<string, object> CustomInformation { get; }
+        public bool HasMediaKey { get; }
+    }
+
+    public class MediaKey : MediaKeyBase
+    {
+
     }
 
     public class EntityConfigurationParser
@@ -169,6 +175,7 @@ namespace Iql.Server.Serialization
                 Map<IEntityDisplayTextFormatter, DisplayFormatter>();
                 Map<IDisplayRule, DisplayRule>();
                 Map<IRelationshipRule, RelationshipRule>();
+                Map<IMediaKey, MediaKey>();
             }
 
             private void Map<TInterface, TConcrete>()

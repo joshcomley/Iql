@@ -87,7 +87,7 @@ namespace Iql.Tests.Tests
             var propertyExpected = Db.EntityConfigurationContext.EntityType<ApplicationUser>()
                 .FindProperty(nameof(ApplicationUser.Client));
             var property = Db.EntityConfigurationContext.EntityType<Person>()
-                .FindPropertyByExpression(p => p.Type.CreatedByUser.Client);
+                .FindNestedPropertyByExpression(p => p.Type.CreatedByUser.Client);
             Assert.AreEqual(propertyExpected, property);
             Assert.AreEqual(nameof(ApplicationUser.Client), property.Name);
             Assert.AreEqual(typeof(Client), property.TypeDefinition.Type);

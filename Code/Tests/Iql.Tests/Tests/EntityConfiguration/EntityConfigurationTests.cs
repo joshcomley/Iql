@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,6 +12,59 @@ namespace Iql.Tests.Tests.EntityConfiguration
     [TestClass]
     public class EntityConfigurationTests : TestsBase
     {
+        [TestMethod]
+        public void MediaKeyShouldBeParseable()
+        {
+            var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);
+            var stringKey = "photo";
+            property.MediaKey
+                .AddPropertyPath(l => l.Client.Category.Guid)
+                .AddPropertyPath(l => l.Id)
+                .AddString(stringKey);
+            var user = new ApplicationUser();
+            user.Id = "myuserid";
+            user.Client = new Client();
+            user.Client.Category = new ClientCategory();
+            user.Client.Category.Guid = new Guid("4500dd19-e220-43d8-b178-80a0bdab8753");
+            var evaluated = property.MediaKey.Evaluate(user);
+            Assert.AreEqual(user.Client.Category.Guid.ToString(), evaluated[0]);
+            Assert.AreEqual(user.Id, evaluated[1]);
+            Assert.AreEqual(stringKey, evaluated[2]);
+            property.MediaKey.Clear();
+        }
+
+        [TestMethod]
+        public async Task MediaKeyShouldBeLazyLoaded()
+        {
+            var user = new ApplicationUser();
+            user.Id = "myuserid";
+            user.ClientId = 771;
+            var client = new Client { Id = 771, TypeId = 441 };
+            var clientType = new ClientType { Id = 441, Name = "4500dd19-e220-43d8-b178-80a0bdab8753" };
+            AppDbContext.InMemoryDb.Users.Add(user);
+            AppDbContext.InMemoryDb.Clients.Add(client);
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientType);
+            var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);
+            var stringKey = "photo";
+            property.MediaKey
+                .AddPropertyPath(l => l.Client.Type.Name)
+                .AddPropertyPath(l => l.Id)
+                .AddString(stringKey);
+            var dbUser = await Db.Users.GetWithKeyAsync(user.Id);
+            var evaluated = await property.MediaKey.EvaluateAsync(dbUser, Db);
+            Assert.AreEqual(clientType.Name, evaluated[0]);
+            Assert.AreEqual(user.Id, evaluated[1]);
+            Assert.AreEqual(stringKey, evaluated[2]);
+            property.MediaKey.Clear();
+        }
+
+        [TestMethod]
+        public async Task MediaKeyDoubleTest()
+        {
+            MediaKeyShouldBeParseable();
+            await MediaKeyShouldBeLazyLoaded();
+        }
+
         [TestMethod]
         public void CountPropertyShouldHaveCountKind()
         {
@@ -45,7 +101,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
                     nameof(Client.AverageSales)
                 });
             var property = Db.EntityConfigurationContext.EntityType<Person>()
-                .FindProperty(
+                .FindNestedProperty(
                     propertyPath);
             Assert.AreEqual(nameof(Client.AverageSales), property.Name);
         }

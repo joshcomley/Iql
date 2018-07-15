@@ -182,6 +182,12 @@ namespace Iql.Server.Serialization
                         .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
                         .ToList();
                 }
+                if (typeof(IMediaKey).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(IMediaKey), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IMediaKey.Property))
+                        .ToList();
+                }
                 if (typeof(IEntityKey).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(typeof(IEntityKey), memberSerialization)

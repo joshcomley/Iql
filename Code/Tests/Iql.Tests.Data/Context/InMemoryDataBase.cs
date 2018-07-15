@@ -8,6 +8,7 @@ namespace Iql.Tests.Data.Context
         public IList<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
         public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
         public IList<Client> Clients { get; set; } = new List<Client>();
+        public IList<ClientCategory> ClientCategories { get; set; } = new List<ClientCategory>();
         public IList<Site> Sites { get; set; } = new List<Site>();
         public IList<SiteInspection> SiteInspections { get; set; } = new List<SiteInspection>();
         public IList<Person> People { get; set; } = new List<Person>();

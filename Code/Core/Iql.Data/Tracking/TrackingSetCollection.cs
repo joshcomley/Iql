@@ -122,9 +122,13 @@ namespace Iql.Data.Tracking
             return TrackingSetByType(entityType).IsTracked(key);
         }
 
-        public bool IsTracked(object entity, Type entityType)
+        public bool IsTracked(object entity, Type entityType = null)
         {
-            return TrackingSetByType(entityType).IsTracked(entity);
+            if (entity == null)
+            {
+                return false;
+            }
+            return TrackingSetByType(entityType ?? entity.GetType()).IsTracked(entity);
         }
 
         public bool IsMarkedForDeletion(object entity, Type entityType)

@@ -73,7 +73,7 @@ namespace Iql.Entities
 
         Task<Geography.Geography> IEntityConfiguration.ResolveGeographyAsync(object entity)
         {
-            return ResolveGeographyAsync((T) entity);
+            return ResolveGeographyAsync((T)entity);
         }
 
         public IEntityConfiguration SetGeographyResolver(Func<T, Task<Geography.Geography>> expression)
@@ -91,12 +91,12 @@ namespace Iql.Entities
 
         public DisplayFormatting<T> GetDisplayFormatting()
         {
-            return (DisplayFormatting<T>) DisplayFormatting;
+            return (DisplayFormatting<T>)DisplayFormatting;
         }
 
         public ValidationCollection<T> GetEntityValidation()
         {
-            return (ValidationCollection<T>) EntityValidation;
+            return (ValidationCollection<T>)EntityValidation;
         }
 
         public EntityConfiguration(EntityConfigurationBuilder builder = null)
@@ -168,7 +168,7 @@ namespace Iql.Entities
         IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByExpression<TProperty>(object entity,
             Expression<Func<object, TProperty>> expression)
         {
-            var property = ((IEntityConfiguration)this).FindPropertyByLambdaExpression(expression);
+            var property = FindPropertyByLambdaExpression(expression);
             return ValidateEntityProperty((T)entity, property);
         }
 
@@ -480,8 +480,18 @@ namespace Iql.Entities
             return key;
         }
 
-        public IProperty FindProperty(string name)
+        public IEntityProperty<T> FindProperty(string name)
         {
+            return (IEntityProperty<T>)Properties.SingleOrDefault(p => p.Name.ToLower() == name.ToLower());
+        }
+        IProperty IEntityConfiguration.FindProperty(string name)
+        {
+            return FindProperty(name);
+        }
+
+        public IProperty FindNestedProperty(string name)
+        {
+            // TODO: Use IqlPropertyPath
             if (name.IndexOf("/") != -1)
             {
                 var parts = name.Split('/');
@@ -490,7 +500,7 @@ namespace Iql.Entities
                 for (var i = 0; i < parts.Length; i++)
                 {
                     var part = parts[i];
-                    property = config.FindProperty(part);
+                    property = config.FindNestedProperty(part);
                     if (i == parts.Length - 1)
                     {
                         break;
@@ -502,25 +512,45 @@ namespace Iql.Entities
             return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
         }
 
-        public IProperty[] FindPropertiesByHint(string hint)
+        public IEntityProperty<T>[] FindPropertiesByHint(string hint)
         {
-            return Properties.Where(p => p.HasHint(hint)).ToArray();
+            return Properties.Where(p => p.HasHint(hint)).Select(p => (IEntityProperty<T>)p).ToArray();
         }
 
-        public IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
+        IProperty[] IEntityConfiguration.FindPropertiesByHint(string hint)
+        {
+            return FindPropertiesByHint(hint).Select(p => (IProperty)p).ToArray();
+        }
+
+        public IEntityProperty<T> FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
+        {
+            return (IEntityProperty<T>)FindNestedPropertyByIqlExpression(propertyExpression);
+        }
+
+        public IEntityProperty<T> FindPropertyByLambdaExpression(LambdaExpression property)
+        {
+            return (IEntityProperty<T>)FindNestedPropertyByLambdaExpression(property);
+        }
+
+        public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(this, propertyExpression).Property;
         }
 
-        public IProperty FindPropertyByLambdaExpression(LambdaExpression property)
+        public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression property)
         {
             var iql = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property).Expression;
-            return FindPropertyByIqlExpression(iql);
+            return FindNestedPropertyByIqlExpression(iql);
         }
 
-        public IProperty FindPropertyByExpression(Expression<Func<T, object>> property)
+        public IEntityProperty<T> FindPropertyByExpression(Expression<Func<T, object>> property)
         {
             return FindPropertyByLambdaExpression(property);
+        }
+
+        public IProperty FindNestedPropertyByExpression(Expression<Func<T, object>> property)
+        {
+            return FindNestedPropertyByLambdaExpression(property);
         }
 
         IProperty IEntityConfiguration.FindPropertyByExpression(
@@ -580,7 +610,7 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> ConfigureProperty(
             Expression<Func<T, object>> property,
-            Action<IProperty> configure)
+            Action<IEntityProperty<T>> configure)
         {
             var propertyDefinition = FindPropertyByExpression(property);
             configure(propertyDefinition);
@@ -598,7 +628,7 @@ namespace Iql.Entities
             return this;
         }
 
-        public IProperty DefineAndGetProperty<TProperty>(Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
+        public IEntityProperty<T> DefineAndGetProperty<TProperty>(Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
 #if !TypeScript
@@ -698,7 +728,7 @@ namespace Iql.Entities
             return this;
         }
 
-        private static void AddRelationshipFilterRule<TProperty>(Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule, 
+        private static void AddRelationshipFilterRule<TProperty>(Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
             IProperty propertyDefinition,
             string key = null,
             string message = null

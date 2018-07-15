@@ -273,15 +273,15 @@ namespace Iql.Data.Context
             return null;
         }
 
-        public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null)
+        public async Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null)
         {
-            return GetDbSetByEntityType(entityType ?? entity.GetType())
+            return await GetDbSetByEntityType(entityType ?? entity.GetType())
                 .LoadAllRelationshipsAsync(entity, mode);
         }
 
-        public Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships, Type entityType = null)
+        public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships, Type entityType = null)
         {
-            return GetDbSetByEntityType(entityType ?? entity.GetType())
+            return await GetDbSetByEntityType(entityType ?? entity.GetType())
                 .LoadRelationshipsAsync(entity, relationships);
         }
 
@@ -291,10 +291,10 @@ namespace Iql.Data.Context
                 .LoadRelationshipPropertyAsync(entity, property, queryFilter);
         }
 
-        public Task<IList> LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        public async Task<IList> LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return LoadRelationshipPropertyAsync(entity,
-                EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType()).FindPropertyByLambdaExpression(relationship),
+            return await LoadRelationshipPropertyAsync(entity,
+                EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType()).FindNestedPropertyByLambdaExpression(relationship),
                 queryFilter);
         }
 

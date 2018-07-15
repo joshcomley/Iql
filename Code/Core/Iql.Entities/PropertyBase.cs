@@ -38,6 +38,7 @@ namespace Iql.Entities
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
+        public virtual IMediaKey MediaKey { get; }
 
         private PropertySearchKind _searchKind;
 #if !TypeScript
@@ -61,7 +62,6 @@ namespace Iql.Entities
         private bool _searchKindSet;
         private bool? _readOnly;
         private RelationshipMatch _relationship;
-
         public PropertySearchKind SearchKind
         {
             get

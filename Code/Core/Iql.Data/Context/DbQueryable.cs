@@ -78,9 +78,9 @@ namespace Iql.Data.Context
             return SearchProperties(search, properties);
         }
 
-        public Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        public async Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return LoadRelationshipPropertyAsync(
+            await LoadRelationshipPropertyAsync(
                 entity, DataContext.EntityConfigurationContext.EntityType<T>()
                     .FindPropertyByExpression(property),
                 queryFilter);
@@ -119,9 +119,9 @@ namespace Iql.Data.Context
             return (IList)await query.ToListAsync();
         }
 
-        Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        async Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return LoadRelationshipPropertyAsync((T)entity, DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType())
+            return await LoadRelationshipPropertyAsync((T)entity, DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType())
                 .FindPropertyByExpression(relationship),
                 queryFilter);
         }
@@ -153,7 +153,7 @@ namespace Iql.Data.Context
             return dictionary;
         }
 
-        public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
+        public async Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
         {
             IEnumerable<RelationshipMatch> relationships = EntityConfiguration.AllRelationships();
             switch (mode)
@@ -165,22 +165,22 @@ namespace Iql.Data.Context
                     relationships = relationships.Where(r => !r.ThisEnd.IsCollection);
                     break;
             }
-            return LoadRelationshipsAsync(entity, relationships);
+            return await LoadRelationshipsAsync(entity, relationships);
         }
 
-        Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships)
+        async Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships)
         {
-            return LoadRelationshipsAsync((T)entity, relationships);
+            return await LoadRelationshipsAsync((T)entity, relationships);
         }
 
-        Task<Dictionary<IProperty, IList>> IDbQueryable.LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
+        async Task<Dictionary<IProperty, IList>> IDbQueryable.LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
         {
-            return LoadAllRelationshipsAsync((T)entity, mode);
+            return await LoadAllRelationshipsAsync((T)entity, mode);
         }
 
-        Task<IList> IDbQueryable.LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        async Task<IList> IDbQueryable.LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return LoadRelationshipPropertyAsync((T)entity, property, queryFilter);
+            return await LoadRelationshipPropertyAsync((T)entity, property, queryFilter);
         }
 
         IDataContext IDbQueryable.DataContext { get => DataContext; set => DataContext = value; }

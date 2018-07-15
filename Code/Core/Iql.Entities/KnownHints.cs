@@ -1,4 +1,9 @@
-﻿namespace Iql.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using Newtonsoft.Json;
+
+namespace Iql.Entities
 {
     public class KnownHints
     {

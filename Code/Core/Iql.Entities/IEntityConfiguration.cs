@@ -30,13 +30,14 @@ namespace Iql.Entities
         IPropertyValidationResult ValidateEntityProperty(object entity, IProperty property);
         IProperty FindPropertyByExpression(Expression<Func<object, object>> expression);
         IProperty[] FindPropertiesByHint(string hint);
-        IProperty FindPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
-        IProperty FindPropertyByLambdaExpression(LambdaExpression expression);
+        IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
+        IProperty FindNestedPropertyByLambdaExpression(LambdaExpression expression);
         IEntityConfiguration AddSanitizer(Action<object> expression, string key = null);
         IEntityConfiguration SetGeographyResolver(Func<object, Task<Geography.Geography>> expression);
         Task<Geography.Geography> ResolveGeographyAsync(object entity);
         Type Type { get; }
         IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null);
+        IProperty FindNestedProperty(string name);
         IProperty FindProperty(string name);
         IProperty FindOrDefinePropertyByName(string name, Type elementType);
         RelationshipMatch FindRelationship(string propertyName);

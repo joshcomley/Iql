@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
@@ -10,9 +11,11 @@ using Iql.Entities.Validation;
 namespace Iql.Entities
 {
     [DebuggerDisplay("{Name} - {Kind}")]
-    public class Property<TOwner, TProperty, TElementType> : PropertyBase, IProperty
+    public class Property<TOwner, TProperty, TElementType> : PropertyBase, IEntityProperty<TOwner>
+        where TOwner : class
     {
         private Dictionary<string, object> _customInformation;
+        private MediaKey<TOwner> _mediaKey;
 
         public Property(
             IEntityConfiguration entityConfiguration,
@@ -109,13 +112,22 @@ namespace Iql.Entities
         }
 
         public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; private set; } = new RelationshipRuleCollection<TOwner, TElementType>();
+
+        public new MediaKey<TOwner> MediaKey
+        {
+            get => _mediaKey = _mediaKey ?? new MediaKey<TOwner>(this);
+            set => _mediaKey = value;
+        }
+        IMediaKey IPropertyMetadata.MediaKey => MediaKey;
+        public bool HasMediaKey => MediaKey.Parts.Any();
+
         IRuleCollection<IRelationshipRule> IPropertyMetadata.RelationshipFilterRules
         {
             get => RelationshipFilterRules;
-            set => RelationshipFilterRules = (RelationshipRuleCollection<TOwner, TElementType>) value;
+            set => RelationshipFilterRules = (RelationshipRuleCollection<TOwner, TElementType>)value;
         }
 
-    public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
+        public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }
         public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
         public Func<TOwner, TProperty, TProperty> PropertySetterTyped { get; set; }
@@ -131,5 +143,11 @@ namespace Iql.Entities
             var l = Expression.Lambda(Expression.Assign(Expression.Property(p, name), v), p, v);
             return (Expression<Func<T, TAssignmentProperty, TAssignmentProperty>>)l;
         }
+    }
+
+    public interface IEntityProperty<T> : IProperty
+        where T : class
+    {
+        new MediaKey<T> MediaKey { get; }
     }
 }

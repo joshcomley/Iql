@@ -64,6 +64,12 @@ namespace Iql.Entities
             return null;
         }
 
+        public static EntityConfiguration<T> FindConfigurationForEntityTypeTyped<T>()
+            where T : class
+        {
+            return (EntityConfiguration<T>) FindConfigurationForEntityType(typeof(T));
+        }
+
         public static EntityConfigurationBuilder FindConfigurationBuilderForEntityType(Type entityType)
         {
             var config = FindConfigurationForEntityType(entityType);

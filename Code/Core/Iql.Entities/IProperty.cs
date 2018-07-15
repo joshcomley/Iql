@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Entities
 {
@@ -26,5 +24,6 @@ namespace Iql.Entities
         IProperty SetReadOnly(bool readOnly = true);
         IProperty SetHidden(bool hidden = true);
         IProperty SetNullable(bool nullable = true);
+        bool HasMediaKey { get; }
     }
 }

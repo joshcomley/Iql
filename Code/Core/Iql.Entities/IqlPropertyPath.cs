@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Extensions;
 
 namespace Iql.Entities
 {
@@ -106,9 +107,13 @@ namespace Iql.Entities
         }
 
         public static IqlPropertyPath FromLambda<T>(Expression<Func<T, object>> field,
-            EntityConfiguration<T> entityConfigurationContext) where T : class
+            EntityConfiguration<T> entityConfigurationContext = null) where T : class
         {
             var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter().ConvertPropertyLambdaToIql(field).Expression;
+            if (entityConfigurationContext == null)
+            {
+                entityConfigurationContext = EntityConfigurationBuilder.FindConfigurationForEntityTypeTyped<T>();
+            }
             return FromPropertyExpression(entityConfigurationContext, propertyExpression);
         }
 
@@ -206,6 +211,30 @@ namespace Iql.Entities
                 ourTop = ourTop.Child;
             }
             return FromString(ourTop.Child.PathFromHere, ourTop.Child.EntityConfiguration);
+        }
+
+        public object Evaluate(object entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            var result = entity;
+            foreach (var part in PropertyPath)
+            {
+                result = result.GetPropertyValueByName(part.PropertyName);
+                if (result == null)
+                {
+                    return null;
+                }
+            }
+
+            return result;
+        }
+
+        public T EvaluateAs<T>(object entity)
+        {
+            return (T)Evaluate(entity);
         }
     }
 }
