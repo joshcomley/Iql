@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
-using Iql.Entities.DisplayFormatting;
+﻿using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
+using System.Collections.Generic;
 
 namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {
+        List<IGeographic> Geographics { get; set; }
         IDisplayFormatting DisplayFormatting { get; }
         IRuleCollection<IBinaryRule> EntityValidation { get; }
         IEntityKey Key { get; }

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Iql.DotNet.Serialization;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
@@ -152,7 +153,9 @@ namespace Iql.Server.Serialization
                 }
                 if (typeof(IProperty).IsAssignableFrom(type))
                 {
-                    return base.CreateProperties(typeof(IPropertyMetadata), memberSerialization);
+                    return base.CreateProperties(typeof(IPropertyMetadata), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IPropertyMetadata.HasMediaKey))
+                        .ToList();
                 }
                 if (typeof(ITypeDefinition).IsAssignableFrom(type))
                 {
@@ -182,10 +185,28 @@ namespace Iql.Server.Serialization
                         .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
                         .ToList();
                 }
+                if (typeof(IGeographic).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(IGeographic), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IGeographic.EntityConfiguration))
+                        .ToList();
+                }
                 if (typeof(IMediaKey).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(typeof(IMediaKey), memberSerialization)
                         .Where(p => p.PropertyName != nameof(IMediaKey.Property))
+                        .ToList();
+                }
+                if (typeof(IMediaKeyGroup).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(IMediaKeyGroup), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IMediaKeyGroup.MediaKey))
+                        .ToList();
+                }
+                if (typeof(IMediaKeyPart).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(IMediaKeyPart), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IMediaKeyPart.MediaKey))
                         .ToList();
                 }
                 if (typeof(IEntityKey).IsAssignableFrom(type))

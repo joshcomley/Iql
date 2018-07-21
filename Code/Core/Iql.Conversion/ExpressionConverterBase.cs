@@ -25,11 +25,11 @@ namespace Iql.Conversion
 
         static ExpressionConverterBase()
         {
-            ConvertLambdaExpressionToIqlByTypeMethod = typeof(ExpressionConverterBase)
-                .GetMethod(nameof(ConvertLambdaExpressionToIqlByType));
+            ConvertLambdaToIqlMethod = typeof(ExpressionConverterBase)
+                .GetMethod(nameof(ConvertLambdaToIql));
         }
 
-        public static MethodInfo ConvertLambdaExpressionToIqlByTypeMethod { get; set; }
+        public static MethodInfo ConvertLambdaToIqlMethod { get; set; }
 
         public virtual ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(
             LambdaExpression filter, 
@@ -39,7 +39,7 @@ namespace Iql.Conversion
 #endif
             )
         {
-            return (ExpressionResult<IqlExpression>) ConvertLambdaExpressionToIqlByTypeMethod
+            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
                 .InvokeGeneric(this, new object[]
                 {
                     filter

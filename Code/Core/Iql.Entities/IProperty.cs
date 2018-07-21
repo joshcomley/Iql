@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Iql.Entities.Geography;
 
 namespace Iql.Entities
 {
     public interface IProperty : IPropertyMetadata, IConfiguration
     {
+        IGeographic Geographic { get; }
+        bool IsLongitudeProperty { get; }
+        bool IsLatitudeProperty { get; }
+        bool IsLongitudeOrLatitudeProperty { get; }
         bool IsTitleProperty { get; }
         bool IsPreviewProperty { get; }
         bool IsSubTitleProperty { get; }

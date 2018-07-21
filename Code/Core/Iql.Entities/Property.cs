@@ -1,12 +1,12 @@
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Validation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Display;
-using Iql.Entities.Rules.Relationship;
-using Iql.Entities.Validation;
 
 namespace Iql.Entities
 {
@@ -113,13 +113,27 @@ namespace Iql.Entities
 
         public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; private set; } = new RelationshipRuleCollection<TOwner, TElementType>();
 
+        protected override IMediaKey GetMediaKey()
+        {
+            return _mediaKey;
+        }
+
+        protected override void SetMediaKey(IMediaKey value)
+        {
+            _mediaKey = (MediaKey<TOwner>) value;
+        }
+
         public new MediaKey<TOwner> MediaKey
         {
             get => _mediaKey = _mediaKey ?? new MediaKey<TOwner>(this);
             set => _mediaKey = value;
         }
-        IMediaKey IPropertyMetadata.MediaKey => MediaKey;
-        public bool HasMediaKey => MediaKey.Parts.Any();
+
+        IMediaKey IPropertyMetadata.MediaKey
+        {
+            get => MediaKey;
+            set => MediaKey = (MediaKey<TOwner>)value;
+        }
 
         IRuleCollection<IRelationshipRule> IPropertyMetadata.RelationshipFilterRules
         {

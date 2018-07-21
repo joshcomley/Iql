@@ -48,7 +48,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Server.OData.Net", "Ext
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Server.ConsoleApp", "Extensions\Iql.Server.ConsoleApp\Iql.Server.ConsoleApp.csproj", "{A56F14B7-6111-4340-8BA5-F14AC229C723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.Server", "Extensions\Iql.Server\Iql.Server.csproj", "{4DA304EA-1C83-4AAA-AD22-5C558684453E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Server", "Extensions\Iql.Server\Iql.Server.csproj", "{4DA304EA-1C83-4AAA-AD22-5C558684453E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Client.ContextGenerator", "Extensions\Iql.Client.ContextGenerator\Iql.Client.ContextGenerator.csproj", "{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Client.ContextGenerator.ConsoleApp", "Apps\Iql.Client.ContextGenerator.ConsoleApp\Iql.Client.ContextGenerator.ConsoleApp.csproj", "{E41517A2-B925-4AC4-8652-E31CF3D52532}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{7B747451-DBBA-4A11-BA7C-7EEE49CAFA7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +159,18 @@ Global
 		{4DA304EA-1C83-4AAA-AD22-5C558684453E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4DA304EA-1C83-4AAA-AD22-5C558684453E}.TypeScript Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4DA304EA-1C83-4AAA-AD22-5C558684453E}.TypeScript Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}.TypeScript Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2}.TypeScript Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E41517A2-B925-4AC4-8652-E31CF3D52532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E41517A2-B925-4AC4-8652-E31CF3D52532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E41517A2-B925-4AC4-8652-E31CF3D52532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E41517A2-B925-4AC4-8652-E31CF3D52532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E41517A2-B925-4AC4-8652-E31CF3D52532}.TypeScript Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E41517A2-B925-4AC4-8652-E31CF3D52532}.TypeScript Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +190,8 @@ Global
 		{F30063B2-FE3F-4F52-B911-E296B94D9B1E} = {1F66D0C4-9146-4ACB-9CBA-4E3390A5B02F}
 		{A56F14B7-6111-4340-8BA5-F14AC229C723} = {1F66D0C4-9146-4ACB-9CBA-4E3390A5B02F}
 		{4DA304EA-1C83-4AAA-AD22-5C558684453E} = {1F66D0C4-9146-4ACB-9CBA-4E3390A5B02F}
+		{BC572AD6-D85B-4AA1-BA42-26309C02B8B2} = {1F66D0C4-9146-4ACB-9CBA-4E3390A5B02F}
+		{E41517A2-B925-4AC4-8652-E31CF3D52532} = {7B747451-DBBA-4A11-BA7C-7EEE49CAFA7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25F5A3C4-C3A4-4E48-A846-3490FB1C1F53}

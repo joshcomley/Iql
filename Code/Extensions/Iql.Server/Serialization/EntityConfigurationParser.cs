@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.DotNet.Serialization;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Enums;
+using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
@@ -20,6 +22,8 @@ namespace Iql.Server.Serialization
     {
 
     }
+
+    [DebuggerDisplay("{Name} - {SetName}")]
     public class EntityConfiguration : EntityConfigurationBase
     {
 
@@ -29,6 +33,7 @@ namespace Iql.Server.Serialization
     {
 
     }
+
     public class DisplayRuleCollection : RuleCollection<IDisplayRule>
     {
 
@@ -52,6 +57,7 @@ namespace Iql.Server.Serialization
         public IqlExpression FormatterExpressionIql { get; set; }
         public Func<object, string> Format { get; }
     }
+
     public class DisplayFormatting : IDisplayFormatting
     {
         public DisplayFormatting()
@@ -75,27 +81,60 @@ namespace Iql.Server.Serialization
     {
         public Func<object, LambdaExpression> Run { get; }
     }
+
     public class DisplayRule : RuleBase, IDisplayRule
     {
         public Func<object, bool> Run { get; }
         public DisplayRuleKind Kind { get; set; }
         public DisplayRuleAppliesToKind AppliesToKind { get; set; }
     }
+
     public class ValidationRule : RuleBase, IBinaryRule, IValidationRule
     {
         public Func<object, bool> Run { get; }
     }
+
+    [DebuggerDisplay("{Name}")]
     public class Property : PropertyBase, IProperty
     {
+        private IMediaKey _mediaKey;
+        protected override IMediaKey GetMediaKey()
+        {
+            return _mediaKey;
+        }
+
+        protected override void SetMediaKey(IMediaKey value)
+        {
+            _mediaKey = value;
+        }
+
         public override Func<object, object> GetValue { get; set; }
         public override Func<object, object, object> SetValue { get; set; }
         public Dictionary<string, object> CustomInformation { get; }
-        public bool HasMediaKey { get; }
     }
 
     public class MediaKey : MediaKeyBase
     {
+        protected override void ClearGroups()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
+    public class MediaKeyGroup : IMediaKeyGroup
+    {
+        public IMediaKey MediaKey { get; }
+        public string Separator { get; set; }
+        public List<IMediaKeyPart> Parts { get; set; }
+        public string[] Evaluate(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string EvaluateToString(object entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class EntityConfigurationParser
@@ -176,6 +215,9 @@ namespace Iql.Server.Serialization
                 Map<IDisplayRule, DisplayRule>();
                 Map<IRelationshipRule, RelationshipRule>();
                 Map<IMediaKey, MediaKey>();
+                Map<IMediaKeyGroup, MediaKeyGroup>();
+                Map<IMediaKeyPart, MediaKeyPart>();
+                Map<IGeographic, Geographic>();
             }
 
             private void Map<TInterface, TConcrete>()

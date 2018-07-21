@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Extensions;
@@ -77,6 +78,7 @@ namespace Iql.Entities
                 .ToArray();
         }
 
+        public List<IGeographic> Geographics { get; set; } = new List<IGeographic>();
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
         public IEntityKey Key { get; set; }

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10012-1-Debug" />
+    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0012-1-Debug" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
+    <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
+    <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="C:\Users\Josh Comley\.nuget\packages\typesharp.core\0.0.6-preview0012-1-debug\contentFiles\any\netstandard2.0\Translation\ClassTranslationTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+  </ItemGroup>
+
+</Project>

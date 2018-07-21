@@ -693,8 +693,9 @@ namespace Iql.Entities
         }
 
         public EntityConfiguration<T> DefineEntityValidation(Expression<Func<T, bool>> validation,
-            string key = null,
-            string message = null)
+            string message = null,
+            string key = null
+            )
         {
             GetEntityValidation().Add(new ValidationRule<T>(validation, key, message));
             return this;
@@ -703,8 +704,9 @@ namespace Iql.Entities
         public EntityConfiguration<T> DefinePropertyValidation<TProperty>(
             Expression<Func<T, TProperty>> property,
             Expression<Func<T, bool>> validation,
-            string key = null,
-            string message = null)
+            string message = null,
+            string key = null
+            )
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
             var validationCollection = (ValidationCollection<T>)propertyDefinition.ValidationRules;
@@ -941,6 +943,18 @@ namespace Iql.Entities
         {
             var propertyNames = properties.Select(p => IqlConverter.Instance.GetPropertyName(p));
             PropertyOrder = propertyNames.ToList();
+            return this;
+        }
+
+        public EntityConfiguration<T> HasGeographic(
+            Expression<Func<T, object>> longitudeProperty,
+            Expression<Func<T, object>> latitudeProperty, 
+            string key = null)
+        {
+            Geographics.Add(new Geographic(
+                FindNestedPropertyByExpression(longitudeProperty),
+                FindNestedPropertyByExpression(latitudeProperty),
+                key));
             return this;
         }
     }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
+using Iql.Data.DataStores;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 
@@ -9,6 +11,10 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet
     {
+        IDataContext DataContext { get; }
+        TrackingSetCollection TrackingSetCollection { get; }
+        IDataStore DataStore { get; }
+        DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);
         bool DifferentEntityWithSameKeyIsTracked(object entity);

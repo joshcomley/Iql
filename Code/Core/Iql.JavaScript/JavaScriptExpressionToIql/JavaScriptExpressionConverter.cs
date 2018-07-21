@@ -127,11 +127,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         static JavaScriptExpressionConverter()
         {
-            ConvertLambdaExpressionToIqlByTypeMethod = typeof(ExpressionConverterBase)
-                .GetMethod(nameof(ConvertLambdaExpressionToIqlByType));
+            ConvertLambdaToIqlMethod = typeof(ExpressionConverterBase)
+                .GetMethod(nameof(ConvertLambdaToIql));
         }
 
-        public static MethodInfo ConvertLambdaExpressionToIqlByTypeMethod { get; set; }
+        public static MethodInfo ConvertLambdaToIqlMethod { get; set; }
 
         public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
 #if TypeScript
@@ -139,7 +139,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         )
         {
-            return (ExpressionResult<IqlExpression>)ConvertLambdaExpressionToIqlByTypeMethod
+            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
                 .InvokeGeneric(this, new object[]
                 {
                     filter

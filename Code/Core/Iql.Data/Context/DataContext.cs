@@ -10,6 +10,7 @@ using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Lists;
+using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
@@ -37,6 +38,33 @@ namespace Iql.Data.Context
             }
 
             return null;
+        }
+
+        public static IDataContext FindDataContextForEntity(object entity)
+        {
+            var tracker = FindTrackingForEntity(entity);
+            return tracker?.DataContext;
+        }
+
+        public static ITrackingSet FindTrackingForEntity(object entity)
+        {
+            var trackers = DataTracker.AllDataTrackers();
+            for (var i = 0; i < trackers.Length; i++)
+            {
+                var tracker = trackers[i];
+                var set = tracker.Tracking.FindTracking(entity);
+                if (set != null)
+                {
+                    return set;
+                }
+            }
+            return null;
+        }
+
+        public static IEntityStateBase FindEntity(object entity)
+        {
+            var tracker = FindTrackingForEntity(entity);
+            return tracker?.GetEntityState(entity);
         }
 
         public DataContext(

@@ -34,6 +34,7 @@ namespace Iql.Data.Tracking
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
         private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
+        public DataTracker DataTracker => DataStore.DataTracker;
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; }
         public TrackingSetCollection TrackingSetCollection { get; }

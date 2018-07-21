@@ -7,6 +7,8 @@ namespace Iql.Entities
 {
     public interface IEntityConfigurationBuilder
     {
+        bool IsEntityType<T>();
+        bool IsEntityTypeByType(Type type);
         IEnumerable<IEntityConfiguration> EntityTypes();
         IEnumerable<IEnumConfiguration> EnumTypes();
         void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action);

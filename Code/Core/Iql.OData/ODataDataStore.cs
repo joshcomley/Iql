@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Iql.Data.Context;
+﻿using Iql.Data.Context;
 using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
@@ -20,9 +15,13 @@ using Iql.OData.Extensions;
 using Iql.OData.IqlToODataExpression.Parsers;
 using Iql.OData.Json;
 using Iql.OData.Methods;
-using Iql.Queryable.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using JsonSerializer = Iql.OData.Json.JsonSerializer;
 
 namespace Iql.OData
@@ -274,13 +273,15 @@ namespace Iql.OData
             return result;
         }
 
-        private static async Task<TEntity> GetODataSingleResultAsync<TEntity>(IHttpResult httpResult)
+        private async Task<TResult> GetODataSingleResultAsync<TResult>(IHttpResult httpResult)
         {
+            var isValueResult = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TResult)) == null;
             var json = await httpResult.GetResponseTextAsync();
             var odataResultRoot = JObject.Parse(json);
             ParseObj(odataResultRoot);
+            var value = isValueResult ? odataResultRoot["value"] : odataResultRoot;
             var oDataGetResult =
-                odataResultRoot.ToObject<TEntity>();
+                value.ToObject<TResult>();
             return oDataGetResult;
         }
 
@@ -296,7 +297,8 @@ namespace Iql.OData
 
         private static async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(IHttpResult httpResult)
         {
-            var odataResultRoot = JObject.Parse(await httpResult.GetResponseTextAsync());
+            var json = await httpResult.GetResponseTextAsync();
+            var odataResultRoot = JObject.Parse(json);
             ParseObj(odataResultRoot);
             var countToken = odataResultRoot["Count"];
             var count = countToken?.ToObject<int?>();

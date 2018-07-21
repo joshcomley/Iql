@@ -1,21 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Iql.Entities.Extensions;
-using Iql.Entities.Metadata;
+using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
-using Iql.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Iql.Entities
 {
     public abstract class PropertyBase : MetadataBase, IPropertyMetadata
     {
-        public bool IsTitleProperty => EntityConfiguration != null && EntityConfiguration.TitlePropertyName == Name;
-        public bool IsPreviewProperty => EntityConfiguration != null && EntityConfiguration.PreviewPropertyName == Name;
+        public IGeographic Geographic => EntityConfiguration != null && EntityConfiguration.Geographics != null
+            ? EntityConfiguration.Geographics.FirstOrDefault(g =>
+                Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
+            : null;
+        public bool IsLongitudeProperty => Equals(Geographic?.LongitudeProperty, this);
+        public bool IsLatitudeProperty => Equals(Geographic?.LatitudeProperty, this);
+        public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
+        public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == Name;
+        public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName == Name;
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public IEntityConfiguration EntityConfiguration { get; set; }
         public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
@@ -38,7 +44,16 @@ namespace Iql.Entities
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
-        public virtual IMediaKey MediaKey { get; }
+
+        protected abstract IMediaKey GetMediaKey();
+        protected abstract void SetMediaKey(IMediaKey value);
+        public bool HasMediaKey => MediaKey?.Groups?.Any(g => g.Parts?.Any() == true) == true;
+
+        public IMediaKey MediaKey
+        {
+            get => GetMediaKey();
+            set => SetMediaKey(value);
+        }
 
         private PropertySearchKind _searchKind;
 #if !TypeScript
@@ -62,6 +77,7 @@ namespace Iql.Entities
         private bool _searchKindSet;
         private bool? _readOnly;
         private RelationshipMatch _relationship;
+
         public PropertySearchKind SearchKind
         {
             get

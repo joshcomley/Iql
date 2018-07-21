@@ -134,9 +134,19 @@ namespace Iql.Entities
         {
             if (!_entities.ContainsKey(type))
             {
-                throw new Exception($"No entity of type \"{type.Name}\" has been configured for this context.");
+                return null;
             }
             return _entities[type];
+        }
+
+        public bool IsEntityType<T>()
+        {
+            return IsEntityTypeByType(typeof(T));
+        }
+
+        public bool IsEntityTypeByType(Type type)
+        {
+            return GetEntityByType(type) != null;
         }
 
         public Dictionary<Type, IList> FlattenObjectGraphs(Type entityType, IEnumerable entities)
