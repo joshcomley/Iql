@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Extensions;
@@ -16,7 +17,7 @@ namespace Iql.Entities
         private string _titlePropertyName;
         private string _previewPropertyName;
         public IList<IProperty> Properties { get; set; }
-        public List<IRelationship> Relationships { get; set; }
+        public IList<IRelationship> Relationships { get; set; }
 
         public object GetVersion(object entity)
         {
@@ -60,25 +61,51 @@ namespace Iql.Entities
 
         public bool HasRelationshipKeys => Key != null && Key.HasRelationshipKeys;
 
-        public IProperty[] OrderedProperties()
+        public IPropertyGroup[] OrderedProperties()
         {
             if (PropertyOrder == null || !PropertyOrder.Any())
             {
-                return Properties.ToArray();
-            }
-            return Properties.OrderBy(t =>
+                var all = new List<IPropertyGroup>();
+                all.AddRange(Properties.Where(p => p.Geographic == null && p.NestedSet == null));
+                if (Geographics != null)
                 {
-                    var index = PropertyOrder.IndexOf(t.Name);
-                    if (index == -1)
+                    all.AddRange(Geographics);
+                }
+
+                if (NestedSets != null)
+                {
+                    all.AddRange(NestedSets);
+                }
+
+                return all.ToArray();
+            }
+
+            var ordered = PropertyOrder.ToList();
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var property = Properties[i];
+                var found = false;
+                for (var j = 0; j < PropertyOrder.Count; j++)
+                {
+                    var propertyGroup = PropertyOrder[j];
+                    if (propertyGroup.GetProperties().Contains(property))
                     {
-                        return 99999;
+                        found = true;
+                        break;
                     }
-                    return index;
-                })
-                .ToArray();
+                }
+
+                if (!found)
+                {
+                    ordered.Add(property);
+                }
+            }
+
+            return ordered.ToArray();
         }
 
-        public List<IGeographic> Geographics { get; set; } = new List<IGeographic>();
+        public IList<IGeographic> Geographics { get; set; } = new List<IGeographic>();
+        public IList<INestedSet> NestedSets { get; set; } = new List<INestedSet>();
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
         public IEntityKey Key { get; set; }

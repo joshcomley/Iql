@@ -8,6 +8,21 @@ namespace Iql.Server.Serialization
     {
         public static void SetValueAtPropertyPath(this object @object, string propertyPath, object value)
         {
+            @object.ValueAtPropertyPath(propertyPath, value, true);
+        }
+
+        public static object GetValueAtPropertyPath(this object @object, string propertyPath)
+        {
+            return @object.ValueAtPropertyPath(propertyPath, null, false);
+        }
+
+        public static T GetValueAtPropertyPathAs<T>(this object @object, string propertyPath)
+        {
+            return (T)@object.GetValueAtPropertyPath(propertyPath);
+        }
+
+        private static object ValueAtPropertyPath(this object @object, string propertyPath, object value, bool set)
+        {
             var path = propertyPath.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             for (var i = 0; i < path.Length; i++)
             {
@@ -23,7 +38,12 @@ namespace Iql.Server.Serialization
                     {
                         if (isSet)
                         {
-                            (obj as IList)[index] = value;
+                            if (set)
+                            {
+                                (obj as IList)[index] = value;
+                            }
+
+                            return (obj as IList)[index];
                         }
                         else
                         {
@@ -55,14 +75,19 @@ namespace Iql.Server.Serialization
                 {
                     if (isSet)
                     {
-                        @object.SetPropertyValueByName(part, value);
+                        if (set)
+                        {
+                            @object.SetPropertyValueByName(part, value);
+                        }
+
+                        return @object.GetPropertyValueByName(part);
                     }
-                    else
-                    {
-                        @object = @object.GetPropertyValueByName(part);
-                    }
+
+                    @object = @object.GetPropertyValueByName(part);
                 }
             }
+
+            return null;
         }
 
     }

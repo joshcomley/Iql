@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
-using Iql.DotNet.Serialization;
+﻿using Iql.DotNet.Serialization;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
@@ -14,9 +10,29 @@ using Iql.Entities.Rules.Relationship;
 using Iql.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Iql.Server.Serialization
 {
+    public enum PropertyGroupKind
+    {
+        Property = 1,
+        PropertyCollection,
+        Geographic,
+        NestedSet
+    }
+
+    public class SerializedPropertyGroup
+    {
+        public string Type { get; set; }
+        public string Paths { get; set; }
+        public PropertyGroupKind Kind { get; set; }
+        public List<SerializedPropertyGroup> Children { get; set; }
+    }
+
     public static class EntityConfigurationBuilderSerialization
     {
         public static string ToJson(this IEntityConfigurationBuilder entityConfigurationBuilder)
@@ -80,7 +96,13 @@ namespace Iql.Server.Serialization
                 //writer.WriteRaw("{}");
                 if (value != null)
                 {
-                    if (Regex.IsMatch(writer.Path, @"^EntityTypes\[[0-9]+\]\.Properties(|\[[0-9]+\])$"))
+                    var directConversion = string.Join("|", new[]
+                    {
+                        nameof(IEntityMetadata.Properties),
+                        nameof(IEntityMetadata.NestedSets),
+                        nameof(IEntityMetadata.Geographics),
+                    });
+                    if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, directConversion))
                     {
                         var indented = Formatting.Indented;
                         var settings = new JsonSerializerSettings
@@ -95,10 +117,65 @@ namespace Iql.Server.Serialization
                     }
                     else
                     {
-                        var property = value as IProperty;
-                        writer.WriteValue($"{property.EntityConfiguration.Type.Name}:{property.Name}");
+                        if (value is IPropertyGroup)
+                        {
+                            var serialized = SerializePropertyGroup(value as IPropertyGroup);
+                            var json = JsonConvert.SerializeObject(serialized);
+                            writer.WriteValue(json);
+                        }
                     }
                 }
+            }
+
+            private static SerializedPropertyGroup SerializePropertyGroup(IPropertyGroup propertyGroup)
+            {
+                if (propertyGroup != null)
+                {
+                    var properties = propertyGroup.GetProperties();
+                    var entityConfiguration = propertyGroup.EntityConfiguration;
+                    var kind = PropertyGroupKind.Property;
+                    List<SerializedPropertyGroup> children = null;
+                    string path = null;
+                    if (propertyGroup is IGeographic)
+                    {
+                        kind = PropertyGroupKind.Geographic;
+                        path = entityConfiguration.Geographics.IndexOf(propertyGroup as IGeographic).ToString();
+                    }
+                    else if (propertyGroup is INestedSet)
+                    {
+                        kind = PropertyGroupKind.NestedSet;
+                        path = entityConfiguration.NestedSets.IndexOf(propertyGroup as INestedSet).ToString();
+                    }
+                    else if (propertyGroup is PropertyCollection)
+                    {
+                        kind = PropertyGroupKind.PropertyCollection;
+                    }
+
+                    switch (kind)
+                    {
+                        case PropertyGroupKind.Property:
+                            path = (properties[0] as IProperty).Name;
+                            break;
+                        case PropertyGroupKind.PropertyCollection:
+                            children = new List<SerializedPropertyGroup>();
+                            foreach (var child in properties)
+                            {
+                                children.Add(SerializePropertyGroup(child)); ;
+                            }
+                            // path = string.Join(",", properties.Select(p => p.Name));
+                            break;
+                    }
+                    var serialized = new SerializedPropertyGroup
+                    {
+                        Kind = kind,
+                        Type = entityConfiguration.Type.Name,
+                        Paths = path,
+                        Children = children
+                    };
+                    return serialized;
+                }
+
+                return null;
             }
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -113,7 +190,7 @@ namespace Iql.Server.Serialization
 
             public override bool CanConvert(Type objectType)
             {
-                return typeof(IProperty).IsAssignableFrom(objectType);
+                return typeof(IPropertyGroup).IsAssignableFrom(objectType);
             }
         }
 
@@ -143,7 +220,7 @@ namespace Iql.Server.Serialization
             }
         }
 
-        class InterfaceContractResolver : DefaultContractResolver
+        private class InterfaceContractResolver : DefaultContractResolver
         {
             protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
             {
@@ -189,6 +266,12 @@ namespace Iql.Server.Serialization
                 {
                     return base.CreateProperties(typeof(IGeographic), memberSerialization)
                         .Where(p => p.PropertyName != nameof(IGeographic.EntityConfiguration))
+                        .ToList();
+                }
+                if (typeof(INestedSet).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(INestedSet), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(INestedSet.EntityConfiguration))
                         .ToList();
                 }
                 if (typeof(IMediaKey).IsAssignableFrom(type))

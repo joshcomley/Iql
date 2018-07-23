@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using Iql.DotNet.Serialization;
+﻿using Iql.DotNet.Serialization;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Enums;
 using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.Validation;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Iql.Server.Serialization
 {
@@ -218,6 +218,8 @@ namespace Iql.Server.Serialization
                 Map<IMediaKeyGroup, MediaKeyGroup>();
                 Map<IMediaKeyPart, MediaKeyPart>();
                 Map<IGeographic, Geographic>();
+                Map<INestedSet, NestedSet>();
+                Map<IPropertyGroup, PropertyCollection>();
             }
 
             private void Map<TInterface, TConcrete>()
@@ -232,23 +234,25 @@ namespace Iql.Server.Serialization
             }
 
             private Dictionary<string, IEntityConfiguration> EntityConfigurations { get; } = new Dictionary<string, IEntityConfiguration>();
-            private Dictionary<string, string> PropertyMappings { get; } = new Dictionary<string, string>();
+            private Dictionary<string, SerializedPropertyGroup> PropertyMappings { get; } = new Dictionary<string, SerializedPropertyGroup>();
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
-                if (objectType == typeof(IProperty) && reader.Value is string)
+                var isConvertedProperty = objectType == typeof(IProperty) && reader.Value is string;
+                var isPropertyOrder =
+                    JsonPathHelper.IsEntityConfigurationProperty(reader.Path, nameof(IEntityMetadata.PropertyOrder));
+                if (isConvertedProperty || isPropertyOrder)
                 {
-                    PropertyMappings.Add(reader.Path, reader.Value as string);
+                    var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
+                    PropertyMappings.Add(reader.Path, group);
                     return null;
                 }
-
                 var result = serializer.Deserialize(reader, TypeMappings[objectType]);
                 if (objectType == typeof(IEntityConfiguration))
                 {
                     var config = result as IEntityConfiguration;
                     EntityConfigurations.Add(config.Name, config);
                 }
-
                 return result;
             }
 
@@ -261,11 +265,39 @@ namespace Iql.Server.Serialization
             {
                 foreach (var mapping in PropertyMappings)
                 {
-                    var propertyParts = mapping.Value.Split(new char[] {':'}, StringSplitOptions.RemoveEmptyEntries);
-                    var property = document.EntityTypes.Single(e => e.Name == propertyParts[0]).Properties
-                        .Single(p => p.Name == propertyParts[1]);
-                    document.SetValueAtPropertyPath(mapping.Key, property);
+                    ProcessPropertyGroup(document, mapping.Value, mapping, true);
                 }
+            }
+
+            private static IPropertyGroup ProcessPropertyGroup(EntityConfigurationDocument document, SerializedPropertyGroup @group,
+                KeyValuePair<string, SerializedPropertyGroup> mapping, bool set)
+            {
+                var entityMetadata = document.EntityTypes.Single(e => e.Name == @group.Type);
+                switch (@group.Kind)
+                {
+                    case PropertyGroupKind.Property:
+                        var property = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
+                        if (set) { document.SetValueAtPropertyPath(mapping.Key, property); }
+                        return property;
+                    case PropertyGroupKind.PropertyCollection:
+                        var coll = new PropertyCollection(entityMetadata as IEntityConfiguration);
+                        foreach (var child in @group.Children)
+                        {
+                            coll.Properties.Add(ProcessPropertyGroup(document, child, mapping, false));
+                        }
+                        if (set) { document.SetValueAtPropertyPath(mapping.Key, coll); }
+                        return coll;
+                    case PropertyGroupKind.Geographic:
+                        var geo = entityMetadata.Geographics[Convert.ToInt32(@group.Paths)];
+                        if (set) { document.SetValueAtPropertyPath(mapping.Key, geo); }
+                        return geo;
+                    case PropertyGroupKind.NestedSet:
+                        var ns = entityMetadata.NestedSets[Convert.ToInt32(@group.Paths)];
+                        if (set) { document.SetValueAtPropertyPath(mapping.Key, ns); }
+                        return ns;
+                }
+
+                return null;
             }
         }
 

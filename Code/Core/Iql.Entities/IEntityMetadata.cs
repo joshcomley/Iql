@@ -3,12 +3,14 @@ using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using System.Collections.Generic;
+using Iql.Entities.NestedSets;
 
 namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {
-        List<IGeographic> Geographics { get; set; }
+        IList<IGeographic> Geographics { get; set; }
+        IList<INestedSet> NestedSets { get; set; }
         IDisplayFormatting DisplayFormatting { get; }
         IRuleCollection<IBinaryRule> EntityValidation { get; }
         IEntityKey Key { get; }
@@ -20,8 +22,8 @@ namespace Iql.Entities
         bool SetNameSet { get; }
         string DefaultSortExpression { get; set; }
         bool DefaultSortDescending { get; set; }
-        List<string> PropertyOrder { get; set; }
+        IList<IPropertyGroup> PropertyOrder { get; set; }
         IList<IProperty> Properties { get; set; }
-        List<IRelationship> Relationships { get; set; }
+        IList<IRelationship> Relationships { get; set; }
     }
 }

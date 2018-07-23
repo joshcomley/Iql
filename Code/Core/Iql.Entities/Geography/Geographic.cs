@@ -20,5 +20,9 @@
 
         }
 #endif
+        public IPropertyGroup[] GetProperties()
+        {
+            return new[] { LongitudeProperty, LatitudeProperty };
+        }
     }
 }

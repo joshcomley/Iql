@@ -451,12 +451,12 @@ namespace Tunnel.ApiContext.Base
             }).DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount).DefineCollectionProperty(p => p.AdditionalSendReportsTo, p => p.AdditionalSendReportsToCount).DefineProperty(p => p.Parent, true, IqlType.Unknown).DefineCollectionProperty(p => p.Children, p => p.ChildrenCount).DefineProperty(p => p.Client, true, IqlType.Unknown).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.ReadOnly = true;
             }).DefineCollectionProperty(p => p.SiteInspections, p => p.SiteInspectionsCount).DefineCollectionProperty(p => p.Users, p => p.UsersCount).Configure(p => {
-                p.PropertyOrder = new List<string>(new[]
-                {
-                    "Name",
-                    "Address",
-                    "PostCode"
-                });
+                //p.PropertyOrder = new List<string>(new[]
+                //{
+                //    "Name",
+                //    "Address",
+                //    "PostCode"
+                //});
             });
             builder.EntityType<Site>().HasOne(p => p.Parent).WithMany(p => p.Children).WithConstraint(p => p.ParentId, p => p.Id);
             builder.EntityType<Site>().HasOne(p => p.Client).WithMany(p => p.Sites).WithConstraint(p => p.ClientId, p => p.Id);

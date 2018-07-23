@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
 
 namespace Iql.Entities
 {
-    public interface IProperty : IPropertyMetadata, IConfiguration
+    public interface IProperty : IPropertyMetadata, IConfiguration, IPropertyGroup
     {
+        NestedSetProperty NestedSet { get; }
         IGeographic Geographic { get; }
         bool IsLongitudeProperty { get; }
         bool IsLatitudeProperty { get; }
@@ -24,7 +26,6 @@ namespace Iql.Entities
         Func<object, object> GetValue { get; }
         Func<object, object, object> SetValue { get; }
         Dictionary<string, object> CustomInformation { get; }
-        IEntityConfiguration EntityConfiguration { get; }
         IProperty SetReadOnlyAndHidden(bool readOnlyAndHidden = true);
         IProperty SetReadOnly(bool readOnly = true);
         IProperty SetHidden(bool hidden = true);

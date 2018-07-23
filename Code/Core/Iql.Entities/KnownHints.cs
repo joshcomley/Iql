@@ -10,16 +10,6 @@ namespace Iql.Entities
         private const string Prefix = "Iql:";
         public const string EmailAddress = Prefix + nameof(EmailAddress);
         public const string InlineEdit = Prefix + nameof(InlineEdit);
-        public const string NestedSet = Prefix + nameof(NestedSet);
-        public const string NestedSetLeft = NestedSet + ":Left";
-        public const string NestedSetRight = NestedSet + ":Right";
-        public const string NestedSetLeftOf = NestedSet + ":LeftOf";
-        public const string NestedSetRightOf = NestedSet + ":RightOf";
-        public const string NestedSetKey = NestedSet + ":Key";
-        public const string NestedSetLevel = NestedSet + ":Level";
-        public const string NestedSetParentId = NestedSet + ":ParentId";
-        public const string NestedSetParent = NestedSet + ":Parent";
-        public const string NestedSetId = NestedSet + ":Id";
         public const string BigText = Prefix + nameof(BigText);
         public const string Time = Prefix + nameof(Time);
         public const string Date = Prefix + nameof(Date);

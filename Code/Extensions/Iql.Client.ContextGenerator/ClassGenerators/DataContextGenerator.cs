@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Brandless.ObjectSerializer;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Lists;
 using Iql.Entities;
+using Iql.Entities.Geography;
 using Iql.Entities.Metadata;
+using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Display;
 using Iql.Extensions;
@@ -19,6 +16,11 @@ using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
 using Iql.Parsing;
 using Iql.Server.Serialization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
@@ -620,6 +622,43 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         continue;
                     }
 
+                    if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.PropertyOrder))
+                    {
+                        dealtWith = true;
+                        if (entityMetadata.PropertyOrder?.Any() == true)
+                        {
+                            sb.AppendLine();
+                            sb.Append($"p.{nameof(EntityConfiguration<object>.SetPropertyOrder)}(");
+                            var propertyGroups = new List<string>();
+                            foreach (var propertyGroup in entityMetadata.PropertyOrder)
+                            {
+                                var groupSb = new StringBuilder();
+                                groupSb.Append("_ => _.");
+                                if (propertyGroup is IGeographic)
+                                {
+                                    groupSb.Append(
+                                        $"{nameof(IEntityMetadata.Geographics)}[{entityMetadata.Geographics.IndexOf(propertyGroup as IGeographic)}]");
+                                }
+                                else if (propertyGroup is INestedSet)
+                                {
+                                    groupSb.Append(
+                                        $"{nameof(IEntityMetadata.NestedSets)}[{entityMetadata.NestedSets.IndexOf(propertyGroup as INestedSet)}]");
+                                }
+                                else if (propertyGroup is PropertyCollection)
+                                {
+
+                                }
+                                else
+                                {
+
+                                }
+                                propertyGroups.Add(groupSb.ToString());
+                            }
+
+                            sb.Append(string.Join(", ", propertyGroups));
+                            sb.Append(");");
+                        }
+                    }
                     if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
                     {
                         dealtWith = true;
@@ -628,12 +667,42 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             foreach (var geographic in entityMetadata.Geographics)
                             {
                                 sb.AppendLine();
-                                sb.Append("p.HasGeographic(");
+                                sb.Append($"p.{nameof(EntityConfiguration<object>.HasGeographic)}(");
                                 sb.Append($"g => g.{geographic.LongitudeProperty.Name}, g => g.{geographic.LatitudeProperty.Name}");
                                 if (!string.IsNullOrEmpty(geographic.Key))
                                 {
                                     sb.Append($@", ""{geographic.Key}""");
                                 }
+                                sb.Append(");");
+                            }
+                        }
+                    }
+                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.NestedSets))
+                    {
+                        dealtWith = true;
+                        if (entityMetadata.NestedSets?.Any() == true)
+                        {
+                            foreach (var nestedSet in entityMetadata.NestedSets)
+                            {
+                                sb.AppendLine();
+                                sb.Append($"p.{nameof(EntityConfiguration<object>.HasNestedSet)}(");
+                                var parameters = new[]
+                                {
+                                    nestedSet.LeftProperty,
+                                    nestedSet.RightProperty,
+                                    nestedSet.LeftOfProperty,
+                                    nestedSet.RightOfProperty,
+                                    nestedSet.KeyProperty,
+                                    nestedSet.LevelProperty,
+                                    nestedSet.ParentIdProperty,
+                                    nestedSet.ParentProperty,
+                                    nestedSet.IdProperty
+                                };
+                                var parameterStrings =
+                                    parameters.Select(p => p == null ? "null" : $"ns => ns.{p.Name}")
+                                        .ToList();
+                                parameterStrings.Add(String(nestedSet.SetKey));
+                                sb.Append(string.Join(", ", parameterStrings));
                                 sb.Append(");");
                             }
                         }

@@ -1,3 +1,15 @@
+using Iql.Conversion;
+using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Extensions;
+using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
+using Iql.Entities.Relationships;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Sanitization;
+using Iql.Entities.Validation;
+using Iql.Entities.Validation.Validation;
+using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,24 +17,12 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Iql.Conversion;
-using Iql.Entities.DisplayFormatting;
-using Iql.Entities.Extensions;
-using Iql.Entities.Geography;
-using Iql.Entities.Relationships;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Display;
-using Iql.Entities.Rules.Relationship;
-using Iql.Entities.Sanitization;
-using Iql.Entities.Validation;
-using Iql.Entities.Validation.Validation;
-using Iql.Extensions;
 
 namespace Iql.Entities
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
-        class DefaultValuePlaceholder { }
+        private class DefaultValuePlaceholder { }
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
@@ -539,6 +539,10 @@ namespace Iql.Entities
 
         public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression property)
         {
+            if (property == null)
+            {
+                return null;
+            }
             var iql = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property).Expression;
             return FindNestedPropertyByIqlExpression(iql);
         }
@@ -939,22 +943,62 @@ namespace Iql.Entities
         //        property);
         //}
 
-        public EntityConfiguration<T> SetPropertyOrder(params Expression<Func<T, object>>[] properties)
+        public EntityConfiguration<T> SetPropertyOrder(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var propertyNames = properties.Select(p => IqlConverter.Instance.GetPropertyName(p));
-            PropertyOrder = propertyNames.ToList();
+            var coll = new List<IPropertyGroup>();
+            foreach (var property in properties)
+            {
+                coll.Add(property(this));
+            }
+            PropertyOrder = coll.ToList();
             return this;
+        }
+
+        public PropertyCollection PropertyCollection(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        {
+            var coll = new PropertyCollection(this);
+            foreach (var property in properties)
+            {
+                coll.Properties.Add(property(this));
+            }
+            return coll;
         }
 
         public EntityConfiguration<T> HasGeographic(
             Expression<Func<T, object>> longitudeProperty,
-            Expression<Func<T, object>> latitudeProperty, 
+            Expression<Func<T, object>> latitudeProperty,
             string key = null)
         {
             Geographics.Add(new Geographic(
-                FindNestedPropertyByExpression(longitudeProperty),
-                FindNestedPropertyByExpression(latitudeProperty),
+                FindPropertyByExpression(longitudeProperty),
+                FindPropertyByExpression(latitudeProperty),
                 key));
+            return this;
+        }
+
+        public EntityConfiguration<T> HasNestedSet(
+            Expression<Func<T, object>> leftProperty,
+            Expression<Func<T, object>> rightProperty,
+            Expression<Func<T, object>> leftOfProperty = null,
+            Expression<Func<T, object>> rightOfProperty = null,
+            Expression<Func<T, object>> keyProperty = null,
+            Expression<Func<T, object>> levelProperty = null,
+            Expression<Func<T, object>> parentIdProperty = null,
+            Expression<Func<T, object>> parentProperty = null,
+            Expression<Func<T, object>> idProperty = null,
+            string setKey = null)
+        {
+            NestedSets.Add(new NestedSet(
+                FindPropertyByExpression(leftProperty),
+                FindPropertyByExpression(rightProperty),
+                FindPropertyByExpression(leftOfProperty),
+                FindPropertyByExpression(rightOfProperty),
+                FindPropertyByExpression(keyProperty),
+                FindPropertyByExpression(levelProperty),
+                FindPropertyByExpression(parentIdProperty),
+                FindPropertyByExpression(parentProperty),
+                FindPropertyByExpression(idProperty),
+                setKey));
             return this;
         }
     }

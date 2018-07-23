@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Iql.Entities.Extensions;
 
 namespace Iql.Entities.DisplayFormatting
 {
@@ -73,7 +74,7 @@ namespace Iql.Entities.DisplayFormatting
             var formatter = Get(key);
             if (formatter == null)
             {
-                var titleProperties = EntityConfiguration.OrderedProperties().Where(p => p.HasHint(KnownHints.Title)).ToArray();
+                var titleProperties = EntityConfiguration.OrderedProperties().SelectMany(p => p.Flatten()).Where(p => p.HasHint(KnownHints.Title)).ToArray();
                 if (titleProperties.Any())
                 {
                     var parts = new List<string>();

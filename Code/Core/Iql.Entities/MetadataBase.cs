@@ -124,7 +124,7 @@ namespace Iql.Entities
         public string Description { get; set; }
         public List<string> Hints { get; set; } = new List<string>();
 
-        public List<string> PropertyOrder { get; set; } = new List<string>();
+        public IList<IPropertyGroup> PropertyOrder { get; set; } = new List<IPropertyGroup>();
 
         public MetadataHint FindHint(string name)
         {

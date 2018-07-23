@@ -38,7 +38,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
             Assert.AreEqual("Guid", group2.Parts[0].Key);
             Assert.AreEqual(1, group1.Parts.Count);
             Assert.IsFalse(group2.Parts[1].IsPropertyPath);
-            Assert.AreEqual("main-image", group2.Parts[1].Key);
+            Assert.AreEqual("ImageUrl", group2.Parts[1].Key);
         }
 #endif
 

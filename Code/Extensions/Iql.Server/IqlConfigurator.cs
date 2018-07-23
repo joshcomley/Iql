@@ -31,6 +31,9 @@ namespace Iql.Server
                 }
             }
 
+            configurators = configurators.OrderBy(c => typeof(AllConfigurator<>).IsAssignableFromGeneric(c.GetType()))
+                .ToList();
+
             foreach (var configurator in configurators)
             {
                 configurator.Configure(builder);

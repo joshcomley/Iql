@@ -1,64 +1,30 @@
-﻿using System.Linq;
-using Iql.Data.Context;
+﻿using Iql.Data.Context;
 using Iql.Data.Lists;
 using Iql.Data.Queryable;
 using Iql.Entities;
+using Iql.Entities.NestedSets;
 
 namespace Iql.Data.NestedSets
 {
     public class NestedSetManager<T> : INestedSetManager
         where T : class
     {
-        private IEntityConfiguration _entityConfig;
+        public INestedSet NestedSet { get; }
 
         public IEntityConfiguration EntityConfig
         {
-            get => _entityConfig;
-            set
-            {
-                _entityConfig = value;
-                if (_entityConfig != null)
-                {
-                    IdProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetId).FirstOrDefault();
-                    ParentIdProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetParentId).FirstOrDefault();
-                    ParentProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetParent).FirstOrDefault();
-                    LeftProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetLeft).FirstOrDefault();
-                    RightProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetRight).FirstOrDefault();
-                    LeftOfProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetLeftOf).FirstOrDefault();
-                    RightOfProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetRightOf).FirstOrDefault();
-                    KeyProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetKey).FirstOrDefault();
-                    LevelProperty = EntityConfig.FindPropertiesByHint(KnownHints.NestedSetLevel).FirstOrDefault();
-                }
-            }
+            get => NestedSet.EntityConfiguration;
         }
 
-        public IProperty RightOfProperty { get; set; }
-
-        public IProperty LeftOfProperty { get; set; }
-
-        public IProperty LevelProperty { get; set; }
-
-        public IProperty IdProperty { get; set; }
-
-        public IProperty ParentProperty { get; set; }
-
-        public IProperty ParentIdProperty { get; set; }
-
-        public IProperty KeyProperty { get; set; }
-
-        public IProperty RightProperty { get; set; }
-
-        public IProperty LeftProperty { get; set; }
-
-        public NestedSetManager(IEntityConfiguration entityConfig = null)
+        public NestedSetManager(INestedSet nestedSet)
         {
-            EntityConfig = entityConfig ?? EntityConfigurationBuilder.FindConfigurationForEntityType(typeof(T));
+            NestedSet = nestedSet;
         }
 
         public bool HasLocation(T entity)
         {
-            var left = LeftProperty.GetValue(entity);
-            var right = RightProperty.GetValue(entity);
+            var left = NestedSet.LeftProperty.GetValue(entity);
+            var right = NestedSet.RightProperty.GetValue(entity);
             return !Equals(left, 0) && !Equals(left, null) && !Equals(right, 0) && !Equals(right, null);
         }
 
@@ -91,59 +57,56 @@ namespace Iql.Data.NestedSets
         public IqlExpression GetFilter(T entity, NestedSetQueryKind kind)
         {
             IqlExpression filter = null;
-            if (EntityConfig.HasHint(KnownHints.NestedSet))
+            var keyCheck = new IqlIsEqualToExpression(
+                IqlExpression.GetPropertyExpression(NestedSet.KeyProperty.Name),
+                new IqlLiteralExpression(NestedSet.KeyProperty.GetValue(entity), IqlType.String)
+            );
+            switch (kind)
             {
-                var keyCheck = new IqlIsEqualToExpression(
-                    IqlExpression.GetPropertyExpression(KeyProperty.Name),
-                    new IqlLiteralExpression(KeyProperty.GetValue(entity), IqlType.String)
-                );
-                switch (kind)
-                {
-                    case NestedSetQueryKind.Descendents:
-                        {
-                            var gt = new IqlIsGreaterThanExpression(
-                                IqlExpression.GetPropertyExpression(LeftProperty.Name),
-                                new IqlLiteralExpression(LeftProperty.GetValue(entity), IqlType.Integer)
-                            );
-                            var lt = new IqlIsLessThanExpression(
-                                IqlExpression.GetPropertyExpression(RightProperty.Name),
-                                new IqlLiteralExpression(RightProperty.GetValue(entity), IqlType.Integer)
-                            );
-                            filter = new IqlExpression[] { gt, lt, keyCheck }.And();
-                        }
-                        break;
-                    case NestedSetQueryKind.Children:
-                        {
-                            var parentIdCheck = new IqlIsEqualToExpression(
-                                IqlExpression.GetPropertyExpression(ParentIdProperty.Name),
-                                new IqlLiteralExpression(IdProperty.GetValue(entity), IqlType.Integer)
-                            );
-                            filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
-                        }
-                        break;
-                    case NestedSetQueryKind.Parent:
-                        {
-                            var parentIdCheck = new IqlIsEqualToExpression(
-                                IqlExpression.GetPropertyExpression(IdProperty.Name),
-                                new IqlLiteralExpression(ParentIdProperty.GetValue(entity), IqlType.Integer)
-                            );
-                            filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
-                        }
-                        break;
-                    case NestedSetQueryKind.Ancestors:
-                        {
-                            var leftCheck = new IqlIsLessThanExpression(
-                                IqlExpression.GetPropertyExpression(LeftProperty.Name),
-                                new IqlLiteralExpression(LeftProperty.GetValue(entity), IqlType.Integer)
-                            );
-                            var rightCheck = new IqlIsGreaterThanExpression(
-                                IqlExpression.GetPropertyExpression(RightProperty.Name),
-                                new IqlLiteralExpression(RightProperty.GetValue(entity), IqlType.Integer)
-                            );
-                            filter = new IqlExpression[] { leftCheck, rightCheck, keyCheck }.And();
-                        }
-                        break;
-                }
+                case NestedSetQueryKind.Descendents:
+                    {
+                        var gt = new IqlIsGreaterThanExpression(
+                            IqlExpression.GetPropertyExpression(NestedSet.LeftProperty.Name),
+                            new IqlLiteralExpression(NestedSet.LeftProperty.GetValue(entity), IqlType.Integer)
+                        );
+                        var lt = new IqlIsLessThanExpression(
+                            IqlExpression.GetPropertyExpression(NestedSet.RightProperty.Name),
+                            new IqlLiteralExpression(NestedSet.RightProperty.GetValue(entity), IqlType.Integer)
+                        );
+                        filter = new IqlExpression[] { gt, lt, keyCheck }.And();
+                    }
+                    break;
+                case NestedSetQueryKind.Children:
+                    {
+                        var parentIdCheck = new IqlIsEqualToExpression(
+                            IqlExpression.GetPropertyExpression(NestedSet.ParentIdProperty.Name),
+                            new IqlLiteralExpression(NestedSet.IdProperty.GetValue(entity), IqlType.Integer)
+                        );
+                        filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
+                    }
+                    break;
+                case NestedSetQueryKind.Parent:
+                    {
+                        var parentIdCheck = new IqlIsEqualToExpression(
+                            IqlExpression.GetPropertyExpression(NestedSet.IdProperty.Name),
+                            new IqlLiteralExpression(NestedSet.ParentIdProperty.GetValue(entity), IqlType.Integer)
+                        );
+                        filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
+                    }
+                    break;
+                case NestedSetQueryKind.Ancestors:
+                    {
+                        var leftCheck = new IqlIsLessThanExpression(
+                            IqlExpression.GetPropertyExpression(NestedSet.LeftProperty.Name),
+                            new IqlLiteralExpression(NestedSet.LeftProperty.GetValue(entity), IqlType.Integer)
+                        );
+                        var rightCheck = new IqlIsGreaterThanExpression(
+                            IqlExpression.GetPropertyExpression(NestedSet.RightProperty.Name),
+                            new IqlLiteralExpression(NestedSet.RightProperty.GetValue(entity), IqlType.Integer)
+                        );
+                        filter = new IqlExpression[] { leftCheck, rightCheck, keyCheck }.And();
+                    }
+                    break;
             }
             return filter;
         }

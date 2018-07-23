@@ -5,6 +5,7 @@ using System.Reflection;
 using Brandless.Data.Contracts;
 using Brandless.Data.Entities;
 using Iql.Entities;
+using Iql.Entities.NestedSets;
 using Microsoft.AspNetCore.Identity;
 
 namespace Iql.Server
@@ -57,6 +58,15 @@ namespace Iql.Server
                 foreach (var methodInfo in methodInfos)
                 {
                     methodInfo.Invoke(this, new object[] {builder});
+                }
+
+                var entityConfiguration = builder.GetEntityByType(entityType);
+                foreach (var property in entityConfiguration.Properties)
+                {
+                    if (property.Geographic != null || property.NestedSet.Kind != NestedSetPropertyKind.None)
+                    {
+                        property.ReadOnly = true;
+                    }
                 }
             }
         }

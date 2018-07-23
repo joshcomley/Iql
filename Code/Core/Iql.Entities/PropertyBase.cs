@@ -1,5 +1,6 @@
 using Iql.Entities.Extensions;
 using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
@@ -13,10 +14,17 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : MetadataBase, IPropertyMetadata
     {
+        public IPropertyGroup[] GetProperties()
+        {
+            return new[] { this as IProperty };
+        }
         public IGeographic Geographic => EntityConfiguration != null && EntityConfiguration.Geographics != null
             ? EntityConfiguration.Geographics.FirstOrDefault(g =>
                 Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
             : null;
+
+        private NestedSetProperty _nestedSet;
+        public NestedSetProperty NestedSet => _nestedSet = _nestedSet ?? new NestedSetProperty(this as IProperty);
         public bool IsLongitudeProperty => Equals(Geographic?.LongitudeProperty, this);
         public bool IsLatitudeProperty => Equals(Geographic?.LatitudeProperty, this);
         public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
