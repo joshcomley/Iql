@@ -30,6 +30,5 @@ namespace Iql.Entities
         IProperty SetReadOnly(bool readOnly = true);
         IProperty SetHidden(bool hidden = true);
         IProperty SetNullable(bool nullable = true);
-        bool HasMediaKey { get; }
     }
 }

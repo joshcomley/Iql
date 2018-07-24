@@ -1,9 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Iql.Entities.NestedSets
 {
     public class NestedSet : PropertyGroupBase<NestedSet>, INestedSet
     {
+        public override PropertyKind Kind
+        {
+            get => PropertyKind.SimpleCollection;
+            set { }
+        }
         public override IEntityConfiguration EntityConfiguration =>
             (LeftProperty ?? RightProperty ?? LeftOfProperty ?? RightOfProperty ?? KeyProperty ?? LevelProperty ?? ParentIdProperty ?? ParentProperty ?? IdProperty)?.EntityConfiguration;
         public string SetKey { get; set; }

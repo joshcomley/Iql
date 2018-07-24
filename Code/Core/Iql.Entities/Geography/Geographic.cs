@@ -2,6 +2,11 @@
 {
     public class Geographic : PropertyGroupBase<Geographic>, IGeographic
     {
+        public override PropertyKind Kind
+        {
+            get => PropertyKind.SimpleCollection;
+            set { }
+        }
         public override IEntityConfiguration EntityConfiguration => (LongitudeProperty ?? LatitudeProperty)?.EntityConfiguration;
         public string Key { get; set; }
         public IProperty LongitudeProperty { get; set; }
@@ -17,7 +22,6 @@
 #if !TypeScript
         public Geographic():base(null)
         {
-
         }
 #endif
         public override IPropertyGroup[] GetProperties()

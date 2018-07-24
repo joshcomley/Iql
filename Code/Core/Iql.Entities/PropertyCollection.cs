@@ -5,6 +5,11 @@ namespace Iql.Entities
 {
     public class PropertyCollection : PropertyGroupBase<PropertyCollection>
     {
+        public override PropertyKind Kind
+        {
+            get => PropertyKind.GroupCollection;
+            set { }
+        }
         public List<IPropertyGroup> Properties { get; }
         public override IPropertyGroup[] GetProperties()
         {

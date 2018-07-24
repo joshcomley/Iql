@@ -14,7 +14,6 @@ namespace Iql.Entities
         bool HasMediaKey { get; }
         IMediaKey MediaKey { get; set; }
         string Placeholder { get; set; }
-        PropertyKind Kind { get; set; }
         PropertySearchKind SearchKind { get; set; }
         bool ReadOnly { get; set; }
         bool Hidden { get; set; }

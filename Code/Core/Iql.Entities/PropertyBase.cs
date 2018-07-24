@@ -79,7 +79,7 @@ namespace Iql.Entities
             set => _relationship = value;
         }
 
-        public PropertyKind Kind { get; set; }
+        public override PropertyKind Kind { get; set; }
 
         private bool _searchKindSet;
         private bool? _readOnly;

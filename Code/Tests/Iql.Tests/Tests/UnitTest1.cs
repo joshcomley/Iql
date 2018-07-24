@@ -679,10 +679,14 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task PropertyKindValues()
         {
+#if !TypeScript
             var kind = PropertyKind.Primitive;
             Assert.AreEqual(nameof(PropertyKind.Primitive), kind.ToString());
             kind = PropertyKind.Relationship;
             Assert.AreEqual(nameof(PropertyKind.Relationship), kind.ToString());
+#endif
+            Assert.IsTrue(!PropertyKind.Primitive.HasFlag(PropertyKind.Relationship));
+            Assert.IsTrue(!PropertyKind.Relationship.HasFlag(PropertyKind.Primitive));
             //kind = PropertyKind.RelationshipKey;
             //Assert.AreEqual(string.Join(", ", new[] { nameof(PropertyKind.Primitive), nameof(PropertyKind.RelationshipKey) }), kind.ToString());
             //kind = PropertyKind.Key;
