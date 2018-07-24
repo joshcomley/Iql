@@ -1,13 +1,13 @@
 ﻿namespace Iql.Entities.Geography
 {
-    public class Geographic : IGeographic
+    public class Geographic : PropertyGroupBase<Geographic>, IGeographic
     {
-        public IEntityConfiguration EntityConfiguration => (LongitudeProperty ?? LatitudeProperty)?.EntityConfiguration;
+        public override IEntityConfiguration EntityConfiguration => (LongitudeProperty ?? LatitudeProperty)?.EntityConfiguration;
         public string Key { get; set; }
         public IProperty LongitudeProperty { get; set; }
         public IProperty LatitudeProperty { get; set; }
 
-        public Geographic(IProperty longitudeProperty = null, IProperty latitudeProperty = null, string key = null)
+        public Geographic(IProperty longitudeProperty = null, IProperty latitudeProperty = null, string key = null):base(null)
         {
             LongitudeProperty = longitudeProperty;
             LatitudeProperty = latitudeProperty;
@@ -15,12 +15,12 @@
         }
 
 #if !TypeScript
-        public Geographic()
+        public Geographic():base(null)
         {
 
         }
 #endif
-        public IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetProperties()
         {
             return new[] { LongitudeProperty, LatitudeProperty };
         }

@@ -6,10 +6,8 @@ using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Entities
 {
-    public interface IPropertyMetadata : IMetadata
+    public interface IPropertyMetadata : IPropertyGroup
     {
-        IRuleCollection<IBinaryRule> ValidationRules { get; set; }
-        IRuleCollection<IDisplayRule> DisplayRules { get; set; }
         IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         IEnumerable<IRelationship> Relationships { get; }
         ITypeDefinition TypeDefinition { get; set; }

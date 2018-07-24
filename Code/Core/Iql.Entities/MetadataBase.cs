@@ -121,11 +121,11 @@ namespace Iql.Entities
         }
 
         public string GroupPath { get; set; }
-        public string Description { get; set; }
-        public List<string> Hints { get; set; } = new List<string>();
 
         public IList<IPropertyGroup> PropertyOrder { get; set; } = new List<IPropertyGroup>();
 
+        public string Description { get; set; }
+        public List<string> Hints { get; set; } = new List<string>();
         public MetadataHint FindHint(string name)
         {
             return HintHelper.FindHint(this, name);

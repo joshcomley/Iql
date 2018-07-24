@@ -2,9 +2,9 @@
 
 namespace Iql.Entities.NestedSets
 {
-    public class NestedSet : INestedSet
+    public class NestedSet : PropertyGroupBase<NestedSet>, INestedSet
     {
-        public IEntityConfiguration EntityConfiguration =>
+        public override IEntityConfiguration EntityConfiguration =>
             (LeftProperty ?? RightProperty ?? LeftOfProperty ?? RightOfProperty ?? KeyProperty ?? LevelProperty ?? ParentIdProperty ?? ParentProperty ?? IdProperty)?.EntityConfiguration;
         public string SetKey { get; set; }
         public IProperty LeftProperty { get; set; }
@@ -26,7 +26,7 @@ namespace Iql.Entities.NestedSets
             IProperty parentIdProperty = null,
             IProperty parentProperty = null, 
             IProperty idProperty = null,
-            string setKey = null)
+            string setKey = null) :base(null)
         {
             SetKey = setKey;
             LeftProperty = leftProperty;
@@ -40,7 +40,7 @@ namespace Iql.Entities.NestedSets
             IdProperty = idProperty;
         }
 
-        public IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetProperties()
         {
             return new[]
                 {

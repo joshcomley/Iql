@@ -25,6 +25,8 @@ using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
 using EnumExtensions = Iql.OData.TypeScript.Generator.Extensions.EnumExtensions;
+using IPropertyGroup = Iql.Entities.IPropertyGroup;
+using PropertyCollection = Iql.Entities.PropertyCollection;
 using TypeInfo = Iql.OData.TypeScript.Generator.Definitions.TypeInfo;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
@@ -258,7 +260,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       {
                                           IMetadata propertyMetadata =
                                               entityConfiguration.Properties.SingleOrDefault(p => p.Name == property.Name);
-                                          ConfigreMetadata(entityConfiguration, propertyMetadata, typeParameter, parameters.First());
+                                          ConfigreMetadata(propertyMetadata, parameters.First());
                                       }
                                   }
                                   if (entityConfiguration != null)
@@ -388,7 +390,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                               }
                                           }
                                       }
-                                      ConfigreMetadata(entityConfiguration, entityConfiguration, null);
+                                      ConfigreMetadata(entityConfiguration);
                                   }
                               });
                               Append(";");
@@ -573,28 +575,36 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return typeParameter;
         }
 
-        private void ConfigreMetadata(
-            IEntityMetadata entityConfiguration,
-            IMetadata metadata,
-            IVariable typeParameter,
-            IVariable propertyParameter = null
+        private string ConfigreMetadata(IMetadata metadata,
+            IVariable propertyParameter = null,
+            string lambdaKey = "p",
+            bool appendConfigure = true
             )
         {
             if (metadata != null)
             {
-                AppendLine();
-                Dot();
+                if (appendConfigure)
+                {
+                    AppendLine();
+                    Dot();
+                }
                 var configureParameters = new List<IVariable>();
                 if (propertyParameter != null)
                 {
                     configureParameters.Add(propertyParameter);
                 }
                 var sb = new StringBuilder();
-                sb.Append("p => {");
-                var isProperty = metadata is IPropertyMetadata;
-                var metadataType = isProperty ? typeof(IPropertyMetadata) : typeof(IEntityMetadata);
-                var metadataSolidType = isProperty ? typeof(Property) : typeof(Server.Serialization.EntityConfiguration);
+                sb.Append($"{lambdaKey} => {{");
+                var isProperty = metadata is IPropertyMetadata || metadata is IPropertyGroup;
+                var metadataType = typeof(IEntityMetadata);
+                var metadataSolidType = typeof(Server.Serialization.EntityConfiguration);
+                if (isProperty)
+                {
+                    metadataType = metadata is IPropertyMetadata ? typeof(IPropertyMetadata) : typeof(IPropertyGroup);
+                    metadataSolidType = metadata is IPropertyMetadata ? typeof(Property) : typeof(PropertyCollection);
+                }
                 var metadataProperties = metadataType.GetPublicProperties().ToArray();
+                var propertyGroupMetadata = metadata as IPropertyGroup;
                 var propertyMetadata = metadata as IPropertyMetadata;
                 var entityMetadata = metadata as IEntityMetadata;
                 foreach (var metadataProperty in metadataProperties)
@@ -627,35 +637,17 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         dealtWith = true;
                         if (entityMetadata.PropertyOrder?.Any() == true)
                         {
+                            // This needs to be recursive, with an incrementing lambda key
                             sb.AppendLine();
-                            sb.Append($"p.{nameof(EntityConfiguration<object>.SetPropertyOrder)}(");
+                            sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.SetPropertyOrder)}(");
                             var propertyGroups = new List<string>();
                             foreach (var propertyGroup in entityMetadata.PropertyOrder)
                             {
-                                var groupSb = new StringBuilder();
-                                groupSb.Append("_ => _.");
-                                if (propertyGroup is IGeographic)
-                                {
-                                    groupSb.Append(
-                                        $"{nameof(IEntityMetadata.Geographics)}[{entityMetadata.Geographics.IndexOf(propertyGroup as IGeographic)}]");
-                                }
-                                else if (propertyGroup is INestedSet)
-                                {
-                                    groupSb.Append(
-                                        $"{nameof(IEntityMetadata.NestedSets)}[{entityMetadata.NestedSets.IndexOf(propertyGroup as INestedSet)}]");
-                                }
-                                else if (propertyGroup is PropertyCollection)
-                                {
-
-                                }
-                                else
-                                {
-
-                                }
-                                propertyGroups.Add(groupSb.ToString());
+                                var groupSb = SerializePropertyGroups(propertyGroup, entityMetadata, 0);
+                                propertyGroups.Add(groupSb);
                             }
 
-                            sb.Append(string.Join(", ", propertyGroups));
+                            sb.Append(string.Join(",\n", propertyGroups));
                             sb.Append(");");
                         }
                     }
@@ -667,8 +659,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             foreach (var geographic in entityMetadata.Geographics)
                             {
                                 sb.AppendLine();
-                                sb.Append($"p.{nameof(EntityConfiguration<object>.HasGeographic)}(");
-                                sb.Append($"g => g.{geographic.LongitudeProperty.Name}, g => g.{geographic.LatitudeProperty.Name}");
+                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
+                                sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
                                 if (!string.IsNullOrEmpty(geographic.Key))
                                 {
                                     sb.Append($@", ""{geographic.Key}""");
@@ -685,7 +677,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             foreach (var nestedSet in entityMetadata.NestedSets)
                             {
                                 sb.AppendLine();
-                                sb.Append($"p.{nameof(EntityConfiguration<object>.HasNestedSet)}(");
+                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasNestedSet)}(");
                                 var parameters = new[]
                                 {
                                     nestedSet.LeftProperty,
@@ -699,7 +691,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     nestedSet.IdProperty
                                 };
                                 var parameterStrings =
-                                    parameters.Select(p => p == null ? "null" : $"ns => ns.{p.Name}")
+                                    parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
                                         .ToList();
                                 parameterStrings.Add(String(nestedSet.SetKey));
                                 sb.Append(string.Join(", ", parameterStrings));
@@ -806,17 +798,17 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         dealtWith = true;
                         if (propertyMetadata.MediaKey?.Groups?.Any() == true)
                         {
-                            sb.AppendLine("p.MediaKey");
+                            sb.AppendLine($"{lambdaKey}.MediaKey");
                             foreach (var group in propertyMetadata.MediaKey.Groups)
                             {
                                 if (group.Parts != null && group.Parts.Any())
                                 {
-                                    sb.AppendLine(".AddGroup(g => g");
+                                    sb.AppendLine($".AddGroup({lambdaKey}_g => {lambdaKey}_g");
                                     foreach (var part in group.Parts)
                                     {
                                         sb.AppendLine(
                                             part.IsPropertyPath
-                                                ? $".AddPropertyPath(_ => _.{part.Key.Replace("/", ".")})"
+                                                ? $".AddPropertyPath({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
                                                 : $@".AddString(""{part.Key}"")");
                                     }
 
@@ -876,33 +868,37 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         sb.Append("\r\n");
                         sb.Append(GetIndentPlusOne());
-                        sb.Append($"p.{metadataProperty.Name} = {assign};");
+                        sb.Append($"{lambdaKey}.{metadataProperty.Name} = {assign};");
                     }
                     else if (!Equals(value, false) && !dealtWith && metadataProperty.CanWrite)
                     {
                         sb.Append("\r\n");
                         sb.Append(GetIndentPlusOne());
-                        sb.Append($"// p.{metadataProperty.Name} = ???;");
+                        sb.Append($"// {lambdaKey}.{metadataProperty.Name} = ???;");
                     }
                 }
 
                 sb.Append("\r\n");
                 sb.Append(GetCurrentIndent());
                 sb.Append("}");
-                configureParameters.Add(
-                    new PropertyDefinition(sb.ToString()));
                 //if (OutputType == OutputType.TypeScript && typeParameter != null)
                 //{
                 //    configureParameters.Add(typeParameter);
                 //}
+                if (appendConfigure)
+                {
+                    configureParameters.Add(
+                        new PropertyDefinition(sb.ToString()));
+                    MethodCall(
+                                      isProperty
+                                          ? nameof(EntityConfiguration<object>.ConfigureProperty)
+                                          : nameof(EntityConfiguration<object>.Configure),
+                                      false,
+                                      configureParameters.ToArray()
+                                  );
+                }
 
-                MethodCall(
-                    isProperty
-                        ? nameof(EntityConfiguration<object>.ConfigureProperty)
-                        : nameof(EntityConfiguration<object>.Configure),
-                    false,
-                    configureParameters.ToArray()
-                );
+                return sb.ToString();
                 /*
                 .ConfigureProperty(p => p.PhoneNumber, metadata =>{
                     metadata.Description = "";
@@ -910,6 +906,49 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 })
                                                */
             }
+
+            return "";
+        }
+
+        private string SerializePropertyGroups(IPropertyGroup propertyGroup, IEntityMetadata entityMetadata, int index)
+        {
+            var groupSb = new StringBuilder();
+
+            string Lambda(int i, bool inline = true)
+            {
+                var indexCh = i == 0 ? "" : i.ToString();
+                var inlineStr = $"_{indexCh}.";
+                return $"_{indexCh} => {(inline ? inlineStr : "")}";
+            }
+            groupSb.Append(Lambda(index));
+            if (propertyGroup is IGeographic)
+            {
+                groupSb.Append(
+                    $"{nameof(IEntityMetadata.Geographics)}[{entityMetadata.Geographics.IndexOf(propertyGroup as IGeographic)}]");
+            }
+            else if (propertyGroup is INestedSet)
+            {
+                groupSb.Append(
+                    $"{nameof(IEntityMetadata.NestedSets)}[{entityMetadata.NestedSets.IndexOf(propertyGroup as INestedSet)}]");
+            }
+            else if (propertyGroup is PropertyCollection)
+            {
+                var coll = propertyGroup as PropertyCollection;
+                var list = new List<string>();
+                foreach (var subGroup in coll.Properties)
+                {
+                    list.Add(SerializePropertyGroups(subGroup, entityMetadata, ++index));
+                }
+
+                groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyCollection)}({string.Join(",\n", list)})");
+                groupSb.Append($@".{nameof(PropertyGroupBase<PropertyCollection>.Configure)}({ConfigreMetadata(coll, null, $"coll{++index}", false)})");
+            }
+            else
+            {
+                groupSb.Append($"{nameof(EntityConfiguration<object>.FindPropertyByExpression)}({Lambda(++index)}{propertyGroup.Name})");
+            }
+
+            return groupSb.ToString();
         }
 
         private string ConvertToTypeScript(string serialized)

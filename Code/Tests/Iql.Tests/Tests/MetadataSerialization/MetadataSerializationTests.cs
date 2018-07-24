@@ -4,6 +4,7 @@ using Iql.Server.Serialization;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Iql.Entities;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.MetadataSerialization
@@ -21,6 +22,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 .HasGeographic(c => c.AverageIncome, c => c.AverageIncome, "MyGeographic");
             clientConfig
                 .HasNestedSet(c => c.AverageIncome, c => c.AverageSales, setKey: "MyNestedSet");
+            clientConfig.Geographics[0].SetHint(KnownHints.BigText);
             clientConfig.SetPropertyOrder(
                 c => c.FindProperty(nameof(Client.Name)),
                 c => c.PropertyCollection(
@@ -28,7 +30,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                     c1 => c1.Geographics[0], 
                     c1 => c1.PropertyCollection(
                         c2 => c2.FindProperty(nameof(Client.Description)),
-                        c2 => c2.FindProperty(nameof(Client.Category)))),
+                        c2 => c2.FindProperty(nameof(Client.Category)))).Configure(c3 => c3.SetHint(KnownHints.HelpTextBottom)),
                 c => c.NestedSets[0]);
             var json = db.EntityConfigurationContext.ToJson();
             var document = EntityConfigurationDocument.FromJson(json);

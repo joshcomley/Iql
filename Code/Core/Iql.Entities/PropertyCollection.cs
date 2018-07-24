@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 namespace Iql.Entities
 {
-    public class PropertyCollection : IPropertyGroup
+    public class PropertyCollection : PropertyGroupBase<PropertyCollection>
     {
-        public IEntityConfiguration EntityConfiguration { get; }
         public List<IPropertyGroup> Properties { get; }
-        public IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetProperties()
         {
             return Properties.ToArray();
         }
 
-        public PropertyCollection(IEntityConfiguration entityConfiguration)
+        public PropertyCollection(IEntityConfiguration entityConfiguration) : base(entityConfiguration)
         {
-            EntityConfiguration = entityConfiguration;
             Properties = new List<IPropertyGroup>();
         }
     }

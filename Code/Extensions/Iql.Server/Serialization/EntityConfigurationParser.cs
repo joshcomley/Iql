@@ -238,13 +238,24 @@ namespace Iql.Server.Serialization
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
-                var isConvertedProperty = objectType == typeof(IProperty) && reader.Value is string;
-                var isPropertyOrder =
-                    JsonPathHelper.IsEntityConfigurationProperty(reader.Path, nameof(IEntityMetadata.PropertyOrder));
-                if (isConvertedProperty || isPropertyOrder)
+                var path = reader.Path;
+                var value = reader.Value;
+                var existingValue2 = existingValue;
+                //if (reader.TokenType != JsonToken.StartObject)
+                //{
+                //    var result2 = reader.Read();
+                //    return result2;
+                //}
+                var isConvertedProperty = (objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string && 
+                                          !string.IsNullOrWhiteSpace(reader.Value as string) &&
+                                          (reader.Value as string).StartsWith("{");
+                if (isConvertedProperty)
                 {
-                    var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
-                    PropertyMappings.Add(reader.Path, group);
+                    if (!string.IsNullOrWhiteSpace(reader.Value as string))
+                    {
+                        var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
+                        PropertyMappings.Add(reader.Path, group);
+                    }
                     return null;
                 }
                 var result = serializer.Deserialize(reader, TypeMappings[objectType]);

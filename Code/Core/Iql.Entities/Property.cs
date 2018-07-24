@@ -58,7 +58,7 @@ namespace Iql.Entities
             IProperty countRelationship,
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
-            EntityConfiguration = entityConfiguration;
+            EntityConfigurationInternal = entityConfiguration;
             Name = name;
             if (readOnly.HasValue)
             {
@@ -98,14 +98,14 @@ namespace Iql.Entities
         }
 
         public new ValidationCollection<TOwner> ValidationRules { get; private set; } = new ValidationCollection<TOwner>();
-        IRuleCollection<IBinaryRule> IPropertyMetadata.ValidationRules
+        IRuleCollection<IBinaryRule> IPropertyGroup.ValidationRules
         {
             get => ValidationRules;
             set => ValidationRules = (ValidationCollection<TOwner>)value;
         }
 
         public new DisplayRuleCollection<TOwner> DisplayRules { get; private set; } = new DisplayRuleCollection<TOwner>();
-        IRuleCollection<IDisplayRule> IPropertyMetadata.DisplayRules
+        IRuleCollection<IDisplayRule> IPropertyGroup.DisplayRules
         {
             get => DisplayRules;
             set => DisplayRules = (DisplayRuleCollection<TOwner>)value;

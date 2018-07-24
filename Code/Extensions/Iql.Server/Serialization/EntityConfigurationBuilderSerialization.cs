@@ -86,6 +86,12 @@ namespace Iql.Server.Serialization
 
         public class IPropertyConverter : JsonConverter
         {
+            public bool IsNested { get; }
+
+            public IPropertyConverter(bool isNested = false)
+            {
+                IsNested = isNested;
+            }
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
                 //if (value != null)
@@ -96,35 +102,84 @@ namespace Iql.Server.Serialization
                 //writer.WriteRaw("{}");
                 if (value != null)
                 {
-                    var directConversion = string.Join("|", new[]
+                    //if (IsInPropertyOrder)
+                    //{
+                    //    if (value is PropertyCollection)
+                    //    {
+                    //        serializer.Serialize(writer, value);
+                    //        //WritePropertyGroupDirect(writer, value, false);
+                    //    }
+                    //    else
+                    //    {
+                    //        WritePropertyGroupReference(writer, value);
+                    //    }
+                    //}
+                    //else
+                    //{
+
+                    //}
+                    if (IsNested)
                     {
-                        nameof(IEntityMetadata.Properties),
-                        nameof(IEntityMetadata.NestedSets),
-                        nameof(IEntityMetadata.Geographics),
-                    });
-                    if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, directConversion))
-                    {
-                        var indented = Formatting.Indented;
-                        var settings = new JsonSerializerSettings
+                        if (string.IsNullOrWhiteSpace(writer.Path))
                         {
-                            ContractResolver = new InterfaceContractResolver()
-                        };
-                        settings.Converters.Add(new ExpressionJsonConverter());
-                        settings.Converters.Add(new TypeConverter());
-                        //settings.Converters.Add(new IPropertyConverter());
-                        var serialized = JsonConvert.SerializeObject(value, value.GetType(), indented, settings);
-                        writer.WriteRawValue(serialized);
+                            WritePropertyGroupDirect(writer, value, false, false);
+                        }
+                        else
+                        {
+                            WritePropertyGroupReference(writer, value);
+                        }
                     }
                     else
                     {
-                        if (value is IPropertyGroup)
+                        var directConversion = string.Join("|", new[]
                         {
-                            var serialized = SerializePropertyGroup(value as IPropertyGroup);
-                            var json = JsonConvert.SerializeObject(serialized);
-                            writer.WriteValue(json);
+                            nameof(IEntityMetadata.Properties),
+                            nameof(IEntityMetadata.NestedSets),
+                            nameof(IEntityMetadata.Geographics),
+                        });
+                        if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, false, directConversion))
+                        {
+                            // All properties below here must be references
+                            WritePropertyGroupDirect(writer, value, false);
+                        }
+                        //else if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, true,
+                        //             nameof(IEntityMetadata.PropertyOrder)) &&
+                        //         value is PropertyCollection)
+                        //{
+                        //    WritePropertyGroupDirect(writer, value, true);
+                        //}
+                        else //if (value is IPropertyGroup)
+                        {
+                            WritePropertyGroupReference(writer, value);
                         }
                     }
                 }
+            }
+
+            private static void WritePropertyGroupReference(JsonWriter writer, object value)
+            {
+                var serialized = SerializePropertyGroup(value as IPropertyGroup);
+                var json = JsonConvert.SerializeObject(serialized);
+                writer.WriteValue(json);
+            }
+
+            private static void WritePropertyGroupDirect(JsonWriter writer, object value, bool allowDirectPropertyConversion = true, bool allowAnyPropertyConversion = true)
+            {
+                var indented = Formatting.Indented;
+                var settings = new JsonSerializerSettings
+                {
+                    ContractResolver = new InterfaceContractResolver()
+                };
+                settings.Converters.Add(new ExpressionJsonConverter());
+                settings.Converters.Add(new TypeConverter());
+                if (allowAnyPropertyConversion)
+                {
+                    settings.Converters.Add(new IPropertyConverter(true));
+                }
+                //settings.Converters.Add(new IPropertyConverter());
+                var ppp = writer.Path;
+                var serialized = JsonConvert.SerializeObject(value, value.GetType(), indented, settings);
+                writer.WriteRawValue(serialized);
             }
 
             private static SerializedPropertyGroup SerializePropertyGroup(IPropertyGroup propertyGroup)
@@ -148,7 +203,7 @@ namespace Iql.Server.Serialization
                     }
                     else if (propertyGroup is PropertyCollection)
                     {
-                        kind = PropertyGroupKind.PropertyCollection;
+                        throw new NotImplementedException();
                     }
 
                     switch (kind)
@@ -190,7 +245,11 @@ namespace Iql.Server.Serialization
 
             public override bool CanConvert(Type objectType)
             {
-                return typeof(IPropertyGroup).IsAssignableFrom(objectType);
+                if (IsNested)
+                {
+                    return typeof(IProperty).IsAssignableFrom(objectType);
+                }
+                return !typeof(PropertyCollection).IsAssignableFrom(objectType) && typeof(IPropertyGroup).IsAssignableFrom(objectType);
             }
         }
 
@@ -231,7 +290,7 @@ namespace Iql.Server.Serialization
                 if (typeof(IProperty).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(typeof(IPropertyMetadata), memberSerialization)
-                        .Where(p => p.PropertyName != nameof(IPropertyMetadata.HasMediaKey))
+                        .Where(p => p.PropertyName != nameof(IPropertyMetadata.HasMediaKey) && p.PropertyName != nameof(IProperty.EntityConfiguration))
                         .ToList();
                 }
                 if (typeof(ITypeDefinition).IsAssignableFrom(type))
@@ -309,6 +368,13 @@ namespace Iql.Server.Serialization
                 {
                     return base.CreateProperties(typeof(IBinaryRule), memberSerialization)
                         .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
+                        .ToList();
+                }
+
+                if (typeof(IPropertyGroup).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(type, memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IProperty.EntityConfiguration))
                         .ToList();
                 }
                 //if (type == typeof(IRuleCollection<IBinaryRule>))

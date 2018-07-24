@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Iql.Data.DataStores;
 using Iql.Data.Lists;
 using Iql.Entities;
@@ -38,6 +39,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         }
 
         public IClassGenerator Generator { get; set; }
+        public void UseTempStringBuilder(StringBuilder temp, Action action)
+        {
+            Generator.UseTempStringBuilder(temp, action);
+        }
+
         public string GetExpressionString(IqlExpression iql)
         {
             return Generator.GetExpressionString(iql);

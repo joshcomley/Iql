@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
@@ -9,6 +10,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
     public interface IClassGenerator
     {
+        void UseTempStringBuilder(StringBuilder temp, Action action);
         string GetExpressionString(IqlExpression iql);
         GeneratedFile File { get; }
         ISchemaTypeResolver TypeResolver { get; }

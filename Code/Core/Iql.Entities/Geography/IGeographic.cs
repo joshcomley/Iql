@@ -14,7 +14,7 @@
 
      */
 
-    public interface IGeographic : IEntityConfigurationItem, IPropertyGroup
+    public interface IGeographic : IPropertyGroup
     {
         string Key { get; set; }
         IProperty LongitudeProperty { get; set; }

@@ -12,9 +12,9 @@ using System.Reflection;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyBase : MetadataBase, IPropertyMetadata
+    public abstract class PropertyBase : PropertyGroupBase<PropertyBase>, IPropertyMetadata
     {
-        public IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetProperties()
         {
             return new[] { this as IProperty };
         }
@@ -31,7 +31,8 @@ namespace Iql.Entities
         public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == Name;
         public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName == Name;
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
-        public IEntityConfiguration EntityConfiguration { get; set; }
+        public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
+        protected IEntityConfiguration EntityConfigurationInternal { get; set; }
         public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
         public bool Searchable { get; set; } = true;
 
@@ -47,8 +48,6 @@ namespace Iql.Entities
             }
         }
 
-        public virtual IRuleCollection<IBinaryRule> ValidationRules { get; set; }
-        public virtual IRuleCollection<IDisplayRule> DisplayRules { get; set; }
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
@@ -164,6 +163,10 @@ namespace Iql.Entities
         {
             Nullable = nullable;
             return (IProperty)this;
+        }
+
+        protected PropertyBase() : base(null)
+        {
         }
     }
 }
