@@ -5,6 +5,7 @@ namespace Iql.Entities
 {
     public class PropertyCollection : PropertyGroupBase<PropertyCollection>
     {
+        public ContentAlignment ContentAlignment { get; set; } = ContentAlignment.Vertical;
         public override PropertyKind Kind
         {
             get => PropertyKind.GroupCollection;
