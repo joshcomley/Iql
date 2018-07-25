@@ -661,10 +661,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 sb.AppendLine();
                                 sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
                                 sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
-                                if (!string.IsNullOrEmpty(geographic.Key))
-                                {
-                                    sb.Append($@", ""{geographic.Key}""");
-                                }
+                                    sb.Append($@", {(geographic.Key == null ? "null" : $@"""{geographic.Key}""")}");
+                                sb.Append($@", {ConfigreMetadata(geographic, null, "geo", false)}");
                                 sb.Append(");");
                             }
                         }
@@ -694,6 +692,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
                                         .ToList();
                                 parameterStrings.Add(String(nestedSet.SetKey));
+                                parameterStrings.Add(ConfigreMetadata(nestedSet, null, $"{lambdaKey}_ns", false));
                                 sb.Append(string.Join(", ", parameterStrings));
                                 sb.Append(");");
                             }
@@ -733,7 +732,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         if (EnumExtensions.IsValidEnumValue(value))
                         {
-                            assign = $"{nameof(PropertyKind)}.{value}";
+                            assign = ((PropertyKind)value).ToCodeString();
                         }
                         dealtWith = true;
                     }
@@ -741,7 +740,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         if (EnumExtensions.IsValidEnumValue(value))
                         {
-                            assign = $"{string.Join(" | ", value.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(e => $"{nameof(EntityManageKind)}.{e.Trim()}"))}";
+                            assign = ((EntityManageKind)value).ToCodeString();
                         }
                         dealtWith = true;
                     }

@@ -22,6 +22,7 @@ namespace Iql.Entities
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
+        IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
         private class DefaultValuePlaceholder { }
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
@@ -967,12 +968,18 @@ namespace Iql.Entities
         public EntityConfiguration<T> HasGeographic(
             Expression<Func<T, object>> longitudeProperty,
             Expression<Func<T, object>> latitudeProperty,
-            string key = null)
+            string key = null,
+            Action<IGeographic> configure = null)
         {
-            Geographics.Add(new Geographic(
+            var geo = new Geographic(
                 FindPropertyByExpression(longitudeProperty),
                 FindPropertyByExpression(latitudeProperty),
-                key));
+                key);
+            Geographics.Add(geo);
+            if (configure != null)
+            {
+                configure(geo);
+            }
             return this;
         }
 
@@ -986,9 +993,10 @@ namespace Iql.Entities
             Expression<Func<T, object>> parentIdProperty = null,
             Expression<Func<T, object>> parentProperty = null,
             Expression<Func<T, object>> idProperty = null,
-            string setKey = null)
+            string setKey = null,
+            Action<INestedSet> configure = null)
         {
-            NestedSets.Add(new NestedSet(
+            var nestedSet = new NestedSet(
                 FindPropertyByExpression(leftProperty),
                 FindPropertyByExpression(rightProperty),
                 FindPropertyByExpression(leftOfProperty),
@@ -998,7 +1006,12 @@ namespace Iql.Entities
                 FindPropertyByExpression(parentIdProperty),
                 FindPropertyByExpression(parentProperty),
                 FindPropertyByExpression(idProperty),
-                setKey));
+                setKey);
+            NestedSets.Add(nestedSet);
+            if (configure != null)
+            {
+                configure(nestedSet);
+            }
             return this;
         }
     }

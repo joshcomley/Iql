@@ -46,7 +46,7 @@ namespace Iql.Entities.NestedSets
             IdProperty = idProperty;
         }
 
-        public override IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetGroupProperties()
         {
             return new[]
                 {

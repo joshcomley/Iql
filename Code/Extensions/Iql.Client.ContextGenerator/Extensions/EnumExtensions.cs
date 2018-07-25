@@ -1,7 +1,17 @@
-﻿namespace Iql.OData.TypeScript.Generator.Extensions
+﻿using System;
+using System.Linq;
+
+namespace Iql.OData.TypeScript.Generator.Extensions
 {
     public static class EnumExtensions
     {
+        public static string ToCodeString<TEnum>(this TEnum value)
+            where TEnum : struct
+        {
+            return
+                $"{string.Join(" | ", value.ToString().Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(e => $"{typeof(TEnum).Name}.{e.Trim()}"))}";
+        }
+
         public static bool IsValid<TEnum>(this TEnum enumValue)
             where TEnum : struct
         {

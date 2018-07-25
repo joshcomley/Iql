@@ -11,7 +11,7 @@ namespace Iql.Entities
             set { }
         }
         public List<IPropertyGroup> Properties { get; }
-        public override IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetGroupProperties()
         {
             return Properties.ToArray();
         }

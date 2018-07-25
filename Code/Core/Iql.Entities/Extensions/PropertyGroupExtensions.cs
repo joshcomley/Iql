@@ -21,7 +21,7 @@ namespace Iql.Entities.Extensions
                 return properties;
             }
 
-            foreach (var property in propertyGroup.GetProperties())
+            foreach (var property in propertyGroup.GetGroupProperties())
             {
                 property.FlattenInternal(properties);
             }

@@ -61,7 +61,7 @@ namespace Iql.Entities
 
         public bool HasRelationshipKeys => Key != null && Key.HasRelationshipKeys;
 
-        public IPropertyGroup[] OrderedProperties()
+        public IPropertyGroup[] GetGroupProperties()
         {
             if (PropertyOrder == null || !PropertyOrder.Any())
             {
@@ -88,7 +88,7 @@ namespace Iql.Entities
                 for (var j = 0; j < PropertyOrder.Count; j++)
                 {
                     var propertyGroup = PropertyOrder[j];
-                    if (propertyGroup.GetProperties().Contains(property))
+                    if (propertyGroup.GetGroupProperties().Contains(property))
                     {
                         found = true;
                         break;

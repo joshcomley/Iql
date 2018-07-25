@@ -186,7 +186,7 @@ namespace Iql.Server.Serialization
             {
                 if (propertyGroup != null)
                 {
-                    var properties = propertyGroup.GetProperties();
+                    var properties = propertyGroup.GetGroupProperties();
                     var entityConfiguration = propertyGroup.EntityConfiguration;
                     var kind = PropertyGroupKind.Property;
                     List<SerializedPropertyGroup> children = null;

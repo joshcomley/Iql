@@ -24,7 +24,7 @@
         {
         }
 #endif
-        public override IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetGroupProperties()
         {
             return new[] { LongitudeProperty, LatitudeProperty };
         }

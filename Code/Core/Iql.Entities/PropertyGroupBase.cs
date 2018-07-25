@@ -11,7 +11,7 @@ namespace Iql.Entities
         public virtual IEntityConfiguration EntityConfiguration { get; }
         public IRuleCollection<IBinaryRule> ValidationRules { get; set; }
         public IRuleCollection<IDisplayRule> DisplayRules { get; set; }
-        public abstract IPropertyGroup[] GetProperties();
+        public abstract IPropertyGroup[] GetGroupProperties();
 
         protected PropertyGroupBase(IEntityConfiguration entityConfiguration)
         {

@@ -14,7 +14,7 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : PropertyGroupBase<PropertyBase>, IPropertyMetadata
     {
-        public override IPropertyGroup[] GetProperties()
+        public override IPropertyGroup[] GetGroupProperties()
         {
             return new[] { this as IProperty };
         }
