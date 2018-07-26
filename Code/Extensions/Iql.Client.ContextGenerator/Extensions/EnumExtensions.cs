@@ -9,7 +9,13 @@ namespace Iql.OData.TypeScript.Generator.Extensions
             where TEnum : struct
         {
             return
-                $"{string.Join(" | ", value.ToString().Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(e => $"{typeof(TEnum).Name}.{e.Trim()}"))}";
+                value.ToEnumCodeString();
+        }
+
+        public static string ToEnumCodeString(this object value)
+        {
+            return
+                $"{string.Join(" | ", value.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(e => $"{value.GetType().Name}.{e.Trim()}"))}";
         }
 
         public static bool IsValid<TEnum>(this TEnum enumValue)

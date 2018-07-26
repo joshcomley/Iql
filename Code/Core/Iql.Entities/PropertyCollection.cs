@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Iql.Entities
 {
-    public class PropertyCollection : PropertyGroupBase<PropertyCollection>
+    public class PropertyCollection : PropertyGroupBase<IPropertyCollection>, IPropertyCollection
     {
         public ContentAlignment ContentAlignment { get; set; } = ContentAlignment.Vertical;
         public override PropertyKind Kind
@@ -21,5 +21,10 @@ namespace Iql.Entities
         {
             Properties = new List<IPropertyGroup>();
         }
+
+        //IPropertyCollection IConfigurableProperty<IPropertyCollection>.Configure(Action<IPropertyCollection> configure)
+        //{
+        //    Configure(con)
+        //}
     }
 }

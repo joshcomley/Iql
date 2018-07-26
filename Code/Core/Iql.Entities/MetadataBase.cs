@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Iql.Entities.Metadata;
 using Iql.Extensions;
+using System.Collections.Generic;
 
 namespace Iql.Entities
 {
@@ -12,6 +12,8 @@ namespace Iql.Entities
         private bool _nameSet;
         private string _title;
         private bool _titleSet;
+        public IMetadataCollection Metadata { get; set; } = new MetadataCollection();
+
         public string Name
         {
             get

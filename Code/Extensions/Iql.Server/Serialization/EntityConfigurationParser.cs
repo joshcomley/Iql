@@ -192,6 +192,37 @@ namespace Iql.Server.Serialization
             }
         }
 
+
+        public class MetadataCollectionConverter : JsonConverter
+        {
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                var mcj = new MetadataCollectionJson();
+                serializer.Populate(reader, mcj);
+                var mc = new MetadataCollection();
+                foreach (var item in mcj.All)
+                {
+                    mc.Set(item.Key, item.Value);
+                }
+                return mc;
+            }
+
+            public override bool CanConvert(Type objectType)
+            {
+                return typeof(IMetadataCollection).IsAssignableFrom(objectType);
+            }
+        }
+
+        internal class MetadataCollectionJson : MetadataCollectionBase, IMetadataCollection
+        {
+            public KeyValuePair<string, object>[] All { get; set; }
+        }
+
         public class InterfaceConverter : JsonConverter
         {
             private Dictionary<Type, Type> TypeMappings { get; } = new Dictionary<Type, Type>();
@@ -220,10 +251,11 @@ namespace Iql.Server.Serialization
                 Map<IGeographic, Geographic>();
                 Map<INestedSet, NestedSet>();
                 Map<IPropertyGroup, PropertyCollection>();
+                // Map<IMetadataCollection, MetadataCollectionJson>();
             }
 
             private void Map<TInterface, TConcrete>()
-                where TConcrete : TInterface
+            // where TConcrete : TInterface
             {
                 TypeMappings.Add(typeof(TInterface), typeof(TConcrete));
             }
@@ -246,7 +278,7 @@ namespace Iql.Server.Serialization
                 //    var result2 = reader.Read();
                 //    return result2;
                 //}
-                var isConvertedProperty = (objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string && 
+                var isConvertedProperty = (objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string &&
                                           !string.IsNullOrWhiteSpace(reader.Value as string) &&
                                           (reader.Value as string).StartsWith("{");
                 if (isConvertedProperty)
@@ -258,6 +290,7 @@ namespace Iql.Server.Serialization
                     }
                     return null;
                 }
+
                 var result = serializer.Deserialize(reader, TypeMappings[objectType]);
                 if (objectType == typeof(IEntityConfiguration))
                 {
@@ -319,6 +352,7 @@ namespace Iql.Server.Serialization
             settings.Converters.Add(interfaceTypeResolver);
             var lambdaExpressionConverter = new LambdaExpressionConverter();
             settings.Converters.Add(lambdaExpressionConverter);
+            settings.Converters.Add(new MetadataCollectionConverter());
             var configurationDocument = JsonConvert.DeserializeObject<EntityConfigurationDocument>(json, settings);
             settings.Converters.Add(new TypeConverter());
             interfaceTypeResolver.Finalise(configurationDocument);

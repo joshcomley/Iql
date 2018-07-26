@@ -4,8 +4,8 @@ using System;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup
-        where T : PropertyGroupBase<T>
+    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurableProperty<T>
+        where T : IConfigurableProperty<T>
     {
         public abstract PropertyKind Kind { get; set; }
         public virtual IEntityConfiguration EntityConfiguration { get; }
@@ -20,8 +20,8 @@ namespace Iql.Entities
 
         public T Configure(Action<T> configure)
         {
-            configure((T)this);
-            return (T)this;
+            configure((T)(object)this);
+            return (T)(object)this;
         }
     }
 }

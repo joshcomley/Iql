@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Extensions;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql.Entities
 {
@@ -71,36 +72,23 @@ namespace Iql.Entities
                 {
                     all.AddRange(Geographics);
                 }
-
                 if (NestedSets != null)
                 {
                     all.AddRange(NestedSets);
                 }
-
                 return all.ToArray();
             }
 
+            var flattened = PropertyOrder.FlattenAllToSimpleProperties().ToList();
             var ordered = PropertyOrder.ToList();
             for (var i = 0; i < Properties.Count; i++)
             {
                 var property = Properties[i];
-                var found = false;
-                for (var j = 0; j < PropertyOrder.Count; j++)
-                {
-                    var propertyGroup = PropertyOrder[j];
-                    if (propertyGroup.GetGroupProperties().Contains(property))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found)
+                if (!flattened.Contains(property))
                 {
                     ordered.Add(property);
                 }
             }
-
             return ordered.ToArray();
         }
 

@@ -74,7 +74,7 @@ namespace Iql.Entities.DisplayFormatting
             var formatter = Get(key);
             if (formatter == null)
             {
-                var titleProperties = EntityConfiguration.GetGroupProperties().SelectMany(p => p.Flatten()).Where(p => p.HasHint(KnownHints.Title)).ToArray();
+                var titleProperties = EntityConfiguration.GetGroupProperties().SelectMany(p => p.FlattenToSimpleProperties()).Where(p => p.HasHint(KnownHints.Title)).ToArray();
                 if (titleProperties.Any())
                 {
                     var parts = new List<string>();

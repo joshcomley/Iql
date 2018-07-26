@@ -955,7 +955,7 @@ namespace Iql.Entities
             return this;
         }
 
-        public PropertyCollection PropertyCollection(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        public IPropertyCollection PropertyCollection(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
             var coll = new PropertyCollection(this);
             foreach (var property in properties)

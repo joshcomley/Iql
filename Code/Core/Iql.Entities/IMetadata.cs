@@ -9,6 +9,7 @@ namespace Iql.Entities
         string Description { get; set; }
         string FriendlyName { get; set; }
         List<string> Hints { get; set; }
+        IMetadataCollection Metadata { get; set; }
         string Name { get; set; }
         string Title { get; set; }
         List<HelpText> HelpTexts { get; set; }

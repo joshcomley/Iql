@@ -201,7 +201,7 @@ namespace Iql.Server.Serialization
                         kind = PropertyGroupKind.NestedSet;
                         path = entityConfiguration.NestedSets.IndexOf(propertyGroup as INestedSet).ToString();
                     }
-                    else if (propertyGroup is PropertyCollection)
+                    else if (propertyGroup is IPropertyCollection)
                     {
                         throw new NotImplementedException();
                     }
@@ -249,7 +249,7 @@ namespace Iql.Server.Serialization
                 {
                     return typeof(IProperty).IsAssignableFrom(objectType);
                 }
-                return !typeof(PropertyCollection).IsAssignableFrom(objectType) && typeof(IPropertyGroup).IsAssignableFrom(objectType);
+                return !typeof(IPropertyCollection).IsAssignableFrom(objectType) && typeof(IPropertyGroup).IsAssignableFrom(objectType);
             }
         }
 
@@ -370,7 +370,6 @@ namespace Iql.Server.Serialization
                         .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
                         .ToList();
                 }
-
                 if (typeof(IPropertyGroup).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(type, memberSerialization)

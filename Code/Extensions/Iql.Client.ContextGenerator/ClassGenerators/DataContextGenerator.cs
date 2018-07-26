@@ -25,6 +25,7 @@ using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
 using EnumExtensions = Iql.OData.TypeScript.Generator.Extensions.EnumExtensions;
+using IPropertyCollection = Iql.Entities.IPropertyCollection;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
 using PropertyCollection = Iql.Entities.PropertyCollection;
 using TypeInfo = Iql.OData.TypeScript.Generator.Definitions.TypeInfo;
@@ -600,7 +601,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 var metadataSolidType = typeof(Server.Serialization.EntityConfiguration);
                 if (isProperty)
                 {
-                    metadataType = metadata is IPropertyMetadata ? typeof(IPropertyMetadata) : typeof(IPropertyGroup);
+                    if (metadata is IPropertyCollection)
+                    {
+                        metadataType = typeof(IPropertyCollection);
+                    }
+                    else if (metadata is IPropertyMetadata)
+                    {
+                        metadataType = typeof(IPropertyMetadata);
+                    }
+                    else
+                    {
+                        metadataType = typeof(IPropertyGroup);
+                    }
                     metadataSolidType = metadata is IPropertyMetadata ? typeof(Property) : typeof(PropertyCollection);
                 }
                 var metadataProperties = metadataType.GetPublicProperties().ToArray();
@@ -661,7 +673,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 sb.AppendLine();
                                 sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
                                 sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
-                                    sb.Append($@", {(geographic.Key == null ? "null" : $@"""{geographic.Key}""")}");
+                                sb.Append($@", {(geographic.Key == null ? "null" : $@"""{geographic.Key}""")}");
                                 sb.Append($@", {ConfigreMetadata(geographic, null, "geo", false)}");
                                 sb.Append(");");
                             }
@@ -728,19 +740,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         }
                         dealtWith = true;
                     }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(PropertyKind))
+                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnum)
                     {
                         if (EnumExtensions.IsValidEnumValue(value))
                         {
-                            assign = ((PropertyKind)value).ToCodeString();
-                        }
-                        dealtWith = true;
-                    }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(EntityManageKind))
-                    {
-                        if (EnumExtensions.IsValidEnumValue(value))
-                        {
-                            assign = ((EntityManageKind)value).ToCodeString();
+                            assign = value.ToEnumCodeString();
                         }
                         dealtWith = true;
                     }
@@ -816,6 +820,23 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             }
 
                             sb.Append(";");
+                        }
+                    }
+                    else if (metadataProperty.Name == nameof(IMetadata.Metadata))
+                    {
+                        dealtWith = true;
+                        if (metadata.Metadata != null && metadata.Metadata.All.Any())
+                        {
+                            sb.AppendLine();
+                            sb.Append($"{lambdaKey}.{nameof(IMetadata.Metadata)}.");
+                            var items = new List<string>();
+                            var os = new CSharpObjectSerializer();
+                            foreach (var item in metadata.Metadata.All)
+                            {
+                                var serialized = os.Serialize(item.Value);
+                                items.Add($"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
+                            }
+                            sb.Append($"{string.Join(".", items)};");
                         }
                     }
                     else if (metadataProperty.CanWrite && (metadataProperty.PropertyType.IsClass || metadataProperty.PropertyType.IsInterface) && metadataProperty.PropertyType != typeof(string))
@@ -930,9 +951,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 groupSb.Append(
                     $"{nameof(IEntityMetadata.NestedSets)}[{entityMetadata.NestedSets.IndexOf(propertyGroup as INestedSet)}]");
             }
-            else if (propertyGroup is PropertyCollection)
+            else if (propertyGroup is IPropertyCollection)
             {
-                var coll = propertyGroup as PropertyCollection;
+                var coll = propertyGroup as IPropertyCollection;
                 var list = new List<string>();
                 foreach (var subGroup in coll.Properties)
                 {
@@ -940,7 +961,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }
 
                 groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyCollection)}({string.Join(",\n", list)})");
-                groupSb.Append($@".{nameof(PropertyGroupBase<PropertyCollection>.Configure)}({ConfigreMetadata(coll, null, $"coll{++index}", false)})");
+                groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({ConfigreMetadata(coll, null, $"coll{++index}", false)})");
             }
             else
             {

@@ -10,7 +10,7 @@ namespace Iql.Entities
         IRuleCollection<IDisplayRule> DisplayRules { get; set; }
     }
 
-    public interface IPropertyContainer : IEntityConfigurationItem
+    public interface IPropertyContainer : IMetadata, IEntityConfigurationItem
     {
         IPropertyGroup[] GetGroupProperties();
     }

@@ -6,7 +6,7 @@ using Iql.Entities.NestedSets;
 
 namespace Iql.Entities
 {
-    public interface IProperty : IPropertyMetadata, IConfiguration, IPropertyGroup
+    public interface IProperty : IPropertyMetadata, IConfiguration, IPropertyGroup, IConfigurableProperty<IProperty>
     {
         NestedSetProperty NestedSet { get; }
         IGeographic Geographic { get; }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql.Entities.NestedSets
 {
-    public class NestedSet : PropertyGroupBase<NestedSet>, INestedSet
+    public class NestedSet : PropertyGroupBase<INestedSet>, INestedSet
     {
         public override PropertyKind Kind
         {

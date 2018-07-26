@@ -1,6 +1,6 @@
 ﻿namespace Iql.Entities.NestedSets
 {
-    public interface INestedSet : IPropertyGroup
+    public interface INestedSet : IPropertyGroup, IConfigurableProperty<INestedSet>
     {
         string SetKey { get; set; }
         IProperty LeftProperty { get; set; }

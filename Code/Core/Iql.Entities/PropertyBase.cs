@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyBase : PropertyGroupBase<PropertyBase>, IPropertyMetadata
+    public abstract class PropertyBase : PropertyGroupBase<IProperty>, IPropertyMetadata
     {
         public override IPropertyGroup[] GetGroupProperties()
         {

@@ -30,10 +30,19 @@ namespace Iql.Tests.Tests.MetadataSerialization
                     c1 => c1.Geographics[0], 
                     c1 => c1.PropertyCollection(
                         c2 => c2.FindProperty(nameof(Client.Description)),
-                        c2 => c2.FindProperty(nameof(Client.Category)))).Configure(c3 => c3.SetHint(KnownHints.HelpTextBottom)),
+                        c2 => c2.FindProperty(nameof(Client.Category))))
+                    .Configure(c3 =>
+                    {
+                        c3.SetHint(KnownHints.HelpTextBottom);
+                        c3.ContentAlignment = ContentAlignment.Horizontal;
+                    }),
                 c => c.NestedSets[0]);
+            clientConfig.Metadata.Set("abc", 123);
+            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.PropertyOrder[1] as IPropertyCollection).ContentAlignment);
             var json = db.EntityConfigurationContext.ToJson();
             var document = EntityConfigurationDocument.FromJson(json);
+            var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
+            Assert.AreEqual(123L, clientContentParsed.Metadata.Get("abc"));
             var averageIncomeProperty = clientConfig.FindProperty(nameof(Client.AverageIncome));
             var averageSalesProperty = clientConfig.FindProperty(nameof(Client.AverageSales));
             Assert.AreEqual(averageIncomeProperty.NestedSet.NestedSet, clientConfig.NestedSets.First());

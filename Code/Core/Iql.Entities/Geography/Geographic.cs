@@ -1,6 +1,6 @@
 ﻿namespace Iql.Entities.Geography
 {
-    public class Geographic : PropertyGroupBase<Geographic>, IGeographic
+    public class Geographic : PropertyGroupBase<IGeographic>, IGeographic
     {
         public override PropertyKind Kind
         {
