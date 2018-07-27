@@ -242,7 +242,7 @@ namespace Iql.Entities
                     var ends = new[] { relationship.Source, relationship.Target };
                     for (var i = 0; i < ends.Length; i++)
                     {
-                        if (ends[i].Configuration == this)
+                        if (Equals(ends[i].Configuration, this))
                         {
                             var relationshipMatch = new EntityRelationship(relationship, i == 1);
                             list.Add(relationshipMatch);
@@ -253,6 +253,72 @@ namespace Iql.Entities
                 _allRelationships = list;
             }
             return _allRelationships;
+        }
+
+        public EntityRelationship FindRelationshipByName(string propertyName)
+        {
+            return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
+        }
+
+        public bool EntityHasKey(object entity, CompositeKey key)
+        {
+            var isMatch = true;
+            foreach (var id in Key.Properties)
+            {
+                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.Name);
+                if (compositeKeyValue == null)
+                {
+                    return false;
+                }
+                if (!Equals(entity.GetPropertyValue(id), compositeKeyValue.Value))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
+
+        public bool KeysMatch(object left, object right)
+        {
+            if (new[] { left, right }.Count(i => i == null) == 1)
+            {
+                return false;
+            }
+            if (left.GetType() != right.GetType())
+            {
+                return false;
+            }
+            if (left == right)
+            {
+                return true;
+            }
+            var isMatch = true;
+            foreach (var id in Key.Properties)
+            {
+                if (!Equals(left.GetPropertyValue(id), right.GetPropertyValue(id)))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            return isMatch;
+        }
+
+        public CompositeKey GetCompositeKey(object entity)
+        {
+            var key = new CompositeKey(Key.Properties.Length);
+            for (var i = 0; i < Key.Properties.Length; i++)
+            {
+                var property = Key.Properties[i];
+                key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
+            }
+            return key;
+        }
+
+        public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
+        {
+            return IqlPropertyPath.FromPropertyExpression(this as IEntityConfiguration, propertyExpression).Property;
         }
     }
 }

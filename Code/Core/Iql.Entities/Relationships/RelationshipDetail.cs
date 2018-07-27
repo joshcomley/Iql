@@ -1,12 +1,12 @@
+using Iql.Entities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Iql.Entities.Extensions;
 
 namespace Iql.Entities.Relationships
 {
-    public class RelationshipDetail<T, TProperty, TPropertyEntityType> : IRelationshipDetail where T : class
+    public class RelationshipDetail<T, TProperty> : IRelationshipDetail where T : class
     {
         private IProperty[] _constraints;
 
@@ -14,7 +14,7 @@ namespace Iql.Entities.Relationships
             IRelationship relationship,
             RelationshipSide relationshipSide,
             EntityConfigurationBuilder configuration,
-            Expression<Func<T, TProperty>> expression,
+            LambdaExpression expression,
             Type elementType)
         {
             Relationship = relationship;
@@ -34,7 +34,7 @@ namespace Iql.Entities.Relationships
             }
         }
 
-        public RelationshipDetail<T, TProperty, TPropertyEntityType> IsInferredWith(Expression<Func<T, TProperty>> expression)
+        public RelationshipDetail<T, TProperty> IsInferredWith(Expression<Func<T, TProperty>> expression)
         {
             InferredWith = expression;
             return this;
@@ -42,6 +42,12 @@ namespace Iql.Entities.Relationships
 
         public LambdaExpression InferredWith { get; set; }
         public bool AllowInlineEditing { get; set; }
+
+        public RelationshipDetail<T, TProperty> Configure(Action<RelationshipDetail<T, TProperty>> action)
+        {
+            action(this);
+            return this;
+        }
 
         public IRelationshipDetail OtherSide =>
             RelationshipSide == RelationshipSide.Source ? Relationship.Target : Relationship.Source;
@@ -157,6 +163,19 @@ namespace Iql.Entities.Relationships
             //}
 
             return compositeKey;
+        }
+    }
+
+    public class CollectionRelationshipDetail<T, TProperty> : RelationshipDetail<T, IEnumerable<TProperty>>
+        where T : class
+    {
+        public CollectionRelationshipDetail(
+            IRelationship relationship,
+            RelationshipSide relationshipSide,
+            EntityConfigurationBuilder configuration,
+            LambdaExpression expression,
+            Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
+        {
         }
     }
 }

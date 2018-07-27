@@ -19,5 +19,17 @@ namespace Iql.Entities.Relationships
             RelationshipKind.OneToOne)
         {
         }
+
+        protected override IRelationshipDetail BuildSource(LambdaExpression property)
+        {
+            return new RelationshipDetail<TSource, TTarget>(this, RelationshipSide.Source, Builder,
+                property, TargetElementType);
+        }
+
+        protected override IRelationshipDetail BuildTarget(LambdaExpression property)
+        {
+            return new RelationshipDetail<TTarget, TSource>(this, RelationshipSide.Target, Builder,
+                property, SourceElementType);
+        }
     }
 }

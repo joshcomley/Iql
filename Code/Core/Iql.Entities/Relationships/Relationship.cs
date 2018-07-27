@@ -4,11 +4,11 @@ using Iql.Conversion;
 
 namespace Iql.Entities.Relationships
 {
-    public class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : RelationshipBase
+    public abstract class Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> : RelationshipBase
         where TSource : class
         where TTarget : class
     {
-        public Relationship(
+        protected Relationship(
             EntityConfigurationBuilder configuration,
             Expression<Func<TSource, TSourceProperty>> sourceProperty,
             Type sourceElementType,
@@ -19,8 +19,8 @@ namespace Iql.Entities.Relationships
             SourceElementType = sourceElementType;
             TargetElementType = targetElementType;
             Configure(configuration,
-                () => new RelationshipDetail<TSource, TSourceProperty, TTarget>(this, RelationshipSide.Source, configuration, sourceProperty, targetElementType),
-                () => new RelationshipDetail<TTarget, TTargetProperty, TSource>(this, RelationshipSide.Target, configuration, targetProperty, sourceElementType),
+                sourceProperty,
+                targetProperty,
                 kind);
         }
 

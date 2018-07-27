@@ -356,7 +356,8 @@ namespace Iql.Entities
 
         public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType, IqlType? iqlType)
         {
-            var expression = (Expression<Func<T, TProperty>>)lambda;
+            //Expression.Lambda()
+            var expression = CastLambda<TProperty>(lambda);
             var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(expression).Expression;
             var property = FindProperty(iql.PropertyName);
             if (property == null)
@@ -375,77 +376,33 @@ namespace Iql.Entities
             return property;
         }
 
+        private Expression<Func<T, TProperty>> CastLambda<TProperty>(LambdaExpression lambda)
+        {
+#if TypeScript
+            return (Expression<Func<T, TProperty>>)lambda;
+#else
+            return (Expression<Func<T, TProperty>>)Expression.Lambda(Expression.Convert(lambda.Body, typeof(TProperty)), lambda.Parameters);
+#endif
+        }
+
         public IProperty FindOrDefinePropertyByName(string name, Type elementType)
         {
             var property = typeof(T).GetProperty(name);
             return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType, null);
         }
 
-        public EntityRelationship FindRelationshipByName(string propertyName)
+        public RelationshipDetail<T, TProperty> FindRelationship<TProperty>(Expression<Func<T, TProperty>> propertyName)
         {
-            return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
+            var property = FindPropertyByExpression(propertyName);
+            var relationship = FindRelationshipByName(property.Name);
+            return (RelationshipDetail<T, TProperty>)relationship.ThisEnd;
         }
 
-        //public EntityRelationship FindRelationship<TProperty>(Expression<Func<T, TProperty>> propertyName)
-        //{
-        //    // FindNestedPropertyByExpression()
-        //    return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
-        //}
-
-        public bool EntityHasKey(object entity, CompositeKey key)
+        public CollectionRelationshipDetail<T, TOtherEnd> FindCollectionRelationship<TOtherEnd>(Expression<Func<T, IEnumerable<TOtherEnd>>> propertyName)
         {
-            var isMatch = true;
-            foreach (var id in Key.Properties)
-            {
-                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.Name);
-                if (compositeKeyValue == null)
-                {
-                    return false;
-                }
-                if (!Equals(entity.GetPropertyValue(id), compositeKeyValue.Value))
-                {
-                    isMatch = false;
-                    break;
-                }
-            }
-            return isMatch;
-        }
-
-        public bool KeysMatch(object left, object right)
-        {
-            if (new[] { left, right }.Count(i => i == null) == 1)
-            {
-                return false;
-            }
-            if (left.GetType() != right.GetType())
-            {
-                return false;
-            }
-            if (left == right)
-            {
-                return true;
-            }
-            var isMatch = true;
-            foreach (var id in Key.Properties)
-            {
-                if (!Equals(left.GetPropertyValue(id), right.GetPropertyValue(id)))
-                {
-                    isMatch = false;
-                    break;
-                }
-            }
-            return isMatch;
-        }
-
-        public CompositeKey GetCompositeKey(object entity)
-        {
-            var key = new CompositeKey(Key.Properties.Length);
-            for (var i = 0; i < Key.Properties.Length; i++)
-            {
-                var property = Key.Properties[i];
-                key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
-            }
-            return key;
+            var property = FindPropertyByExpression(propertyName);
+            var relationship = FindRelationshipByName(property.Name);
+            return (CollectionRelationshipDetail<T, TOtherEnd>) relationship.ThisEnd;
         }
 
         public IEntityProperty<T> FindProperty(string name)
@@ -498,11 +455,6 @@ namespace Iql.Entities
         public IEntityProperty<T> FindPropertyByLambdaExpression(LambdaExpression property)
         {
             return (IEntityProperty<T>)FindNestedPropertyByLambdaExpression(property);
-        }
-
-        public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
-        {
-            return IqlPropertyPath.FromPropertyExpression(this, propertyExpression).Property;
         }
 
         public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression property)

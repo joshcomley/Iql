@@ -15,18 +15,152 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Iql.Entities.Validation.Validation;
 
 namespace Iql.Server.Serialization
 {
-    public class Relationship : RelationshipBase
+    public class RelationshipDetail : IRelationshipDetail
     {
+        public LambdaExpression InferredWith { get; set; }
+        public IqlExpression InferredWithIql { get; set; }
+        public bool AllowInlineEditing { get; set; }
+        public RelationshipSide RelationshipSide { get; }
+        public Type Type { get; }
+        public bool IsCollection { get; }
+        public IProperty Property { get; set; }
+        public IProperty CountProperty { get; }
+        public IRelationshipDetail OtherSide { get; }
+        public IRelationship Relationship { get; }
+        public IEntityConfiguration Configuration { get; set; }
+        public CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void MarkDirty(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty[] Constraints()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class Relationship : RelationshipBase, IRelationship
+    {
+        public new IRelationshipDetail Source { get; set; }
+        IRelationshipDetail IRelationship.Source => Source;
+
+        public new IRelationshipDetail Target { get; set; }
+        IRelationshipDetail IRelationship.Target => Target;
+
+        protected override IRelationshipDetail BuildSource(LambdaExpression property)
+        {
+            return null;
+        }
+
+        protected override IRelationshipDetail BuildTarget(LambdaExpression property)
+        {
+            return null;
+        }
     }
 
     [DebuggerDisplay("{Name} - {SetName}")]
-    public class EntityConfiguration : EntityConfigurationBase
+    public class EntityConfiguration : EntityConfigurationBase, IEntityConfiguration
     {
+        IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
+        public IEntityConfiguration SetManageKind(EntityManageKind manageKind)
+        {
+            throw new NotImplementedException();
+        }
 
+        public EntityConfigurationBuilder Builder { get; }
+        public string GetDisplayText(object entity, string key = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntityConfiguration SetDefaultSortExpression(string expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntityValidationResult ValidateEntity(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity, Expression<Func<object, TProperty>> property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPropertyValidationResult ValidateEntityPropertyByName(object entity, string property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPropertyValidationResult ValidateEntityProperty(object entity, IProperty property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty FindPropertyByExpression(Expression<Func<object, object>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty[] FindPropertiesByHint(string hint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntityConfiguration AddSanitizer(Action<object> expression, string key = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntityConfiguration SetGeographyResolver(Func<object, Task<Geography>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Geography> ResolveGeographyAsync(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty FindNestedProperty(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty FindProperty(string name)
+        {
+            return Properties.FirstOrDefault(p => p.Name == name);
+        }
+
+        public IProperty FindOrDefinePropertyByName(string name, Type elementType)
+        {
+            return FindProperty(name);
+        }
     }
 
     public class ValidationRuleCollection : RuleCollection<IBinaryRule>
@@ -235,6 +369,8 @@ namespace Iql.Server.Serialization
                 Map<IProperty, Property>();
                 Map<ITypeDefinition, TypeDetail>();
                 Map<IRelationship, Relationship>();
+                Map<IRelationshipDetail, RelationshipDetail>();
+                Map<IRelationshipRule, RelationshipRule>();
                 Map<IRelationshipConstraint, RelationshipConstraint>();
                 Map<IRuleCollection<IBinaryRule>, ValidationRuleCollection>();
                 Map<IRuleCollection<IDisplayRule>, DisplayRuleCollection>();
@@ -244,7 +380,6 @@ namespace Iql.Server.Serialization
                 Map<IDisplayFormatting, DisplayFormatting>();
                 Map<IEntityDisplayTextFormatter, DisplayFormatter>();
                 Map<IDisplayRule, DisplayRule>();
-                Map<IRelationshipRule, RelationshipRule>();
                 Map<IMediaKey, MediaKey>();
                 Map<IMediaKeyGroup, MediaKeyGroup>();
                 Map<IMediaKeyPart, MediaKeyPart>();

@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
-    public class OneToRelationship<TSource, TTarget, TSourceProperty, TTargetProperty>
+    public abstract class OneToRelationship<TSource, TTarget, TSourceProperty, TTargetProperty>
         : Relationship<TSource, TTarget, TSourceProperty, TTargetProperty> 
         where TSource : class 
         where TTarget : class

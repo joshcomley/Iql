@@ -28,12 +28,14 @@ using EnumExtensions = Iql.OData.TypeScript.Generator.Extensions.EnumExtensions;
 using IPropertyCollection = Iql.Entities.IPropertyCollection;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
 using PropertyCollection = Iql.Entities.PropertyCollection;
+using RelationshipDetail = Iql.Server.Serialization.RelationshipDetail;
 using TypeInfo = Iql.OData.TypeScript.Generator.Definitions.TypeInfo;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
     public class DataContextGenerator : ClassGenerator
     {
+        private List<RelationshipDetail> RelationshipDetailsDealtWith { get; } = new List<RelationshipDetail>();
         private CSharpObjectSerializer CSharpObjectSerializer { get; }
         private readonly string _className;
         private readonly string _dbSetsPath;
@@ -897,7 +899,51 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         sb.Append($"// {lambdaKey}.{metadataProperty.Name} = ???;");
                     }
                 }
-
+                // Relationships
+                if (metadata is IEntityMetadata)
+                {
+                    foreach (var relationship in entityMetadata.Relationships)
+                    {
+                        var source = relationship.Source as RelationshipDetail;
+                        var target = relationship.Target as RelationshipDetail;
+                        foreach (var detail in new[] { source, target })
+                        {
+                            var entityConfig = this.Schema.EntityConfigurations.Single(ec =>
+                                ec.Value.Properties.Contains(detail.Property)).Value;
+                            if(entityConfig == metadata)
+                            {
+                                continue;
+                            }
+                            if (detail.AllowInlineEditing || detail.InferredWithIql != null)
+                            {
+                                // TODO: Get the relationship and set lamdba etc.
+                                sb.AppendLine();
+                                var nestedLambdaKey = $"{lambdaKey}_rel";
+                                var method = detail == source
+                                    ? nameof(EntityConfiguration<object>.FindRelationship)
+                                    : nameof(EntityConfiguration<object>.FindCollectionRelationship);
+                                sb.Append($"{lambdaKey}.{method}({nestedLambdaKey} => {nestedLambdaKey}.{detail.Property.Name})");
+                                var relationshipConfiguration = new StringBuilder();
+                                if (detail.AllowInlineEditing)
+                                {
+                                    relationshipConfiguration.AppendLine(
+                                        $"{nestedLambdaKey}.{nameof(IRelationshipDetail.AllowInlineEditing)} = true;");
+                                }
+                                if (detail.InferredWithIql != null)
+                                {
+                                    var path = IqlPropertyPath.FromPropertyExpression(entityConfig as IEntityConfiguration,
+                                        (detail.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
+                                    relationshipConfiguration.AppendLine(
+                                        $"{nestedLambdaKey}.{nameof(RelationshipDetail<object, object>.IsInferredWith)}({nestedLambdaKey}_inf => {nestedLambdaKey}_inf.{path.PathToHere.Replace("/", ".")});");
+                                }
+                                sb.AppendLine(
+                                        $@".{nameof(RelationshipDetail<object, object>.Configure)}({nestedLambdaKey} => {{
+{relationshipConfiguration}
+}});");
+                            }
+                        }
+                    }
+                }
                 sb.Append("\r\n");
                 sb.Append(GetCurrentIndent());
                 sb.Append("}");

@@ -18,6 +18,12 @@ namespace Iql.Tests.Tests.MetadataSerialization
             // Test succeeds if no exception is thrown
             var db = new AppDbContext();
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
+            var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
+            var clientRelationship = sitesConfig.FindRelationship(r => r.Client);
+            clientRelationship.AllowInlineEditing = true;
+            clientRelationship.IsInferredWith(_ => _.CreatedByUser.Client);
+            var sitesRelationship = clientConfig.FindCollectionRelationship(r => r.Sites);
+            sitesRelationship.AllowInlineEditing = true;
             clientConfig
                 .HasGeographic(c => c.AverageIncome, c => c.AverageIncome, "MyGeographic");
             clientConfig
@@ -43,6 +49,10 @@ namespace Iql.Tests.Tests.MetadataSerialization
             var json = db.EntityConfigurationContext.ToJson();
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
+            var sitesContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));
+            var clientRelationshipParsed = sitesContentParsed.Relationships.First(r => r.Constraints.Any(c => c.SourceKeyProperty.Name == nameof(Site.ClientId)));
+            Assert.IsNotNull(clientRelationshipParsed.Source);
+            Assert.IsNotNull(clientRelationshipParsed.Target);
             Assert.AreEqual(123L, clientContentParsed.Metadata.Get("abc"));
             var averageIncomeProperty = clientConfig.FindProperty(nameof(Client.AverageIncome));
             var averageSalesProperty = clientConfig.FindProperty(nameof(Client.AverageSales));
