@@ -393,7 +393,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                               }
                                           }
                                       }
-                                      ConfigreMetadata(entityConfiguration);
                                   }
                               });
                               Append(";");
@@ -498,6 +497,45 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       //}
                                   });
                               }
+
+                              VariableAccessor(builder, () =>
+                              {
+                                  MethodCall(
+                                      defineEntityName,
+                                      false,
+                                      defineEntityParameters
+                                  );
+                                  AppendLine();
+                                  ConfigreMetadata(entityConfiguration);
+                                  Append(";");
+                                  AppendLine();
+
+                                  //if (entityConfiguration != null)
+                                  //{
+                                  //    var parameters = new List<IVariable>();
+                                  //    parameters.Add(propertyLambda);
+                                  //    var typeParameter = GetAndAddTypeScriptTypeParameter(type, parameters);
+                                  //    IMetadata propertyMetadata =
+                                  //        entityConfiguration.PropertyConfigurations?.ContainsKey(property.Name) ==
+                                  //        true
+                                  //            ? entityConfiguration.PropertyConfigurations[property.Name].Metadata
+                                  //            : null;
+                                  //    if (propertyMetadata != null)
+                                  //    {
+                                  //        AppendLine();
+                                  //        VariableAccessor(builder, () =>
+                                  //        {
+                                  //            MethodCall(
+                                  //                defineEntityName,
+                                  //                false,
+                                  //                defineEntityParameters
+                                  //            );
+                                  //            AppendLine();
+                                  //            ConfigreMetadata(propertyMetadata, typeParameter, parameters.First());
+                                  //        });
+                                  //    }
+                                  //}
+                              });
 
                               if (entityDefinition != _entitySetDefinitions.Last())
                               {
@@ -908,9 +946,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         var target = relationship.Target as RelationshipDetail;
                         foreach (var detail in new[] { source, target })
                         {
-                            var entityConfig = this.Schema.EntityConfigurations.Single(ec =>
+                            var entityConfig = Schema.EntityConfigurations.Single(ec =>
                                 ec.Value.Properties.Contains(detail.Property)).Value;
-                            if(entityConfig == metadata)
+                            if(entityConfig != metadata)
                             {
                                 continue;
                             }
