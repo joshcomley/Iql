@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Iql.Data.Events;
 using Iql.Entities.Events;
+using Iql.Entities.Lists.Events;
 
-namespace Iql.Data.Lists
+namespace Iql.Entities.Lists
 {
     public class ObservableList<T> : IList<T>, IObservableList
     {

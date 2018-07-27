@@ -8,7 +8,7 @@ namespace Iql.Data.Lists
         where TRelation : class 
         where TSource : class
     {
-        public RelationshipMatch Relationship { get; }
+        public EntityRelationship Relationship { get; }
         public CompositeKey ItemKey { get; }
         public TSource Owner { get; }
         public RelatedList<TSource, TRelation> List { get; }
@@ -21,7 +21,7 @@ namespace Iql.Data.Lists
 
         public RelatedListChange(
             RelatedListChangeKind kind,
-            RelationshipMatch relationship,
+            EntityRelationship relationship,
             CompositeKey itemKey,
             TRelation item,
             TSource owner,

@@ -106,7 +106,6 @@ namespace Iql.Entities
             Builder = builder;
             DisplayFormatting = new DisplayFormatting<T>(this);
             EntityValidation = new ValidationCollection<T>();
-            Relationships = new List<IRelationship>();
             Properties = new List<IProperty>();
             Name = Type.Name;
         }
@@ -382,48 +381,16 @@ namespace Iql.Entities
             return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType, null);
         }
 
-        public RelationshipMatch FindRelationship(string propertyName)
+        public EntityRelationship FindRelationshipByName(string propertyName)
         {
             return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
         }
 
-        public List<RelationshipMatch> AllRelationships()
-        {
-            return AllRelationshipsInternal(true);
-        }
-
-        public List<RelationshipMatch> AllRelationshipsInternal(bool nested)
-        {
-            var list = new List<RelationshipMatch>();
-            foreach (var relationship in Relationships)
-            {
-                var ends = new[] { relationship.Source, relationship.Target };
-                for (var i = 0; i < ends.Length; i++)
-                {
-                    if (ends[i].Configuration == this)
-                    {
-                        var relationshipMatch = new RelationshipMatch(relationship, i == 1);
-                        if (relationship.Kind == RelationshipKind.OneToOne && nested)
-                        {
-                            //var matches = (List<RelationshipMatch>)GetType().GetMethod(nameof(FindAllRelationships),
-                            //    BindingFlags.Instance | BindingFlags.NonPublic)
-                            //    .MakeGenericMethod(relationshipMatch.OtherEnd.Type)
-                            //    .Invoke(this, new object[]{ relationshipMatch.OtherEnd.Configuration });
-                            //var match = matches.SingleOrDefault(m => m.Relationship.Type == RelationshipType.OneToOne &&
-                            //                                         m.OtherEnd.Property.PropertyName ==
-                            //                                         relationshipMatch.ThisEnd.Property.PropertyName &&
-                            //                                         m.ThisEnd.Property.PropertyName ==
-                            //                                         relationshipMatch.OtherEnd.Property.PropertyName &&
-                            //                                         relationshipMatch.Relationship != relationship);
-                            //relationshipMatch.InverseOneToOneRelationship = match;
-                            //match.InverseOneToOneRelationship = relationshipMatch;
-                        }
-                        list.Add(relationshipMatch);
-                    }
-                }
-            }
-            return list;
-        }
+        //public EntityRelationship FindRelationship<TProperty>(Expression<Func<T, TProperty>> propertyName)
+        //{
+        //    // FindNestedPropertyByExpression()
+        //    return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
+        //}
 
         public bool EntityHasKey(object entity, CompositeKey key)
         {
@@ -548,7 +515,7 @@ namespace Iql.Entities
             return FindNestedPropertyByIqlExpression(iql);
         }
 
-        public IEntityProperty<T> FindPropertyByExpression(Expression<Func<T, object>> property)
+        public IEntityProperty<T> FindPropertyByExpression<TProperty>(Expression<Func<T, TProperty>> property)
         {
             return FindPropertyByLambdaExpression(property);
         }
@@ -673,7 +640,7 @@ namespace Iql.Entities
                 _propertiesMap[name] = definition;
             }
 
-            var relationship = FindRelationship(name);
+            var relationship = FindRelationshipByName(name);
             if (relationship != null)
             {
                 definition.Kind = PropertyKind.Relationship;

@@ -36,12 +36,12 @@ namespace Iql.Entities.Relationships
                 property
             );
             //relationship.Type == RelationshipType.OneToOne
-            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationship(relationship.Source.Property.Name);
+            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationshipByName(relationship.Source.Property.Name);
             if (sourceRelationshipMatch == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
-            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationship(relationship.Target.Property.Name);
+            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationshipByName(relationship.Target.Property.Name);
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
                 targetRelationshipMatch == null)
             {
@@ -60,12 +60,12 @@ namespace Iql.Entities.Relationships
                 _property,
                 property
             );
-            if (_sourceEntityConfiguration.FindRelationship(relationship.Source.Property.Name) == null)
+            if (_sourceEntityConfiguration.FindRelationshipByName(relationship.Source.Property.Name) == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
-                _targetEntityConfiguration.FindRelationship(relationship.Target.Property.Name) == null)
+                _targetEntityConfiguration.FindRelationshipByName(relationship.Target.Property.Name) == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }

@@ -38,6 +38,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                     }),
                 c => c.NestedSets[0]);
             clientConfig.Metadata.Set("abc", 123);
+            // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.PropertyOrder[1] as IPropertyCollection).ContentAlignment);
             var json = db.EntityConfigurationContext.ToJson();
             var document = EntityConfigurationDocument.FromJson(json);

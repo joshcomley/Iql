@@ -1,8 +1,8 @@
 using System.Collections;
-using Iql.Data.Events;
 using Iql.Entities.Events;
+using Iql.Entities.Lists.Events;
 
-namespace Iql.Data.Lists
+namespace Iql.Entities.Lists
 {
     public interface IObservableList : IList
     {

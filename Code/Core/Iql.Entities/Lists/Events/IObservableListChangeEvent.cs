@@ -1,7 +1,6 @@
 using System;
-using Iql.Data.Lists;
 
-namespace Iql.Data.Events
+namespace Iql.Entities.Lists.Events
 {
     public interface IObservableListChangeEvent
     {

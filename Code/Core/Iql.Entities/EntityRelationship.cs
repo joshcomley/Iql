@@ -2,13 +2,13 @@ using Iql.Entities.Relationships;
 
 namespace Iql.Entities
 {
-    public class RelationshipMatch
+    public class EntityRelationship
     {
         public IRelationship Relationship { get; }
         public bool ThisIsTarget { get; }
         public IRelationshipDetail ThisEnd { get; }
         public IRelationshipDetail OtherEnd { get; }
-        public RelationshipMatch(IRelationship relationship, bool thisIsTarget)
+        public EntityRelationship(IRelationship relationship, bool thisIsTarget)
         {
             Relationship = relationship;
             ThisIsTarget = thisIsTarget;

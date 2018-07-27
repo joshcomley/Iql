@@ -4,6 +4,7 @@ using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Entities.Lists.Events;
 
 namespace Iql.Data.Lists
 {

@@ -33,7 +33,7 @@ namespace Iql.Entities
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
         protected IEntityConfiguration EntityConfigurationInternal { get; set; }
-        public List<RelationshipMatch> RelationshipSources { get; set; } = new List<RelationshipMatch>();
+        public List<EntityRelationship> RelationshipSources { get; set; } = new List<EntityRelationship>();
         public bool Searchable { get; set; } = true;
 
         public virtual bool? Nullable
@@ -66,7 +66,7 @@ namespace Iql.Entities
 #if !TypeScript
         public PropertyInfo PropertyInfo { get; set; }
 #endif
-        public RelationshipMatch Relationship
+        public EntityRelationship Relationship
         {
             get
             {
@@ -83,7 +83,7 @@ namespace Iql.Entities
 
         private bool _searchKindSet;
         private bool? _readOnly;
-        private RelationshipMatch _relationship;
+        private EntityRelationship _relationship;
 
         public PropertySearchKind SearchKind
         {

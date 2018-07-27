@@ -5,7 +5,7 @@ namespace Iql.Data.Lists
 {
     public interface IRelatedListChange
     {
-        RelationshipMatch Relationship { get; }
+        EntityRelationship Relationship { get; }
         object Owner { get; }
         IRelatedList List { get; }
         CompositeKey ItemKey {get;}

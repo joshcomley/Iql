@@ -13,7 +13,7 @@ namespace Iql.Entities
 
         internal static void TryAssignRelationshipToPropertyDefinition(IEntityConfiguration entityConfiguration, IProperty definition, bool tryAssignOtherEnd = true)
         {
-            var relationship = entityConfiguration.FindRelationship(definition.Name);
+            var relationship = entityConfiguration.FindRelationshipByName(definition.Name);
             if (relationship != null)
             {
                 definition.Kind = PropertyKind.Relationship;
@@ -27,7 +27,7 @@ namespace Iql.Entities
                         !constraintProperty.Kind.HasFlag(PropertyKind.Key))
                     {
                         constraintProperty.Kind = constraintProperty.Kind | PropertyKind.RelationshipKey;
-                        constraintProperty.Relationship = otherEndConfiguration.FindRelationship(relationship.OtherEnd.Property.Name);
+                        constraintProperty.Relationship = otherEndConfiguration.FindRelationshipByName(relationship.OtherEnd.Property.Name);
                     }
                 }
                 if (tryAssignOtherEnd)

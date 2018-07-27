@@ -39,8 +39,8 @@ namespace Iql.Entities
         IProperty FindNestedProperty(string name);
         IProperty FindProperty(string name);
         IProperty FindOrDefinePropertyByName(string name, Type elementType);
-        RelationshipMatch FindRelationship(string propertyName);
-        List<RelationshipMatch> AllRelationships();
+        EntityRelationship FindRelationshipByName(string propertyName);
+        List<EntityRelationship> AllRelationships();
         bool EntityHasKey(object entity, CompositeKey key);
         bool KeysMatch(object left, object right);
         CompositeKey GetCompositeKey(object entity);

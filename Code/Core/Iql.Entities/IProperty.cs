@@ -19,8 +19,8 @@ namespace Iql.Entities
 #if !TypeScript
         PropertyInfo PropertyInfo { get; set; }
 #endif
-        RelationshipMatch Relationship { get; set; }
-        List<RelationshipMatch> RelationshipSources { get; set; }
+        EntityRelationship Relationship { get; set; }
+        List<EntityRelationship> RelationshipSources { get; set; }
         //IProperty CountRelationship { get; }
         List<object> Helpers { get; set; }
         Func<object, object> GetValue { get; }

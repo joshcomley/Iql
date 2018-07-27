@@ -24,6 +24,6 @@ namespace Iql.Entities
         bool DefaultSortDescending { get; set; }
         IList<IPropertyGroup> PropertyOrder { get; set; }
         IList<IProperty> Properties { get; set; }
-        IList<IRelationship> Relationships { get; set; }
+        IList<IRelationship> Relationships { get; }
     }
 }

@@ -6,7 +6,7 @@ using Iql.Entities.Extensions;
 
 namespace Iql.Entities.Relationships
 {
-    public class RelationshipDetail<T, TProperty> : IRelationshipDetail where T : class
+    public class RelationshipDetail<T, TProperty, TPropertyEntityType> : IRelationshipDetail where T : class
     {
         private IProperty[] _constraints;
 
@@ -33,6 +33,15 @@ namespace Iql.Entities.Relationships
                     break;
             }
         }
+
+        public RelationshipDetail<T, TProperty, TPropertyEntityType> IsInferredWith(Expression<Func<T, TProperty>> expression)
+        {
+            InferredWith = expression;
+            return this;
+        }
+
+        public LambdaExpression InferredWith { get; set; }
+        public bool AllowInlineEditing { get; set; }
 
         public IRelationshipDetail OtherSide =>
             RelationshipSide == RelationshipSide.Source ? Relationship.Target : Relationship.Source;

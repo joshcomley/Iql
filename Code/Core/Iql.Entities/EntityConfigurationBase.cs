@@ -8,6 +8,7 @@ using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.Lists;
 
 namespace Iql.Entities
 {
@@ -18,7 +19,11 @@ namespace Iql.Entities
         private string _titlePropertyName;
         private string _previewPropertyName;
         public IList<IProperty> Properties { get; set; }
-        public IList<IRelationship> Relationships { get; set; }
+
+        public IList<IRelationship> Relationships
+        {
+            get => _relationships;
+        }
 
         public object GetVersion(object entity)
         {
@@ -155,6 +160,12 @@ namespace Iql.Entities
 
         private bool _setFriendlyNameSet = false;
         private string _setName;
+        private readonly ObservableList<IRelationship> _relationships = new ObservableList<IRelationship>();
+
+        public EntityConfigurationBase()
+        {
+            _relationships.Change.Subscribe(change => { _allRelationships = null; });
+        }
 
         public string SetFriendlyName
         {
@@ -218,5 +229,30 @@ namespace Iql.Entities
 
         public static string DefaultRequiredAutoValidationFailureMessage { get; set; } = "This field is required";
         public static string DefaultRequiredAutoValidationFailureKey { get; set; } = "Auto";
+
+        private List<EntityRelationship> _allRelationships = new List<EntityRelationship>();
+
+        public List<EntityRelationship> AllRelationships()
+        {
+            if (_allRelationships == null)
+            {
+                var list = new List<EntityRelationship>();
+                foreach (var relationship in Relationships)
+                {
+                    var ends = new[] { relationship.Source, relationship.Target };
+                    for (var i = 0; i < ends.Length; i++)
+                    {
+                        if (ends[i].Configuration == this)
+                        {
+                            var relationshipMatch = new EntityRelationship(relationship, i == 1);
+                            list.Add(relationshipMatch);
+                        }
+                    }
+                }
+
+                _allRelationships = list;
+            }
+            return _allRelationships;
+        }
     }
 }

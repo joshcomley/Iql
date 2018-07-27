@@ -307,7 +307,7 @@ namespace Iql.Data.Context
                 .LoadAllRelationshipsAsync(entity, mode);
         }
 
-        public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships, Type entityType = null)
+        public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships, Type entityType = null)
         {
             return await GetDbSetByEntityType(entityType ?? entity.GetType())
                 .LoadRelationshipsAsync(entity, relationships);

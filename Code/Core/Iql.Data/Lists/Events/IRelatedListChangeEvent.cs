@@ -1,6 +1,7 @@
 using System;
 using Iql.Data.Lists;
 using Iql.Entities;
+using Iql.Entities.Lists.Events;
 
 namespace Iql.Data.Events
 {

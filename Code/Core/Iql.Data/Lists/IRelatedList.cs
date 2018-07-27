@@ -2,6 +2,7 @@ using System;
 using Iql.Data.Events;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Entities.Lists;
 
 namespace Iql.Data.Lists
 {

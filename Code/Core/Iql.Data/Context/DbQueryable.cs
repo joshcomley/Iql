@@ -126,7 +126,7 @@ namespace Iql.Data.Context
                 queryFilter);
         }
 
-        public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(T entity, IEnumerable<RelationshipMatch> relationships)
+        public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(T entity, IEnumerable<EntityRelationship> relationships)
         {
             var dictionary = new Dictionary<IProperty, IList>();
             var list = relationships.ToArray();
@@ -155,7 +155,7 @@ namespace Iql.Data.Context
 
         public async Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
         {
-            IEnumerable<RelationshipMatch> relationships = EntityConfiguration.AllRelationships();
+            IEnumerable<EntityRelationship> relationships = EntityConfiguration.AllRelationships();
             switch (mode)
             {
                 case LoadRelationshipMode.Collections:
@@ -168,7 +168,7 @@ namespace Iql.Data.Context
             return await LoadRelationshipsAsync(entity, relationships);
         }
 
-        async Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<RelationshipMatch> relationships)
+        async Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships)
         {
             return await LoadRelationshipsAsync((T)entity, relationships);
         }

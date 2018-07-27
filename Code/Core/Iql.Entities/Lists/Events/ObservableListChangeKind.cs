@@ -1,4 +1,4 @@
-namespace Iql.Data.Events
+namespace Iql.Entities.Lists.Events
 {
     public enum ObservableListChangeKind
     {
