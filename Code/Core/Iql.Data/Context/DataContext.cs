@@ -650,7 +650,7 @@ namespace Iql.Data.Context
                 {
                     foreach (var relationship in entityConfiguration.Relationships)
                     {
-                        var isSource = relationship.Source.Configuration == entityConfiguration;
+                        var isSource = relationship.Source.EntityConfiguration == entityConfiguration;
                         var propertyName = isSource
                             ? relationship.Source.Property
                             : relationship.Target.Property;

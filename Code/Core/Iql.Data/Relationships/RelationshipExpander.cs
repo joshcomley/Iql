@@ -177,7 +177,7 @@ namespace Iql.Data.Relationships
 
             if (assignRelationships)
             {
-                var targetCountProperty = relationship.Target.Configuration.FindProperty(
+                var targetCountProperty = relationship.Target.EntityConfiguration.FindProperty(
                     $"{relationship.Target.Property.Name}Count");
                 if (targetCountProperty != null && targetCountProperty.Kind.HasFlag(PropertyKind.Count))
                 {
@@ -237,7 +237,7 @@ namespace Iql.Data.Relationships
 
             if (!root.ContainsKey(relationship))
             {
-                var properties = relationship.Constraints();
+                var properties = relationship.Constraints;
                 var result = new Dictionary<string, EntityRelationships<T>>();
                 var sourceDictionary = new Dictionary<string, EntityRelationships<T>>();
                 for (var i = 0; i < dataSet.Count; i++)
@@ -298,7 +298,7 @@ namespace Iql.Data.Relationships
                 var grouping = new Dictionary<string, IList>();
                 inner.Add(relationship, grouping);
                 var properties =
-                    relationship.Constraints();
+                    relationship.Constraints;
                 for (var i = 0; i < dataSet.Count; i++)
                 {
                     var entity = dataSet[i];

@@ -127,7 +127,7 @@ namespace Iql.Entities
                 return true;
             }
 
-            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.Configuration.Key.IsPivot())
+            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
             {
                 return true;
             }

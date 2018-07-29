@@ -174,7 +174,7 @@ namespace Iql.Data.Tracking.State
 
                 if (!relationshipEntityState.IsNew)
                 {
-                    var thisEndConstraints = relationshipProperty.Relationship.ThisEnd.Constraints();
+                    var thisEndConstraints = relationshipProperty.Relationship.ThisEnd.Constraints;
                     for (var i = 0; i < thisEndConstraints.Length; i++)
                     {
                         var constraint = thisEndConstraints[i];

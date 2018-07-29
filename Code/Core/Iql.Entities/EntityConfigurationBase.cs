@@ -55,7 +55,7 @@ namespace Iql.Entities
 
                 if (property.Kind.HasFlag(PropertyKind.Relationship))
                 {
-                    var constraints = property.Relationship.ThisEnd.Constraints();
+                    var constraints = property.Relationship.ThisEnd.Constraints;
                     if (constraints.Any(c => !c.Kind.HasFlag(PropertyKind.Key)))
                     {
                         return true;
@@ -242,7 +242,7 @@ namespace Iql.Entities
                     var ends = new[] { relationship.Source, relationship.Target };
                     for (var i = 0; i < ends.Length; i++)
                     {
-                        if (Equals(ends[i].Configuration, this))
+                        if (Equals(ends[i].EntityConfiguration, this))
                         {
                             var relationshipMatch = new EntityRelationship(relationship, i == 1);
                             list.Add(relationshipMatch);

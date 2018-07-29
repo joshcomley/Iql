@@ -109,7 +109,7 @@ namespace Iql.Data.DataStores.InMemory
             var path = IqlPropertyPath.FromPropertyExpression(
                 DataContext.EntityConfigurationContext.EntityType<TEntity>(),
                 expandExpression.NavigationProperty);
-            var otherSideType = path.Property.Relationship.OtherEnd.Configuration.Type;
+            var otherSideType = path.Property.Relationship.OtherEnd.EntityConfiguration.Type;
             return (InMemoryContext<TEntity>)ExpandInternalMethod.InvokeGeneric(
                 this,
                 new object[] { expandExpression, path },

@@ -67,7 +67,7 @@ namespace Iql.Data.Tracking.State
                 return true;
             }
 
-            var constraints = Property.Relationship.ThisEnd.Constraints();
+            var constraints = Property.Relationship.ThisEnd.Constraints;
             for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];

@@ -6,7 +6,7 @@ namespace Iql.Entities.Relationships
     {
         //RelationshipMultiplicity SourceMultiplicity { get; }
         //RelationshipMultiplicity TargetMultiplicity { get; }
-        List<IRelationshipConstraint> Constraints { get; }
+        IList<IRelationshipConstraint> Constraints { get; }
         RelationshipKind Kind { get; }
         IRelationshipDetail Source { get; }
         IRelationshipDetail Target { get; }

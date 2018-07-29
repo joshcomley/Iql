@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Iql.Entities.Lists;
 
 namespace Iql.Entities.Relationships
 {
@@ -11,7 +12,7 @@ namespace Iql.Entities.Relationships
 
         protected RelationshipBase()
         {
-            Constraints = new List<IRelationshipConstraint>();
+            Constraints = new ObservableList<IRelationshipConstraint>();
         }
 
         private LambdaExpression _sourceProperty;
@@ -35,7 +36,7 @@ namespace Iql.Entities.Relationships
 
         protected abstract IRelationshipDetail BuildSource(LambdaExpression property);
         protected abstract IRelationshipDetail BuildTarget(LambdaExpression property);
-        public List<IRelationshipConstraint> Constraints { get; private set; }
+        public IList<IRelationshipConstraint> Constraints { get; }
         public RelationshipKind Kind { get; private set; }
 
         public virtual IRelationshipDetail Source => _source = _source ?? BuildSource(_sourceProperty);

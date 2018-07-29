@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Iql.Entities
 {
-    public interface IPropertyCollection : IPropertyGroup, IConfigurableProperty<IPropertyCollection>
+    public interface IPropertyCollection : IPropertyGroup, IConfigurable<IPropertyCollection>
     {
         ContentAlignment ContentAlignment { get; set; }
         List<IPropertyGroup> Properties { get; }
     }
 
-    public interface IConfigurableProperty<out T>
-        where T : IConfigurableProperty<T>
+    public interface IConfigurable<out T>
+        where T : IConfigurable<T>
     {
         T Configure(Action<T> configure);
     }

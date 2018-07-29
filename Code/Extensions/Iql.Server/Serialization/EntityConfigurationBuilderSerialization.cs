@@ -37,7 +37,7 @@ namespace Iql.Server.Serialization
     {
         public static string ToJson(this IEntityConfigurationBuilder entityConfigurationBuilder)
         {
-            var settings = new JsonSerializerSettings()
+            var settings = new JsonSerializerSettings
             {
                 ContractResolver = new InterfaceContractResolver()
             };
@@ -100,6 +100,10 @@ namespace Iql.Server.Serialization
                 //}
                 //writer.WriteValue((value as IProperty).Name);
                 //writer.WriteRaw("{}");
+                if (writer.Path.Contains("Relationships"))
+                {
+                    int a = 0;
+                }
                 if (value != null)
                 {
                     //if (IsInPropertyOrder)
@@ -136,8 +140,9 @@ namespace Iql.Server.Serialization
                             nameof(IEntityMetadata.Properties),
                             nameof(IEntityMetadata.NestedSets),
                             nameof(IEntityMetadata.Geographics),
+                            $@"{nameof(IEntityMetadata.Relationships)}\[[0-9]+\]\.({nameof(IRelationship.Source)}|{nameof(IRelationship.Target)})",
                         });
-                        if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, false, directConversion))
+                        if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, false, $"({directConversion})"))
                         {
                             // All properties below here must be references
                             WritePropertyGroupDirect(writer, value, false);
@@ -303,7 +308,9 @@ namespace Iql.Server.Serialization
                 }
                 if (typeof(IRelationshipDetail).IsAssignableFrom(type))
                 {
-                    return base.CreateProperties(typeof(IRelationshipDetailMetadata), memberSerialization);
+                    return base.CreateProperties(typeof(IRelationshipDetailMetadata), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IRelationshipDetailMetadata.EntityConfiguration))
+                        .ToList();
                 }
                 if (typeof(IDisplayFormatting).IsAssignableFrom(type))
                 {

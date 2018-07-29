@@ -95,8 +95,8 @@ namespace Iql.Data.Context
             var otherDbSet = DataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type);
             var root = new IqlRootReferenceExpression();
             var expressions = new List<IqlExpression>();
-            var thisEndConstraints = property.Relationship.ThisEnd.Constraints().ToArray();
-            var otherEndConstraints = property.Relationship.OtherEnd.Constraints().ToArray();
+            var thisEndConstraints = property.Relationship.ThisEnd.Constraints.ToArray();
+            var otherEndConstraints = property.Relationship.OtherEnd.Constraints.ToArray();
             for (var i = 0; i < thisEndConstraints.Length; i++)
             {
                 expressions.Add(new IqlIsEqualToExpression(
@@ -729,7 +729,7 @@ namespace Iql.Data.Context
             var entityConfiguration = DataContext.EntityConfigurationContext.EntityType<T>();
             foreach (var relationship in entityConfiguration.Relationships)
             {
-                var thisEnd = relationship.Source.Configuration == entityConfiguration
+                var thisEnd = relationship.Source.EntityConfiguration == entityConfiguration
                     ? relationship.Source
                     : relationship.Target;
                 set = action(set, relationship, thisEnd);
@@ -938,7 +938,7 @@ namespace Iql.Data.Context
                         property = property.Relationship.ThisEnd.CountProperty;
                         iqlExpandExpression.NavigationProperty.PropertyName = property.Name;
                     }
-                    var expandEntityType = property.Relationship.OtherEnd.Configuration.Type;
+                    var expandEntityType = property.Relationship.OtherEnd.EntityConfiguration.Type;
                     var expandDbSet = DataContext.GetDbSetByEntityType(expandEntityType);
                     var expandQueryable = expandQueryExpression.Queryable(expandDbSet);
                     var expandQuery = await expandQueryable.ToIqlAsync();

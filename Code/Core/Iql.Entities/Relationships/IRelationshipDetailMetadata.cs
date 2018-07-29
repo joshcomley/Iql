@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
-    public interface IRelationshipDetailMetadata
+    public interface IRelationshipDetailMetadata : IPropertyGroup
     {
         LambdaExpression InferredWith { get; set; }
         bool AllowInlineEditing { get; set; }

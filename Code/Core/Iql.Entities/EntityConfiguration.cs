@@ -280,7 +280,7 @@ namespace Iql.Entities
             {
                 if (!property.Relationship.ThisIsTarget)
                 {
-                    var properties = property.Relationship.ThisEnd.Constraints();
+                    var properties = property.Relationship.ThisEnd.Constraints;
                     for (var i = 0; i < properties.Length; i++)
                     {
                         var constraint = properties[i];

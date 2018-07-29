@@ -598,7 +598,7 @@ namespace Iql.OData
             var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entityType);
             foreach (var relationship in entityConfiguration.Relationships)
             {
-                var end = relationship.Source.Configuration == entityConfiguration
+                var end = relationship.Source.EntityConfiguration == entityConfiguration
                     ? relationship.Source
                     : relationship.Target;
                 if (end.Property.Name == property)

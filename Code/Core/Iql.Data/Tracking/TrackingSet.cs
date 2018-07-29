@@ -316,12 +316,12 @@ namespace Iql.Data.Tracking
                                         .GetEntityByType(changeEvent.OwnerType)
                                         .FindProperty(changeEvent.List.PropertyName)
                                         .Relationship;
-                                var compositeKey = relationship.OtherEnd.Configuration.GetCompositeKey(changeEvent.Item);
+                                var compositeKey = relationship.OtherEnd.EntityConfiguration.GetCompositeKey(changeEvent.Item);
 
                                 // If this relationship also defines some key values, make sure they are checked in the
                                 // composite key
-                                var sourceConstraints = relationship.OtherEnd.Constraints();
-                                var targetConstraints = relationship.ThisEnd.Constraints();
+                                var sourceConstraints = relationship.OtherEnd.Constraints;
+                                var targetConstraints = relationship.ThisEnd.Constraints;
                                 for (var i = 0; i < sourceConstraints.Length; i++)
                                 {
                                     var sourceConstraint = sourceConstraints[i];

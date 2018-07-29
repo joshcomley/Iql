@@ -70,7 +70,7 @@ namespace Iql.Entities
         public IEntityConfiguration EntityConfiguration { get; set; }
 
         public IEntityConfiguration PropertyEntityConfiguration =>
-            Property == null ? null : Property.Relationship.OtherEnd.Configuration;
+            Property == null ? null : Property.Relationship.OtherEnd.EntityConfiguration;
 
         public object GetValue(object entity)
         {

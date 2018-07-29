@@ -4,8 +4,8 @@ using System;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurableProperty<T>
-        where T : IConfigurableProperty<T>
+    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
+        where T : IConfigurable<T>
     {
         public abstract PropertyKind Kind { get; set; }
         public virtual IEntityConfiguration EntityConfiguration { get; }

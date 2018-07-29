@@ -27,6 +27,7 @@ using TypeSharp.Extensions;
 using EnumExtensions = Iql.OData.TypeScript.Generator.Extensions.EnumExtensions;
 using IPropertyCollection = Iql.Entities.IPropertyCollection;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
+using IRelationshipDetail = Iql.Entities.Relationships.IRelationshipDetail;
 using PropertyCollection = Iql.Entities.PropertyCollection;
 using RelationshipDetail = Iql.Server.Serialization.RelationshipDetail;
 using TypeInfo = Iql.OData.TypeScript.Generator.Definitions.TypeInfo;
@@ -35,7 +36,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
     public class DataContextGenerator : ClassGenerator
     {
-        private List<RelationshipDetail> RelationshipDetailsDealtWith { get; } = new List<RelationshipDetail>();
         private CSharpObjectSerializer CSharpObjectSerializer { get; }
         private readonly string _className;
         private readonly string _dbSetsPath;
@@ -556,6 +556,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       .defineProperty(Certificate, p => p.certificate)
                               */
                           }
+                          Append(ConfigureRelationships(builder));
                       },
                       modifier: Modifier.Override);
                     AppendLine();
@@ -619,7 +620,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         private string ConfigreMetadata(IMetadata metadata,
             IVariable propertyParameter = null,
             string lambdaKey = "p",
-            bool appendConfigure = true
+            bool appendConfigure = true,
+            IEntityMetadata sourceEntityConfiguration = null
             )
         {
             if (metadata != null)
@@ -635,7 +637,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     configureParameters.Add(propertyParameter);
                 }
                 var sb = new StringBuilder();
-                sb.Append($"{lambdaKey} => {{");
                 var isProperty = metadata is IPropertyMetadata || metadata is IPropertyGroup;
                 var metadataType = typeof(IEntityMetadata);
                 var metadataSolidType = typeof(Server.Serialization.EntityConfiguration);
@@ -644,19 +645,25 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     if (metadata is IPropertyCollection)
                     {
                         metadataType = typeof(IPropertyCollection);
+                        metadataSolidType = typeof(PropertyCollection);
                     }
                     else if (metadata is IPropertyMetadata)
                     {
                         metadataType = typeof(IPropertyMetadata);
+                        metadataSolidType = typeof(Property);
+                    }
+                    else if (metadata is IRelationshipDetail)
+                    {
+                        metadataType = typeof(IRelationshipDetailMetadata);
+                        metadataSolidType = typeof(RelationshipDetail);
                     }
                     else
                     {
                         metadataType = typeof(IPropertyGroup);
+                        metadataSolidType = typeof(PropertyCollection);
                     }
-                    metadataSolidType = metadata is IPropertyMetadata ? typeof(Property) : typeof(PropertyCollection);
                 }
                 var metadataProperties = metadataType.GetPublicProperties().ToArray();
-                var propertyGroupMetadata = metadata as IPropertyGroup;
                 var propertyMetadata = metadata as IPropertyMetadata;
                 var entityMetadata = metadata as IEntityMetadata;
                 foreach (var metadataProperty in metadataProperties)
@@ -672,7 +679,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
                     catch { }
                     var value = metadataProperty.GetValue(metadata);
-                    if (value == null)
+                    var nullAllowed =
+                        metadata is IRelationshipDetailMetadata &&
+                        metadataProperty.Name == nameof(IRelationshipDetailMetadata.InferredWith);
+                    if (value == null && !nullAllowed)
                     {
                         continue;
                     }
@@ -684,6 +694,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         continue;
                     }
 
+                    if (metadata is IRelationshipDetailMetadata &&
+                        new[]
+                        {
+                            nameof(IRelationshipDetailMetadata.Property),
+                            nameof(IRelationshipDetailMetadata.Kind),
+                        }.Contains(metadataProperty.Name))
+                    {
+                        continue;
+                    }
                     if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.PropertyOrder))
                     {
                         dealtWith = true;
@@ -703,7 +722,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             sb.Append(");");
                         }
                     }
-                    if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
+                    if (metadata is IRelationshipDetailMetadata &&
+                        metadataProperty.Name == nameof(IRelationshipDetailMetadata.InferredWith))
+                    {
+                        dealtWith = true;
+                        var relationshipDetail = metadata as RelationshipDetail;
+                        if (relationshipDetail.InferredWithIql != null)
+                        {
+                            sb.AppendLine();
+                            var path = IqlPropertyPath.FromPropertyExpression(sourceEntityConfiguration as IEntityConfiguration,
+                                (relationshipDetail.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
+                            sb.AppendLine(
+                                $"{lambdaKey}.{nameof(RelationshipDetail<object, object>.IsInferredWith)}({lambdaKey}_inf => {lambdaKey}_inf.{path.PathToHere.Replace("/", ".")});");
+                        }
+                    }
+                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
                     {
                         dealtWith = true;
                         if (entityMetadata.Geographics?.Any() == true)
@@ -937,54 +970,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         sb.Append($"// {lambdaKey}.{metadataProperty.Name} = ???;");
                     }
                 }
-                // Relationships
-                if (metadata is IEntityMetadata)
+
+                var body = sb.ToString();
+                if (string.IsNullOrWhiteSpace(body.Trim()))
                 {
-                    foreach (var relationship in entityMetadata.Relationships)
-                    {
-                        var source = relationship.Source as RelationshipDetail;
-                        var target = relationship.Target as RelationshipDetail;
-                        foreach (var detail in new[] { source, target })
-                        {
-                            var entityConfig = Schema.EntityConfigurations.Single(ec =>
-                                ec.Value.Properties.Contains(detail.Property)).Value;
-                            if(entityConfig != metadata)
-                            {
-                                continue;
-                            }
-                            if (detail.AllowInlineEditing || detail.InferredWithIql != null)
-                            {
-                                // TODO: Get the relationship and set lamdba etc.
-                                sb.AppendLine();
-                                var nestedLambdaKey = $"{lambdaKey}_rel";
-                                var method = detail == source
-                                    ? nameof(EntityConfiguration<object>.FindRelationship)
-                                    : nameof(EntityConfiguration<object>.FindCollectionRelationship);
-                                sb.Append($"{lambdaKey}.{method}({nestedLambdaKey} => {nestedLambdaKey}.{detail.Property.Name})");
-                                var relationshipConfiguration = new StringBuilder();
-                                if (detail.AllowInlineEditing)
-                                {
-                                    relationshipConfiguration.AppendLine(
-                                        $"{nestedLambdaKey}.{nameof(IRelationshipDetail.AllowInlineEditing)} = true;");
-                                }
-                                if (detail.InferredWithIql != null)
-                                {
-                                    var path = IqlPropertyPath.FromPropertyExpression(entityConfig as IEntityConfiguration,
-                                        (detail.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
-                                    relationshipConfiguration.AppendLine(
-                                        $"{nestedLambdaKey}.{nameof(RelationshipDetail<object, object>.IsInferredWith)}({nestedLambdaKey}_inf => {nestedLambdaKey}_inf.{path.PathToHere.Replace("/", ".")});");
-                                }
-                                sb.AppendLine(
-                                        $@".{nameof(RelationshipDetail<object, object>.Configure)}({nestedLambdaKey} => {{
-{relationshipConfiguration}
-}});");
-                            }
-                        }
-                    }
+                    return null;
                 }
-                sb.Append("\r\n");
-                sb.Append(GetCurrentIndent());
-                sb.Append("}");
+                var finalSb = new StringBuilder();
+                finalSb.Append($"{lambdaKey} => {{");
+                finalSb.Append(body);
+                finalSb.Append("\r\n");
+                finalSb.Append(GetCurrentIndent());
+                finalSb.Append("}");
                 //if (OutputType == OutputType.TypeScript && typeParameter != null)
                 //{
                 //    configureParameters.Add(typeParameter);
@@ -992,7 +989,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 if (appendConfigure)
                 {
                     configureParameters.Add(
-                        new PropertyDefinition(sb.ToString()));
+                        new PropertyDefinition(finalSb.ToString()));
                     MethodCall(
                                       isProperty
                                           ? nameof(EntityConfiguration<object>.ConfigureProperty)
@@ -1002,7 +999,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                   );
                 }
 
-                return sb.ToString();
+                return finalSb.ToString();
                 /*
                 .ConfigureProperty(p => p.PhoneNumber, metadata =>{
                     metadata.Description = "";
@@ -1014,6 +1011,56 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return "";
         }
 
+        private string ConfigureRelationships(IVariable builder)
+        {
+            var lambdaKey = "rel";
+            var result = new StringBuilder();
+            foreach (var config in Schema.EntityConfigurations)
+            {
+                var sb = new StringBuilder();
+                foreach (var relationship in config.Value.Relationships)
+                {
+                    var source = relationship.Source as RelationshipDetail;
+                    var target = relationship.Target as RelationshipDetail;
+                    foreach (var detail in new[] { source, target })
+                    {
+                        var entityConfig = Schema.EntityConfigurations.Single(ec =>
+                            ec.Value.Properties.Contains(detail.Property)).Value;
+
+                        if (entityConfig != config.Value)
+                        {
+                            continue;
+                        }
+                        
+                        // TODO: Get the relationship and set lamdba etc.
+                        var nestedLambdaKey = $"{lambdaKey}_p";
+                        var method =
+                                Equals(entityConfig, config.Value)
+                                    ? nameof(EntityConfiguration<object>.FindRelationship)
+                                    : nameof(EntityConfiguration<object>.FindCollectionRelationship)
+                            ;
+                        var configured = ConfigreMetadata(detail, null, $"{lambdaKey}_cnf", false, entityConfig);
+                        if (!string.IsNullOrWhiteSpace(configured))
+                        {
+                            sb.AppendLine();
+                            sb.Append($"{lambdaKey}.{method}({nestedLambdaKey} => {nestedLambdaKey}.{detail.Property.Name})");
+                            sb.Append($@".{nameof(IRelationshipDetail.Configure)}({configured});");
+                        }
+                    }
+                }
+
+                var relationshipConfigurations = sb.ToString();
+                if (!string.IsNullOrWhiteSpace(relationshipConfigurations))
+                {
+                    result.AppendLine(
+                        $@"{builder.Name}.{nameof(EntityConfigurationBuilder.EntityType)}<{NameMapper(config.Key)}>().{nameof(EntityConfiguration<object>.Configure)}({lambdaKey} => {{
+{relationshipConfigurations}
+}});");
+                }
+            }
+
+            return result.ToString();
+        }
         private string SerializePropertyGroups(IPropertyGroup propertyGroup, IEntityMetadata entityMetadata, int index)
         {
             var groupSb = new StringBuilder();

@@ -20,34 +20,14 @@ using Iql.Entities.Validation.Validation;
 
 namespace Iql.Server.Serialization
 {
-    public class RelationshipDetail : IRelationshipDetail
+    public class RelationshipDetail : RelationshipDetailBase
     {
-        public LambdaExpression InferredWith { get; set; }
         public IqlExpression InferredWithIql { get; set; }
-        public bool AllowInlineEditing { get; set; }
-        public RelationshipSide RelationshipSide { get; }
-        public Type Type { get; }
-        public bool IsCollection { get; }
-        public IProperty Property { get; set; }
-        public IProperty CountProperty { get; }
-        public IRelationshipDetail OtherSide { get; }
-        public IRelationship Relationship { get; }
-        public IEntityConfiguration Configuration { get; set; }
-        public CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false)
+        public RelationshipDetail() : base(null, RelationshipSide.Source)
         {
-            throw new NotImplementedException();
-        }
-
-        public void MarkDirty(object entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IProperty[] Constraints()
-        {
-            throw new NotImplementedException();
         }
     }
+
     public class Relationship : RelationshipBase, IRelationship
     {
         public new IRelationshipDetail Source { get; set; }

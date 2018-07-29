@@ -1,10 +1,10 @@
 ﻿#if !TypeScript
+using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Server.Serialization;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using Iql.Entities;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.MetadataSerialization
@@ -20,6 +20,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
             var clientRelationship = sitesConfig.FindRelationship(r => r.Client);
+            clientRelationship.Metadata.Set("NumberSeven", 7);
             clientRelationship.AllowInlineEditing = true;
             clientRelationship.IsInferredWith(_ => _.CreatedByUser.Client);
             var sitesRelationship = clientConfig.FindCollectionRelationship(r => r.Sites);
@@ -32,8 +33,9 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig.SetPropertyOrder(
                 c => c.FindProperty(nameof(Client.Name)),
                 c => c.PropertyCollection(
-                    c1 => c1.FindProperty(nameof(Client.Id)), 
-                    c1 => c1.Geographics[0], 
+                    c1 => c1.FindProperty(nameof(Client.Id)),
+                    c1 => c1.FindRelationship(c2 => c2.Type),
+                    c1 => c1.Geographics[0],
                     c1 => c1.PropertyCollection(
                         c2 => c2.FindProperty(nameof(Client.Description)),
                         c2 => c2.FindProperty(nameof(Client.Category))))
@@ -46,11 +48,14 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.PropertyOrder[1] as IPropertyCollection).ContentAlignment);
+
             var json = db.EntityConfigurationContext.ToJson();
+
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
             var sitesContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));
             var clientRelationshipParsed = sitesContentParsed.Relationships.First(r => r.Constraints.Any(c => c.SourceKeyProperty.Name == nameof(Site.ClientId)));
+            Assert.AreEqual(7, clientRelationship.Metadata.Get("NumberSeven"));
             Assert.IsNotNull(clientRelationshipParsed.Source);
             Assert.IsNotNull(clientRelationshipParsed.Target);
             Assert.AreEqual(123L, clientContentParsed.Metadata.Get("abc"));
