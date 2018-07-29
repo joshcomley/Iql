@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 
 namespace Iql.Entities
 {
-    public interface IProperty : IPropertyMetadata, IConfiguration, IPropertyGroup, IConfigurable<IProperty>
+    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
     {
         NestedSetProperty NestedSet { get; }
         IGeographic Geographic { get; }
@@ -30,5 +31,6 @@ namespace Iql.Entities
         IProperty SetReadOnly(bool readOnly = true);
         IProperty SetHidden(bool hidden = true);
         IProperty SetNullable(bool nullable = true);
+        IProperty IsInferredWithExpression(LambdaExpression expression);
     }
 }

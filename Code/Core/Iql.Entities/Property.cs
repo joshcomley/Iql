@@ -5,7 +5,6 @@ using Iql.Entities.Validation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Iql.Entities
@@ -120,7 +119,7 @@ namespace Iql.Entities
 
         protected override void SetMediaKey(IMediaKey value)
         {
-            _mediaKey = (MediaKey<TOwner>) value;
+            _mediaKey = (MediaKey<TOwner>)value;
         }
 
         public new MediaKey<TOwner> MediaKey
@@ -150,6 +149,32 @@ namespace Iql.Entities
 
         public Dictionary<string, object> CustomInformation => _customInformation = _customInformation ?? new Dictionary<string, object>();
 
+        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression)
+        {
+            InferredWith = expression;
+            return this;
+        }
+
+        public IEntityProperty<TOwner> Configure(Action<IEntityProperty<TOwner>> configure)
+        {
+            if (configure != null)
+            {
+                configure(this);
+            }
+            return this;
+        }
+
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression)
+        {
+            return IsInferredWith(expression);
+        }
+
+        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression)
+        {
+            InferredWith = expression;
+            return this;
+        }
+
         private static Expression<Func<T, TAssignmentProperty, TAssignmentProperty>> GetAssignmentLambda<T, TAssignmentProperty>(string name)
         {
             var p = Expression.Parameter(typeof(T), "o");
@@ -163,5 +188,7 @@ namespace Iql.Entities
         where T : class
     {
         new MediaKey<T> MediaKey { get; }
+        IEntityProperty<T> IsInferredWith(Expression<Func<T, object>> expression);
+        IEntityProperty<T> Configure(Action<IEntityProperty<T>> action);
     }
 }

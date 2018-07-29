@@ -22,7 +22,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             var clientRelationship = sitesConfig.FindRelationship(r => r.Client);
             clientRelationship.Metadata.Set("NumberSeven", 7);
             clientRelationship.AllowInlineEditing = true;
-            clientRelationship.IsInferredWith(_ => _.CreatedByUser.Client);
+            sitesConfig.FindPropertyByExpression(c => c.Client).IsInferredWith(_ => _.CreatedByUser.Client);
             var sitesRelationship = clientConfig.FindCollectionRelationship(r => r.Sites);
             sitesRelationship.AllowInlineEditing = true;
             clientConfig

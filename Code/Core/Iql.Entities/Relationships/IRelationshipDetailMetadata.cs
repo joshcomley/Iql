@@ -5,7 +5,6 @@ namespace Iql.Entities.Relationships
 {
     public interface IRelationshipDetailMetadata : IPropertyGroup
     {
-        LambdaExpression InferredWith { get; set; }
         bool AllowInlineEditing { get; set; }
         RelationshipSide RelationshipSide { get; }
         Type Type { get; }

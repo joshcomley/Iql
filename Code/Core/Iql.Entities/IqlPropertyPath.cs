@@ -41,23 +41,56 @@ namespace Iql.Entities
 
         public IqlPropertyPath Top => PropertyPath == null || PropertyPath.Length == 0 ? null : PropertyPath[0];
         public IqlPropertyPath Child { get; protected set; }
-        public string PathToHere => string.Join("/", PropertyPath.Select(p => p.Property.Name));
+        public static string DefaultSeparator => "/";
+        public string Separator { get; set; } = DefaultSeparator;
+        public string PathToHere => GetPathToHere(Separator);
 
-        public string PathFromHere
+        public string GetPathToHere(string separator)
         {
-            get
+            return string.Join(separator, PropertyPath.Select(p => p.Property.Name));
+        }
+
+        public string RelationshipPathToHere => GetRelationshipPathToHere(Separator);
+        public string GetRelationshipPathToHere(string separator)
+        {
+            return string.Join(separator,
+                PropertyPath.Where(p => p.Property.Kind.HasFlag(PropertyKind.Relationship))
+                    .Select(p => p.Property.Name));
+        }
+
+        public string PathFromHere => GetPathFromHere(Separator);
+
+        public string GetPathFromHere(string separator)
+        {
+            var parts = new List<string>();
+            parts.Add(PropertyName);
+            var child = Child;
+            while (child != null)
             {
-                var parts = new List<string>();
+                parts.Add(child.PropertyName);
+                child = child.Child;
+            }
+
+            return string.Join(separator, parts);
+        }
+
+        public string RelationshipPathFromHere => GetRelationshipPathFromHere(Separator);
+
+        public string GetRelationshipPathFromHere(string separator)
+        {
+            var parts = new List<string>();
+            if (Property.Kind.HasFlag(PropertyKind.Relationship))
+            {
                 parts.Add(PropertyName);
                 var child = Child;
-                while (child != null)
+                while (child != null && child.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
                     parts.Add(child.PropertyName);
                     child = child.Child;
                 }
-
-                return string.Join("/", parts);
             }
+
+            return string.Join(separator, parts);
         }
 
         public IqlPropertyPath Parent { get; }
@@ -115,6 +148,14 @@ namespace Iql.Entities
                 entityConfigurationContext = EntityConfigurationBuilder.FindConfigurationForEntityTypeTyped<T>();
             }
             return FromPropertyExpression(entityConfigurationContext, propertyExpression);
+        }
+
+        public static IqlPropertyPath FromLambdaExpression(LambdaExpression field,
+            IEntityConfiguration entityConfigurationContext)
+        {
+            var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter()
+                .ConvertLambdaExpressionToIqlByType(field, entityConfigurationContext.Type).Expression as IqlLambdaExpression;
+            return FromPropertyExpression(entityConfigurationContext, propertyExpression.Body as IqlPropertyExpression);
         }
 
         public static IqlPropertyPath FromString(string path,

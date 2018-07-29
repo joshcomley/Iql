@@ -22,7 +22,6 @@ namespace Iql.Server.Serialization
 {
     public class RelationshipDetail : RelationshipDetailBase
     {
-        public IqlExpression InferredWithIql { get; set; }
         public RelationshipDetail() : base(null, RelationshipSide.Source)
         {
         }
@@ -211,6 +210,7 @@ namespace Iql.Server.Serialization
     [DebuggerDisplay("{Name}")]
     public class Property : PropertyBase, IProperty
     {
+        public IqlExpression InferredWithIql { get; set; }
         private IMediaKey _mediaKey;
         protected override IMediaKey GetMediaKey()
         {
@@ -225,6 +225,11 @@ namespace Iql.Server.Serialization
         public override Func<object, object> GetValue { get; set; }
         public override Func<object, object, object> SetValue { get; set; }
         public Dictionary<string, object> CustomInformation { get; }
+        public IProperty IsInferredWithExpression(LambdaExpression expression)
+        {
+            InferredWith = expression;
+            return this;
+        }
     }
 
     public class MediaKey : MediaKeyBase
@@ -424,7 +429,17 @@ namespace Iql.Server.Serialization
             {
                 foreach (var mapping in PropertyMappings)
                 {
-                    ProcessPropertyGroup(document, mapping.Value, mapping, true);
+                    if (mapping.Value.Kind != PropertyGroupKind.Relationship)
+                    {
+                        ProcessPropertyGroup(document, mapping.Value, mapping, true);
+                    }
+                }
+                foreach (var mapping in PropertyMappings)
+                {
+                    if (mapping.Value.Kind == PropertyGroupKind.Relationship)
+                    {
+                        ProcessPropertyGroup(document, mapping.Value, mapping, true);
+                    }
                 }
             }
 
@@ -436,6 +451,7 @@ namespace Iql.Server.Serialization
                 {
                     case PropertyGroupKind.Property:
                         var property = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
+                        (property as Property).EntityConfigurationInternal = entityMetadata as IEntityConfiguration;
                         if (set) { document.SetValueAtPropertyPath(mapping.Key, property); }
                         return property;
                     case PropertyGroupKind.PropertyCollection:
@@ -454,6 +470,16 @@ namespace Iql.Server.Serialization
                         var ns = entityMetadata.NestedSets[Convert.ToInt32(@group.Paths)];
                         if (set) { document.SetValueAtPropertyPath(mapping.Key, ns); }
                         return ns;
+                    case PropertyGroupKind.Relationship:
+                        var entityConfiguration = entityMetadata as IEntityConfiguration;
+                        //var property2 = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
+                        //var rel = entityMetadata.Relationships.Single(p => p.Source.Property.Name == @group.Paths);
+                        //if (set) { document.SetValueAtPropertyPath(mapping.Key, rel.Source); }
+                        //return rel.Source;
+                        var entityRelationships = entityConfiguration.AllRelationships();
+                        var rel = entityRelationships.Single(p => p.ThisEnd.Property.Name == @group.Paths);
+                        if (set) { document.SetValueAtPropertyPath(mapping.Key, rel.ThisEnd); }
+                        return rel.ThisEnd;
                 }
 
                 return null;

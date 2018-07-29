@@ -6,7 +6,6 @@ using Iql.Entities.Rules.Display;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
@@ -34,7 +33,6 @@ namespace Iql.Entities.Relationships
             }
         }
 
-        public LambdaExpression InferredWith { get; set; }
         public bool AllowInlineEditing { get; set; }
 
         public IRelationshipDetail OtherSide =>
@@ -63,10 +61,23 @@ namespace Iql.Entities.Relationships
             }
         }
 
-        public IEntityConfiguration EntityConfiguration { get; set; }
+        public IEntityConfiguration EntityConfiguration
+        {
+            get
+            {
+                if (_entityConfiguration == null)
+                {
+                    _entityConfiguration = Property?.EntityConfiguration;
+                }
+
+                return _entityConfiguration;
+            }
+            set => _entityConfiguration = value;
+        }
 
         private readonly List<object> _beingMarkedAsDirty = new List<object>();
         private EventSubscription _constraintsSubscription;
+        private IEntityConfiguration _entityConfiguration;
 
         public void MarkDirty(object entity)
         {

@@ -22,7 +22,8 @@ namespace Iql.Server.Serialization
         Property = 1,
         PropertyCollection,
         Geographic,
-        NestedSet
+        NestedSet,
+        Relationship
     }
 
     public class SerializedPropertyGroup
@@ -205,6 +206,29 @@ namespace Iql.Server.Serialization
                     {
                         kind = PropertyGroupKind.NestedSet;
                         path = entityConfiguration.NestedSets.IndexOf(propertyGroup as INestedSet).ToString();
+                    }
+                    else if (propertyGroup is IRelationshipDetailMetadata)
+                    {
+                        kind = PropertyGroupKind.Relationship;
+                        path = (propertyGroup as IRelationshipDetailMetadata).Property.Name;
+                        //var index = 0;
+                        //var isSource = false;
+                        //for (var i = 0; i < entityConfiguration.Relationships.Count; i++)
+                        //{
+                        //    if (entityConfiguration.Relationships[i].Source == propertyGroup)
+                        //    {
+                        //        isSource = true;
+                        //        index = i;
+                        //        break;
+                        //    }
+
+                        //    if (entityConfiguration.Relationships[i].Target == propertyGroup)
+                        //    {
+                        //        index = i;
+                        //        break;
+                        //    }
+                        //}
+                        //path = $"{index}:{(isSource ? "Source" : "Target")}";
                     }
                     else if (propertyGroup is IPropertyCollection)
                     {

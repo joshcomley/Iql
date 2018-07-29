@@ -1,4 +1,6 @@
-﻿using Iql.Entities;
+﻿using System;
+using System.Linq.Expressions;
+using Iql.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 
@@ -7,6 +9,15 @@ namespace Iql.Tests.Tests.Properties
     [TestClass]
     public class IqlPropertyPathTests : TestsBase
     {
+        [TestMethod]
+        public void RelationshipPropertyPath()
+        {
+            Expression<Func<ApplicationUser, object>> exp = c => c.Client.Type.Name;
+            var path = IqlPropertyPath.FromLambdaExpression(exp, Db.EntityConfigurationContext.EntityType<ApplicationUser>());
+            path.Separator = ".";
+            Assert.AreEqual("Client.Type", path.RelationshipPathToHere);
+        }
+
         [TestMethod]
         public void TestPropertySetterOnNestedProperty()
         {

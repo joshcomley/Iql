@@ -27,12 +27,6 @@ namespace Iql.Entities.Relationships
             action(this as TConfigurable);
             return this as TConfigurable;
         }
-
-        public TConfigurable IsInferredWith(Expression<Func<T, TProperty>> expression)
-        {
-            InferredWith = expression;
-            return this as TConfigurable;
-        }
     }
 
     public class RelationshipDetail<T, TProperty> :

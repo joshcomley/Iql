@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
@@ -20,5 +21,7 @@ namespace Iql.Entities
         bool Sortable { get; set; }
         bool Searchable { get; set; }
         bool? Nullable { get; set; }
+        LambdaExpression InferredWith { get; set; }
+        IqlPropertyPath GetInferredWithPath();
     }
 }

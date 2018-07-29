@@ -5,6 +5,7 @@ namespace Iql.Entities
 {
     public interface IPropertyCollection : IPropertyGroup, IConfigurable<IPropertyCollection>
     {
+        bool Enclose { get; set; }
         ContentAlignment ContentAlignment { get; set; }
         List<IPropertyGroup> Properties { get; }
     }

@@ -263,7 +263,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       {
                                           IMetadata propertyMetadata =
                                               entityConfiguration.Properties.SingleOrDefault(p => p.Name == property.Name);
-                                          ConfigreMetadata(propertyMetadata, parameters.First());
+                                          ConfigreMetadata(propertyMetadata, parameters.First(), "p", true, entityConfiguration);
                                       }
                                   }
                                   if (entityConfiguration != null)
@@ -557,6 +557,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                               */
                           }
                           Append(ConfigureRelationships(builder));
+                          Append(ConfigurePropertyOrders(builder));
                       },
                       modifier: Modifier.Override);
                     AppendLine();
@@ -680,8 +681,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     catch { }
                     var value = metadataProperty.GetValue(metadata);
                     var nullAllowed =
-                        metadata is IRelationshipDetailMetadata &&
-                        metadataProperty.Name == nameof(IRelationshipDetailMetadata.InferredWith);
+                        metadata is IPropertyMetadata &&
+                        metadataProperty.Name == nameof(IPropertyMetadata.InferredWith);
                     if (value == null && !nullAllowed)
                     {
                         continue;
@@ -706,34 +707,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.PropertyOrder))
                     {
                         dealtWith = true;
-                        if (entityMetadata.PropertyOrder?.Any() == true)
-                        {
-                            // This needs to be recursive, with an incrementing lambda key
-                            sb.AppendLine();
-                            sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.SetPropertyOrder)}(");
-                            var propertyGroups = new List<string>();
-                            foreach (var propertyGroup in entityMetadata.PropertyOrder)
-                            {
-                                var groupSb = SerializePropertyGroups(propertyGroup, entityMetadata, 0);
-                                propertyGroups.Add(groupSb);
-                            }
-
-                            sb.Append(string.Join(",\n", propertyGroups));
-                            sb.Append(");");
-                        }
+                        // We will do this at the end when we're sure all relationships and other
+                        // property groups are configured
                     }
-                    if (metadata is IRelationshipDetailMetadata &&
-                        metadataProperty.Name == nameof(IRelationshipDetailMetadata.InferredWith))
+                    if (metadata is IProperty &&
+                        metadataProperty.Name == nameof(IPropertyMetadata.InferredWith))
                     {
                         dealtWith = true;
-                        var relationshipDetail = metadata as RelationshipDetail;
-                        if (relationshipDetail.InferredWithIql != null)
+                        var property = metadata as Property;
+                        if (property.InferredWithIql != null)
                         {
                             sb.AppendLine();
                             var path = IqlPropertyPath.FromPropertyExpression(sourceEntityConfiguration as IEntityConfiguration,
-                                (relationshipDetail.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
+                                (property.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
                             sb.AppendLine(
-                                $"{lambdaKey}.{nameof(RelationshipDetail<object, object>.IsInferredWith)}({lambdaKey}_inf => {lambdaKey}_inf.{path.PathToHere.Replace("/", ".")});");
+                                $"{lambdaKey}.{nameof(IEntityProperty<object>.IsInferredWith)}({lambdaKey}_inf => {lambdaKey}_inf.{path.GetPathToHere(".")});");
                         }
                     }
                     else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
@@ -795,7 +783,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
                     {
-                        if (!Equals(value, metadataProperty.GetValue(Activator.CreateInstance(metadataSolidType))))
+                        var instance = metadataSolidType == typeof(PropertyCollection)
+                            ? new PropertyCollection(sourceEntityConfiguration as IEntityConfiguration)
+                            : Activator.CreateInstance(metadataSolidType);
+                        if (!Equals(value, metadataProperty.GetValue(instance)))
                         {
                             assign = value.ToString().ToLower();
                         }
@@ -1011,6 +1002,20 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return "";
         }
 
+        private string ConfigurePropertyOrders(IVariable builder)
+        {
+            var sb = new StringBuilder();
+            foreach (var config in Schema.EntityConfigurations)
+            {
+                var entityMetadata = config.Value;
+                if (entityMetadata.PropertyOrder?.Any() == true)
+                {
+                    sb.AppendLine($"{GetEntityTypeConfiguration(builder, config.Key)}.{nameof(EntityConfiguration<object>.SetPropertyOrder)}({string.Join(",\n", entityMetadata.PropertyOrder.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
+                }
+            }
+            return sb.ToString();
+        }
+
         private string ConfigureRelationships(IVariable builder)
         {
             var lambdaKey = "rel";
@@ -1031,7 +1036,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         {
                             continue;
                         }
-                        
+
                         // TODO: Get the relationship and set lamdba etc.
                         var nestedLambdaKey = $"{lambdaKey}_p";
                         var method =
@@ -1053,13 +1058,26 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 if (!string.IsNullOrWhiteSpace(relationshipConfigurations))
                 {
                     result.AppendLine(
-                        $@"{builder.Name}.{nameof(EntityConfigurationBuilder.EntityType)}<{NameMapper(config.Key)}>().{nameof(EntityConfiguration<object>.Configure)}({lambdaKey} => {{
-{relationshipConfigurations}
-}});");
+                        RunWithinEntityTypeConfiguration(builder, config.Key, lambdaKey, () => relationshipConfigurations)
+                        );
                 }
             }
 
             return result.ToString();
+        }
+
+        private string RunWithinEntityTypeConfiguration(IVariable builder, string entityTypeName,
+            string lambdaKey,
+            Func<string> content)
+        {
+            return $@"{GetEntityTypeConfiguration(builder, entityTypeName)}.{nameof(EntityConfiguration<object>.Configure)}({lambdaKey} => {{
+{content()}
+}});";
+        }
+
+        private string GetEntityTypeConfiguration(IVariable builder, string entityTypeName)
+        {
+            return $@"{builder.Name}.{nameof(EntityConfigurationBuilder.EntityType)}<{NameMapper(entityTypeName)}>()";
         }
         private string SerializePropertyGroups(IPropertyGroup propertyGroup, IEntityMetadata entityMetadata, int index)
         {
@@ -1082,6 +1100,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 groupSb.Append(
                     $"{nameof(IEntityMetadata.NestedSets)}[{entityMetadata.NestedSets.IndexOf(propertyGroup as INestedSet)}]");
             }
+            else if (propertyGroup is IRelationshipDetailMetadata)
+            {
+                var rel = propertyGroup as IRelationshipDetailMetadata;
+                groupSb.Append($"{(rel.IsCollection ? nameof(EntityConfiguration<object>.FindCollectionRelationship) : nameof(EntityConfiguration<object>.FindRelationship))}({Lambda(++index)}{rel.Property.Name})");
+            }
             else if (propertyGroup is IPropertyCollection)
             {
                 var coll = propertyGroup as IPropertyCollection;
@@ -1092,7 +1115,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }
 
                 groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyCollection)}({string.Join(",\n", list)})");
-                groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({ConfigreMetadata(coll, null, $"coll{++index}", false)})");
+                groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({ConfigreMetadata(coll, null, $"coll{++index}", false, entityMetadata)})");
             }
             else
             {

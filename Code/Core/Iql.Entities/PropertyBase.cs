@@ -8,6 +8,7 @@ using Iql.Entities.Rules.Relationship;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Iql.Entities
@@ -32,7 +33,7 @@ namespace Iql.Entities
         public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName == Name;
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
-        protected IEntityConfiguration EntityConfigurationInternal { get; set; }
+        public IEntityConfiguration EntityConfigurationInternal { get; set; }
         public List<EntityRelationship> RelationshipSources { get; set; } = new List<EntityRelationship>();
         public bool Searchable { get; set; } = true;
 
@@ -46,6 +47,17 @@ namespace Iql.Entities
                     TypeDefinition = TypeDefinition.ChangeNullable(value.Value);
                 }
             }
+        }
+
+        public LambdaExpression InferredWith { get; set; }
+        public IqlPropertyPath GetInferredWithPath()
+        {
+            if (InferredWith == null)
+            {
+                return null;
+            }
+
+            return IqlPropertyPath.FromLambdaExpression(InferredWith, EntityConfiguration);
         }
 
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
