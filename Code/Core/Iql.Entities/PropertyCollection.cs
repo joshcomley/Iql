@@ -18,7 +18,7 @@ namespace Iql.Entities
             return Properties.ToArray();
         }
 
-        public PropertyCollection(IEntityConfiguration entityConfiguration) : base(entityConfiguration)
+        public PropertyCollection(IEntityConfiguration entityConfiguration, string key = null) : base(entityConfiguration, null)
         {
             Properties = new List<IPropertyGroup>();
         }

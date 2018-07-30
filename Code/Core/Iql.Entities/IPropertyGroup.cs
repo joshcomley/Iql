@@ -5,6 +5,7 @@ namespace Iql.Entities
 {
     public interface IPropertyGroup : IConfiguration, IPropertyContainer
     {
+        string Key { get; set; }
         PropertyKind Kind { get; set; }
         IRuleCollection<IBinaryRule> ValidationRules { get; set; }
         IRuleCollection<IDisplayRule> DisplayRules { get; set; }

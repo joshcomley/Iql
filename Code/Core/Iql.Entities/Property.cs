@@ -14,8 +14,6 @@ namespace Iql.Entities
         where TOwner : class
     {
         private Dictionary<string, object> _customInformation;
-        private MediaKey<TOwner> _mediaKey;
-
         public Property(
             IEntityConfiguration entityConfiguration,
             string name,
@@ -111,29 +109,6 @@ namespace Iql.Entities
         }
 
         public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; private set; } = new RelationshipRuleCollection<TOwner, TElementType>();
-
-        protected override IMediaKey GetMediaKey()
-        {
-            return _mediaKey;
-        }
-
-        protected override void SetMediaKey(IMediaKey value)
-        {
-            _mediaKey = (MediaKey<TOwner>)value;
-        }
-
-        public new MediaKey<TOwner> MediaKey
-        {
-            get => _mediaKey = _mediaKey ?? new MediaKey<TOwner>(this);
-            set => _mediaKey = value;
-        }
-
-        IMediaKey IPropertyMetadata.MediaKey
-        {
-            get => MediaKey;
-            set => MediaKey = (MediaKey<TOwner>)value;
-        }
-
         IRuleCollection<IRelationshipRule> IPropertyMetadata.RelationshipFilterRules
         {
             get => RelationshipFilterRules;
@@ -182,13 +157,5 @@ namespace Iql.Entities
             var l = Expression.Lambda(Expression.Assign(Expression.Property(p, name), v), p, v);
             return (Expression<Func<T, TAssignmentProperty, TAssignmentProperty>>)l;
         }
-    }
-
-    public interface IEntityProperty<T> : IProperty
-        where T : class
-    {
-        new MediaKey<T> MediaKey { get; }
-        IEntityProperty<T> IsInferredWith(Expression<Func<T, object>> expression);
-        IEntityProperty<T> Configure(Action<IEntityProperty<T>> action);
     }
 }

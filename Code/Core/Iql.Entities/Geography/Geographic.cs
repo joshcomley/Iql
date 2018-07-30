@@ -8,19 +8,17 @@
             set { }
         }
         public override IEntityConfiguration EntityConfiguration => (LongitudeProperty ?? LatitudeProperty)?.EntityConfiguration;
-        public string Key { get; set; }
         public IProperty LongitudeProperty { get; set; }
         public IProperty LatitudeProperty { get; set; }
 
-        public Geographic(IProperty longitudeProperty = null, IProperty latitudeProperty = null, string key = null):base(null)
+        public Geographic(IProperty longitudeProperty = null, IProperty latitudeProperty = null, string key = null) : base(null, key)
         {
             LongitudeProperty = longitudeProperty;
             LatitudeProperty = latitudeProperty;
-            Key = key;
         }
 
 #if !TypeScript
-        public Geographic():base(null)
+        public Geographic() : base(null, null)
         {
         }
 #endif

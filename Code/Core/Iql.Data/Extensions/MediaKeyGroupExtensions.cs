@@ -17,7 +17,7 @@ namespace Iql.Data.Extensions
             {
                 if (keyPart.IsPropertyPath)
                 {
-                    var propertyPath = IqlPropertyPath.FromString(keyPart.Key, mediaGroup.MediaKey.Property.EntityConfiguration);
+                    var propertyPath = IqlPropertyPath.FromString(keyPart.Key, mediaGroup.MediaKey.File.EntityConfiguration);
                     parts.Add((await propertyPath.EvaluateAsync(entity, dataContext) ?? "").ToString());
                 }
                 else

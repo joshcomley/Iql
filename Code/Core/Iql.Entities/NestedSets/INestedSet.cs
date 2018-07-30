@@ -12,5 +12,6 @@
         IProperty ParentIdProperty { get; set; }
         IProperty ParentProperty { get; set; }
         IProperty IdProperty { get; set; }
+        NestedSetPropertyKind GetPropertyKind(IProperty property);
     }
 }

@@ -734,8 +734,59 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 sb.AppendLine();
                                 sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
                                 sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
-                                sb.Append($@", {(geographic.Key == null ? "null" : $@"""{geographic.Key}""")}");
+                                sb.Append($@", {String(geographic.Key)}");
                                 sb.Append($@", {ConfigreMetadata(geographic, null, "geo", false)}");
+                                sb.Append(");");
+                            }
+                        }
+                    }
+                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DateRanges))
+                    {
+                        dealtWith = true;
+                        if (entityMetadata.DateRanges?.Any() == true)
+                        {
+                            foreach (var dateRange in entityMetadata.DateRanges)
+                            {
+                                sb.AppendLine();
+                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasDateRange)}(");
+                                var parameters = new[]
+                                {
+                                    dateRange.StartDateProperty,
+                                    dateRange.EndDateProperty
+                                };
+                                var parameterStrings =
+                                    parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                        .ToList();
+                                parameterStrings.Add(String(dateRange.Key));
+                                parameterStrings.Add(ConfigreMetadata(dateRange, null, $"{lambdaKey}_ns", false));
+                                sb.Append(string.Join(", ", parameterStrings));
+                                sb.Append(");");
+                            }
+                        }
+                    }
+                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Files))
+                    {
+                        dealtWith = true;
+                        if (entityMetadata.Files?.Any() == true)
+                        {
+                            foreach (var file in entityMetadata.Files)
+                            {
+                                sb.AppendLine();
+                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasFile)}(");
+                                var parameters = new[]
+                                {
+                                    file.FileUrlProperty,
+                                    file.PreviewUrlProperty,
+                                    file.NameProperty,
+                                    file.VersionProperty,
+                                    file.KindProperty
+                                };
+                                var parameterStrings =
+                                    parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                        .ToList();
+                                parameterStrings.Add(String(file.Key));
+                                parameterStrings.Add(ConfigreMetadata(file, null, $"{lambdaKey}_ns", false));
+                                sb.Append(string.Join(", ", parameterStrings));
                                 sb.Append(");");
                             }
                         }
@@ -765,6 +816,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
                                         .ToList();
                                 parameterStrings.Add(String(nestedSet.SetKey));
+                                parameterStrings.Add(String(nestedSet.Key));
                                 parameterStrings.Add(ConfigreMetadata(nestedSet, null, $"{lambdaKey}_ns", false));
                                 sb.Append(string.Join(", ", parameterStrings));
                                 sb.Append(");");
@@ -859,33 +911,33 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         }
                         dealtWith = true;
                     }
-                    else if (isProperty && metadataProperty.Name == nameof(IPropertyMetadata.MediaKey))
-                    {
-                        // Special case
-                        dealtWith = true;
-                        if (propertyMetadata.MediaKey?.Groups?.Any() == true)
-                        {
-                            sb.AppendLine($"{lambdaKey}.MediaKey");
-                            foreach (var group in propertyMetadata.MediaKey.Groups)
-                            {
-                                if (group.Parts != null && group.Parts.Any())
-                                {
-                                    sb.AppendLine($".AddGroup({lambdaKey}_g => {lambdaKey}_g");
-                                    foreach (var part in group.Parts)
-                                    {
-                                        sb.AppendLine(
-                                            part.IsPropertyPath
-                                                ? $".AddPropertyPath({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
-                                                : $@".AddString(""{part.Key}"")");
-                                    }
+                    //else if (isProperty && metadataProperty.Name == nameof(IPropertyMetadata.MediaKey))
+                    //{
+                    //    // Special case
+                    //    dealtWith = true;
+                    //    if (propertyMetadata.MediaKey?.Groups?.Any() == true)
+                    //    {
+                    //        sb.AppendLine($"{lambdaKey}.MediaKey");
+                    //        foreach (var group in propertyMetadata.MediaKey.Groups)
+                    //        {
+                    //            if (group.Parts != null && group.Parts.Any())
+                    //            {
+                    //                sb.AppendLine($".AddGroup({lambdaKey}_g => {lambdaKey}_g");
+                    //                foreach (var part in group.Parts)
+                    //                {
+                    //                    sb.AppendLine(
+                    //                        part.IsPropertyPath
+                    //                            ? $".AddPropertyPath({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
+                    //                            : $@".AddString(""{part.Key}"")");
+                    //                }
 
-                                    sb.Append(")");
-                                }
-                            }
+                    //                sb.Append(")");
+                    //            }
+                    //        }
 
-                            sb.Append(";");
-                        }
-                    }
+                    //        sb.Append(";");
+                    //    }
+                    //}
                     else if (metadataProperty.Name == nameof(IMetadata.Metadata))
                     {
                         dealtWith = true;

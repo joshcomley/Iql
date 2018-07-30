@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Iql.Entities.NestedSets
 {
@@ -22,17 +21,32 @@ namespace Iql.Entities.NestedSets
         public IProperty ParentIdProperty { get; set; }
         public IProperty ParentProperty { get; set; }
         public IProperty IdProperty { get; set; }
+        public NestedSetPropertyKind GetPropertyKind(IProperty property)
+        {
+            if (LeftProperty == property) { return NestedSetPropertyKind.Left; }
+            if (RightProperty == property) { return NestedSetPropertyKind.Right; }
+            if (LeftOfProperty == property) { return NestedSetPropertyKind.LeftOf; }
+            if (RightOfProperty == property) { return NestedSetPropertyKind.RightOf; }
+            if (KeyProperty == property) { return NestedSetPropertyKind.Key; }
+            if (LevelProperty == property) { return NestedSetPropertyKind.Level; }
+            if (ParentIdProperty == property) { return NestedSetPropertyKind.ParentId; }
+            if (ParentProperty == property) { return NestedSetPropertyKind.Parent; }
+            if (IdProperty == property) { return NestedSetPropertyKind.Id; }
+
+            return NestedSetPropertyKind.None;
+        }
 
         public NestedSet(IProperty leftProperty = null,
-            IProperty rightProperty = null, 
-            IProperty leftOfProperty = null, 
-            IProperty rightOfProperty = null, 
-            IProperty keyProperty = null, 
-            IProperty levelProperty = null, 
+            IProperty rightProperty = null,
+            IProperty leftOfProperty = null,
+            IProperty rightOfProperty = null,
+            IProperty keyProperty = null,
+            IProperty levelProperty = null,
             IProperty parentIdProperty = null,
-            IProperty parentProperty = null, 
+            IProperty parentProperty = null,
             IProperty idProperty = null,
-            string setKey = null) :base(null)
+            string setKey = null,
+            string key = null) : base(null, key)
         {
             SetKey = setKey;
             LeftProperty = leftProperty;

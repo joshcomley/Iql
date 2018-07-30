@@ -3,6 +3,7 @@ using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using System.Collections.Generic;
+using Iql.Entities.Dates;
 using Iql.Entities.NestedSets;
 
 namespace Iql.Entities
@@ -11,6 +12,7 @@ namespace Iql.Entities
     {
         IList<IGeographic> Geographics { get; set; }
         IList<INestedSet> NestedSets { get; set; }
+        IList<IDateRange> DateRanges { get; set; }
         IDisplayFormatting DisplayFormatting { get; }
         IRuleCollection<IBinaryRule> EntityValidation { get; }
         IEntityKey Key { get; }
@@ -25,5 +27,7 @@ namespace Iql.Entities
         IList<IPropertyGroup> PropertyOrder { get; set; }
         IList<IProperty> Properties { get; set; }
         IList<IRelationship> Relationships { get; }
+        IList<IFile> Files { get; }
+        IPropertyGroup[] AllPropertyGroups();
     }
 }

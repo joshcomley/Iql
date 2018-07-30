@@ -12,7 +12,7 @@ namespace Iql.Entities
         {
             if (IsPropertyPath)
             {
-                var config = MediaKey.Property.EntityConfiguration;
+                var config = MediaKey.File.EntityConfiguration;
                 var currentConfig = config;
                 var parts = Key.Split('/');
                 var relationshipParts = new List<string>();

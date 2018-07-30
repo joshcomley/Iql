@@ -3,13 +3,13 @@ using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
-using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Entities.Dates;
 
 namespace Iql.Entities
 {
@@ -24,8 +24,9 @@ namespace Iql.Entities
                 Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
             : null;
 
-        private NestedSetProperty _nestedSet;
-        public NestedSetProperty NestedSet => _nestedSet = _nestedSet ?? new NestedSetProperty(this as IProperty);
+        public IFile File => EntityConfiguration.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != FilePropertyKind.None);
+        public IDateRange DateRange => EntityConfiguration.DateRanges.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != DateRangePropertyKind.None);
+        public INestedSet NestedSet => EntityConfiguration.NestedSets.FirstOrDefault(ns => ns.GetPropertyKind(this as IProperty) != NestedSetPropertyKind.None);
         public bool IsLongitudeProperty => Equals(Geographic?.LongitudeProperty, this);
         public bool IsLatitudeProperty => Equals(Geographic?.LatitudeProperty, this);
         public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
@@ -63,16 +64,6 @@ namespace Iql.Entities
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
-
-        protected abstract IMediaKey GetMediaKey();
-        protected abstract void SetMediaKey(IMediaKey value);
-        public bool HasMediaKey => MediaKey?.Groups?.Any(g => g.Parts?.Any() == true) == true;
-
-        public IMediaKey MediaKey
-        {
-            get => GetMediaKey();
-            set => SetMediaKey(value);
-        }
 
         private PropertySearchKind _searchKind;
 #if !TypeScript
@@ -177,7 +168,7 @@ namespace Iql.Entities
             return (IProperty)this;
         }
 
-        protected PropertyBase() : base(null)
+        protected PropertyBase() : base(null, null)
         {
         }
     }

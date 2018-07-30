@@ -12,8 +12,6 @@ namespace Iql.Entities
         IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         IEnumerable<IRelationship> Relationships { get; }
         ITypeDefinition TypeDefinition { get; set; }
-        bool HasMediaKey { get; }
-        IMediaKey MediaKey { get; set; }
         string Placeholder { get; set; }
         PropertySearchKind SearchKind { get; set; }
         bool ReadOnly { get; set; }

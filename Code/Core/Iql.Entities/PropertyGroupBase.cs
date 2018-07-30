@@ -7,15 +7,17 @@ namespace Iql.Entities
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
         where T : IConfigurable<T>
     {
+        public string Key { get; set; }
         public abstract PropertyKind Kind { get; set; }
         public virtual IEntityConfiguration EntityConfiguration { get; }
         public IRuleCollection<IBinaryRule> ValidationRules { get; set; }
         public IRuleCollection<IDisplayRule> DisplayRules { get; set; }
         public abstract IPropertyGroup[] GetGroupProperties();
 
-        protected PropertyGroupBase(IEntityConfiguration entityConfiguration)
+        protected PropertyGroupBase(IEntityConfiguration entityConfiguration, string key)
         {
             EntityConfiguration = entityConfiguration;
+            Key = key;
         }
 
         public T Configure(Action<T> configure)

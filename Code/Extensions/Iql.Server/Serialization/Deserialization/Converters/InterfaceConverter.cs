@@ -1,0 +1,175 @@
+﻿using Iql.Entities;
+using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Enums;
+using Iql.Entities.Geography;
+using Iql.Entities.NestedSets;
+using Iql.Entities.Relationships;
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Iql.Entities.Dates;
+
+namespace Iql.Server.Serialization
+{
+    public class InterfaceConverter : JsonConverter
+    {
+        private Dictionary<Type, Type> TypeMappings { get; } = new Dictionary<Type, Type>();
+
+        public InterfaceConverter()
+        {
+            Map<IEnumConfiguration, EnumConfiguration>();
+            Map<IEnumValue, EnumValue>();
+            Map<IEntityMetadata, EntityConfiguration>();
+            Map<IProperty, Property>();
+            Map<ITypeDefinition, TypeDetail>();
+            Map<IRelationship, Relationship>();
+            Map<IRelationshipDetail, RelationshipDetail>();
+            Map<IRelationshipRule, RelationshipRule>();
+            Map<IRelationshipConstraint, RelationshipConstraint>();
+            Map<IRuleCollection<IBinaryRule>, ValidationRuleCollection>();
+            Map<IRuleCollection<IDisplayRule>, DisplayRuleCollection>();
+            Map<IRuleCollection<IRelationshipRule>, RelationshipRuleCollection>();
+            Map<IBinaryRule, ValidationRule>();
+            Map<IEntityKey, EntityKeyBase>();
+            Map<IDisplayFormatting, DisplayFormatting>();
+            Map<IEntityDisplayTextFormatter, DisplayFormatter>();
+            Map<IDisplayRule, DisplayRule>();
+            Map<IMediaKey, MediaKey>();
+            Map<IMediaKeyGroup, MediaKeyGroup>();
+            Map<IMediaKeyPart, MediaKeyPart>();
+            Map<IGeographic, Geographic>();
+            Map<IDateRange, DateRange>();
+            Map<IFile, File>();
+            Map<INestedSet, NestedSet>();
+            Map<IPropertyGroup, PropertyCollection>();
+            // Map<IMetadataCollection, MetadataCollectionJson>();
+        }
+
+        private void Map<TInterface, TConcrete>()
+        // where TConcrete : TInterface
+        {
+            TypeMappings.Add(typeof(TInterface), typeof(TConcrete));
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Dictionary<string, IEntityConfiguration> EntityConfigurations { get; } = new Dictionary<string, IEntityConfiguration>();
+        private Dictionary<string, SerializedPropertyGroup> PropertyMappings { get; } = new Dictionary<string, SerializedPropertyGroup>();
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var path = reader.Path;
+            var value = reader.Value;
+            var existingValue2 = existingValue;
+            //if (reader.TokenType != JsonToken.StartObject)
+            //{
+            //    var result2 = reader.Read();
+            //    return result2;
+            //}
+            var isConvertedProperty = (objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string &&
+                                      !string.IsNullOrWhiteSpace(reader.Value as string) &&
+                                      (reader.Value as string).StartsWith("{");
+            if (isConvertedProperty)
+            {
+                if (!string.IsNullOrWhiteSpace(reader.Value as string))
+                {
+                    var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
+                    PropertyMappings.Add(reader.Path, group);
+                }
+                return null;
+            }
+
+            if (typeof(IMediaKey).IsAssignableFrom(objectType))
+            {
+                int a = 0;
+            }
+            var result = serializer.Deserialize(reader, TypeMappings[objectType]);
+            if (objectType == typeof(IEntityConfiguration))
+            {
+                var config = result as IEntityConfiguration;
+                EntityConfigurations.Add(config.Name, config);
+            }
+            return result;
+        }
+
+        public override bool CanConvert(Type objectType)
+        {
+            return TypeMappings.ContainsKey(objectType);
+        }
+
+        public void Finalise(EntityConfigurationDocument document)
+        {
+            foreach (var mapping in PropertyMappings)
+            {
+                if (mapping.Value.Kind != PropertyGroupKind.Relationship)
+                {
+                    ProcessPropertyGroup(document, mapping.Value, mapping, true);
+                }
+            }
+            foreach (var mapping in PropertyMappings)
+            {
+                if (mapping.Value.Kind == PropertyGroupKind.Relationship)
+                {
+                    ProcessPropertyGroup(document, mapping.Value, mapping, true);
+                }
+            }
+        }
+
+        private static IPropertyGroup ProcessPropertyGroup(EntityConfigurationDocument document, SerializedPropertyGroup @group,
+            KeyValuePair<string, SerializedPropertyGroup> mapping, bool set)
+        {
+            var entityMetadata = document.EntityTypes.Single(e => e.Name == @group.Type);
+            switch (@group.Kind)
+            {
+                case PropertyGroupKind.Property:
+                    var property = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
+                    (property as Property).EntityConfigurationInternal = entityMetadata as IEntityConfiguration;
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, property); }
+                    return property;
+                case PropertyGroupKind.PropertyCollection:
+                    var coll = new PropertyCollection(entityMetadata as IEntityConfiguration);
+                    foreach (var child in @group.Children)
+                    {
+                        coll.Properties.Add(ProcessPropertyGroup(document, child, mapping, false));
+                    }
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, coll); }
+                    return coll;
+                case PropertyGroupKind.Geographic:
+                    var geo = entityMetadata.Geographics[Convert.ToInt32(@group.Paths)];
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, geo); }
+                    return geo;
+                case PropertyGroupKind.NestedSet:
+                    var ns = entityMetadata.NestedSets[Convert.ToInt32(@group.Paths)];
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, ns); }
+                    return ns;
+                case PropertyGroupKind.File:
+                    var f = entityMetadata.Files[Convert.ToInt32(@group.Paths)];
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, f); }
+                    return f;
+                case PropertyGroupKind.DateRange:
+                    var dr = entityMetadata.DateRanges[Convert.ToInt32(@group.Paths)];
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, dr); }
+                    return dr;
+                case PropertyGroupKind.Relationship:
+                    var entityConfiguration = entityMetadata as IEntityConfiguration;
+                    //var property2 = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
+                    //var rel = entityMetadata.Relationships.Single(p => p.Source.Property.Name == @group.Paths);
+                    //if (set) { document.SetValueAtPropertyPath(mapping.Key, rel.Source); }
+                    //return rel.Source;
+                    var entityRelationships = entityConfiguration.AllRelationships();
+                    var rel = entityRelationships.Single(p => p.ThisEnd.Property.Name == @group.Paths);
+                    if (set) { document.SetValueAtPropertyPath(mapping.Key, rel.ThisEnd); }
+                    return rel.ThisEnd;
+            }
+
+            return null;
+        }
+    }
+}

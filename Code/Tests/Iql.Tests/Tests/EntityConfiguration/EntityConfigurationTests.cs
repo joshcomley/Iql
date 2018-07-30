@@ -7,6 +7,7 @@ using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Entities.Dates;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.EntityConfiguration
@@ -14,40 +15,13 @@ namespace Iql.Tests.Tests.EntityConfiguration
     [TestClass]
     public class EntityConfigurationTests : TestsBase
     {
-#if !TypeScript
-        [TestMethod]
-        public void TestDeserializationOfEntityConfiguration()
-        {
-            var json = EntityConfigurationJson.Json;
-            var configuration = EntityConfigurationParser.FromJson(json);
-            var scaffold = configuration.EntityTypes.Single(e => e.Name == "Scaffold");
-            var imageProperty = scaffold.Properties.Single(p => p.Name == "ImageUrl");
-
-            Assert.IsTrue(imageProperty.HasMediaKey);
-
-            Assert.AreEqual(2, imageProperty.MediaKey.Groups.Count);
-
-            var group1 = imageProperty.MediaKey.Groups[0];
-            Assert.AreEqual(1, group1.Parts.Count);
-            Assert.IsTrue(group1.Parts[0].IsPropertyPath);
-            Assert.AreEqual("Client/Guid", group1.Parts[0].Key);
-
-            var group2 = imageProperty.MediaKey.Groups[1];
-            Assert.AreEqual(2, group2.Parts.Count);
-            Assert.IsTrue(group2.Parts[0].IsPropertyPath);
-            Assert.AreEqual("Guid", group2.Parts[0].Key);
-            Assert.AreEqual(1, group1.Parts.Count);
-            Assert.IsFalse(group2.Parts[1].IsPropertyPath);
-            Assert.AreEqual("ImageUrl", group2.Parts[1].Key);
-        }
-#endif
-
         [TestMethod]
         public void MediaKeyShouldBeParseable()
         {
             var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);
             var stringKey = "photo";
-            property.MediaKey
+            var file = new File<ApplicationUser>(property);
+            var mediaKey = new MediaKey<ApplicationUser>(file)
                 .AddGroup(g =>
                     g.AddPropertyPath(l => l.Client.Type.Id)
                 )
@@ -61,20 +35,21 @@ namespace Iql.Tests.Tests.EntityConfiguration
             user.Client = new Client();
             user.Client.Type = new ClientType();
             user.Client.Type.Id = 7;
-            var evaluated = property.MediaKey.Evaluate(user);
+            var evaluated = mediaKey.Evaluate(user);
             Assert.AreEqual(user.Client.Type.Id.ToString(), evaluated[0][0]);
             Assert.AreEqual(user.Id, evaluated[1][0]);
             Assert.AreEqual(stringKey, evaluated[1][1]);
-            var evaluatedToString = property.MediaKey.EvaluateToString(user);
+            var evaluatedToString = mediaKey.EvaluateToString(user);
             Assert.AreEqual($"{user.Client.Type.Id.ToString()}/{user.Id}-{stringKey}", evaluatedToString);
-            var relationshipPath = property.MediaKey.Groups[0].Parts[0].GetRelationshipPath();
+            var relationshipPath = mediaKey.Groups[0].Parts[0].GetRelationshipPath();
             Assert.AreEqual($"{nameof(ApplicationUser.Client)}/{nameof(Client.Type)}", relationshipPath.PathToHere);
-            property.MediaKey.Clear();
+            mediaKey.Clear();
         }
 
         [TestMethod]
         public async Task MediaKeyShouldBeLazyLoaded()
         {
+            var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);
             var user = new ApplicationUser();
             user.Id = "myuserid";
             user.ClientId = 771;
@@ -83,9 +58,9 @@ namespace Iql.Tests.Tests.EntityConfiguration
             AppDbContext.InMemoryDb.Users.Add(user);
             AppDbContext.InMemoryDb.Clients.Add(client);
             AppDbContext.InMemoryDb.ClientTypes.Add(clientType);
-            var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);
             var stringKey = "photo";
-            property.MediaKey
+            var file = new File<ApplicationUser>(property);
+            var mediaKey = new MediaKey<ApplicationUser>(file)
                 .AddGroup(g =>
                     g.AddPropertyPath(l => l.Client.Type.Name)
                 )
@@ -95,13 +70,13 @@ namespace Iql.Tests.Tests.EntityConfiguration
                         .AddString(stringKey))
                 ;
             var dbUser = await Db.Users.GetWithKeyAsync(user.Id);
-            var evaluated = await property.MediaKey.EvaluateAsync(dbUser, Db);
+            var evaluated = await mediaKey.EvaluateAsync(dbUser, Db);
             Assert.AreEqual(clientType.Name, evaluated[0][0]);
             Assert.AreEqual(user.Id, evaluated[1][0]);
             Assert.AreEqual(stringKey, evaluated[1][1]);
-            var evaluatedToString = await property.MediaKey.EvaluateToStringAsync(dbUser, Db);
+            var evaluatedToString = await mediaKey.EvaluateToStringAsync(dbUser, Db);
             Assert.AreEqual($"{clientType.Name}/{user.Id}-{stringKey}", evaluatedToString);
-            property.MediaKey.Clear();
+            mediaKey.Clear();
         }
 
         [TestMethod]

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Iql.Entities.Dates;
 
 namespace Iql.Server.Serialization
 {
@@ -23,7 +24,9 @@ namespace Iql.Server.Serialization
         PropertyCollection,
         Geographic,
         NestedSet,
-        Relationship
+        Relationship,
+        DateRange,
+        File
     }
 
     public class SerializedPropertyGroup
@@ -101,10 +104,6 @@ namespace Iql.Server.Serialization
                 //}
                 //writer.WriteValue((value as IProperty).Name);
                 //writer.WriteRaw("{}");
-                if (writer.Path.Contains("Relationships"))
-                {
-                    int a = 0;
-                }
                 if (value != null)
                 {
                     //if (IsInPropertyOrder)
@@ -141,6 +140,8 @@ namespace Iql.Server.Serialization
                             nameof(IEntityMetadata.Properties),
                             nameof(IEntityMetadata.NestedSets),
                             nameof(IEntityMetadata.Geographics),
+                            nameof(IEntityMetadata.DateRanges),
+                            nameof(IEntityMetadata.Files),
                             $@"{nameof(IEntityMetadata.Relationships)}\[[0-9]+\]\.({nameof(IRelationship.Source)}|{nameof(IRelationship.Target)})",
                         });
                         if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, false, $"({directConversion})"))
@@ -206,6 +207,16 @@ namespace Iql.Server.Serialization
                     {
                         kind = PropertyGroupKind.NestedSet;
                         path = entityConfiguration.NestedSets.IndexOf(propertyGroup as INestedSet).ToString();
+                    }
+                    else if (propertyGroup is IDateRange)
+                    {
+                        kind = PropertyGroupKind.DateRange;
+                        path = entityConfiguration.DateRanges.IndexOf(propertyGroup as IDateRange).ToString();
+                    }
+                    else if (propertyGroup is IFile)
+                    {
+                        kind = PropertyGroupKind.File;
+                        path = entityConfiguration.Files.IndexOf(propertyGroup as IFile).ToString();
                     }
                     else if (propertyGroup is IRelationshipDetailMetadata)
                     {
@@ -319,7 +330,7 @@ namespace Iql.Server.Serialization
                 if (typeof(IProperty).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(typeof(IPropertyMetadata), memberSerialization)
-                        .Where(p => p.PropertyName != nameof(IPropertyMetadata.HasMediaKey) && p.PropertyName != nameof(IProperty.EntityConfiguration))
+                        .Where(p => p.PropertyName != nameof(IProperty.EntityConfiguration))
                         .ToList();
                 }
                 if (typeof(ITypeDefinition).IsAssignableFrom(type))
@@ -358,6 +369,18 @@ namespace Iql.Server.Serialization
                         .Where(p => p.PropertyName != nameof(IGeographic.EntityConfiguration))
                         .ToList();
                 }
+                if (typeof(IDateRange).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(IDateRange), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IDateRange.EntityConfiguration))
+                        .ToList();
+                }
+                if (typeof(IFile).IsAssignableFrom(type))
+                {
+                    return base.CreateProperties(typeof(IFile), memberSerialization)
+                        .Where(p => p.PropertyName != nameof(IFile.EntityConfiguration))
+                        .ToList();
+                }
                 if (typeof(INestedSet).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(typeof(INestedSet), memberSerialization)
@@ -367,7 +390,7 @@ namespace Iql.Server.Serialization
                 if (typeof(IMediaKey).IsAssignableFrom(type))
                 {
                     return base.CreateProperties(typeof(IMediaKey), memberSerialization)
-                        .Where(p => p.PropertyName != nameof(IMediaKey.Property))
+                        .Where(p => p.PropertyName != nameof(IMediaKey.File))
                         .ToList();
                 }
                 if (typeof(IMediaKeyGroup).IsAssignableFrom(type))

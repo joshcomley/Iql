@@ -63,7 +63,7 @@ namespace Iql.Server
                 var entityConfiguration = builder.GetEntityByType(entityType);
                 foreach (var property in entityConfiguration.Properties)
                 {
-                    if (property.Geographic != null || property.NestedSet.Kind != NestedSetPropertyKind.None)
+                    if (property.Geographic != null || property.NestedSet != null)
                     {
                         property.ReadOnly = true;
                     }

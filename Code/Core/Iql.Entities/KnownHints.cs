@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Newtonsoft.Json;
-
-namespace Iql.Entities
+﻿namespace Iql.Entities
 {
     public class KnownHints
     {
@@ -18,9 +13,6 @@ namespace Iql.Entities
         public const string Percentage = Prefix + nameof(Percentage);
         public const string DateAndTime = Prefix + nameof(DateAndTime);
         public const string PhoneNumber = Prefix +nameof(PhoneNumber);
-        private const string Range = Prefix + nameof(Range) + ":";
-        public const string RangeStart = Range + "Start";
-        public const string RangeEnd = Range + "End";
         private const string HelpText = Prefix + nameof(HelpText) + ":";
         public const string HelpTextTop = HelpText + "Top";
         public const string HelpTextBottom = HelpText + "Bottom";
@@ -31,26 +23,8 @@ namespace Iql.Entities
         public const string Title = Prefix + nameof(Title);
         public const string Image = Prefix + nameof(Image);
         public const string Video = Prefix + nameof(Video);
-        public const string File = Prefix + nameof(File);
         public const string EntityPreview = Prefix + nameof(EntityPreview);
         public const string SubTitle = Prefix + nameof(SubTitle);
-
-        public static string FileTypeFor(string propertyName)
-        {
-            return $"{Prefix}FileTypeFor:{propertyName}";
-        }
-        public static string FileNameFor(string propertyName)
-        {
-            return $"{Prefix}FileNameFor:{propertyName}";
-        }
-        public static string PreviewFor(string propertyName)
-        {
-            return $"{Prefix}PreviewFor:{propertyName}";
-        }
-        public static string FileRevisionFor(string propertyName)
-        {
-            return $"{Prefix}FileRevisionFor:{propertyName}";
-        }
 
         public const string Version = Prefix + "Version";
     }

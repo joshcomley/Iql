@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using Iql.Entities.Dates;
 
 namespace Iql.Entities
 {
     public class MediaKey<T> : MediaKeyBase
         where T : class
     {
-        public IEntityProperty<T> Property
+        public File<T> File
         {
-            get => (IEntityProperty<T>)PropertyInternal;
-            set => PropertyInternal = value;
+            get => (File<T>)FileInternal;
+            set => FileInternal = value;
         }
 
-        public MediaKey(IEntityProperty<T> property)
+        public MediaKey(File<T> file)
         {
-            Property = property;
+            File = file;
         }
 
         public MediaKey<T> AddGroup(Action<MediaKeyGroup<T>> configureGroup)

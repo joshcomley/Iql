@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Entities.Dates;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 
@@ -9,8 +10,10 @@ namespace Iql.Entities
 {
     public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
     {
-        NestedSetProperty NestedSet { get; }
+        IDateRange DateRange { get; }
+        INestedSet NestedSet { get; }
         IGeographic Geographic { get; }
+        IFile File { get; }
         bool IsLongitudeProperty { get; }
         bool IsLatitudeProperty { get; }
         bool IsLongitudeOrLatitudeProperty { get; }

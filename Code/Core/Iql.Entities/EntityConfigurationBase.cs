@@ -1,6 +1,8 @@
+using Iql.Entities.Dates;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Extensions;
 using Iql.Entities.Geography;
+using Iql.Entities.Lists;
 using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
@@ -8,7 +10,6 @@ using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.Lists;
 
 namespace Iql.Entities
 {
@@ -20,9 +21,30 @@ namespace Iql.Entities
         private string _previewPropertyName;
         public IList<IProperty> Properties { get; set; }
 
-        public IList<IRelationship> Relationships
+        public IList<IRelationship> Relationships => _relationships;
+
+        public IPropertyGroup[] AllPropertyGroups()
         {
-            get => _relationships;
+            var list = new List<IPropertyGroup>();
+            var relationships = AllRelationships();
+            if (relationships != null)
+            {
+                foreach (var relationship in relationships)
+                {
+                    list.Add(relationship.ThisEnd);
+                }
+            }
+
+            var others = new IEnumerable<IPropertyGroup>[] { NestedSets, Geographics, DateRanges, Files };
+            for (var i = 0; i < others.Length; i++)
+            {
+                var group = others[i];
+                if (group != null)
+                {
+                    list.AddRange(group);
+                }
+            }
+            return list.Distinct().ToArray();
         }
 
         public object GetVersion(object entity)
@@ -72,15 +94,14 @@ namespace Iql.Entities
             if (PropertyOrder == null || !PropertyOrder.Any())
             {
                 var all = new List<IPropertyGroup>();
-                all.AddRange(Properties.Where(p => p.Geographic == null && p.NestedSet == null));
-                if (Geographics != null)
-                {
-                    all.AddRange(Geographics);
-                }
-                if (NestedSets != null)
-                {
-                    all.AddRange(NestedSets);
-                }
+                all.AddRange(Properties.Where(p =>
+                    p.Geographic == null &&
+                    p.NestedSet == null &&
+                    p.Relationship == null &&
+                    p.DateRange == null));
+
+                all.AddRange(AllPropertyGroups());
+
                 return all.ToArray();
             }
 
@@ -99,6 +120,8 @@ namespace Iql.Entities
 
         public IList<IGeographic> Geographics { get; set; } = new List<IGeographic>();
         public IList<INestedSet> NestedSets { get; set; } = new List<INestedSet>();
+        public IList<IDateRange> DateRanges { get; set; } = new List<IDateRange>();
+        public IList<IFile> Files { get; set; } = new List<IFile>();
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
         public IEntityKey Key { get; set; }

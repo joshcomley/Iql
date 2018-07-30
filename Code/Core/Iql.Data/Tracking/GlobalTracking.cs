@@ -40,7 +40,7 @@ namespace Iql.Data.Tracking
 
         public static bool IsEntityNew(object entity)
         {
-            return !IsEntityTracked(entity) || GetEntityState(entity).IsNew;
+            return IsEntityTracked(entity) && GetEntityState(entity)?.IsNew == true;
         }
     }
 }

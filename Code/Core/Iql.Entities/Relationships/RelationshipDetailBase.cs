@@ -182,6 +182,7 @@ namespace Iql.Entities.Relationships
             return list.ToArray();
         }
 
+        public string Key { get; set; }
         public PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
         public IRuleCollection<IBinaryRule> ValidationRules { get; set; }
         public IRuleCollection<IDisplayRule> DisplayRules { get; set; }

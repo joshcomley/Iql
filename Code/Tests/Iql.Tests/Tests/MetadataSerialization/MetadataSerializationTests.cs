@@ -45,6 +45,9 @@ namespace Iql.Tests.Tests.MetadataSerialization
                         c3.ContentAlignment = ContentAlignment.Horizontal;
                     }),
                 c => c.NestedSets[0]);
+            clientConfig.HasFile(f => f.Description,
+                mk => mk.AddGroup(g => g.AddPropertyPath(p => p.CreatedByUser.Id).AddString("test")),
+                key: "my-file");
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.PropertyOrder[1] as IPropertyCollection).ContentAlignment);
@@ -53,6 +56,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
 
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
+            Assert.IsNotNull(clientContentParsed.Files[0].MediaKey);
             var sitesContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));
             var clientRelationshipParsed = sitesContentParsed.Relationships.First(r => r.Constraints.Any(c => c.SourceKeyProperty.Name == nameof(Site.ClientId)));
             Assert.AreEqual(7, clientRelationship.Metadata.Get("NumberSeven"));
@@ -61,10 +65,10 @@ namespace Iql.Tests.Tests.MetadataSerialization
             Assert.AreEqual(123L, clientContentParsed.Metadata.Get("abc"));
             var averageIncomeProperty = clientConfig.FindProperty(nameof(Client.AverageIncome));
             var averageSalesProperty = clientConfig.FindProperty(nameof(Client.AverageSales));
-            Assert.AreEqual(averageIncomeProperty.NestedSet.NestedSet, clientConfig.NestedSets.First());
-            Assert.AreEqual(averageIncomeProperty.NestedSet.Kind, NestedSetPropertyKind.Left);
-            Assert.AreEqual(averageSalesProperty.NestedSet.NestedSet, clientConfig.NestedSets.First());
-            Assert.AreEqual(averageSalesProperty.NestedSet.Kind, NestedSetPropertyKind.Right);
+            Assert.AreEqual(averageIncomeProperty.NestedSet, clientConfig.NestedSets.First());
+            Assert.AreEqual(averageIncomeProperty.NestedSet.GetPropertyKind(averageIncomeProperty), NestedSetPropertyKind.Left);
+            Assert.AreEqual(averageSalesProperty.NestedSet, clientConfig.NestedSets.First());
+            Assert.AreEqual(averageSalesProperty.NestedSet.GetPropertyKind(averageSalesProperty), NestedSetPropertyKind.Right);
             clientConfig.Geographics.Clear();
             clientConfig.NestedSets.Clear();
         }

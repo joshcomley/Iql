@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Iql.Entities.Dates;
 
 namespace Iql.Entities
 {
@@ -902,6 +903,61 @@ namespace Iql.Entities
             return this;
         }
 
+        public EntityConfiguration<T> HasDateRange(
+            Expression<Func<T, object>> startDateProperty,
+            Expression<Func<T, object>> endDateProperty,
+            string key = null,
+            Action<IDateRange> configure = null
+        )
+        {
+            var dateRange = new DateRange(
+                FindPropertyByExpression(startDateProperty),
+                FindPropertyByExpression(endDateProperty),
+                key);
+            DateRanges.Add(dateRange);
+            if (configure != null)
+            {
+                configure(dateRange);
+            }
+            return this;
+        }
+
+        public File<T>[] FindFiles(Func<File<T>, bool> filter)
+        {
+            return Files.Select(f => (File<T>) f).Where(filter).ToArray();
+        }
+
+        public EntityConfiguration<T> HasFile(
+            Expression<Func<T, object>> fileUrlProperty,
+            Action<MediaKey<T>> configureMediaKey,
+            Expression<Func<T, object>> previewUrlProperty =null,
+            Expression<Func<T, object>> nameProperty = null,
+            Expression<Func<T, object>> versionProperty = null,
+            Expression<Func<T, object>> kindProperty = null,
+            string key = null,
+            Action<IFile> configure = null
+        )
+        {
+            var fileProperty = FindPropertyByExpression(fileUrlProperty);
+            // MediaKey should support preview variable
+            var file = new File<T>(
+                fileProperty,
+                FindPropertyByExpression(previewUrlProperty),
+                FindPropertyByExpression(nameProperty),
+                FindPropertyByExpression(versionProperty),
+                FindPropertyByExpression(kindProperty),
+                key);
+            var mediaKey = new MediaKey<T>(file);
+            configureMediaKey(mediaKey);
+            file.MediaKey = mediaKey;
+            Files.Add(file);
+            if (configure != null)
+            {
+                configure(file);
+            }
+            return this;
+        }
+
         public EntityConfiguration<T> HasNestedSet(
             Expression<Func<T, object>> leftProperty,
             Expression<Func<T, object>> rightProperty,
@@ -913,6 +969,7 @@ namespace Iql.Entities
             Expression<Func<T, object>> parentProperty = null,
             Expression<Func<T, object>> idProperty = null,
             string setKey = null,
+            string key = null,
             Action<INestedSet> configure = null)
         {
             var nestedSet = new NestedSet(
@@ -925,7 +982,8 @@ namespace Iql.Entities
                 FindPropertyByExpression(parentIdProperty),
                 FindPropertyByExpression(parentProperty),
                 FindPropertyByExpression(idProperty),
-                setKey);
+                setKey,
+                key);
             NestedSets.Add(nestedSet);
             if (configure != null)
             {
