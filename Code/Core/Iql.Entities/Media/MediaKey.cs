@@ -1,18 +1,18 @@
 ﻿using System;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
-    public class MediaKey<T> : MediaKeyBase
+    public class MediaKey<T> : MediaKeyBase, IConfigurable<MediaKey<T>>
         where T : class
     {
-        public File<T> File
+        public IFileUrl<T> File
         {
-            get => (File<T>)FileInternal;
+            get => (IFileUrl<T>)FileInternal;
             set => FileInternal = value;
         }
 
-        public MediaKey(File<T> file)
+        public MediaKey(IFileUrl<T> file)
         {
             File = file;
         }
@@ -37,6 +37,16 @@ namespace Iql.Entities
         protected override void ClearGroups()
         {
             Groups.Clear();
+        }
+
+        public MediaKey<T> Configure(Action<MediaKey<T>> configure)
+        {
+            if (configure != null)
+            {
+                configure(this);
+            }
+
+            return null;
         }
     }
 }

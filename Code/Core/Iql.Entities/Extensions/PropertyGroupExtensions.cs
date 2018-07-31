@@ -5,6 +5,10 @@ namespace Iql.Entities.Extensions
 {
     public static class PropertyGroupExtensions
     {
+        public static string ResolveGroupName(this IPropertyGroup propertyGroup)
+        {
+            return $"__{string.Join("_", propertyGroup.GetGroupProperties().Select(_ => _.Name))}__";
+        }
         public static IProperty[] FlattenAllToSimpleProperties(this IEnumerable<IPropertyGroup> propertyGroup)
         {
             var list = new List<IProperty>();
@@ -56,7 +60,7 @@ namespace Iql.Entities.Extensions
             if (propertyGroup.Kind.HasFlag(PropertyKind.GroupCollection))
             {
                 var coll = propertyGroup as IPropertyCollection;
-                foreach (var property in coll.Properties)
+                foreach (var property in coll.GetGroupProperties())
                 {
                     property.FlattenInternal(properties);
                 }

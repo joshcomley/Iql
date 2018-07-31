@@ -17,7 +17,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
@@ -929,27 +930,12 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> HasFile(
             Expression<Func<T, object>> fileUrlProperty,
-            Action<MediaKey<T>> configureMediaKey,
-            Expression<Func<T, object>> previewUrlProperty =null,
-            Expression<Func<T, object>> nameProperty = null,
-            Expression<Func<T, object>> versionProperty = null,
-            Expression<Func<T, object>> kindProperty = null,
-            string key = null,
-            Action<IFile> configure = null
+            Action<File<T>> configure = null
         )
         {
             var fileProperty = FindPropertyByExpression(fileUrlProperty);
             // MediaKey should support preview variable
-            var file = new File<T>(
-                fileProperty,
-                FindPropertyByExpression(previewUrlProperty),
-                FindPropertyByExpression(nameProperty),
-                FindPropertyByExpression(versionProperty),
-                FindPropertyByExpression(kindProperty),
-                key);
-            var mediaKey = new MediaKey<T>(file);
-            configureMediaKey(mediaKey);
-            file.MediaKey = mediaKey;
+            var file = new File<T>(fileProperty);
             Files.Add(file);
             if (configure != null)
             {

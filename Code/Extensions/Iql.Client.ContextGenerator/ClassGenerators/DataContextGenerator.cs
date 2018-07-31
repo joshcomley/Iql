@@ -21,6 +21,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Iql.Entities.PropertyGroups.Files;
 using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
@@ -618,13 +619,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return typeParameter;
         }
 
+        private const string DefaultLambdaKey = "p";
         private string ConfigreMetadata(IMetadata metadata,
             IVariable propertyParameter = null,
-            string lambdaKey = "p",
+            string lambdaKey = null,
             bool appendConfigure = true,
             IEntityMetadata sourceEntityConfiguration = null
             )
         {
+            if (lambdaKey == null)
+            {
+                lambdaKey = DefaultLambdaKey;
+            }
             if (metadata != null)
             {
                 if (appendConfigure)
@@ -657,6 +663,16 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         metadataType = typeof(IRelationshipDetailMetadata);
                         metadataSolidType = typeof(RelationshipDetail);
+                    }
+                    else if (metadata is IFile)
+                    {
+                        metadataType = typeof(IFile);
+                        metadataSolidType = typeof(File);
+                    }
+                    else if (metadata is IFilePreview)
+                    {
+                        metadataType = typeof(IFilePreview);
+                        metadataSolidType = typeof(FilePreview);
                     }
                     else
                     {
@@ -775,18 +791,23 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasFile)}(");
                                 var parameters = new[]
                                 {
-                                    file.FileUrlProperty,
-                                    file.PreviewUrlProperty,
-                                    file.NameProperty,
-                                    file.VersionProperty,
-                                    file.KindProperty
+                                    file.UrlProperty
                                 };
+                                var subLambda = $"{lambdaKey}_f";
                                 var parameterStrings =
-                                    parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                    parameters.Select(p => p == null ? "null" : $"{subLambda} => {subLambda}.{p.Name}")
                                         .ToList();
-                                parameterStrings.Add(String(file.Key));
-                                parameterStrings.Add(ConfigreMetadata(file, null, $"{lambdaKey}_ns", false));
-                                sb.Append(string.Join(", ", parameterStrings));
+                                var config = ConfigreMetadata(file, null, subLambda, false);
+                                if (string.IsNullOrWhiteSpace(config))
+                                {
+                                    config = $"{subLambda} => {{}}";
+                                }
+                                var allParams = new[]
+                                {
+                                    parameterStrings[0],
+                                    config
+                                };
+                                sb.Append(string.Join(", ", allParams));
                                 sb.Append(");");
                             }
                         }
@@ -911,33 +932,34 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         }
                         dealtWith = true;
                     }
-                    //else if (isProperty && metadataProperty.Name == nameof(IPropertyMetadata.MediaKey))
-                    //{
-                    //    // Special case
-                    //    dealtWith = true;
-                    //    if (propertyMetadata.MediaKey?.Groups?.Any() == true)
-                    //    {
-                    //        sb.AppendLine($"{lambdaKey}.MediaKey");
-                    //        foreach (var group in propertyMetadata.MediaKey.Groups)
-                    //        {
-                    //            if (group.Parts != null && group.Parts.Any())
-                    //            {
-                    //                sb.AppendLine($".AddGroup({lambdaKey}_g => {lambdaKey}_g");
-                    //                foreach (var part in group.Parts)
-                    //                {
-                    //                    sb.AppendLine(
-                    //                        part.IsPropertyPath
-                    //                            ? $".AddPropertyPath({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
-                    //                            : $@".AddString(""{part.Key}"")");
-                    //                }
+                    else if (isProperty && metadataProperty.Name == nameof(IFile.MediaKey))
+                    {
+                        // Special case
+                        dealtWith = true;
+                        var mediaKey = metadata.GetPropertyValueByNameAs<IMediaKey>(nameof(IFile.MediaKey));
+                        if (mediaKey?.Groups?.Any() == true)
+                        {
+                            sb.AppendLine($"{lambdaKey}.{nameof(IFile.MediaKey)}");
+                            foreach (var group in mediaKey.Groups)
+                            {
+                                if (group.Parts != null && group.Parts.Any())
+                                {
+                                    sb.AppendLine($".{nameof(MediaKey<object>.AddGroup)}({lambdaKey}_g => {lambdaKey}_g");
+                                    foreach (var part in group.Parts)
+                                    {
+                                        sb.AppendLine(
+                                            part.IsPropertyPath
+                                                ? $".{nameof(MediaKeyGroup<object>.AddPropertyPath)}({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
+                                                : $@".{nameof(MediaKeyGroup<object>.AddString)}(""{part.Key}"")");
+                                    }
 
-                    //                sb.Append(")");
-                    //            }
-                    //        }
+                                    sb.Append(")");
+                                }
+                            }
 
-                    //        sb.Append(";");
-                    //    }
-                    //}
+                            sb.Append(";");
+                        }
+                    }
                     else if (metadataProperty.Name == nameof(IMetadata.Metadata))
                     {
                         dealtWith = true;
@@ -953,6 +975,16 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 items.Add($"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
                             }
                             sb.Append($"{string.Join(".", items)};");
+                        }
+                    }
+                    else if (metadata is IFileUrlBase &&
+                             typeof(IProperty).IsAssignableFrom(metadataProperty.PropertyType))
+                    {
+                        dealtWith = true;
+                        var property = (IProperty)metadataProperty.GetValue(metadata);
+                        if (property != null)
+                        {
+                            sb.AppendLine($"{lambdaKey}.{metadataProperty.Name} = {DefaultLambdaKey}.{nameof(EntityConfiguration<object>.FindProperty)}({String(property.Name)});");
                         }
                     }
                     else if (metadataProperty.CanWrite && (metadataProperty.PropertyType.IsClass || metadataProperty.PropertyType.IsInterface) && metadataProperty.PropertyType != typeof(string))

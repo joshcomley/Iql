@@ -1,5 +1,5 @@
 ﻿using Iql.Entities;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Server.Serialization
 {

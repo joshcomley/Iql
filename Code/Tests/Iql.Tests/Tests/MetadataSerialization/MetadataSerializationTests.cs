@@ -5,6 +5,7 @@ using Iql.Server.Serialization;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Iql.Entities.PropertyGroups.Files;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.MetadataSerialization
@@ -46,8 +47,19 @@ namespace Iql.Tests.Tests.MetadataSerialization
                     }),
                 c => c.NestedSets[0]);
             clientConfig.HasFile(f => f.Description,
-                mk => mk.AddGroup(g => g.AddPropertyPath(p => p.CreatedByUser.Id).AddString("test")),
-                key: "my-file");
+                f =>
+                {
+                    f.MediaKey.AddGroup(g => g.AddPropertyPath(p => p.CreatedByUser.Id).AddString("root-mk-test"));
+                    f.Key = "my-file";
+                    f.AddPreview(
+                        _ => _.Name,
+                        200,
+                        configure:
+                        fp => fp.MediaKey.AddGroup(
+                            g => g.AddPropertyPath(p => p.CreatedByUser.Id).AddString("sub-mk-test")
+                        )
+                    );
+                });
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.PropertyOrder[1] as IPropertyCollection).ContentAlignment);
@@ -56,7 +68,12 @@ namespace Iql.Tests.Tests.MetadataSerialization
 
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
-            Assert.IsNotNull(clientContentParsed.Files[0].MediaKey);
+            var file = clientContentParsed.Files[0];
+            Assert.IsNotNull(file.MediaKey);
+            Assert.AreEqual(1, file.Previews.Count);
+            var filePreview = file.Previews[0];
+            Assert.IsNotNull(filePreview.MediaKey);
+            Assert.AreEqual("sub-mk-test", filePreview.MediaKey.Groups[0].Parts[1].Key);
             var sitesContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));
             var clientRelationshipParsed = sitesContentParsed.Relationships.First(r => r.Constraints.Any(c => c.SourceKeyProperty.Name == nameof(Site.ClientId)));
             Assert.AreEqual(7, clientRelationship.Metadata.Get("NumberSeven"));

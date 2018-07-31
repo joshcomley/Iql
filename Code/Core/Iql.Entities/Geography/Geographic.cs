@@ -1,4 +1,6 @@
-﻿namespace Iql.Entities.Geography
+﻿using System.Linq;
+
+namespace Iql.Entities.Geography
 {
     public class Geographic : PropertyGroupBase<IGeographic>, IGeographic
     {
@@ -24,7 +26,7 @@
 #endif
         public override IPropertyGroup[] GetGroupProperties()
         {
-            return new[] { LongitudeProperty, LatitudeProperty };
+            return new[] { LongitudeProperty, LatitudeProperty }.Where(_ => _ != null).ToArray();
         }
     }
 }

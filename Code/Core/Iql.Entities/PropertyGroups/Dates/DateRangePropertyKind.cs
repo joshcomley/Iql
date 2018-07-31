@@ -1,4 +1,4 @@
-﻿namespace Iql.Entities.Dates
+﻿namespace Iql.Entities.PropertyGroups.Dates
 {
     public enum DateRangePropertyKind
     {

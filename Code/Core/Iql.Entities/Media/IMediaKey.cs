@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
     public interface IMediaKey
     {
-        IFile File { get; }
+        IFileUrlBase File { get; }
         string Separator { get; set; }
         IList<IMediaKeyGroup> Groups { get; }
         string[][] Evaluate(object entity);

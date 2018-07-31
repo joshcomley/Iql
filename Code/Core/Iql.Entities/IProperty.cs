@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Iql.Entities.Dates;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
     public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
     {
+        IPropertyGroup PropertyGroup { get; }
         IDateRange DateRange { get; }
         INestedSet NestedSet { get; }
         IGeographic Geographic { get; }

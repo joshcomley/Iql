@@ -1,6 +1,8 @@
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using System;
+using System.Linq;
+using Iql.Entities.Extensions;
 
 namespace Iql.Entities
 {
@@ -8,6 +10,8 @@ namespace Iql.Entities
         where T : IConfigurable<T>
     {
         public string Key { get; set; }
+        public string GroupName => this.ResolveGroupName();
+
         public abstract PropertyKind Kind { get; set; }
         public virtual IEntityConfiguration EntityConfiguration { get; }
         public IRuleCollection<IBinaryRule> ValidationRules { get; set; }

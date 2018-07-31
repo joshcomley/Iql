@@ -9,12 +9,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
     public abstract class PropertyBase : PropertyGroupBase<IProperty>, IPropertyMetadata
     {
+        public IPropertyGroup PropertyGroup
+        {
+            get
+            {
+                if (Relationship != null)
+                {
+                    return Relationship.ThisEnd;
+                }
+
+                if (Geographic != null)
+                {
+                    return Geographic;
+                }
+
+                if (NestedSet != null)
+                {
+                    return NestedSet;
+                }
+
+                if (DateRange != null)
+                {
+                    return DateRange;
+                }
+
+                if (File != null)
+                {
+                    return File;
+                }
+
+                return null;
+            }
+        }
         public override IPropertyGroup[] GetGroupProperties()
         {
             return new[] { this as IProperty };

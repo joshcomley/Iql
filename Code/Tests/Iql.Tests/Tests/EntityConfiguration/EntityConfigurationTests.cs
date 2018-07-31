@@ -7,7 +7,7 @@ using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Files;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Tests.EntityConfiguration

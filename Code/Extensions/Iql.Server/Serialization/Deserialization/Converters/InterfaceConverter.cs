@@ -11,7 +11,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Server.Serialization
 {
@@ -44,6 +45,7 @@ namespace Iql.Server.Serialization
             Map<IGeographic, Geographic>();
             Map<IDateRange, DateRange>();
             Map<IFile, File>();
+            Map<IFilePreview, FilePreview>();
             Map<INestedSet, NestedSet>();
             Map<IPropertyGroup, PropertyCollection>();
             // Map<IMetadataCollection, MetadataCollectionJson>();
@@ -86,10 +88,6 @@ namespace Iql.Server.Serialization
                 return null;
             }
 
-            if (typeof(IMediaKey).IsAssignableFrom(objectType))
-            {
-                int a = 0;
-            }
             var result = serializer.Deserialize(reader, TypeMappings[objectType]);
             if (objectType == typeof(IEntityConfiguration))
             {

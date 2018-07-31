@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
     public abstract class MediaKeyBase : IMediaKey
     {
-        protected IFile FileInternal { get; set; }
+        protected IFileUrlBase FileInternal { get; set; }
         public string Separator { get; set; } = "/";
-        IFile IMediaKey.File => FileInternal;
+        IFileUrlBase IMediaKey.File => FileInternal;
         public IList<IMediaKeyGroup> Groups { get; } = new List<IMediaKeyGroup>();
         public string[][] Evaluate(object entity)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Iql.Entities.Dates
+namespace Iql.Entities.PropertyGroups.Dates
 {
     public class DateRange : PropertyGroupBase<IDateRange>, IDateRange
     {

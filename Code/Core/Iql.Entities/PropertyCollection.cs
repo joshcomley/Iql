@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql.Entities
 {
@@ -15,7 +16,15 @@ namespace Iql.Entities
         public List<IPropertyGroup> Properties { get; }
         public override IPropertyGroup[] GetGroupProperties()
         {
-            return Properties.ToArray();
+            return Properties.Select(p =>
+            {
+                if (p.Kind.HasFlag(PropertyKind.Property))
+                {
+                    var pr = p as IProperty;
+                    return pr.PropertyGroup ?? pr;
+                }
+                return p;
+            }).ToArray();
         }
 
         public PropertyCollection(IEntityConfiguration entityConfiguration, string key = null) : base(entityConfiguration, null)

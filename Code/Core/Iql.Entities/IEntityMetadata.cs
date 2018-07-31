@@ -3,8 +3,9 @@ using Iql.Entities.Geography;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using System.Collections.Generic;
-using Iql.Entities.Dates;
 using Iql.Entities.NestedSets;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {

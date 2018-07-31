@@ -1,53 +1,74 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-namespace Iql.Entities.Dates
+namespace Iql.Entities.PropertyGroups.Files
 {
     public class FileBase : PropertyGroupBase<IFile>, IFile
     {
         public FileBase(
-            IProperty fileUrlProperty = null,
-            IProperty previewUrlProperty = null,
+            IProperty urlProperty = null,
             IProperty nameProperty = null,
             IProperty versionProperty = null,
             IProperty kindProperty = null,
             string key = null) : base(null, key)
         {
-            FileUrlProperty = fileUrlProperty;
-            PreviewUrlProperty = previewUrlProperty;
+            UrlProperty = urlProperty;
             NameProperty = nameProperty;
             VersionProperty = versionProperty;
             KindProperty = kindProperty;
         }
 
-        IMediaKey IFile.MediaKey
+        IMediaKey IFileUrlBase.MediaKey
         {
             get => MediaKeyInternal;
             set => MediaKeyInternal = value;
         }
         protected IMediaKey MediaKeyInternal { get; set; }
         public override IEntityConfiguration EntityConfiguration =>
-            (FileUrlProperty ?? PreviewUrlProperty ?? NameProperty ?? VersionProperty ?? KindProperty)?.EntityConfiguration;
-        public override PropertyKind Kind { get; set; }
-        public IProperty FileUrlProperty { get; set; }
-        public IProperty PreviewUrlProperty { get; set; }
+            EntityConfigurationInternal;
+
+        protected IEntityConfiguration EntityConfigurationInternal =>
+            (UrlProperty ?? NameProperty ?? VersionProperty ?? KindProperty)?.EntityConfiguration;
+
+        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
+        public IList<IFilePreview> Previews { get; set; } = new List<IFilePreview>();
+        public IFile RootFile => RootFileInternal;
+        protected IFile RootFileInternal => this;
+        protected IProperty UrlPropertyInternal { get; set; }
+        public IProperty UrlProperty
+        {
+            get => UrlPropertyInternal;
+            set => UrlPropertyInternal = value;
+        }
+
         public IProperty NameProperty { get; set; }
         public IProperty VersionProperty { get; set; }
         public IProperty KindProperty { get; set; }
 
         public override IPropertyGroup[] GetGroupProperties()
         {
-            return new[] { FileUrlProperty, PreviewUrlProperty, NameProperty, VersionProperty, KindProperty }
-                .Where(p => !Equals(null, p)).ToArray();
+            var list = new List<IPropertyGroup>();
+            list.AddRange(new[] { UrlProperty, NameProperty, VersionProperty, KindProperty });
+            if (Previews != null)
+            {
+                for (var i = 0; i < Previews.Count; i++)
+                {
+                    var preview = Previews[i];
+                    list.Add(preview.UrlProperty);
+                }
+            }
+
+            return list.Where(_ => _ != null).ToArray();
         }
 
         public FilePropertyKind GetPropertyKind(IProperty property)
         {
-            if (property == FileUrlProperty)
+            if (property == UrlProperty)
             {
                 return FilePropertyKind.FileUrl;
             }
 
-            if (property == PreviewUrlProperty)
+            if (Previews?.Any(p => p.UrlProperty == property) == true)
             {
                 return FilePropertyKind.PreviewUrl;
             }

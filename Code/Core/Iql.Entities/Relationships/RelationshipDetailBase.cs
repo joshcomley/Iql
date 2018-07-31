@@ -11,6 +11,8 @@ namespace Iql.Entities.Relationships
 {
     public abstract class RelationshipDetailBase : MetadataBase, IRelationshipDetail
     {
+        public string GroupName => this.ResolveGroupName();
+
         private IProperty[] _constraints;
 
         protected RelationshipDetailBase(
@@ -105,6 +107,11 @@ namespace Iql.Entities.Relationships
                 if (_constraints != null)
                 {
                     return _constraints;
+                }
+
+                if (Relationship == null)
+                {
+                    return new IProperty[] { };
                 }
                 if (_constraintsSubscription == null && Relationship.Constraints is ObservableList<IRelationshipConstraint>)
                 {

@@ -1,4 +1,3 @@
-using Iql.Entities.Dates;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Extensions;
 using Iql.Entities.Geography;
@@ -10,6 +9,8 @@ using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
@@ -91,16 +92,14 @@ namespace Iql.Entities
 
         public IPropertyGroup[] GetGroupProperties()
         {
+            var allPropertyGroups = AllPropertyGroups();
             if (PropertyOrder == null || !PropertyOrder.Any())
             {
                 var all = new List<IPropertyGroup>();
                 all.AddRange(Properties.Where(p =>
-                    p.Geographic == null &&
-                    p.NestedSet == null &&
-                    p.Relationship == null &&
-                    p.DateRange == null));
+                    p.PropertyGroup == null));
 
-                all.AddRange(AllPropertyGroups());
+                all.AddRange(allPropertyGroups);
 
                 return all.ToArray();
             }
@@ -110,7 +109,17 @@ namespace Iql.Entities
             for (var i = 0; i < Properties.Count; i++)
             {
                 var property = Properties[i];
-                if (!flattened.Contains(property))
+                var dealtWith = false;
+                if (property.PropertyGroup != null)
+                {
+                    dealtWith = true;
+                    if (!flattened.Contains(property))
+                    {
+                        ordered.Add(property.PropertyGroup);
+                        flattened.AddRange(property.PropertyGroup.FlattenToSimpleProperties());
+                    }
+                }
+                if (!dealtWith && !flattened.Contains(property))
                 {
                     ordered.Add(property);
                 }
@@ -185,7 +194,7 @@ namespace Iql.Entities
         private string _setName;
         private readonly ObservableList<IRelationship> _relationships = new ObservableList<IRelationship>();
 
-        public EntityConfigurationBase()
+        protected EntityConfigurationBase()
         {
             _relationships.Change.Subscribe(change => { _allRelationships = null; });
         }
@@ -219,16 +228,8 @@ namespace Iql.Entities
             {
                 if (!SetNameSet && _setName == null)
                 {
-                    if (_setFriendlyNameSet)
-                    {
-                        _setName = _setFriendlyName;
-                    }
-                    else
-                    {
-                        _setName = ResolveName();
-                    }
+                    _setName = _setFriendlyNameSet ? _setFriendlyName : ResolveName();
                 }
-
                 return _setName;
             }
             set
