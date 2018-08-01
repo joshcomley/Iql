@@ -865,14 +865,25 @@ namespace Iql.Entities
         //        property);
         //}
 
-        public EntityConfiguration<T> SetPropertyOrder(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        public EntityConfiguration<T> SetEditDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
             var coll = new List<IPropertyGroup>();
             foreach (var property in properties)
             {
                 coll.Add(property(this));
             }
-            PropertyOrder = coll.ToList();
+            EditDisplay = coll.ToList();
+            return this;
+        }
+
+        public EntityConfiguration<T> SetReadDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        {
+            var coll = new List<IPropertyGroup>();
+            foreach (var property in properties)
+            {
+                coll.Add(property(this));
+            }
+            ReadDisplay = coll.ToList();
             return this;
         }
 

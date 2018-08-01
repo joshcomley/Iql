@@ -31,7 +31,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig
                 .HasNestedSet(c => c.AverageIncome, c => c.AverageSales, setKey: "MyNestedSet");
             clientConfig.Geographics[0].SetHint(KnownHints.BigText);
-            clientConfig.SetPropertyOrder(
+            clientConfig.SetEditDisplay(
                 c => c.FindProperty(nameof(Client.Name)),
                 c => c.PropertyCollection(
                     c1 => c1.FindProperty(nameof(Client.Id)),
@@ -62,7 +62,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 });
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
-            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.PropertyOrder[1] as IPropertyCollection).ContentAlignment);
+            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.EditDisplay[1] as IPropertyCollection).ContentAlignment);
 
             var json = db.EntityConfigurationContext.ToJson();
 

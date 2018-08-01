@@ -124,7 +124,8 @@ namespace Iql.Entities
 
         public string GroupPath { get; set; }
 
-        public IList<IPropertyGroup> PropertyOrder { get; set; } = new List<IPropertyGroup>();
+        public IList<IPropertyGroup> EditDisplay { get; set; } = new List<IPropertyGroup>();
+        public IList<IPropertyGroup> ReadDisplay { get; set; } = new List<IPropertyGroup>();
 
         public string Description { get; set; }
         public List<string> Hints { get; set; } = new List<string>();

@@ -3,14 +3,14 @@ using Iql.Entities.Extensions;
 using Iql.Entities.Geography;
 using Iql.Entities.Lists;
 using Iql.Entities.NestedSets;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.PropertyGroups.Dates;
-using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
@@ -92,8 +92,14 @@ namespace Iql.Entities
 
         public IPropertyGroup[] GetGroupProperties()
         {
+            return GetDisplayConfiguration(DisplayConfigurationKind.Edit);
+        }
+
+        public virtual IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind)
+        {
+            var orderedDisplaySetting = kind == DisplayConfigurationKind.Edit ? EditDisplay : ReadDisplay;
             var allPropertyGroups = AllPropertyGroups();
-            if (PropertyOrder == null || !PropertyOrder.Any())
+            if (orderedDisplaySetting == null || !orderedDisplaySetting.Any())
             {
                 var all = new List<IPropertyGroup>();
                 all.AddRange(Properties.Where(p =>
@@ -104,8 +110,8 @@ namespace Iql.Entities
                 return all.ToArray();
             }
 
-            var flattened = PropertyOrder.FlattenAllToSimpleProperties().ToList();
-            var ordered = PropertyOrder.ToList();
+            var flattened = orderedDisplaySetting.FlattenAllToSimpleProperties().ToList();
+            var ordered = orderedDisplaySetting.ToList();
             for (var i = 0; i < Properties.Count; i++)
             {
                 var property = Properties[i];
@@ -119,11 +125,13 @@ namespace Iql.Entities
                         flattened.AddRange(property.PropertyGroup.FlattenToSimpleProperties());
                     }
                 }
+
                 if (!dealtWith && !flattened.Contains(property))
                 {
                     ordered.Add(property);
                 }
             }
+
             return ordered.ToArray();
         }
 

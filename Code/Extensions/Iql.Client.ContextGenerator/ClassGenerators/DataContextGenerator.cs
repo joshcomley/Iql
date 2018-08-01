@@ -720,7 +720,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         continue;
                     }
-                    if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.PropertyOrder))
+                    if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.EditDisplay))
                     {
                         dealtWith = true;
                         // We will do this at the end when we're sure all relationships and other
@@ -1092,12 +1092,20 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             foreach (var config in Schema.EntityConfigurations)
             {
                 var entityMetadata = config.Value;
-                if (entityMetadata.PropertyOrder?.Any() == true)
-                {
-                    sb.AppendLine($"{GetEntityTypeConfiguration(builder, config.Key)}.{nameof(EntityConfiguration<object>.SetPropertyOrder)}({string.Join(",\n", entityMetadata.PropertyOrder.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
-                }
+                ConfigureDisplaySetting(builder, entityMetadata.EditDisplay, sb, config, nameof(EntityConfiguration<object>.SetEditDisplay), entityMetadata);
+                ConfigureDisplaySetting(builder, entityMetadata.ReadDisplay, sb, config, nameof(EntityConfiguration<object>.SetReadDisplay), entityMetadata);
             }
             return sb.ToString();
+        }
+
+        private void ConfigureDisplaySetting(IVariable builder, IList<IPropertyGroup> displaySetting, StringBuilder sb, KeyValuePair<string, IEntityMetadata> config,
+            string displaySettingMethodName, IEntityMetadata entityMetadata)
+        {
+            if (displaySetting?.Any() == true)
+            {
+                sb.AppendLine(
+                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({string.Join(",\n", displaySetting.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
+            }
         }
 
         private string ConfigureRelationships(IVariable builder)

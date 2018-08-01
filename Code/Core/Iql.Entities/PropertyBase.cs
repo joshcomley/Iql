@@ -16,6 +16,8 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : PropertyGroupBase<IProperty>, IPropertyMetadata
     {
+        public bool Internal => PropertyGroup != null;
+        public bool HiddenOrInternal => Hidden || Internal;
         public IPropertyGroup PropertyGroup
         {
             get
@@ -57,9 +59,9 @@ namespace Iql.Entities
                 Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
             : null;
 
-        public IFile File => EntityConfiguration.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != FilePropertyKind.None);
-        public IDateRange DateRange => EntityConfiguration.DateRanges.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != DateRangePropertyKind.None);
-        public INestedSet NestedSet => EntityConfiguration.NestedSets.FirstOrDefault(ns => ns.GetPropertyKind(this as IProperty) != NestedSetPropertyKind.None);
+        public IFile File => EntityConfiguration?.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != FilePropertyKind.None);
+        public IDateRange DateRange => EntityConfiguration?.DateRanges.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != DateRangePropertyKind.None);
+        public INestedSet NestedSet => EntityConfiguration?.NestedSets.FirstOrDefault(ns => ns.GetPropertyKind(this as IProperty) != NestedSetPropertyKind.None);
         public bool IsLongitudeProperty => Equals(Geographic?.LongitudeProperty, this);
         public bool IsLatitudeProperty => Equals(Geographic?.LatitudeProperty, this);
         public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
