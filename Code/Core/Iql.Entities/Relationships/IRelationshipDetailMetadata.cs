@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
-    public interface IRelationshipDetailMetadata : IPropertyGroup
+    public interface IRelationshipDetailMetadata : ISimpleProperty
     {
         bool AllowInlineEditing { get; set; }
         RelationshipSide RelationshipSide { get; }

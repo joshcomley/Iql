@@ -11,6 +11,6 @@ namespace Iql.OData.TypeScript.Generator.Parsers
         public List<EntitySetDefinition> EntitySets { get; set; } = new List<EntitySetDefinition>();
         public List<EnumTypeDefinition> EnumTypes { get; set; } = new List<EnumTypeDefinition>();
         public List<EntityFunctionDefinition> Functions { get; set; } = new List<EntityFunctionDefinition>();
-        public Dictionary<string, IEntityMetadata>  EntityConfigurations { get; set; }
+        public Dictionary<string, IEntityConfiguration>  EntityConfigurations { get; set; }
     }
 }

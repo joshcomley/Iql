@@ -82,14 +82,14 @@ namespace Iql.Entities
         }
 
         private readonly Dictionary<string, IEnumConfiguration> _enumTypes = new Dictionary<string, IEnumConfiguration>();
-        public IEnumerable<IEnumConfiguration> EnumTypes()
+        public IEnumerable<IEnumConfiguration> AllEnumTypes()
         {
             return _enumTypes.Values.ToArray();
         }
 
         public void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action)
         {
-            var all = EntityTypes().ToList();
+            var all = AllEntityTypes().ToList();
             foreach (var config in all)
             {
                 if (filter(config))
@@ -125,7 +125,7 @@ namespace Iql.Entities
             return _enumTypes[name];
         }
 
-        public IEnumerable<IEntityConfiguration> EntityTypes()
+        public IEnumerable<IEntityConfiguration> AllEntityTypes()
         {
             return _entities.Values;
         }

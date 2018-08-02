@@ -212,7 +212,7 @@ namespace Iql.Server.Serialization.Converters
             {
                 return typeof(IProperty).IsAssignableFrom(objectType);
             }
-            return !typeof(IPropertyCollection).IsAssignableFrom(objectType) && typeof(IPropertyGroup).IsAssignableFrom(objectType);
+            return !typeof(IPropertyCollection).IsAssignableFrom(objectType) && !typeof(IPropertyPath).IsAssignableFrom(objectType) && typeof(IPropertyGroup).IsAssignableFrom(objectType);
         }
     }
 }

@@ -17,8 +17,8 @@ namespace Iql.Server.Serialization
             settings.Converters.Add(new IPropertyConverter());
             settings.Converters.Add(new TypeConverter());
             var doc = new EntityConfigurationDocument();
-            doc.EntityTypes.AddRange(entityConfigurationBuilder.EntityTypes());
-            doc.EnumTypes.AddRange(entityConfigurationBuilder.EnumTypes());
+            doc.EntityTypes.AddRange(entityConfigurationBuilder.AllEntityTypes());
+            doc.EnumTypes.AddRange(entityConfigurationBuilder.AllEnumTypes());
             settings.Formatting = Formatting.Indented;
             var serialized = JsonConvert.SerializeObject(doc, settings);
             return serialized;

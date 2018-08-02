@@ -709,7 +709,7 @@ namespace Iql.Tests.Tests
             PrintOutAllPropertyKinds()
         {
             var sb = new StringBuilder();
-            foreach (var config in Db.EntityConfigurationContext.EntityTypes())
+            foreach (var config in Db.EntityConfigurationContext.AllEntityTypes())
             {
                 sb.AppendLine(config.Type.Name);
                 for (var i = 0; i < config.Properties.Count; i++)

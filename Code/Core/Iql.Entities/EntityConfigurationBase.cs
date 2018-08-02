@@ -11,11 +11,15 @@ using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Iql.Conversion;
 
 namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
+        protected virtual IEntityConfigurationProvider ConfigurationProvider { get; }
+        protected readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
         private IProperty _titleProperty;
         private IProperty _previewProperty;
         private string _titlePropertyName;
@@ -24,6 +28,10 @@ namespace Iql.Entities
 
         public IList<IRelationship> Relationships => _relationships;
 
+        protected EntityConfigurationBase(IEntityConfigurationProvider configurationProvider)
+        {
+            ConfigurationProvider = configurationProvider;
+        }
         public IPropertyGroup[] AllPropertyGroups()
         {
             var list = new List<IPropertyGroup>();
@@ -351,6 +359,45 @@ namespace Iql.Entities
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(this as IEntityConfiguration, propertyExpression).Property;
+        }
+
+        public IProperty FindNestedProperty(string name)
+        {
+            // TODO: Use IqlPropertyPath
+            if (name.IndexOf("/") != -1)
+            {
+                var parts = name.Split('/');
+                IEntityConfiguration config = this as IEntityConfiguration;
+                IProperty property = null;
+                for (var i = 0; i < parts.Length; i++)
+                {
+                    var part = parts[i];
+                    property = config.FindNestedProperty(part);
+                    if (i == parts.Length - 1)
+                    {
+                        break;
+                    }
+                    config = property.Relationship.OtherEnd.EntityConfiguration;
+                }
+                return property;
+            }
+            var result = _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
+            if (result == null)
+            {
+                result = Properties.SingleOrDefault(_ => _.Name == name);
+            }
+
+            return result;
+        }
+
+        public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression property)
+        {
+            if (property == null)
+            {
+                return null;
+            }
+            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, Type).Expression;
+            return FindNestedPropertyByIqlExpression((iql as IqlLambdaExpression).Body as IqlPropertyExpression);
         }
     }
 }

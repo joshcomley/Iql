@@ -34,12 +34,13 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig.SetEditDisplay(
                 c => c.FindProperty(nameof(Client.Name)),
                 c => c.PropertyCollection(
-                    c1 => c1.FindProperty(nameof(Client.Id)),
-                    c1 => c1.FindRelationship(c2 => c2.Type),
-                    c1 => c1.Geographics[0],
-                    c1 => c1.PropertyCollection(
-                        c2 => c2.FindProperty(nameof(Client.Description)),
-                        c2 => c2.FindProperty(nameof(Client.Category))))
+                        c1 => c1.PropertyPath(_ => _.Type.Name),
+                        c1 => c1.FindProperty(nameof(Client.Id)),
+                        c1 => c1.FindRelationship(c2 => c2.Type),
+                        c1 => c1.Geographics[0],
+                        c1 => c1.PropertyCollection(
+                            c2 => c2.FindProperty(nameof(Client.Description)),
+                            c2 => c2.FindProperty(nameof(Client.Category))))
                     .Configure(c3 =>
                     {
                         c3.SetHint(KnownHints.HelpTextBottom);
@@ -63,11 +64,13 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.EditDisplay[1] as IPropertyCollection).ContentAlignment);
-
             var json = db.EntityConfigurationContext.ToJson();
 
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
+            var propertyPath = (clientContentParsed.EditDisplay[1] as PropertyCollection).Properties[0];
+            Assert.IsTrue(propertyPath is PropertyPath);
+            Assert.AreEqual("Type/Name", (propertyPath as PropertyPath).Path);
             var file = clientContentParsed.Files[0];
             Assert.IsNotNull(file.MediaKey);
             Assert.AreEqual(1, file.Previews.Count);

@@ -86,7 +86,6 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             //XDocument doc = XDocument.Parse(edmx);
             var odataParser = new ODataSchemaParser(edmx, iqlJson);
             var schema = odataParser.Parse();
-
             //schema.Dump();
             var typeScriptConverter = new ODataSchemaTypeScriptGenerator(schema, Settings);
             var files = typeScriptConverter.Generate(OutputType.CSharp);

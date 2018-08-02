@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.Extensions;
 
 namespace Iql.Entities.Relationships
 {
@@ -18,8 +19,8 @@ namespace Iql.Entities.Relationships
             Type elementType) : base(relationship,
             relationshipSide)
         {
-            EntityConfiguration = configuration.EntityType<T>();
-            Property = EntityConfiguration.FindOrDefineProperty<TProperty>(expression, elementType);
+            var entityConfiguration = configuration.EntityType<T>();
+            Property = entityConfiguration.FindOrDefineProperty<TProperty>(expression, elementType, elementType.ToIqlType());
         }
 
         public TConfigurable Configure(Action<TConfigurable> action)
@@ -51,7 +52,7 @@ namespace Iql.Entities.Relationships
         public CollectionRelationshipDetail(
             IRelationship relationship,
             RelationshipSide relationshipSide,
-            EntityConfigurationBuilder configuration,
+            IEntityConfigurationBuilder configuration,
             LambdaExpression expression,
             Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
         {

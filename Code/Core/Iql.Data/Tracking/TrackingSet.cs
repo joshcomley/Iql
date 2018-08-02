@@ -389,7 +389,7 @@ namespace Iql.Data.Tracking
                 }
 
                 var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-                if (property.Kind.HasFlag(PropertyKind.Key) && property.ReadOnly)
+                if (property.Kind.HasFlag(PropertyKind.Key) && property.IsReadOnly)
                 {
                     DataStore.RelationshipObserver.RunIfNotIgnored(() =>
                         {
@@ -469,7 +469,7 @@ namespace Iql.Data.Tracking
                 for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
                 {
                     var property = EntityConfiguration.Key.Properties[i];
-                    if (property.ReadOnly && !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
+                    if (property.IsReadOnly && !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {
                         throw new AttemptingToAssignRemotelyGeneratedKeyException();
                     }

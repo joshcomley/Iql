@@ -193,7 +193,7 @@ namespace Iql.Data.Tracking.State
 
         public bool IsInsertable()
         {
-            if (EntityConfiguration.Key.Properties.All(p => p.ReadOnly))
+            if (EntityConfiguration.Key.Properties.All(p => p.IsReadOnly))
             {
                 return true;
             }
@@ -202,7 +202,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
                 var property = EntityConfiguration.Key.Properties[i];
-                if (property.ReadOnly)
+                if (property.IsReadOnly)
                 {
                     continue;
                 }
@@ -229,7 +229,7 @@ namespace Iql.Data.Tracking.State
 
         public bool HasValidKey()
         {
-            if (EntityConfiguration.Key.Properties.All(p => p.ReadOnly) &&
+            if (EntityConfiguration.Key.Properties.All(p => p.IsReadOnly) &&
                 !IsNew)
             {
                 return true;
@@ -238,7 +238,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
                 var property = EntityConfiguration.Key.Properties[i];
-                if (property.ReadOnly)
+                if (property.IsReadOnly)
                 {
                     continue;
                 }

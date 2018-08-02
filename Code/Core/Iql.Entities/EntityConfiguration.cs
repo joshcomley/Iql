@@ -24,6 +24,7 @@ namespace Iql.Entities
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
+        public virtual EntityConfigurationBuilder Builder { get; }
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
         private class DefaultValuePlaceholder { }
 
@@ -34,9 +35,6 @@ namespace Iql.Entities
             ManageKind = manageKind;
             return this;
         }
-
-        public EntityConfigurationBuilder Builder { get; }
-        private readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
 
         private readonly Dictionary<string, EntitySanitizer<T>> _sanitizers = new Dictionary<string, EntitySanitizer<T>>();
         public IEntityConfiguration AddSanitizer(Action<T> expression, string key = null)
@@ -102,10 +100,9 @@ namespace Iql.Entities
             return (ValidationCollection<T>)EntityValidation;
         }
 
-        public EntityConfiguration(EntityConfigurationBuilder builder = null)
+        public EntityConfiguration(EntityConfigurationBuilder builder = null) : base(builder)
         {
             Type = typeof(T);
-            Builder = builder;
             DisplayFormatting = new DisplayFormatting<T>(this);
             EntityValidation = new ValidationCollection<T>();
             Properties = new List<IProperty>();
@@ -267,7 +264,7 @@ namespace Iql.Entities
 
         private static bool PropertyValueIsIllegallyEmpty(IProperty property, object entity, object propertyValue)
         {
-            if (property.ReadOnly)
+            if (property.IsReadOnly)
             {
                 return false;
             }
@@ -393,6 +390,12 @@ namespace Iql.Entities
             return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType, null);
         }
 
+        public PropertyPath PropertyPath(Expression<Func<T, object>> expression, string key = null)
+        {
+            var p = IqlPropertyPath.FromLambda(expression, this);
+            return new PropertyPath(this, p.PathToHere, key);
+        }
+
         public RelationshipDetail<T, TProperty> FindRelationship<TProperty>(Expression<Func<T, TProperty>> propertyName)
         {
             var property = FindPropertyByExpression(propertyName);
@@ -404,7 +407,7 @@ namespace Iql.Entities
         {
             var property = FindPropertyByExpression(propertyName);
             var relationship = FindRelationshipByName(property.Name);
-            return (CollectionRelationshipDetail<T, TOtherEnd>) relationship.ThisEnd;
+            return (CollectionRelationshipDetail<T, TOtherEnd>)relationship.ThisEnd;
         }
 
         public IEntityProperty<T> FindProperty(string name)
@@ -414,29 +417,6 @@ namespace Iql.Entities
         IProperty IEntityConfiguration.FindProperty(string name)
         {
             return FindProperty(name);
-        }
-
-        public IProperty FindNestedProperty(string name)
-        {
-            // TODO: Use IqlPropertyPath
-            if (name.IndexOf("/") != -1)
-            {
-                var parts = name.Split('/');
-                IEntityConfiguration config = this;
-                IProperty property = null;
-                for (var i = 0; i < parts.Length; i++)
-                {
-                    var part = parts[i];
-                    property = config.FindNestedProperty(part);
-                    if (i == parts.Length - 1)
-                    {
-                        break;
-                    }
-                    config = Builder.GetEntityByType(property.TypeDefinition.ElementType);
-                }
-                return property;
-            }
-            return _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
         }
 
         public IEntityProperty<T>[] FindPropertiesByHint(string hint)
@@ -459,15 +439,6 @@ namespace Iql.Entities
             return (IEntityProperty<T>)FindNestedPropertyByLambdaExpression(property);
         }
 
-        public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression property)
-        {
-            if (property == null)
-            {
-                return null;
-            }
-            var iql = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property).Expression;
-            return FindNestedPropertyByIqlExpression(iql);
-        }
 
         public IEntityProperty<T> FindPropertyByExpression<TProperty>(Expression<Func<T, TProperty>> property)
         {
@@ -936,7 +907,7 @@ namespace Iql.Entities
 
         public File<T>[] FindFiles(Func<File<T>, bool> filter)
         {
-            return Files.Select(f => (File<T>) f).Where(filter).ToArray();
+            return Files.Select(f => (File<T>)f).Where(filter).ToArray();
         }
 
         public EntityConfiguration<T> HasFile(

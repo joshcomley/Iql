@@ -1,23 +1,19 @@
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.Lists;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Display;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.Entities.Relationships
 {
-    public abstract class RelationshipDetailBase : MetadataBase, IRelationshipDetail
+    public abstract class RelationshipDetailBase : SimplePropertyGroupBase<IRelationshipDetail>, IRelationshipDetail
     {
-        public string GroupName => this.ResolveGroupName();
-
         private IProperty[] _constraints;
 
         protected RelationshipDetailBase(
             IRelationship relationship,
-            RelationshipSide relationshipSide)
+            RelationshipSide relationshipSide) : base(null, null)
         {
             Relationship = relationship;
             RelationshipSide = relationshipSide;
@@ -63,24 +59,8 @@ namespace Iql.Entities.Relationships
             }
         }
 
-        public IEntityConfiguration EntityConfiguration
-        {
-            get
-            {
-                if (_entityConfiguration == null)
-                {
-                    _entityConfiguration = Property?.EntityConfiguration;
-                }
-
-                return _entityConfiguration;
-            }
-            set => _entityConfiguration = value;
-        }
-
         private readonly List<object> _beingMarkedAsDirty = new List<object>();
         private EventSubscription _constraintsSubscription;
-        private IEntityConfiguration _entityConfiguration;
-
         public void MarkDirty(object entity)
         {
             if (entity != null && !_beingMarkedAsDirty.Contains(entity))
@@ -181,7 +161,7 @@ namespace Iql.Entities.Relationships
             return compositeKey;
         }
 
-        public IPropertyGroup[] GetGroupProperties()
+        public override IPropertyGroup[] GetGroupProperties()
         {
             var list = new List<IPropertyGroup>();
             list.AddRange(Constraints);
@@ -189,10 +169,7 @@ namespace Iql.Entities.Relationships
             return list.ToArray();
         }
 
-        public string Key { get; set; }
-        public PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
-        public IRuleCollection<IBinaryRule> ValidationRules { get; set; }
-        public IRuleCollection<IDisplayRule> DisplayRules { get; set; }
+        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
         IRelationshipDetail IConfigurable<IRelationshipDetail>.Configure(Action<IRelationshipDetail> configure)
         {
             if (configure != null)

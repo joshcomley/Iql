@@ -11,19 +11,38 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
+using Newtonsoft.Json.Linq;
+using IPropertyGroup = Iql.Entities.IPropertyGroup;
 
 namespace Iql.Server.Serialization
 {
-    public class InterfaceConverter : JsonConverter
+    public class SerializerDetails
     {
+        public Dictionary<string, IEntityConfiguration> EntityConfigurations { get; } = new Dictionary<string, IEntityConfiguration>();
+        public List<Action<EntityConfigurationDocument>> PreFinalisers { get; } = new List<Action<EntityConfigurationDocument>>();
+        public List<Action<EntityConfigurationDocument>> Finalisers { get; } = new List<Action<EntityConfigurationDocument>>();
+        public List<Action> OtherFinalisaers { get; } = new List<Action>();
+        public int CurrentEntityConfigurationIndex { get; set; }
+        public EntityConfigurationBuilder Builder { get; } = new EntityConfigurationBuilder();
+    }
+
+    public class InterfaceConverter<T> : JsonConverter
+    {
+        public Dictionary<string, SerializedPropertyGroup> PropertyMappings { get; } = new Dictionary<string, SerializedPropertyGroup>();
+        public JsonSerializerSettings Settings { get; }
+        public SerializerDetails Details { get; }
         private Dictionary<Type, Type> TypeMappings { get; } = new Dictionary<Type, Type>();
 
-        public InterfaceConverter()
+        public InterfaceConverter(JsonSerializerSettings settings, SerializerDetails details)
         {
+            Settings = settings;
+            Details = details ?? new SerializerDetails();
             Map<IEnumConfiguration, EnumConfiguration>();
             Map<IEnumValue, EnumValue>();
+            Map<IEntityConfiguration, EntityConfiguration>();
             Map<IEntityMetadata, EntityConfiguration>();
             Map<IProperty, Property>();
             Map<ITypeDefinition, TypeDetail>();
@@ -47,7 +66,8 @@ namespace Iql.Server.Serialization
             Map<IFile, File>();
             Map<IFilePreview, FilePreview>();
             Map<INestedSet, NestedSet>();
-            Map<IPropertyGroup, PropertyCollection>();
+            //Map<IPropertyPath, PropertyPath>();
+            Map<IPropertyGroup, JObject>();
             // Map<IMetadataCollection, MetadataCollectionJson>();
         }
 
@@ -62,12 +82,14 @@ namespace Iql.Server.Serialization
             throw new NotImplementedException();
         }
 
-        private Dictionary<string, IEntityConfiguration> EntityConfigurations { get; } = new Dictionary<string, IEntityConfiguration>();
-        private Dictionary<string, SerializedPropertyGroup> PropertyMappings { get; } = new Dictionary<string, SerializedPropertyGroup>();
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var path = reader.Path;
+            if (path.StartsWith("EntityTypes"))
+            {
+                int a = 0;
+            }
             var value = reader.Value;
             var existingValue2 = existingValue;
             //if (reader.TokenType != JsonToken.StartObject)
@@ -88,11 +110,42 @@ namespace Iql.Server.Serialization
                 return null;
             }
 
-            var result = serializer.Deserialize(reader, TypeMappings[objectType]);
-            if (objectType == typeof(IEntityConfiguration))
+            if (typeof(IEntityConfiguration).IsAssignableFrom(objectType))
+            {
+                Details.CurrentEntityConfigurationIndex = Convert.ToInt32(Regex
+                    .Match(path, $@"^{nameof(EntityConfigurationDocument.EntityTypes)}\[(?<Index>\d+)\]")
+                    .Groups["Index"].Value);
+            }
+            var typeMapping = TypeMappings[objectType];
+            object result = null;
+            if (objectType == typeof(IPropertyGroup))
+            {
+                var jobj = serializer.Deserialize(reader, typeMapping) as JObject;
+                if (jobj.ContainsKey("Path"))
+                {
+                    var propertyPath = EntityConfigurationParser.DeserializeFromJson<PropertyPathJson>(jobj.ToString(), Details);
+                    var entityConfigIndex = Details.CurrentEntityConfigurationIndex;
+                    Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration((IEntityConfiguration) doc.EntityTypes[entityConfigIndex]));
+                    result = propertyPath;
+                    //serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyPath));
+                }
+                else
+                {
+                    var propertyCollection = EntityConfigurationParser.DeserializeFromJson<PropertyCollection>(jobj.ToString(), Details);
+                    result = propertyCollection;
+                    //result = serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyCollection));
+                    //result = jobj.ToObject<PropertyCollection>(serializer);
+                }
+            }
+            else
+            {
+                result = serializer.Deserialize(reader, typeMapping);
+            }
+            if (typeof(IEntityMetadata).IsAssignableFrom(objectType))
             {
                 var config = result as IEntityConfiguration;
-                EntityConfigurations.Add(config.Name, config);
+                Details.EntityConfigurations.Add(config.Name, config);
+                Details.PreFinalisers.Insert(0, document => (config as EntityConfiguration).SetConfigurationProvider(document));
             }
             return result;
         }
@@ -102,25 +155,29 @@ namespace Iql.Server.Serialization
             return TypeMappings.ContainsKey(objectType);
         }
 
-        public void Finalise(EntityConfigurationDocument document)
+        public void Finalise(T root, EntityConfigurationDocument document)
         {
             foreach (var mapping in PropertyMappings)
             {
                 if (mapping.Value.Kind != PropertyGroupKind.Relationship)
                 {
-                    ProcessPropertyGroup(document, mapping.Value, mapping, true);
-                }
-            }
-            foreach (var mapping in PropertyMappings)
-            {
-                if (mapping.Value.Kind == PropertyGroupKind.Relationship)
-                {
-                    ProcessPropertyGroup(document, mapping.Value, mapping, true);
+                    ProcessPropertyGroup(root, document, mapping.Value, mapping, true);
                 }
             }
         }
 
-        private static IPropertyGroup ProcessPropertyGroup(EntityConfigurationDocument document, SerializedPropertyGroup @group,
+        public void Finalise2(T root, EntityConfigurationDocument document)
+        {
+            foreach (var mapping in PropertyMappings)
+            {
+                if (mapping.Value.Kind == PropertyGroupKind.Relationship)
+                {
+                    ProcessPropertyGroup(root, document, mapping.Value, mapping, true);
+                }
+            }
+        }
+
+        private static IPropertyGroup ProcessPropertyGroup(T root, EntityConfigurationDocument document, SerializedPropertyGroup @group,
             KeyValuePair<string, SerializedPropertyGroup> mapping, bool set)
         {
             var entityMetadata = document.EntityTypes.Single(e => e.Name == @group.Type);
@@ -129,31 +186,31 @@ namespace Iql.Server.Serialization
                 case PropertyGroupKind.Property:
                     var property = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
                     (property as Property).EntityConfigurationInternal = entityMetadata as IEntityConfiguration;
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, property); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, property); }
                     return property;
                 case PropertyGroupKind.PropertyCollection:
                     var coll = new PropertyCollection(entityMetadata as IEntityConfiguration);
                     foreach (var child in @group.Children)
                     {
-                        coll.Properties.Add(ProcessPropertyGroup(document, child, mapping, false));
+                        coll.Properties.Add(ProcessPropertyGroup(root, document, child, mapping, false));
                     }
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, coll); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, coll); }
                     return coll;
                 case PropertyGroupKind.Geographic:
                     var geo = entityMetadata.Geographics[Convert.ToInt32(@group.Paths)];
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, geo); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, geo); }
                     return geo;
                 case PropertyGroupKind.NestedSet:
                     var ns = entityMetadata.NestedSets[Convert.ToInt32(@group.Paths)];
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, ns); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, ns); }
                     return ns;
                 case PropertyGroupKind.File:
                     var f = entityMetadata.Files[Convert.ToInt32(@group.Paths)];
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, f); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, f); }
                     return f;
                 case PropertyGroupKind.DateRange:
                     var dr = entityMetadata.DateRanges[Convert.ToInt32(@group.Paths)];
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, dr); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, dr); }
                     return dr;
                 case PropertyGroupKind.Relationship:
                     var entityConfiguration = entityMetadata as IEntityConfiguration;
@@ -163,7 +220,7 @@ namespace Iql.Server.Serialization
                     //return rel.Source;
                     var entityRelationships = entityConfiguration.AllRelationships();
                     var rel = entityRelationships.Single(p => p.ThisEnd.Property.Name == @group.Paths);
-                    if (set) { document.SetValueAtPropertyPath(mapping.Key, rel.ThisEnd); }
+                    if (set) { root.SetValueAtPropertyPath(mapping.Key, rel.ThisEnd); }
                     return rel.ThisEnd;
             }
 

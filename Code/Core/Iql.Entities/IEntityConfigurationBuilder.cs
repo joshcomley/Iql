@@ -5,12 +5,10 @@ using Iql.Entities.Enums;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationBuilder
+    public interface IEntityConfigurationBuilder : IEntityConfigurationProvider
     {
         bool IsEntityType<T>();
         bool IsEntityTypeByType(Type type);
-        IEnumerable<IEntityConfiguration> EntityTypes();
-        IEnumerable<IEnumConfiguration> EnumTypes();
         void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action);
         EntityConfiguration<T> EntityType<T>() where T : class;
         IEnumConfiguration EnumType<T>();

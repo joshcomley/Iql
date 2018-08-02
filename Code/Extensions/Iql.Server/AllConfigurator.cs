@@ -65,7 +65,7 @@ namespace Iql.Server
                 {
                     if (property.Geographic != null || property.NestedSet != null)
                     {
-                        property.ReadOnly = true;
+                        property.SetReadOnly();
                     }
                 }
             }

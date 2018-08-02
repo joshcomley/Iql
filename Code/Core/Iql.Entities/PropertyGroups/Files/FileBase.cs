@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql.Entities.PropertyGroups.Files
 {
-    public class FileBase : PropertyGroupBase<IFile>, IFile
+    public class FileBase : SimplePropertyGroupBase<IFile>, IFile
     {
         public FileBase(
             IProperty urlProperty = null,

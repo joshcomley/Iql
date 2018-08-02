@@ -10,6 +10,7 @@ namespace Iql.Entities
         IProperty[] Properties { get; }
         void AddProperty(IProperty property);
         bool IsPivot();
-        void SetReadOnly(bool readOnly = true);
+        void SetReadKind(PropertyReadKind readKind);
+        void SetEditKind(PropertyEditKind editKind);
     }
 }

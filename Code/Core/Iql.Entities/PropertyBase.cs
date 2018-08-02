@@ -14,10 +14,10 @@ using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyBase : PropertyGroupBase<IProperty>, IPropertyMetadata
+    public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata
     {
         public bool Internal => PropertyGroup != null;
-        public bool HiddenOrInternal => Hidden || Internal;
+        public bool IsHiddenOrInternal => IsHidden || Internal;
         public IPropertyGroup PropertyGroup
         {
             get
@@ -149,17 +149,18 @@ namespace Iql.Entities
 
         internal IProperty CountRelationship { get; set; }
 
-        public bool ReadOnly
-        {
-            get => _readOnly ?? ResolveAutoReadOnly();
-            set => _readOnly = value;
-        }
+        public bool IsReadOnly => ResolveAutoReadOnly();
 
-        public bool Hidden { get; set; } = false;
-        public bool Sortable { get; set; } = true;
+        public bool IsHidden => EditKind == PropertyEditKind.Hidden && ReadKind == PropertyReadKind.Hidden;
+
 
         private bool ResolveAutoReadOnly()
         {
+            if (EditKind == PropertyEditKind.Display || EditKind == PropertyEditKind.Hidden)
+            {
+                return true;
+            }
+
             if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
             {
                 return true;
@@ -173,29 +174,10 @@ namespace Iql.Entities
             return false;
         }
 
-        public string Placeholder { get; set; }
         public abstract Func<object, object> GetValue { get; set; }
         public abstract Func<object, object, object> SetValue { get; set; }
 
         public List<object> Helpers { get; set; }
-
-        public IProperty SetReadOnlyAndHidden(bool readOnlyAndHidden = true)
-        {
-            SetReadOnly(readOnlyAndHidden).SetHidden(readOnlyAndHidden);
-            return (IProperty)this;
-        }
-
-        public IProperty SetReadOnly(bool readOnly = true)
-        {
-            ReadOnly = readOnly;
-            return (IProperty)this;
-        }
-
-        public IProperty SetHidden(bool hidden = true)
-        {
-            Hidden = hidden;
-            return (IProperty)this;
-        }
 
         public IProperty SetNullable(bool nullable = true)
         {

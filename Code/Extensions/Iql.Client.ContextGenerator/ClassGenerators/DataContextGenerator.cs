@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Iql.Entities.PropertyGroups.Files;
 using TypeSharp;
@@ -654,6 +655,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         metadataType = typeof(IPropertyCollection);
                         metadataSolidType = typeof(PropertyCollection);
                     }
+                    else if (metadata is IPropertyPath)
+                    {
+                        metadataType = typeof(IPropertyPath);
+                        metadataSolidType = typeof(PropertyPath);
+                    }
                     else if (metadata is IPropertyMetadata)
                     {
                         metadataType = typeof(IPropertyMetadata);
@@ -879,7 +885,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnum)
                     {
-                        if (EnumExtensions.IsValidEnumValue(value))
+                        if (EnumExtensions.IsValidEnumValue(value) && !IsDefaultValue(metadataProperty, value, metadataSolidType))
                         {
                             assign = value.ToEnumCodeString();
                         }
@@ -1086,6 +1092,30 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return "";
         }
 
+        private readonly Dictionary<Type, object> _instances = new Dictionary<Type, object>();
+        private bool IsDefaultValue(MemberInfo metadataProperty, object value, Type metadataSolidType)
+        {
+            if (!_instances.ContainsKey(metadataSolidType))
+            {
+                object instance = null;
+                if (metadataSolidType == typeof(PropertyCollection))
+                {
+                    instance = new PropertyCollection(null);
+                }
+                else if (metadataSolidType == typeof(PropertyPath))
+                {
+                    instance = new PropertyPath(null, null);
+                }
+                else
+                {
+                    instance = Activator.CreateInstance(metadataSolidType);
+                }
+                _instances.Add(metadataSolidType, instance);
+            }
+            return Equals(_instances[metadataSolidType].GetPropertyValue(metadataProperty.Name),
+                value);
+        }
+
         private string ConfigurePropertyOrders(IVariable builder)
         {
             var sb = new StringBuilder();
@@ -1098,7 +1128,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return sb.ToString();
         }
 
-        private void ConfigureDisplaySetting(IVariable builder, IList<IPropertyGroup> displaySetting, StringBuilder sb, KeyValuePair<string, IEntityMetadata> config,
+        private void ConfigureDisplaySetting(IVariable builder, IList<IPropertyGroup> displaySetting, StringBuilder sb, KeyValuePair<string, IEntityConfiguration> config,
             string displaySettingMethodName, IEntityMetadata entityMetadata)
         {
             if (displaySetting?.Any() == true)
@@ -1196,6 +1226,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 var rel = propertyGroup as IRelationshipDetailMetadata;
                 groupSb.Append($"{(rel.IsCollection ? nameof(EntityConfiguration<object>.FindCollectionRelationship) : nameof(EntityConfiguration<object>.FindRelationship))}({Lambda(++index)}{rel.Property.Name})");
+            }
+            else if (propertyGroup is IPropertyPath)
+            {
+                var propertyPath = propertyGroup as IPropertyPath;
+                var lambda = $"{Lambda(++index)}";
+                groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyPath)}({lambda}{propertyPath.Path.Replace("/", ".")})");
+                groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyPath>.Configure)}({ConfigreMetadata(propertyPath, null, $"coll{++index}", false, entityMetadata)})");
             }
             else if (propertyGroup is IPropertyCollection)
             {

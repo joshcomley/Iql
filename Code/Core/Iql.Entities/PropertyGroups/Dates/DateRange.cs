@@ -2,7 +2,7 @@
 
 namespace Iql.Entities.PropertyGroups.Dates
 {
-    public class DateRange : PropertyGroupBase<IDateRange>, IDateRange
+    public class DateRange : SimplePropertyGroupBase<IDateRange>, IDateRange
     {
         public IProperty StartDateProperty { get; set; }
         public IProperty EndDateProperty { get; set; }

@@ -4,6 +4,7 @@
     {
         Property = 1,
         PropertyCollection,
+        PropertyPath,
         Geographic,
         NestedSet,
         Relationship,

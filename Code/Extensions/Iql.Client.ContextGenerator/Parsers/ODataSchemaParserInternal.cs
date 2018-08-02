@@ -19,7 +19,8 @@ namespace Iql.OData.TypeScript.Generator.Parsers
         {
             _schema = new ODataSchema();
             _doc = XDocument.Parse(odataXml);
-            _schema.EntityConfigurations = EntityConfigurationParser.FromJson(iqlJson).EntityTypes.ToDictionary(t => t.Name);
+            var entityConfigurationDocument = EntityConfigurationParser.FromJson(iqlJson);
+            _schema.EntityConfigurations = entityConfigurationDocument.EntityTypes.ToDictionary(t => t.Name);
             ParseEntityTypes(_doc.ByTagNames("EntityType"));
             ParseEnumTypes(_doc.ByTagNames("EnumType"));
             ParseEntityTypeProperties(_doc.ByTagNames("EntityType"));

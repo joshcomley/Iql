@@ -4,6 +4,42 @@ using System.Linq;
 
 namespace Iql.Entities
 {
+    public interface IPropertyPath : IPropertyGroup, IConfigurable<IPropertyPath>
+    {
+        string Path { get; set; }
+        IPropertyGroup Property { get; }
+        IqlPropertyPath BuildPropertyPath();
+    }
+
+    public class PropertyPath : PropertyGroupBase<IPropertyPath>, IPropertyPath
+    {
+        protected IPropertyGroup _property;
+        public override PropertyKind Kind { get; set; } = PropertyKind.GroupCollection;
+        public string Path { get; set; }
+
+        public IPropertyGroup Property => _property;
+
+        public PropertyPath(IEntityConfiguration configuration, string path, string key = null)
+            : base(configuration, key)
+        {
+            Path = path;
+            if (configuration != null)
+            {
+                _property = configuration.FindNestedProperty(path);
+            }
+        }
+
+        public override IPropertyGroup[] GetGroupProperties()
+        {
+            return new[] { Property };
+        }
+
+        public IqlPropertyPath BuildPropertyPath()
+        {
+            return IqlPropertyPath.FromString(Path, EntityConfiguration);
+        }
+    }
+
     public class PropertyCollection : PropertyGroupBase<IPropertyCollection>, IPropertyCollection
     {
         public bool Enclose { get; set; } = true;
@@ -16,7 +52,7 @@ namespace Iql.Entities
         public List<IPropertyGroup> Properties { get; }
         public override IPropertyGroup[] GetGroupProperties()
         {
-            return Properties.Select(p =>
+            return Properties.Where(p => p != null).Select(p =>
             {
                 if (p.Kind.HasFlag(PropertyKind.Property))
                 {

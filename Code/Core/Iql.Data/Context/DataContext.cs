@@ -106,7 +106,7 @@ namespace Iql.Data.Context
 
         private void InitializeSetNames()
         {
-            var allConfigs = EntityConfigurationContext.EntityTypes().ToArray();
+            var allConfigs = EntityConfigurationContext.AllEntityTypes().ToArray();
             for (var i = 0; i < allConfigs.Length; i++)
             {
                 var config = allConfigs[i];

@@ -9,7 +9,20 @@ using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
-    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
+    public interface ISimpleProperty : IPropertyGroup
+    {
+        PropertyReadKind ReadKind { get; set; }
+        PropertyEditKind EditKind { get; set; }
+        bool SupportsInlineEditing { get; set; }
+        bool PromptBeforeEdit { get; set; }
+        string Placeholder { get; set; }
+        bool Sortable { get; set; }
+        ISimpleProperty SetReadOnlyAndHidden();
+        ISimpleProperty SetReadOnly();
+        ISimpleProperty SetHidden();
+    }
+
+    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>, ISimpleProperty
     {
         IPropertyGroup PropertyGroup { get; }
         IDateRange DateRange { get; }
@@ -32,9 +45,6 @@ namespace Iql.Entities
         Func<object, object> GetValue { get; }
         Func<object, object, object> SetValue { get; }
         Dictionary<string, object> CustomInformation { get; }
-        IProperty SetReadOnlyAndHidden(bool readOnlyAndHidden = true);
-        IProperty SetReadOnly(bool readOnly = true);
-        IProperty SetHidden(bool hidden = true);
         IProperty SetNullable(bool nullable = true);
         IProperty IsInferredWithExpression(LambdaExpression expression);
     }

@@ -129,6 +129,13 @@ namespace Iql.Server.Serialization.Resolvers
                     .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
                     .ToList();
             }
+            if (typeof(IPropertyPath).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => p.PropertyName != nameof(IPropertyPath.Property))
+                    .Where(p => p.PropertyName != nameof(IPropertyPath.EntityConfiguration))
+                    .ToList();
+            }
             if (typeof(IPropertyGroup).IsAssignableFrom(type))
             {
                 return base.CreateProperties(type, memberSerialization)

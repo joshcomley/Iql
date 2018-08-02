@@ -47,12 +47,20 @@ namespace Iql.Entities
             return true;
         }
 
-        public void SetReadOnly(bool readOnly = true)
+        public void SetReadKind(PropertyReadKind readKind)
         {
             for (var i = 0; i < Properties.Length; i++)
             {
                 var property = Properties[i];
-                property.ReadOnly = readOnly;
+                property.ReadKind = readKind;
+            }
+        }
+        public void SetEditKind(PropertyEditKind editKind)
+        {
+            for (var i = 0; i < Properties.Length; i++)
+            {
+                var property = Properties[i];
+                property.EditKind = editKind;
             }
         }
 

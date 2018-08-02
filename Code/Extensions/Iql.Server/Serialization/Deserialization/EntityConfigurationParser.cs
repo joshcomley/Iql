@@ -1,18 +1,5 @@
-﻿using Iql.DotNet.Serialization;
-using Iql.Entities;
-using Iql.Entities.DisplayFormatting;
-using Iql.Entities.Enums;
-using Iql.Entities.Geography;
-using Iql.Entities.NestedSets;
-using Iql.Entities.Relationships;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Display;
-using Iql.Entities.Rules.Relationship;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 
 namespace Iql.Server.Serialization
 {
@@ -20,17 +7,72 @@ namespace Iql.Server.Serialization
     {
         public static EntityConfigurationDocument FromJson(string json)
         {
+            var document = DeserializeFromJson<EntityConfigurationDocument>(json);
+
+            return document;
+        }
+
+        internal static T DeserializeFromJson<T>(string json, SerializerDetails details  = null)
+        where T : class
+        {
+            var settings = NewJsonSerializerSettings<T>(details,
+                out var interfaceTypeResolver,
+                out var lambdaExpressionConverter,
+                out var detailsReturned);
+            var result = JsonConvert.DeserializeObject<T>(json, settings);
+            var finalisers = new Action<EntityConfigurationDocument>[]
+            {
+                doc => interfaceTypeResolver.Finalise2(result, doc),
+                doc => lambdaExpressionConverter.Finalise(result)
+            };
+            if (details != null)
+            {
+                details.PreFinalisers.Add(doc => interfaceTypeResolver.Finalise(result, doc));
+                details.Finalisers.AddRange(finalisers);
+            }
+            else
+            {
+                foreach (var preFinaliser in detailsReturned.PreFinalisers)
+                {
+                    preFinaliser(result as EntityConfigurationDocument);
+                }
+                interfaceTypeResolver.Finalise(result, result as EntityConfigurationDocument);
+                foreach (var config in (result as EntityConfigurationDocument).EntityTypes)
+                {
+                    var rels = config.AllRelationships();
+                    foreach (var rel in rels)
+                    {
+                        rel.ThisEnd.Property.Relationship = rel;
+                    }
+                }
+
+                foreach (var finaliser in detailsReturned.Finalisers)
+                {
+                    finaliser(result as EntityConfigurationDocument);
+                }
+                foreach (var finaliser in finalisers)
+                {
+                    finaliser(result as EntityConfigurationDocument);
+                }
+            }
+            return result;
+        }
+        
+        public static JsonSerializerSettings NewJsonSerializerSettings<T>(
+            SerializerDetails details,
+            out InterfaceConverter<T> interfaceTypeResolver,
+            out LambdaExpressionConverter<T> lambdaExpressionConverter,
+            out SerializerDetails detailsReturned)
+        where T : class
+        {
             var settings = new JsonSerializerSettings();
-            var interfaceTypeResolver = new InterfaceConverter();
+            interfaceTypeResolver = new InterfaceConverter<T>(settings, details);
+            detailsReturned = interfaceTypeResolver.Details;
             settings.Converters.Add(interfaceTypeResolver);
-            var lambdaExpressionConverter = new LambdaExpressionConverter();
+            lambdaExpressionConverter = new LambdaExpressionConverter<T>();
             settings.Converters.Add(lambdaExpressionConverter);
             settings.Converters.Add(new MetadataCollectionConverter());
-            var configurationDocument = JsonConvert.DeserializeObject<EntityConfigurationDocument>(json, settings);
-            settings.Converters.Add(new TypeConverter());
-            interfaceTypeResolver.Finalise(configurationDocument);
-            lambdaExpressionConverter.Finalise(configurationDocument);
-            return configurationDocument;
+            return settings;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Iql.Entities.NestedSets
 {
-    public class NestedSet : PropertyGroupBase<INestedSet>, INestedSet
+    public class NestedSet : SimplePropertyGroupBase<INestedSet>, INestedSet
     {
         public override PropertyKind Kind
         {

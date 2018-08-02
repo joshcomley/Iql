@@ -8,7 +8,7 @@ namespace Iql.Entities.Relationships
         where TSource : class 
         where TTarget : class
     {
-        public OneToRelationship(
+        protected OneToRelationship(
             EntityConfigurationBuilder configuration,
             Expression<Func<TSource, TSourceProperty>> sourceProperty,
             Type sourceElementType,

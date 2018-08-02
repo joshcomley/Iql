@@ -5,6 +5,27 @@ namespace Iql.Entities.Extensions
 {
     public static class PropertyGroupExtensions
     {
+        //public static IPropertyGroup Filter(this IPropertyGroup propertyGroups, DisplayConfigurationKind kind)
+        //{
+        //    return propertyGroups.FilterInternal(kind, new List<IPropertyGroup>());
+        //}
+
+        //private static IPropertyGroup FilterInternal(this IPropertyGroup propertyGroup, DisplayConfigurationKind kind, List<IPropertyGroup> filtered)
+        //{
+        //    var result = new List<IPropertyGroup>();
+        //    foreach (var group in propertyGroup.GetGroupProperties())
+        //    {
+        //        if (group is ISimpleProperty)
+        //        {
+        //            switch (kind)
+        //            {
+        //                case DisplayConfigurationKind.Edit:
+        //                    if((group as ISimpleProperty).EditKind == )
+        //            }
+        //        }
+        //    }
+        //}
+
         public static string ResolveGroupName(this IPropertyGroup propertyGroup)
         {
             return $"__{string.Join("_", propertyGroup.GetGroupProperties().Select(_ => _.Name))}__";

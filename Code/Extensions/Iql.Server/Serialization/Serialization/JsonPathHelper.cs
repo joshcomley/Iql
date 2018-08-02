@@ -8,7 +8,7 @@ namespace Iql.Server.Serialization
         {
             var property = properties.Length > 1 ? $"({string.Join("|", properties)})" : properties[0];
             return Regex.IsMatch(path,
-                $@"^{nameof(EntityConfigurationDocument.EntityTypes)}\[[0-9]+\]\.{property}(|\[[0-9]+\]){(allowNested ? "" : "$")}");
+                $@"^{nameof(EntityConfigurationDocument.AllEntityTypes)}\[[0-9]+\]\.{property}(|\[[0-9]+\]){(allowNested ? "" : "$")}");
         }
     }
 }

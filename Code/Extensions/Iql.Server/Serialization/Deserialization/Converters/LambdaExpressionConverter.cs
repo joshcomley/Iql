@@ -6,7 +6,8 @@ using System.Linq.Expressions;
 
 namespace Iql.Server.Serialization
 {
-    public class LambdaExpressionConverter : JsonConverter
+    public class LambdaExpressionConverter<T> : JsonConverter
+    where T : class
     {
         private Dictionary<string, string> ExpressionMappings { get; } = new Dictionary<string, string>();
 
@@ -26,7 +27,7 @@ namespace Iql.Server.Serialization
             return typeof(LambdaExpression).IsAssignableFrom(objectType);
         }
 
-        public void Finalise(EntityConfigurationDocument document)
+        public void Finalise(T document)
         {
             foreach (var mapping in ExpressionMappings)
             {

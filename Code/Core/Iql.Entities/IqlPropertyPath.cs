@@ -232,7 +232,7 @@ namespace Iql.Entities
                     continue;
                 }
 
-                entityConfig = entityConfigurationContext.Builder.GetEntityByType(property.Relationship.OtherEnd.Type);
+                entityConfig = property.Relationship.OtherEnd.Property.EntityConfiguration;
             }
 
             return propertyPath;

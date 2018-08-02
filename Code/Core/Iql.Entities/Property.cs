@@ -59,7 +59,7 @@ namespace Iql.Entities
             Name = name;
             if (readOnly.HasValue)
             {
-                ReadOnly = readOnly.Value;
+                SetReadOnly();
             }
             CountRelationship = countRelationship;
             if (countRelationship != null)

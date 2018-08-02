@@ -12,13 +12,24 @@ namespace Iql.Server.Serialization
     [DebuggerDisplay("{Name} - {SetName}")]
     public class EntityConfiguration : EntityConfigurationBase, IEntityConfiguration
     {
+        protected override Entities.IEntityConfigurationProvider ConfigurationProvider => _configurationProvider;
+
+        private EntityConfigurationBuilder _builder;
+        private  Entities.IEntityConfigurationProvider _configurationProvider;
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
+
+        internal void SetConfigurationProvider(Entities.IEntityConfigurationProvider provider)
+        {
+            _configurationProvider = provider;
+        }
+
         public IEntityConfiguration SetManageKind(EntityManageKind manageKind)
         {
             throw new NotImplementedException();
         }
 
         public EntityConfigurationBuilder Builder { get; }
+
         public string GetDisplayText(object entity, string key = null)
         {
             throw new NotImplementedException();
@@ -64,11 +75,6 @@ namespace Iql.Server.Serialization
             throw new NotImplementedException();
         }
 
-        public IProperty FindNestedPropertyByLambdaExpression(LambdaExpression expression)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEntityConfiguration AddSanitizer(Action<object> expression, string key = null)
         {
             throw new NotImplementedException();
@@ -85,11 +91,6 @@ namespace Iql.Server.Serialization
         }
 
         public IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IProperty FindNestedProperty(string name)
         {
             throw new NotImplementedException();
         }
