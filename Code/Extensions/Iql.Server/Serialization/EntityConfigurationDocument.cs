@@ -5,7 +5,7 @@ using Iql.Entities.Enums;
 
 namespace Iql.Server.Serialization
 {
-    public class EntityConfigurationDocument : Entities.IEntityConfigurationProvider
+    public class EntityConfigurationDocument : Entities.IEntityConfigurationContainer
     {
         public List<IEnumConfiguration> EnumTypes { get; set; } = new List<IEnumConfiguration>();
         public List<IEntityConfiguration> EntityTypes { get; set; } = new List<IEntityConfiguration>();

@@ -3,7 +3,7 @@ using Iql.Entities.Enums;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationProvider
+    public interface IEntityConfigurationContainer
     {
         IEnumerable<IEntityConfiguration> AllEntityTypes();
         IEnumerable<IEnumConfiguration> AllEnumTypes();

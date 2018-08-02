@@ -14,9 +14,8 @@
 
      */
 
-    public interface IGeographic : IPropertyGroup, IConfigurable<IGeographic>
+    public interface IGeographic : ISimpleProperty, IConfigurable<IGeographic>
     {
-        string Key { get; set; }
         IProperty LongitudeProperty { get; set; }
         IProperty LatitudeProperty { get; set; }
     }

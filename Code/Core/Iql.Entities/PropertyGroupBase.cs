@@ -38,6 +38,11 @@ namespace Iql.Entities
             ReadKind = PropertyReadKind.Hidden;
             return this;
         }
+
+        public virtual ISimpleProperty ResolvePrimaryProperty()
+        {
+            return this;
+        }
     }
 
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>

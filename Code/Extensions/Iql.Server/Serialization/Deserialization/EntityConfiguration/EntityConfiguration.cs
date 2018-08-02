@@ -12,15 +12,15 @@ namespace Iql.Server.Serialization
     [DebuggerDisplay("{Name} - {SetName}")]
     public class EntityConfiguration : EntityConfigurationBase, IEntityConfiguration
     {
-        protected override Entities.IEntityConfigurationProvider ConfigurationProvider => _configurationProvider;
+        protected override Entities.IEntityConfigurationContainer ConfigurationContainer => _configurationContainer;
 
         private EntityConfigurationBuilder _builder;
-        private  Entities.IEntityConfigurationProvider _configurationProvider;
+        private  Entities.IEntityConfigurationContainer _configurationContainer;
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
 
-        internal void SetConfigurationProvider(Entities.IEntityConfigurationProvider provider)
+        internal void SetConfigurationProvider(Entities.IEntityConfigurationContainer container)
         {
-            _configurationProvider = provider;
+            _configurationContainer = container;
         }
 
         public IEntityConfiguration SetManageKind(EntityManageKind manageKind)
@@ -103,6 +103,11 @@ namespace Iql.Server.Serialization
         public IProperty FindOrDefinePropertyByName(string name, Type elementType)
         {
             return FindProperty(name);
+        }
+
+        public EntityConfiguration(Entities.IEntityConfigurationContainer configurationContainer)
+            : base(configurationContainer)
+        {
         }
     }
 }

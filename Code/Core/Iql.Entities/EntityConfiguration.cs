@@ -104,6 +104,7 @@ namespace Iql.Entities
         {
             Type = typeof(T);
             DisplayFormatting = new DisplayFormatting<T>(this);
+            Builder = builder;
             EntityValidation = new ValidationCollection<T>();
             Properties = new List<IProperty>();
             Name = Type.Name;

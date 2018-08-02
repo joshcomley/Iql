@@ -18,7 +18,7 @@ namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
-        protected virtual IEntityConfigurationProvider ConfigurationProvider { get; }
+        protected virtual IEntityConfigurationContainer ConfigurationContainer { get; }
         protected readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
         private IProperty _titleProperty;
         private IProperty _previewProperty;
@@ -28,9 +28,13 @@ namespace Iql.Entities
 
         public IList<IRelationship> Relationships => _relationships;
 
-        protected EntityConfigurationBase(IEntityConfigurationProvider configurationProvider)
+        protected EntityConfigurationBase(IEntityConfigurationContainer configurationContainer)
         {
-            ConfigurationProvider = configurationProvider;
+            ConfigurationContainer = configurationContainer;
+            _relationships.Change.Subscribe(change =>
+            {
+                _allRelationships = null;
+            });
         }
         public IPropertyGroup[] AllPropertyGroups()
         {
@@ -209,11 +213,6 @@ namespace Iql.Entities
         private bool _setFriendlyNameSet = false;
         private string _setName;
         private readonly ObservableList<IRelationship> _relationships = new ObservableList<IRelationship>();
-
-        protected EntityConfigurationBase()
-        {
-            _relationships.Change.Subscribe(change => { _allRelationships = null; });
-        }
 
         public string SetFriendlyName
         {

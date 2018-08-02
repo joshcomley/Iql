@@ -7,17 +7,22 @@ namespace Iql.Entities
     public interface IPropertyPath : IPropertyGroup, IConfigurable<IPropertyPath>
     {
         string Path { get; set; }
-        IPropertyGroup Property { get; }
+        ISimpleProperty Property { get; }
         IqlPropertyPath BuildPropertyPath();
     }
 
-    public class PropertyPath : PropertyGroupBase<IPropertyPath>, IPropertyPath
+    public class PropertyPath : SimplePropertyGroupBase<IPropertyPath>, IPropertyPath
     {
-        protected IPropertyGroup _property;
-        public override PropertyKind Kind { get; set; } = PropertyKind.GroupCollection;
+        public override ISimpleProperty ResolvePrimaryProperty()
+        {
+            return Property;
+        }
+
+        protected ISimpleProperty _property;
+        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
         public string Path { get; set; }
 
-        public IPropertyGroup Property => _property;
+        public ISimpleProperty Property => _property;
 
         public PropertyPath(IEntityConfiguration configuration, string path, string key = null)
             : base(configuration, key)

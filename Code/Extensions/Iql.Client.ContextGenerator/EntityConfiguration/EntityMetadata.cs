@@ -2,7 +2,7 @@
 
 namespace Iql.OData.TypeScript.Generator.EntityConfiguration
 {
-    public class EntityMetadata : EntityConfigurationBase
-    {
-    }
+    //public class EntityMetadata : EntityConfigurationBase
+    //{
+    //}
 }

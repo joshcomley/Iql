@@ -86,7 +86,7 @@ namespace Iql.Server.Serialization
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var path = reader.Path;
-            if (path.StartsWith("EntityTypes"))
+            if (path.StartsWith("EntityTypes[1].Relationships[0].Source"))
             {
                 int a = 0;
             }

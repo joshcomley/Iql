@@ -5,7 +5,7 @@ using Iql.Entities.Enums;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationBuilder : IEntityConfigurationProvider
+    public interface IEntityConfigurationBuilder : IEntityConfigurationContainer
     {
         bool IsEntityType<T>();
         bool IsEntityTypeByType(Type type);

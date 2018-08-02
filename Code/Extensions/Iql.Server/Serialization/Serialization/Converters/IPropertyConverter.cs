@@ -21,6 +21,7 @@ namespace Iql.Server.Serialization.Converters
         }
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            var path = writer.Path;
             //if (value != null)
             //{
             //    writer.WriteValue((value as IProperty).Name);
@@ -45,6 +46,10 @@ namespace Iql.Server.Serialization.Converters
                 //{
 
                 //}
+                if (value is IRelationshipDetailMetadata)
+                {
+                    int a = 0;
+                }
                 if (IsNested)
                 {
                     if (string.IsNullOrWhiteSpace(writer.Path))

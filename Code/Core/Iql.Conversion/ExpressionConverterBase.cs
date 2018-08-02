@@ -25,11 +25,11 @@ namespace Iql.Conversion
 
         static ExpressionConverterBase()
         {
-            ConvertLambdaToIqlMethod = typeof(ExpressionConverterBase)
-                .GetMethod(nameof(ConvertLambdaToIql));
+            ConvertLambdaToIqlInternalMethod = typeof(ExpressionConverterBase)
+                .GetMethod(nameof(ConvertLambdaToIqlInternal), BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        public static MethodInfo ConvertLambdaToIqlMethod { get; set; }
+        public static MethodInfo ConvertLambdaToIqlInternalMethod { get; set; }
 
         public virtual ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(
             LambdaExpression filter, 
@@ -39,7 +39,7 @@ namespace Iql.Conversion
 #endif
             )
         {
-            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
+            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlInternalMethod
                 .InvokeGeneric(this, new object[]
                 {
                     filter
@@ -47,6 +47,19 @@ namespace Iql.Conversion
                     , evaluateContext
 #endif
                 }, entityType);
+        }
+
+        private ExpressionResult<IqlExpression> ConvertLambdaToIqlInternal<TEntity>(LambdaExpression lambdaExpression
+#if TypeScript
+, EvaluateContext evaluateContext
+#endif
+        ) where TEntity : class
+        {
+            return ConvertLambdaExpressionToIql<TEntity>(lambdaExpression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
         }
 
         public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> lambdaExpression

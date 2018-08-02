@@ -22,9 +22,9 @@ namespace Iql.Data.Extensions
 
             var expandOperation = new ExpandOperation();
             var returnOperation = expandOperation;
-            IDbQueryable expandedDbSet = dataContext.GetDbSetByEntityType(
+            var expandedDbSet = dataContext.GetDbSetByEntityType(
                 entityConfiguration.FindProperty(path.PropertyName).Relationship.OtherEnd.Type);
-            if (path.Child != null)
+            if (path.Child != null && path.Child.Property.Kind.HasFlag(PropertyKind.Relationship))
             {
                 expandedDbSet = expandedDbSet.ExpandRelationship(path.Child.PathFromHere);
             }

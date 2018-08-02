@@ -27,6 +27,7 @@ using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
 using EnumExtensions = Iql.OData.TypeScript.Generator.Extensions.EnumExtensions;
+using IEntityConfiguration = Iql.Entities.IEntityConfiguration;
 using IPropertyCollection = Iql.Entities.IPropertyCollection;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
 using IRelationshipDetail = Iql.Entities.Relationships.IRelationshipDetail;
@@ -852,20 +853,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(string))
                     {
-                        var str = value as string;
-                        if (str != null)
+                        if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
                         {
-                            assign = String(str);
+                            assign = String(value as string);
                         }
-
                         dealtWith = true;
                     }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
                     {
-                        var instance = metadataSolidType == typeof(PropertyCollection)
-                            ? new PropertyCollection(sourceEntityConfiguration as IEntityConfiguration)
-                            : Activator.CreateInstance(metadataSolidType);
-                        if (!Equals(value, metadataProperty.GetValue(instance)))
+                        if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
                         {
                             assign = value.ToString().ToLower();
                         }
@@ -1105,6 +1101,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 else if (metadataSolidType == typeof(PropertyPath))
                 {
                     instance = new PropertyPath(null, null);
+                }
+                else if (typeof(IEntityConfiguration).IsAssignableFrom(metadataSolidType))
+                {
+                    instance = new Server.Serialization.EntityConfiguration(null);
                 }
                 else
                 {

@@ -20,11 +20,12 @@ namespace Iql.Entities
         ISimpleProperty SetReadOnlyAndHidden();
         ISimpleProperty SetReadOnly();
         ISimpleProperty SetHidden();
+        ISimpleProperty ResolvePrimaryProperty();
     }
 
     public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>, ISimpleProperty
     {
-        IPropertyGroup PropertyGroup { get; }
+        ISimpleProperty PropertyGroup { get; }
         IDateRange DateRange { get; }
         INestedSet NestedSet { get; }
         IGeographic Geographic { get; }

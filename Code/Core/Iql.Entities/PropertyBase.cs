@@ -16,9 +16,14 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata
     {
+        public override ISimpleProperty ResolvePrimaryProperty()
+        {
+            return PropertyGroup ?? this;
+        }
+
         public bool Internal => PropertyGroup != null;
         public bool IsHiddenOrInternal => IsHidden || Internal;
-        public IPropertyGroup PropertyGroup
+        public ISimpleProperty PropertyGroup
         {
             get
             {

@@ -2,7 +2,7 @@
 
 namespace Iql.Entities.PropertyGroups.Files
 {
-    public interface IFile : IPropertyGroup, IConfigurable<IFile>, IFileUrlBase
+    public interface IFile : ISimpleProperty, IConfigurable<IFile>, IFileUrlBase
     {
         IList<IFilePreview> Previews { get; set; }
         IProperty NameProperty { get; set; }
