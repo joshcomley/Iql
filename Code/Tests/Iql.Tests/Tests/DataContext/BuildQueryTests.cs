@@ -21,7 +21,7 @@ namespace Iql.Tests.Tests.DataContext
                 );
             var query = collection.BuildQueryFromPropertyGroup<Site>(Db);
             var uri = await query.ResolveODataUriAsync();
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children,CreatedByUser($expand=Client($expand=Type))", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children/$count,CreatedByUser($expand=Client($expand=Type))", uri);
         }
     }
 }

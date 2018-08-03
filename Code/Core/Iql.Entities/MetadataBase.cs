@@ -9,12 +9,12 @@ namespace Iql.Entities
         private string _friendlyName;
         private bool _friendlyNameSet;
         private string _name;
-        private bool _nameSet;
+        protected bool _nameSet;
         private string _title;
         private bool _titleSet;
         public IMetadataCollection Metadata { get; set; } = new MetadataCollection();
 
-        public string Name
+        public virtual string Name
         {
             get
             {

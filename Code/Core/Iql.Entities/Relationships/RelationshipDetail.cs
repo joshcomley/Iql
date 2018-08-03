@@ -11,6 +11,11 @@ namespace Iql.Entities.Relationships
         where T : class
         where TConfigurable : RelationshipDetailTypedBase<T, TProperty, TConfigurable>
     {
+        protected override string ResolveName()
+        {
+            return Property?.Name;
+        }
+
         protected RelationshipDetailTypedBase(
             IRelationship relationship,
             RelationshipSide relationshipSide,

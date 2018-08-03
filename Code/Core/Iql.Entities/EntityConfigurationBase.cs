@@ -104,46 +104,57 @@ namespace Iql.Entities
 
         public IPropertyGroup[] GetGroupProperties()
         {
-            return GetDisplayConfiguration(DisplayConfigurationKind.Edit);
-        }
-
-        public virtual IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind)
-        {
-            var orderedDisplaySetting = kind == DisplayConfigurationKind.Edit ? EditDisplay : ReadDisplay;
-            var allPropertyGroups = AllPropertyGroups();
-            if (orderedDisplaySetting == null || !orderedDisplaySetting.Any())
+            var all = new List<IPropertyGroup>();
+            all.AddRange(AllPropertyGroups());
+            all.AddRange(Properties.Where(p =>
+                p.PropertyGroup == null));
+            return all.OrderBy(_ =>
             {
-                var all = new List<IPropertyGroup>();
-                all.AddRange(Properties.Where(p =>
-                    p.PropertyGroup == null));
-
-                all.AddRange(allPropertyGroups);
-
-                return all.ToArray();
-            }
-
-            var flattened = orderedDisplaySetting.FlattenAllToSimpleProperties().ToList();
-            var ordered = orderedDisplaySetting.ToList();
-            for (var i = 0; i < Properties.Count; i++)
-            {
-                var property = Properties[i];
-                var dealtWith = false;
-                if (property.PropertyGroup != null)
+                if (_ is IGeographic)
                 {
-                    dealtWith = true;
-                    if (!flattened.Contains(property))
+                    return 0;
+                }
+
+                if (_ is IFile)
+                {
+                    return 1;
+                }
+                if (_ is IProperty)
+                {
+                    if ((_ as IProperty).SearchKind == PropertySearchKind.Primary)
                     {
-                        ordered.Add(property.PropertyGroup);
-                        flattened.AddRange(property.PropertyGroup.FlattenToSimpleProperties());
+                        return 30;
+                    }
+                    if ((_ as IProperty).SearchKind == PropertySearchKind.Secondary)
+                    {
+                        return 40;
                     }
                 }
+                return 999999;
+            }).ToArray();
+        }
 
-                if (!dealtWith && !flattened.Contains(property))
+        public virtual IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind, bool appendMissingProperties = true)
+        {
+            var orderedDisplaySetting = kind == DisplayConfigurationKind.Edit ? EditDisplay : ReadDisplay;
+            if (orderedDisplaySetting == null || !orderedDisplaySetting.Any())
+            {
+                return GetGroupProperties();
+            }
+            var ordered = orderedDisplaySetting.ToList();
+            if (appendMissingProperties)
+            {
+                var flattened = orderedDisplaySetting.FlattenAllToSimpleProperties().ToList();
+                var groupProperties = GetGroupProperties();
+                for (var i = 0; i < groupProperties.Length; i++)
                 {
-                    ordered.Add(property);
+                    var property = groupProperties[i];
+                    if (!flattened.Contains(property) && !ordered.Contains(property))
+                    {
+                        ordered.Add(property);
+                    }
                 }
             }
-
             return ordered.ToArray();
         }
 

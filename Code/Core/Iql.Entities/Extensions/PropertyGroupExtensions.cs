@@ -30,9 +30,10 @@ namespace Iql.Entities.Extensions
         {
             return $"__{string.Join("_", propertyGroup.GetGroupProperties().Select(_ => _.Name))}__";
         }
-        public static IProperty[] FlattenAllToSimpleProperties(this IEnumerable<IPropertyGroup> propertyGroup)
+
+        public static ISimpleProperty[] FlattenAllToSimpleProperties(this IEnumerable<IPropertyGroup> propertyGroup)
         {
-            var list = new List<IProperty>();
+            var list = new List<ISimpleProperty>();
             foreach (var item in propertyGroup)
             {
                 item.FlattenToSimplePropertiesInternal(list);
@@ -40,18 +41,50 @@ namespace Iql.Entities.Extensions
             return list.Distinct().ToArray();
         }
 
-        public static IProperty[] FlattenToSimpleProperties(this IPropertyGroup propertyGroup)
+        public static ISimpleProperty[] FlattenToSimpleProperties(this IPropertyGroup propertyGroup)
         {
             return new[] { propertyGroup }.FlattenAllToSimpleProperties();
         }
 
-        private static List<IProperty> FlattenToSimplePropertiesInternal(this IPropertyGroup propertyGroup, List<IProperty> properties)
+        private static List<ISimpleProperty> FlattenToSimplePropertiesInternal(this IPropertyGroup propertyGroup, List<ISimpleProperty> properties)
+        {
+            if (propertyGroup is ISimpleProperty)
+            {
+                properties.Add(propertyGroup as ISimpleProperty);
+            }
+            else
+            {
+                foreach (var property in propertyGroup.GetGroupProperties())
+                {
+                    properties.AddRange(property.FlattenToSimpleProperties());
+                }
+            }
+            return properties;
+        }
+
+
+        public static IProperty[] FlattenAllToValueProperties(this IEnumerable<IPropertyGroup> propertyGroup)
+        {
+            var list = new List<IProperty>();
+            foreach (var item in propertyGroup)
+            {
+                item.FlattenToValuePropertiesInternal(list);
+            }
+            return list.Distinct().ToArray();
+        }
+
+        public static IProperty[] FlattenToValueProperties(this IPropertyGroup propertyGroup)
+        {
+            return new[] { propertyGroup }.FlattenAllToValueProperties();
+        }
+
+        private static List<IProperty> FlattenToValuePropertiesInternal(this IPropertyGroup propertyGroup, List<IProperty> properties)
         {
             if (!propertyGroup.Kind.HasFlag(PropertyKind.Property))
             {
                 foreach (var property in propertyGroup.GetGroupProperties())
                 {
-                    properties.AddRange(property.FlattenToSimpleProperties());
+                    properties.AddRange(property.FlattenToValueProperties());
                 }
             }
             else

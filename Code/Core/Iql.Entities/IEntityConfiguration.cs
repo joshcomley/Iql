@@ -21,6 +21,7 @@ namespace Iql.Entities
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
         IEntityConfiguration SetDefaultSortExpression(string expression);
+        IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind, bool appendMissingProperties = true);
         IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
         IEntityValidationResult ValidateEntity(object entity);
         IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity,

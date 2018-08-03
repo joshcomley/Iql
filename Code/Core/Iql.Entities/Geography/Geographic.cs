@@ -4,6 +4,11 @@ namespace Iql.Entities.Geography
 {
     public class Geographic : SimplePropertyGroupBase<IGeographic>, IGeographic
     {
+        protected override string ResolveName()
+        {
+            return "Location";
+        }
+
         public override PropertyKind Kind
         {
             get => PropertyKind.SimpleCollection;

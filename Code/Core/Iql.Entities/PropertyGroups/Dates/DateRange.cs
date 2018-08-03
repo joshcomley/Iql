@@ -4,6 +4,15 @@ namespace Iql.Entities.PropertyGroups.Dates
 {
     public class DateRange : SimplePropertyGroupBase<IDateRange>, IDateRange
     {
+        protected override string ResolveName()
+        {
+            var parts = new[] {StartDateProperty?.Name, EndDateProperty?.Name}.Where(_ =>
+                !string.IsNullOrWhiteSpace(_)).ToArray();
+            return parts.Length == 0
+                ? "DateRange"
+                : string.Join(" - ", parts);
+        }
+
         public IProperty StartDateProperty { get; set; }
         public IProperty EndDateProperty { get; set; }
         public override IEntityConfiguration EntityConfiguration =>

@@ -57,6 +57,7 @@ namespace Iql.Entities
         {
             EntityConfigurationInternal = entityConfiguration;
             Name = name;
+            PropertyName = name;
             if (readOnly.HasValue)
             {
                 SetReadOnly();

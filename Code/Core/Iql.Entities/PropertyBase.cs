@@ -154,6 +154,8 @@ namespace Iql.Entities
 
         internal IProperty CountRelationship { get; set; }
 
+        public string PropertyName { get; set; }
+
         public bool IsReadOnly => ResolveAutoReadOnly();
 
         public bool IsHidden => EditKind == PropertyEditKind.Hidden && ReadKind == PropertyReadKind.Hidden;
