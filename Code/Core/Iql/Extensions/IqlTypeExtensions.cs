@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.Extensions
@@ -141,6 +142,14 @@ namespace Iql.Extensions
             if (type == IqlType.Boolean)
             {
                 return typeof(bool);
+            }
+            if (type == IqlType.Date)
+            {
+                return typeof(DateTime);
+            }
+            if (type == IqlType.Collection)
+            {
+                return typeof(List<>);
             }
             if (type == IqlType.Integer)
             {
