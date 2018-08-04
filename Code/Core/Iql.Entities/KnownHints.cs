@@ -23,6 +23,8 @@
         public const string Title = Prefix + nameof(Title);
         public const string Image = Prefix + nameof(Image);
         public const string Video = Prefix + nameof(Video);
+        public const string Pdf = Prefix + nameof(Pdf);
+        public const string Spreadsheet = Prefix + nameof(Spreadsheet);
         public const string EntityPreview = Prefix + nameof(EntityPreview);
         public const string SubTitle = Prefix + nameof(SubTitle);
 
