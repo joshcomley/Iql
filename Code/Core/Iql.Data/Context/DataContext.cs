@@ -631,7 +631,18 @@ namespace Iql.Data.Context
 
                     if (remoteValue != null)
                     {
-                        if (property.TypeDefinition.Type.IsEnum && remoteValue is string)
+                        var isEnum = property.TypeDefinition.Type.IsEnum;
+#if !TypeScript
+                        if (!isEnum)
+                        {
+                            var underlyingType = Nullable.GetUnderlyingType(property.TypeDefinition.Type);
+                            if (underlyingType != null && underlyingType.IsEnum)
+                            {
+                                isEnum = true;
+                            }
+                        }
+#endif
+                        if (isEnum && remoteValue is string)
                         {
                             try
                             {

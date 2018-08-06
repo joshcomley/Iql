@@ -13,6 +13,10 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 action.Kind == IqlExpressionKind.Has)
             {
                 var rightLiteral = action.Right as IqlEnumLiteralExpression;
+                //if (rightLiteral.Value == null)
+                //{
+                //    return null;
+                //}
                 var valueString = string.Join(",", rightLiteral.Value.Select(v => v.Name).OrderBy(o => o));
                 var enumString = $"\'{valueString}\'";
                 action.Right = new IqlFinalExpression<string>(
@@ -27,6 +31,10 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 if (type.IsDefined(typeof(FlagsAttribute), true))
                 {
                     var rightLiteral = action.Right as IqlLiteralExpression;
+                    //if (rightLiteral.Value == null)
+                    //{
+                    //    return null;
+                    //}
                     var value = Enum.ToObject(type, rightLiteral.Value);
                     var valueString = 
                         string.Join(",", value.ToString().Split(',')
@@ -36,12 +44,31 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                         enumString);
                 }
             }
+
+            var left = parser.Parse(action.Left);
+            var right = parser.Parse(action.Right);
+
+            if (left == null && right != null)
+            {
+                return new IqlFinalExpression<string>(right.ToCodeString());
+            }
+
+            if (left != null && right == null)
+            {
+                return new IqlFinalExpression<string>(left.ToCodeString());
+            }
+
+            if (left == null)
+            {
+                return new IqlFinalExpression<string>("");
+            }
+
             var spacer = " ";
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(
-                    action.Left,
+                    new IqlFinalExpression<string>(left.ToCodeString()),
                     new IqlFinalExpression<string>($"{spacer}{ResolveOperator(action)}{spacer}"),
-                    action.Right
+                    new IqlFinalExpression<string>(right.ToCodeString())
                 )
             );
         }

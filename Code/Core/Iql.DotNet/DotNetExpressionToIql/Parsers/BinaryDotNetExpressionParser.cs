@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Iql.DotNet.Extensions;
 
 namespace Iql.DotNet.DotNetExpressionToIql.Parsers
 {
@@ -37,7 +38,7 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
 
             bool CheckEnum(Expression sideA, IqlExpression sideB)
             {
-                if (sideA is UnaryExpression && (sideA as UnaryExpression).Operand.Type.IsEnum && sideB is IqlLiteralExpression)
+                if (sideA is UnaryExpression && (sideA as UnaryExpression).Operand.Type.IsEnumOrNullableEnum() && sideB is IqlLiteralExpression)
                 {
                     var value = Convert.ToInt64((sideB as IqlLiteralExpression).Value);
                     binary.Right = new IqlEnumLiteralExpression((sideA as UnaryExpression).Operand.Type)

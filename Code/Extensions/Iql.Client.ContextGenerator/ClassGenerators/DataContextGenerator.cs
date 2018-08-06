@@ -879,7 +879,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         }
                         dealtWith = true;
                     }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnum)
+                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumOrNullableEnum())
                     {
                         if (EnumExtensions.IsValidEnumValue(value) && !IsDefaultValue(metadataProperty, value, metadataSolidType))
                         {

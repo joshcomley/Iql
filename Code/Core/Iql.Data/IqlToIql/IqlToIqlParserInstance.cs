@@ -10,7 +10,8 @@ namespace Iql.Data.IqlToIql
         string, IqlToIqlIqlOutput, IExpressionConverter>
     {
         public IqlToIqlParserInstance(IEntityConfiguration entityConfiguration) : base(
-            new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver()) { }
+            new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver())
+        { }
         public override IqlToIqlIqlOutput ParseExpression(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -26,7 +27,14 @@ namespace Iql.Data.IqlToIql
             {
                 throw new Exception("No parser found for " + expression.GetType().Name);
             }
-            return new IqlToIqlIqlOutput(parser.ToQueryString(expression, this));
+
+            var result = parser.ToQueryString(expression, this);
+            if (result == null)
+            {
+                int a = 0;
+            }
+            //return result == null ? null : new IqlToIqlIqlOutput(result);
+            return new IqlToIqlIqlOutput(result);
         }
     }
 }

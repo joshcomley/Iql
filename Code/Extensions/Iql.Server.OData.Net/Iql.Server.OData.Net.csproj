@@ -7,7 +7,7 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10213-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10234-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>

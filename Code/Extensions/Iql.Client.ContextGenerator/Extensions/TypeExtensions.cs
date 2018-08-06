@@ -7,6 +7,17 @@ namespace Iql.OData.TypeScript.Generator.Extensions
 {
     public static class TypeExtensions
     {
+        public static bool IsEnumOrNullableEnum(this Type type)
+        {
+            if (type.IsEnum)
+            {
+                return true;
+            }
+
+            var underlying = Nullable.GetUnderlyingType(type);
+            return underlying != null && underlying.IsEnum;
+        }
+
         public static bool IsAny(this Type type, params Type[] args)
         {
             return args.Any(t => t == type);

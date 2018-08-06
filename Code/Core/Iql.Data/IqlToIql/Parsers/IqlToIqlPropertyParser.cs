@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Iql.Data.Queryable;
 using Iql.Entities;
@@ -9,6 +10,10 @@ namespace Iql.Data.IqlToIql.Parsers
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlLambdaExpression action, IqlToIqlParserInstance parser)
         {
             action.Body = parser.Parse(action.Body).Expression;
+            if (action.Body == null)
+            {
+                return null;
+            }
             if (action.Parameters != null)
             {
                 for (var i = 0; i < action.Parameters.Count; i++)
@@ -60,7 +65,35 @@ namespace Iql.Data.IqlToIql.Parsers
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlBinaryExpression action, IqlToIqlParserInstance parser)
         {
             var lr = new[] { action.Left, action.Right };
+            var isValidEnumCheck = action.Kind == IqlExpressionKind.Has || action.Kind == IqlExpressionKind.IsEqualTo ||
+                         action.Kind == IqlExpressionKind.IsNotEqualTo;
+            var propertyExpression = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Property) as IqlPropertyExpression;
+            var enumLiteralExpression = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.EnumLiteral) as IqlEnumLiteralExpression;
             var literal = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Literal) as IqlLiteralExpression;
+            if (propertyExpression != null &&
+                enumLiteralExpression != null &&
+                isValidEnumCheck)
+            {
+                if (enumLiteralExpression.Value == null)
+                {
+                    return null;
+                }
+            }
+            else if (propertyExpression !=null &&
+                     literal != null &&
+                     isValidEnumCheck &&
+                     (literal.ReturnType == IqlType.Integer || literal.InferredReturnType == IqlType.Integer))
+            {
+                var type = propertyExpression.ResolveType(parser.CurrentEntityType);
+                if (type?.IsDefined(typeof(FlagsAttribute), true) == true)
+                {
+                    if (literal.Value == null)
+                    {
+                        return null;
+                    }
+                }
+            }
+
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
 
             if (literal != null &&
@@ -70,14 +103,27 @@ namespace Iql.Data.IqlToIql.Parsers
                 return parser.ReplaceAndParse(new IqlNotExpression(lr.SingleOrDefault(l => l != literal) ?? literal)).Expression;
             }
 
-            action.Left = (IqlExpression)parser.Parse(action.Left).Expression;
-            action.Right = (IqlExpression)parser.Parse(action.Right).Expression;
+            action.Left = parser.Parse(action.Left).Expression;
+            action.Right = parser.Parse(action.Right).Expression;
+
+            if (action.Left == null && action.Right != null)
+            {
+                return action.Right;
+            }
+            if (action.Left != null && action.Right == null)
+            {
+                return action.Left;
+            }
+            if (action.Left == null && action.Right == null)
+            {
+                return null;
+            }
 
             lr = new[] { action.Left, action.Right };
             literal = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Literal) as IqlLiteralExpression;
 
-            var isEqualTo = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.IsEqualTo);
-            var isNotEqualTo = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.IsNotEqualTo);
+            //var isEqualTo = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.IsEqualTo);
+            //var isNotEqualTo = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.IsNotEqualTo);
 
             var indexOf = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.StringIndexOf);
 

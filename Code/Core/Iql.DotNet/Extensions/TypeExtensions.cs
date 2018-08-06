@@ -4,6 +4,17 @@ namespace Iql.DotNet.Extensions
 {
     public static class TypeExtensions
     {
+        public static bool IsEnumOrNullableEnum(this Type type)
+        {
+            if (type.IsEnum)
+            {
+                return true;
+            }
+
+            var underlying = Nullable.GetUnderlyingType(type);
+            return underlying != null && underlying.IsEnum;
+        }
+
         public static GenericBaseType TryGetBaseType(this Type entityType, Type type,
             Action<GenericBaseType> onSuccess = null)
         {

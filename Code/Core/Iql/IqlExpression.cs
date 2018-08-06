@@ -56,6 +56,12 @@ namespace Iql
             ancestor.Parent = expression;
         }
 
+        public T As<T>()
+            where T : IqlExpression
+        {
+            return this as T;
+        }
+
         public static IqlPropertyExpression GetPropertyExpression(string propertyName)
         {
             var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");

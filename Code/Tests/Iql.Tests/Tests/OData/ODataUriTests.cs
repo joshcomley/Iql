@@ -402,6 +402,83 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task EnumEmptyCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.Permissions),
+                    new IqlRootReferenceExpression()),
+                new IqlEnumLiteralExpression(null)));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users",
+                uri);
+        }
+
+
+        [TestMethod]
+        public async Task EnumEmptyReversedCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(
+                new IqlEnumLiteralExpression(null),
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.Permissions),
+                    new IqlRootReferenceExpression())));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task EnumEmptyHasCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlHasExpression(
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.Permissions),
+                    new IqlRootReferenceExpression()),
+                new IqlEnumLiteralExpression(null)));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task EnumEmptyOrCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlOrExpression(new IqlIsEqualToExpression(
+                    new IqlPropertyExpression(
+                        nameof(ApplicationUser.Permissions),
+                        new IqlRootReferenceExpression()),
+                    new IqlEnumLiteralExpression(null)),
+                new IqlIsEqualToExpression(
+                    new IqlPropertyExpression(
+                        nameof(ApplicationUser.Permissions),
+                        new IqlRootReferenceExpression()),
+                    new IqlEnumLiteralExpression(null))
+            ));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users",
+                uri);
+        }
+        [TestMethod]
+        public async Task EnumEmptyHasOrCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlOrExpression(new IqlHasExpression(
+                    new IqlPropertyExpression(
+                        nameof(ApplicationUser.Permissions),
+                        new IqlRootReferenceExpression()),
+                    new IqlEnumLiteralExpression(null)),
+                new IqlHasExpression(
+                    new IqlPropertyExpression(
+                        nameof(ApplicationUser.Permissions),
+                        new IqlRootReferenceExpression()),
+                    new IqlEnumLiteralExpression(null))
+            ));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users",
+                uri);
+        }
+
+        [TestMethod]
         public async Task EnumFlagsExactConstructedManuallyCheck()
         {
             var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(

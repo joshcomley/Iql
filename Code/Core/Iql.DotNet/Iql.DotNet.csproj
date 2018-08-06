@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="TypeSharp.Extensions" Version="0.0.5-preview5" />
+    <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0013-1-Debug" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Iql.Data\Iql.Data.csproj" />
