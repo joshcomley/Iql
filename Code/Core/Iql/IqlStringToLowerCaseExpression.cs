@@ -16,6 +16,7 @@ namespace Iql
 			// #CloneStart
 
 			var expression = new IqlStringToLowerCaseExpression(null);
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

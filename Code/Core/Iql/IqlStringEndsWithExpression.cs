@@ -17,6 +17,7 @@ namespace Iql
 
 			var expression = new IqlStringEndsWithExpression(null, null);
 			expression.Value = Value?.Clone();
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

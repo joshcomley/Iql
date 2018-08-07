@@ -20,6 +20,7 @@ namespace Iql
 
 			var expression = new IqlDataSetReferenceExpression();
 			expression.Name = Name;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

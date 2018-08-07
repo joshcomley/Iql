@@ -2,7 +2,7 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10213-0-Release" />
+        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10234-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">

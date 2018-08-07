@@ -20,6 +20,7 @@ namespace Iql
 
 			var expression = new IqlFinalExpression<TValue>(default(TValue));
 			expression.Value = Value;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

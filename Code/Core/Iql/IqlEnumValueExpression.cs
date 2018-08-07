@@ -23,6 +23,7 @@ namespace Iql
 			expression.Name = Name;
 			expression.Value = Value;
 			expression.InferredReturnType = InferredReturnType;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

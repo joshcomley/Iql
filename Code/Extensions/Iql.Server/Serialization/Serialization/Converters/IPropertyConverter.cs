@@ -46,10 +46,6 @@ namespace Iql.Server.Serialization.Converters
                 //{
 
                 //}
-                if (value is IRelationshipDetailMetadata)
-                {
-                    int a = 0;
-                }
                 if (IsNested)
                 {
                     if (string.IsNullOrWhiteSpace(writer.Path))

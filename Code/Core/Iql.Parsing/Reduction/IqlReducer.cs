@@ -81,10 +81,6 @@ namespace Iql.Parsing.Reduction
                 }
             }
 
-            if (expression is IqlPropertyExpression && (expression as IqlPropertyExpression).PropertyName == "ClientId")
-            {
-                int a = 0;
-            }
             if (!expression.IsOrHas(i => i is IqlRootReferenceExpression || i is IqlVariableExpression && ancestralParameters.Contains((i as IqlVariableExpression).VariableName)))
             {
                 // We need this initial cast to object in TypeScript because for some reason

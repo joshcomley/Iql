@@ -24,6 +24,7 @@ namespace Iql
 			expression.NavigationProperty = (IqlPropertyExpression)NavigationProperty?.Clone();
 			expression.Query = (IqlCollectitonQueryExpression)Query?.Clone();
 			expression.Count = Count;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

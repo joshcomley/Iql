@@ -101,6 +101,7 @@ namespace Iql
 			expression.Minutes = Minutes;
 			expression.Seconds = Seconds;
 			expression.Milliseconds = Milliseconds;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

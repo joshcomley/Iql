@@ -29,6 +29,7 @@ namespace Iql
 			expression.EntityTypeName = EntityTypeName;
 			expression.Value = Value;
 			expression.VariableName = VariableName;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

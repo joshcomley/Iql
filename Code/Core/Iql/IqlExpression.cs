@@ -14,6 +14,7 @@ namespace Iql
             Parent = parent;
         }
 
+        public string Key { get; set; }
         public IqlExpressionKind Kind { get; set; }
         public IqlType ReturnType { get; set; }
         public IqlExpression Parent { get; set; }
@@ -258,5 +259,14 @@ namespace Iql
         }
 
         public abstract IqlExpression Clone();
+
+        public virtual IqlExpression[] Flatten()
+        {
+            var list = new List<IqlExpression>();
+            FlattenInternal(list);
+            return list.ToArray();
+        }
+
+        internal abstract void FlattenInternal(IList<IqlExpression> expressions);
     }
 }

@@ -29,10 +29,6 @@ namespace Iql.Data.IqlToIql
             }
 
             var result = parser.ToQueryString(expression, this);
-            if (result == null)
-            {
-                int a = 0;
-            }
             //return result == null ? null : new IqlToIqlIqlOutput(result);
             return new IqlToIqlIqlOutput(result);
         }

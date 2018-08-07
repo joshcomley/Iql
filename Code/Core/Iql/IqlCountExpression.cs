@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql
 {
     public class IqlCountExpression : IqlParentValueExpression
@@ -24,6 +26,7 @@ namespace Iql
 			var expression = new IqlCountExpression(null, null, null);
 			expression.RootVariableName = RootVariableName;
 			expression.Value = Value?.Clone();
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

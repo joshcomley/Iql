@@ -31,6 +31,7 @@ namespace Iql
 			expression.Test = Test?.Clone();
 			expression.IfTrue = IfTrue?.Clone();
 			expression.IfFalse = IfFalse?.Clone();
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

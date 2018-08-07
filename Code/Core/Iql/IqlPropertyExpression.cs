@@ -26,6 +26,7 @@ namespace Iql
 
 			var expression = new IqlPropertyExpression();
 			expression.PropertyName = PropertyName;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

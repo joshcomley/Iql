@@ -22,6 +22,7 @@ namespace Iql
 			var expression = new IqlOrderByExpression(null);
 			expression.OrderExpression = OrderExpression?.Clone();
 			expression.Descending = Descending;
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

@@ -229,10 +229,6 @@ namespace Iql.Parsing
             IncrementPath(expression);
             var index = appendToAncestors ? Ancestors.Count - 1 : -1;
             var result = ParseExpression(expression);
-            if (result == null)
-            {
-                int a = 0;
-            }
             if (expression != null)
             {
                 if (!OutputMap.ContainsKey(expression))

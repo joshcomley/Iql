@@ -11,6 +11,7 @@ namespace Iql
 			// #CloneStart
 
 			var expression = new IqlNowExpression();
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

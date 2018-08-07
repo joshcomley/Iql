@@ -27,6 +27,7 @@ namespace Iql
 
 			var expression = new IqlNotExpression(null);
 			expression.Expression = Expression?.Clone();
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();

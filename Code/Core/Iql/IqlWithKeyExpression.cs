@@ -37,6 +37,7 @@ namespace Iql
 				}
 				expression.KeyEqualToExpressions = listCopy;
 			}
+			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
 			expression.Parent = Parent?.Clone();
