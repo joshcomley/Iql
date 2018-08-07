@@ -323,7 +323,7 @@ namespace Iql.Data.IqlToIql.Parsers
             action.Expression = (IqlExpression)parser.Parse(action.Expression).Expression;
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
 
-            return action;
+            return action.Expression == null ? null : action;
         }
     }
 

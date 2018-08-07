@@ -414,6 +414,21 @@ namespace Iql.Tests.Tests.OData
                 uri);
         }
 
+        [TestMethod]
+        public async Task EmptyParenthesisCheck()
+        {
+            var query = Db.Users.WhereEquals(
+                new IqlOrExpression(new IqlParenthesisExpression(null),
+                    new IqlIsEqualToExpression(
+                        new IqlPropertyExpression(
+                            nameof(ApplicationUser.FullName),
+                            new IqlRootReferenceExpression()),
+                        new IqlLiteralExpression("abc"))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/FullName eq 'abc')",
+                uri);
+        }
+
 
         [TestMethod]
         public async Task EnumEmptyReversedCheck()
