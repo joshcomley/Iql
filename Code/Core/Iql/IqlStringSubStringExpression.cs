@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql
 {
     public class IqlStringSubStringExpression : IqlParentValueExpression
@@ -30,5 +32,21 @@ namespace Iql
 
 			// #CloneEnd
 		}
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			Take?.FlattenInternal(expressions);
+			Value?.FlattenInternal(expressions);
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
+        }
     }
 }

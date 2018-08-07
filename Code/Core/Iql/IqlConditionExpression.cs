@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql
 {
     public class IqlConditionExpression : IqlExpression
@@ -38,6 +40,23 @@ namespace Iql
 			return expression;
 
             // #CloneEnd
+        }
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			Test?.FlattenInternal(expressions);
+			IfTrue?.FlattenInternal(expressions);
+			IfFalse?.FlattenInternal(expressions);
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
         }
     }
 }

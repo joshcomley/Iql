@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 
 namespace Iql
@@ -35,5 +36,20 @@ namespace Iql
 
 			// #CloneEnd
 		}
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			Expression?.FlattenInternal(expressions);
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
+        }
     }
 }

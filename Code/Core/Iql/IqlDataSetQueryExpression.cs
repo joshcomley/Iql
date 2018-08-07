@@ -102,5 +102,43 @@ namespace Iql
 
 			// #CloneEnd
 		}
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			DataSet?.FlattenInternal(expressions);
+			if(OrderBys != null)
+			{
+				for(var i = 0; i < OrderBys.Count; i++)
+				{
+					OrderBys[i]?.FlattenInternal(expressions);
+				}
+			}
+			if(Expands != null)
+			{
+				for(var i = 0; i < Expands.Count; i++)
+				{
+					Expands[i]?.FlattenInternal(expressions);
+				}
+			}
+			Filter?.FlattenInternal(expressions);
+			WithKey?.FlattenInternal(expressions);
+			if(Parameters != null)
+			{
+				for(var i = 0; i < Parameters.Count; i++)
+				{
+					Parameters[i]?.FlattenInternal(expressions);
+				}
+			}
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
+        }
     }
 }

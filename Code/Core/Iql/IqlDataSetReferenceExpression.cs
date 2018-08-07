@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql
 {
     public class IqlDataSetReferenceExpression : IqlExpression
@@ -28,5 +30,19 @@ namespace Iql
 
 			// #CloneEnd
 		}
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
+        }
     }
 }

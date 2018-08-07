@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Iql
 {
     public class IqlMultiplyEqualsExpression : IqlBinaryExpression
@@ -27,5 +29,21 @@ namespace Iql
 
 			// #CloneEnd
 		}
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			Left?.FlattenInternal(expressions);
+			Right?.FlattenInternal(expressions);
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
+        }
     }
 }

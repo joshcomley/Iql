@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Entities;
 using Iql.Tests.Context;
@@ -166,6 +167,30 @@ namespace Iql.Tests.Tests
                 new IqlIsLessThanExpression(property, new IqlLiteralExpression(dates[1], IqlType.Date))
             );
             await Db.RiskAssessments.WhereEquals(and).ToListAsync();
+        }
+
+        [TestMethod]
+        public void FlattenIqlExpressionsTest()
+        {
+            var dates = new DateTimeOffset[] { DateTimeOffset.Now, DateTimeOffset.Now, };
+            var root = new IqlRootReferenceExpression("root", "", typeof(RiskAssessment));
+            var property = new IqlPropertyExpression(nameof(RiskAssessment.CreatedDate));
+            property.Parent = root;
+            var literal = new IqlLiteralExpression(dates[0], IqlType.Date);
+            var left = new IqlIsGreaterThanExpression(property, literal);
+            var right = new IqlIsLessThanExpression(property, literal);
+            var and = new IqlAndExpression(
+                left,
+                right
+            );
+            var flattened = and.Flatten();
+            Assert.AreEqual(6, flattened.Length);
+            Assert.IsTrue(flattened.Contains(root));
+            Assert.IsTrue(flattened.Contains(property));
+            Assert.IsTrue(flattened.Contains(literal));
+            Assert.IsTrue(flattened.Contains(left));
+            Assert.IsTrue(flattened.Contains(right));
+            Assert.IsTrue(flattened.Contains(and));
         }
     }
 }

@@ -79,5 +79,26 @@ namespace Iql
 
 			// #CloneEnd
 		}
+
+		internal override void FlattenInternal(IList<IqlExpression> expressions)
+        {
+			// #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			expressions.Add(this);
+			if(Value != null)
+			{
+				for(var i = 0; i < Value.Length; i++)
+				{
+					Value[i]?.FlattenInternal(expressions);
+				}
+			}
+			Parent?.FlattenInternal(expressions);
+
+			// #FlattenEnd
+        }
     }
 }
