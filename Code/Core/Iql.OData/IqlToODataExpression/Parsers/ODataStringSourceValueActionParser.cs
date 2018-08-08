@@ -4,7 +4,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     {
         public override IqlExpression[] ResolveMethodArguments(IqlParentValueExpression action)
         {
-            return new[] {action.Parent, action.Value};
+            return new[] { action.Parent, action.Value };
         }
 
         public override string ResolveMethodName(IqlParentValueExpression action)

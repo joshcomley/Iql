@@ -507,6 +507,78 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task AnyCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlAnyExpression("_",
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.ClientsCreated),
+                    new IqlRootReferenceExpression()),
+                new IqlIsEqualToExpression(new IqlPropertyExpression(
+                        nameof(Client.Name),
+                        new IqlRootReferenceExpression("_")),
+                    new IqlLiteralExpression("jimbo", IqlType.String))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/any(_:(_/Name eq 'jimbo'))",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task AllCheck()
+        {
+            var query = Db.Users.WhereEquals(new IqlAllExpression("_",
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.ClientsCreated),
+                    new IqlRootReferenceExpression()),
+                new IqlIsEqualToExpression(new IqlPropertyExpression(
+                        nameof(Client.Name),
+                        new IqlRootReferenceExpression("_")),
+                    new IqlLiteralExpression("jimbo", IqlType.String))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/all(_:(_/Name eq 'jimbo'))",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task AllCheck2()
+        {
+            var query = Db.Users.WhereEquals(new IqlAllExpression("_",
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.ClientsCreated),
+                    new IqlRootReferenceExpression()),
+                new IqlStringIncludesExpression(new IqlPropertyExpression(
+                        nameof(Client.Name),
+                        new IqlRootReferenceExpression("_")),
+                    new IqlLiteralExpression("jimbo", IqlType.String))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/all(_:contains(_/Name,'jimbo'))",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task EmptyAny()
+        {
+            var query = Db.Users.WhereEquals(new IqlAnyExpression("_",
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.ClientsCreated),
+                    new IqlRootReferenceExpression()), null));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/any()",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task EmptyAll()
+        {
+            var query = Db.Users.WhereEquals(new IqlAllExpression("_",
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.ClientsCreated),
+                    new IqlRootReferenceExpression()), null));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users",
+                uri);
+        }
+
+        [TestMethod]
         public async Task EnumFlagsContainsCheck()
         {
             var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0

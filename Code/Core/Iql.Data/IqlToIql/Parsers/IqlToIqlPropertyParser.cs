@@ -335,6 +335,11 @@ namespace Iql.Data.IqlToIql.Parsers
             action.Value = (IqlExpression)parser.Parse(action.Value).Expression;
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
 
+            if (action.Value == null && action.Kind == IqlExpressionKind.All)
+            {
+                return null;
+            }
+
             return action;
         }
     }
