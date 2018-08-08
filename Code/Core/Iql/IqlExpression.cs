@@ -260,13 +260,22 @@ namespace Iql
 
         public abstract IqlExpression Clone();
 
-        public virtual IqlExpression[] Flatten()
+        public virtual IqlExpression[] Flatten(Func<IqlExpression, FlattenReactionKind> checker = null)
         {
             var list = new List<IqlExpression>();
-            FlattenInternal(list);
+            FlattenInternal(list, checker);
             return list.ToArray();
         }
 
-        internal abstract void FlattenInternal(IList<IqlExpression> expressions);
+        protected FlattenReactionKind CheckFlatten(Func<IqlExpression, FlattenReactionKind> checker)
+        {
+            if (checker == null)
+            {
+                return FlattenReactionKind.Continue;
+            }
+            return checker(this);
+        }
+
+        internal abstract void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Iql
@@ -27,7 +28,7 @@ namespace Iql
 			// #CloneEnd
 		}
 
-		internal override void FlattenInternal(IList<IqlExpression> expressions)
+		internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
         {
 			// #FlattenStart
 
@@ -35,8 +36,19 @@ namespace Iql
 			{
 				return;
 			}
-			expressions.Add(this);
-			Parent?.FlattenInternal(expressions);
+			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
+			if(reaction == FlattenReactionKind.Ignore)
+			{
+				return;
+			}
+			if(reaction != FlattenReactionKind.OnlyChildren)
+			{
+				expressions.Add(this);
+			}
+			if(reaction != FlattenReactionKind.IgnoreChildren)
+			{
+				Parent?.FlattenInternal(expressions, checker);
+			}
 
 			// #FlattenEnd
         }

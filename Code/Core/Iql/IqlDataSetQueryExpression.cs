@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Iql
@@ -103,7 +104,7 @@ namespace Iql
 			// #CloneEnd
 		}
 
-		internal override void FlattenInternal(IList<IqlExpression> expressions)
+		internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
         {
 			// #FlattenStart
 
@@ -111,32 +112,43 @@ namespace Iql
 			{
 				return;
 			}
-			expressions.Add(this);
-			DataSet?.FlattenInternal(expressions);
-			if(OrderBys != null)
+			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
+			if(reaction == FlattenReactionKind.Ignore)
 			{
-				for(var i = 0; i < OrderBys.Count; i++)
-				{
-					OrderBys[i]?.FlattenInternal(expressions);
-				}
+				return;
 			}
-			if(Expands != null)
+			if(reaction != FlattenReactionKind.OnlyChildren)
 			{
-				for(var i = 0; i < Expands.Count; i++)
-				{
-					Expands[i]?.FlattenInternal(expressions);
-				}
+				expressions.Add(this);
 			}
-			Filter?.FlattenInternal(expressions);
-			WithKey?.FlattenInternal(expressions);
-			if(Parameters != null)
+			if(reaction != FlattenReactionKind.IgnoreChildren)
 			{
-				for(var i = 0; i < Parameters.Count; i++)
+				DataSet?.FlattenInternal(expressions, checker);
+				if(OrderBys != null)
 				{
-					Parameters[i]?.FlattenInternal(expressions);
+					for(var i = 0; i < OrderBys.Count; i++)
+					{
+						OrderBys[i]?.FlattenInternal(expressions, checker);
+					}
 				}
+				if(Expands != null)
+				{
+					for(var i = 0; i < Expands.Count; i++)
+					{
+						Expands[i]?.FlattenInternal(expressions, checker);
+					}
+				}
+				Filter?.FlattenInternal(expressions, checker);
+				WithKey?.FlattenInternal(expressions, checker);
+				if(Parameters != null)
+				{
+					for(var i = 0; i < Parameters.Count; i++)
+					{
+						Parameters[i]?.FlattenInternal(expressions, checker);
+					}
+				}
+				Parent?.FlattenInternal(expressions, checker);
 			}
-			Parent?.FlattenInternal(expressions);
 
 			// #FlattenEnd
         }
