@@ -20,6 +20,7 @@ using Iql.Data.Relationships;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
 using Iql.Queryable.Extensions;
@@ -39,7 +40,7 @@ namespace Iql.Data.DataStores
 
         public virtual INestedSetsProvider<T> NestedSetsProviderFor<T>()
         {
-            return (INestedSetsProvider<T>) NestedSetsProviderForType(typeof(T));
+            return (INestedSetsProvider<T>)NestedSetsProviderForType(typeof(T));
         }
 
         public DataTracker DataTracker
@@ -97,9 +98,9 @@ namespace Iql.Data.DataStores
             where T : class
         {
             var rootTrackingSet = Tracking.TrackingSet<T>();
-            if (rootTrackingSet.IsTracked(entity))
+            if (rootTrackingSet.IsMatchingEntityTracked(entity))
             {
-                var state = rootTrackingSet.GetEntityState(entity);
+                var state = rootTrackingSet.FindMatchingEntityState(entity);
                 state.MarkedForDeletion = false;
                 return state;
             }
@@ -152,7 +153,7 @@ namespace Iql.Data.DataStores
             var trackingSet = Tracking.TrackingSet<T>();
             trackingSet.MarkForDelete(entity);
             RelationshipObserver.DeleteRelationships(entity, typeof(T));
-            var entityState = (EntityState<T>)trackingSet.GetEntityState(entity);
+            var entityState = (EntityState<T>)trackingSet.FindMatchingEntityState(entity);
             return entityState;
         }
 
@@ -281,9 +282,9 @@ namespace Iql.Data.DataStores
                             foreach (var entity in entityType.Value)
                             {
                                 var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
-                                if (trackingSet.IsTracked(entity))
+                                if (trackingSet.IsMatchingEntityTracked(entity))
                                 {
-                                    var state = trackingSet.GetEntityState(entity);
+                                    var state = trackingSet.FindMatchingEntityState(entity);
                                     trackingSet.TrackEntity(state.Entity, entity, isNew: false, onlyMergeWithExisting: true);
                                     state.Reset();
                                 }
@@ -359,7 +360,7 @@ namespace Iql.Data.DataStores
             foreach (var queuedOperation in queue)
             {
                 var task = GetType()
-                    .GetMethod(nameof(Perform))
+                    .GetMethod(nameof(PerformAsync))
                     .InvokeGeneric(this, new object[]
                         {
                             queuedOperation, saveChangesResult
@@ -398,7 +399,7 @@ namespace Iql.Data.DataStores
             );
         }
 
-        public virtual async Task Perform<TEntity>(
+        public virtual async Task PerformAsync<TEntity>(
             IQueuedOperation operation,
             SaveChangesResult saveChangesResult) where TEntity : class
         {
@@ -420,7 +421,21 @@ namespace Iql.Data.DataStores
                             await CheckNotAlreadyExistsAsync(addEntityOperation))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
-                        result = await PerformAddAsync(addEntityOperation);
+
+                        var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
+                        if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
+                        {
+                            var method = typeof(DataStore).GetMethod(nameof(PerformMappedAddAsync), BindingFlags.NonPublic | BindingFlags.Instance);
+                            result = await (Task<AddEntityResult<TEntity>>)method.InvokeGeneric(
+                                this,
+                                new object[] { addEntityOperation, specialTypeMap },
+                                typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
+                            addEntityOperation.Result.Success = result.Success;
+                        }
+                        else
+                        {
+                            result = await PerformAddAsync(addEntityOperation);
+                        }
 
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
@@ -431,7 +446,7 @@ namespace Iql.Data.DataStores
 #endif
                             var trackingSet = Tracking.TrackingSet<TEntity>();
                             trackingSet.TrackEntity(localEntity, remoteEntity, false);
-                            trackingSet.GetEntityState(localEntity).Reset();
+                            trackingSet.FindMatchingEntityState(localEntity).Reset();
                             await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
@@ -462,7 +477,19 @@ namespace Iql.Data.DataStores
                         }
                         else
                         {
-                            result = await PerformUpdateAsync(updateEntityOperation);
+                            var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
+                            if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
+                            {
+                                var method = typeof(DataStore).GetMethod(nameof(PerformMappedUpdateAsync), BindingFlags.NonPublic | BindingFlags.Instance);
+                                result = await (Task<UpdateEntityResult<TEntity>>)method.InvokeGeneric(
+                                    this,
+                                    new object[] { updateEntityOperation, specialTypeMap },
+                                    typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
+                            }
+                            else
+                            {
+                                result = await PerformUpdateAsync(updateEntityOperation);
+                            }
                             var operationEntity = updateEntityOperation
                                 .Operation
                                 .Entity;
@@ -512,7 +539,20 @@ namespace Iql.Data.DataStores
                     }
                     else if (entityNew != null || deleteEntityOperation.Key != null)
                     {
-                        result = await PerformDeleteAsync(deleteEntityOperation);
+                        var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
+                        if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
+                        {
+                            var method = typeof(DataStore).GetMethod(nameof(PerformMappedDeleteAsync), BindingFlags.NonPublic | BindingFlags.Instance);
+                            result = await (Task<DeleteEntityResult<TEntity>>)method.InvokeGeneric(
+                                this,
+                                new object[] { deleteEntityOperation, specialTypeMap },
+                                typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
+                            deleteEntityOperation.Result.Success = result.Success;
+                        }
+                        else
+                        {
+                            result = await PerformDeleteAsync(deleteEntityOperation);
+                        }
                         if (result.Success)
                         {
                             ForAnEntityAcrossAllDataStores<TEntity>(deleteEntityOperation.Operation.Key, (dataTracker, key) =>
@@ -534,6 +574,128 @@ namespace Iql.Data.DataStores
             {
                 saveChangesResult.Results.Add(entityCrudResult);
             }
+        }
+
+        private async Task<AddEntityResult<TEntity>> PerformMappedAddAsync<TEntity, TMap>(
+            QueuedAddEntityOperation<TEntity> add,
+            SpecialTypeDefinition definition)
+            where TMap : class
+        where TEntity : class
+        {
+            var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
+            var addEntityOperation = new AddEntityOperation<TMap>(mappedEntity, DataContext);
+            var mappedAdd = new QueuedAddEntityOperation<TMap>(
+                addEntityOperation,
+                new AddEntityResult<TMap>(true, addEntityOperation));
+
+            var properties = DataContext.EntityConfigurationContext.EntityType<TEntity>().Properties;
+            for (var i = 0; i < properties.Count; i++)
+            {
+                var property = properties[i];
+                var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
+                mappedProperty.SetValue(mappedEntity,
+                    property.GetValue(add.Operation.Entity));
+            }
+
+            var saveChangesResult = new SaveChangesResult(true);
+            var mappedResult = mappedAdd.Result;
+            await PerformAsync<TMap>(mappedAdd, saveChangesResult);
+            var unmappedResult = add.Result;
+            unmappedResult.Success = mappedResult.Success;
+            // TODO: Map validation results correctly
+            unmappedResult.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
+            foreach (var validationResult in mappedResult.EntityValidationResults)
+            {
+                if (validationResult.Key == mappedEntity)
+                {
+                    unmappedResult.EntityValidationResults.Add(add.Operation.Entity, validationResult.Value);
+                }
+            }
+
+            if (mappedResult.RemoteEntity != null)
+            {
+                var remoteEntity = (TEntity)Activator.CreateInstance(typeof(TEntity));
+                for (var i = 0; i < properties.Count; i++)
+                {
+                    var property = properties[i];
+                    var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
+                    property.SetValue(remoteEntity,
+                        mappedProperty.GetValue(mappedResult.RemoteEntity));
+                }
+                unmappedResult.RemoteEntity = remoteEntity;
+            }
+
+            return unmappedResult;
+        }
+
+        private async Task<DeleteEntityResult<TEntity>> PerformMappedDeleteAsync<TEntity, TMap>(
+            QueuedDeleteEntityOperation<TEntity> deleteOperation,
+            SpecialTypeDefinition definition)
+            where TMap : class
+        {
+            var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
+            var operationKey = deleteOperation.Operation.Key;
+            var remappedCompositeKey = new CompositeKey(operationKey.Keys.Length);
+            for (var i = 0; i < operationKey.Keys.Length; i++)
+            {
+                remappedCompositeKey.Keys[i] = new KeyValue(
+                    definition.ResolvePropertyMap(operationKey.Keys[i].Name).PropertyName,
+                    operationKey.Keys[i].Value,
+                    operationKey.Keys[i].ValueType);
+                mappedEntity.SetPropertyValueByName(remappedCompositeKey.Keys[i].Name,
+                    remappedCompositeKey.Keys[i].Value);
+            }
+            var deleteEntityOperation = new DeleteEntityOperation<TMap>(remappedCompositeKey, mappedEntity, DataContext);
+            var mappedDelete = new QueuedDeleteEntityOperation<TMap>(
+                deleteEntityOperation,
+                new DeleteEntityResult<TMap>(true, deleteEntityOperation));
+            var mappedDeleteResult = mappedDelete.Result;
+            await PerformAsync<TMap>(mappedDelete, new SaveChangesResult(true));
+
+            deleteOperation.Result.Success = mappedDeleteResult.Success;
+            return deleteOperation.Result;
+        }
+
+        private async Task<UpdateEntityResult<TEntity>> PerformMappedUpdateAsync<TEntity, TMap>(
+            QueuedUpdateEntityOperation<TEntity> update,
+            SpecialTypeDefinition definition)
+            where TMap : class
+        {
+            var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
+            var updateEntityOperation = new UpdateEntityOperation<TMap>(mappedEntity, DataContext);
+            var mappedUpdate = new QueuedUpdateEntityOperation<TMap>(
+                updateEntityOperation,
+                new UpdateEntityResult<TMap>(true, updateEntityOperation));
+
+            var dummyEntityState = new EntityState<TMap>(mappedEntity, typeof(TMap), DataContext,
+                DataContext.EntityConfigurationContext.EntityType<TMap>());
+            updateEntityOperation.EntityState = dummyEntityState;
+            for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
+            {
+                var sourcePropertyState = update.Operation.EntityState.PropertyStates[i];
+                var mappedProperty = definition.ResolvePropertyMap(sourcePropertyState.Property.PropertyName);
+                var targetPropertyState = dummyEntityState.PropertyStates.Single(p => p.Property == mappedProperty);
+                targetPropertyState.OldValue = sourcePropertyState.OldValue;
+                targetPropertyState.NewValue = sourcePropertyState.NewValue;
+                mappedEntity.SetPropertyValueByName(
+                    mappedProperty.PropertyName,
+                    sourcePropertyState.NewValue);
+            }
+
+            var mappedResult = mappedUpdate.Result;
+            await PerformAsync<TMap>(mappedUpdate, new SaveChangesResult(true));
+            var unmappedResult = new UpdateEntityResult<TEntity>(mappedResult.Success,
+                update.Operation);
+            unmappedResult.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
+            foreach (var validationResult in mappedResult.EntityValidationResults)
+            {
+                if (validationResult.Key == mappedEntity)
+                {
+                    unmappedResult.EntityValidationResults.Add(update.Operation.Entity, validationResult.Value);
+                }
+            }
+
+            return unmappedResult;
         }
 
         private async Task<bool> CheckNotAlreadyExistsAsync<TEntity>(

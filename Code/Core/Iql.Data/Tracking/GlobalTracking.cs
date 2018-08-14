@@ -20,7 +20,7 @@ namespace Iql.Data.Tracking
             {
                 return null;
             }
-            return TrackedEntities[entity].GetEntityState(entity);
+            return TrackedEntities[entity].FindMatchingEntityState(entity);
         }
 
         public static void RegisterAsTracked(object entity, ITrackingSet set)

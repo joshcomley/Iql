@@ -259,7 +259,7 @@ namespace Iql.Tests.Tests
 
             var site = await Db.Sites.Expand(s => s.Client).GetWithKeyAsync(1);
             var propertyReferenceState = Db.DataStore.Tracking.TrackingSet<Site>()
-                .GetEntityState(site)
+                .FindMatchingEntityState(site)
                 .GetPropertyState(nameof(Site.Client));
             var client1 = site.Client;
             Assert.AreEqual(client1, propertyReferenceState.OldValue);

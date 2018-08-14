@@ -9,13 +9,13 @@ namespace Iql.OData.Extensions
             return configuration.ResolveEntitySetUriByType(typeof(T));
         }
 
-        public static string ResolveEntitySetUriByType(this ODataConfiguration configuration, Type type)
+        public static string ResolveEntitySetUriByType(this ODataConfiguration configuration, Type type, string entitySetName = null)
         {
             if (configuration == null)
             {
                 return "";
             }
-            var entitySetName = configuration.GetEntitySetNameByType(type);
+            entitySetName = entitySetName ?? configuration.GetEntitySetNameByType(type);
             var apiUriBase = configuration.ApiUriBase;
             if (!apiUriBase.EndsWith("/"))
             {

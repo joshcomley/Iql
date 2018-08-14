@@ -186,7 +186,7 @@ namespace Iql.Data.Relationships
                 return null;
             }
 
-            var state = TrackingSetCollection.TrackingSetByType(relationship.Target.Type).GetEntityState(entity);
+            var state = TrackingSetCollection.TrackingSetByType(relationship.Target.Type).FindMatchingEntityState(entity);
             if (state.IsNew)
             {
                 // Assign a temporary ID
@@ -226,7 +226,7 @@ namespace Iql.Data.Relationships
                 if (target != null)
                 {
                     var targetTracking = TrackingSetCollection.TrackingSetByType(relationship.Target.Type);
-                    var state = targetTracking.GetEntityState(target);
+                    var state = targetTracking.FindMatchingEntityState(target);
                     targetKey = GetTargetKeyString(target, relationship);
                     if (state.IsNew)
                     {
@@ -281,7 +281,7 @@ namespace Iql.Data.Relationships
                 var entity = entities[i];
                 if (!_observed.ContainsKey(entity))
                 {
-                    var entityObserver = new EntityObserver(trackingSet.GetEntityState(entity));
+                    var entityObserver = new EntityObserver(trackingSet.FindMatchingEntityState(entity));
                     _observed.Add(entity, entityObserver);
                     entityObserver.RegisterMarkForDeletionChanged(MarkedForDeletionChange);
                     entityObserver.RegisterPropertyChanged(e => { PropertyChangeEvent(e, entityConfiguration); });
@@ -380,7 +380,7 @@ namespace Iql.Data.Relationships
                 var targetTrackingSet = TrackingSetCollection
                     .TrackingSetByType(targetType);
                 if (!targetTrackingSet
-                    .IsTracked(newValue))
+                    .IsMatchingEntityTracked(newValue))
                 {
                     DataContext.DataStore.Add(newValue);
                     Observe(newValue, targetType);
@@ -529,7 +529,7 @@ namespace Iql.Data.Relationships
                                     {
                                         foreach (var source in list)
                                         {
-                                            var state = sourceTrackingSet.GetEntityState(source);
+                                            var state = sourceTrackingSet.FindMatchingEntityState(source);
                                             UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
                                         }
                                     }
@@ -537,7 +537,7 @@ namespace Iql.Data.Relationships
                                 break;
                             case RelationshipKind.OneToOne:
                                 {
-                                    var state = sourceTrackingSet.GetEntityState(targetSourceValue);
+                                    var state = sourceTrackingSet.FindMatchingEntityState(targetSourceValue);
                                     UpdateDeletionStatus(deleted, state, entityState.Entity, relationship.Relationship);
                                 }
                                 break;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Iql.Tests.Tests.OData;
 using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Data.Context
@@ -6,6 +7,7 @@ namespace Iql.Tests.Data.Context
     public class InMemoryDataBase
     {
         public IList<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+        public IList<MyCustomReport> MyCustomReports { get; set; } = new List<MyCustomReport>();
         public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
         public IList<Client> Clients { get; set; } = new List<Client>();
         public IList<ClientCategory> ClientCategories { get; set; } = new List<ClientCategory>();

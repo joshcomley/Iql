@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.SpecialTypes;
 using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
@@ -132,7 +133,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         ctorParams);
                     if (Settings.ConfigureOData)
                     {
-                        Property("public", odataConfigurationPropertyName, TypeResolver.TranslateType(typeof(ODataConfiguration)), null, true);
+                        var odataConfigurationBackingFieldName = AsBackingFieldName(odataConfigurationPropertyName);
+                        AppendLine($@"        private {nameof(ODataConfiguration)} {odataConfigurationBackingFieldName};
+        public {nameof(ODataConfiguration)} {odataConfigurationPropertyName} => {odataConfigurationBackingFieldName} = {odataConfigurationBackingFieldName} ?? new {nameof(ODataConfiguration)}({nameof(IDataContext.EntityConfigurationContext)});");
+                        //Property("public", odataConfigurationPropertyName, TypeResolver.TranslateType(typeof(ODataConfiguration)), null, true);
                     }
                     AppendLine();
                     var builder = new EntityFunctionParameterDefinition("builder", TypeResolver.TranslateType(typeof(EntityConfigurationBuilder)));
@@ -561,6 +565,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                           }
                           Append(ConfigureRelationships(builder));
                           Append(ConfigurePropertyOrders(builder));
+                          Append(ConfigureSpecialTypes(builder));
                       },
                       modifier: Modifier.Override);
                     AppendLine();
@@ -586,6 +591,45 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             }
             File.Contents = Contents();
             return File;
+        }
+
+        private string AsBackingFieldName(string name)
+        {
+            return $"_{name.Substring(0, 1).ToLower()}{name.Substring(1)}";
+        }
+
+        private string ConfigureSpecialTypes(EntityFunctionParameterDefinition builder)
+        {
+            var sb = new StringBuilder();
+            var cr = Schema.EntityConfigurationDocument.CustomReportsDefinition as CustomReportsDefinition;
+            if (cr != null)
+            {
+                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.CustomReportsDefinition)} = {nameof(IEntityConfigurationBuilder.CustomReportsDefinition)}.{nameof(CustomReportsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{cr.EntityConfiguration.Name}>(),
+                _ => _.{cr.IdProperty.PropertyName},
+                _ => _.{cr.UserIdProperty.PropertyName},
+                _ => _.{cr.NameProperty.PropertyName},
+                _ => _.{cr.EntityTypeProperty.PropertyName},
+                _ => _.{cr.IqlProperty.PropertyName},
+                _ => _.{cr.FieldsProperty.PropertyName},
+                _ => _.{cr.SortProperty.PropertyName},
+                _ => _.{cr.SortDescendingProperty.PropertyName},
+                _ => _.{cr.SearchProperty.PropertyName}
+                );");
+            }
+            var us = Schema.EntityConfigurationDocument.UserSettingsDefinition as UserSettingsDefinition;
+            if (us != null)
+            {
+                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UserSettingsDefinition)} = {nameof(IEntityConfigurationBuilder.UserSettingsDefinition)}.{nameof(CustomReportsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{us.EntityConfiguration.Name}>(),
+                _ => _.{us.IdProperty.PropertyName},
+                _ => _.{us.UserIdProperty.PropertyName},
+                _ => _.{us.Key1Property.PropertyName},
+                _ => _.{us.Key2Property.PropertyName},
+                _ => _.{us.Key3Property.PropertyName},
+                _ => _.{us.Key4Property.PropertyName},
+                _ => _.{us.ValueProperty.PropertyName}
+                );");
+            }
+            return sb.ToString();
         }
 
         private IVariable GetAndAddTypeScriptTypeParameter(GeneratorTypeDefinition propertyType, List<IVariable> parameters)
@@ -622,6 +666,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         }
 
         private const string DefaultLambdaKey = "p";
+
         private string ConfigreMetadata(IMetadata metadata,
             IVariable propertyParameter = null,
             string lambdaKey = null,

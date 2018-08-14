@@ -11,6 +11,7 @@ using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
+using Iql.Entities.SpecialTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -20,6 +21,12 @@ namespace Iql.Server.Serialization.Resolvers
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
+            if (typeof(SpecialTypeDefinition).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => !new string[]{nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration)}.Contains(p.PropertyName))
+                    .ToList();
+            }
             if (typeof(IEntityConfiguration).IsAssignableFrom(type))
             {
                 return base.CreateProperties(typeof(IEntityMetadata), memberSerialization);

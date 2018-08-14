@@ -2,6 +2,7 @@ using System;
 using Iql.Conversion;
 using Iql.Data.Types;
 using Iql.Entities;
+using Iql.Entities.SpecialTypes;
 using Iql.Parsing;
 
 namespace Iql.Data.IqlToIql
@@ -31,6 +32,18 @@ namespace Iql.Data.IqlToIql
             var result = parser.ToQueryString(expression, this);
             //return result == null ? null : new IqlToIqlIqlOutput(result);
             return new IqlToIqlIqlOutput(result);
+        }
+
+        public SpecialTypeDefinition ResolveSpecialTypeMap(Action<SpecialTypeDefinition> action = null)
+        {
+            var definition =
+                Adapter.EntityConfigurationContext.GetEntityByType(CurrentEntityType).SpecialTypeDefinition;
+            if(definition  != null && action != null)
+            {
+                action(definition);
+            }
+
+            return definition;
         }
     }
 }

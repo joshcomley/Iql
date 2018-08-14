@@ -90,14 +90,25 @@ namespace Iql.Data.Tracking
                 entity);
         }
 
+        public bool IsMatchingEntityTracked(object entity)
+        {
+            return HasEntityState(entity, false);
+        }
+
         public bool IsTracked(object entity)
         {
-            return HasEntityState(entity);
+            return HasEntityState(entity, true);
+        }
+
+        public IEntityStateBase FindMatchingEntityState(object entity)
+        {
+            var result = TryGetEntityState(entity, false);
+            return result?.State;
         }
 
         public IEntityStateBase GetEntityState(object entity)
         {
-            var result = TryGetEntityState(entity);
+            var result = TryGetEntityState(entity, true);
             return result?.State;
         }
 
@@ -107,7 +118,7 @@ namespace Iql.Data.Tracking
             {
                 return GetEntityStateByKey((CompositeKey)entity);
             }
-            var existingEntityState = TryGetEntityState(entity);
+            var existingEntityState = TryGetEntityState(entity, false);
             if (existingEntityState != null && existingEntityState.State != null)
             {
                 return existingEntityState.State;
@@ -132,9 +143,10 @@ namespace Iql.Data.Tracking
             return entityState;
         }
 
-        private bool HasEntityState(object entity)
+        private bool HasEntityState(object entity, bool entityOnly)
         {
-            return GetEntityState(entity) != null;
+            var result = entityOnly ? GetEntityState(entity) : FindMatchingEntityState(entity);
+            return result != null;
         }
 
         class TryGetEntityStateResult
@@ -144,7 +156,7 @@ namespace Iql.Data.Tracking
             public IEntityStateBase State { get; set; }
         }
 
-        private TryGetEntityStateResult TryGetEntityState(object entity)
+        private TryGetEntityStateResult TryGetEntityState(object entity, bool entityOnly)
         {
             var result = new TryGetEntityStateResult();
             result.PersistenceKey = Guid.Empty;
@@ -152,6 +164,11 @@ namespace Iql.Data.Tracking
             if (EntitiesByObject.ContainsKey(entity))
             {
                 result.State = EntitiesByObject[entity];
+                return result;
+            }
+
+            if (entityOnly)
+            {
                 return result;
             }
 
@@ -210,7 +227,7 @@ namespace Iql.Data.Tracking
             for (var i = 0; i < typed.Count; i++)
             {
                 var item = typed[i];
-                if (allowNew || (!isNew && IsTracked(item)))
+                if (allowNew || (!isNew && IsMatchingEntityTracked(item)))
                 {
                     result.Add(TrackEntity(item, null, isNew, onlyMergeWithExisting));
                 }
@@ -461,7 +478,7 @@ namespace Iql.Data.Tracking
                 _tracking.Add(entity, entity);
             }
 
-            var hadEntityState = HasEntityState(entity);
+            var hadEntityState = HasEntityState(entity, true);
             if (!hadEntityState &&
                 isNew &&
                 !EntityConfiguration.GetCompositeKey(entity).HasDefaultValue())
@@ -754,7 +771,7 @@ namespace Iql.Data.Tracking
 
         public void AbandonChangesForEntity(T entity)
         {
-            var state = GetEntityState(entity);
+            var state = FindMatchingEntityState(entity);
             if (state != null)
             {
                 AbandonChangesForEntityState((IEntityState<T>) state);
@@ -784,7 +801,7 @@ namespace Iql.Data.Tracking
             var allStates = new List<IEntityState<T>>();
             foreach (var entity in entities)
             {
-                var state = GetEntityState(entity);
+                var state = FindMatchingEntityState(entity);
                 if (state != null)
                 {
                     allStates.Add((IEntityState<T>) state);

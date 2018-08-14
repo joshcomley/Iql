@@ -12,7 +12,7 @@ namespace Hazception.ApiContext.Base
 {
 	public class HazceptionDataContextBase : DataContext
 	{
-		public HazceptionDataContextBase(IDataStore dataStore) : base(dataStore)
+	    public HazceptionDataContextBase(IDataStore dataStore) : base(dataStore)
 		{
 			this.ClientTypes = this.AsCustomDbSet<HazClientType, int, HazClientTypeSet>();
 			
@@ -48,9 +48,10 @@ namespace Hazception.ApiContext.Base
 		
 		}
 
-		public ODataConfiguration ODataConfiguration { get; set; }		 = new ODataConfiguration();
-		
-		public override void Configure(EntityConfigurationBuilder builder)
+	    private ODataConfiguration _oDataConfiguration;
+	    public ODataConfiguration ODataConfiguration => _oDataConfiguration = _oDataConfiguration ?? new ODataConfiguration(EntityConfigurationContext);
+
+	    public override void Configure(EntityConfigurationBuilder builder)
 		{
 			builder.EntityType<HazClientType>()
 				.HasKey(p => p.Id)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Crud.Operations;
@@ -17,6 +18,7 @@ using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Relationships;
+using Iql.Entities.SpecialTypes;
 using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Parsing.Expressions.QueryExpressions;
@@ -30,7 +32,11 @@ namespace Iql.Data.Context
     public class DbQueryable<T> : Queryable<T, DbQueryable<T>, DbList<T>>, IDbQueryable
         where T : class
     {
+        private MethodInfo _mappedToListWithResponseAsyncMethod;
+        private MethodInfo MappedToListWithResponseAsyncMethod => _mappedToListWithResponseAsyncMethod = _mappedToListWithResponseAsyncMethod ?? typeof(DbQueryable<T>).GetMethod(nameof(MappedToListWithResponseAsync), BindingFlags.Instance | BindingFlags.NonPublic);
+
         private ITrackingSet _trackingSet;
+
         public DbQueryable(
             EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore> dataStoreGetter,
             EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(evaluateContext)
@@ -479,7 +485,61 @@ namespace Iql.Data.Context
 
         public async Task<GetDataResult<T>> ToListWithResponseAsync()
         {
-            return await DataContext.DataStore.GetAsync(new GetDataOperation<T>(this, DataContext));
+            var getDataOperation = new GetDataOperation<T>(this, DataContext);
+            var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(EntityConfiguration.Type.Name);
+            if (specialTypeMap != null && specialTypeMap.EntityConfiguration != EntityConfiguration)
+            {
+                var mappedType = specialTypeMap.EntityConfiguration.Type;
+                var dbSet = DataContext.GetDbSetByEntityType(mappedType);
+                return await (Task<GetDataResult<T>>)MappedToListWithResponseAsyncMethod.InvokeGeneric(this,
+                    new object[] { dbSet, specialTypeMap, getDataOperation },
+                    mappedType);
+            }
+            return await DataContext.DataStore.GetAsync(getDataOperation);
+        }
+
+        private async Task<GetDataResult<T>> MappedToListWithResponseAsync<TMap>(
+            global::Iql.Queryable.IQueryable<TMap> queryable,
+            SpecialTypeDefinition definition,
+            GetDataOperation<T> getOperation)
+            where TMap : class
+        {
+            for (var i = 0; i < Operations.Count; i++)
+            {
+                var operation = Operations[i];
+                queryable = (global::Iql.Queryable.IQueryable<TMap>) queryable.Then(operation);
+            }
+
+            var getDataResult = await DataContext.DataStore.GetAsync(new GetDataOperation<TMap>(queryable, DataContext));
+            var list = new List<T>();
+            var entityConfiguration = EntityConfiguration;//DataContext.EntityConfigurationContext.EntityType<T>();
+            for (var i = 0; i < getDataResult.Data.Count; i++)
+            {
+                var item = getDataResult.Data[i];
+                var mappedItem = (T)Activator.CreateInstance(typeof(T));
+                for (int j = 0; j < entityConfiguration.Properties.Count; j++)
+                {
+                    IProperty property = entityConfiguration.Properties[j];
+                    var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
+                    if (mappedProperty != null)
+                    {
+                        mappedItem.SetPropertyValueByName(property.PropertyName,
+                            item.GetPropertyValueByName(mappedProperty.Name));
+                    }
+                }
+
+                list.Add(mappedItem);
+            }
+
+            var flattened = new Dictionary<Type, IList>();
+            flattened.Add(typeof(T), list);
+            var flattenedGetDataResult = new FlattenedGetDataResult<T>(flattened, getOperation, getDataResult.Success);
+            flattenedGetDataResult.Root = list;
+            flattenedGetDataResult.Queryable = this;
+            var dbList = (DataContext.DataStore as DataStore).TrackGetDataResult(
+                flattenedGetDataResult);
+            var result = new GetDataResult<T>(dbList, getOperation, getDataResult.Success);
+            return result;
         }
 
         public EntityState<T> Add(T entity)

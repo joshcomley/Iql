@@ -94,7 +94,7 @@ namespace Iql.Entities
         }
 
         public IqlPropertyPath Parent { get; }
-        public string PropertyName => Property?.Name;
+        public string PropertyName => Property?.PropertyName;
         public IProperty Property { get; }
         public IqlPropertyExpression Expression { get; }
 

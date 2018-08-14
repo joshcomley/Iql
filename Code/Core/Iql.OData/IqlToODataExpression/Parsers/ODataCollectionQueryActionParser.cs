@@ -86,7 +86,20 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             {
                 query = "";
             }
-            var baseUri = parser.Converter.Configuration.ResolveEntitySetUriByType(parser.CurrentEntityType);
+
+            string baseUri = null;
+            if (action is IqlDataSetQueryExpression)
+            {
+                var dataSetQuery = action as IqlDataSetQueryExpression;
+                if (dataSetQuery.DataSet != null && !string.IsNullOrWhiteSpace(dataSetQuery.DataSet.Name))
+                {
+                    baseUri = parser.Converter.Configuration.ResolveEntitySetUriByType(parser.CurrentEntityType, dataSetQuery.DataSet.Name);
+                }
+            }
+            if (string.IsNullOrWhiteSpace(baseUri))
+            {
+                baseUri = parser.Converter.Configuration.ResolveEntitySetUriByType(parser.CurrentEntityType);
+            }
             if (!parser.Nested && !string.IsNullOrWhiteSpace(baseUri))
             {
                 query = $"{baseUri}{query}";

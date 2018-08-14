@@ -4,6 +4,7 @@ using System.Linq;
 using Iql.Data.Operations;
 using Iql.Entities;
 using Iql.Entities.Extensions;
+using Iql.Entities.SpecialTypes;
 using Iql.Extensions;
 using Iql.Parsing.Expressions;
 using Iql.Parsing.Expressions.QueryExpressions;

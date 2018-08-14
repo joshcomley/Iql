@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.SpecialTypes;
 using Newtonsoft.Json.Linq;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
 
@@ -63,6 +64,7 @@ namespace Iql.Server.Serialization
             Map<IMediaKeyPart, MediaKeyPart>();
             Map<IGeographic, Geographic>();
             Map<IDateRange, DateRange>();
+            Map<SpecialTypeDefinition, SpecialTypeDefinition>();
             Map<IFile, File>();
             Map<IFilePreview, FilePreview>();
             Map<INestedSet, NestedSet>();
@@ -88,6 +90,10 @@ namespace Iql.Server.Serialization
             var path = reader.Path;
             var value = reader.Value;
             var existingValue2 = existingValue;
+            if (typeof(SpecialTypeDefinition).IsAssignableFrom(objectType))
+            {
+                int a = 0;
+            }
             //if (reader.TokenType != JsonToken.StartObject)
             //{
             //    var result2 = reader.Read();
@@ -113,6 +119,14 @@ namespace Iql.Server.Serialization
                     .Groups["Index"].Value);
             }
             var typeMapping = TypeMappings[objectType];
+            if (reader.Path == nameof(EntityConfigurationDocument.CustomReportsDefinition))
+            {
+                typeMapping = typeof(CustomReportsDefinition);
+            }
+            else if (reader.Path == nameof(EntityConfigurationDocument.UserSettingsDefinition))
+            {
+                typeMapping = typeof(UserSettingsDefinition);
+            }
             object result = null;
             if (objectType == typeof(IPropertyGroup))
             {

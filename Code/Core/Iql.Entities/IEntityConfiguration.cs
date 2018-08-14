@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 
 namespace Iql.Entities
 {
     public interface IEntityConfiguration : IEntityMetadata, IConfiguration, IPropertyContainer
     {
+        SpecialTypeDefinition SpecialTypeDefinition { get; set; }
         IProperty TitleProperty { get; }
         IProperty PreviewProperty { get; }
         IEntityConfiguration SetManageKind(EntityManageKind manageKind);

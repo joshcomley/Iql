@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
+using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
@@ -11,6 +12,8 @@ namespace Iql.Entities
     {
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();
+        private readonly Dictionary<string, IEntityConfiguration> _entitiesByTypeName =
+            new Dictionary<string, IEntityConfiguration>();
 
         private static readonly List<EntityConfigurationBuilder> EntityConfigurationBuilders =
             new List<EntityConfigurationBuilder>();
@@ -76,6 +79,16 @@ namespace Iql.Entities
             return config?.Builder;
         }
 
+        public IEntityConfiguration GetEntityByTypeName(string typeName)
+        {
+            if (_entitiesByTypeName.ContainsKey(typeName))
+            {
+                return _entitiesByTypeName[typeName];
+            }
+
+            return null;
+        }
+
         public bool IsEntityType(Type type)
         {
             return _entities.ContainsKey(type);
@@ -111,6 +124,7 @@ namespace Iql.Entities
             {
                 entityConfiguration = new EntityConfiguration<T>(this);
                 _entities[entityType] = entityConfiguration;
+                _entitiesByTypeName[entityType.Name] = entityConfiguration;
             }
             return entityConfiguration;
         }
@@ -138,6 +152,14 @@ namespace Iql.Entities
             }
             return _entities[type];
         }
+
+        public SpecialTypeDefinition GetSpecialTypeMap(string name)
+        {
+            return GetEntityByTypeName(name).SpecialTypeDefinition;
+        }
+
+        public SpecialTypeDefinition UserSettingsDefinition { get; set; }
+        public SpecialTypeDefinition CustomReportsDefinition { get; set; }
 
         public bool IsEntityType<T>()
         {

@@ -71,11 +71,10 @@ namespace Tunnel.ApiContext.Base
             this.ODataConfiguration.RegisterEntitySet<UserSite>(nameof(UserSites));
             this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
         }
-        public ODataConfiguration ODataConfiguration
-        {
-            get;
-            set;
-        } = new ODataConfiguration();
+
+        private ODataConfiguration _oDataConfiguration;
+        public ODataConfiguration ODataConfiguration => _oDataConfiguration = _oDataConfiguration ?? new ODataConfiguration(EntityConfigurationContext);
+
         public override void Configure(EntityConfigurationBuilder builder)
         {
             builder.EntityType<ApplicationLog>().HasKey(p => p.Id, IqlType.Unknown).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).DefineProperty(p => p.CreatedDate, false, IqlType.Date).DefineProperty(p => p.Module, true, IqlType.String).DefineProperty(p => p.Message, true, IqlType.String);

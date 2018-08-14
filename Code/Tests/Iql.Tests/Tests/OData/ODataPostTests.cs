@@ -32,7 +32,7 @@ namespace Iql.Tests.Tests.OData
                         db.Clients.Add(client);
                         client.Name = "New client 123";
                         var result = await db.SaveChangesAsync();
-                        var state = db.DataStore.Tracking.TrackingSet<HazClient>().GetEntityState(client);
+                        var state = db.DataStore.Tracking.TrackingSet<HazClient>().FindMatchingEntityState(client);
                         Assert.AreEqual(false, result.Success);
                         Assert.AreEqual(true, state.IsNew);
                         Assert.AreEqual(1, result.Results.Count);

@@ -10,6 +10,7 @@ using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Lists;
+using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -52,7 +53,7 @@ namespace Iql.Data.Context
             for (var i = 0; i < trackers.Length; i++)
             {
                 var tracker = trackers[i];
-                var set = tracker.Tracking.FindTracking(entity);
+                var set = tracker.Tracking.GetTrackingSetForEntity(entity);
                 if (set != null)
                 {
                     return set;
@@ -64,7 +65,7 @@ namespace Iql.Data.Context
         public static IEntityStateBase FindEntity(object entity)
         {
             var tracker = FindTrackingForEntity(entity);
-            return tracker?.GetEntityState(entity);
+            return tracker?.FindMatchingEntityState(entity);
         }
 
         public DataContext(
@@ -121,7 +122,7 @@ namespace Iql.Data.Context
             }
         }
 
-        private void InitializeProperties()
+        protected virtual void InitializeProperties()
         {
             var allProperties = GetType().GetRuntimeProperties().ToArray();
             var properties = allProperties
@@ -162,7 +163,7 @@ namespace Iql.Data.Context
                     property.SetValue(this, asDbSetByType);
                 }
                 var configuration = EntityConfigurationContext.GetEntityByType(entityType);
-                if (!configuration.SetNameSet)
+                if (configuration != null && !configuration.SetNameSet)
                 {
                     configuration.SetName = property.Name;
                 }
@@ -196,7 +197,7 @@ namespace Iql.Data.Context
         public IEntityStateBase GetEntityState(object entity, Type entityType = null)
         {
             entityType = entityType ?? entity.GetType();
-            return DataStore.Tracking.TrackingSetByType(entityType).GetEntityState(entity);
+            return DataStore.Tracking.TrackingSetByType(entityType).FindMatchingEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -431,6 +432,34 @@ namespace Iql.Data.Context
             return _configurations[entityType.Name] as EntityConfiguration<T>;
         }
 
+        private CustomReportsManager _customReportsManager;
+        public CustomReportsManager CustomReportsManager
+        {
+            get
+            {
+                if (EntityConfigurationContext.CustomReportsDefinition != null)
+                {
+                    _customReportsManager = new CustomReportsManager(this);
+                }
+
+                return _customReportsManager;
+            }
+        }
+
+        private UserSettingsManager _userSettingsManager;
+        public UserSettingsManager UserSettingsManager
+        {
+            get
+            {
+                if (EntityConfigurationContext.UserSettingsDefinition != null)
+                {
+                    _userSettingsManager = new UserSettingsManager(this);
+                }
+
+                return _userSettingsManager;
+            }
+        }
+
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {
             return DataStore.NestedSetsProviderForType(type);
@@ -525,7 +554,7 @@ namespace Iql.Data.Context
             var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
             var entityState = DataStore.Tracking.TrackingSetByType(entityType)
-                .GetEntityState(entity);
+                .FindMatchingEntityState(entity);
             entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
             DeleteEntity(entity
 #if TypeScript
@@ -744,6 +773,11 @@ namespace Iql.Data.Context
                 }
             }
             return list;
+        }
+
+        public bool IsTracked(object entity)
+        {
+            return DataStore.Tracking.IsTracked(entity);
         }
     }
 }

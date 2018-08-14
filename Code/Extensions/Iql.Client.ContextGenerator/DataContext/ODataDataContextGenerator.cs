@@ -21,6 +21,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Metadata;
 using Iql.Entities.Rules.Display;
+using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 using Iql.OData.Json;
 using Iql.OData.Methods;
@@ -120,6 +121,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(RelatedList<,>),
                 typeof(PropertyValidationResult<>),
                 typeof(GetDataResult<object>),
+                typeof(CustomReportsDefinition),
+                typeof(UserSettingsDefinition),
                 typeof(EntityConfigurationBuilder),
                 typeof(IDataStore),
                 typeof(ODataDataStore),

@@ -2,12 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.Entities;
 
 namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryDataStoreConfiguration
     {
+        public IEntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<string, LambdaExpression> _sources = new Dictionary<string, LambdaExpression>();
+
+        public InMemoryDataStoreConfiguration(IEntityConfigurationBuilder builder)
+        {
+            Builder = builder;
+        }
 
         public void RegisterSource<T>(Expression<Func<IList<T>>> getter)
         {
@@ -28,6 +35,11 @@ namespace Iql.Data.DataStores.InMemory
         {
             if (!_sources.ContainsKey(name))
             {
+                var map = Builder.GetSpecialTypeMap(name);
+                if (map != null)
+                {
+                    return GetSourceByType(map.EntityConfiguration.Type);
+                }
                 throw new Exception($"Unable to find data source with name \"{name}\"");
             }
             return _sources[name].Compile().DynamicInvoke() as IList;

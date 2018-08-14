@@ -54,13 +54,13 @@ namespace Iql.Data.DataStores.InMemory
             rootTrackingSet.SetKey(clone,
                 () =>
                 {
-                    if (!rootTrackingSet.IsTracked(clone))
+                    if (!rootTrackingSet.IsMatchingEntityTracked(clone))
                     {
                         rootTrackingSet.TrackEntity(clone, null, false);
                     }
                     else
                     {
-                        rootTrackingSet.GetEntityState(clone).IsNew = false;
+                        rootTrackingSet.FindMatchingEntityState(clone).IsNew = false;
                     }
                     foreach (var property in configuration.Key.Properties)
                     {
@@ -98,7 +98,7 @@ namespace Iql.Data.DataStores.InMemory
                 var trackingSet = InMemoryTrackingSetCollection.TrackingSetByType(grouping.Key);
                 foreach (var entity in grouping.Value)
                 {
-                    if (!trackingSet.IsTracked(entity))
+                    if (!trackingSet.IsMatchingEntityTracked(entity))
                     {
                         trackingSet.TrackEntity(entity, null, entity != clone);
                     }
@@ -185,14 +185,16 @@ namespace Iql.Data.DataStores.InMemory
             var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TEntity>(iql);
             var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)expression.Compile();
             var inMemoryContext = new InMemoryContext<TEntity>(DataContext);
-            var result = func(inMemoryContext).SourceList.ToList().CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
-            inMemoryContext.AddMatches(typeof(TEntity), result);
+            var result = func(inMemoryContext);
+            var resultList = result.SourceList.ToList();
+            var clonedResult = resultList.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
+            inMemoryContext.AddMatches(typeof(TEntity), clonedResult);
             var dictionary = new Dictionary<Type, IList>();
             foreach (var item in inMemoryContext.AllData)
             {
                 dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
             }
-            operation.Result.Root = result;
+            operation.Result.Root = clonedResult;
             operation.Result.Success = true;
             operation.Result.Data = dictionary;
             return operation.Result;

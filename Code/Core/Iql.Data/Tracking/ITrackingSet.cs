@@ -17,9 +17,11 @@ namespace Iql.Data.Tracking
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);
+        bool IsMatchingEntityTracked(object entity);
         bool DifferentEntityWithSameKeyIsTracked(object entity);
         IEntityConfiguration EntityConfiguration { get; }
         IEntityStateBase GetEntityState(object entity);
+        IEntityStateBase FindMatchingEntityState(object entity);
         IEntityStateBase GetEntityStateByKey(CompositeKey key);
         bool KeyIsTracked(CompositeKey key);
         void MarkForDelete(object entity);

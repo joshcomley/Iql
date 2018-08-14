@@ -12,7 +12,8 @@
         public const string CustomReport = Prefix + nameof(CustomReport);
         public const string Percentage = Prefix + nameof(Percentage);
         public const string DateAndTime = Prefix + nameof(DateAndTime);
-        public const string PhoneNumber = Prefix +nameof(PhoneNumber);
+        public const string PhoneNumber = Prefix + nameof(PhoneNumber);
+        public const string CurrentUserKey = Prefix + nameof(CurrentUserKey);
         private const string HelpText = Prefix + nameof(HelpText) + ":";
         public const string HelpTextTop = HelpText + "Top";
         public const string HelpTextBottom = HelpText + "Bottom";

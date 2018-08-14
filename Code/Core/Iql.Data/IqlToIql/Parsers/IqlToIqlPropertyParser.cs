@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using Iql.Data.Extensions;
 using Iql.Data.Queryable;
 using Iql.Entities;
+using Iql.Entities.SpecialTypes;
 
 namespace Iql.Data.IqlToIql.Parsers
 {
@@ -19,6 +21,14 @@ namespace Iql.Data.IqlToIql.Parsers
                 for (var i = 0; i < action.Parameters.Count; i++)
                 {
                     action.Parameters[i] = (IqlRootReferenceExpression)parser.Parse(action.Parameters[i]).Expression;
+                    var iqlRootReferenceExpression = action.Parameters[i];
+                    if (!string.IsNullOrWhiteSpace(iqlRootReferenceExpression.EntityTypeName))
+                    {
+                        parser.ResolveSpecialTypeMap(specialTypeMap =>
+                        {
+                            iqlRootReferenceExpression.EntityTypeName = specialTypeMap.EntityConfiguration.Type.Name;
+                        });
+                    }
                 }
             }
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
@@ -32,6 +42,15 @@ namespace Iql.Data.IqlToIql.Parsers
         {
             var property = parser.Adapter.EntityConfigurationContext.EntityType<TEntity>()
                 .FindProperty(action.PropertyName);
+            parser.ResolveSpecialTypeMap(specialTypeMap =>
+            {
+                var mappedProperty = specialTypeMap.ResolvePropertyMap(action.PropertyName);
+                if (mappedProperty != null)
+                {
+                    action.PropertyName = mappedProperty.PropertyName;
+                    action.ReturnType = mappedProperty.TypeDefinition.ToIqlType();
+                }
+            });
             if (property != null && property.Kind.HasFlag(PropertyKind.Count))
             {
                 action.PropertyName = property.Relationship.ThisEnd.Property.Name;
@@ -79,7 +98,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     return null;
                 }
             }
-            else if (propertyExpression !=null &&
+            else if (propertyExpression != null &&
                      literal != null &&
                      isValidEnumCheck &&
                      (literal.ReturnType == IqlType.Integer || literal.InferredReturnType == IqlType.Integer))
@@ -210,6 +229,14 @@ namespace Iql.Data.IqlToIql.Parsers
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlDataSetQueryExpression action, IqlToIqlParserInstance parser)
         {
             action.DataSet = (IqlDataSetReferenceExpression)parser.Parse(action.DataSet).Expression;
+            var reference = (IqlDataSetReferenceExpression) action.DataSet;
+            if (reference != null)
+            {
+                parser.ResolveSpecialTypeMap(specialTypeMap =>
+                {
+                    reference.Name = specialTypeMap.EntityConfiguration.SetName;
+                });
+            }
             if (action.OrderBys != null)
             {
                 for (var i = 0; i < action.OrderBys.Count; i++)

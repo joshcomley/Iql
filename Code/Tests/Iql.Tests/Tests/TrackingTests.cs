@@ -82,7 +82,7 @@ namespace Iql.Tests.Tests
             var client = await Db.Clients.GetWithKeyAsync(1);
             var clientType = await Db.ClientTypes.ToListAsync();
             var propertyState = Db.DataStore.Tracking.TrackingSet<Client>()
-                .GetEntityState(client)
+                .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
             Assert.IsFalse(propertyState.HasChanged);
         }
@@ -108,10 +108,10 @@ namespace Iql.Tests.Tests
             var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
             client.Type = clientType2;
             var referencePropertyState = Db.DataStore.Tracking.TrackingSet<Client>()
-                .GetEntityState(client)
+                .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
             var referenceKeyPropertyState = Db.DataStore.Tracking.TrackingSet<Client>()
-                .GetEntityState(client)
+                .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.TypeId));
             var changes = Db.DataStore.GetChanges();
             Assert.IsTrue(referencePropertyState.HasChanged);
@@ -377,7 +377,7 @@ namespace Iql.Tests.Tests
             };
             var addedMap = person.Types.Add(newEquivalentTypeMap);
             var newEquivalentTypeMapState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
-                .GetEntityState(newEquivalentTypeMap);
+                .FindMatchingEntityState(newEquivalentTypeMap);
             Assert.AreEqual(addedMap, newEquivalentTypeMap);
 
             var changes = Db.DataStore.GetChanges();
@@ -462,7 +462,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, person.Types.Count);
             var typeMap = person.Types[0];
             var typeMapState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
-                .GetEntityState(typeMap);
+                .FindMatchingEntityState(typeMap);
             person.Types.Remove(typeMap);
             Assert.AreEqual(0, person.Types.Count);
             var newEquivalentTypeMap = new PersonTypeMap
@@ -729,7 +729,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, person.Types.Count);
             Assert.AreEqual(0, typeMap.PersonId);
             var entityState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
-                .GetEntityState(typeMap);
+                .FindMatchingEntityState(typeMap);
             var currentKey = entityState.CurrentKey;
             //var originalKey = entityState.RemoteKey;
             //Assert.AreEqual(1, originalKey.GetValue(nameof(PersonTypeMap.PersonId)));

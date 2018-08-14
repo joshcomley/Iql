@@ -72,8 +72,8 @@ namespace Iql.Tests.Tests
             //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
             //Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
-            var riskAssessmentState = tracking.TrackingSetByType(typeof(RiskAssessment)).GetEntityState(riskAssessment);
-            var riskAssessmentSolutionState = tracking.TrackingSetByType(typeof(RiskAssessmentSolution)).GetEntityState(solution);
+            var riskAssessmentState = tracking.TrackingSetByType(typeof(RiskAssessment)).FindMatchingEntityState(riskAssessment);
+            var riskAssessmentSolutionState = tracking.TrackingSetByType(typeof(RiskAssessmentSolution)).FindMatchingEntityState(solution);
 
             Assert.IsFalse(riskAssessmentState.MarkedForDeletion);
             Assert.IsFalse(riskAssessmentState.MarkedForCascadeDeletion);

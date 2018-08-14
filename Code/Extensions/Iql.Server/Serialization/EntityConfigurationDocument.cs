@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Iql.Entities;
 using Iql.Entities.Enums;
+using Iql.Entities.SpecialTypes;
 
 namespace Iql.Server.Serialization
 {
-    public class EntityConfigurationDocument : Entities.IEntityConfigurationContainer
+    public class EntityConfigurationDocument : IEntityConfigurationContainer
     {
+        public SpecialTypeDefinition CustomReportsDefinition { get; set; }
+        public SpecialTypeDefinition UserSettingsDefinition { get; set; }
         public List<IEnumConfiguration> EnumTypes { get; set; } = new List<IEnumConfiguration>();
         public List<IEntityConfiguration> EntityTypes { get; set; } = new List<IEntityConfiguration>();
 

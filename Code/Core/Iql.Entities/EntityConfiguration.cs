@@ -19,6 +19,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
@@ -29,6 +30,8 @@ namespace Iql.Entities
         private class DefaultValuePlaceholder { }
 
         private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
+
+        public SpecialTypeDefinition SpecialTypeDefinition { get; set; }
 
         public IEntityConfiguration SetManageKind(EntityManageKind manageKind)
         {

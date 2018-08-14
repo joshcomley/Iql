@@ -5,7 +5,7 @@ namespace Iql.Data.Crud.Operations
 {
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation
     {
-        public IEntityStateBase EntityState { get; }
+        public IEntityStateBase EntityState { get; set; }
 
         public UpdateEntityOperation(T entity, IDataContext dataContext, IEntityStateBase entityState = null)
             : base(OperationType.Update, entity, dataContext)

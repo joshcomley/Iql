@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 
 namespace Iql.Server.Serialization
@@ -22,6 +23,8 @@ namespace Iql.Server.Serialization
         {
             _configurationContainer = container;
         }
+
+        public SpecialTypeDefinition SpecialTypeDefinition { get; set; }
 
         public IEntityConfiguration SetManageKind(EntityManageKind manageKind)
         {

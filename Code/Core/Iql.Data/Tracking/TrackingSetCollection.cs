@@ -58,7 +58,7 @@ namespace Iql.Data.Tracking
                     {
                         continue;
                     }
-                    if (tracking.GetEntityState(dependency).IsNew)
+                    if (tracking.FindMatchingEntityState(dependency).IsNew)
                     {
                         count++;
                     }
@@ -119,15 +119,15 @@ namespace Iql.Data.Tracking
 
         public bool KeyIsTracked(CompositeKey key, Type entityType)
         {
-            return TrackingSetByType(entityType).IsTracked(key);
+            return TrackingSetByType(entityType).IsMatchingEntityTracked(key);
         }
 
         public bool IsTracked(object entity, Type entityType = null)
         {
-            return FindTracking(entity, entityType) != null;
+            return GetTrackingSetForEntity(entity, entityType) != null;
         }
 
-        public ITrackingSet FindTracking(object entity, Type entityType = null)
+        public ITrackingSet GetTrackingSetForEntity(object entity, Type entityType = null)
         {
             if (entity == null)
             {
@@ -153,13 +153,13 @@ namespace Iql.Data.Tracking
         public bool IsMarkedForDeletion(object entity, Type entityType)
         {
             var set = TrackingSetByType(entityType);
-            return set.GetEntityState(entity).MarkedForDeletion;
+            return set.FindMatchingEntityState(entity).MarkedForDeletion;
         }
 
         public bool IsMarkedForCascadeDeletion(object entity, Type entityType)
         {
             var set = TrackingSetByType(entityType);
-            return set.GetEntityState(entity).MarkedForCascadeDeletion;
+            return set.FindMatchingEntityState(entity).MarkedForCascadeDeletion;
         }
 
         //public void TrackGraph(object entity, Type entityType)

@@ -170,7 +170,7 @@ namespace Iql.Data.Tracking.State
                 }
                 var relationshipEntityState = DataContext.DataStore.Tracking
                     .TrackingSetByType(relationshipProperty.Relationship.OtherEnd.Type)
-                    .GetEntityState(relationshipEntity);
+                    .FindMatchingEntityState(relationshipEntity);
 
                 if (!relationshipEntityState.IsNew)
                 {

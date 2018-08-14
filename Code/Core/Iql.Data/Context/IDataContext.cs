@@ -7,6 +7,7 @@ using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Lists;
+using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Relationships;
@@ -16,6 +17,9 @@ namespace Iql.Data.Context
 {
     public interface IDataContext
     {
+        bool IsTracked(object entity);
+        CustomReportsManager CustomReportsManager { get; }
+        UserSettingsManager UserSettingsManager { get; }
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();
         void AbandonChanges();

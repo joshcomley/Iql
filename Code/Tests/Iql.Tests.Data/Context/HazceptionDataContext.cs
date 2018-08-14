@@ -25,19 +25,6 @@ namespace Iql.Tests.Context
                 IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
 #endif
             }
-            InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration();
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Hazards);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Videos);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Exams);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamManagers);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamCandidates);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamCandidateResults);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamResults);
-            var inMemoryDb = new HazceptionDataStore().GetData();
-            InMemoryDb = inMemoryDb;
         }
 
         public static HazceptionInMemoryDataBase InMemoryDb { get; set; }
@@ -45,6 +32,22 @@ namespace Iql.Tests.Context
         public HazceptionDataContext(IDataStore dataStore = null) :
             base(dataStore ?? new InMemoryDataStore())
         {
+            if (InMemoryDataStoreConfiguration == null)
+            {
+                InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration(EntityConfigurationContext);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Hazards);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Videos);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Exams);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamManagers);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamCandidates);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamCandidateResults);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ExamResults);
+                var inMemoryDb = new HazceptionDataStore().GetData();
+                InMemoryDb = inMemoryDb;
+            }
             ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             this.ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
