@@ -2,6 +2,7 @@ using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using System;
 using System.Linq;
+using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 
 namespace Iql.Entities
@@ -9,12 +10,51 @@ namespace Iql.Entities
     public abstract class SimplePropertyGroupBase<T> : PropertyGroupBase<T>, ISimpleProperty
         where T : IConfigurable<T>
     {
+        private PropertyEditKind _editKind = PropertyEditKind.Edit;
+        private PropertyReadKind _readKind = PropertyReadKind.Display;
+
         protected SimplePropertyGroupBase(IEntityConfiguration entityConfiguration, string key) : base(entityConfiguration, key)
         {
         }
 
-        public PropertyReadKind ReadKind { get; set; } = PropertyReadKind.Display;
-        public PropertyEditKind EditKind { get; set; } = PropertyEditKind.Edit;
+        private EventEmitter<ValueChangedEvent<PropertyEditKind>> _editKindChanged;
+
+        public EventEmitter<ValueChangedEvent<PropertyEditKind>> EditKindChanged => _editKindChanged =
+            _editKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyEditKind>>();
+
+        private EventEmitter<ValueChangedEvent<PropertyReadKind>> _readKindChanged;
+
+        public EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged => _readKindChanged =
+            _readKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyReadKind>>();
+
+        public PropertyReadKind ReadKind
+        {
+            get => _readKind;
+            set
+            {
+                var oldValue = _readKind;
+                _readKind = value;
+                if (oldValue != value && _readKindChanged != null)
+                {
+                    ReadKindChanged.Emit(() => new ValueChangedEvent<PropertyReadKind>(oldValue, value));
+                }
+            }
+        }
+
+        public PropertyEditKind EditKind
+        {
+            get => _editKind;
+            set
+            {
+                var oldValue = _editKind;
+                _editKind = value;
+                if (oldValue != value && _editKindChanged != null)
+                {
+                    EditKindChanged.Emit(() => new ValueChangedEvent<PropertyEditKind>(oldValue, value));
+                }
+            }
+        }
+
         public bool SupportsInlineEditing { get; set; } = true;
         public bool PromptBeforeEdit { get; set; } = false;
         public string Placeholder { get; set; }

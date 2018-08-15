@@ -91,6 +91,8 @@ namespace Iql.Entities
         }
 
         public LambdaExpression InferredWith { get; set; }
+        private LambdaExpression _inferredWithPathResolvedWith;
+        private IqlPropertyPath _inferredWithPath;
         public IqlPropertyPath GetInferredWithPath()
         {
             if (InferredWith == null)
@@ -98,7 +100,12 @@ namespace Iql.Entities
                 return null;
             }
 
-            return IqlPropertyPath.FromLambdaExpression(InferredWith, EntityConfiguration);
+            if (_inferredWithPathResolvedWith != InferredWith)
+            {
+                _inferredWithPathResolvedWith = InferredWith;
+                _inferredWithPath = IqlPropertyPath.FromLambdaExpression(InferredWith, EntityConfiguration);
+            }
+            return _inferredWithPath;
         }
 
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }

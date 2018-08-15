@@ -69,7 +69,7 @@ namespace Iql.Data.Context
             where T : class
         ;
 
-        Task<T> GetEntityByMockEntity<T>(
+        Task<T> GetEntityFromEntityAsync<T>(
             T entity
 #if TypeScript
             , Type entityType

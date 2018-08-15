@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Entities.Events;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
@@ -11,6 +12,8 @@ namespace Iql.Entities
 {
     public interface ISimpleProperty : IPropertyGroup
     {
+        EventEmitter<ValueChangedEvent<PropertyEditKind>> EditKindChanged { get; }
+        EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged { get; }
         PropertyReadKind ReadKind { get; set; }
         PropertyEditKind EditKind { get; set; }
         bool SupportsInlineEditing { get; set; }

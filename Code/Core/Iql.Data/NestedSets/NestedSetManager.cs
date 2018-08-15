@@ -1,4 +1,5 @@
 ﻿using Iql.Data.Context;
+using Iql.Data.Extensions;
 using Iql.Data.Lists;
 using Iql.Data.Queryable;
 using Iql.Entities;
@@ -59,7 +60,7 @@ namespace Iql.Data.NestedSets
             IqlExpression filter = null;
             var keyCheck = new IqlIsEqualToExpression(
                 IqlExpression.GetPropertyExpression(NestedSet.KeyProperty.Name),
-                new IqlLiteralExpression(NestedSet.KeyProperty.GetValue(entity), IqlType.String)
+                new IqlLiteralExpression(NestedSet.KeyProperty.GetValue(entity), NestedSet.KeyProperty.TypeDefinition.ToIqlType())
             );
             switch (kind)
             {
@@ -67,11 +68,11 @@ namespace Iql.Data.NestedSets
                     {
                         var gt = new IqlIsGreaterThanExpression(
                             IqlExpression.GetPropertyExpression(NestedSet.LeftProperty.Name),
-                            new IqlLiteralExpression(NestedSet.LeftProperty.GetValue(entity), IqlType.Integer)
+                            new IqlLiteralExpression(NestedSet.LeftProperty.GetValue(entity), NestedSet.IdProperty.TypeDefinition.ToIqlType())
                         );
                         var lt = new IqlIsLessThanExpression(
                             IqlExpression.GetPropertyExpression(NestedSet.RightProperty.Name),
-                            new IqlLiteralExpression(NestedSet.RightProperty.GetValue(entity), IqlType.Integer)
+                            new IqlLiteralExpression(NestedSet.RightProperty.GetValue(entity), NestedSet.IdProperty.TypeDefinition.ToIqlType())
                         );
                         filter = new IqlExpression[] { gt, lt, keyCheck }.And();
                     }
@@ -80,7 +81,7 @@ namespace Iql.Data.NestedSets
                     {
                         var parentIdCheck = new IqlIsEqualToExpression(
                             IqlExpression.GetPropertyExpression(NestedSet.ParentIdProperty.Name),
-                            new IqlLiteralExpression(NestedSet.IdProperty.GetValue(entity), IqlType.Integer)
+                            new IqlLiteralExpression(NestedSet.IdProperty.GetValue(entity), NestedSet.IdProperty.TypeDefinition.ToIqlType())
                         );
                         filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
                     }
@@ -89,7 +90,7 @@ namespace Iql.Data.NestedSets
                     {
                         var parentIdCheck = new IqlIsEqualToExpression(
                             IqlExpression.GetPropertyExpression(NestedSet.IdProperty.Name),
-                            new IqlLiteralExpression(NestedSet.ParentIdProperty.GetValue(entity), IqlType.Integer)
+                            new IqlLiteralExpression(NestedSet.ParentIdProperty.GetValue(entity), NestedSet.IdProperty.TypeDefinition.ToIqlType())
                         );
                         filter = new IqlExpression[] { keyCheck, parentIdCheck }.And();
                     }
@@ -98,11 +99,11 @@ namespace Iql.Data.NestedSets
                     {
                         var leftCheck = new IqlIsLessThanExpression(
                             IqlExpression.GetPropertyExpression(NestedSet.LeftProperty.Name),
-                            new IqlLiteralExpression(NestedSet.LeftProperty.GetValue(entity), IqlType.Integer)
+                            new IqlLiteralExpression(NestedSet.LeftProperty.GetValue(entity), NestedSet.IdProperty.TypeDefinition.ToIqlType())
                         );
                         var rightCheck = new IqlIsGreaterThanExpression(
                             IqlExpression.GetPropertyExpression(NestedSet.RightProperty.Name),
-                            new IqlLiteralExpression(NestedSet.RightProperty.GetValue(entity), IqlType.Integer)
+                            new IqlLiteralExpression(NestedSet.RightProperty.GetValue(entity), NestedSet.IdProperty.TypeDefinition.ToIqlType())
                         );
                         filter = new IqlExpression[] { leftCheck, rightCheck, keyCheck }.And();
                     }

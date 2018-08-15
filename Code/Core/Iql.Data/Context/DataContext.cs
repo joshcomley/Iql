@@ -594,23 +594,23 @@ namespace Iql.Data.Context
             {
                 return null;
             }
-            return await GetEntityByMockEntity(entity
+            return await GetEntityFromEntityAsync(entity
 #if TypeScript
 , entityType
 #endif
                 );
         }
 
-        public async Task<T> GetEntityByMockEntity<T>(T entity
+        public async Task<T> GetEntityFromEntityAsync<T>(T entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
             ) where T : class
         {
 #if !TypeScript
             var entityType = typeof(T);
 #endif
-            if (entityType == typeof(object))
+            if (entityType == null || entityType == typeof(object))
             {
                 entityType = entity.GetType();
             }
