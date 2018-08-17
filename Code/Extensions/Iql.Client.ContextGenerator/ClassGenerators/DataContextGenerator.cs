@@ -24,6 +24,7 @@ using System.Reflection;
 using System.Text;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.SpecialTypes;
+using Iql.Server.Serialization.Deserialization.EntityConfiguration;
 using TypeSharp;
 using TypeSharp.Conversion;
 using TypeSharp.Extensions;
@@ -33,7 +34,7 @@ using IPropertyCollection = Iql.Entities.IPropertyCollection;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
 using IRelationshipDetail = Iql.Entities.Relationships.IRelationshipDetail;
 using PropertyCollection = Iql.Entities.PropertyCollection;
-using RelationshipDetail = Iql.Server.Serialization.RelationshipDetail;
+using RelationshipDetail = Iql.Server.Serialization.Deserialization.EntityConfiguration.RelationshipDetail;
 using TypeInfo = Iql.OData.TypeScript.Generator.Definitions.TypeInfo;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
@@ -693,7 +694,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 var sb = new StringBuilder();
                 var isProperty = metadata is IPropertyMetadata || metadata is IPropertyGroup;
                 var metadataType = typeof(IEntityMetadata);
-                var metadataSolidType = typeof(Server.Serialization.EntityConfiguration);
+                var metadataSolidType = typeof(Server.Serialization.Deserialization.EntityConfiguration.EntityConfiguration);
                 if (isProperty)
                 {
                     if (metadata is IPropertyCollection)
@@ -1149,7 +1150,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }
                 else if (typeof(IEntityConfiguration).IsAssignableFrom(metadataSolidType))
                 {
-                    instance = new Server.Serialization.EntityConfiguration(null);
+                    instance = new Server.Serialization.Deserialization.EntityConfiguration.EntityConfiguration(null);
                 }
                 else
                 {

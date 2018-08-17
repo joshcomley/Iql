@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.Converters
 {
     public class TypeConverter : JsonConverter
     {

@@ -1,7 +1,7 @@
-﻿using Iql.Entities;
-using System;
+﻿using System;
+using Iql.Entities;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     public class MediaKey : MediaKeyBase
     {

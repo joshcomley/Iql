@@ -15,7 +15,7 @@ using Iql.Entities.SpecialTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Iql.Server.Serialization.Resolvers
+namespace Iql.Server.Serialization.Serialization.Resolvers
 {
     internal class InterfaceContractResolver : DefaultContractResolver
     {

@@ -6,7 +6,7 @@ using Iql.OData.TypeScript.Generator.Builders;
 using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.EntityConfiguration;
 using Iql.OData.TypeScript.Generator.Extensions;
-using EntityConfigurationParser = Iql.Server.Serialization.EntityConfigurationParser;
+using EntityConfigurationParser = Iql.Server.Serialization.Deserialization.EntityConfigurationParser;
 
 namespace Iql.OData.TypeScript.Generator.Parsers
 {

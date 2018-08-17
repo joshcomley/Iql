@@ -1,7 +1,7 @@
-﻿using Iql.Entities.Relationships;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using Iql.Entities.Relationships;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     public class Relationship : RelationshipBase, IRelationship
     {

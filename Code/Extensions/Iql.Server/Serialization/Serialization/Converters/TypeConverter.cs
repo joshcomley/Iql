@@ -2,7 +2,7 @@
 using Iql.Extensions;
 using Newtonsoft.Json;
 
-namespace Iql.Server.Serialization.Converters
+namespace Iql.Server.Serialization.Serialization.Converters
 {
     public class TypeConverter : JsonConverter
     {

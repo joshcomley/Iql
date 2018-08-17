@@ -1,8 +1,9 @@
-﻿using Iql.Entities;
+﻿using System;
+using Iql.Entities;
+using Iql.Server.Serialization.Deserialization.EntityConfiguration;
 using Newtonsoft.Json;
-using System;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.Converters
 {
     public class MetadataCollectionConverter : JsonConverter
     {

@@ -27,8 +27,18 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             var isiteUrl = "http://localhost:48000/odata/$metadata";
             var tunnelUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("isite")
+            switch ("todoot")
             {
+                case "todoot":
+                    await GenerateAsync("http://localhost:62000/odata/$metadata", OutputType.TypeScript, @"D:\Code\Apps\Todoot\Code\Web\", @"D:\Code\Apps\Todoot\Code\Web\ClientApp\", @"app\generated\DataContext");
+                    //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
+                    //isiteSettings.GenerateCountProperties = false;
+                    //isiteSettings.GenerateEntities = false;
+                    //isiteSettings.GenerateEntitySets = false;
+                    //isiteSettings.GenerateDataContext = true;
+                    //isiteSettings.ConfigureOData = false;
+                    //GenerateWithSettings(isiteUrl, OutputType.CSharp, @"D:\Code\i-site\Code\Api\src\ISite.App.Data\", @"IqlContext", isiteSettings);
+                    break;
                 case "isite":
                     await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Web\", @"D:\Code\i-site\Code\Web\ClientApp\", @"app\generated\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);

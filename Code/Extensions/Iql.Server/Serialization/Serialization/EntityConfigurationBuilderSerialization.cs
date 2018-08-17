@@ -1,9 +1,10 @@
 ﻿using Iql.Entities;
+using Iql.Server.Serialization.Serialization.Converters;
+using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;
-using Iql.Server.Serialization.Converters;
-using Iql.Server.Serialization.Resolvers;
+using TypeConverter = Iql.Server.Serialization.Deserialization.Converters.TypeConverter;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Serialization
 {
     public static class EntityConfigurationBuilderSerialization
     {

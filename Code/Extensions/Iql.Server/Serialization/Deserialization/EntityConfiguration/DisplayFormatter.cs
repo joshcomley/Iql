@@ -1,8 +1,8 @@
-﻿using Iql.Entities.DisplayFormatting;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Iql.Entities.DisplayFormatting;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     public class DisplayFormatter : IEntityDisplayTextFormatter
     {

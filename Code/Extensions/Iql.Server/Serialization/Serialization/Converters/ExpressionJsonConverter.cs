@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Iql.DotNet.Serialization;
 using Newtonsoft.Json;
 
-namespace Iql.Server.Serialization.Converters
+namespace Iql.Server.Serialization.Serialization.Converters
 {
     public class ExpressionJsonConverter : JsonConverter
     {

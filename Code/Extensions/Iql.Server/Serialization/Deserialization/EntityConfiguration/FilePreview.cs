@@ -1,7 +1,7 @@
 ﻿using Iql.Entities;
 using Iql.Entities.PropertyGroups.Files;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     public class FilePreview : FilePreviewBase
     {

@@ -1,14 +1,14 @@
-﻿using Iql.Entities;
-using Iql.Entities.Geography;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Entities;
+using Iql.Entities.Geography;
 using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     [DebuggerDisplay("{Name} - {SetName}")]
     public class EntityConfiguration : EntityConfigurationBase, IEntityConfiguration

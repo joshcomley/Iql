@@ -1,10 +1,11 @@
-﻿using Iql.DotNet.Serialization;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.DotNet.Serialization;
+using Iql.Server.Serialization.Serialization;
+using Newtonsoft.Json;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.Converters
 {
     public class LambdaExpressionConverter<T> : JsonConverter
     where T : class

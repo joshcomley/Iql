@@ -1,24 +1,26 @@
-﻿using Iql.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Enums;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
+using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Iql.Entities.PropertyGroups.Dates;
-using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.SpecialTypes;
+using Iql.Server.Serialization.Deserialization.EntityConfiguration;
+using Iql.Server.Serialization.Serialization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.Converters
 {
     public class SerializerDetails
     {
@@ -43,8 +45,8 @@ namespace Iql.Server.Serialization
             Details = details ?? new SerializerDetails();
             Map<IEnumConfiguration, EnumConfiguration>();
             Map<IEnumValue, EnumValue>();
-            Map<IEntityConfiguration, EntityConfiguration>();
-            Map<IEntityMetadata, EntityConfiguration>();
+            Map<IEntityConfiguration, EntityConfiguration.EntityConfiguration>();
+            Map<IEntityMetadata, EntityConfiguration.EntityConfiguration>();
             Map<IProperty, Property>();
             Map<ITypeDefinition, TypeDetail>();
             Map<IRelationship, Relationship>();
@@ -155,7 +157,7 @@ namespace Iql.Server.Serialization
             {
                 var config = result as IEntityConfiguration;
                 Details.EntityConfigurations.Add(config.Name, config);
-                Details.PreFinalisers.Insert(0, document => (config as EntityConfiguration).SetConfigurationProvider(document));
+                Details.PreFinalisers.Insert(0, document => (config as EntityConfiguration.EntityConfiguration).SetConfigurationProvider(document));
             }
             return result;
         }

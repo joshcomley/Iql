@@ -2,7 +2,7 @@
 using System.Collections;
 using Iql.Extensions;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Serialization
 {
     public static class IqlSerializationObjectExtensions
     {

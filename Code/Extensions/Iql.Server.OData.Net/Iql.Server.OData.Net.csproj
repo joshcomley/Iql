@@ -2,12 +2,18 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10234-0-Release" />
+        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10236-0-Release" />
+        <PackageReference Include="Brandless.AspNetCore.OData.EntityFramework" Version="1.2.10094-alpha-10236-0-Release" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10094-0-Release" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10094-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10234-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10236-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData.EntityFramework" Version="1.2.10094-alpha-10236-1-Debug" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10094-1-Debug" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10094-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>

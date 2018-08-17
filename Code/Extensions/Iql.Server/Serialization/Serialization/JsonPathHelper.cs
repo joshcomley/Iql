@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Serialization
 {
     public class JsonPathHelper
     {

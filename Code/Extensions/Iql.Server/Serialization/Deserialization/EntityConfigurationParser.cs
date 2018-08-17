@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Iql.Server.Serialization.Deserialization.Converters;
+using Newtonsoft.Json;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization
 {
     public class EntityConfigurationParser
     {

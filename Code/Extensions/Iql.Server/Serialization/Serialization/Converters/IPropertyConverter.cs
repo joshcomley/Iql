@@ -6,10 +6,10 @@ using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
-using Iql.Server.Serialization.Resolvers;
+using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;
 
-namespace Iql.Server.Serialization.Converters
+namespace Iql.Server.Serialization.Serialization.Converters
 {
     public class IPropertyConverter : JsonConverter
     {

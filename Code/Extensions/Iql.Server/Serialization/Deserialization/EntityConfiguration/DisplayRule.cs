@@ -1,7 +1,7 @@
-﻿using Iql.Entities.Rules.Display;
-using System;
+﻿using System;
+using Iql.Entities.Rules.Display;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     public class DisplayRule : RuleBase, IDisplayRule
     {

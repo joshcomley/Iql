@@ -1,10 +1,10 @@
-﻿using Iql.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using Iql.Entities;
 
-namespace Iql.Server.Serialization
+namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 {
     [DebuggerDisplay("{Name}")]
     public class Property : PropertyBase, IProperty

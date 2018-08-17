@@ -2,6 +2,7 @@
 using Iql.Entities;
 using Iql.Entities.Enums;
 using Iql.Entities.SpecialTypes;
+using Iql.Server.Serialization.Deserialization;
 
 namespace Iql.Server.Serialization
 {
