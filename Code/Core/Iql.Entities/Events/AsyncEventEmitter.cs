@@ -16,11 +16,11 @@ namespace Iql.Entities.Events
 
         }
 
-        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> propertyChangeEvent)
+        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action)
         {
             return SubscribeAsync(async e =>
             {
-                await propertyChangeEvent(e);
+                await action(e);
             });
         }
 
@@ -39,25 +39,25 @@ namespace Iql.Entities.Events
             SubscriptionActions = new List<Func<TEvent, Task>>();
         }
 
-        public EventSubscription SubscribeAsync(Func<TEvent, Task> propertyChangeEvent)
+        public EventSubscription SubscribeAsync(Func<TEvent, Task> action)
         {
             if (_subscriptions == null)
             {
                 _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
             }
             var id = ++_subscriptionId;
-            _subscriptions.Add(id, propertyChangeEvent);
+            _subscriptions.Add(id, action);
             SubscriptionActions = _subscriptions.Values.ToList();
             return new EventSubscription(this, id);
         }
 
         private List<Func<TEvent, Task>> SubscriptionActions { get; set; }
 
-        public async Task<TEvent> EmitAsync(Func<TEvent> propertyChangeEvent, Func<TEvent, Task> afterEvent = null)
+        public async Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent = null)
         {
             if (SubscriptionActions != null && SubscriptionActions.Count > 0)
             {
-                var ev = propertyChangeEvent();
+                var ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
                 for (var i = 0; i < SubscriptionActions.Count; i++)
                 {
                     await SubscriptionActions[i](ev);

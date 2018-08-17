@@ -15,11 +15,11 @@ namespace Iql.Entities.Events
             
         }
 
-        EventSubscription IEventSubscriberBase.Subscribe(Action<object> propertyChangeEvent)
+        EventSubscription IEventSubscriberBase.Subscribe(Action<object> action)
         {
             return Subscribe(e =>
             {
-                propertyChangeEvent(e);
+                action(e);
             });
         }
 
@@ -32,25 +32,25 @@ namespace Iql.Entities.Events
             _subscriptions.Remove(subscription);
         }
 
-        public EventSubscription Subscribe(Action<TEvent> propertyChangeEvent)
+        public EventSubscription Subscribe(Action<TEvent> action)
         {
             if (_subscriptions == null)
             {
                 _subscriptions = new Dictionary<int, Action<TEvent>>();
             }
             var id = ++_subscriptionId;
-            _subscriptions.Add(id, propertyChangeEvent);
+            _subscriptions.Add(id, action);
             SubscriptionActions = _subscriptions.Values.ToList();
             return new EventSubscription(this, id);
         }
 
         private List<Action<TEvent>> SubscriptionActions { get; set; }
 
-        public TEvent Emit(Func<TEvent> propertyChangeEvent, Action<TEvent> afterEvent = null)
+        public TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null)
         {
             if (SubscriptionActions != null && SubscriptionActions.Count > 0)
             {
-                var ev = propertyChangeEvent();
+                var ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
                 for (var i = 0; i < SubscriptionActions.Count; i++)
                 {
                     SubscriptionActions[i](ev);

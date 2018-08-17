@@ -11,10 +11,15 @@ namespace Iql.Data.Extensions
             {
                 return IqlType.Unknown;
             }
-
+            
             if (type.ConvertedFromType == KnownPrimitiveTypes.Guid)
             {
                 return IqlType.Guid;
+            }
+
+            if (type.Kind != IqlType.Unknown)
+            {
+                return type.Kind;
             }
 
             return type.Type.ToIqlType();

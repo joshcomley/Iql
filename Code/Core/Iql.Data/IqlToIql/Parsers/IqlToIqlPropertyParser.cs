@@ -42,6 +42,11 @@ namespace Iql.Data.IqlToIql.Parsers
         {
             var property = parser.Adapter.EntityConfigurationContext.EntityType<TEntity>()
                 .FindProperty(action.PropertyName);
+            if (property != null && property.Kind.HasFlag(PropertyKind.Count))
+            {
+                action.PropertyName = property.Relationship.ThisEnd.Property.Name;
+                return new IqlCountExpression(null, action, null);
+            }
             parser.ResolveSpecialTypeMap(specialTypeMap =>
             {
                 var mappedProperty = specialTypeMap.ResolvePropertyMap(action.PropertyName);
@@ -51,11 +56,6 @@ namespace Iql.Data.IqlToIql.Parsers
                     action.ReturnType = mappedProperty.TypeDefinition.ToIqlType();
                 }
             });
-            if (property != null && property.Kind.HasFlag(PropertyKind.Count))
-            {
-                action.PropertyName = property.Relationship.ThisEnd.Property.Name;
-                return new IqlCountExpression(null, action, null);
-            }
             action.Parent = (IqlExpression)parser.Parse(action.Parent).Expression;
             return action;
         }

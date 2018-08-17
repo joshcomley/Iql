@@ -4,8 +4,14 @@ namespace Iql.Serialization
 {
     public class IqlJsonDeserializer
     {
-        public static TIql DeserializeJson<TIql>(string json)
-            where TIql : class
+        public static IqlExpression DeserializeJson(string json)
+        {
+            var instance = new IqlJsonDeserializerInstance<IqlExpression>(json);
+            return instance.Deserialize();
+        }
+
+        public static TIql DeserializeJsonAs<TIql>(string json)
+            where TIql : IqlExpression
         {
             var instance = new IqlJsonDeserializerInstance<TIql>(json);
             return instance.Deserialize();

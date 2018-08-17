@@ -8,7 +8,7 @@ namespace Iql
     {
         public List<IqlIsEqualToExpression> KeyEqualToExpressions { get; set; }
 
-        public IqlWithKeyExpression(IEnumerable<IqlIsEqualToExpression> keyEqualToExpressions, 
+        public IqlWithKeyExpression(IEnumerable<IqlIsEqualToExpression> keyEqualToExpressions = null, 
             IqlExpression parent = null)
             : base(IqlExpressionKind.WithKey, IqlType.Class, parent)
         {

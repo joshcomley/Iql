@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Iql.Entities.SpecialTypes;
+using Iql.OData.Extensions;
 using Iql.Tests.Context;
 using Iql.Tests.Tests.OData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,6 +14,7 @@ namespace Iql.Tests.Tests.DataContext
         [TestMethod]
         public async Task GetCustomReportsNormally()
         {
+            AppDbContext.InMemoryDb.MyCustomReports.Clear();
             var firstRemote = new MyCustomReport
             {
                 MyName = "abc",
@@ -33,14 +35,39 @@ namespace Iql.Tests.Tests.DataContext
             firstLocal.MyName = "abc2";
             await Db.SaveChangesAsync();
             Assert.AreEqual("abc2", firstRemote.MyName);
-            AppDbContext.InMemoryDb.MyCustomReports.Clear();
             //var allCustomReportsInternal = await Db.CustomReportsManager.Set.ToListAsync();
             //Assert.AreEqual(2, allCustomReportsInternal.Count);
         }
 
         [TestMethod]
+        public async Task GetCustomReportsWithKeyOData()
+        {
+            AppDbContext.InMemoryDb.MyCustomReports.Clear();
+            var firstRemote = new MyCustomReport
+            {
+                MyName = "abc",
+                MyId = new Guid("9cac910f-6b7c-46b8-9de6-d4373a0063d8"),
+                MyEntityType = "MyType"
+            };
+            AppDbContext.InMemoryDb.MyCustomReports.Add(firstRemote);
+            AppDbContext.InMemoryDb.MyCustomReports.Add(new MyCustomReport
+            {
+                MyName = "def",
+                MyId = new Guid("571202dc-057f-49b8-8681-8450695fc079"),
+                MyEntityType = "MyOtherType"
+            });
+            var allCustomReportsLocal = await Db.CustomReportsManager.Set.ToListAsync();
+            Assert.AreEqual(2, allCustomReportsLocal.Count);
+            var query =
+                Db.CustomReportsManager.Set.WithKey(new Guid("9cac910f-6b7c-46b8-9de6-d4373a0063d8"));
+            var odataUri = await query.ResolveODataUriAsync();
+            Assert.AreEqual(@"http://localhost:28000/odata/MyCustomReports(9cac910f-6b7c-46b8-9de6-d4373a0063d8)", odataUri);
+        }
+
+        [TestMethod]
         public async Task GetCustomReportsWithMappingOfPropertyNames()
         {
+            AppDbContext.InMemoryDb.MyCustomReports.Clear();
             var firstRemote = new MyCustomReport
             {
                 MyName = "abc",
@@ -77,7 +104,6 @@ namespace Iql.Tests.Tests.DataContext
             Assert.AreEqual(2, AppDbContext.InMemoryDb.MyCustomReports.Count);
             await Db.SaveChangesAsync();
             Assert.AreEqual(2, AppDbContext.InMemoryDb.MyCustomReports.Count);
-            AppDbContext.InMemoryDb.MyCustomReports.Clear();
             // Test insert and delete
             //var allCustomReportsInternal = await Db.CustomReportsManager.Set.ToListAsync();
             //Assert.AreEqual(2, allCustomReportsInternal.Count);
@@ -86,6 +112,7 @@ namespace Iql.Tests.Tests.DataContext
         [TestMethod]
         public async Task GetCustomReportsWithMappingOfPropertyNamesAndComplexFilter()
         {
+            AppDbContext.InMemoryDb.MyCustomReports.Clear();
             var firstRemote = new MyCustomReport
             {
                 MyName = "abc",
@@ -102,7 +129,6 @@ namespace Iql.Tests.Tests.DataContext
             var allCustomReportsLocal = await Db.CustomReportsManager.Set.Where(c => c.Name == "def" && c.EntityType.Length > 5).ToListAsync();
             Assert.AreEqual(1, allCustomReportsLocal.Count);
             Assert.AreEqual("def", allCustomReportsLocal[0].Name);
-            AppDbContext.InMemoryDb.MyCustomReports.Clear();
         }
     }
 }

@@ -22,6 +22,12 @@ namespace Iql.Serialization
         {
             var clone = JObject.Parse(Json);
             var typed = EnsureType(clone);
+#if TypeScript
+            if (typeof(TIql) == null)
+            {
+                return (TIql)typed;
+            }
+#endif
             return typed is TIql ? (TIql)typed : null;
         }
 

@@ -9,12 +9,12 @@ namespace Iql.Entities.Events
     }
     public interface IAsyncEventEmitter<TEvent>
     {
-        Task<TEvent> EmitAsync(Func<TEvent> propertyChangeEvent, Func<TEvent, Task> afterEventAsync = null);
+        Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEventAsync = null);
     }
 
     public interface IAsyncEventSubscriber<out TEvent> : IAsyncEventSubscriberBase
     {
-        EventSubscription SubscribeAsync(Func<TEvent, Task> propertyChangeEvent);
+        EventSubscription SubscribeAsync(Func<TEvent, Task> action);
     }
 
     public interface IAsyncEventSubscriberBase: IEventUnsubcriber
@@ -28,12 +28,12 @@ namespace Iql.Entities.Events
     }
     public interface IEventEmitter<TEvent>
     {
-        TEvent Emit(Func<TEvent> propertyChangeEvent, Action<TEvent> afterEvent = null);
+        TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null);
     }
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase
     {
-        EventSubscription Subscribe(Action<TEvent> propertyChangeEvent);
+        EventSubscription Subscribe(Action<TEvent> action);
     }
 
     public interface IEventSubscriberBase: IEventUnsubcriber

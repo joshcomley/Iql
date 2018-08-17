@@ -34,7 +34,7 @@ namespace Iql
 
     public class IqlDataSetQueryExpression : IqlCollectitonQueryExpression
     {
-        public IqlDataSetQueryExpression(string entityTypeName, IqlExpression parent = null)
+        public IqlDataSetQueryExpression(string entityTypeName = null, IqlExpression parent = null)
             : base(entityTypeName, IqlExpressionKind.DataSetQuery, parent)
         {
         }

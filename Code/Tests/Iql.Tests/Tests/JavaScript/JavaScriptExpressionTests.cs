@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Entities.Rules.Relationship;
+using Iql.Entities.SpecialTypes;
 using Iql.JavaScript.Extensions;
 #if !TypeScript
 #endif
@@ -14,6 +15,7 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.OData;
 using Iql.OData.Extensions;
 using Iql.Tests.Context;
+using Iql.Tests.Tests.OData;
 using Iql.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
@@ -41,6 +43,70 @@ namespace Iql.Tests.Tests.JavaScript
             var javascript =
                 converter.ConvertIqlToExpressionStringByType(expression.Expression, typeof(ApplicationUser));
             Assert.AreEqual(@"function(entity) { return ((entity || {})[""ClientId""] == 1); }",
+                javascript);
+        }
+
+        [TestMethod]
+        public void TestGuid()
+        {
+            var converter = new JavaScriptExpressionConverter();
+            var expression = new IqlDataSetQueryExpression
+            {
+                DataSet = new IqlDataSetReferenceExpression
+                {
+                    Name = "MyCustomReports",
+                    Kind = IqlExpressionKind.DataSetReference,
+                    ReturnType = IqlType.Collection
+                },
+                IncludeCount = true,
+                WithKey = new IqlWithKeyExpression
+                {
+                    KeyEqualToExpressions = new List<IqlIsEqualToExpression>
+                {
+                    new IqlIsEqualToExpression
+                    {
+                        Left = new IqlPropertyExpression
+                        {
+                            PropertyName = "MyId",
+                            Kind = IqlExpressionKind.Property,
+                            ReturnType = IqlType.Guid,
+                            Parent = new IqlRootReferenceExpression
+                            {
+                                Value = "",
+                                VariableName = "entity",
+                                Kind = IqlExpressionKind.RootReference,
+                                ReturnType = IqlType.Unknown
+                            }
+                        },
+                        Right = new IqlLiteralExpression
+                        {
+                            Value = "9cac910f-6b7c-46b8-9de6-d4373a0063d8",
+                            InferredReturnType = IqlType.String,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Guid
+                        },
+                        Kind = IqlExpressionKind.IsEqualTo,
+                        ReturnType = IqlType.Unknown
+                    }
+                },
+                    Kind = IqlExpressionKind.WithKey,
+                    ReturnType = IqlType.Class
+                },
+                Parameters = new List<IqlRootReferenceExpression>
+            {
+                new IqlRootReferenceExpression
+                {
+                    EntityTypeName = "MyCustomReport",
+                    Kind = IqlExpressionKind.RootReference,
+                    ReturnType = IqlType.Unknown
+                }
+            },
+                Kind = IqlExpressionKind.DataSetQuery,
+                ReturnType = IqlType.Class
+            };
+            var javascript =
+                converter.ConvertIqlToExpressionStringAs<MyCustomReport>(expression);
+            Assert.AreEqual(@"function(context) { return context.Where(function(entity) { return ((entity || {})[""MyId""] == '9cac910f-6b7c-46b8-9de6-d4373a0063d8'); }); }",
                 javascript);
         }
 
