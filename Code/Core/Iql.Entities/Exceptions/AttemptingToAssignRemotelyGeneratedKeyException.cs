@@ -1,6 +1,6 @@
 using System;
 
-namespace Iql.Data.Exceptions
+namespace Iql.Entities.Exceptions
 {
     public class AttemptingToAssignRemotelyGeneratedKeyException : Exception
     {

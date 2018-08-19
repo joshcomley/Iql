@@ -1,5 +1,6 @@
 using System;
 using Iql.Data.Exceptions;
+using Iql.Entities.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.App.Data.Entities;
 

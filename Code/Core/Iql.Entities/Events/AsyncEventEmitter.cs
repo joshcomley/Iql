@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Entities.Exceptions;
 
 namespace Iql.Entities.Events
 {
@@ -60,11 +61,31 @@ namespace Iql.Entities.Events
                 var ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
                 for (var i = 0; i < SubscriptionActions.Count; i++)
                 {
-                    await SubscriptionActions[i](ev);
+                    try
+                    {
+                        await SubscriptionActions[i](ev);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is AttemptingToAssignRemotelyGeneratedKeyException)
+                        {
+                            throw e;
+                        }
+                    }
                 }
                 if (afterEvent != null)
                 {
-                    await afterEvent(ev);
+                    try
+                    {
+                        await afterEvent(ev);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is AttemptingToAssignRemotelyGeneratedKeyException)
+                        {
+                            throw e;
+                        }
+                    }
                 }
 
                 return ev;

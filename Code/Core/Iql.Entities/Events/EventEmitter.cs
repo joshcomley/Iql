@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.Exceptions;
 
 namespace Iql.Entities.Events
 {
@@ -53,11 +54,31 @@ namespace Iql.Entities.Events
                 var ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
                 for (var i = 0; i < SubscriptionActions.Count; i++)
                 {
-                    SubscriptionActions[i](ev);
+                    try
+                    {
+                        SubscriptionActions[i](ev);
+                    }
+                    catch(Exception e)
+                    {
+                        if (e is AttemptingToAssignRemotelyGeneratedKeyException)
+                        {
+                            throw e;
+                        }
+                    }
                 }
                 if (afterEvent != null)
                 {
-                    afterEvent(ev);
+                    try
+                    {
+                        afterEvent(ev);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is AttemptingToAssignRemotelyGeneratedKeyException)
+                        {
+                            throw e;
+                        }
+                    }
                 }
 
                 return ev;

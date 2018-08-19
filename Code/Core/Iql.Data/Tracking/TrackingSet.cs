@@ -11,6 +11,7 @@ using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Entities.Exceptions;
 using Iql.Entities.Extensions;
 
 namespace Iql.Data.Tracking
