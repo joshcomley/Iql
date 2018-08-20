@@ -1,0 +1,25323 @@
+﻿namespace Iql.Tests.Tests.MetadataSerialization
+{
+    public class MetadataSerializationJsonCache
+    {
+        public const string Json = @"{
+  ""CustomReportsDefinition"": {
+    ""UserIdProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyUserId\"",\""Kind\"":1,\""Children\"":null}"",
+    ""NameProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyName\"",\""Kind\"":1,\""Children\"":null}"",
+    ""EntityTypeProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyEntityType\"",\""Kind\"":1,\""Children\"":null}"",
+    ""IqlProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyIql\"",\""Kind\"":1,\""Children\"":null}"",
+    ""FieldsProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyFields\"",\""Kind\"":1,\""Children\"":null}"",
+    ""SortProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MySort\"",\""Kind\"":1,\""Children\"":null}"",
+    ""SortDescendingProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MySortDescending\"",\""Kind\"":1,\""Children\"":null}"",
+    ""SearchProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MySearch\"",\""Kind\"":1,\""Children\"":null}"",
+    ""IdProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyId\"",\""Kind\"":1,\""Children\"":null}"",
+    ""Metadata"": {
+      ""All"": []
+    },
+    ""Name"": null,
+    ""Title"": null,
+    ""FriendlyName"": null,
+    ""GroupPath"": null,
+    ""EditDisplay"": [],
+    ""ReadDisplay"": [],
+    ""Description"": null,
+    ""Hints"": [],
+    ""HelpTexts"": []
+  },
+  ""UserSettingsDefinition"": null,
+  ""EnumTypes"": [],
+  ""EntityTypes"": [
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ApplicationLog\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Application Logs"",
+      ""SetName"": ""ApplicationLogs"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Module"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Module__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Module"",
+  ""Title"": ""Module"",
+  ""FriendlyName"": ""Module"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Message"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Message__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Message"",
+  ""Title"": ""Message"",
+  ""FriendlyName"": ""Message"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ApplicationLog"",
+      ""Title"": ""ApplicationLog"",
+      ""FriendlyName"": ""Application Log"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Users"",
+      ""SetName"": ""Users"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientId"",
+  ""Title"": ""ClientId"",
+  ""FriendlyName"": ""Client Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Email"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Email__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Email"",
+  ""Title"": ""Email"",
+  ""FriendlyName"": ""Email"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""FullName"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FullName__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FullName"",
+  ""Title"": ""FullName"",
+  ""FriendlyName"": ""Full Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""EmailConfirmed"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__EmailConfirmed__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""EmailConfirmed"",
+  ""Title"": ""EmailConfirmed"",
+  ""FriendlyName"": ""Email Confirmed"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""UserType"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserType__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UserType"",
+  ""Title"": ""UserType"",
+  ""FriendlyName"": ""User Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""IsLockedOut"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__IsLockedOut__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""IsLockedOut"",
+  ""Title"": ""IsLockedOut"",
+  ""FriendlyName"": ""Is Locked Out"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Permissions"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Permissions__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Permissions"",
+  ""Title"": ""Permissions"",
+  ""FriendlyName"": ""Permissions"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Client"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Client__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientsCreated"",
+  ""Title"": ""ClientsCreated"",
+  ""FriendlyName"": ""Clients Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientsCreatedCount"",
+  ""Title"": ""ClientsCreatedCount"",
+  ""FriendlyName"": ""Clients Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""DocumentCategoriesCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__DocumentCategoriesCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DocumentCategoriesCreated"",
+  ""Title"": ""DocumentCategoriesCreated"",
+  ""FriendlyName"": ""Document Categories Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""DocumentCategoriesCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__DocumentCategoriesCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DocumentCategoriesCreatedCount"",
+  ""Title"": ""DocumentCategoriesCreatedCount"",
+  ""FriendlyName"": ""Document Categories Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteDocumentsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteDocumentsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteDocumentsCreated"",
+  ""Title"": ""SiteDocumentsCreated"",
+  ""FriendlyName"": ""Site Documents Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteDocumentsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteDocumentsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteDocumentsCreatedCount"",
+  ""Title"": ""SiteDocumentsCreatedCount"",
+  ""FriendlyName"": ""Site Documents Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultActionsTakenCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultActionsTakenCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultActionsTakenCreated"",
+  ""Title"": ""FaultActionsTakenCreated"",
+  ""FriendlyName"": ""Fault Actions Taken Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultActionsTakenCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultActionsTakenCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultActionsTakenCreatedCount"",
+  ""Title"": ""FaultActionsTakenCreatedCount"",
+  ""FriendlyName"": ""Fault Actions Taken Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultCategoriesCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultCategoriesCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultCategoriesCreated"",
+  ""Title"": ""FaultCategoriesCreated"",
+  ""FriendlyName"": ""Fault Categories Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultCategoriesCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultCategoriesCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultCategoriesCreatedCount"",
+  ""Title"": ""FaultCategoriesCreatedCount"",
+  ""FriendlyName"": ""Fault Categories Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultDefaultRecommendationsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultDefaultRecommendationsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultDefaultRecommendationsCreated"",
+  ""Title"": ""FaultDefaultRecommendationsCreated"",
+  ""FriendlyName"": ""Fault Default Recommendations Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultDefaultRecommendationsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultDefaultRecommendationsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultDefaultRecommendationsCreatedCount"",
+  ""Title"": ""FaultDefaultRecommendationsCreatedCount"",
+  ""FriendlyName"": ""Fault Default Recommendations Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultRecommendationsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultRecommendationsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultRecommendationsCreated"",
+  ""Title"": ""FaultRecommendationsCreated"",
+  ""FriendlyName"": ""Fault Recommendations Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultRecommendationsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultRecommendationsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultRecommendationsCreatedCount"",
+  ""Title"": ""FaultRecommendationsCreatedCount"",
+  ""FriendlyName"": ""Fault Recommendations Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultTypesCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultTypesCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultTypesCreated"",
+  ""Title"": ""FaultTypesCreated"",
+  ""FriendlyName"": ""Fault Types Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultTypesCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultTypesCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultTypesCreatedCount"",
+  ""Title"": ""FaultTypesCreatedCount"",
+  ""FriendlyName"": ""Fault Types Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ProjectCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ProjectCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ProjectCreated"",
+  ""Title"": ""ProjectCreated"",
+  ""FriendlyName"": ""Project Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ProjectCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ProjectCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ProjectCreatedCount"",
+  ""Title"": ""ProjectCreatedCount"",
+  ""FriendlyName"": ""Project Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReportReceiverEmailAddressesCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportReceiverEmailAddressesCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportReceiverEmailAddressesCreated"",
+  ""Title"": ""ReportReceiverEmailAddressesCreated"",
+  ""FriendlyName"": ""Report Receiver Email Addresses Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReportReceiverEmailAddressesCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportReceiverEmailAddressesCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportReceiverEmailAddressesCreatedCount"",
+  ""Title"": ""ReportReceiverEmailAddressesCreatedCount"",
+  ""FriendlyName"": ""Report Receiver Email Addresses Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentsCreated"",
+  ""Title"": ""RiskAssessmentsCreated"",
+  ""FriendlyName"": ""Risk Assessments Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentsCreatedCount"",
+  ""Title"": ""RiskAssessmentsCreatedCount"",
+  ""FriendlyName"": ""Risk Assessments Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentAnswersCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentAnswersCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentAnswersCreated"",
+  ""Title"": ""RiskAssessmentAnswersCreated"",
+  ""FriendlyName"": ""Risk Assessment Answers Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentAnswersCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentAnswersCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentAnswersCreatedCount"",
+  ""Title"": ""RiskAssessmentAnswersCreatedCount"",
+  ""FriendlyName"": ""Risk Assessment Answers Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentQuestionsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentQuestionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentQuestionsCreated"",
+  ""Title"": ""RiskAssessmentQuestionsCreated"",
+  ""FriendlyName"": ""Risk Assessment Questions Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentQuestionsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentQuestionsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentQuestionsCreatedCount"",
+  ""Title"": ""RiskAssessmentQuestionsCreatedCount"",
+  ""FriendlyName"": ""Risk Assessment Questions Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCreated"",
+  ""Title"": ""PeopleCreated"",
+  ""FriendlyName"": ""People Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCreatedCount"",
+  ""Title"": ""PeopleCreatedCount"",
+  ""FriendlyName"": ""People Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonInspectionsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonInspectionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspectionsCreated"",
+  ""Title"": ""PersonInspectionsCreated"",
+  ""FriendlyName"": ""Person Inspections Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonInspectionsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonInspectionsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspectionsCreatedCount"",
+  ""Title"": ""PersonInspectionsCreatedCount"",
+  ""FriendlyName"": ""Person Inspections Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonLoadingsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonLoadingsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonLoadingsCreated"",
+  ""Title"": ""PersonLoadingsCreated"",
+  ""FriendlyName"": ""Person Loadings Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonLoadingsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonLoadingsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonLoadingsCreatedCount"",
+  ""Title"": ""PersonLoadingsCreatedCount"",
+  ""FriendlyName"": ""Person Loadings Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonTypesCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonTypesCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonTypesCreated"",
+  ""Title"": ""PersonTypesCreated"",
+  ""FriendlyName"": ""Person Types Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonTypesCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonTypesCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonTypesCreatedCount"",
+  ""Title"": ""PersonTypesCreatedCount"",
+  ""FriendlyName"": ""Person Types Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultReportsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReportsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReportsCreated"",
+  ""Title"": ""FaultReportsCreated"",
+  ""FriendlyName"": ""Fault Reports Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultReportsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReportsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReportsCreatedCount"",
+  ""Title"": ""FaultReportsCreatedCount"",
+  ""FriendlyName"": ""Fault Reports Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SitesCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SitesCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SitesCreated"",
+  ""Title"": ""SitesCreated"",
+  ""FriendlyName"": ""Sites Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SitesCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SitesCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SitesCreatedCount"",
+  ""Title"": ""SitesCreatedCount"",
+  ""FriendlyName"": ""Sites Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspectionsCreated"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionsCreated"",
+  ""Title"": ""SiteInspectionsCreated"",
+  ""FriendlyName"": ""Site Inspections Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspectionsCreatedCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionsCreatedCount"",
+  ""Title"": ""SiteInspectionsCreatedCount"",
+  ""FriendlyName"": ""Site Inspections Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Sites"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Sites__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sites"",
+  ""Title"": ""Sites"",
+  ""FriendlyName"": ""Sites"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SitesCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SitesCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SitesCount"",
+  ""Title"": ""SitesCount"",
+  ""FriendlyName"": ""Sites Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Client\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId_Client__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Users\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Users__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Users"",
+  ""Title"": ""Users"",
+  ""FriendlyName"": ""Users"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Client:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ClientsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientsCreated"",
+  ""Title"": ""Clients Created"",
+  ""FriendlyName"": ""Clients Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""DocumentCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""DocumentCategoriesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""DocumentCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_DocumentCategoriesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DocumentCategoriesCreated"",
+  ""Title"": ""Document Categories Created"",
+  ""FriendlyName"": ""Document Categories Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteDocumentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteDocumentsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteDocumentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteDocumentsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteDocumentsCreated"",
+  ""Title"": ""Site Documents Created"",
+  ""FriendlyName"": ""Site Documents Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultActionsTakenCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultActionsTakenCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultActionsTakenCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultActionsTakenCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultActionsTakenCreated"",
+  ""Title"": ""Fault Actions Taken Created"",
+  ""FriendlyName"": ""Fault Actions Taken Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultCategoriesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultCategoriesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultCategoriesCreated"",
+  ""Title"": ""Fault Categories Created"",
+  ""FriendlyName"": ""Fault Categories Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultDefaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultDefaultRecommendationsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultDefaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultDefaultRecommendationsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultDefaultRecommendationsCreated"",
+  ""Title"": ""Fault Default Recommendations Created"",
+  ""FriendlyName"": ""Fault Default Recommendations Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultRecommendationsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultRecommendationsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultRecommendationsCreated"",
+  ""Title"": ""Fault Recommendations Created"",
+  ""FriendlyName"": ""Fault Recommendations Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultTypesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultTypesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultTypesCreated"",
+  ""Title"": ""Fault Types Created"",
+  ""FriendlyName"": ""Fault Types Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Project\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Project\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ProjectCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ProjectCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ProjectCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ProjectCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ProjectCreated"",
+  ""Title"": ""Project Created"",
+  ""FriendlyName"": ""Project Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ReportReceiverEmailAddressesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ReportReceiverEmailAddressesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ReportReceiverEmailAddressesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ReportReceiverEmailAddressesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportReceiverEmailAddressesCreated"",
+  ""Title"": ""Report Receiver Email Addresses Created"",
+  ""FriendlyName"": ""Report Receiver Email Addresses Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentsCreated"",
+  ""Title"": ""Risk Assessments Created"",
+  ""FriendlyName"": ""Risk Assessments Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentAnswersCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentAnswersCreated"",
+  ""Title"": ""Risk Assessment Answers Created"",
+  ""FriendlyName"": ""Risk Assessment Answers Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentQuestionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentQuestionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentQuestionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentQuestionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentQuestionsCreated"",
+  ""Title"": ""Risk Assessment Questions Created"",
+  ""FriendlyName"": ""Risk Assessment Questions Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PeopleCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PeopleCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PeopleCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PeopleCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCreated"",
+  ""Title"": ""People Created"",
+  ""FriendlyName"": ""People Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonInspectionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonInspectionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspectionsCreated"",
+  ""Title"": ""Person Inspections Created"",
+  ""FriendlyName"": ""Person Inspections Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonLoadingsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonLoadingsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonLoadingsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonLoadingsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonLoadingsCreated"",
+  ""Title"": ""Person Loadings Created"",
+  ""FriendlyName"": ""Person Loadings Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonTypesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonTypesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonTypesCreated"",
+  ""Title"": ""Person Types Created"",
+  ""FriendlyName"": ""Person Types Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultReportsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultReportsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultReportsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultReportsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReportsCreated"",
+  ""Title"": ""Fault Reports Created"",
+  ""FriendlyName"": ""Fault Reports Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SitesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SitesCreated"",
+  ""Title"": ""Sites Created"",
+  ""FriendlyName"": ""Sites Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteInspectionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionsCreated"",
+  ""Title"": ""Site Inspections Created"",
+  ""FriendlyName"": ""Site Inspections Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""UserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""User\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserId_User__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""User"",
+  ""Title"": ""User"",
+  ""FriendlyName"": ""User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Sites\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Sites__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sites"",
+  ""Title"": ""Sites"",
+  ""FriendlyName"": ""Sites"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ApplicationUser"",
+      ""Title"": ""ApplicationUser"",
+      ""FriendlyName"": ""Application User"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [
+        {
+  ""LongitudeProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""AverageIncome\"",\""Kind\"":1,\""Children\"":null}"",
+  ""LatitudeProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""AverageIncome\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AverageIncome_AverageIncome__"",
+  ""Key"": ""MyGeographic"",
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Location"",
+  ""Title"": ""Location"",
+  ""FriendlyName"": ""Location"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [
+    ""Iql:BigText""
+  ],
+  ""HelpTexts"": []
+}
+      ],
+      ""NestedSets"": [
+        {
+  ""SetKey"": ""MyNestedSet"",
+  ""LeftProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""AverageIncome\"",\""Kind\"":1,\""Children\"":null}"",
+  ""RightProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""AverageSales\"",\""Kind\"":1,\""Children\"":null}"",
+  ""LeftOfProperty"": null,
+  ""RightOfProperty"": null,
+  ""KeyProperty"": null,
+  ""LevelProperty"": null,
+  ""ParentIdProperty"": null,
+  ""ParentProperty"": null,
+  ""IdProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AverageIncome_AverageSales__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Hierarchy"",
+  ""Title"": ""Hierarchy"",
+  ""FriendlyName"": ""Hierarchy"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Clients"",
+      ""SetName"": ""Clients"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [
+        ""{\""Type\"":\""Client\"",\""Paths\"":\""Name\"",\""Kind\"":1,\""Children\"":null}"",
+        {
+          ""Enclose"": true,
+          ""ContentAlignment"": 2,
+          ""Kind"": 16,
+          ""Properties"": [
+            {
+              ""Kind"": 8,
+              ""Path"": ""Type/Name"",
+              ""EditKindChanged"": {},
+              ""ReadKindChanged"": {},
+              ""ReadKind"": 1,
+              ""EditKind"": 1,
+              ""SupportsInlineEditing"": true,
+              ""PromptBeforeEdit"": false,
+              ""Placeholder"": null,
+              ""Sortable"": true,
+              ""Key"": null,
+              ""GroupName"": ""__Name__"",
+              ""ValidationRules"": null,
+              ""DisplayRules"": null,
+              ""Metadata"": {
+                ""All"": []
+              },
+              ""Name"": null,
+              ""Title"": null,
+              ""FriendlyName"": null,
+              ""GroupPath"": null,
+              ""EditDisplay"": [],
+              ""ReadDisplay"": [],
+              ""Description"": null,
+              ""Hints"": [],
+              ""HelpTexts"": []
+            },
+            ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}"",
+            ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":6,\""Children\"":null}"",
+            ""{\""Type\"":\""Client\"",\""Paths\"":\""0\"",\""Kind\"":4,\""Children\"":null}"",
+            {
+              ""Enclose"": true,
+              ""ContentAlignment"": 1,
+              ""Kind"": 16,
+              ""Properties"": [
+                ""{\""Type\"":\""Client\"",\""Paths\"":\""Description\"",\""Kind\"":1,\""Children\"":null}"",
+                ""{\""Type\"":\""Client\"",\""Paths\"":\""Category\"",\""Kind\"":1,\""Children\"":null}""
+              ],
+              ""Key"": null,
+              ""GroupName"": ""__Description_Category__"",
+              ""ValidationRules"": null,
+              ""DisplayRules"": null,
+              ""Metadata"": {
+                ""All"": []
+              },
+              ""Name"": null,
+              ""Title"": null,
+              ""FriendlyName"": null,
+              ""GroupPath"": null,
+              ""EditDisplay"": [],
+              ""ReadDisplay"": [],
+              ""Description"": null,
+              ""Hints"": [],
+              ""HelpTexts"": []
+            }
+          ],
+          ""Key"": null,
+          ""GroupName"": ""___Id_Type_Location___"",
+          ""ValidationRules"": null,
+          ""DisplayRules"": null,
+          ""Metadata"": {
+            ""All"": []
+          },
+          ""Name"": null,
+          ""Title"": null,
+          ""FriendlyName"": null,
+          ""GroupPath"": null,
+          ""EditDisplay"": [],
+          ""ReadDisplay"": [],
+          ""Description"": null,
+          ""Hints"": [
+            ""Iql:HelpText:Bottom""
+          ],
+          ""HelpTexts"": []
+        },
+        ""{\""Type\"":\""Client\"",\""Paths\"":\""0\"",\""Kind\"":5,\""Children\"":null}""
+      ],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Users"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Users__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Users"",
+  ""Title"": ""Users"",
+  ""FriendlyName"": ""Users"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TypeId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TypeId"",
+  ""Title"": ""TypeId"",
+  ""FriendlyName"": ""Type Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 6
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Discount"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Discount__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Discount"",
+  ""Title"": ""Discount"",
+  ""FriendlyName"": ""Discount"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 6
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""AverageSales"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AverageSales__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AverageSales"",
+  ""Title"": ""AverageSales"",
+  ""FriendlyName"": ""Average Sales"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 6
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""AverageIncome"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AverageIncome__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": [
+      {
+        ""Kind"": 1,
+        ""AppliesToKind"": 1,
+        ""Key"": ""7bb7aa15-224d-46b0-ad2c-f864965a8c6f"",
+        ""Message"": """",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Client</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlPropertyExpression\"">\r\n      <Kind>Property</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <EntityTypeName>Client</EntityTypeName>\r\n        <VariableName>entity</VariableName>\r\n      </Parent>\r\n      <PropertyName>AverageSales</PropertyName>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Decimal</ReturnType>\r\n      <Value xsi:type=\""xsd:float\"">0</Value>\r\n      <InferredReturnType>Decimal</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AverageIncome"",
+  ""Title"": ""AverageIncome"",
+  ""FriendlyName"": ""Average Income"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CategoryId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CategoryId"",
+  ""Title"": ""CategoryId"",
+  ""FriendlyName"": ""Category Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""UsersCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UsersCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UsersCount"",
+  ""Title"": ""UsersCount"",
+  ""FriendlyName"": ""Users Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Type"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Type__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Category"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Category__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""People"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__People__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCount"",
+  ""Title"": ""PeopleCount"",
+  ""FriendlyName"": ""People Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Sites"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Sites__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sites"",
+  ""Title"": ""Sites"",
+  ""FriendlyName"": ""Sites"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SitesCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SitesCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SitesCount"",
+  ""Title"": ""SitesCount"",
+  ""FriendlyName"": ""Sites Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Client\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId_Client__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Users\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Users__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Users"",
+  ""Title"": ""Users"",
+  ""FriendlyName"": ""Users"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Client:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""ClientsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Clients\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""ClientsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Clients__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Clients"",
+  ""Title"": ""Clients"",
+  ""FriendlyName"": ""Clients"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ClientType:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ClientsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ClientsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientsCreated"",
+  ""Title"": ""Clients Created"",
+  ""FriendlyName"": ""Clients Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""ClientId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Client\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId_Client__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Client:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""ClientId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": true,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Client\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId_Client__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": [
+      {
+        ""Key"": ""NumberSeven"",
+        ""Value"": 7
+      }
+    ]
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": true,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Sites\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Sites__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sites"",
+  ""Title"": ""Sites"",
+  ""FriendlyName"": ""Sites"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Client:Id""
+        }
+      ],
+      ""Files"": [
+        {
+  ""Previews"": [
+    {
+      ""MaxWidth"": 200,
+      ""MaxHeight"": null,
+      ""Key"": null,
+      ""UrlProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Name\"",\""Kind\"":1,\""Children\"":null}"",
+      ""MediaKey"": {
+        ""Separator"": ""/"",
+        ""Groups"": [
+          {
+            ""Separator"": ""-"",
+            ""Parts"": [
+              {
+                ""IsPropertyPath"": true,
+                ""Key"": ""CreatedByUser/Id""
+              },
+              {
+                ""IsPropertyPath"": false,
+                ""Key"": ""sub-mk-test""
+              }
+            ]
+          }
+        ]
+      },
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": null,
+      ""Title"": null,
+      ""FriendlyName"": null,
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    }
+  ],
+  ""NameProperty"": null,
+  ""VersionProperty"": null,
+  ""KindProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description_Name__"",
+  ""Key"": ""my-file"",
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": [],
+  ""UrlProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Description\"",\""Kind\"":1,\""Children\"":null}"",
+  ""MediaKey"": {
+    ""Separator"": ""/"",
+    ""Groups"": [
+      {
+        ""Separator"": ""-"",
+        ""Parts"": [
+          {
+            ""IsPropertyPath"": true,
+            ""Key"": ""CreatedByUser/Id""
+          },
+          {
+            ""IsPropertyPath"": false,
+            ""Key"": ""root-mk-test""
+          }
+        ]
+      }
+    ]
+  }
+}
+      ],
+      ""Metadata"": {
+        ""All"": [
+          {
+            ""Key"": ""abc"",
+            ""Value"": 123
+          }
+        ]
+      },
+      ""Name"": ""Client"",
+      ""Title"": ""Client"",
+      ""FriendlyName"": ""Client"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Client Types"",
+      ""SetName"": ""ClientTypes"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Clients"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Clients__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Clients"",
+  ""Title"": ""Clients"",
+  ""FriendlyName"": ""Clients"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientsCount"",
+  ""Title"": ""ClientsCount"",
+  ""FriendlyName"": ""Clients Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""ClientsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Clients\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ClientType\"",\""Paths\"":\""ClientsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Clients__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Clients"",
+  ""Title"": ""Clients"",
+  ""FriendlyName"": ""Clients"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ClientType:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ClientType"",
+      ""Title"": ""ClientType"",
+      ""FriendlyName"": ""Client Type"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Document Categories"",
+      ""SetName"": ""DocumentCategories"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Documents"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Documents__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Documents"",
+  ""Title"": ""Documents"",
+  ""FriendlyName"": ""Documents"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""DocumentsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__DocumentsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DocumentsCount"",
+  ""Title"": ""DocumentsCount"",
+  ""FriendlyName"": ""Documents Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""DocumentCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""DocumentCategoriesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""DocumentCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_DocumentCategoriesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DocumentCategoriesCreated"",
+  ""Title"": ""Document Categories Created"",
+  ""FriendlyName"": ""Document Categories Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""CategoryId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""Category\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId_Category__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""Documents\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Documents__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Documents"",
+  ""Title"": ""Documents"",
+  ""FriendlyName"": ""Documents"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""DocumentCategory:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""DocumentCategory"",
+      ""Title"": ""DocumentCategory"",
+      ""FriendlyName"": ""Document Category"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Site Documents"",
+      ""SetName"": ""SiteDocuments"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CategoryId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CategoryId"",
+  ""Title"": ""CategoryId"",
+  ""FriendlyName"": ""Category Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteId"",
+  ""Title"": ""SiteId"",
+  ""FriendlyName"": ""Site Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""Title"",
+  ""FriendlyName"": ""Title"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Category"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Category__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Site"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Site__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""CategoryId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""Category\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId_Category__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""Documents\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Documents__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Documents"",
+  ""Title"": ""Documents"",
+  ""FriendlyName"": ""Documents"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""DocumentCategory:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Documents\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Documents__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Documents"",
+  ""Title"": ""Documents"",
+  ""FriendlyName"": ""Documents"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteDocumentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteDocumentsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteDocumentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteDocumentsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteDocumentsCreated"",
+  ""Title"": ""Site Documents Created"",
+  ""FriendlyName"": ""Site Documents Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""SiteDocument"",
+      ""Title"": ""SiteDocument"",
+      ""FriendlyName"": ""Site Document"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Sites"",
+      ""SetName"": ""Sites"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Documents"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Documents__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Documents"",
+  ""Title"": ""Documents"",
+  ""FriendlyName"": ""Documents"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""AdditionalSendReportsTo"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AdditionalSendReportsTo__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AdditionalSendReportsTo"",
+  ""Title"": ""AdditionalSendReportsTo"",
+  ""FriendlyName"": ""Additional Send Reports To"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ParentId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ParentId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ParentId"",
+  ""Title"": ""ParentId"",
+  ""FriendlyName"": ""Parent Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientId"",
+  ""Title"": ""ClientId"",
+  ""FriendlyName"": ""Client Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Address"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Address__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Address"",
+  ""Title"": ""Address"",
+  ""FriendlyName"": ""Address"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""PostCode"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PostCode__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PostCode"",
+  ""Title"": ""PostCode"",
+  ""FriendlyName"": ""Post Code"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": [
+    {
+      ""Text"": ""A name is useful"",
+      ""Kind"": 1
+    }
+  ]
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Left"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Left__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Left"",
+  ""Title"": ""Left"",
+  ""FriendlyName"": ""Left"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Right"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Right__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Right"",
+  ""Title"": ""Right"",
+  ""FriendlyName"": ""Right"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""DocumentsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__DocumentsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DocumentsCount"",
+  ""Title"": ""DocumentsCount"",
+  ""FriendlyName"": ""Documents Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""AdditionalSendReportsToCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AdditionalSendReportsToCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AdditionalSendReportsToCount"",
+  ""Title"": ""AdditionalSendReportsToCount"",
+  ""FriendlyName"": ""Additional Send Reports To Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Parent"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Parent__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Parent"",
+  ""Title"": ""Parent"",
+  ""FriendlyName"": ""Parent"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Children"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Children__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Children"",
+  ""Title"": ""Children"",
+  ""FriendlyName"": ""Children"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ChildrenCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ChildrenCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ChildrenCount"",
+  ""Title"": ""ChildrenCount"",
+  ""FriendlyName"": ""Children Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Client"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Site</EntityTypeName>\r\n      <VariableName>_</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlPropertyExpression\"">\r\n      <Kind>Property</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <EntityTypeName>Site</EntityTypeName>\r\n        <VariableName>_</VariableName>\r\n      </Parent>\r\n      <PropertyName>CreatedByUser</PropertyName>\r\n    </Parent>\r\n    <PropertyName>Client</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Client__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspections"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspections__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspections"",
+  ""Title"": ""SiteInspections"",
+  ""FriendlyName"": ""Site Inspections"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspectionsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionsCount"",
+  ""Title"": ""SiteInspectionsCount"",
+  ""FriendlyName"": ""Site Inspections Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Users"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Users__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Users"",
+  ""Title"": ""Users"",
+  ""FriendlyName"": ""Users"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""UsersCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UsersCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UsersCount"",
+  ""Title"": ""UsersCount"",
+  ""FriendlyName"": ""Users Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Documents\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""DocumentsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Documents__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Documents"",
+  ""Title"": ""Documents"",
+  ""FriendlyName"": ""Documents"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AdditionalSendReportsToCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AdditionalSendReportsTo\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AdditionalSendReportsToCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_AdditionalSendReportsTo__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AdditionalSendReportsTo"",
+  ""Title"": ""Additional Send Reports To"",
+  ""FriendlyName"": ""Additional Send Reports To"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""ParentId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Parent\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""ChildrenCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ParentId_Parent__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Parent"",
+  ""Title"": ""Parent"",
+  ""FriendlyName"": ""Parent"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Children\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""ChildrenCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Children__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Children"",
+  ""Title"": ""Children"",
+  ""FriendlyName"": ""Children"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""ClientId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": true,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Client\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId_Client__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": [
+      {
+        ""Key"": ""NumberSeven"",
+        ""Value"": 7
+      }
+    ]
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": true,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Sites\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Sites__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sites"",
+  ""Title"": ""Sites"",
+  ""FriendlyName"": ""Sites"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Client:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SitesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SitesCreated"",
+  ""Title"": ""Sites Created"",
+  ""FriendlyName"": ""Sites Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspections\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteInspections__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspections"",
+  ""Title"": ""Site Inspections"",
+  ""FriendlyName"": ""Site Inspections"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Users\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Users__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Users"",
+  ""Title"": ""Users"",
+  ""FriendlyName"": ""Users"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""Site"",
+      ""Title"": ""Site"",
+      ""FriendlyName"": ""Site"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Report Actions Taken"",
+      ""SetName"": ""ReportActionsTaken"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultReportId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReportId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReportId"",
+  ""Title"": ""FaultReportId"",
+  ""FriendlyName"": ""Fault Report Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Notes"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Notes__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""47ccc5d8-f230-4b25-86de-d1afd67eed27"",
+        ""Message"": ""Please enter some actions taken notes"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      },
+      {
+        ""Key"": ""35b9cd02-9abf-45a9-bb18-3aa63ed7c251"",
+        ""Message"": ""Please enter at least five characters for notes"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlStringLengthExpression\"">\r\n      <Kind>StringLength</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Parent xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Notes</PropertyName>\r\n      </Parent>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Value xsi:type=\""xsd:int\"">5</Value>\r\n      <InferredReturnType>Integer</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Notes"",
+  ""Title"": ""Notes"",
+  ""FriendlyName"": ""Notes"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonReport"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonReport__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonReport"",
+  ""Title"": ""PersonReport"",
+  ""FriendlyName"": ""Person Report"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""FaultReportId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""PersonReport\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""ActionsTakenCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReportId_PersonReport__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonReport"",
+  ""Title"": ""Person Report"",
+  ""FriendlyName"": ""Person Report"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""ActionsTaken\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""ActionsTakenCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ActionsTaken__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ActionsTaken"",
+  ""Title"": ""Actions Taken"",
+  ""FriendlyName"": ""Actions Taken"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonReport:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultActionsTakenCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultActionsTakenCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultActionsTakenCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultActionsTakenCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultActionsTakenCreated"",
+  ""Title"": ""Fault Actions Taken Created"",
+  ""FriendlyName"": ""Fault Actions Taken Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ReportActionsTaken"",
+      ""Title"": ""ReportActionsTaken"",
+      ""FriendlyName"": ""Report Actions Taken"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Person Reports"",
+      ""SetName"": ""PersonReports"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ActionsTaken"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ActionsTaken__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ActionsTaken"",
+  ""Title"": ""ActionsTaken"",
+  ""FriendlyName"": ""Actions Taken"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Recommendations"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Recommendations__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendations"",
+  ""Title"": ""Recommendations"",
+  ""FriendlyName"": ""Recommendations"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonId"",
+  ""Title"": ""PersonId"",
+  ""FriendlyName"": ""Person Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TypeId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TypeId"",
+  ""Title"": ""TypeId"",
+  ""FriendlyName"": ""Type Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""a83392af-4778-4e9c-8188-91079e422f99"",
+        ""Message"": ""Please enter a valid report title"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      },
+      {
+        ""Key"": ""ed0047b2-28bf-448a-a8d7-6fb24f21b4c5"",
+        ""Message"": ""Please enter less than five characters"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">5</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""Title"",
+  ""FriendlyName"": ""Title"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Status"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Status__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Status"",
+  ""Title"": ""Status"",
+  ""FriendlyName"": ""Status"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ActionsTakenCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ActionsTakenCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ActionsTakenCount"",
+  ""Title"": ""ActionsTakenCount"",
+  ""FriendlyName"": ""Actions Taken Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RecommendationsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RecommendationsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RecommendationsCount"",
+  ""Title"": ""RecommendationsCount"",
+  ""FriendlyName"": ""Recommendations Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Person"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Person__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Person"",
+  ""Title"": ""Person"",
+  ""FriendlyName"": ""Person"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Type"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Type__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""FaultReportId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""PersonReport\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""ActionsTakenCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReportId_PersonReport__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonReport"",
+  ""Title"": ""Person Report"",
+  ""FriendlyName"": ""Person Report"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""ActionsTaken\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""ActionsTakenCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ActionsTaken__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ActionsTaken"",
+  ""Title"": ""Actions Taken"",
+  ""FriendlyName"": ""Actions Taken"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonReport:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""ReportId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""PersonReport\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportId_PersonReport__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonReport"",
+  ""Title"": ""Person Report"",
+  ""FriendlyName"": ""Person Report"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Recommendations\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Recommendations__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendations"",
+  ""Title"": ""Recommendations"",
+  ""FriendlyName"": ""Recommendations"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonReport:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""PersonId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Person\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""ReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId_Person__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Person"",
+  ""Title"": ""Person"",
+  ""FriendlyName"": ""Person"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Reports\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""ReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Reports__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Reports"",
+  ""Title"": ""Reports"",
+  ""FriendlyName"": ""Reports"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Person:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""FaultReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""FaultReports\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""FaultReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultReports__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReports"",
+  ""Title"": ""Fault Reports"",
+  ""FriendlyName"": ""Fault Reports"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ReportType:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultReportsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultReportsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultReportsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultReportsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReportsCreated"",
+  ""Title"": ""Fault Reports Created"",
+  ""FriendlyName"": ""Fault Reports Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""PersonReport"",
+      ""Title"": ""PersonReport"",
+      ""FriendlyName"": ""Person Report"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Report Categories"",
+      ""SetName"": ""ReportCategories"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReportTypes"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportTypes__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportTypes"",
+  ""Title"": ""ReportTypes"",
+  ""FriendlyName"": ""Report Types"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReportTypesCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportTypesCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportTypesCount"",
+  ""Title"": ""ReportTypesCount"",
+  ""FriendlyName"": ""Report Types Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultCategoriesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultCategoriesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultCategoriesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultCategoriesCreated"",
+  ""Title"": ""Fault Categories Created"",
+  ""FriendlyName"": ""Fault Categories Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""CategoryId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""Category\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""ReportTypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId_Category__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""ReportTypes\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""ReportTypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ReportTypes__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportTypes"",
+  ""Title"": ""Report Types"",
+  ""FriendlyName"": ""Report Types"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ReportCategory:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ReportCategory"",
+      ""Title"": ""ReportCategory"",
+      ""FriendlyName"": ""Report Category"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Report Default Recommendations"",
+      ""SetName"": ""ReportDefaultRecommendations"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Text"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Text__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Text"",
+  ""Title"": ""Text"",
+  ""FriendlyName"": ""Text"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Recommendations"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Recommendations__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendations"",
+  ""Title"": ""Recommendations"",
+  ""FriendlyName"": ""Recommendations"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RecommendationsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RecommendationsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RecommendationsCount"",
+  ""Title"": ""RecommendationsCount"",
+  ""FriendlyName"": ""Recommendations Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultDefaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultDefaultRecommendationsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultDefaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultDefaultRecommendationsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultDefaultRecommendationsCreated"",
+  ""Title"": ""Fault Default Recommendations Created"",
+  ""FriendlyName"": ""Fault Default Recommendations Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""RecommendationId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""Recommendation\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RecommendationId_Recommendation__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendation"",
+  ""Title"": ""Recommendation"",
+  ""FriendlyName"": ""Recommendation"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""Recommendations\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Recommendations__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendations"",
+  ""Title"": ""Recommendations"",
+  ""FriendlyName"": ""Recommendations"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ReportDefaultRecommendation:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ReportDefaultRecommendation"",
+      ""Title"": ""ReportDefaultRecommendation"",
+      ""FriendlyName"": ""Report Default Recommendation"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Report Recommendations"",
+      ""SetName"": ""ReportRecommendations"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReportId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportId"",
+  ""Title"": ""ReportId"",
+  ""FriendlyName"": ""Report Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RecommendationId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RecommendationId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RecommendationId"",
+  ""Title"": ""RecommendationId"",
+  ""FriendlyName"": ""Recommendation Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Notes"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Notes__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Notes"",
+  ""Title"": ""Notes"",
+  ""FriendlyName"": ""Notes"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonReport"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonReport__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonReport"",
+  ""Title"": ""PersonReport"",
+  ""FriendlyName"": ""Person Report"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Recommendation"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Recommendation__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendation"",
+  ""Title"": ""Recommendation"",
+  ""FriendlyName"": ""Recommendation"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""ReportId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""PersonReport\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportId_PersonReport__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonReport"",
+  ""Title"": ""Person Report"",
+  ""FriendlyName"": ""Person Report"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Recommendations\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Recommendations__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendations"",
+  ""Title"": ""Recommendations"",
+  ""FriendlyName"": ""Recommendations"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonReport:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""RecommendationId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""Recommendation\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RecommendationId_Recommendation__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendation"",
+  ""Title"": ""Recommendation"",
+  ""FriendlyName"": ""Recommendation"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""Recommendations\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""RecommendationsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Recommendations__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Recommendations"",
+  ""Title"": ""Recommendations"",
+  ""FriendlyName"": ""Recommendations"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ReportDefaultRecommendation:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultRecommendationsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultRecommendationsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultRecommendationsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultRecommendationsCreated"",
+  ""Title"": ""Fault Recommendations Created"",
+  ""FriendlyName"": ""Fault Recommendations Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ReportRecommendation"",
+      ""Title"": ""ReportRecommendation"",
+      ""FriendlyName"": ""Report Recommendation"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ReportType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Report Types"",
+      ""SetName"": ""ReportTypes"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CategoryId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CategoryId"",
+  ""Title"": ""CategoryId"",
+  ""FriendlyName"": ""Category Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Category"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Category__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultReports"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReports__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReports"",
+  ""Title"": ""FaultReports"",
+  ""FriendlyName"": ""Fault Reports"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""FaultReportsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FaultReportsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReportsCount"",
+  ""Title"": ""FaultReportsCount"",
+  ""FriendlyName"": ""Fault Reports Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""CategoryId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""Category\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""ReportTypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CategoryId_Category__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""ReportTypes\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""ReportTypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ReportTypes__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportTypes"",
+  ""Title"": ""Report Types"",
+  ""FriendlyName"": ""Report Types"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ReportCategory:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultTypesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""FaultTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultTypesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultTypesCreated"",
+  ""Title"": ""Fault Types Created"",
+  ""FriendlyName"": ""Fault Types Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""FaultReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""FaultReports\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ReportType\"",\""Paths\"":\""FaultReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_FaultReports__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FaultReports"",
+  ""Title"": ""Fault Reports"",
+  ""FriendlyName"": ""Fault Reports"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ReportType:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ReportType"",
+      ""Title"": ""ReportType"",
+      ""FriendlyName"": ""Report Type"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""Project\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Projects"",
+      ""SetName"": ""Projects"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""Title"",
+  ""FriendlyName"": ""Title"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Project\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Project\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ProjectCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ProjectCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ProjectCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ProjectCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ProjectCreated"",
+  ""Title"": ""Project Created"",
+  ""FriendlyName"": ""Project Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""Project"",
+      ""Title"": ""Project"",
+      ""FriendlyName"": ""Project"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Report Receiver Email Addresses"",
+      ""SetName"": ""ReportReceiverEmailAddresses"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteId"",
+  ""Title"": ""SiteId"",
+  ""FriendlyName"": ""Site Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""EmailAddress"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__EmailAddress__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""EmailAddress"",
+  ""Title"": ""EmailAddress"",
+  ""FriendlyName"": ""Email Address"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Site"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Site__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AdditionalSendReportsToCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AdditionalSendReportsTo\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AdditionalSendReportsToCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_AdditionalSendReportsTo__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AdditionalSendReportsTo"",
+  ""Title"": ""Additional Send Reports To"",
+  ""FriendlyName"": ""Additional Send Reports To"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ReportReceiverEmailAddressesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ReportReceiverEmailAddressesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""ReportReceiverEmailAddressesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_ReportReceiverEmailAddressesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportReceiverEmailAddressesCreated"",
+  ""Title"": ""Report Receiver Email Addresses Created"",
+  ""FriendlyName"": ""Report Receiver Email Addresses Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ReportReceiverEmailAddress"",
+      ""Title"": ""ReportReceiverEmailAddress"",
+      ""FriendlyName"": ""Report Receiver Email Address"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Risk Assessments"",
+      ""SetName"": ""RiskAssessments"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspectionId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionId"",
+  ""Title"": ""SiteInspectionId"",
+  ""FriendlyName"": ""Site Inspection Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspection"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspection__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspection"",
+  ""Title"": ""SiteInspection"",
+  ""FriendlyName"": ""Site Inspection"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentSolution"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentSolution__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolution"",
+  ""Title"": ""RiskAssessmentSolution"",
+  ""FriendlyName"": ""Risk Assessment Solution"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""SiteInspectionId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 0,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""SiteInspection\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspection"",
+  ""Title"": ""Site Inspection"",
+  ""FriendlyName"": ""Site Inspection"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessment\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessment__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessment"",
+  ""Title"": ""Risk Assessment"",
+  ""FriendlyName"": ""Risk Assessment"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""SiteInspection:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentsCreated"",
+  ""Title"": ""Risk Assessments Created"",
+  ""FriendlyName"": ""Risk Assessments Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""RiskAssessmentId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 0,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""RiskAssessment\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentId_RiskAssessment__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessment"",
+  ""Title"": ""Risk Assessment"",
+  ""FriendlyName"": ""Risk Assessment"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""RiskAssessmentSolution\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentSolution__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolution"",
+  ""Title"": ""Risk Assessment Solution"",
+  ""FriendlyName"": ""Risk Assessment Solution"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""RiskAssessment:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""RiskAssessment"",
+      ""Title"": ""RiskAssessment"",
+      ""FriendlyName"": ""Risk Assessment"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Site Inspections"",
+      ""SetName"": ""SiteInspections"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessment"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessment__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessment"",
+  ""Title"": ""RiskAssessment"",
+  ""FriendlyName"": ""Risk Assessment"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonInspections"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonInspections__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspections"",
+  ""Title"": ""PersonInspections"",
+  ""FriendlyName"": ""Person Inspections"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteId"",
+  ""Title"": ""SiteId"",
+  ""FriendlyName"": ""Site Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""StartTime"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__StartTime__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""StartTime"",
+  ""Title"": ""StartTime"",
+  ""FriendlyName"": ""Start Time"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""EndTime"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__EndTime__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""EndTime"",
+  ""Title"": ""EndTime"",
+  ""FriendlyName"": ""End Time"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonInspectionsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonInspectionsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspectionsCount"",
+  ""Title"": ""PersonInspectionsCount"",
+  ""FriendlyName"": ""Person Inspections Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Site"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Site__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""SiteInspectionId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 0,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""SiteInspection\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspection"",
+  ""Title"": ""Site Inspection"",
+  ""FriendlyName"": ""Site Inspection"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessment\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessment__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessment"",
+  ""Title"": ""Risk Assessment"",
+  ""FriendlyName"": ""Risk Assessment"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""SiteInspection:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""SiteInspectionId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""SiteInspection\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""PersonInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspection"",
+  ""Title"": ""Site Inspection"",
+  ""FriendlyName"": ""Site Inspection"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""PersonInspections\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""PersonInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonInspections__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspections"",
+  ""Title"": ""Person Inspections"",
+  ""FriendlyName"": ""Person Inspections"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""SiteInspection:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspections\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteInspections__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspections"",
+  ""Title"": ""Site Inspections"",
+  ""FriendlyName"": ""Site Inspections"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteInspectionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionsCreated"",
+  ""Title"": ""Site Inspections Created"",
+  ""FriendlyName"": ""Site Inspections Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""SiteInspection"",
+      ""Title"": ""SiteInspection"",
+      ""FriendlyName"": ""Site Inspection"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Risk Assessment Solutions"",
+      ""SetName"": ""RiskAssessmentSolutions"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentId"",
+  ""Title"": ""RiskAssessmentId"",
+  ""FriendlyName"": ""Risk Assessment Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessment"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessment__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessment"",
+  ""Title"": ""RiskAssessment"",
+  ""FriendlyName"": ""Risk Assessment"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""RiskAssessmentId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 0,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""RiskAssessment\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentId_RiskAssessment__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessment"",
+  ""Title"": ""Risk Assessment"",
+  ""FriendlyName"": ""Risk Assessment"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""RiskAssessmentSolution\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentSolution__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolution"",
+  ""Title"": ""Risk Assessment Solution"",
+  ""FriendlyName"": ""Risk Assessment Solution"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""RiskAssessment:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""RiskAssessmentSolution"",
+      ""Title"": ""RiskAssessmentSolution"",
+      ""FriendlyName"": ""Risk Assessment Solution"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Risk Assessment Answers"",
+      ""SetName"": ""RiskAssessmentAnswers"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""QuestionId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__QuestionId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""QuestionId"",
+  ""Title"": ""QuestionId"",
+  ""FriendlyName"": ""Question Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""SpecificHazard"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SpecificHazard__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SpecificHazard"",
+  ""Title"": ""SpecificHazard"",
+  ""FriendlyName"": ""Specific Hazard"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""PrecautionsToControlHazard"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PrecautionsToControlHazard__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PrecautionsToControlHazard"",
+  ""Title"": ""PrecautionsToControlHazard"",
+  ""FriendlyName"": ""Precautions To Control Hazard"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Question"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Question__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Question"",
+  ""Title"": ""Question"",
+  ""FriendlyName"": ""Question"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""QuestionId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""Question\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""AnswersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__QuestionId_Question__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Question"",
+  ""Title"": ""Question"",
+  ""FriendlyName"": ""Question"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""Answers\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""AnswersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Answers__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Answers"",
+  ""Title"": ""Answers"",
+  ""FriendlyName"": ""Answers"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""RiskAssessmentQuestion:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentAnswersCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentAnswersCreated"",
+  ""Title"": ""Risk Assessment Answers Created"",
+  ""FriendlyName"": ""Risk Assessment Answers Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""RiskAssessmentAnswer"",
+      ""Title"": ""RiskAssessmentAnswer"",
+      ""FriendlyName"": ""Risk Assessment Answer"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Risk Assessment Questions"",
+      ""SetName"": ""RiskAssessmentQuestions"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Answers"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Answers__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Answers"",
+  ""Title"": ""Answers"",
+  ""FriendlyName"": ""Answers"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""AnswersCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AnswersCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AnswersCount"",
+  ""Title"": ""AnswersCount"",
+  ""FriendlyName"": ""Answers Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""QuestionId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""Question\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""AnswersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__QuestionId_Question__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Question"",
+  ""Title"": ""Question"",
+  ""FriendlyName"": ""Question"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""Answers\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""AnswersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Answers__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Answers"",
+  ""Title"": ""Answers"",
+  ""FriendlyName"": ""Answers"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""RiskAssessmentQuestion:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentQuestionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentQuestionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentQuestionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentQuestionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentQuestionsCreated"",
+  ""Title"": ""Risk Assessment Questions Created"",
+  ""FriendlyName"": ""Risk Assessment Questions Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""RiskAssessmentQuestion"",
+      ""Title"": ""RiskAssessmentQuestion"",
+      ""FriendlyName"": ""Risk Assessment Question"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [
+          {
+            ""Key"": ""Default"",
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <PropertyName>Title</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          },
+          {
+            ""Key"": ""Report"",
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>Person</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Title</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Id</PropertyName>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          }
+        ],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": [
+          {
+            ""Key"": ""NoTitleOrDescription"",
+            ""Message"": ""Please enter either a title or a description"",
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          },
+          {
+            ""Key"": ""JoshCheck"",
+            ""Message"": ""If the name is 'Josh' please match it in the description"",
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          }
+        ]
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""Person\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""People"",
+      ""SetName"": ""People"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TypeId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TypeId"",
+  ""Title"": ""TypeId"",
+  ""FriendlyName"": ""Type Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""LoadingId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__LoadingId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""LoadingId"",
+  ""Title"": ""LoadingId"",
+  ""FriendlyName"": ""Loading Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Key"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Key__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Key"",
+  ""Title"": ""Key"",
+  ""FriendlyName"": ""Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""EmptyTitle"",
+        ""Message"": ""Please enter a person title"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      },
+      {
+        ""Key"": ""TitleMaxLength"",
+        ""Message"": ""Please enter less than fifty characters"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">50</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      },
+      {
+        ""Key"": ""TitleMinLength"",
+        ""Message"": ""Please enter at least three characters for the person's title"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsLessThanExpression\"">\r\n      <Kind>IsLessThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">3</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""__key2"",
+  ""FriendlyName"": ""Key me2"",
+  ""GroupPath"": null,
+  ""Description"": ""Some key2"",
+  ""Hints"": [
+    ""!2"",
+    ""Open2""
+  ],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""EmptyDescription"",
+        ""Message"": ""Please enter a person description"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Category"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Category__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientId"",
+  ""Title"": ""ClientId"",
+  ""FriendlyName"": ""Client Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Client"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Client__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Type"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Type__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": [
+      {
+        ""Key"": ""7e279234-9d63-441c-81af-eedc56623ddb"",
+        ""Message"": """",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <EntityTypeName>PersonLoading</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <EntityTypeName>PersonLoading</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>Name</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Variable</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>Title</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Loading"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Loading__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Loading"",
+  ""Title"": ""Loading"",
+  ""FriendlyName"": ""Loading"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Types"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Types__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Types"",
+  ""Title"": ""Types"",
+  ""FriendlyName"": ""Types"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TypesCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypesCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TypesCount"",
+  ""Title"": ""TypesCount"",
+  ""FriendlyName"": ""Types Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Reports"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Reports__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Reports"",
+  ""Title"": ""Reports"",
+  ""FriendlyName"": ""Reports"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReportsCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReportsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReportsCount"",
+  ""Title"": ""ReportsCount"",
+  ""FriendlyName"": ""Reports Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""ClientId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Client\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId_Client__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Client"",
+  ""Title"": ""Client"",
+  ""FriendlyName"": ""Client"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Client\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Client\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Client:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonType:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""LoadingId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Loading\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__LoadingId_Loading__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Loading"",
+  ""Title"": ""Loading"",
+  ""FriendlyName"": ""Loading"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonLoading:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PeopleCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PeopleCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PeopleCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PeopleCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCreated"",
+  ""Title"": ""People Created"",
+  ""FriendlyName"": ""People Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""PersonId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""Person\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId_Person__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Person"",
+  ""Title"": ""Person"",
+  ""FriendlyName"": ""Person"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Types\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Types__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Types"",
+  ""Title"": ""Types"",
+  ""FriendlyName"": ""Types"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Person:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""PersonId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Person\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""ReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId_Person__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Person"",
+  ""Title"": ""Person"",
+  ""FriendlyName"": ""Person"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Reports\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""ReportsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Reports__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Reports"",
+  ""Title"": ""Reports"",
+  ""FriendlyName"": ""Reports"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Person:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""Person"",
+      ""Title"": ""PERSON"",
+      ""FriendlyName"": ""A person"",
+      ""GroupPath"": null,
+      ""Description"": ""Hello"",
+      ""Hints"": [
+        ""%"",
+        ""Print""
+      ],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Person Types"",
+      ""SetName"": ""PersonTypes"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""People"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__People__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""Title"",
+  ""FriendlyName"": ""Title"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCount"",
+  ""Title"": ""PeopleCount"",
+  ""FriendlyName"": ""People Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleMap"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleMap__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleMap"",
+  ""Title"": ""PeopleMap"",
+  ""FriendlyName"": ""People Map"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleMapCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleMapCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleMapCount"",
+  ""Title"": ""PeopleMapCount"",
+  ""FriendlyName"": ""People Map Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonType:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonTypesCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonTypesCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonTypesCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonTypesCreated"",
+  ""Title"": ""Person Types Created"",
+  ""FriendlyName"": ""Person Types Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleMapCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleMap\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleMapCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PeopleMap__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleMap"",
+  ""Title"": ""People Map"",
+  ""FriendlyName"": ""People Map"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonType:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""PersonType"",
+      ""Title"": ""PersonType"",
+      ""FriendlyName"": ""Person Type"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Person Loadings"",
+      ""SetName"": ""PersonLoadings"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""People"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__People__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""ad594498-422a-42c1-8867-5ceed666fe17"",
+        ""Message"": ""Please enter a loading name"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonLoading</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCount"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCount"",
+  ""Title"": ""PeopleCount"",
+  ""FriendlyName"": ""People Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""LoadingId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Loading\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__LoadingId_Loading__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Loading"",
+  ""Title"": ""Loading"",
+  ""FriendlyName"": ""Loading"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonLoading:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonLoadingsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonLoadingsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonLoadingsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonLoadingsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonLoadingsCreated"",
+  ""Title"": ""Person Loadings Created"",
+  ""FriendlyName"": ""Person Loadings Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""PersonLoading"",
+      ""Title"": ""PersonLoading"",
+      ""FriendlyName"": ""Person Loading"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Person Inspections"",
+      ""SetName"": ""PersonInspections"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspectionId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspectionId"",
+  ""Title"": ""SiteInspectionId"",
+  ""FriendlyName"": ""Site Inspection Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonId"",
+  ""Title"": ""PersonId"",
+  ""FriendlyName"": ""Person Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""InspectionStatus"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__InspectionStatus__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""InspectionStatus"",
+  ""Title"": ""InspectionStatus"",
+  ""FriendlyName"": ""Inspection Status"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""StartTime"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__StartTime__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""StartTime"",
+  ""Title"": ""StartTime"",
+  ""FriendlyName"": ""Start Time"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""EndTime"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__EndTime__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""EndTime"",
+  ""Title"": ""EndTime"",
+  ""FriendlyName"": ""End Time"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ReasonForFailure"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ReasonForFailure__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ReasonForFailure"",
+  ""Title"": ""ReasonForFailure"",
+  ""FriendlyName"": ""Reason For Failure"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""IsDesignRequired"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__IsDesignRequired__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""IsDesignRequired"",
+  ""Title"": ""IsDesignRequired"",
+  ""FriendlyName"": ""Is Design Required"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""DrawingNumber"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__DrawingNumber__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""DrawingNumber"",
+  ""Title"": ""DrawingNumber"",
+  ""FriendlyName"": ""Drawing Number"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteInspection"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspection__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspection"",
+  ""Title"": ""SiteInspection"",
+  ""FriendlyName"": ""Site Inspection"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""SiteInspectionId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""SiteInspection\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""PersonInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteInspection"",
+  ""Title"": ""Site Inspection"",
+  ""FriendlyName"": ""Site Inspection"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""PersonInspections\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""PersonInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonInspections__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspections"",
+  ""Title"": ""Person Inspections"",
+  ""FriendlyName"": ""Person Inspections"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""SiteInspection:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonInspectionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""PersonInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PersonInspectionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonInspectionsCreated"",
+  ""Title"": ""Person Inspections Created"",
+  ""FriendlyName"": ""Person Inspections Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""PersonInspection"",
+      ""Title"": ""PersonInspection"",
+      ""FriendlyName"": ""Person Inspection"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": [
+          {
+            ""Key"": ""IqlEntityValidation"",
+            ""Message"": ""You have not entered a description"",
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n    <Kind>IsEqualTo</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlConditionExpression\"">\r\n      <Kind>Condition</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Description</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Test>\r\n      <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </IfTrue>\r\n      <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n        <Kind>StringToUpperCase</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Description</PropertyName>\r\n        </Parent>\r\n      </IfFalse>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          }
+        ]
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": true,
+        ""Properties"": [
+          ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""PersonId\"",\""Kind\"":1,\""Children\"":null}"",
+          ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Person Types Map"",
+      ""SetName"": ""PersonTypesMap"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersonId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId__"",
+  ""Key"": null,
+  ""Kind"": 27,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersonId"",
+  ""Title"": ""PersonId"",
+  ""FriendlyName"": ""Person Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TypeId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId__"",
+  ""Key"": null,
+  ""Kind"": 27,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TypeId"",
+  ""Title"": ""TypeId"",
+  ""FriendlyName"": ""Type Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Notes"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Notes__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""You have not entered any notes"",
+        ""Message"": ""IqlNotesPropertyValidation"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n    <Kind>IsEqualTo</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlConditionExpression\"">\r\n      <Kind>Condition</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Notes</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Test>\r\n      <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </IfTrue>\r\n      <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n        <Kind>StringToUpperCase</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Notes</PropertyName>\r\n        </Parent>\r\n      </IfFalse>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Notes"",
+  ""Title"": ""Notes"",
+  ""FriendlyName"": ""Notes"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Person"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Person__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Person"",
+  ""Title"": ""Person"",
+  ""FriendlyName"": ""Person"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Type"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Type__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""PersonId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""Person\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersonId_Person__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Person"",
+  ""Title"": ""Person"",
+  ""FriendlyName"": ""Person"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Types\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Types__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Types"",
+  ""Title"": ""Types"",
+  ""FriendlyName"": ""Types"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Person:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""Type\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleMapCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId_Type__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleMap\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""PeopleMapCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_PeopleMap__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleMap"",
+  ""Title"": ""People Map"",
+  ""FriendlyName"": ""People Map"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""PersonType:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""PersonTypeMap"",
+      ""Title"": ""PersonTypeMap"",
+      ""FriendlyName"": ""Person Type Map"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": true,
+        ""Properties"": [
+          ""{\""Type\"":\""UserSite\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+          ""{\""Type\"":\""UserSite\"",\""Paths\"":\""UserId\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""User Sites"",
+      ""SetName"": ""UserSites"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId__"",
+  ""Key"": null,
+  ""Kind"": 27,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteId"",
+  ""Title"": ""SiteId"",
+  ""FriendlyName"": ""Site Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""UserId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserId__"",
+  ""Key"": null,
+  ""Kind"": 27,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UserId"",
+  ""Title"": ""UserId"",
+  ""FriendlyName"": ""User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""User"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__User__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""User"",
+  ""Title"": ""User"",
+  ""FriendlyName"": ""User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Site"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Site__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""UserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""User\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserId_User__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""User"",
+  ""Title"": ""User"",
+  ""FriendlyName"": ""User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Sites\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SitesCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Sites__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sites"",
+  ""Title"": ""Sites"",
+  ""FriendlyName"": ""Sites"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""UserSite\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Users\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""UsersCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Users__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""ValidationRules"": null,
+  ""DisplayRules"": null,
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Users"",
+  ""Title"": ""Users"",
+  ""FriendlyName"": ""Users"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""UserSite"",
+      ""Title"": ""UserSite"",
+      ""FriendlyName"": ""User Site"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyId\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""My Custom Reports"",
+      ""SetName"": ""MyCustomReports"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 12
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""MyId"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MyId__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MyId"",
+  ""Title"": ""MyId"",
+  ""FriendlyName"": ""My Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MyUserId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MyUserId__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MyUserId"",
+  ""Title"": ""MyUserId"",
+  ""FriendlyName"": ""My User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MyName"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MyName__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MyName"",
+  ""Title"": ""MyName"",
+  ""FriendlyName"": ""My Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MyEntityType"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MyEntityType__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MyEntityType"",
+  ""Title"": ""MyEntityType"",
+  ""FriendlyName"": ""My Entity Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MyIql"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MyIql__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MyIql"",
+  ""Title"": ""MyIql"",
+  ""FriendlyName"": ""My Iql"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MyFields"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MyFields__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MyFields"",
+  ""Title"": ""MyFields"",
+  ""FriendlyName"": ""My Fields"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MySort"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MySort__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MySort"",
+  ""Title"": ""MySort"",
+  ""FriendlyName"": ""My Sort"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""MySortDescending"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MySortDescending__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MySortDescending"",
+  ""Title"": ""MySortDescending"",
+  ""FriendlyName"": ""My Sort Descending"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""MySearch"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__MySearch__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""MySearch"",
+  ""Title"": ""MySearch"",
+  ""FriendlyName"": ""My Search"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""MyCustomReport"",
+      ""Title"": ""MyCustomReport"",
+      ""FriendlyName"": ""My Custom Report"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""IqlCustomReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": null,
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 1,
+      ""SetFriendlyName"": ""Iql Custom Report"",
+      ""SetName"": ""IqlCustomReport"",
+      ""SetNameSet"": false,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 12
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""UserId"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserId__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UserId"",
+  ""Title"": ""UserId"",
+  ""FriendlyName"": ""User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Name"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Name__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Name"",
+  ""Title"": ""Name"",
+  ""FriendlyName"": ""Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""EntityType"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__EntityType__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""EntityType"",
+  ""Title"": ""EntityType"",
+  ""FriendlyName"": ""Entity Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Iql"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Iql__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Iql"",
+  ""Title"": ""Iql"",
+  ""FriendlyName"": ""Iql"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Fields"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Fields__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Fields"",
+  ""Title"": ""Fields"",
+  ""FriendlyName"": ""Fields"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Sort"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Sort__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Sort"",
+  ""Title"": ""Sort"",
+  ""FriendlyName"": ""Sort"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SortDescending"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SortDescending__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SortDescending"",
+  ""Title"": ""SortDescending"",
+  ""FriendlyName"": ""Sort Descending"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Search"",
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWith"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Search__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Search"",
+  ""Title"": ""Search"",
+  ""FriendlyName"": ""Search"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""IqlCustomReport"",
+      ""Title"": ""IqlCustomReport"",
+      ""FriendlyName"": ""Iql Custom Report"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    }
+  ]
+}";
+    }
+}

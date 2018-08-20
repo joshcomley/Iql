@@ -15,7 +15,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             get => FileInternal;
             set => FileInternal = value;
         }
-        public IProperty Property
+        public IProperty UrlProperty
         {
             get => UrlPropertyInternal;
             set => UrlPropertyInternal = value;

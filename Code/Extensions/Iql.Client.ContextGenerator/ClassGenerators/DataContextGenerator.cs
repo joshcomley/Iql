@@ -251,7 +251,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                           parameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{iqlType}"));
                                       }
 
-                                      var typeParameter = GetAndAddTypeScriptTypeParameter(propertyType, parameters);
                                       var name = propertyType.IsCollection
                                               ? nameof(EntityConfiguration<object>.DefineCollectionProperty)
                                               : (isConverted
@@ -722,15 +721,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         metadataType = typeof(IFile);
                         metadataSolidType = typeof(File);
                     }
-                    else if (metadata is IFilePreview)
-                    {
-                        metadataType = typeof(IFilePreview);
-                        metadataSolidType = typeof(FilePreview);
-                    }
                     else
                     {
                         metadataType = typeof(IPropertyGroup);
                         metadataSolidType = typeof(PropertyCollection);
+                    }
+                }
+                else
+                {
+                    if (metadata is IFilePreview)
+                    {
+                        metadataType = typeof(IFilePreview);
+                        metadataSolidType = typeof(FilePreview);
                     }
                 }
                 var metadataProperties = metadataType.GetPublicProperties().ToArray();
@@ -740,6 +742,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     var dealtWith = false;
                     string assign = null;
+                    var assignIsAssign = true;
                     try
                     {
                         // This is a horrible hack to fix a null reference exception I can't figure out
@@ -933,6 +936,23 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         }
                         dealtWith = true;
                     }
+                    else if (typeof(IFile).IsAssignableFrom(metadataProperty.DeclaringType) && metadataProperty.Name == nameof(IFile.Previews))
+                    {
+                        var filePreviews = value as IList<IFilePreview>;
+                        if (filePreviews != null && filePreviews.Any())
+                        {
+                            var sbFilePreviews = new StringBuilder();
+                            foreach (var filePreview in filePreviews)
+                            {
+                                sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.PropertyName}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {ConfigreMetadata(filePreview, null, "fp", false)});");
+                            }
+
+                            assign = sbFilePreviews.ToString();
+                        }
+
+                        assignIsAssign = false;
+                        dealtWith = true;
+                    }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumerableType())
                     {
                         var enumerable = value as IEnumerable;
@@ -980,7 +1000,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         }
                         dealtWith = true;
                     }
-                    else if (isProperty && metadataProperty.Name == nameof(IFile.MediaKey))
+                    else if (typeof(IMediaKey).IsAssignableFrom(metadataProperty.PropertyType))
                     {
                         // Special case
                         dealtWith = true;
@@ -1084,7 +1104,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         sb.Append("\r\n");
                         sb.Append(GetIndentPlusOne());
-                        sb.Append($"{lambdaKey}.{metadataProperty.Name} = {assign};");
+                        if (assignIsAssign)
+                        {
+                            sb.Append($"{lambdaKey}.{metadataProperty.Name} = ");
+                        }
+                        sb.Append($"{assign};");
                     }
                     else if (!Equals(value, false) && !dealtWith && metadataProperty.CanWrite)
                     {

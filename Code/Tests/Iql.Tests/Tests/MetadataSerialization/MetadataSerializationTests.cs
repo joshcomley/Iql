@@ -17,7 +17,6 @@ namespace Iql.Tests.Tests.MetadataSerialization
         [TestMethod]
         public void TestSerializeDeserialize()
         {
-            // Test succeeds if no exception is thrown
             var db = new AppDbContext();
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
@@ -65,7 +64,11 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.EditDisplay[1] as IPropertyCollection).ContentAlignment);
-            var json = db.EntityConfigurationContext.ToJson();
+            var json = 
+                false
+                // For speedy debugging
+                ? MetadataSerializationJsonCache.Json 
+                : db.EntityConfigurationContext.ToJson();
 
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
@@ -76,6 +79,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             Assert.IsNotNull(file.MediaKey);
             Assert.AreEqual(1, file.Previews.Count);
             var filePreview = file.Previews[0];
+            Assert.IsNotNull(filePreview.UrlProperty);
             Assert.IsNotNull(filePreview.MediaKey);
             Assert.AreEqual("sub-mk-test", filePreview.MediaKey.Groups[0].Parts[1].Key);
             var sitesContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));

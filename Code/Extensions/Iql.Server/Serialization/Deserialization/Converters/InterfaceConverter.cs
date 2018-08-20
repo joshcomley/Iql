@@ -92,10 +92,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             var path = reader.Path;
             var value = reader.Value;
             var existingValue2 = existingValue;
-            if (typeof(SpecialTypeDefinition).IsAssignableFrom(objectType))
-            {
-                int a = 0;
-            }
             //if (reader.TokenType != JsonToken.StartObject)
             //{
             //    var result2 = reader.Read();
@@ -106,11 +102,12 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                                       (reader.Value as string).StartsWith("{");
             if (isConvertedProperty)
             {
-                if (!string.IsNullOrWhiteSpace(reader.Value as string))
+                if ((reader.Value as string).Contains("PreviewUrl"))
                 {
-                    var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
-                    PropertyMappings.Add(reader.Path, group);
+                    int a = 0;
                 }
+                var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
+                PropertyMappings.Add(reader.Path, group);
                 return null;
             }
 
@@ -121,6 +118,10 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                     .Groups["Index"].Value);
             }
             var typeMapping = TypeMappings[objectType];
+            if (typeMapping == typeof(FilePreview))
+            {
+                int a = 0;
+            }
             if (reader.Path == nameof(EntityConfigurationDocument.CustomReportsDefinition))
             {
                 typeMapping = typeof(CustomReportsDefinition);
@@ -129,6 +130,12 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             {
                 typeMapping = typeof(UserSettingsDefinition);
             }
+
+            //if (typeMapping == typeof(File) && existingValue != null && (existingValue as IFile).Previews != null &&
+            //    (existingValue as IFile).Previews.Any())
+            //{
+            //    int a = 0;
+            //}
             object result = null;
             if (objectType == typeof(IPropertyGroup))
             {
@@ -137,7 +144,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                 {
                     var propertyPath = EntityConfigurationParser.DeserializeFromJson<PropertyPathJson>(jobj.ToString(), Details);
                     var entityConfigIndex = Details.CurrentEntityConfigurationIndex;
-                    Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration((IEntityConfiguration) doc.EntityTypes[entityConfigIndex]));
+                    Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration((IEntityConfiguration)doc.EntityTypes[entityConfigIndex]));
                     result = propertyPath;
                     //serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyPath));
                 }
