@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.Geography;
+using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.Relationships;
 
 namespace Iql.Entities.Extensions
 {
@@ -31,6 +34,86 @@ namespace Iql.Entities.Extensions
             return $"__{string.Join("_", propertyGroup.GetGroupProperties().Select(_ => _.Name))}__";
         }
 
+        public static IEnumerable<IPropertyGroup> PrioritizeForEditing(this IEnumerable<IPropertyGroup> properties)
+        {
+            if (properties == null)
+            {
+                return properties;
+            }
+            var propertiesArray = properties as IPropertyGroup[] ?? properties.ToArray();
+
+            return propertiesArray.OrderBy(property =>
+            {
+                if (property is IProperty)
+                {
+                    var simpleProperty = property as IProperty;
+                    if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+                    {
+                        return 0;
+                    }
+                    if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
+                    {
+                        return 1;
+                    }
+                }
+
+                if (property is RelationshipDetailBase)
+                {
+                    var relationship = property as RelationshipDetailBase;
+                    if (relationship.IsCollection)
+                    {
+                        return 10;
+                    }
+
+                    return 2;
+                }
+
+                return 3;
+            });
+        }
+
+        public static IEnumerable<IPropertyGroup> PrioritizeForReading(this IEnumerable<IPropertyGroup> properties)
+        {
+            if (properties == null)
+            {
+                return properties;
+            }
+            var propertiesArray = properties as IPropertyGroup[] ?? properties.ToArray();
+
+            return propertiesArray.OrderBy(property =>
+            {
+                if (property is IGeographic)
+                {
+                    return 0;
+                }
+
+                if (property is IFile)
+                {
+                    return 1;
+                }
+                if (property is IProperty)
+                {
+                    if ((property as IProperty).SearchKind == PropertySearchKind.Primary)
+                    {
+                        return 30;
+                    }
+                    if ((property as IProperty).SearchKind == PropertySearchKind.Secondary)
+                    {
+                        return 40;
+                    }
+                }
+                if (property is RelationshipDetailBase)
+                {
+                    var relationship = property as RelationshipDetailBase;
+                    if (relationship.IsCollection)
+                    {
+                        return 60;
+                    }
+                    return 50;
+                }
+                return 999999;
+            });
+        }
         public static ISimpleProperty[] FlattenAllToSimpleProperties(this IEnumerable<IPropertyGroup> propertyGroup)
         {
             var list = new List<ISimpleProperty>();

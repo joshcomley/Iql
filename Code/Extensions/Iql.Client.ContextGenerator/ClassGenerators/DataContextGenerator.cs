@@ -1314,7 +1314,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }
 
                 groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyCollection)}({string.Join(",\n", list)})");
-                groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({ConfigreMetadata(coll, null, $"coll{++index}", false, entityMetadata)})");
+                var collectionMetadata = ConfigreMetadata(coll, null, $"coll{++index}", false, entityMetadata);
+                if (!string.IsNullOrWhiteSpace(collectionMetadata))
+                {
+                    groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({collectionMetadata})");
+                }
             }
             else
             {

@@ -440,7 +440,8 @@ namespace Iql.OData
 
         private static string GetKeyValue(KeyValue key)
         {
-            if (key.ValueType.ConvertedFromType != KnownPrimitiveTypes.Guid &&
+            if (key.ValueType.Kind != IqlType.Guid && 
+                key.ValueType.ConvertedFromType != KnownPrimitiveTypes.Guid &&
                 (key.Value is string ||
                 key.ValueType != null &&
                 key.ValueType.Type == typeof(string))

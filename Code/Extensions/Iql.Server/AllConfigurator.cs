@@ -160,7 +160,11 @@ namespace Iql.Server
             builder.EntityType<T>().Configure(config =>
             {
                 config.TitlePropertyName = nameof(IHasName.Name);
-                config.ConfigureProperty(p => p.Name, p => p.SetNullable(false));
+                config.ConfigureProperty(p => p.Name, p =>
+                {
+                    p.SetNullable(false);
+                    p.SearchKind = PropertySearchKind.Primary;
+                });
             });
         }
 

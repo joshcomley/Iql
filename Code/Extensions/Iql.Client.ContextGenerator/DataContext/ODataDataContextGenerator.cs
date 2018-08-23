@@ -317,7 +317,12 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 }
             }
 
-            foreach (var @using in fullUsings.Distinct())
+            var final = fullUsings.Distinct().ToList();
+            if (!final.Contains("System"))
+            {
+                final.Add("System");
+            }
+            foreach (var @using in final)
             {
                 fileContents.AppendLine($"using {@using};");
             }

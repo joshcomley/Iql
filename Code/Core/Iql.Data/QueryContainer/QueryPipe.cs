@@ -78,6 +78,7 @@ namespace Iql.Data.QueryContainer
 
         IDbList IQueryPipe.Results => Results;
 
+        private string _lastReloadId = null;
         /// <summary>
         /// Refreshed the results, asynchronously.
         /// </summary>
@@ -85,29 +86,63 @@ namespace Iql.Data.QueryContainer
         /// <returns></returns>
         public async Task<bool> RefreshResultsAsync(bool force = false)
         {
+            _lastReloadId = Guid.NewGuid().ToString();
+            var lastReloadId = _lastReloadId;
             // Build the query
             QueryBuilding = true;
             await QueryBuildingChanged.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            if (lastReloadId != _lastReloadId)
+            {
+                return false;
+            }
             var pipe = new QueryPipeEvent<T>(this);
             await Pipe.EmitAsync(() => pipe);
+            if (lastReloadId != _lastReloadId)
+            {
+                return false;
+            }
             QueryBuilding = false;
             await QueryBuildingChanged.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            if (lastReloadId != _lastReloadId)
+            {
+                return false;
+            }
 
             // Broadcast the final query
             await QueryBuilt.EmitAsync(() => new QueryPipeInspectorEvent<T>(pipe.Query));
+            if (lastReloadId != _lastReloadId)
+            {
+                return false;
+            }
 
             // Load the results
             var iql = await pipe.Query.ToIqlAsync();
+            if (lastReloadId != _lastReloadId)
+            {
+                return false;
+            }
             var iqljson = JsonConvert.SerializeObject(iql);
             var canUpdate = force || iqljson != _lastIql;
             if (canUpdate)
             {
                 ResultsLoading = true;
                 await EmitEventAsync(ResultsLoadingChanged);
+                if (lastReloadId != _lastReloadId)
+                {
+                    return false;
+                }
                 _lastIql = iqljson;
                 Results = await pipe.Query.ToListAsync();
+                if (lastReloadId != _lastReloadId)
+                {
+                    return false;
+                }
                 ResultsLoading = false;
                 await EmitEventAsync(ResultsLoadingChanged);
+                if (lastReloadId != _lastReloadId)
+                {
+                    return false;
+                }
 
                 // Broadcast the final results
                 await ResultsLoaded.EmitAsync(() => new QueryPipeChangedEvent<T>(this));

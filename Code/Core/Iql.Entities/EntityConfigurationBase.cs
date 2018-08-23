@@ -108,30 +108,7 @@ namespace Iql.Entities
             all.AddRange(AllPropertyGroups());
             all.AddRange(Properties.Where(p =>
                 p.PropertyGroup == null));
-            return all.OrderBy(_ =>
-            {
-                if (_ is IGeographic)
-                {
-                    return 0;
-                }
-
-                if (_ is IFile)
-                {
-                    return 1;
-                }
-                if (_ is IProperty)
-                {
-                    if ((_ as IProperty).SearchKind == PropertySearchKind.Primary)
-                    {
-                        return 30;
-                    }
-                    if ((_ as IProperty).SearchKind == PropertySearchKind.Secondary)
-                    {
-                        return 40;
-                    }
-                }
-                return 999999;
-            }).ToArray();
+            return all.PrioritizeForReading().ToArray();
         }
 
         public virtual IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind, bool appendMissingProperties = true)

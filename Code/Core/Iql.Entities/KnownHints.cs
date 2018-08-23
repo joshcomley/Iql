@@ -28,6 +28,7 @@
         public const string Spreadsheet = Prefix + nameof(Spreadsheet);
         public const string EntityPreview = Prefix + nameof(EntityPreview);
         public const string SubTitle = Prefix + nameof(SubTitle);
+        public const string InlistEdit = Prefix + nameof(InlistEdit);
 
         public const string Version = Prefix + "Version";
     }

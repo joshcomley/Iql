@@ -530,12 +530,14 @@ namespace Iql.Data.Context
 
         public void DeleteEntity(object entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
         )
         {
 #if !TypeScript
             var entityType = entity.GetType();
+#else
+            entityType = entityType ?? entity.GetType();
 #endif
             AsDbSetByType(entityType).DeleteEntity(entity);
         }

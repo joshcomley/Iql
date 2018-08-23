@@ -474,6 +474,7 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"http://localhost:28000/odata/Users",
                 uri);
         }
+
         [TestMethod]
         public async Task EnumEmptyHasOrCheck()
         {
