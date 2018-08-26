@@ -47,13 +47,17 @@ namespace Iql.Entities.Extensions
                 if (property is IProperty)
                 {
                     var simpleProperty = property as IProperty;
-                    if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+                    if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
                     {
                         return 0;
                     }
+                    if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+                    {
+                        return 10;
+                    }
                     if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
                     {
-                        return 1;
+                        return 20;
                     }
                 }
 
@@ -62,13 +66,13 @@ namespace Iql.Entities.Extensions
                     var relationship = property as RelationshipDetailBase;
                     if (relationship.IsCollection)
                     {
-                        return 10;
+                        return 50;
                     }
 
-                    return 2;
+                    return 40;
                 }
 
-                return 3;
+                return 30;
             });
         }
 
@@ -93,11 +97,16 @@ namespace Iql.Entities.Extensions
                 }
                 if (property is IProperty)
                 {
-                    if ((property as IProperty).SearchKind == PropertySearchKind.Primary)
+                    var simpleProperty = property as IProperty;
+                    if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
+                    {
+                        return 2;
+                    }
+                    if (simpleProperty.SearchKind == PropertySearchKind.Primary)
                     {
                         return 30;
                     }
-                    if ((property as IProperty).SearchKind == PropertySearchKind.Secondary)
+                    if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
                     {
                         return 40;
                     }
@@ -111,7 +120,7 @@ namespace Iql.Entities.Extensions
                     }
                     return 50;
                 }
-                return 999999;
+                return 100;
             });
         }
         public static ISimpleProperty[] FlattenAllToSimpleProperties(this IEnumerable<IPropertyGroup> propertyGroup)
