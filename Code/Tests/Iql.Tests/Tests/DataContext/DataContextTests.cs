@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Threading.Tasks;
+using Iql.Tests.Context;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tunnel.ApiContext.Base;
 using Tunnel.App.Data.Entities;
 using Tunnel.Sets;
@@ -8,6 +10,54 @@ namespace Iql.Tests.Tests.DataContext
     [TestClass]
     public class DataContextTests : TestsBase
     {
+        [TestMethod]
+        public async Task UpdatingADeletedEntityShouldUntrackTheEntity()
+        {
+            var id = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Description = "blah",
+                Id = id,
+                TypeId = 7
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var client = await Db.Clients.GetWithKeyAsync(id);
+            Assert.IsTrue(Db.IsTracked(client));
+            Assert.IsNotNull(client);
+            AppDbContext.InMemoryDb.Clients.Remove(clientRemote);
+            client.Name = "def";
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Length);
+            await Db.SaveChangesAsync();
+            Assert.IsFalse(Db.IsTracked(client));
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+        }
+
+        [TestMethod]
+        public async Task DeletingADeletedEntityShouldUntrackTheEntity()
+        {
+            var id = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var client = await Db.Clients.GetWithKeyAsync(id);
+            Assert.IsTrue(Db.IsTracked(client));
+            Assert.IsNotNull(client);
+            AppDbContext.InMemoryDb.Clients.Remove(clientRemote);
+            Db.DeleteEntity(client);
+            var changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(1, changes.Length);
+            await Db.SaveChangesAsync();
+            Assert.IsFalse(Db.IsTracked(client));
+            changes = Db.DataStore.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+        }
+
         [TestMethod]
         public void GetDbSetBySet()
         {

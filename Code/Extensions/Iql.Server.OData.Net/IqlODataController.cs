@@ -492,7 +492,10 @@ namespace Iql.Server.OData.Net
 
         public virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, T entity)
         {
-            await MediaManager.DeleteAssociatedMediaAsync(entity, Builder);
+            if (MediaManager != null)
+            {
+                await MediaManager.DeleteAssociatedMediaAsync(entity, Builder);
+            }
         }
 
         protected virtual async Task<T> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,

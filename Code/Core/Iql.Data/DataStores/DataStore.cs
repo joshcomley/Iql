@@ -31,7 +31,7 @@ namespace Iql.Data.DataStores
     public class DataStore : IDataStore
     {
         private DataTracker _dataTracker;
-        public static MethodInfo ToListTypedMethod { get; set; }
+        public static MethodInfo MarkAsDeletedByKeyTypedMethod { get; set; }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {
@@ -65,6 +65,9 @@ namespace Iql.Data.DataStores
 
         static DataStore()
         {
+            MarkAsDeletedByKeyTypedMethod = typeof(DataStore)
+                .GetMethod(nameof(MarkAsDeletedByKey),
+                    BindingFlags.Instance | BindingFlags.Public);
             AddInternalMethod = typeof(DataStore)
                 .GetMethod(nameof(AddInternal),
                     BindingFlags.Instance | BindingFlags.NonPublic);
@@ -516,6 +519,10 @@ namespace Iql.Data.DataStores
 #endif
                                 );
                             }
+                            else
+                            {
+                                await MarkAsDeletedIfNecessary(operationEntity);
+                            }
                         }
                         //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
                     }
@@ -555,14 +562,11 @@ namespace Iql.Data.DataStores
                         }
                         if (result.Success)
                         {
-                            ForAnEntityAcrossAllDataStores<TEntity>(deleteEntityOperation.Operation.Key, (dataTracker, key) =>
-                            {
-                                var state = dataTracker.DataStore.Tracking.TrackingSet<TEntity>()
-                                    .GetEntityStateByKey(key);
-                                dataTracker.RemoveEntityByKey<TEntity>(deleteEntityOperation.Operation.Key);
-                                var iEntity = state?.Entity as IEntity;
-                                iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
-                            });
+                            MarkAsDeletedByKey<TEntity>(deleteEntityOperation.Operation.Key);
+                        }
+                        else
+                        {
+                            await MarkAsDeletedIfNecessary(deleteEntityOperation.Operation.Entity);
                         }
                     }
 
@@ -574,6 +578,45 @@ namespace Iql.Data.DataStores
             {
                 saveChangesResult.Results.Add(entityCrudResult);
             }
+        }
+
+        public async Task MarkAsDeletedIfNecessary<TEntity>(TEntity entity) where TEntity : class
+        {
+            // TODO: We should return NotFound from our data store implementations
+            // Todoot: 159
+            var result = await DataContext.GetDbSetByEntityType(typeof(TEntity)).SetTracking(false).GetWithKeyAsync(DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)).GetCompositeKey(entity));
+            if (result == null)
+            {
+                MarkAsDeleted(entity);
+            }
+        }
+
+        public void MarkAsDeleted<TEntity>(TEntity entity) where TEntity : class
+        {
+            var entityType = typeof(TEntity);
+#if TypeScript
+            entityType = entityType ?? entity.GetType();
+#endif
+            var key = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)).GetCompositeKey(entity);
+            MarkAsDeletedByKeyAndType(key, entityType);
+        }
+
+        public void MarkAsDeletedByKeyAndType(CompositeKey entityKey, Type entityType)
+        {
+            MarkAsDeletedByKeyTypedMethod.InvokeGeneric(this, new object[] { entityKey }, entityType);
+        }
+
+        public void MarkAsDeletedByKey<TEntity>(CompositeKey entityKey)
+            where TEntity : class
+        {
+            ForAnEntityAcrossAllDataStores<TEntity>(entityKey, (dataTracker, key) =>
+            {
+                var state = dataTracker.DataStore.Tracking.TrackingSet<TEntity>()
+                    .GetEntityStateByKey(key);
+                dataTracker.RemoveEntityByKey<TEntity>(entityKey);
+                var iEntity = state?.Entity as IEntity;
+                iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
+            });
         }
 
         private async Task<AddEntityResult<TEntity>> PerformMappedAddAsync<TEntity, TMap>(

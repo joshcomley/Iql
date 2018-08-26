@@ -8,6 +8,7 @@ using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
 
 namespace Iql.Data.DataStores
 {
@@ -52,5 +53,9 @@ namespace Iql.Data.DataStores
             where TEntity : class;
 
         Task<SaveChangesResult> SaveChangesAsync(SaveChangesOperation operation);
+
+        void MarkAsDeletedByKey<TEntity>(CompositeKey entityKey) where TEntity : class;
+        void MarkAsDeletedByKeyAndType(CompositeKey entityKey, Type entityType);
+        void MarkAsDeleted<TEntity>(TEntity entity) where TEntity : class;
     }
 }

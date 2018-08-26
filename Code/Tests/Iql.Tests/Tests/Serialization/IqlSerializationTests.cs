@@ -7,6 +7,14 @@ namespace Iql.Tests.Tests.Serialization
     public class IqlSerializationTests
     {
         [TestMethod]
+        public void DeserializeBinaryWithPropertyExpression()
+        {
+            var json = @"{""Left"":{""PropertyName"":""CreatedByUserId"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":null,""Value"":"""",""VariableName"":""entity"",""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""e5db3128-2939-4720-bf7f-5118c13ea107"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Key"":""RelationshipSingle"",""Kind"":10,""ReturnType"":1,""Parent"":null}";
+            var iql = IqlJsonDeserializer.DeserializeJson(json);
+            Assert.AreEqual("CreatedByUserId", ((IqlPropertyExpression)((IqlBinaryExpression)iql).Left).PropertyName);
+        }
+
+        [TestMethod]
         public void DeserializeIql()
         {
             var json =
