@@ -20,7 +20,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
             EntityConfigurationContext = entityConfigurationContext;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlExpression), () => new JavaScriptStringSourceActionParser());
+            Registry.Register(typeof(IqlInvocationExpression), () => new JavaScriptInvocationParser());
             Registry.Register(typeof(IqlVariableExpression), () => new JavaScriptVariableActionParser());
+            Registry.Register(typeof(IqlConditionExpression), () => new JavaScriptConditionActionParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new JavaScriptLambdaActionParser());
             Registry.Register(typeof(IqlWithKeyExpression), () => new JavaScriptWithKeyQueryParser());
             Registry.Register(typeof(IqlExpandExpression), () => new JavaScriptExpandQueryParser());

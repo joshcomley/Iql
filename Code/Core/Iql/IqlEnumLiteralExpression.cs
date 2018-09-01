@@ -111,5 +111,27 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			if(Value != null)
+			{
+				for(var i = 0; i < Value.Length; i++)
+				{
+					Value[i] = (IqlEnumValueExpression)context.Replace(this, nameof(Value), i, Value[i]);
+				}
+			}
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

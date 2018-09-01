@@ -24,7 +24,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlWithKeyExpression(null);
+			var expression = new IqlWithKeyExpression();
 			if(KeyEqualToExpressions == null)
 			{
 				expression.KeyEqualToExpressions = null;
@@ -78,5 +78,27 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			if(KeyEqualToExpressions != null)
+			{
+				for(var i = 0; i < KeyEqualToExpressions.Count; i++)
+				{
+					KeyEqualToExpressions[i] = (IqlIsEqualToExpression)context.Replace(this, nameof(KeyEqualToExpressions), i, KeyEqualToExpressions[i]);
+				}
+			}
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

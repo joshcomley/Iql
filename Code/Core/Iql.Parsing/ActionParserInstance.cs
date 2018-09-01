@@ -162,7 +162,7 @@ namespace Iql.Parsing
             //    return parameter.EntityTypeName;
             //}
 
-            var lambdaExpressions = GetAncestors<IqlParameteredExpression>();
+            var lambdaExpressions = GetAncestors<IqlParameteredLambdaExpression>();
 
             for (var i = lambdaExpressions.Length - 1; i >= 0; i--)
             {
@@ -397,9 +397,9 @@ namespace Iql.Parsing
 
     public class LambdaAndParameter
     {
-        public IqlParameteredExpression LambdaExpression { get; set; }
+        public IqlParameteredLambdaExpression LambdaExpression { get; set; }
         public IqlRootReferenceExpression ParameterExpression { get; set; }
-        public LambdaAndParameter(IqlParameteredExpression lambdaExpression, IqlRootReferenceExpression parameterExpression)
+        public LambdaAndParameter(IqlParameteredLambdaExpression lambdaExpression, IqlRootReferenceExpression parameterExpression)
         {
             LambdaExpression = lambdaExpression;
             ParameterExpression = parameterExpression;

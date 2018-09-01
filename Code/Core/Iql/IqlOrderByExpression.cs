@@ -59,5 +59,21 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			OrderExpression = context.Replace(this, nameof(OrderExpression), null, OrderExpression);
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

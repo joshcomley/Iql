@@ -57,6 +57,7 @@ namespace Iql
         EnumLiteral = 53,
         EnumValue = 54,
         Lambda = 55,
-        Condition = 56
+        Condition = 56,
+        Invocation = 57
     }
 }

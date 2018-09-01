@@ -21,13 +21,13 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
-        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambdaExpression
+        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambda
 #if TypeScript
                 , EvaluateContext evaluateContext = null
 #endif
             )
         {
-            return ConvertJavaScriptStringToIql<TEntity>(lambdaExpression.ToString()
+            return ConvertJavaScriptStringToIql<TEntity>(lambda.ToString()
 #if TypeScript
             , evaluateContext
 #endif

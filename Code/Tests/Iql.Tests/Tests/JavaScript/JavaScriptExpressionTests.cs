@@ -26,6 +26,19 @@ namespace Iql.Tests.Tests.JavaScript
     public class JavaScriptExpressionTests : TestsBase
     {
         [TestMethod]
+        public void TestConditionalExpression()
+        {
+            var converter = new JavaScriptExpressionConverter();
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function (c) { return 1 > 2 ? 3 : 4; }");
+            var lambda = expression.Expression as IqlLambdaExpression;
+            Assert.IsTrue(lambda.Body is IqlConditionExpression);
+            var javascript =
+                converter.ConvertIqlToExpressionStringByType(expression.Expression, typeof(ApplicationUser));
+            Assert.AreEqual(@"function(entity) { return ((1 > 2)?3:4); }",
+                javascript);
+        }
+
+        [TestMethod]
         public void TestLambdaGeneratingLambda()
         {
             var instance = RelationshipFilterContextExpressions.Get();

@@ -9,6 +9,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
         {
             RootVariableName = rootVariableName;
             Registry.Register(typeof(IqlCollectitonQueryExpression), () => new DotNetDataSetQueryExpressionParser());
+            Registry.Register(typeof(IqlInvocationExpression), () => new DotNetInvocationParser());
             Registry.Register(typeof(IqlVariableExpression), () => new DotNetVariableParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new DotNetLambdaParser());
             Registry.Register(typeof(IqlExpandExpression), () => new DotNetExpandExpressionParser());

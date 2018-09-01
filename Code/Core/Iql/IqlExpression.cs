@@ -260,6 +260,15 @@ namespace Iql
 
         public abstract IqlExpression Clone();
 
+        public IqlExpression ReplaceWith(Func<ReplaceContext, IqlExpression, IqlExpression> replacer)
+        {
+            return Replace(new ReplaceContext(replacer));
+        }
+        public IqlExpression Replace(ReplaceContext context)
+        {
+            return ReplaceExpressions(context);
+        }
+        internal abstract IqlExpression ReplaceExpressions(ReplaceContext context);
         public virtual IqlExpression[] Flatten(Func<IqlExpression, FlattenReactionKind> checker = null)
         {
             var list = new List<IqlExpression>();

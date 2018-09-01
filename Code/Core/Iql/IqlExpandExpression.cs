@@ -62,5 +62,22 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			NavigationProperty = (IqlPropertyExpression)context.Replace(this, nameof(NavigationProperty), null, NavigationProperty);
+			Query = (IqlCollectitonQueryExpression)context.Replace(this, nameof(Query), null, Query);
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

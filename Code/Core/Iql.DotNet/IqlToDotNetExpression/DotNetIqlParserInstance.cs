@@ -47,7 +47,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
             }
         }
 
-        public Dictionary<IqlParameteredExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlParameteredExpression, Dictionary<string, ParameterExpression>>();
+        public Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>>();
 
         public ParameterExpression GetParameterExpression(string name)
         {
@@ -59,7 +59,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
             return null;
         }
 
-        private ParameterExpression GetParameterExpression(IqlParameteredExpression lambda,
+        private ParameterExpression GetParameterExpression(IqlParameteredLambdaExpression lambda,
             IqlRootReferenceExpression parameter)
         {
             if (lambda == null)
@@ -156,7 +156,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
         private IEnumerable<ParameterExpression> ResolveParentParameters()
         {
             var parameters = new List<ParameterExpression>();
-            var lambda = GetNearestAncestor<IqlParameteredExpression>();
+            var lambda = GetNearestAncestor<IqlParameteredLambdaExpression>();
             if (lambda != null && lambda.Parameters != null)
             {
                 foreach (var parameter in lambda.Parameters)

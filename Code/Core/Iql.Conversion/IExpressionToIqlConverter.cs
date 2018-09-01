@@ -15,31 +15,31 @@ namespace Iql.Conversion
 //#endif
 //        )
 //            where TEntity : class;
-        ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression filter
+        ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
-        ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter,
+        ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression expression,
             Type entityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
-        ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter
+        ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
-        ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaToIql<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> filter
+        ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaToIql<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
-        ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaExpressionToIql<TEntity>(LambdaExpression filter
+        ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaExpressionToIql<TEntity>(LambdaExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

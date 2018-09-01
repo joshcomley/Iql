@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Iql.Data.Crud.Operations;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 
 namespace Iql.Data.Tracking.State
 {
@@ -109,7 +110,12 @@ namespace Iql.Data.Tracking.State
 
         public void AbandonChange()
         {
-            NewValue = OldValue;
+            if (HasChanged)
+            {
+                NewValue = OldValue;
+                EntityState.Entity.SetPropertyValue(Property, OldValue);
+            }
+            //_hasChanged = false;
         }
     }
 }

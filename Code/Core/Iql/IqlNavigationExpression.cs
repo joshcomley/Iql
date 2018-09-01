@@ -2,7 +2,7 @@
 
 namespace Iql
 {
-    public abstract class IqlNavigationExpression : IqlParameteredExpression
+    public abstract class IqlNavigationExpression : IqlParameteredLambdaExpression
     {
         protected IqlNavigationExpression(
             string entityTypeName,

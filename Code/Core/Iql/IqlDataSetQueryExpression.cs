@@ -49,7 +49,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlDataSetQueryExpression(null);
+			var expression = new IqlDataSetQueryExpression();
 			expression.DataSet = (IqlDataSetReferenceExpression)DataSet?.Clone();
 			if(OrderBys == null)
 			{
@@ -152,5 +152,44 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			DataSet = (IqlDataSetReferenceExpression)context.Replace(this, nameof(DataSet), null, DataSet);
+			if(OrderBys != null)
+			{
+				for(var i = 0; i < OrderBys.Count; i++)
+				{
+					OrderBys[i] = (IqlOrderByExpression)context.Replace(this, nameof(OrderBys), i, OrderBys[i]);
+				}
+			}
+			if(Expands != null)
+			{
+				for(var i = 0; i < Expands.Count; i++)
+				{
+					Expands[i] = (IqlExpandExpression)context.Replace(this, nameof(Expands), i, Expands[i]);
+				}
+			}
+			Filter = context.Replace(this, nameof(Filter), null, Filter);
+			WithKey = (IqlWithKeyExpression)context.Replace(this, nameof(WithKey), null, WithKey);
+			if(Parameters != null)
+			{
+				for(var i = 0; i < Parameters.Count; i++)
+				{
+					Parameters[i] = (IqlRootReferenceExpression)context.Replace(this, nameof(Parameters), i, Parameters[i]);
+				}
+			}
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

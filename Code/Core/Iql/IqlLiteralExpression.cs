@@ -20,7 +20,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlLiteralExpression(null);
+			var expression = new IqlLiteralExpression();
 			expression.Value = Value;
 			expression.InferredReturnType = InferredReturnType;
 			expression.Key = Key;
@@ -56,5 +56,20 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

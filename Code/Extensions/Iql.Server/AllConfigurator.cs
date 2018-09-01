@@ -146,10 +146,8 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                config.TitlePropertyName = nameof(IHasName.Name);
                 config.ConfigureProperty(p => p.Id, p => p.SetReadOnly());
                 config.ConfigureProperty(p => p.Email, p => p.SetHint(KnownHints.EmailAddress));
-                config.TitlePropertyName = nameof(IdentityUser.UserName);
             });
         }
 

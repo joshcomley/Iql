@@ -47,5 +47,6 @@ namespace Iql.Entities
         bool EntityHasKey(object entity, CompositeKey key);
         bool KeysMatch(object left, object right);
         CompositeKey GetCompositeKey(object entity);
+        string GetCompositeKeyString(object entity);
     }
 }

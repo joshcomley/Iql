@@ -9,6 +9,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         public JavaScriptQueryExpressionAdapterIql()
         {
             RegisterParser(() => new LambdaJavaScriptExpressionParserIql<T>());
+            RegisterParser(() => new ConditionalJavaScriptExpressionParserIql<T>());
             RegisterParser(() => new BinaryJavaScriptExpressionParserIql<T>());
             RegisterParser(() => new CallJavaScriptExpressionParserIql<T>());
             RegisterParser(() => new CompoundJavaScriptExpressionNodeParserIql<T>());

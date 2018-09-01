@@ -79,8 +79,8 @@ namespace Iql.Data.Tracking.State
         {
             for (var i = 0; i < Properties.Count; i++)
             {
-                var property = Properties[i];
-                property.AbandonChange();
+                var state = Properties[i];
+                state.AbandonChange();
             }
             MarkedForDeletion = false;
             MarkedForCascadeDeletion = false;

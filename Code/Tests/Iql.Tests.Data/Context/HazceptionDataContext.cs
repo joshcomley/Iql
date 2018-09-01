@@ -2,6 +2,7 @@
 using Iql.Conversion;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.InMemory;
+using Iql.Entities;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
@@ -9,6 +10,7 @@ using Iql.DotNet;
 #endif
 using Iql.Queryable;
 using Iql.Tests.Data.Context;
+using Tunnel.App.Data.Entities;
 
 namespace Iql.Tests.Context
 {

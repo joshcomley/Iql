@@ -70,8 +70,8 @@ namespace Iql.Entities
         public bool IsLongitudeProperty => Equals(Geographic?.LongitudeProperty, this);
         public bool IsLatitudeProperty => Equals(Geographic?.LatitudeProperty, this);
         public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
-        public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == Name;
-        public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName == Name;
+        public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == Name || EntityConfiguration?.TitleProperty == this;
+        public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName == Name || EntityConfiguration?.PreviewProperty == this;
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
         public IEntityConfiguration EntityConfigurationInternal { get; set; }

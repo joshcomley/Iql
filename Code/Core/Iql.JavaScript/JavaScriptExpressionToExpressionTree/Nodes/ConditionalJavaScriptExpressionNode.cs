@@ -3,9 +3,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes
     public class ConditionalJavaScriptExpressionNode : JavaScriptExpressionNode
     {
         public ConditionalJavaScriptExpressionNode(
-            object test,
-            object consequent,
-            object alternate)
+            JavaScriptExpressionNode test,
+            JavaScriptExpressionNode consequent,
+            JavaScriptExpressionNode alternate)
             : base(ExpressionType.Conditional)
         {
             Test = test;
@@ -13,8 +13,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes
             Alternate = alternate;
         }
 
-        public object Test { get; set; }
-        public object Consequent { get; set; }
-        public object Alternate { get; set; }
+        public JavaScriptExpressionNode Test { get; set; }
+        public JavaScriptExpressionNode Consequent { get; set; }
+        public JavaScriptExpressionNode Alternate { get; set; }
     }
 }

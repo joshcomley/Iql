@@ -10,5 +10,14 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         public LambdaExpression FormatterExpression { get; set; }
         public IqlExpression FormatterExpressionIql { get; set; }
         public Func<object, string> Format { get; }
+        public string FormatAndIntercept(object entity, Func<IFormatterContext, IqlExpression, object, string> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string FormatAndInterceptWith(IFormatterContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

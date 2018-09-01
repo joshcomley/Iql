@@ -17,7 +17,7 @@ namespace Iql.OData
             Configuration = configuration;
         }
 
-        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression filter
+        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambda
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

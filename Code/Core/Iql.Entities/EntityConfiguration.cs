@@ -93,14 +93,16 @@ namespace Iql.Entities
             return this;
         }
 
-        public DisplayFormatting<T> GetDisplayFormatting()
+        public new DisplayFormatting<T> DisplayFormatting
         {
-            return (DisplayFormatting<T>)DisplayFormatting;
+            get => (DisplayFormatting<T>) base.DisplayFormatting;
+            set => base.DisplayFormatting = value;
         }
 
-        public ValidationCollection<T> GetEntityValidation()
+        public new ValidationCollection<T> EntityValidation
         {
-            return (ValidationCollection<T>)EntityValidation;
+            get => (ValidationCollection<T>)base.EntityValidation;
+            set => base.EntityValidation = value;
         }
 
         public EntityConfiguration(EntityConfigurationBuilder builder = null) : base(builder)
@@ -115,7 +117,7 @@ namespace Iql.Entities
 
         public string GetDisplayText(T entity, string key = null)
         {
-            return GetDisplayFormatting().TryFormat(entity, key);
+            return DisplayFormatting.TryFormat(entity, key);
         }
 
         string IEntityConfiguration.GetDisplayText(object entity, string key = null)
@@ -189,7 +191,7 @@ namespace Iql.Entities
         {
             var validationResult = new EntityValidationResult<T>(entity);
 
-            foreach (var validation in GetEntityValidation().All)
+            foreach (var validation in EntityValidation.All)
             {
                 if (!validation.Run(entity))
                 {
@@ -589,7 +591,7 @@ namespace Iql.Entities
         public EntityConfiguration<T> DefineDisplayFormatter(Expression<Func<T, string>> formatter,
             string key = null)
         {
-            GetDisplayFormatting().Set(formatter, key);
+            DisplayFormatting.Set(formatter, key);
             return this;
         }
 
@@ -598,7 +600,7 @@ namespace Iql.Entities
             string key = null
             )
         {
-            GetEntityValidation().Add(new ValidationRule<T>(validation, key, message));
+            EntityValidation.Add(new ValidationRule<T>(validation, key, message));
             return this;
         }
 

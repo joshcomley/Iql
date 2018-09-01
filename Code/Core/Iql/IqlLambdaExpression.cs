@@ -3,17 +3,24 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlLambdaExpression : IqlParameteredExpression
+    public class IqlLambdaExpression : IqlParameteredLambdaExpression
     {
+        public IqlLambdaExpression AddParameter(string name = null)
+        {
+            Parameters.Add(new IqlRootReferenceExpression(name ?? ""));
+            return this;
+        }
+
         public IqlExpression Body { get; set; }
 
-        public IqlLambdaExpression(IqlType? returnType = IqlType.Unknown, IqlExpression parent = null) : base(IqlExpressionKind.Lambda, returnType, parent)
+        public IqlLambdaExpression(IqlType? returnType = IqlType.Unknown, IqlExpression body = null, IqlExpression parent = null) : base(IqlExpressionKind.Lambda, returnType, parent)
         {
+            Body = body;
         }
 
         public IqlLambdaExpression() : base(IqlExpressionKind.Lambda, IqlType.Unknown)
         {
-            
+
         }
 
         public override bool IsOrHas(Func<IqlExpression, bool> matches)
@@ -49,9 +56,9 @@ namespace Iql
             // #CloneEnd
         }
 
-		internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
+        internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
         {
-			// #FlattenStart
+            // #FlattenStart
 
 			if(expressions.Contains(this))
 			{
@@ -79,7 +86,30 @@ namespace Iql
 				Parent?.FlattenInternal(expressions, checker);
 			}
 
-			// #FlattenEnd
+            // #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			Body = context.Replace(this, nameof(Body), null, Body);
+			if(Parameters != null)
+			{
+				for(var i = 0; i < Parameters.Count; i++)
+				{
+					Parameters[i] = (IqlRootReferenceExpression)context.Replace(this, nameof(Parameters), i, Parameters[i]);
+				}
+			}
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

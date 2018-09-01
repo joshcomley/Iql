@@ -15,6 +15,7 @@ using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.DotNet;
 #endif
 using Tunnel.ApiContext.Base;
+using Tunnel.App.Data.Entities;
 using Tunnel.Sets;
 
 namespace Iql.Tests.Context
@@ -108,6 +109,8 @@ namespace Iql.Tests.Context
         public override void Configure(EntityConfigurationBuilder builder)
         {
             base.Configure(builder);
+            builder.EntityType<Person>()
+                .DefineDisplayFormatter(entity => entity.Title + " - " + entity.Type.CreatedByUser.Client.Name + " (" + entity.Id + ")", "ReportLong");
             ConfigureCustomReports();
         }
     }

@@ -9,21 +9,20 @@ namespace Iql
         public IqlExpression IfTrue { get; set; }
         public IqlExpression IfFalse { get; set; }
 
-        // ReSharper disable once UnusedMember.Global
-        public IqlConditionExpression() : base(IqlExpressionKind.Condition, IqlType.Unknown, null)
-        {
-            
-        }
-
         public IqlConditionExpression(
-            IqlExpression condition,
-            IqlExpression then,
+            IqlExpression condition = null,
+            IqlExpression then = null,
             IqlExpression otherwise = null,
             IqlExpression parent = null) : base(IqlExpressionKind.Condition, IqlType.Unknown, parent)
         {
             Test = condition;
             IfTrue = then;
             IfFalse = otherwise;
+        }
+
+        public IqlConditionExpression() : this(null)
+        {
+
         }
 
         public override IqlExpression Clone()
@@ -70,5 +69,23 @@ namespace Iql
 
 			// #FlattenEnd
         }
+
+		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+		{
+			// #ReplaceStart
+
+			Test = context.Replace(this, nameof(Test), null, Test);
+			IfTrue = context.Replace(this, nameof(IfTrue), null, IfTrue);
+			IfFalse = context.Replace(this, nameof(IfFalse), null, IfFalse);
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+			// #ReplaceEnd
+		}
     }
 }

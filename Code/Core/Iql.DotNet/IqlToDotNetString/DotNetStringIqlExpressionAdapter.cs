@@ -11,6 +11,7 @@ namespace Iql.DotNet.IqlToDotNetString
             RootVariableName = rootVariableName;
             Registry.Register(typeof(IqlNotExpression), () => new DotNetStringNotExpressionParser());
             Registry.Register(typeof(IqlVariableExpression), () => new DotNetStringVariableParser());
+            Registry.Register(typeof(IqlConditionExpression), () => new DotNetStringConditionExpressionParser());
             Registry.Register(typeof(IqlCollectitonQueryExpression), () => new DotNetStringDataSetQueryExpressionParser());
             Registry.Register(typeof(IqlStringTrimExpression), () => new DotNetStringStringTrimExpressionParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new DotNetStringLambdaParser());

@@ -22,9 +22,9 @@ namespace Iql.Entities.DisplayFormatting
 
         public IEnumerable<EntityDisplayTextFormatter<TEntity>> All => _formatters.Values.ToArray();
 
-        public EntityDisplayTextFormatter<TEntity> Default { get; private set; }
+        public EntityDisplayTextFormatter<TEntity> Default => All?.SingleOrDefault(_ => _.Key == "Default");
 
-        public EntityDisplayTextFormatter<TEntity> Get(string key)
+        public EntityDisplayTextFormatter<TEntity> Get(string key = null)
         {
             if (key == null)
             {
@@ -41,12 +41,11 @@ namespace Iql.Entities.DisplayFormatting
 
         public EntityDisplayTextFormatter<TEntity> Set(Expression<Func<TEntity, string>> expression, string key = null)
         {
-            var formatter = new EntityDisplayTextFormatter<TEntity>(expression, key);
             if (key == null)
             {
                 key = "Default";
-                Default = formatter;
             }
+            var formatter = new EntityDisplayTextFormatter<TEntity>(expression, key);
             if (_formatters.ContainsKey(key))
             {
                 _formatters[key] = formatter;
@@ -59,19 +58,13 @@ namespace Iql.Entities.DisplayFormatting
             return formatter;
         }
 
-        public string FormatWith(TEntity entity, string key = null)
+        public string TryFormat(TEntity entity, string key = null)
         {
             var formatter = Get(key);
             if (formatter == null)
             {
-                return "";
+                formatter = All?.FirstOrDefault();
             }
-            return Default.Format(entity);
-        }
-
-        public string TryFormat(TEntity entity, string key = null)
-        {
-            var formatter = Get(key);
             if (formatter == null)
             {
                 var titleProperties = EntityConfiguration.GetGroupProperties().SelectMany(p => p.FlattenToValueProperties()).Where(p => p.HasHint(KnownHints.Title)).ToArray();
@@ -119,7 +112,7 @@ namespace Iql.Entities.DisplayFormatting
                 }
                 return "";
             }
-            return Default.Format(entity);
+            return formatter.Format(entity);
         }
 
         private IProperty TryFindProperty(params string[] names)

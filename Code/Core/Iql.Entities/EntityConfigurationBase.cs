@@ -158,7 +158,6 @@ namespace Iql.Entities
                     _titlePropertyNameChanged = false;
                     _titleProperty = Properties.SingleOrDefault(p => p.Name == TitlePropertyName);
                 }
-
                 return _titleProperty;
             }
         }
@@ -178,7 +177,16 @@ namespace Iql.Entities
 
         public string TitlePropertyName
         {
-            get => _titlePropertyName;
+            get
+            {
+                if (_titlePropertyName == null && Properties != null)
+                {
+                    _titlePropertyName = Properties.Where(p => p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
+                        .OrderBy(p => p.HasHint(KnownHints.EmailAddress) || p.Kind.HasFlag(PropertyKind.RelationshipKey) || p.Kind.HasFlag(PropertyKind.Key))
+                        .FirstOrDefault()?.PropertyName;
+                }
+                return _titlePropertyName;
+            }
             set
             {
                 _titlePropertyName = value;
@@ -343,6 +351,11 @@ namespace Iql.Entities
             return key;
         }
 
+        public string GetCompositeKeyString(object entity)
+        {
+            return GetCompositeKey(entity).AsKeyString();
+        }
+        
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(this as IEntityConfiguration, propertyExpression).Property;
