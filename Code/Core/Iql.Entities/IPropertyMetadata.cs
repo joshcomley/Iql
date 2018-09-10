@@ -2,8 +2,8 @@
 using System.Linq.Expressions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules;
-using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
+using Iql.Entities.ValueResolvers;
 
 namespace Iql.Entities
 {
@@ -21,6 +21,7 @@ namespace Iql.Entities
         Display,
         Hidden
     }
+
     public interface IPropertyMetadata : ISimpleProperty
     {
         IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }

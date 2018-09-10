@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Iql.Entities.ValueResolvers;
 
 namespace Iql.Entities
 {
@@ -124,6 +126,30 @@ namespace Iql.Entities
         public override Func<object, object, object> SetValue { get; set; }
 
         public Dictionary<string, object> CustomInformation => _customInformation = _customInformation ?? new Dictionary<string, object>();
+
+        public IValueResolver<TOwner> DefaultValueResolver { get; set; }
+
+        public Property<TOwner, TProperty, TElementType> UseLiteralDefaultValue(TElementType value)
+        {
+            DefaultValueResolver = new LiteralValueResolver<TOwner>(value);
+            return this;
+        }
+
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.UseLiteralDefaultValue(object value)
+        {
+            return UseLiteralDefaultValue((TElementType) value);
+        }
+
+        public Property<TOwner, TProperty, TElementType> UseFunctionDefaultValue(Func<TOwner, Task<TElementType>> resolver)
+        {
+            DefaultValueResolver = new FunctionValueResolver<TOwner>(async owner => await resolver(owner));
+            return this;
+        }
+
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.UseFunctionDefaultValue(Func<TOwner, Task<object>> resolver)
+        {
+            return UseFunctionDefaultValue(async owner => (TElementType) await resolver(owner));
+        }
 
         public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression)
         {

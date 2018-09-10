@@ -54,7 +54,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        IQueryableBase OrderByDefault(bool descending = false);
+        IQueryableBase OrderByDefault(bool? descending = null);
 
 //        IQueryableBase ExpandProperty(string propetyName
         //#if TypeScript

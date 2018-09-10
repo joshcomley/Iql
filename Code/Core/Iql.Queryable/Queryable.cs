@@ -158,12 +158,12 @@ namespace Iql.Queryable
             orderByOperation.Expression = PropertyExpression(propetyName);
             return Then(orderByOperation);
         }
-        IQueryableBase IQueryableBase.OrderByDefault(bool descending = false)
+        IQueryableBase IQueryableBase.OrderByDefault(bool? descending = null)
         {
             return OrderByDefault(descending);
         }
 
-        public abstract TQueryable OrderByDefault(bool descending = false);
+        public abstract TQueryable OrderByDefault(bool? descending = null);
 
         //        public TQueryable ExpandProperty(string propetyName
         //#if TypeScript

@@ -158,6 +158,7 @@ namespace Iql.Entities
             return GetEntityByTypeName(name).SpecialTypeDefinition;
         }
 
+        public SpecialTypeDefinition UsersDefinition { get; set; }
         public SpecialTypeDefinition UserSettingsDefinition { get; set; }
         public SpecialTypeDefinition CustomReportsDefinition { get; set; }
 

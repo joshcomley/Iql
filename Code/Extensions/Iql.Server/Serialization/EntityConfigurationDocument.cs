@@ -8,6 +8,7 @@ namespace Iql.Server.Serialization
 {
     public class EntityConfigurationDocument : IEntityConfigurationContainer
     {
+        public SpecialTypeDefinition UsersDefinition { get; set; }
         public SpecialTypeDefinition CustomReportsDefinition { get; set; }
         public SpecialTypeDefinition UserSettingsDefinition { get; set; }
         public List<IEnumConfiguration> EnumTypes { get; set; } = new List<IEnumConfiguration>();

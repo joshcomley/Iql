@@ -20,6 +20,7 @@ namespace Iql.Server.Serialization.Serialization
             var doc = new EntityConfigurationDocument();
             doc.EntityTypes.AddRange(entityConfigurationBuilder.AllEntityTypes());
             doc.EnumTypes.AddRange(entityConfigurationBuilder.AllEnumTypes());
+            doc.UsersDefinition = entityConfigurationBuilder.UsersDefinition;
             doc.CustomReportsDefinition = entityConfigurationBuilder.CustomReportsDefinition;
             doc.UserSettingsDefinition = entityConfigurationBuilder.UserSettingsDefinition;
             settings.Formatting = Formatting.Indented;

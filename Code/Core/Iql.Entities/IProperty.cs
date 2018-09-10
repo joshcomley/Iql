@@ -7,6 +7,7 @@ using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.ValueResolvers;
 
 namespace Iql.Entities
 {
@@ -26,7 +27,7 @@ namespace Iql.Entities
         ISimpleProperty ResolvePrimaryProperty();
     }
 
-    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>, ISimpleProperty
+    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
     {
         ISimpleProperty PropertyGroup { get; }
         IDateRange DateRange { get; }

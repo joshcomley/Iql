@@ -102,10 +102,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                                       (reader.Value as string).StartsWith("{");
             if (isConvertedProperty)
             {
-                if ((reader.Value as string).Contains("PreviewUrl"))
-                {
-                    int a = 0;
-                }
                 var group = JsonConvert.DeserializeObject<SerializedPropertyGroup>(reader.Value as string);
                 PropertyMappings.Add(reader.Path, group);
                 return null;
@@ -118,11 +114,11 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                     .Groups["Index"].Value);
             }
             var typeMapping = TypeMappings[objectType];
-            if (typeMapping == typeof(FilePreview))
+            if (reader.Path == nameof(EntityConfigurationDocument.UsersDefinition))
             {
-                int a = 0;
+                typeMapping = typeof(UsersDefinition);
             }
-            if (reader.Path == nameof(EntityConfigurationDocument.CustomReportsDefinition))
+            else if (reader.Path == nameof(EntityConfigurationDocument.CustomReportsDefinition))
             {
                 typeMapping = typeof(CustomReportsDefinition);
             }

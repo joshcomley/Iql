@@ -9,6 +9,7 @@ namespace Iql.Entities
     public interface IEntityConfigurationBuilder : IEntityConfigurationContainer
     {
         SpecialTypeDefinition GetSpecialTypeMap(string name);
+        SpecialTypeDefinition UsersDefinition { get; set; }
         SpecialTypeDefinition UserSettingsDefinition { get; set; }
         SpecialTypeDefinition CustomReportsDefinition { get; set; }
         bool IsEntityType<T>();

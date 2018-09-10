@@ -467,9 +467,14 @@ namespace Iql.Data.Context
             return ResolveLastOrDefault(result);
         }
 
-        public override DbQueryable<T> OrderByDefault(bool descending = false)
+        public override DbQueryable<T> OrderByDefault(bool? descending = null)
         {
-            return this.OrderByProperty(EntityConfiguration.ResolveSearchProperties().First().Name, descending);
+            var defaultSort = EntityConfiguration.DefaultSortExpression;
+            if (string.IsNullOrWhiteSpace(defaultSort))
+            {
+                defaultSort = EntityConfiguration.ResolveSearchProperties().First().Name;
+            }
+            return this.OrderByProperty(defaultSort, EntityConfiguration.DefaultSortDescending);
         }
 
         public override IqlPropertyExpression PropertyExpression(string propertyName)

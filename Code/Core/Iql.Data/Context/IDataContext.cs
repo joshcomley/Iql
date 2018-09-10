@@ -18,6 +18,7 @@ namespace Iql.Data.Context
     public interface IDataContext
     {
         bool IsTracked(object entity);
+        UsersManager UsersManager { get; }
         CustomReportsManager CustomReportsManager { get; }
         UserSettingsManager UserSettingsManager { get; }
         INestedSetsProviderBase NestedSetsProviderForType(Type type);

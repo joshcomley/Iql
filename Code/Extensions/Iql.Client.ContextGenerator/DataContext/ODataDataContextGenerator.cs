@@ -121,6 +121,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(RelatedList<,>),
                 typeof(PropertyValidationResult<>),
                 typeof(GetDataResult<object>),
+                typeof(UsersDefinition),
                 typeof(CustomReportsDefinition),
                 typeof(UserSettingsDefinition),
                 typeof(EntityConfigurationBuilder),

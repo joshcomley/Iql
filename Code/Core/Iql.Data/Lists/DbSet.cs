@@ -84,7 +84,7 @@ namespace Iql.Data.Lists
             return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
         }
 
-        public new DbSet<T, TKey> OrderByDefault(bool descending = false)
+        public new DbSet<T, TKey> OrderByDefault(bool? descending = null)
         {
             return (DbSet<T, TKey>)base.OrderByDefault(descending);
         }

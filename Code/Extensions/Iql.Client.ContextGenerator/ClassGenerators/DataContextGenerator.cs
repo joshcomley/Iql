@@ -619,7 +619,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             var us = Schema.EntityConfigurationDocument.UserSettingsDefinition as UserSettingsDefinition;
             if (us != null)
             {
-                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UserSettingsDefinition)} = {nameof(IEntityConfigurationBuilder.UserSettingsDefinition)}.{nameof(CustomReportsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{us.EntityConfiguration.Name}>(),
+                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UserSettingsDefinition)} = {nameof(IEntityConfigurationBuilder.UserSettingsDefinition)}.{nameof(UserSettingsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{us.EntityConfiguration.Name}>(),
                 _ => _.{us.IdProperty.PropertyName},
                 _ => _.{us.UserIdProperty.PropertyName},
                 _ => _.{us.Key1Property.PropertyName},
@@ -627,6 +627,14 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 _ => _.{us.Key3Property.PropertyName},
                 _ => _.{us.Key4Property.PropertyName},
                 _ => _.{us.ValueProperty.PropertyName}
+                );");
+            }
+            var u = Schema.EntityConfigurationDocument.UsersDefinition as UsersDefinition;
+            if (u != null)
+            {
+                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UsersDefinition)} = {nameof(IEntityConfigurationBuilder.UsersDefinition)}.{nameof(UsersDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{u.EntityConfiguration.Name}>(),
+                _ => _.{u.IdProperty.PropertyName},
+                _ => _.{u.NameProperty.PropertyName}
                 );");
             }
             return sb.ToString();

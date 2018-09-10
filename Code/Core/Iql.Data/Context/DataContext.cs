@@ -432,6 +432,20 @@ namespace Iql.Data.Context
             return _configurations[entityType.Name] as EntityConfiguration<T>;
         }
 
+        private UsersManager _usersManager;
+        public UsersManager UsersManager
+        {
+            get
+            {
+                if (EntityConfigurationContext.UsersDefinition != null)
+                {
+                    _usersManager = new UsersManager(this);
+                }
+
+                return _usersManager;
+            }
+        }
+
         private CustomReportsManager _customReportsManager;
         public CustomReportsManager CustomReportsManager
         {
