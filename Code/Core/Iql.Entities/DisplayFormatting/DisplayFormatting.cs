@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Iql.Entities.Extensions;
 
 namespace Iql.Entities.DisplayFormatting
@@ -22,7 +21,7 @@ namespace Iql.Entities.DisplayFormatting
 
         public IEnumerable<EntityDisplayTextFormatter<TEntity>> All => _formatters.Values.ToArray();
 
-        public EntityDisplayTextFormatter<TEntity> Default => All?.SingleOrDefault(_ => _.Key == "Default");
+        public EntityDisplayTextFormatter<TEntity> Default => All?.SingleOrDefault(_ => _.Key == "Default") ?? All?.FirstOrDefault();
 
         public EntityDisplayTextFormatter<TEntity> Get(string key = null)
         {

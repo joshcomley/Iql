@@ -23,7 +23,7 @@ namespace Iql.Entities
             EntityConfigurationBuilders.Add(this);
         }
 
-        public static Type FindEntityTypeFromName(string entityTypeName)
+        public static Type GetEntityTypeFromName(string entityTypeName)
         {
             return FindConfigurationForEntityTypeName(entityTypeName)?.Type;
         }

@@ -5,9 +5,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0013-1-Debug" />
-  </ItemGroup>
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <ItemGroup>
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0014-0-Release" />
+      </ItemGroup>
+    </When>
+    <When Condition="'$(Configuration)' == 'Debug'">
+      <ItemGroup>
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0014-1-Debug" />
+      </ItemGroup>
+    </When>
+  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
     <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />

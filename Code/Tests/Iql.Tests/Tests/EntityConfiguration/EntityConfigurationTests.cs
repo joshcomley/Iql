@@ -107,7 +107,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
         [TestMethod]
         public void ResolveTypeFromTypeName()
         {
-            var type = EntityConfigurationBuilder.FindEntityTypeFromName(nameof(ApplicationUser));
+            var type = EntityConfigurationBuilder.GetEntityTypeFromName(nameof(ApplicationUser));
             Assert.AreEqual(typeof(ApplicationUser), type);
         }
 
