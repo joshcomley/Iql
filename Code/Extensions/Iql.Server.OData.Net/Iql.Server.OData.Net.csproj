@@ -2,27 +2,34 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10236-0-Release" />
-        <PackageReference Include="Brandless.AspNetCore.OData.EntityFramework" Version="1.2.10094-alpha-10236-0-Release" />
-        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10095-0-Release" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10095-0-Release" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10009-0-Release" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10098-0-Release" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10098-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData" Version="1.2.10094-alpha-10236-1-Debug" />
-        <PackageReference Include="Brandless.AspNetCore.OData.EntityFramework" Version="1.2.10094-alpha-10236-1-Debug" />
-        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10095-1-Debug" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10095-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10009-1-Debug" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10098-1-Debug" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10098-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.2.0-pre-0003" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0001\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0003\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
   </ItemGroup>
 </Project>

@@ -17,6 +17,11 @@ namespace Tunnel.ApiContext.Base
     {
         public TunnelDataContextBase(IDataStore dataStore) : base(dataStore)
         {
+
+        }
+
+        protected override void InitializeProperties()
+        {
             this.ApplicationLogs = this.AsCustomDbSet<ApplicationLog, Guid, ApplicationLogSet>();
             this.Users = this.AsCustomDbSet<ApplicationUser, String, ApplicationUserSet>();
             this.Clients = this.AsCustomDbSet<Client, int, ClientSet>();
@@ -70,6 +75,7 @@ namespace Tunnel.ApiContext.Base
             this.ODataConfiguration.RegisterEntitySet<SiteInspection>(nameof(SiteInspections));
             this.ODataConfiguration.RegisterEntitySet<UserSite>(nameof(UserSites));
             this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
+            base.InitializeProperties();
         }
 
         private ODataConfiguration _oDataConfiguration;

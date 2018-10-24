@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using Iql.Conversion;
 
 namespace Iql.Entities
@@ -364,23 +365,29 @@ namespace Iql.Entities
         public IProperty FindNestedProperty(string name)
         {
             // TODO: Use IqlPropertyPath
-            if (name.IndexOf("/") != -1)
+            var chars = new[] {'/', '.'};
+            for (var j = 0; j < chars.Length; j++)
             {
-                var parts = name.Split('/');
-                IEntityConfiguration config = this as IEntityConfiguration;
-                IProperty property = null;
-                for (var i = 0; i < parts.Length; i++)
+                var ch = chars[j];
+                if (name.IndexOf(ch) != -1)
                 {
-                    var part = parts[i];
-                    property = config.FindNestedProperty(part);
-                    if (i == parts.Length - 1)
+                    var parts = name.Split(ch);
+                    IEntityConfiguration config = this as IEntityConfiguration;
+                    IProperty property = null;
+                    for (var i = 0; i < parts.Length; i++)
                     {
-                        break;
+                        var part = parts[i];
+                        property = config.FindNestedProperty(part);
+                        if (i == parts.Length - 1)
+                        {
+                            break;
+                        }
+                        config = property.Relationship.OtherEnd.EntityConfiguration;
                     }
-                    config = property.Relationship.OtherEnd.EntityConfiguration;
+                    return property;
                 }
-                return property;
             }
+
             var result = _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
             if (result == null)
             {

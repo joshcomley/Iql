@@ -66,7 +66,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 odataParts.Add($"$top={action.Take}");
             }
 
-            if (action.IncludeCount.HasValue)
+            if (action.IncludeCount.HasValue && action.WithKey == null)
             {
                 odataParts.Add($"$count={(action.IncludeCount.Value ? "true" : "false")}");
             }

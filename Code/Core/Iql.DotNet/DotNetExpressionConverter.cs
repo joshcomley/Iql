@@ -12,7 +12,12 @@ namespace Iql.DotNet
 {
     public class DotNetExpressionConverter : ExpressionConverterBase
     {
-        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambda
+        public static void Use()
+        {
+            IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
+        }
+
+        protected override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlInternal<TEntity>(LambdaExpression lambda
 #if TypeScript
 , EvaluateContext evaluateContext
 #endif

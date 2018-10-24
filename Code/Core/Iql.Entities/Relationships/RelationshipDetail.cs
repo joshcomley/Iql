@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.Conversion;
 using Iql.Extensions;
 
 namespace Iql.Entities.Relationships
@@ -25,7 +26,8 @@ namespace Iql.Entities.Relationships
             relationshipSide)
         {
             var entityConfiguration = configuration.EntityType<T>();
-            Property = entityConfiguration.FindOrDefineProperty<TProperty>(expression, elementType, elementType.ToIqlType());
+            var property = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(expression).Expression;
+            Property = entityConfiguration.FindOrDefineProperty<TProperty>(property.PropertyName, elementType, elementType.ToIqlType());
         }
 
         public TConfigurable Configure(Action<TConfigurable> action)

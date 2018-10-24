@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Brandless.ObjectSerializer;
 using Iql.Data;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations.Results;
@@ -215,12 +216,13 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                     OutputClassFunctionsDeclared = false,
                     OutputClassInterfacesImplemented = false,
                     OutputClassNameStaticProperty = false,
-                    OutputClassPropertiesDeclared = false,
+                    OutputClassPropertiesDeclared = true,
                     OutputHardReferences = false,
                     OutputJsonClassConversion = false,
                     OutputTypeLoaded = false,
                     WriteToDisk = false,
                     NpmOutput = true,
+                    WrapGettersAndSetters = false,
                     AddUtilityFiles = false,
                     SafeCasts = false
                 };
@@ -231,6 +233,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 defaultConversionSettings.MetadataReferences.AddReference<MediaKeyBase>("@brandless/iql.entities", true);
                 defaultConversionSettings.MetadataReferences.AddReference<IqlParserRegistry>("@brandless/iql.parsing", true);
                 defaultConversionSettings.MetadataReferences.AddReference<EvaluateContext>("@brandless/iql.conversion", true);
+                var ccol = new CSharpObjectSerializer().SerializeToString(conversionCollections);
                 var result = await CSharpToTypescriptConverter.ConvertToTypeScript(
                     conversionCollections,
                     defaultConversionSettings

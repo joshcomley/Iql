@@ -5,12 +5,12 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="Brandless.Data" Version="0.0.40017-10095-0-Release" />
+        <PackageReference Include="Brandless.Data" Version="0.0.40017-10098-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.Data" Version="0.0.40017-10095-1-Debug" />
+        <PackageReference Include="Brandless.Data" Version="0.0.40017-10098-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>

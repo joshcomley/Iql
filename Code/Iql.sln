@@ -56,7 +56,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Client.ContextGenerator
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{7B747451-DBBA-4A11-BA7C-7EEE49CAFA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iql.Server.Azure", "Extensions\Iql.Server.Azure\Iql.Server.Azure.csproj", "{3358BC60-C11F-4137-A3E4-68668AFCA6D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iql.Server.Azure", "Extensions\Iql.Server.Azure\Iql.Server.Azure.csproj", "{3358BC60-C11F-4137-A3E4-68668AFCA6D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

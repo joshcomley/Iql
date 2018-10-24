@@ -93,7 +93,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             throw new NotImplementedException();
         }
 
-        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null)
+        public IProperty FindOrDefineProperty<TProperty>(string propertyName, Type elementType, IqlType? iqlType = null)
         {
             throw new NotImplementedException();
         }

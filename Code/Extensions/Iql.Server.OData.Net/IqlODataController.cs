@@ -1,28 +1,33 @@
-﻿using System;
+﻿using Brandless.Data.EntityFramework.Crud;
+using Brandless.Data.Models;
+using Iql.Entities;
+using Iql.Entities.PropertyGroups.Files;
+using Iql.Extensions;
+using Iql.Server;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
-using Brandless.Data.EntityFramework.Crud;
-using Brandless.Data.Models;
+using Brandless.AspNetCore.OData.Extensions;
+using Brandless.AspNetCore.OData.Extensions.Binding;
+using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Brandless.AspNetCore.OData.Extensions.Controllers;
 using Brandless.Data.Mptt;
-using Iql.Entities;
 using Iql.Entities.NestedSets;
-using Iql.Entities.PropertyGroups.Files;
-using Iql.Extensions;
 using Iql.Server.Extensions;
 using Iql.Server.Media;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Builder;
-using Microsoft.AspNetCore.OData.EntityFramework.Controllers;
-using Microsoft.AspNetCore.OData.Routing.Conventions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
+using Iql.Server.OData.Net;
 using PropertyKind = Iql.Entities.PropertyKind;
+using Microsoft.AspNet.OData;
+using Newtonsoft.Json;
 
-namespace Iql.Server.OData.Net
+namespace ISite.App.Web.Controllers.Api
 {
     public abstract class IqlODataController<
         TService,
@@ -38,11 +43,11 @@ namespace Iql.Server.OData.Net
         where TUser : class
         where T : class
     {
-        protected IEntityConfigurationBuilder _builder;
-        protected IMediaManager _mediaManager;
-        protected CrudManager _crudManager;
-        protected ODataMediaManager<TService> _oDataMediaManager;
-        protected EntityConfiguration<T> _entityConfiguration;
+        private IEntityConfigurationBuilder _builder;
+        private IMediaManager _mediaManager;
+        private CrudManager _crudManager;
+        private ODataMediaManager<TService> _oDataMediaManager;
+        private EntityConfiguration<T> _entityConfiguration;
 
         public EntityConfiguration<T> EntityConfiguration =>
             _entityConfiguration = _entityConfiguration ?? Builder.EntityType<T>();
@@ -56,16 +61,16 @@ namespace Iql.Server.OData.Net
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
 
-        public override async Task OnAfterPostAsync(T currentEntity, T patchEntity, JObject postedValues, JObject originalValues)
+        public override async Task OnAfterPostAsync(T postedEntity)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
                 foreach (var nestedSet in EntityConfiguration.NestedSets)
                 {
-                    await ApplyNewNestedSetItem(nestedSet, currentEntity, patchEntity, postedValues);
+                    await ApplyNewNestedSetItem(nestedSet, postedEntity);
                 }
             }
-            await base.OnAfterPostAsync(currentEntity, patchEntity, postedValues, originalValues);
+            await base.OnAfterPostAsync(postedEntity);
         }
 
         protected override async Task OnAfterDeleteAsync(KeyValuePair<string, object>[] key, T entity, DeleteActionResult result)
@@ -87,7 +92,7 @@ namespace Iql.Server.OData.Net
             return await base.DeleteEntityAsync(key, entity);
         }
 
-        protected virtual async Task<bool?> DeleteNestedSetEntriesAsync(T entity)
+        private async Task<bool?> DeleteNestedSetEntriesAsync(T entity)
         {
             bool? success = null;
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
@@ -104,19 +109,19 @@ namespace Iql.Server.OData.Net
             return success;
         }
 
-        public override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, T patchEntity, JObject postedValues, JObject originalValues)
+        public override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, Delta<T> patch)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
                 foreach (var nestedSet in EntityConfiguration.NestedSets)
                 {
-                    await ApplyExistingNestedSetItem(nestedSet, currentEntity, patchEntity, postedValues, originalValues);
+                    await ApplyExistingNestedSetItem(nestedSet, currentEntity, patch);
                 }
             }
-            await base.OnAfterPatchAsync(id, currentEntity, patchEntity, postedValues, originalValues);
+            await base.OnAfterPatchAsync(id, currentEntity, patch);
         }
 
-        protected virtual async Task<bool> ApplyDeleteNestedSetItem(INestedSet nestedSet, T entity)
+        private Task<bool> ApplyDeleteNestedSetItem(INestedSet nestedSet, T entity)
         {
             var method = typeof(IqlODataController<
                     TService,
@@ -129,11 +134,11 @@ namespace Iql.Server.OData.Net
                 nestedSet.IdProperty.TypeDefinition.Type,
                 nestedSet.ParentIdProperty.TypeDefinition.Type,
                 nestedSet.KeyProperty.TypeDefinition.Type);
-            return await (Task<bool>)genericMethod
+            return (Task<bool>)genericMethod
                 .Invoke(this, new object[] { nestedSet, entity, nestedSet.KeyProperty.GetValue(entity) });
         }
 
-        protected virtual async Task<bool> ApplyDeleteNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
+        private Task<bool> ApplyDeleteNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
             T entity,
             TTreeKey key)
@@ -152,11 +157,11 @@ namespace Iql.Server.OData.Net
                 Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(entity);
-            return await mptt.DeleteAsync((TKey)id);
+            return mptt.DeleteAsync((TKey)id);
         }
 
 
-        protected virtual async Task ApplyNewNestedSetItem(INestedSet nestedSet, T currentEntity, T patchEntity, JObject postedValues)
+        private Task ApplyNewNestedSetItem(INestedSet nestedSet, T postedEntity)
         {
             var method = typeof(IqlODataController<
                     TService,
@@ -169,11 +174,11 @@ namespace Iql.Server.OData.Net
                 nestedSet.IdProperty.TypeDefinition.Type,
                 nestedSet.ParentIdProperty.TypeDefinition.Type,
                 nestedSet.KeyProperty.TypeDefinition.Type);
-            await (Task)genericMethod
-                .Invoke(this, new object[] { nestedSet, currentEntity, patchEntity, postedValues, nestedSet.KeyProperty.GetValue(patchEntity) });
+            return (Task)genericMethod
+                .Invoke(this, new object[] { nestedSet, postedEntity, nestedSet.KeyProperty.GetValue(postedEntity) });
         }
 
-        protected virtual async Task ApplyExistingNestedSetItem(INestedSet nestedSet, T currentEntity, T patchEntity, JObject postedValues, JObject previousValues)
+        private Task ApplyExistingNestedSetItem(INestedSet nestedSet, T currentEntity, Delta<T> patch)
         {
             var method = typeof(IqlODataController<
                     TService,
@@ -186,55 +191,14 @@ namespace Iql.Server.OData.Net
                 nestedSet.IdProperty.TypeDefinition.Type,
                 nestedSet.ParentIdProperty.TypeDefinition.Type,
                 nestedSet.KeyProperty.TypeDefinition.Type);
-            await (Task)genericMethod
-                .Invoke(this, new object[] { nestedSet, currentEntity, patchEntity, postedValues, previousValues, nestedSet.KeyProperty.GetValue(patchEntity) });
+            return (Task)genericMethod
+                .Invoke(this, new object[] { nestedSet, currentEntity, patch, nestedSet.KeyProperty.GetValue(currentEntity) });
         }
 
-        protected virtual async Task ApplyExistingNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
+        private async Task ApplyExistingNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
             T currentEntity,
-            T patchEntity,
-            JObject postedValues,
-            JObject previousValues,
-            TTreeKey key)
-        {
-            var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
-                () => Data.Context,
-                key,
-                nestedSet.LeftProperty.PropertyName,
-                nestedSet.RightProperty.PropertyName,
-                nestedSet.LeftOfProperty.PropertyName,
-                nestedSet.RightOfProperty.PropertyName,
-                nestedSet.IdProperty.PropertyName,
-                nestedSet.ParentIdProperty.PropertyName,
-                nestedSet.LevelProperty.PropertyName,
-                nestedSet.KeyProperty.PropertyName,
-                Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
-            );
-            var id = nestedSet.IdProperty.GetValue(patchEntity);
-            var parentId = nestedSet.ParentIdProperty.GetValue(patchEntity);
-            var leftOf = nestedSet.LeftOfProperty.GetValue(patchEntity);
-            var rightOf = nestedSet.RightOfProperty.GetValue(patchEntity);
-            if (!Equals(leftOf, null))
-            {
-                await mptt.MoveToAsync((TKey)id, (TNullableKey)leftOf, NodeMoveKind.Left);
-            }
-            else if (!Equals(rightOf, null))
-            {
-                await mptt.MoveToAsync((TKey)id, (TNullableKey)rightOf, NodeMoveKind.Right);
-            }
-            else if (!Equals(previousValues.GetValue(nestedSet.ParentIdProperty.PropertyName),
-                parentId) && postedValues.ContainsKey(nestedSet.ParentIdProperty.PropertyName))
-            {
-                await mptt.MoveToAsync((TKey)id, (TNullableKey)parentId, NodeMoveKind.Beneath);
-            }
-        }
-
-        protected virtual async Task ApplyNewNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
-            INestedSet nestedSet,
-            T currentEntity,
-            T patchEntity,
-            JObject postedValues,
+            Delta<T> patch,
             TTreeKey key)
         {
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
@@ -251,9 +215,48 @@ namespace Iql.Server.OData.Net
                 Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(currentEntity);
-            var parentId = nestedSet.ParentIdProperty.GetValue(patchEntity);
-            var leftOf = nestedSet.LeftOfProperty.GetValue(patchEntity);
-            var rightOf = nestedSet.RightOfProperty.GetValue(patchEntity);
+            var parentId = nestedSet.ParentIdProperty.GetValue(currentEntity);
+            var leftOf = nestedSet.LeftOfProperty.GetValue(currentEntity);
+            var rightOf = nestedSet.RightOfProperty.GetValue(currentEntity);
+            if (!Equals(leftOf, null))
+            {
+                await mptt.MoveToAsync((TKey)id, (TNullableKey)leftOf, NodeMoveKind.Left);
+            }
+            else if (!Equals(rightOf, null))
+            {
+                await mptt.MoveToAsync((TKey)id, (TNullableKey)rightOf, NodeMoveKind.Right);
+            }
+            else if (patch.TryGetPropertyValue(nestedSet.ParentIdProperty.PropertyName, out var value))
+            {
+                if (!Equals(value, parentId))
+                {
+                    await mptt.MoveToAsync((TKey)id, (TNullableKey)parentId, NodeMoveKind.Beneath);
+                }
+            }
+        }
+
+        private async Task ApplyNewNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
+            INestedSet nestedSet,
+            T postedEntity,
+            TTreeKey key)
+        {
+            var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
+                () => Data.Context,
+                key,
+                nestedSet.LeftProperty.PropertyName,
+                nestedSet.RightProperty.PropertyName,
+                nestedSet.LeftOfProperty.PropertyName,
+                nestedSet.RightOfProperty.PropertyName,
+                nestedSet.IdProperty.PropertyName,
+                nestedSet.ParentIdProperty.PropertyName,
+                nestedSet.LevelProperty.PropertyName,
+                nestedSet.KeyProperty.PropertyName,
+                Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
+            );
+            var id = nestedSet.IdProperty.GetValue(postedEntity);
+            var parentId = nestedSet.ParentIdProperty.GetValue(postedEntity);
+            var leftOf = nestedSet.LeftOfProperty.GetValue(postedEntity);
+            var rightOf = nestedSet.RightOfProperty.GetValue(postedEntity);
             if (!Equals(leftOf, null))
             {
                 await mptt.InsertToLeftOfAsync((TKey)id, (TKey)leftOf);
@@ -268,16 +271,16 @@ namespace Iql.Server.OData.Net
             }
         }
 
-        public override async Task OnBeforePostAndPatchAsync(T currentEntity, T patchEntity, JObject postedValues, JObject originalValues)
+        protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
         {
             KeyValuePair<string, object>[] entityKey = null;
             foreach (var property in EntityConfiguration.Properties)
             {
                 if (property.InferredWith != null)
                 {
-                    entityKey = entityKey ?? CrudManager.EntityKey(patchEntity);
+                    entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
                     var path = IqlPropertyPath.FromLambdaExpression(property.InferredWith, property.EntityConfiguration);
-                    var value = await ProcessPropertyPathAsync(currentEntity, patchEntity, path, postedValues);
+                    var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
                     //postedValues[property.Name] = new JObject(value);
                     if (property.Kind.HasFlag(PropertyKind.Primitive))
                     {
@@ -287,7 +290,8 @@ namespace Iql.Server.OData.Net
                         {
                             value = value.ToString();
                         }
-                        property.SetValue(patchEntity, value);
+
+                        patch?.TrySetPropertyValue(property.Name, value);
                         property.SetValue(currentEntity, value);
                     }
                     if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
@@ -297,7 +301,7 @@ namespace Iql.Server.OData.Net
                         {
                             //postedValues[constraint.Name] = new JValue(constraint.Value);
                             currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
-                            patchEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
+                            patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
                         }
                     }
                 }
@@ -307,34 +311,53 @@ namespace Iql.Server.OData.Net
             {
                 foreach (var file in EntityConfiguration.Files)
                 {
-                    if (file.VersionProperty != null && postedValues.ContainsKey(file.VersionProperty.Name))
+                    if (file.VersionProperty != null &&
+                        (
+                            (patch == null && !Equals(null,
+                                 currentEntity.GetPropertyValueByName(file.VersionProperty.PropertyName)))
+                            ||
+                            (patch != null && patch.GetChangedPropertyNames().Contains(file.VersionProperty.Name))
+                        )
+                    )
                     {
-                        UpdateFileUrlWithVersion(currentEntity, patchEntity, (IFileUrl<T>)file);
+                        UpdateFileUrlWithVersion(currentEntity, patch, (IFileUrl<T>)file);
                     }
                 }
             }
-            await base.OnBeforePostAndPatchAsync(currentEntity, patchEntity, postedValues, originalValues);
+            await base.OnBeforePostAndPatchAsync(currentEntity, patch);
         }
 
-        protected static void UpdateFileUrlWithVersion(T currentEntity, T patchEntity, IFileUrl<T> file)
+        private static void UpdateFileUrlWithVersion(T currentEntity, Delta<T> patch, IFileUrl<T> file)
         {
             var url = (string)file.UrlProperty.GetValue(currentEntity);
             if (!string.IsNullOrWhiteSpace(url))
             {
                 var uriBuilder = new UriBuilder(url);
+                string version = null;
+                if (patch == null)
+                {
+                    version = (string)file.RootFile.VersionProperty.GetValue(currentEntity);
+                }
+                else
+                {
+                    if (patch.TryGetPropertyValue(file.RootFile.VersionProperty.PropertyName, out var v))
+                    {
+                        version = (string)v;
+                    }
+                }
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-                query[$"iql_{file.UrlProperty.PropertyName}_{file.RootFile.VersionProperty.PropertyName}"] =
-                    (string)file.RootFile.VersionProperty.GetValue(patchEntity);
+                query[$"iql_{file.UrlProperty.PropertyName}_{file.RootFile.VersionProperty.PropertyName}"] = version;
                 uriBuilder.Query = query.ToString();
                 url = uriBuilder.ToString();
-                file.UrlProperty.SetValue(patchEntity, url);
+                patch.TrySetPropertyValue(file.UrlProperty.PropertyName, url);
                 file.UrlProperty.SetValue(currentEntity, url);
             }
         }
 
-        protected virtual async Task<object> ProcessPropertyPathAsync(T currentEntity, T patchEntity, IqlPropertyPath path, JObject postedValues)
+        private async Task<object> ProcessPropertyPathAsync(T currentEntity, Delta<T> patch, IqlPropertyPath path)
         {
-            JToken currentPostedValues = postedValues;
+            var patchEntity = patch == null ? currentEntity : patch.GetInstance();
+            JToken currentPostedValues = JObject.FromObject(patchEntity);
             object current = null;
             foreach (var pathPart in path.PropertyPath)
             {
@@ -411,7 +434,41 @@ namespace Iql.Server.OData.Net
             return current;
         }
 
-        public override async Task OnAfterPostAndPatchAsync(T currentEntity, T patchEntity, JObject postedValues, JObject originalValues)
+        private bool HasChangedPropertyValue(T entity, Delta<T> patch, string propertyName)
+        {
+            if (patch == null)
+            {
+                return HasPostedPropertyValue(entity, patch, propertyName);
+            }
+
+            if (patch.TryGetPropertyValue(propertyName, out var newValue))
+            {
+                return !Equals(newValue, entity.GetPropertyValueByName(propertyName));
+            }
+
+            return false;
+        }
+
+        private bool HasPostedPropertyValue(T entity, Delta<T> patch, string propertyName)
+        {
+            return !Equals(null, PostedPropertyValue(entity, patch, propertyName));
+        }
+
+        private object PostedPropertyValue(T entity, Delta<T> patch, string propertyName)
+        {
+            if (patch == null)
+            {
+                return entity.GetPropertyValueByName(propertyName);
+            }
+
+            if (patch.TryGetPropertyValue(propertyName, out var r))
+            {
+                return r;
+            }
+
+            return null;
+        }
+        protected override async Task OnAfterPostAndPatchAsync(T currentEntity, Delta<T> patch)
         {
             // Download the file, generate thumbnail, update preview URL, delete file
             // Enqueue a worker item
@@ -422,20 +479,14 @@ namespace Iql.Server.OData.Net
                 var file = (File<T>)file_;
                 if (file.MediaKey != null)
                 {
-                    entityKey = entityKey ?? CrudManager.EntityKey(patchEntity);
+                    entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
                     var populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
                     var revisionKeysForMediaProperty =
                         file.VersionProperty;
                     var requiresNewPreviews = false;
-                    if (revisionKeysForMediaProperty != null && postedValues.ContainsKey(revisionKeysForMediaProperty.Name))
+                    if (revisionKeysForMediaProperty != null && HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName))
                     {
-                        if (originalValues.TryGetValue(revisionKeysForMediaProperty.Name, out var originalVersion))
-                        {
-                            if (!Equals(originalVersion, revisionKeysForMediaProperty.GetValue(patchEntity)))
-                            {
-                                requiresNewPreviews = true;
-                            }
-                        }
+                        requiresNewPreviews = true;
                     }
                     // TODO: Only refresh previews if file version has changed
                     if (requiresNewPreviews)
@@ -456,23 +507,23 @@ namespace Iql.Server.OData.Net
                             // Should be preview
                             await MediaManager.DeleteAsync(populatedEntity, filePreview);
                             await EnqueueThumbnailRequest(sourceUrl, targetUrl);
-                            UpdateFileUrlWithVersion(currentEntity, patchEntity, filePreview);
+                            UpdateFileUrlWithVersion(currentEntity, patch, filePreview);
                         }
                     }
                 }
             }
-            await base.OnAfterPostAndPatchAsync(currentEntity, patchEntity, postedValues, originalValues);
+            await base.OnAfterPostAndPatchAsync(currentEntity, patch);
         }
 
         protected abstract Task EnqueueThumbnailRequest(string sourceUrl, string targetUrl);
 
         [ODataGenericFunction(ForTypeTypeParameterName = nameof(T), BindingName = "keys")]
-        public virtual async Task<string> GetMediaUploadUrl(
+        public virtual Task<string> GetMediaUploadUrl(
             [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys,
             [FromRoute]string property
             )
         {
-            return await GetMediaUrl(keys, Builder.EntityType<T>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
+            return GetMediaUrl(keys, Builder.EntityType<T>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
         }
 
         public async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<T> propertyMetadata, MediaAccessKind mediaAccessKind,
@@ -481,6 +532,7 @@ namespace Iql.Server.OData.Net
             var file = (File<T>)propertyMetadata.File;
             var populatedEntity = await PreloadMediaKeyDependenciesAsync(keys, file);
             var oldValue = propertyMetadata.GetValue(populatedEntity) as string;
+            lifetime = TimeSpan.FromDays(1);
             var newUrl = await MediaManager.GetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
             var newValue = propertyMetadata.GetValue(populatedEntity) as string;
             if (oldValue != newValue)
@@ -490,21 +542,18 @@ namespace Iql.Server.OData.Net
             return newUrl;
         }
 
-        public virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, T entity)
+        public virtual Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, T entity)
         {
-            if (MediaManager != null)
-            {
-                await MediaManager.DeleteAssociatedMediaAsync(entity, Builder);
-            }
+            return MediaManager.DeleteAssociatedMediaAsync(entity, Builder);
         }
 
-        protected virtual async Task<T> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,
+        protected virtual Task<T> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,
             IFileUrl<T> file)
         {
-            return await ODataMediaManager.PreloadMediaKeyDependenciesAsync<T>(key, file);
+            return ODataMediaManager.PreloadMediaKeyDependenciesAsync<T>(key, file);
         }
 
-        public virtual async Task<T> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,
+        public virtual Task<T> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,
             IqlPropertyPath path)
         {
             var query = CrudManager.FindQuery<T>(key);
@@ -515,7 +564,7 @@ namespace Iql.Server.OData.Net
             }
             var where = CrudManager.KeyEqualsExpression<T>(key);
             var finalQuery = query.Where(where);
-            return await finalQuery.SingleOrDefaultAsync();
+            return finalQuery.SingleOrDefaultAsync();
         }
 
         public override async Task<bool> ValidateEntityAsync<TEntity>(TEntity entity, string path, bool isValid, string accessor)

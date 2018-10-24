@@ -95,7 +95,7 @@ namespace Iql.Entities
 
         public new DisplayFormatting<T> DisplayFormatting
         {
-            get => (DisplayFormatting<T>) base.DisplayFormatting;
+            get => (DisplayFormatting<T>)base.DisplayFormatting;
             set => base.DisplayFormatting = value;
         }
 
@@ -343,7 +343,7 @@ namespace Iql.Entities
         }
 
         private IProperty FindOrDefinePropertyInternal(
-            LambdaExpression lambda,
+            string propertyName,
             Type propertyType,
             Type elementType,
             IqlType? iqlType)
@@ -353,30 +353,30 @@ namespace Iql.Entities
                 .First(m => m.Name == nameof(FindOrDefineProperty))
                 .InvokeGeneric(this, new object[]
                 {
-                    lambda,
+                    propertyName,
                     elementType,
                     iqlType
                 }, propertyType);
         }
 
-        public IProperty FindOrDefineProperty<TProperty>(LambdaExpression lambda, Type elementType, IqlType? iqlType)
+        public IProperty FindOrDefineProperty<TProperty>(string propertyName, Type elementType, IqlType? iqlType)
         {
             //Expression.Lambda()
-            var expression = CastLambda<TProperty>(lambda);
-            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(expression).Expression;
-            var property = FindProperty(iql.PropertyName);
+            var expression = CastLambda<TProperty>(GetLambdaExpression<T>(propertyName));
+            var property = FindProperty(propertyName);
             if (property == null)
             {
                 if (typeof(TProperty).IsEnumerableType())
                 {
                     InvokeDefineCollectionPropertyInternal<TProperty>(
-                        typeof(T).GetProperty(iql.PropertyName).PropertyType, elementType, lambda, null);
+                        typeof(T).GetProperty(propertyName).PropertyType, elementType, propertyName, null);
                 }
                 else
                 {
-                    DefineProperty(expression, true, iqlType);
+                    DefineAndGetPropertyInternal(propertyName, expression, null, true, iqlType);
+                    //DefineProperty(expression, true, iqlType);
                 }
-                property = FindProperty(iql.PropertyName);
+                property = FindProperty(propertyName);
             }
             return property;
         }
@@ -393,7 +393,7 @@ namespace Iql.Entities
         public IProperty FindOrDefinePropertyByName(string name, Type elementType)
         {
             var property = typeof(T).GetProperty(name);
-            return FindOrDefinePropertyInternal(GetLambdaExpression<T>(property.Name), property.PropertyType ?? elementType, property.PropertyType ?? elementType, null);
+            return FindOrDefinePropertyInternal(property.Name, property.PropertyType ?? elementType, property.PropertyType ?? elementType, null);
         }
 
         public PropertyPath PropertyPath(Expression<Func<T, object>> expression, string key = null)
@@ -418,8 +418,9 @@ namespace Iql.Entities
 
         public IEntityProperty<T> FindProperty(string name)
         {
-            return (IEntityProperty<T>)Properties.SingleOrDefault(p => p.Name.ToLower() == name.ToLower());
+            return (IEntityProperty<T>)Properties.SingleOrDefault(p => p.PropertyName.ToLower() == name.ToLower());
         }
+
         IProperty IEntityConfiguration.FindProperty(string name)
         {
             return FindProperty(name);
@@ -499,7 +500,7 @@ namespace Iql.Entities
                 var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
                 var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
-                Key.AddProperty(FindOrDefinePropertyInternal(GetLambdaExpression<T>(iql.PropertyName), propertyType, propertyType, null));
+                Key.AddProperty(FindOrDefinePropertyInternal(iql.PropertyName, propertyType, propertyType, null));
             }
             return this;
         }
@@ -531,7 +532,16 @@ namespace Iql.Entities
             return this;
         }
 
-        public IEntityProperty<T> DefineAndGetProperty<TProperty>(Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
+        public IEntityProperty<T> DefineAndGetProperty<TProperty>(Expression<Func<T, TProperty>> property,
+            string convertedFromType, bool nullable = true,
+            IqlType? iqlType = null)
+        {
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
+            var name = iql.PropertyName;
+            return DefineAndGetPropertyInternal(name, property, convertedFromType, nullable, iqlType);
+        }
+
+        public IEntityProperty<T> DefineAndGetPropertyInternal<TProperty>(string name, Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
 #if !TypeScript
@@ -540,8 +550,6 @@ namespace Iql.Entities
                 throw new Exception($"Please use {nameof(DefineCollectionProperty)} to define collection properties.");
             }
 #endif
-            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
-            var name = iql.PropertyName;
             var definition = FindProperty(name) as Property<T, TProperty, TProperty>
                              ?? new Property<T, TProperty, TProperty>(
                                  this,
@@ -578,7 +586,7 @@ namespace Iql.Entities
                 definition.Relationship = relationship;
             }
 
-            TrySetKey(iql.PropertyName);
+            TrySetKey(name);
 
             if (definition.Kind == 0)
             {
@@ -611,7 +619,7 @@ namespace Iql.Entities
             string key = null
             )
         {
-            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
+            var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
             var validationCollection = (ValidationCollection<T>)propertyDefinition.ValidationRules;
             validationCollection.Add(new ValidationRule<T>(validation, key, message));
             return this;
@@ -625,7 +633,7 @@ namespace Iql.Entities
             DisplayRuleKind kind = DisplayRuleKind.DisplayIf,
             DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
         {
-            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
+            var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
             var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
             var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
             rule.AppliesToKind = appliesToKind;
@@ -649,7 +657,7 @@ namespace Iql.Entities
             string key = null,
             string message = null)
         {
-            var propertyDefinition = FindOrDefineProperty<TProperty>(property, typeof(TProperty), null);
+            var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
             AddRelationshipFilterRule(filterRule, propertyDefinition, key, message);
             return this;
         }
@@ -660,9 +668,14 @@ namespace Iql.Entities
             string key = null,
             string message = null)
         {
-            var propertyDefinition = FindOrDefineProperty<IEnumerable<TProperty>>(property, typeof(TProperty), null);
+            var propertyDefinition = FindOrDefineProperty<IEnumerable<TProperty>>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
             AddRelationshipFilterRule(filterRule, propertyDefinition, key, message);
             return this;
+        }
+
+        private IqlPropertyExpression ResolvePropertyIql(LambdaExpression property)
+        {
+            return IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property).Expression;
         }
 
         public EntityConfiguration<T> DefineProperty<TProperty>(
@@ -686,15 +699,14 @@ namespace Iql.Entities
 #if TypeScript
             propertyRuntimeType = typeof(TProperty);
 #endif
-            var lambda = GetLambdaExpression<T>(propertyName);
-            InvokeDefineCollectionPropertyInternal<TProperty>(propertyRuntimeType, typeof(TProperty), lambda, countProperty);
+            InvokeDefineCollectionPropertyInternal<TProperty>(propertyRuntimeType, typeof(TProperty), propertyName, countProperty);
             return this;
         }
 
         private void InvokeDefineCollectionPropertyInternal<TProperty>(
             Type propertyRuntimeType,
             Type elementType,
-            LambdaExpression lambda,
+            string propertyName,
             Expression<Func<T, long?>> countProperty = null)
         {
             var propertyType = typeof(TProperty);
@@ -714,17 +726,22 @@ namespace Iql.Entities
                 .InvokeGeneric(this,
                     new object[]
                     {
-                        lambda, countProperty
+                        propertyName, countProperty
                     },
                     propertyRuntimeType, propertyType);
         }
 
         private EntityConfiguration<T> DefineCollectionPropertyInternal<TValueType, TElementType>(
-            Expression<Func<T, TValueType>> property,
+            string propertyName,
             Expression<Func<T, long?>> countProperty = null
         )
         {
-            var collection = MapProperty<TElementType, TValueType>(property, true, null, IqlType.Collection, null);
+#if TypeScript
+            Expression<Func<T, TValueType>> property = _ => _.GetPropertyValueByNameAs<TValueType>(propertyName);
+#else
+            var property = CastLambda<TValueType>(GetLambdaExpression<T>(propertyName));
+#endif
+            var collection = MapProperty<TElementType, TValueType>(propertyName, property, true, null, IqlType.Collection, null);
             IProperty countDefinition = null;
             if (countProperty != null)
             {
@@ -732,7 +749,7 @@ namespace Iql.Entities
                 var countPropertyDefinition = typeof(T).GetProperty(countPropertyIql.PropertyName);
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {
-                    countDefinition = MapProperty<long?, long?>(countProperty, false, true, IqlType.Integer, collection);
+                    countDefinition = MapProperty<long?, long?>(propertyName + "Count", countProperty, false, true, IqlType.Integer, collection);
                     countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
                     countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
                 }
@@ -741,8 +758,8 @@ namespace Iql.Entities
                     var lambdaExpression = GetLambdaExpression<T>(countPropertyIql.PropertyName);
                     if (countPropertyDefinition.PropertyType == typeof(Int32))
                     {
-                        var lambda = (Expression<Func<T, int>>)lambdaExpression;
-                        countDefinition = MapProperty<int, int>(lambda, false, true, IqlType.Integer, collection);
+                        var lambda = (Expression<Func<T, int>>)CastLambda<int>(lambdaExpression);
+                        countDefinition = MapProperty<int, int>(propertyName + "Count", lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
@@ -750,8 +767,8 @@ namespace Iql.Entities
                     }
                     else
                     {
-                        var lambda = (Expression<Func<T, long>>)lambdaExpression;
-                        countDefinition = MapProperty<long, long>(lambda, false, true, IqlType.Integer, collection);
+                        var lambda = (Expression<Func<T, long>>)CastLambda<long>(lambdaExpression);
+                        countDefinition = MapProperty<long, long>(propertyName + "Count", lambda, false, true, IqlType.Integer, collection);
                         countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
@@ -765,27 +782,30 @@ namespace Iql.Entities
 
         private static LambdaExpression GetLambdaExpression<TOwner>(string propertyName)
         {
+            //return (Expression<Func<TOwner, object>>)(_ => _.GetPropertyValueByName(propertyName));
+#if TypeScript
+            return (Expression<Func<TOwner, object>>)(_ => _.GetPropertyValueByName(propertyName));
+#else
             var param = Expression.Parameter(typeof(TOwner), "o");
             var lambda = Expression.Lambda(Expression.Property(param, propertyName), param);
             return lambda;
+#endif
         }
 
         private Property<T, TPropertyType, TElementType> MapProperty<TElementType, TPropertyType>(
+            string propertyName,
             Expression<Func<T, TPropertyType>> property,
             bool isCollection,
             bool? readOnly,
             IqlType kind,
             IProperty countRelationship)
         {
-            var iql =
-                IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
-            var name = iql.PropertyName;
-            var definition = FindProperty(name) as Property<T, TPropertyType, TElementType>;
+            var definition = FindProperty(propertyName) as Property<T, TPropertyType, TElementType>;
             if (definition == null)
             {
                 definition = new Property<T, TPropertyType, TElementType>(
                     this,
-                    name,
+                    propertyName,
                     false,
                     isCollection,
                     typeof(T),
@@ -799,7 +819,7 @@ namespace Iql.Entities
             {
                 definition.ConfigureProperty(
                     this,
-                    name,
+                    propertyName,
                     false,
                     isCollection,
                     typeof(T),
@@ -814,7 +834,7 @@ namespace Iql.Entities
             if (!Properties.Contains(definition))
             {
                 Properties.Add(definition);
-                _propertiesMap[name] = definition;
+                _propertiesMap[propertyName] = definition;
             }
             EntityConfigurationRelationshipHelper.TryAssignRelationshipToPropertyDefinition(this, definition);
             return definition;

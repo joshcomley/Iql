@@ -40,7 +40,10 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     //GenerateWithSettings(isiteUrl, OutputType.CSharp, @"D:\Code\i-site\Code\Api\src\ISite.App.Data\", @"IqlContext", isiteSettings);
                     break;
                 case "isite":
-                    await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Web\", @"D:\Code\i-site\Code\Web\ClientApp\", @"app\generated\DataContext");
+                    // D:\Code\Playgrounds\lazyNinjas
+                    await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
+                    //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
+                    //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Web\", @"D:\Code\i-site\Code\Web\ClientApp\", @"app\generated\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;
                     //isiteSettings.GenerateEntities = false;
@@ -100,11 +103,11 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             }
         }
 
-        private static async Task GenerateAsync(string odataSchemaUrl, OutputType outputType, string applicationRoot, string applicationPath, string outputSubFolder = null, Func<string, string> nameMapper = null, string @namespace = null, string iqlSchemaUrl = null)
+        private static Task GenerateAsync(string odataSchemaUrl, OutputType outputType, string applicationRoot, string applicationPath, string outputSubFolder = null, Func<string, string> nameMapper = null, string @namespace = null, string iqlSchemaUrl = null)
         {
-            await GenerateWithSettingsAsync(odataSchemaUrl, outputType, applicationRoot, applicationPath, outputSubFolder, new GeneratorSettings(@namespace, nameMapper), iqlSchemaUrl);
+            return GenerateWithSettingsAsync(odataSchemaUrl, outputType, applicationRoot, applicationPath, outputSubFolder, new GeneratorSettings(@namespace, nameMapper), iqlSchemaUrl);
         }
-        private static async Task GenerateWithSettingsAsync(string odataSchemaUrl, OutputType outputType, string applicationRoot, string applicationPath, string outputSubFolder = null, GeneratorSettings settings = null, string iqlSchemaUrl = null)
+        private static Task GenerateWithSettingsAsync(string odataSchemaUrl, OutputType outputType, string applicationRoot, string applicationPath, string outputSubFolder = null, GeneratorSettings settings = null, string iqlSchemaUrl = null)
         {
             settings = settings ?? new GeneratorSettings(null, null);
             var generator = new ODataDataContextGenerator(
@@ -116,7 +119,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                 settings,
                 Path.GetFullPath(Path.Combine(applicationPath, "../node_modules")));
             generator.NameMapper = settings.NameMapper;
-            await generator
+            return generator
                 .GenerateDataContextAsync(outputType);
         }
     }

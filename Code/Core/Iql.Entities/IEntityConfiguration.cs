@@ -39,7 +39,7 @@ namespace Iql.Entities
         IEntityConfiguration SetGeographyResolver(Func<object, Task<Geography.Geography>> expression);
         Task<Geography.Geography> ResolveGeographyAsync(object entity);
         Type Type { get; }
-        IProperty FindOrDefineProperty<TProperty>(LambdaExpression expression, Type elementType, IqlType? iqlType = null);
+        IProperty FindOrDefineProperty<TProperty>(string propertyName, Type elementType, IqlType? iqlType = null);
         IProperty FindNestedProperty(string name);
         IProperty FindProperty(string name);
         IProperty FindOrDefinePropertyByName(string name, Type elementType);

@@ -91,6 +91,7 @@ namespace Iql.Data.Context
                 EntityConfigurationContext = EntityConfigurationsBuilders[thisType];
                 _initialized = true;
                 InitializeProperties();
+                InitializeSetNames();
             }
         }
 
@@ -101,8 +102,8 @@ namespace Iql.Data.Context
                 _initialized = true;
                 Configure(EntityConfigurationContext);
                 InitializeProperties();
+                InitializeSetNames();
             }
-            InitializeSetNames();
         }
 
         private void InitializeSetNames()
@@ -265,6 +266,10 @@ namespace Iql.Data.Context
             {
                 foreach (var property in GetType().GetRuntimeProperties())
                 {
+                    if (!property.GetMethod.IsPublic)
+                    {
+                        continue;
+                    }
                     var value = this.GetPropertyValueByName(property.Name);
                     if (value is IDbQueryable)
                     {
@@ -391,17 +396,22 @@ namespace Iql.Data.Context
                 this);
         }
 
+        private Func<IDataStore> _dataStoreGetter = null;
         public TDbSet AsCustomDbSet<T, TKey, TDbSet>()
             where T : class
         {
             Initialize();
-            Func<IDataStore> dataStoreGetter = () => DataStore;
+            if (_dataStoreGetter == null)
+            {
+                Func<IDataStore> dataStoreGetter = () => DataStore;
+                _dataStoreGetter = dataStoreGetter;
+            }
             return (TDbSet)Activator.CreateInstance(
                 typeof(TDbSet),
                 new object[]
                 {
                     EntityConfigurationContext,
-                    dataStoreGetter,
+                    _dataStoreGetter,
                     EvaluateContext,
                     this
 #if TypeScript

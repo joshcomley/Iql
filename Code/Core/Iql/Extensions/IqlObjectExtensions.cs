@@ -33,16 +33,18 @@ namespace Iql.Extensions
             return (T)obj.GetPropertyValueByName(propertyName);
         }
 
-        public static void SetPropertyValueByName<T>(this T obj, string propertyName, object value)
+        public static object SetPropertyValueByName<T>(this T obj, string propertyName, object value)
         {
             if (obj is JToken)
             {
-                (obj as JToken)[propertyName] = (JToken) ((value is JToken) ? value : new JValue(value));
+                (obj as JToken)[propertyName] = (JToken)((value is JToken) ? value : new JValue(value));
             }
             else
             {
                 obj.GetType().GetRuntimeProperty(propertyName).SetValue(obj, value);
             }
+
+            return value;
         }
     }
 }

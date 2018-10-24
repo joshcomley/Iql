@@ -20,6 +20,15 @@ namespace Iql.Tests.Tests.OData
     public class ODataUriTests : TestsBase
     {
         [TestMethod]
+        public async Task TestCountNotSubmittedOnSingleEntity()
+        {
+            var query = Db.ApplicationLogs.IncludeCount().WithKey(new Guid("4e9dcf61-4abf-458e-abfc-07c20d5ef248"));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/ApplicationLogs(4e9dcf61-4abf-458e-abfc-07c20d5ef248)", uri);
+        }
+
+        [TestMethod]
         public async Task TestGetGuidKey()
         {
             var query = Db.ApplicationLogs.WithKey(new Guid("4e9dcf61-4abf-458e-abfc-07c20d5ef248"));

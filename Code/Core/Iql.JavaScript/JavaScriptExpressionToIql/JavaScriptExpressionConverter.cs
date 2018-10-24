@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Iql.Conversion;
 using Iql.Entities;
 using Iql.Extensions;
@@ -21,7 +22,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
-        public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambda
+        protected override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlInternal<TEntity>(LambdaExpression lambda
 #if TypeScript
                 , EvaluateContext evaluateContext = null
 #endif
@@ -133,34 +134,34 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public static MethodInfo ConvertLambdaToIqlMethod { get; set; }
 
-        public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
-        {
-            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
-                .InvokeGeneric(this, new object[]
-                {
-                    filter
-#if TypeScript
-                    , evaluateContext
-#endif
-                }, entityType);
-        }
+//        public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
+//#if TypeScript
+//            , EvaluateContext evaluateContext = null
+//#endif
+//        )
+//        {
+//            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
+//                .InvokeGeneric(this, new object[]
+//                {
+//                    filter
+//#if TypeScript
+//                    , evaluateContext
+//#endif
+//                }, entityType);
+//        }
 
-        public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        ) where TEntity : class
-        {
-            return ConvertLambdaExpressionToIql<TEntity>(filter
-#if TypeScript
-                , evaluateContext
-#endif
-            );
-        }
+//        public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter
+//#if TypeScript
+//            , EvaluateContext evaluateContext = null
+//#endif
+//        ) where TEntity : class
+//        {
+//            return ConvertLambdaExpressionToIql<TEntity>(filter
+//#if TypeScript
+//                , evaluateContext
+//#endif
+//            );
+//        }
 
         public virtual IExpressionParseResultBase ParseJavaScriptExpressionTree(
             JavaScriptExpressionNode expression,

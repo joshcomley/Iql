@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Iql.Extensions;
+using Iql.Serialization;
+using Newtonsoft.Json;
 
 #if TypeScript
 using Iql.Parsing;
@@ -11,13 +15,13 @@ namespace Iql.Conversion
 {
     public abstract class ExpressionConverterBase : IExpressionConverter
     {
-//        public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
-//#if TypeScript
-//            , EvaluateContext evaluateContext
-//#endif
-//        ) where TEntity : class;
+        //        public abstract ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(QueryExpression filter
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext
+        //#endif
+        //        ) where TEntity : class;
 
-        public abstract ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambda
+        protected abstract ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlInternal<TEntity>(LambdaExpression lambda
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
@@ -31,8 +35,75 @@ namespace Iql.Conversion
 
         public static MethodInfo ConvertLambdaToIqlInternalMethod { get; set; }
 
+        private static readonly string[] LambdaRegexes = new[]
+        {
+#if TypeScript
+            @"^function\s*\(([A-Za-z_][A-Za-z0-9_]*)\)\s*{\s*return\s+\1\.([A-Za-z0-9_\.]+);\s*}$",
+            //@"^function\s+\(([A-Za-z_][A-Za-z0-9_]{0,})\)\s+\{\s+return\s+\1\.([^;]+);\s+\}$",
+#endif
+            @"^([A-Za-z_][A-Za-z0-9_]{0,})\s+\=\>\s+\1\.([A-Za-z_][A-Za-z0-9_]{0,})+$"
+        };
+        private static readonly Dictionary<string, Match> PropertyLambdaConversionCache = new Dictionary<string, Match>();
+        public virtual ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        ) where TEntity : class
+        {
+            var input = expression.ToString().Trim();
+            var key = input + typeof(TEntity).Name;
+            Match match = null;
+            if (PropertyLambdaConversionCache.ContainsKey(key))
+            {
+                match = PropertyLambdaConversionCache[key];
+            }
+            else
+            {
+                for (var i = 0; i < LambdaRegexes.Length; i++)
+                {
+                    var regex = new Regex(LambdaRegexes[i]);
+                    var m = regex.Match(input);
+
+#if TypeScript
+                    if (m != null && m.Groups[2] != null)
+#else
+                    if (m.Groups[2].Success)
+#endif
+                    {
+                        match = m;
+                        break;
+                    }
+                }
+                PropertyLambdaConversionCache.Add(key, match);
+            }
+
+            if (match != null)
+            {
+                IqlPropertyExpression property = null;
+                var parts = match.Groups[2].Value.Split('.');
+                var iqlRootReferenceExpression = new IqlRootReferenceExpression(match.Groups[1].Value);
+                iqlRootReferenceExpression.EntityTypeName = typeof(TEntity).Name;
+                for (var j = 0; j < parts.Length; j++)
+                {
+                    var part = parts[j];
+                    property = new IqlPropertyExpression(part, (IqlReferenceExpression)property ?? iqlRootReferenceExpression);
+                }
+
+                var l = new IqlLambdaExpression(IqlType.Unknown, property);
+                l.Parameters.Add(iqlRootReferenceExpression);
+                return new ExpressionResult<IqlExpression>(l);
+            }
+
+            var result = ConvertLambdaExpressionToIqlInternal<TEntity>(expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+            return result;
+        }
+
         public virtual ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(
-            LambdaExpression lambda, 
+            LambdaExpression lambda,
             Type entityType
 #if TypeScript
             , EvaluateContext evaluateContext

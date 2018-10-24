@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Entities.ValueResolvers;
+using Iql.Extensions;
 
 namespace Iql.Entities
 {
@@ -16,6 +17,9 @@ namespace Iql.Entities
         where TOwner : class
     {
         private Dictionary<string, object> _customInformation;
+        private Expression<Func<TOwner, TProperty, TProperty>> _propertySetterExpressionTyped;
+        private Func<TOwner, TProperty, TProperty> _propertySetterTyped;
+
         public Property(
             IEntityConfiguration entityConfiguration,
             string name,
@@ -92,8 +96,6 @@ namespace Iql.Entities
                 return value;
             };
 
-            PropertySetterExpressionTyped = GetAssignmentLambda<TOwner, TProperty>(name);
-            PropertySetterTyped = PropertySetterExpressionTyped.Compile();
             SetValue = (o, v) => PropertySetterTyped((TOwner)o, (TProperty)v);
         }
 
@@ -119,9 +121,15 @@ namespace Iql.Entities
         }
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
-        public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped { get; set; }
+
+        public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped => 
+            _propertySetterExpressionTyped = _propertySetterExpressionTyped ?? GetAssignmentLambda<TOwner, TProperty>(PropertyName);
+
         public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
-        public Func<TOwner, TProperty, TProperty> PropertySetterTyped { get; set; }
+
+        public Func<TOwner, TProperty, TProperty> PropertySetterTyped => 
+            _propertySetterTyped = _propertySetterTyped ?? PropertySetterExpressionTyped.Compile();
+
         public override Func<object, object> GetValue { get; set; }
         public override Func<object, object, object> SetValue { get; set; }
 
@@ -179,10 +187,16 @@ namespace Iql.Entities
 
         private static Expression<Func<T, TAssignmentProperty, TAssignmentProperty>> GetAssignmentLambda<T, TAssignmentProperty>(string name)
         {
+#if TypeScript
+            Expression<Func<T, TAssignmentProperty, TAssignmentProperty>> lambda = (entity, value) =>
+                (TAssignmentProperty)entity.SetPropertyValueByName(name, value);
+            return lambda;
+#else
             var p = Expression.Parameter(typeof(T), "o");
             var v = Expression.Parameter(typeof(T).GetProperty(name).PropertyType, "v");
             var l = Expression.Lambda(Expression.Assign(Expression.Property(p, name), v), p, v);
             return (Expression<Func<T, TAssignmentProperty, TAssignmentProperty>>)l;
+#endif
         }
     }
 }

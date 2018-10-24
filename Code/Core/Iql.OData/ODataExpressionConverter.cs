@@ -17,9 +17,18 @@ namespace Iql.OData
             Configuration = configuration;
         }
 
+        protected override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlInternal<TEntity>(LambdaExpression lambda
+#if TypeScript
+                , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            throw new NotImplementedException();
+        }
+
         public override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression lambda
 #if TypeScript
-            , EvaluateContext evaluateContext
+            , EvaluateContext evaluateContext = null
 #endif
         )
         {

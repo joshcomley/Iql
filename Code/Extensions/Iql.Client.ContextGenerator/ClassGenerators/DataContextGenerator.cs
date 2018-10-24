@@ -108,6 +108,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
                     Constructor(ctorParams, () =>
                     {
+                    },
+                        ctorParams);
+                    Method("InitializeProperties", null, new EntityTypeDefinition
+                    {
+                        Name = "void"
+                    }, () =>
+                    {
                         if (Settings.GenerateEntitySets)
                         {
                             foreach (var propertyDefinition in entitySetDefinitions)
@@ -130,8 +137,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         {
                             AppendLine($"this.{nameof(IDataContext.RegisterConfiguration)}<{nameof(ODataConfiguration)}>(this.{odataConfigurationPropertyName}{(OutputType == OutputType.TypeScript ? $", {nameof(ODataConfiguration)}" : "")});");
                         }
-                    },
-                        ctorParams);
+                    });
                     if (Settings.ConfigureOData)
                     {
                         var odataConfigurationBackingFieldName = AsBackingFieldName(odataConfigurationPropertyName);
@@ -1044,9 +1050,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             sb.AppendLine();
                             sb.Append($"{lambdaKey}.{nameof(IMetadata.Metadata)}.");
                             var items = new List<string>();
-                            var os = new CSharpObjectSerializer();
                             foreach (var item in metadata.Metadata.All)
                             {
+                                var os = new CSharpObjectSerializer();
                                 var serialized = os.Serialize(item.Value);
                                 items.Add($"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
                             }
@@ -1344,7 +1350,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 Compile = false,
                 GenerateImports = true,
                 WriteToDisk = false,
-                ResolveCircularDependencies = true,
+                ResolveCircularDependencies = false,
                 OutputClassFunctionsDeclared = false,
                 OutputClassInterfacesImplemented = false,
                 OutputClassNameStaticProperty = false,
@@ -1352,6 +1358,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 OutputJsonClassConversion = false,
                 PrintOutput = false,
                 PrintOutputFiles = false,
+                WrapGettersAndSetters = false,
                 OutputSelector = outputSelector
             };
             settings.MetadataReferences.AddReference<HelpText>();

@@ -6,7 +6,7 @@ using System.Reflection;
 using Iql.Entities;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
-using Microsoft.AspNetCore.OData.Builder;
+using Microsoft.AspNet.OData.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Iql.Server.OData.Net
@@ -124,6 +124,11 @@ namespace Iql.Server.OData.Net
             where T : class
         {
             var typeConfiguration = model.EntityType<T>();
+            if (typeof(T).Name == "Site")
+            {
+                var names = typeConfiguration.Properties.Select(p => p.Name).ToArray();
+                int a = 0;
+            }
             foreach (EntitySetConfiguration entitySet in model.EntitySets.Where(s => s.EntityType.ClrType == typeof(T)))
             {
                 BuildEntitySet<T>(builder, model, entitySet);
@@ -131,19 +136,26 @@ namespace Iql.Server.OData.Net
                 //entitySet.EntityType.Keys;
             }
 
-            foreach (var property in typeConfiguration.Properties)
-            {
-                var parameter = Expression.Parameter(typeof(T));
-                var expression = Expression.Lambda(Expression.Property(parameter, property.Name), parameter);
-                BuildEntityPropertyMethod.MakeGenericMethod(typeof(T), property.RelatedClrType)
-                    .Invoke(null, new object[] { builder, model, typeConfiguration, property, expression });
-            }
+            var propertiesDealtWith = new List<string>();
 
             foreach (var property in typeConfiguration.NavigationProperties)
             {
+                propertiesDealtWith.Add(property.Name);
                 var parameter = Expression.Parameter(typeof(T));
                 var expression = Expression.Lambda(Expression.Property(parameter, property.Name), parameter);
-                BuildEntityNavigationPropertyMethod.MakeGenericMethod(typeof(T), property.RelatedClrType, property.Partner?.PropertyInfo?.DeclaringType ?? typeof(object), property.Partner?.PropertyInfo?.PropertyType ?? typeof(object))
+                BuildEntityNavigationPropertyMethod.MakeGenericMethod(typeof(T), property.PropertyInfo.PropertyType, property.Partner?.PropertyInfo?.DeclaringType ?? typeof(object), property.Partner?.PropertyInfo?.PropertyType ?? typeof(object))
+                    .Invoke(null, new object[] { builder, model, typeConfiguration, property, expression });
+            }
+
+            foreach (var property in typeConfiguration.Properties)
+            {
+                if (propertiesDealtWith.Contains(property.Name))
+                {
+                    continue;
+                }
+                var parameter = Expression.Parameter(typeof(T));
+                var expression = Expression.Lambda(Expression.Property(parameter, property.Name), parameter);
+                BuildEntityPropertyMethod.MakeGenericMethod(typeof(T), property.PropertyInfo.PropertyType)
                     .Invoke(null, new object[] { builder, model, typeConfiguration, property, expression });
             }
         }
