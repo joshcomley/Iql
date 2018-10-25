@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.AspNetCore.OData.Extensions.Extensions;
 using Microsoft.AspNet.OData.Builder;
 using Tunnel.App.Data.Entities;
@@ -21,9 +22,14 @@ namespace Tunnel.App.Data
         private static bool _databaseChecked;
         private readonly IServiceProvider _serviceProvider;
 
-        // Uncomment this when running migrations
         public ApplicationDbContext()
         {
+            
+        }
+        // Uncomment this when running migrations
+        public ApplicationDbContext(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
         }
 
         public ApplicationDbContext(IServiceProvider serviceProvider, DbContextOptions<ApplicationDbContext> options)
@@ -89,7 +95,6 @@ namespace Tunnel.App.Data
         IQueryable<SiteDocument> ITunnelService.SiteDocuments => SiteDocuments;
         IQueryable<SiteInspection> ITunnelService.SiteInspections => SiteInspections;
         IQueryable<UserSite> ITunnelService.UserSites => UserSites;
-        public static ODataModelBuilder ODataModelBuilder { get; set; }
         public const string ConnectionString = "Server=.;Database=IqlSampleApp;Integrated Security=True;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -103,17 +108,34 @@ namespace Tunnel.App.Data
             base.OnConfiguring(optionsBuilder);
         }
 
+        public static ODataConfigurationResult Build(IServiceProvider serviceProvider)
+        {
+            if (ODataModel == null)
+            {
+                var model = ODataConfiguration
+                    .GetEdmModel<ITunnelService, ApplicationDbContext>(
+                        serviceProvider,
+                        "IqlSampleApp");
+                ODataModel = model;
+                return model;
+            }
+
+            return ODataModel;
+        }
+
+        public static ODataConfigurationResult ODataModel { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             /*
              * In order for OAuth to work, ensure you install:
              * AspNet.Security.OAuth.Validation
              */
+            Build(_serviceProvider);
 
-            builder
-                .UseServiceProviderForFilters(_serviceProvider);
+            builder.UseServiceProviderForFilters(_serviceProvider);
 
-            builder.BuildNavigationPropertiesFromOData(ODataModelBuilder);
+            builder.BuildNavigationPropertiesFromOData(ODataModel.ModelBuilder);
             //builder
             //    .Entity<Person>()
             //    .HasOne(u => u.CreatedByUser)
