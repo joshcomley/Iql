@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10009-1-Debug" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.3-alpha0003-1-Debug" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.0.3-alpha0003-1-Debug" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.3-alpha0003-1-Debug" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.3-alpha0003-1-Debug" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.3-alpha0003-1-Debug" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="3.0.3-alpha0003-1-Debug" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Iql.Data\Iql.Data.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql.Entities\Iql.Entities.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql.OData\Iql.OData.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql.Parsing\Iql.Parsing.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
+    <ProjectReference Include="..\..\..\Core\Iql\Iql.csproj" />
+    <ProjectReference Include="..\..\..\Extensions\Iql.Server.OData.Net\Iql.Server.OData.Net.csproj" />
+    <ProjectReference Include="..\..\..\Extensions\Iql.Server\Iql.Server.csproj" />
+  </ItemGroup>
+
+</Project>

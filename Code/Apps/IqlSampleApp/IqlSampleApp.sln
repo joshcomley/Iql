@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28218.60
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IqlSampleApp", "IqlSampleApp\IqlSampleApp.csproj", "{20BD7F1E-C088-4AAD-8540-764B42FEF16F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IqlSampleApp.Data", "IqlSampleApp.Data\IqlSampleApp.Data.csproj", "{80BC95AA-9C19-4EC2-B4C2-0DC02A3A8489}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20BD7F1E-C088-4AAD-8540-764B42FEF16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20BD7F1E-C088-4AAD-8540-764B42FEF16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20BD7F1E-C088-4AAD-8540-764B42FEF16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20BD7F1E-C088-4AAD-8540-764B42FEF16F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80BC95AA-9C19-4EC2-B4C2-0DC02A3A8489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80BC95AA-9C19-4EC2-B4C2-0DC02A3A8489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80BC95AA-9C19-4EC2-B4C2-0DC02A3A8489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80BC95AA-9C19-4EC2-B4C2-0DC02A3A8489}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
