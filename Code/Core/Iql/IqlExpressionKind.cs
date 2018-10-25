@@ -71,5 +71,8 @@ namespace Iql
         GeographyMultiLine = 67,
         GeographyPolygon = 68,
         GeographyMultiPolygon = 69,
+        Intersects = 70,
+        Length = 71,
+        Distance = 72
     }
 }
