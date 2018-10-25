@@ -14,6 +14,21 @@ namespace Iql
         {
         }
 
+        public static IqlGeometryPolygonExpression From(double[][] points)
+        {
+            var polygon = new IqlGeometryPolygonExpression(null);
+            polygon.Points = new List<IqlPointExpression>();
+            foreach (var pair in points)
+            {
+                if (pair.Length < 2)
+                {
+                    throw new Exception("Each points pair must have at least two values");
+                }
+                polygon.Points.Add(new IqlGeometryPointExpression(pair[0], pair[1]));
+            }
+            return polygon;
+        }
+
         public override IqlExpression Clone()
         {
             // #CloneStart
@@ -32,7 +47,6 @@ namespace Iql
 				}
 				expression.Points = listCopy;
 			}
-			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

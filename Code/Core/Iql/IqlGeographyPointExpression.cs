@@ -7,7 +7,7 @@ namespace Iql
     {
         public int Srid { get; set; }
 
-        public IqlGeographyPointExpression(long x, long y, int? srid = null) : base(x, y, IqlExpressionKind.GeographyPoint, IqlType.GeographyPoint)
+        public IqlGeographyPointExpression(double x, double y, int? srid = null) : base(x, y, IqlExpressionKind.GeographyPoint, IqlType.GeographyPoint)
         {
             Srid = srid ?? IqlConstants.DefaultGeographicSrid;
         }

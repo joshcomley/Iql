@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlGeographyPolygonExpression : IqlPolygonExpression
+    public class IqlGeographyPolygonExpression : IqlPolygonExpression, IGeographicExpression
     {
         public IqlGeographyPolygonExpression(IEnumerable<IqlPointExpression> points, int? srid = null) : base(points,
             IqlExpressionKind.GeographyPolygon, IqlType.GeographyPolygon)
@@ -11,16 +11,35 @@ namespace Iql
             Srid = srid ?? IqlConstants.DefaultGeographicSrid;
         }
 
-        public IqlGeographyPolygonExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeographyPolygon, IqlType.GeographyPolygon)
+        public IqlGeographyPolygonExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeographyPolygon,
+            IqlType.GeographyPolygon)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
         }
+
+        public static IqlGeographyPolygonExpression From(double[][] points, int? srid = null)
+        {
+            var polygon = new IqlGeographyPolygonExpression(null, srid);
+            polygon.Points = new List<IqlPointExpression>();
+            foreach (var pair in points)
+            {
+                if (pair.Length < 2)
+                {
+                    throw new Exception("Each points pair must have at least two values");
+                }
+                polygon.Points.Add(new IqlGeographyPointExpression(pair[0], pair[1], srid));
+            }
+            return polygon;
+        }
+
+        public int Srid { get; set; }
 
         public override IqlExpression Clone()
         {
             // #CloneStart
 
 			var expression = new IqlGeographyPolygonExpression(null);
+			expression.Srid = Srid;
 			if(Points == null)
 			{
 				expression.Points = null;
@@ -34,7 +53,6 @@ namespace Iql
 				}
 				expression.Points = listCopy;
 			}
-			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

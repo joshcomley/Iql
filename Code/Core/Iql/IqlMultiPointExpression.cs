@@ -8,7 +8,12 @@ namespace Iql
         public List<IqlPointExpression> Points { get; set; }
         protected IqlMultiPointExpression(IEnumerable<IqlPointExpression> points, IqlExpressionKind kind, IqlType type) : base(kind, type)
         {
-            Points = points.ToList();
+            Points = points?.ToList();
+        }
+
+        public bool Intersects(IqlPolygonExpression polygon)
+        {
+            return Points != null && Points.Any(_ => _.Intersects(polygon));
         }
     }
 }

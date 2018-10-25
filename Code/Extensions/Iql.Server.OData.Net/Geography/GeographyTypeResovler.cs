@@ -10,6 +10,11 @@ namespace Iql.Server.OData.Net.Geography
             return typeof(Point);
         }
 
+        public override Type ResolveFromGeographyMultiPoint()
+        {
+            return typeof(MultiPoint);
+        }
+
         public override Type ResolveFromGeographyLine()
         {
             return typeof(LineString);
@@ -33,6 +38,11 @@ namespace Iql.Server.OData.Net.Geography
         public override Type ResolveFromGeometryPoint()
         {
             return typeof(Point);
+        }
+
+        public override Type ResolveFromGeometryMultiPoint()
+        {
+            return typeof(MultiPoint);
         }
 
         public override Type ResolveFromGeometryLine()

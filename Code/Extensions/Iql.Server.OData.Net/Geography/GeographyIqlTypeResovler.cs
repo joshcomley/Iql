@@ -7,6 +7,11 @@
             return IqlType.GeographyPoint;
         }
 
+        public override IqlType ResolveFromGeographyMultiPoint()
+        {
+            return IqlType.GeographyMultiPoint;
+        }
+
         public override IqlType ResolveFromGeographyLine()
         {
             return IqlType.GeographyLine;
@@ -30,6 +35,11 @@
         public override IqlType ResolveFromGeometryPoint()
         {
             return IqlType.GeometryPoint;
+        }
+
+        public override IqlType ResolveFromGeometryMultiPoint()
+        {
+            return IqlType.GeometryMultiPoint;
         }
 
         public override IqlType ResolveFromGeometryLine()

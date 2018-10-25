@@ -3,14 +3,17 @@ using System.Linq;
 
 namespace Iql
 {
-    public abstract class IqlPolygonExpression : IqlExpression, IGeographicExpression
+    public abstract class IqlPolygonExpression : IqlExpression
     {
         public List<IqlPointExpression> Points { get; set; }
         protected IqlPolygonExpression(IEnumerable<IqlPointExpression> points, IqlExpressionKind kind, IqlType type) : base(kind, type)
         {
-            Points = points.ToList();
+            Points = points?.ToList();
         }
 
-        public int Srid { get; set; }
+        public bool Intersects(IqlPointExpression point)
+        {
+            return IqlPointExpression.IntersectsPolygon(point.X, point.Y, this);
+        }
     }
 }

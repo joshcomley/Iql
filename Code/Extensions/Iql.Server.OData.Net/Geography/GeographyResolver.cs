@@ -13,6 +13,10 @@ namespace Iql.Server.OData.Net.Geography
             {
                 return ResolveFromGeographyPoint();
             }
+            if (type == typeof(GeographyMultiPoint) || type == typeof(MultiPoint))
+            {
+                return ResolveFromGeographyMultiPoint();
+            }
             if (type == typeof(GeographyLineString) || type == typeof(LineString))
             {
                 return ResolveFromGeographyLine();
@@ -32,6 +36,10 @@ namespace Iql.Server.OData.Net.Geography
             if (type == typeof(GeometryPoint))
             {
                 return ResolveFromGeometryPoint();
+            }
+            if (type == typeof(GeometryMultiPoint))
+            {
+                return ResolveFromGeometryMultiPoint();
             }
             if (type == typeof(GeometryLineString))
             {
@@ -54,11 +62,13 @@ namespace Iql.Server.OData.Net.Geography
         }
 
         public abstract T ResolveFromGeographyPoint();
+        public abstract T ResolveFromGeographyMultiPoint();
         public abstract T ResolveFromGeographyLine();
         public abstract T ResolveFromGeographyMultiLine();
         public abstract T ResolveFromGeographyPolygon();
         public abstract T ResolveFromGeographyMultiPolygon();
         public abstract T ResolveFromGeometryPoint();
+        public abstract T ResolveFromGeometryMultiPoint();
         public abstract T ResolveFromGeometryLine();
         public abstract T ResolveFromGeometryMultiLine();
         public abstract T ResolveFromGeometryPolygon();
