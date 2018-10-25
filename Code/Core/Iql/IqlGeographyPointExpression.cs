@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlGeographyPointExpression : IqlPointExpression, IGeographic
+    public class IqlGeographyPointExpression : IqlPointExpression, IGeographicExpression
     {
         public int Srid { get; set; }
 

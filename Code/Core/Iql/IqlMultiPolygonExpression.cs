@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql
 {
-    public abstract class IqlMultiPolygonExpression : IqlExpression, IGeographic
+    public abstract class IqlMultiPolygonExpression : IqlExpression, IGeographicExpression
     {
         public List<IqlPolygonExpression> Points { get; set; }
         protected IqlMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points, IqlExpressionKind kind) : base(kind, IqlType.Class)

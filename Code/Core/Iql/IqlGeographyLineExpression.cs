@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlGeographyLineExpression : IqlLineExpression, IGeographic
+    public class IqlGeographyLineExpression : IqlLineExpression, IGeographicExpression
     {
         public IqlGeographyLineExpression(IEnumerable<IqlPointExpression> points, int? srid = null) : base(points,
             IqlExpressionKind.GeographyLine)

@@ -1,6 +1,6 @@
 namespace Iql
 {
-    public interface IGeographic
+    public interface IGeographicExpression
     {
         int Srid { get; set; }
     }
