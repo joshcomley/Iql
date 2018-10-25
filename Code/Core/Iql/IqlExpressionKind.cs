@@ -58,6 +58,14 @@ namespace Iql
         EnumValue = 54,
         Lambda = 55,
         Condition = 56,
-        Invocation = 57
+        Invocation = 57,
+        GeometryPoint = 58,
+        GeometryLine = 59,
+        GeometryPolygon = 60,
+        GeometryMultiPolygon = 61,
+        GeographyPoint = 62,
+        GeographyLine = 63,
+        GeographyPolygon = 64,
+        GeographyMultiPolygon = 65,
     }
 }
