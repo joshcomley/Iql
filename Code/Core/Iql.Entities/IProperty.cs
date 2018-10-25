@@ -32,7 +32,7 @@ namespace Iql.Entities
         ISimpleProperty PropertyGroup { get; }
         IDateRange DateRange { get; }
         INestedSet NestedSet { get; }
-        IGeographic Geographic { get; }
+        IGeographicPoint GeographicPoint { get; }
         IFile File { get; }
         bool IsLongitudeProperty { get; }
         bool IsLatitudeProperty { get; }

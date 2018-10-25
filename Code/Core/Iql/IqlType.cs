@@ -14,6 +14,18 @@ namespace Iql
         Enum,
         TimeSpan,
         EnumValue,
-        Guid
+        Guid,
+        GeometryPoint,
+        GeometryMultiPoint,
+        GeometryPolygon,
+        GeometryMultiPolygon,
+        GeometryLine,
+        GeometryMultiLine,
+        GeographyPoint,
+        GeographyMultiPoint,
+        GeographyPolygon,
+        GeographyMultiPolygon,
+        GeographyLine,
+        GeographyMultiLine,
     }
 }

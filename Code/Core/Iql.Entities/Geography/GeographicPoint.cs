@@ -2,7 +2,7 @@
 
 namespace Iql.Entities.Geography
 {
-    public class Geographic : SimplePropertyGroupBase<IGeographic>, IGeographic
+    public class GeographicPoint : SimplePropertyGroupBase<IGeographicPoint>, IGeographicPoint
     {
         protected override string ResolveName()
         {
@@ -18,14 +18,14 @@ namespace Iql.Entities.Geography
         public IProperty LongitudeProperty { get; set; }
         public IProperty LatitudeProperty { get; set; }
 
-        public Geographic(IProperty longitudeProperty = null, IProperty latitudeProperty = null, string key = null) : base(null, key)
+        public GeographicPoint(IProperty longitudeProperty = null, IProperty latitudeProperty = null, string key = null) : base(null, key)
         {
             LongitudeProperty = longitudeProperty;
             LatitudeProperty = latitudeProperty;
         }
 
 #if !TypeScript
-        public Geographic() : base(null, null)
+        public GeographicPoint() : base(null, null)
         {
         }
 #endif

@@ -156,7 +156,19 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(DisplayRuleAppliesToKind),
                 typeof(EntityManageKind),
                 typeof(HelpTextKind),
-                typeof(HelpText)
+                typeof(HelpText),
+                typeof(IqlGeographyPointExpression),
+                typeof(IqlGeographyMultiPointExpression),
+                typeof(IqlGeographyPolygonExpression),
+                typeof(IqlGeographyMultiPolygonExpression),
+                typeof(IqlGeographyLineExpression),
+                typeof(IqlGeographyMultiLineExpression),
+                typeof(IqlGeometryPointExpression),
+                typeof(IqlGeometryMultiPointExpression),
+                typeof(IqlGeometryPolygonExpression),
+                typeof(IqlGeometryMultiPolygonExpression),
+                typeof(IqlGeometryLineExpression),
+                typeof(IqlGeometryMultiLineExpression),
             };
 
             void WriteBaseClasses(StringBuilder builder, List<GeneratedFile> list)

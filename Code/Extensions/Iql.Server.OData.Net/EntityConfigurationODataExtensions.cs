@@ -6,8 +6,11 @@ using System.Reflection;
 using Iql.Entities;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
+using Iql.Server.OData.Net.Geography;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Spatial;
+using NetTopologySuite.Geometries;
 
 namespace Iql.Server.OData.Net
 {
@@ -124,11 +127,6 @@ namespace Iql.Server.OData.Net
             where T : class
         {
             var typeConfiguration = model.EntityType<T>();
-            if (typeof(T).Name == "Site")
-            {
-                var names = typeConfiguration.Properties.Select(p => p.Name).ToArray();
-                int a = 0;
-            }
             foreach (EntitySetConfiguration entitySet in model.EntitySets.Where(s => s.EntityType.ClrType == typeof(T)))
             {
                 BuildEntitySet<T>(builder, model, entitySet);
@@ -155,9 +153,17 @@ namespace Iql.Server.OData.Net
                 }
                 var parameter = Expression.Parameter(typeof(T));
                 var expression = Expression.Lambda(Expression.Property(parameter, property.Name), parameter);
-                BuildEntityPropertyMethod.MakeGenericMethod(typeof(T), property.PropertyInfo.PropertyType)
+                BuildEntityPropertyMethod.MakeGenericMethod(typeof(T), ResolvePropertyType(property))
                     .Invoke(null, new object[] { builder, model, typeConfiguration, property, expression });
             }
+        }
+
+        private static readonly GeographyTypeResovler GeographyTypeResolver = new GeographyTypeResovler();
+        private static readonly GeographyIqlTypeResovler GeographyIqlTypeResolver = new GeographyIqlTypeResovler();
+        private static Type ResolvePropertyType(PropertyConfiguration property)
+        {
+            var geographyType = GeographyTypeResolver.Resolve(property.PropertyInfo.PropertyType);
+            return geographyType ?? property.PropertyInfo.PropertyType;
         }
 
         private static void BuildEntityProperty<T, TProperty>(
@@ -169,7 +175,11 @@ namespace Iql.Server.OData.Net
             where T : class
         {
             var entityConfiguration = builder.EntityType<T>();
-            entityConfiguration.DefineProperty(expression, property.PropertyInfo.PropertyType.IsNullable(), property.PropertyInfo.PropertyType.ToIqlType());
+            var geographyType = GeographyIqlTypeResolver.Resolve(typeof(TProperty));
+            entityConfiguration.DefineProperty(expression, property.PropertyInfo.PropertyType.IsNullable(),
+                geographyType == 0
+                    ? property.PropertyInfo.PropertyType.ToIqlType()
+                    : geographyType);
             // Nullable
             // Type
 

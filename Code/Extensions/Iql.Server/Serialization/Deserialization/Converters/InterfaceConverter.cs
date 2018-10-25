@@ -64,7 +64,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             Map<IMediaKey, MediaKey>();
             Map<IMediaKeyGroup, MediaKeyGroup>();
             Map<IMediaKeyPart, MediaKeyPart>();
-            Map<IGeographic, Geographic>();
+            Map<IGeographicPoint, GeographicPoint>();
             Map<IDateRange, DateRange>();
             Map<SpecialTypeDefinition, SpecialTypeDefinition>();
             Map<IFile, File>();

@@ -32,9 +32,9 @@ namespace Iql.Entities
                     return Relationship.ThisEnd;
                 }
 
-                if (Geographic != null)
+                if (GeographicPoint != null)
                 {
-                    return Geographic;
+                    return GeographicPoint;
                 }
 
                 if (NestedSet != null)
@@ -59,7 +59,7 @@ namespace Iql.Entities
         {
             return new[] { this as IProperty };
         }
-        public IGeographic Geographic => EntityConfiguration != null && EntityConfiguration.Geographics != null
+        public IGeographicPoint GeographicPoint => EntityConfiguration != null && EntityConfiguration.Geographics != null
             ? EntityConfiguration.Geographics.FirstOrDefault(g =>
                 Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
             : null;
@@ -67,8 +67,8 @@ namespace Iql.Entities
         public IFile File => EntityConfiguration?.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != FilePropertyKind.None);
         public IDateRange DateRange => EntityConfiguration?.DateRanges.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != DateRangePropertyKind.None);
         public INestedSet NestedSet => EntityConfiguration?.NestedSets.FirstOrDefault(ns => ns.GetPropertyKind(this as IProperty) != NestedSetPropertyKind.None);
-        public bool IsLongitudeProperty => Equals(Geographic?.LongitudeProperty, this);
-        public bool IsLatitudeProperty => Equals(Geographic?.LatitudeProperty, this);
+        public bool IsLongitudeProperty => Equals(GeographicPoint?.LongitudeProperty, this);
+        public bool IsLatitudeProperty => Equals(GeographicPoint?.LatitudeProperty, this);
         public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
         public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == Name || EntityConfiguration?.TitleProperty == this;
         public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName == Name || EntityConfiguration?.PreviewProperty == this;

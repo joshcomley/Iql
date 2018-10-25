@@ -5,12 +5,12 @@ namespace Iql
 {
     public class IqlGeometryPointExpression : IqlPointExpression
     {
-        public IqlGeometryPointExpression(long x, long y) : base(x, y, IqlExpressionKind.GeometryPoint)
+        public IqlGeometryPointExpression(long x, long y) : base(x, y, IqlExpressionKind.GeometryPoint, IqlType.GeometryPoint)
         {
 
         }
 
-        public IqlGeometryPointExpression() : base(0, 0, IqlExpressionKind.GeometryPoint)
+        public IqlGeometryPointExpression() : base(0, 0, IqlExpressionKind.GeometryPoint, IqlType.GeometryPoint)
         {
 
         }

@@ -67,10 +67,10 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                     .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
                     .ToList();
             }
-            if (typeof(IGeographic).IsAssignableFrom(type))
+            if (typeof(IGeographicPoint).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IGeographic), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IGeographic.EntityConfiguration))
+                return base.CreateProperties(typeof(IGeographicPoint), memberSerialization)
+                    .Where(p => p.PropertyName != nameof(IGeographicPoint.EntityConfiguration))
                     .ToList();
             }
             if (typeof(IDateRange).IsAssignableFrom(type))

@@ -6,13 +6,13 @@ namespace Iql
     public class IqlGeographyLineExpression : IqlLineExpression, IGeographicExpression
     {
         public IqlGeographyLineExpression(IEnumerable<IqlPointExpression> points, int? srid = null) : base(points,
-            IqlExpressionKind.GeographyLine)
+            IqlExpressionKind.GeographyLine, IqlType.GeographyLine)
         {
             Srid = srid ?? IqlConstants.DefaultGeographicSrid;
         }
 
         public IqlGeographyLineExpression() : base(new IqlPointExpression[] { },
-            IqlExpressionKind.GeographyLine)
+            IqlExpressionKind.GeographyLine, IqlType.GeographyLine)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
         }

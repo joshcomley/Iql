@@ -1296,10 +1296,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 return $"_{indexCh} => {(inline ? inlineStr : "")}";
             }
             groupSb.Append(Lambda(index));
-            if (propertyGroup is IGeographic)
+            if (propertyGroup is IGeographicPoint)
             {
                 groupSb.Append(
-                    $"{nameof(IEntityMetadata.Geographics)}[{entityMetadata.Geographics.IndexOf(propertyGroup as IGeographic)}]");
+                    $"{nameof(IEntityMetadata.Geographics)}[{entityMetadata.Geographics.IndexOf(propertyGroup as IGeographicPoint)}]");
             }
             else if (propertyGroup is INestedSet)
             {

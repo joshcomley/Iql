@@ -14,7 +14,7 @@
 
      */
 
-    public interface IGeographic : ISimpleProperty, IConfigurable<IGeographic>
+    public interface IGeographicPoint : ISimpleProperty, IConfigurable<IGeographicPoint>
     {
         IProperty LongitudeProperty { get; set; }
         IProperty LatitudeProperty { get; set; }

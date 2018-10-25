@@ -136,7 +136,7 @@ namespace Iql.Entities
             return ordered.ToArray();
         }
 
-        public IList<IGeographic> Geographics { get; set; } = new List<IGeographic>();
+        public IList<IGeographicPoint> Geographics { get; set; } = new List<IGeographicPoint>();
         public IList<INestedSet> NestedSets { get; set; } = new List<INestedSet>();
         public IList<IDateRange> DateRanges { get; set; } = new List<IDateRange>();
         public IList<IFile> Files { get; set; } = new List<IFile>();

@@ -122,10 +122,10 @@ namespace Iql.Server.Serialization.Serialization.Converters
                 var kind = PropertyGroupKind.Property;
                 List<SerializedPropertyGroup> children = null;
                 string path = null;
-                if (propertyGroup is IGeographic)
+                if (propertyGroup is IGeographicPoint)
                 {
                     kind = PropertyGroupKind.Geographic;
-                    path = entityConfiguration.Geographics.IndexOf(propertyGroup as IGeographic).ToString();
+                    path = entityConfiguration.Geographics.IndexOf(propertyGroup as IGeographicPoint).ToString();
                 }
                 else if (propertyGroup is INestedSet)
                 {

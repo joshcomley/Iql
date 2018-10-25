@@ -3,22 +3,23 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlGeometryLineExpression : IqlLineExpression
+    public class IqlGeometryMultiPointExpression : IqlMultiPointExpression
     {
-        public IqlGeometryLineExpression(IEnumerable<IqlPointExpression> points) : base(points, IqlExpressionKind.GeometryLine, IqlType.GeometryLine)
+        public IqlGeometryMultiPointExpression(IEnumerable<IqlPointExpression> points) : base(
+            points, IqlExpressionKind.GeometryMultiPoint, IqlType.GeometryMultiPoint)
         {
         }
 
-        public IqlGeometryLineExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeometryLine, IqlType.GeometryLine)
+        public IqlGeometryMultiPointExpression() : base(new IqlPointExpression[] { },
+            IqlExpressionKind.GeometryMultiPoint, IqlType.GeometryMultiPoint)
         {
-
         }
 
         public override IqlExpression Clone()
         {
             // #CloneStart
 
-			var expression = new IqlGeometryLineExpression(null);
+			var expression = new IqlGeometryMultiPointExpression(null);
 			if(Points == null)
 			{
 				expression.Points = null;
@@ -41,7 +42,8 @@ namespace Iql
             // #CloneEnd
         }
 
-        internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
+        internal override void FlattenInternal(IList<IqlExpression> expressions,
+            Func<IqlExpression, FlattenReactionKind> checker = null)
         {
             // #FlattenStart
 

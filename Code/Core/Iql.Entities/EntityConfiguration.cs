@@ -898,9 +898,9 @@ namespace Iql.Entities
             Expression<Func<T, object>> longitudeProperty,
             Expression<Func<T, object>> latitudeProperty,
             string key = null,
-            Action<IGeographic> configure = null)
+            Action<IGeographicPoint> configure = null)
         {
-            var geo = new Geographic(
+            var geo = new GeographicPoint(
                 FindPropertyByExpression(longitudeProperty),
                 FindPropertyByExpression(latitudeProperty),
                 key);

@@ -5,6 +5,16 @@ namespace Iql
 {
     public class IqlGeographyPolygonExpression : IqlPolygonExpression
     {
+        public IqlGeographyPolygonExpression(IEnumerable<IqlPointExpression> points, int? srid = null) : base(points,
+            IqlExpressionKind.GeographyPolygon, IqlType.GeographyPolygon)
+        {
+            Srid = srid ?? IqlConstants.DefaultGeographicSrid;
+        }
+
+        public IqlGeographyPolygonExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeographyPolygon, IqlType.GeographyPolygon)
+        {
+            Srid = IqlConstants.DefaultGeographicSrid;
+        }
 
         public override IqlExpression Clone()
         {
@@ -87,16 +97,6 @@ namespace Iql
 			return this;
 
             // #ReplaceEnd
-        }
-
-        public IqlGeographyPolygonExpression(IEnumerable<IqlPointExpression> points, int? srid = null) : base(points, IqlExpressionKind.GeographyPolygon)
-        {
-            Srid = srid ?? IqlConstants.DefaultGeographicSrid;
-        }
-
-        public IqlGeographyPolygonExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeographyPolygon)
-        {
-            Srid = IqlConstants.DefaultGeographicSrid;
         }
     }
 }

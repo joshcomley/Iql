@@ -5,6 +5,15 @@ namespace Iql
 {
     public class IqlGeometryMultiPolygonExpression : IqlMultiPolygonExpression
     {
+        public IqlGeometryMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points) : base(points,
+            IqlExpressionKind.GeometryMultiPolygon, IqlType.GeometryMultiPolygon)
+        {
+        }
+
+        public IqlGeometryMultiPolygonExpression() : base(new IqlPolygonExpression[] { },
+            IqlExpressionKind.GeometryMultiPolygon, IqlType.GeometryMultiPolygon)
+        {
+        }
 
         public override IqlExpression Clone()
         {
@@ -24,7 +33,6 @@ namespace Iql
 				}
 				expression.Points = listCopy;
 			}
-			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -87,15 +95,6 @@ namespace Iql
 			return this;
 
             // #ReplaceEnd
-        }
-
-        public IqlGeometryMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points) : base(points, IqlExpressionKind.GeometryMultiPolygon)
-        {
-        }
-
-        public IqlGeometryMultiPolygonExpression() : base(new IqlPolygonExpression[] { }, IqlExpressionKind.GeometryMultiPolygon)
-        {
-
         }
     }
 }

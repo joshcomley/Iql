@@ -86,7 +86,7 @@ namespace Iql.Entities.Extensions
 
             return propertiesArray.OrderBy(property =>
             {
-                if (property is IGeographic)
+                if (property is IGeographicPoint)
                 {
                     return 0;
                 }

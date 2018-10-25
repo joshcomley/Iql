@@ -1,33 +1,29 @@
-﻿using Brandless.Data.EntityFramework.Crud;
-using Brandless.Data.Models;
-using Iql.Entities;
-using Iql.Entities.PropertyGroups.Files;
-using Iql.Extensions;
-using Iql.Server;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
-using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Binding;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.AspNetCore.OData.Extensions.Controllers;
+using Brandless.Data.EntityFramework.Crud;
+using Brandless.Data.Models;
 using Brandless.Data.Mptt;
+using Iql.Entities;
 using Iql.Entities.NestedSets;
+using Iql.Entities.PropertyGroups.Files;
+using Iql.Extensions;
 using Iql.Server.Extensions;
 using Iql.Server.Media;
-using Iql.Server.OData.Net;
-using PropertyKind = Iql.Entities.PropertyKind;
 using Microsoft.AspNet.OData;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using PropertyKind = Iql.Entities.PropertyKind;
 
-namespace ISite.App.Web.Controllers.Api
+namespace Iql.Server.OData.Net
 {
     public abstract class IqlODataController<
         TService,

@@ -3,26 +3,41 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlGeographyPointExpression : IqlPointExpression, IGeographicExpression
+    public class IqlGeographyMultiPointExpression : IqlMultiPointExpression, IGeographicExpression
     {
-        public int Srid { get; set; }
-
-        public IqlGeographyPointExpression(long x, long y, int? srid = null) : base(x, y, IqlExpressionKind.GeographyPoint, IqlType.GeographyPoint)
+        public IqlGeographyMultiPointExpression(IEnumerable<IqlPointExpression> points, int? srid = null) : base(
+            points, IqlExpressionKind.GeographyMultiPoint, IqlType.GeographyMultiPoint)
         {
             Srid = srid ?? IqlConstants.DefaultGeographicSrid;
         }
 
-        public IqlGeographyPointExpression() : base(0, 0, IqlExpressionKind.GeographyPoint, IqlType.GeographyPoint)
+        public IqlGeographyMultiPointExpression() : base(new IqlPointExpression[] { },
+            IqlExpressionKind.GeographyMultiPoint, IqlType.GeographyMultiPoint)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
         }
+
+        public int Srid { get; set; }
 
         public override IqlExpression Clone()
         {
             // #CloneStart
 
-			var expression = new IqlGeographyPointExpression(0, 0);
+			var expression = new IqlGeographyMultiPointExpression(null);
 			expression.Srid = Srid;
+			if(Points == null)
+			{
+				expression.Points = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlPointExpression>();
+				for(var i = 0; i < Points.Count; i++)
+				{
+					listCopy.Add((IqlPointExpression)Points[i]?.Clone());
+				}
+				expression.Points = listCopy;
+			}
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -32,7 +47,8 @@ namespace Iql
             // #CloneEnd
         }
 
-        internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
+        internal override void FlattenInternal(IList<IqlExpression> expressions,
+            Func<IqlExpression, FlattenReactionKind> checker = null)
         {
             // #FlattenStart
 
@@ -51,6 +67,13 @@ namespace Iql
 			}
 			if(reaction != FlattenReactionKind.IgnoreChildren)
 			{
+				if(Points != null)
+				{
+					for(var i = 0; i < Points.Count; i++)
+					{
+						Points[i]?.FlattenInternal(expressions, checker);
+					}
+				}
 				Parent?.FlattenInternal(expressions, checker);
 			}
 
@@ -61,6 +84,13 @@ namespace Iql
         {
             // #ReplaceStart
 
+			if(Points != null)
+			{
+				for(var i = 0; i < Points.Count; i++)
+				{
+					Points[i] = (IqlPointExpression)context.Replace(this, nameof(Points), i, Points[i]);
+				}
+			}
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)

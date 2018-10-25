@@ -5,6 +5,14 @@ namespace Iql
 {
     public class IqlGeometryPolygonExpression : IqlPolygonExpression
     {
+        public IqlGeometryPolygonExpression(IEnumerable<IqlPointExpression> points) : base(points,
+            IqlExpressionKind.GeometryPolygon, IqlType.GeometryPolygon)
+        {
+        }
+
+        public IqlGeometryPolygonExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeometryPolygon, IqlType.GeometryPolygon)
+        {
+        }
 
         public override IqlExpression Clone()
         {
@@ -87,15 +95,6 @@ namespace Iql
 			return this;
 
             // #ReplaceEnd
-        }
-
-        public IqlGeometryPolygonExpression(IEnumerable<IqlPointExpression> points) : base(points, IqlExpressionKind.GeometryPolygon)
-        {
-        }
-
-        public IqlGeometryPolygonExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeometryPolygon)
-        {
-
         }
     }
 }

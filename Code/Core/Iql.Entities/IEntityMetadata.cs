@@ -11,7 +11,7 @@ namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {
-        IList<IGeographic> Geographics { get; set; }
+        IList<IGeographicPoint> Geographics { get; set; }
         IList<INestedSet> NestedSets { get; set; }
         IList<IDateRange> DateRanges { get; set; }
         IDisplayFormatting DisplayFormatting { get; }

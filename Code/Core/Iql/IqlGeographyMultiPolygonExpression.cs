@@ -3,14 +3,28 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlGeographyMultiPolygonExpression : IqlMultiPolygonExpression
+    public class IqlGeographyMultiPolygonExpression : IqlMultiPolygonExpression, IGeographicExpression
     {
+        public IqlGeographyMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points, int? srid = null) : base(
+            points, IqlExpressionKind.GeographyMultiPolygon, IqlType.GeographyMultiPolygon)
+        {
+            Srid = srid ?? IqlConstants.DefaultGeographicSrid;
+        }
+
+        public IqlGeographyMultiPolygonExpression() : base(new IqlPolygonExpression[] { },
+            IqlExpressionKind.GeographyMultiPolygon, IqlType.GeographyMultiPolygon)
+        {
+            Srid = IqlConstants.DefaultGeographicSrid;
+        }
+
+        public int Srid { get; set; }
 
         public override IqlExpression Clone()
         {
             // #CloneStart
 
 			var expression = new IqlGeographyMultiPolygonExpression(null);
+			expression.Srid = Srid;
 			if(Points == null)
 			{
 				expression.Points = null;
@@ -24,7 +38,6 @@ namespace Iql
 				}
 				expression.Points = listCopy;
 			}
-			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -87,16 +100,6 @@ namespace Iql
 			return this;
 
             // #ReplaceEnd
-        }
-
-        public IqlGeographyMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points, int? srid = null) : base(points, IqlExpressionKind.GeographyMultiPolygon)
-        {
-            Srid = srid ?? IqlConstants.DefaultGeographicSrid;
-        }
-
-        public IqlGeographyMultiPolygonExpression() : base(new IqlPolygonExpression[] { }, IqlExpressionKind.GeographyMultiPolygon)
-        {
-            Srid = IqlConstants.DefaultGeographicSrid;
         }
     }
 }
