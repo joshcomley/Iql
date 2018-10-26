@@ -7,7 +7,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             var left = parser.Parse(action.Left).ToCodeString();
             var right = parser.Parse(action.Right).ToCodeString();
             return new IqlFinalExpression<string>(
-                $"{left}.{nameof(IqlPointExpression.DistanceFrom)}({right})");
+                $"({left} != null && {left}).{nameof(IqlPointExpression.DistanceFrom)}({right})");
         }
     }
 }

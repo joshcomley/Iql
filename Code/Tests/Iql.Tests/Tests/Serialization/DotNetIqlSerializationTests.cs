@@ -91,6 +91,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <InferredReturnType>Unknown</InferredReturnType>
       <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>
       <VariableName>context</VariableName>
     </IqlRootReferenceExpression>
@@ -102,6 +103,7 @@ namespace Iql.Tests.Tests.Serialization
       <IqlRootReferenceExpression>
         <Kind>RootReference</Kind>
         <ReturnType>Unknown</ReturnType>
+        <InferredReturnType>Unknown</InferredReturnType>
         <EntityTypeName>PersonLoading</EntityTypeName>
         <VariableName>loading</VariableName>
       </IqlRootReferenceExpression>
@@ -115,6 +117,7 @@ namespace Iql.Tests.Tests.Serialization
         <Parent xsi:type=""IqlRootReferenceExpression"">
           <Kind>RootReference</Kind>
           <ReturnType>Unknown</ReturnType>
+          <InferredReturnType>Unknown</InferredReturnType>
           <EntityTypeName>PersonLoading</EntityTypeName>
           <VariableName>loading</VariableName>
         </Parent>
@@ -127,8 +130,9 @@ namespace Iql.Tests.Tests.Serialization
           <Kind>Property</Kind>
           <ReturnType>Unknown</ReturnType>
           <Parent xsi:type=""IqlVariableExpression"">
-            <Kind>Variable</Kind>
+            <Kind>Literal</Kind>
             <ReturnType>Unknown</ReturnType>
+            <InferredReturnType>Unknown</InferredReturnType>
             <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>
             <VariableName>context</VariableName>
           </Parent>
@@ -138,7 +142,8 @@ namespace Iql.Tests.Tests.Serialization
       </Right>
     </Body>
   </Body>
-</IqlLambdaExpression>", iqlXml);
+</IqlLambdaExpression>
+".Trim(), iqlXml.Trim());
         }
 
         [TestMethod]
@@ -153,6 +158,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <InferredReturnType>Unknown</InferredReturnType>
       <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </IqlRootReferenceExpression>
@@ -163,12 +169,13 @@ namespace Iql.Tests.Tests.Serialization
     <Parent xsi:type=""IqlRootReferenceExpression"">
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <InferredReturnType>Unknown</InferredReturnType>
       <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </Parent>
     <PropertyName>Name</PropertyName>
   </Body>
-</IqlLambdaExpression>", xml);
+</IqlLambdaExpression>".Trim(), xml.Trim());
         }
 
         [TestMethod]
@@ -185,6 +192,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <InferredReturnType>Unknown</InferredReturnType>
       <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </IqlRootReferenceExpression>
@@ -195,12 +203,13 @@ namespace Iql.Tests.Tests.Serialization
     <Parent xsi:type=""IqlRootReferenceExpression"">
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <InferredReturnType>Unknown</InferredReturnType>
       <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </Parent>
     <PropertyName>Name</PropertyName>
   </Body>
-</IqlLambdaExpression>", xml);
+</IqlLambdaExpression>".Trim(), xml.Trim());
         }
 
         [TestMethod]
@@ -215,6 +224,7 @@ namespace Iql.Tests.Tests.Serialization
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
       <ReturnType>Unknown</ReturnType>
+      <InferredReturnType>Unknown</InferredReturnType>
       <EntityTypeName>Client</EntityTypeName>
       <VariableName>client</VariableName>
     </IqlRootReferenceExpression>
@@ -234,6 +244,7 @@ namespace Iql.Tests.Tests.Serialization
           <Parent xsi:type=""IqlRootReferenceExpression"">
             <Kind>RootReference</Kind>
             <ReturnType>Unknown</ReturnType>
+            <InferredReturnType>Unknown</InferredReturnType>
             <EntityTypeName>Client</EntityTypeName>
             <VariableName>client</VariableName>
           </Parent>
@@ -252,6 +263,7 @@ namespace Iql.Tests.Tests.Serialization
         <Parent xsi:type=""IqlRootReferenceExpression"">
           <Kind>RootReference</Kind>
           <ReturnType>Unknown</ReturnType>
+          <InferredReturnType>Unknown</InferredReturnType>
           <EntityTypeName>Client</EntityTypeName>
           <VariableName>client</VariableName>
         </Parent>
@@ -265,7 +277,7 @@ namespace Iql.Tests.Tests.Serialization
       <InferredReturnType>String</InferredReturnType>
     </Right>
   </Body>
-</IqlLambdaExpression>", xml);
+</IqlLambdaExpression>".Trim(), xml.Trim());
         }
 
         [TestMethod]

@@ -124,7 +124,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                     var evaluateValue = context.Evaluate(variableName);
                     exp = new IqlVariableExpression(
                         variableName,
-                        evaluateValue.ToString(),
+                        evaluateValue,
                         evaluateValue != null ? evaluateValue.GetType() : null
                     );
                 }

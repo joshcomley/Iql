@@ -33,7 +33,16 @@ namespace Iql.Tests.Tests
 #endif
     ).ToListAsync();
             Assert.AreEqual(0, sites.Count);
-            sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.NotWithinBermudaTrianglePoint) < 2000).ToListAsync();
+            sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.NotWithinBermudaTrianglePoint) < 2000
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+                                              ).ToListAsync();
             Assert.AreEqual(1, sites.Count);
         }
     }

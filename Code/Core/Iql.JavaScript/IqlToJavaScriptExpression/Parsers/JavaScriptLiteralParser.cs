@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
@@ -8,6 +9,11 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
             JavaScriptIqlParserInstance parser)
         {
+            if (action.Value != null && action.Value is IqlExpression)
+            {
+                return new IqlFinalExpression<string>(
+                    "JSON.parse(`" + JsonConvert.SerializeObject(action.Value) + "`)");
+            }
             if (action.ReturnType == IqlType.Guid)
             {
                 return new IqlFinalExpression<string>(action.Value == null ? "null" : $@"'{action.Value}'");
