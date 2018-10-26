@@ -1820,6 +1820,38 @@ namespace IqlSampleApp.Data.Entities
                 }
             }
         }
+        protected IqlGeographyPolygonExpression _area;
+        public IqlGeographyPolygonExpression Area
+        {
+            get => _area;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._area;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Area), this, oldValue, value));
+                    }
+                }
+                _area = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Area), this, oldValue, value));
+                    }
+                }
+            }
+        }
         protected IqlGeographyPointExpression _location;
         public IqlGeographyPointExpression Location
         {

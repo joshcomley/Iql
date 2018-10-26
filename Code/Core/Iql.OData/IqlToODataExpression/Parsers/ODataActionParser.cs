@@ -37,14 +37,14 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 case IqlExpressionKind.Intersects:
                 {
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("geo.intersects("), action.Parent,
-                        new IqlFinalExpression<string>($",geography'SRID={geo.Srid};POLYGON(("),
-                        (action as IqlIntersectsExpression).Polygon, new IqlFinalExpression<string>("))')"));
+                        new IqlFinalExpression<string>($","),
+                        (action as IqlIntersectsExpression).Polygon, new IqlFinalExpression<string>(")"));
                 }
                 case IqlExpressionKind.Distance:
                 {
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("geo.distance("), action.Parent,
-                        new IqlFinalExpression<string>($",geography'SRID={geo.Srid};POINT("),
-                        (action as IqlDistanceExpression).Point, new IqlFinalExpression<string>(")')"));
+                        new IqlFinalExpression<string>($","),
+                        (action as IqlDistanceExpression).Point, new IqlFinalExpression<string>(")"));
                 }
             }
             return null;

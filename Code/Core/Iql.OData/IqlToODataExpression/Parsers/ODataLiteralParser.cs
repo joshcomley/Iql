@@ -42,13 +42,15 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             if (value is IqlGeographyPointExpression)
             {
                 var point = value as IqlGeographyPointExpression;
-                return $"{point.Y} {point.X}";
+                return
+                    $@"geography'SRID={point.Srid};POINT({point.Y} {point.X})'";
             }
 
             if (value is IqlGeographyPolygonExpression)
             {
                 var polygon = value as IqlGeographyPolygonExpression;
-                return string.Join(",", polygon.Points.Select(_ => ODataEncode(_)));
+                return
+                    $@"geography'SRID={polygon.Srid};POLYGON(({string.Join(",", polygon.Points.Select(_ => $"{_.Y} {_.X}"))}))'";
             }
 
             if (value is bool)

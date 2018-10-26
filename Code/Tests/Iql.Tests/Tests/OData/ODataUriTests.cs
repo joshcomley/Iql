@@ -20,7 +20,7 @@ namespace Iql.Tests.Tests.OData
     public class ODataUriTests : TestsBase
     {
         [TestMethod]
-        public async Task TestIntersects()
+        public async Task TestIntersectsLiteral()
         {
             var polygon = new IqlGeographyPolygonExpression(
                 new IqlPointExpression[]
@@ -37,13 +37,31 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-        public async Task TestDistance()
+        public async Task TestIntersectsReference()
+        {
+            var query = Db.Sites.Where(site => site.Location.Intersects(site.Area));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,$it/Area)", uri);
+        }
+
+        [TestMethod]
+        public async Task TestDistanceLiteral()
         {
             var point = new IqlGeographyPointExpression(1, 2);
             var query = Db.Sites.Where(site => site.Location.DistanceFrom(point, IqlDistanceKind.Kilometers) < 150);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
+        }
+
+        [TestMethod]
+        public async Task TestDistanceReference()
+        {
+            var query = Db.Sites.Where(site => site.Location.DistanceFrom(site.Location, IqlDistanceKind.Kilometers) < 150);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,$it/Location) lt 150)", uri);
         }
 
         //[TestMethod]

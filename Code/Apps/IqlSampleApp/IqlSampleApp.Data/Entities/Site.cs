@@ -30,6 +30,20 @@ namespace IqlSampleApp.Data.Entities
             get => _location;
             set => _location = value;
         }
+
+        private PolygonWrapper _area;
+        public Polygon Area
+        {
+            get => _area;
+            set => _area = value;
+        }
+
+        [NotMapped]
+        public GeographyPolygon EdmArea
+        {
+            get => _area;
+            set => _area = value;
+        }
         public string Address { get; set; }
         public string PostCode { get; set; }
         public int? ClientId { get; set; }

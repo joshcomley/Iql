@@ -2597,6 +2597,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
                 p.FriendlyName = "Id";
+            }).DefineProperty(p => p.Area, true, IqlType.Unknown).ConfigureProperty(p => p.Area, p => {
+                p.PropertyName = "Area";
+                p.Nullable = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Area";
+                p.Title = "Area";
+                p.FriendlyName = "Area";
             }).DefineProperty(p => p.Location, true, IqlType.Unknown).ConfigureProperty(p => p.Location, p => {
                 p.PropertyName = "Location";
                 p.Nullable = true;
