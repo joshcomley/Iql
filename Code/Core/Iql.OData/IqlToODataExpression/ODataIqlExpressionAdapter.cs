@@ -23,6 +23,7 @@ namespace Iql.OData.IqlToODataExpression
             Registry.Register(typeof(IqlStringSubStringExpression), () => new ODataStringSubStringActionParser());
             Registry.Register(typeof(IqlParentValueExpression), () => new ODataStringSourceValueActionParser());
             Registry.Register(typeof(IqlUnaryExpression), () => new ODataUnaryActionParser());
+            Registry.Register(typeof(IqlDistanceExpression), () => new ODataDistanceParser());
             Registry.Register(typeof(IqlBinaryExpression), () => new ODataBinaryActionParser());
         }
 

@@ -21,7 +21,6 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 case IqlExpressionKind.StringToUpperCase:
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("toupper("), action.Parent, new IqlFinalExpression<string>(")"));
                 case IqlExpressionKind.Intersects:
-                case IqlExpressionKind.Distance:
                 case IqlExpressionKind.Length:
                     return ResolveGeographic(action, parser);
                 default:
@@ -43,15 +42,6 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                             action.Parent,
                             new IqlFinalExpression<string>($","),
                             (action as IqlIntersectsExpression).Polygon,
-                            new IqlFinalExpression<string>(")"));
-                    }
-                case IqlExpressionKind.Distance:
-                    {
-                        return new IqlAggregateExpression(
-                            new IqlFinalExpression<string>("geo.distance("),
-                            action.Parent,
-                            new IqlFinalExpression<string>($","),
-                            (action as IqlDistanceExpression).Point,
                             new IqlFinalExpression<string>(")"));
                     }
                 case IqlExpressionKind.Length:

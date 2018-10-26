@@ -20,6 +20,7 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlLengthExpression();
+			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

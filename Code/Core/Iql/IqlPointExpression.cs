@@ -18,9 +18,9 @@ namespace Iql
             return IntersectsPolygon(X, Y, polygon);
         }
 
-        public double DistanceFrom(IqlPointExpression point, IqlDistanceKind unit = IqlDistanceKind.Kilometers)
+        public double DistanceFrom(IqlPointExpression point)
         {
-            return DistanceBetween(point.X, point.Y, X, Y, unit);
+            return DistanceBetween(point.X, point.Y, X, Y);
         }
 
         public static double DistanceBetween(double lat1, double lon1, double lat2, double lon2, IqlDistanceKind unit = IqlDistanceKind.Kilometers)

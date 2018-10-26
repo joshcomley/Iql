@@ -24,6 +24,7 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlIntersectsExpression(null, null);
+			expression.Srid = Srid;
 			expression.Polygon = (IqlReferenceExpression)Polygon?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;

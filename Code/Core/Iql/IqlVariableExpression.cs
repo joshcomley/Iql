@@ -4,11 +4,11 @@ using Iql.Extensions;
 
 namespace Iql
 {
-    public class IqlVariableExpression : IqlReferenceExpression
+    public class IqlVariableExpression : IqlLiteralExpression
     {
         public IqlVariableExpression(
             string variableName = null,
-            string value = null,
+            object value = null,
             Type entityType = null) : base(IqlExpressionKind.Variable, entityType.ToIqlType())
         {
             VariableName = variableName;
@@ -21,8 +21,6 @@ namespace Iql
         }
 
         public string EntityTypeName { get; set; }
-
-        public string Value { get; set; }
 
         public string VariableName { get; set; }
 

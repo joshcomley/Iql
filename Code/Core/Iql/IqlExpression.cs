@@ -254,6 +254,40 @@ namespace Iql
                     return typeof(IqlEnumValueExpression);
                 case IqlExpressionKind.Lambda:
                     return typeof(IqlLambdaExpression);
+                case IqlExpressionKind.Condition:
+                    return typeof(IqlConditionExpression);
+                case IqlExpressionKind.Invocation:
+                    return typeof(IqlInvocationExpression);
+                case IqlExpressionKind.GeometryPoint:
+                    return typeof(IqlGeometryPointExpression);
+                case IqlExpressionKind.GeometryMultiPoint:
+                    return typeof(IqlGeometryMultiPointExpression);
+                case IqlExpressionKind.GeometryLine:
+                    return typeof(IqlGeometryLineExpression);
+                case IqlExpressionKind.GeometryMultiLine:
+                    return typeof(IqlGeometryMultiLineExpression);
+                case IqlExpressionKind.GeometryPolygon:
+                    return typeof(IqlGeometryPolygonExpression);
+                case IqlExpressionKind.GeometryMultiPolygon:
+                    return typeof(IqlGeometryMultiPolygonExpression);
+                case IqlExpressionKind.GeographyPoint:
+                    return typeof(IqlGeographyPointExpression);
+                case IqlExpressionKind.GeographyMultiPoint:
+                    return typeof(IqlGeographyMultiPointExpression);
+                case IqlExpressionKind.GeographyLine:
+                    return typeof(IqlGeographyLineExpression);
+                case IqlExpressionKind.GeographyMultiLine:
+                    return typeof(IqlGeographyMultiLineExpression);
+                case IqlExpressionKind.GeographyPolygon:
+                    return typeof(IqlGeographyPolygonExpression);
+                case IqlExpressionKind.GeographyMultiPolygon:
+                    return typeof(IqlGeographyMultiPolygonExpression);
+                case IqlExpressionKind.Intersects:
+                    return typeof(IqlIntersectsExpression);
+                case IqlExpressionKind.Length:
+                    return typeof(IqlLengthExpression);
+                case IqlExpressionKind.Distance:
+                    return typeof(IqlDistanceExpression);
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }

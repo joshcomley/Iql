@@ -46,6 +46,17 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             var parent = iqlReferenceExpression.Parent as IqlReferenceExpression;
             switch (nativeMethodName)
             {
+                case nameof(IqlPointExpression.Intersects):
+                    method = new IqlIntersectsExpression(parent,
+                        context.Parse(expression.Args[0]).Value as IqlReferenceExpression);
+                    break;
+                case nameof(IqlPointExpression.DistanceFrom):
+                    method = new IqlDistanceExpression(parent,
+                        context.Parse(expression.Args[0]).Value as IqlReferenceExpression);
+                    break;
+                case nameof(IqlLineExpression.Length):
+                    method = new IqlLengthExpression(parent);
+                    break;
                 case "includes":
                     method = new IqlStringIncludesExpression(
                         parent,

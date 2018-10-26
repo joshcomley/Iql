@@ -30,7 +30,17 @@ namespace Iql.Tests.Tests.OData
                     new IqlGeographyPointExpression(7, 3),
                     new IqlGeographyPointExpression(1, 2),
                 });
-            var query = Db.Sites.Where(site => site.Location.Intersects(polygon));
+            var query = Db.Sites.Where(site => site.Location.Intersects(polygon)
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')", uri);
@@ -39,7 +49,16 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestIntersectsReference()
         {
-            var query = Db.Sites.Where(site => site.Location.Intersects(site.Area));
+            var query = Db.Sites.Where(site => site.Location.Intersects(site.Area)
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,$it/Area)", uri);
@@ -49,7 +68,17 @@ namespace Iql.Tests.Tests.OData
         public async Task TestDistanceLiteral()
         {
             var point = new IqlGeographyPointExpression(1, 2);
-            var query = Db.Sites.Where(site => site.Location.DistanceFrom(point, IqlDistanceKind.Kilometers) < 150);
+            var query = Db.Sites.Where(site => site.Location.DistanceFrom(point) < 150
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+                                               );
+            var iql = await query.ToIqlAsync();
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
@@ -58,7 +87,17 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestDistanceReference()
         {
-            var query = Db.Sites.Where(site => site.Location.DistanceFrom(site.Location, IqlDistanceKind.Kilometers) < 150);
+            var query = Db.Sites.Where(site => site.Location.DistanceFrom(site.Location) < 150
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,$it/Location) lt 150)", uri);
@@ -74,7 +113,17 @@ namespace Iql.Tests.Tests.OData
                     new IqlGeographyPointExpression(5, 4),
                     new IqlGeographyPointExpression(7, 3),
                 });
-            var query = Db.Sites.Where(site => site.Line.Length(IqlDistanceKind.Kilometers) < line.Length(IqlDistanceKind.Kilometers));
+            var query = Db.Sites.Where(site => site.Line.Length() < line.Length()
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt 745.451415829943)", uri);
@@ -83,7 +132,17 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestLengthWithDirectValue()
         {
-            var query = Db.Sites.Where(site => site.Line.Length(IqlDistanceKind.Kilometers) < 150);
+            var query = Db.Sites.Where(site => site.Line.Length() < 150
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt 150)", uri);

@@ -3,13 +3,10 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlDistanceExpression : IqlExpression, IGeographicExpression
+    public class IqlDistanceExpression : IqlBinaryExpression, IGeographicExpression
     {
-        public IqlReferenceExpression Point { get; set; }
-
-        public IqlDistanceExpression(IqlReferenceExpression parent, IqlReferenceExpression point) : base(IqlExpressionKind.Distance, IqlType.Decimal, parent)
+        public IqlDistanceExpression(IqlReferenceExpression left, IqlReferenceExpression right) : base(IqlExpressionKind.Distance, left, right)
         {
-            Point = point;
             Srid = IqlConstants.DefaultGeographicSrid;
         }
 
@@ -23,7 +20,9 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlDistanceExpression(null, null);
-			expression.Point = (IqlReferenceExpression)Point?.Clone();
+			expression.Srid = Srid;
+			expression.Left = Left?.Clone();
+			expression.Right = Right?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -53,7 +52,8 @@ namespace Iql
 			}
 			if(reaction != FlattenReactionKind.IgnoreChildren)
 			{
-				Point?.FlattenInternal(expressions, checker);
+				Left?.FlattenInternal(expressions, checker);
+				Right?.FlattenInternal(expressions, checker);
 				Parent?.FlattenInternal(expressions, checker);
 			}
 
@@ -64,7 +64,8 @@ namespace Iql
         {
             // #ReplaceStart
 
-			Point = (IqlReferenceExpression)context.Replace(this, nameof(Point), null, Point);
+			Left = context.Replace(this, nameof(Left), null, Left);
+			Right = context.Replace(this, nameof(Right), null, Right);
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)

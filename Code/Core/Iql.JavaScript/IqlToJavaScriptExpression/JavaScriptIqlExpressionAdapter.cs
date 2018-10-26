@@ -40,6 +40,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
             Registry.Register(typeof(IqlStringLengthExpression),
                 () => new JavaScriptStringLengthParser());
             Registry.Register(typeof(IqlUnaryExpression), () => new JavaScriptUnaryActionParser());
+            Registry.Register(typeof(IqlDistanceExpression), () => new JavaScriptDistanceActionParser());
             Registry.Register(typeof(IqlBinaryExpression), () => new JavaScriptBinaryActionParser());
             Registry.Register(typeof(IqlCountExpression), () => new JavaScriptCountActionParser());
             Registry.Register(typeof(IqlAnyAllExpression), () => new JavaScriptAnyAllActionParser());

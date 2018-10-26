@@ -11,14 +11,14 @@ namespace Iql
             Points = points?.ToList();
         }
 
-        public double Length(IqlDistanceKind unit = IqlDistanceKind.Kilometers)
+        public double Length()
         {
             var current = Points[0];
             double total = 0;
             for (var i = 1; i < Points.Count; i++)
             {
                 var point = Points[i];
-                total += IqlPointExpression.DistanceBetween(current.X, current.Y, point.X, point.Y, unit);
+                total += IqlPointExpression.DistanceBetween(current.X, current.Y, point.X, point.Y);
                 current = point;
             }
             return total;

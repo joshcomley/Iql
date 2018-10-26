@@ -12,9 +12,9 @@ namespace Iql.OData.Extensions
             return dataContext.GetConfiguration<ODataConfiguration>();
         }
 
-        public static async Task<string> ResolveODataUriAsync(this IDbQueryable queryable)
+        public static Task<string> ResolveODataUriAsync(this IDbQueryable queryable)
         {            
-            return await queryable.ResolveODataUriFromQueryAsync();
+            return queryable.ResolveODataUriFromQueryAsync();
         }
 
         public static async Task<string> ResolveODataUriFromQueryAsync(this IQueryableBase queryable, ODataConfiguration oDataConfiguration = null)
