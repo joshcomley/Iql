@@ -1,6 +1,7 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
@@ -8,6 +9,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(ODataModelBuilder builder)
         {
+            builder.MapSpatial<Site>(_ => _.EdmLocation, _ => _.Location);
             builder.EntityType<Site>()
                 .HasOptional(s => s.Parent, (left, right) => left.ParentId == right.Id, site => site.Children);
             builder.EntityType<Site>()
