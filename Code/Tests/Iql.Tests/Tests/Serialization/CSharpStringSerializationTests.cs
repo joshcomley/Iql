@@ -6,7 +6,7 @@ using Iql.DotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.Serialization
 {

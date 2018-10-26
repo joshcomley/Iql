@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Tunnel.App.Data
+namespace IqlSampleApp.Data
 {
     public class DesignTimeAppDbContextBuilder : IDesignTimeDbContextFactory<ApplicationDbContext>
     {

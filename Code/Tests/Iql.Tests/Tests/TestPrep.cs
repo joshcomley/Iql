@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Iql.Data.Context;
 using Iql.Tests.Context;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests
 {

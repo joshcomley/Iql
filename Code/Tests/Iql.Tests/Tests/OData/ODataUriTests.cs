@@ -12,13 +12,22 @@ using Iql.Queryable.Expressions;
 #endif
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.OData
 {
     [TestClass]
     public class ODataUriTests : TestsBase
     {
+        [TestMethod]
+        public async Task TestIntersects()
+        {
+            var query = Db.ApplicationLogs.IncludeCount().WithKey(new Guid("4e9dcf61-4abf-458e-abfc-07c20d5ef248"));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/ApplicationLogs(4e9dcf61-4abf-458e-abfc-07c20d5ef248)", uri);
+        }
+
         [TestMethod]
         public async Task TestCountNotSubmittedOnSingleEntity()
         {
@@ -175,7 +184,7 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.Me();
             var uri = meRequest.Uri;
-            Assert.AreEqual(@"http://localhost:28000/odata/Users/Tunnel.Me", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Users/IqlSampleApp.Me", uri);
         }
 
         [TestMethod]
@@ -184,7 +193,7 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.ForClient(7, 2);
             var uri = meRequest.Uri;
-            Assert.AreEqual(@"http://localhost:28000/odata/Users/Tunnel.ForClient(id=7,type=2)", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Users/IqlSampleApp.ForClient(id=7,type=2)", uri);
         }
 
         [TestMethod]
@@ -193,7 +202,7 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.ReinstateUser(new ApplicationUser { Id = "928B9116-B06C-49EF-98C9-52A776E03ECD" });
             var uri = meRequest.Uri;
-            Assert.AreEqual(@"http://localhost:28000/odata/Users('928B9116-B06C-49EF-98C9-52A776E03ECD')/Tunnel.ReinstateUser", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Users('928B9116-B06C-49EF-98C9-52A776E03ECD')/IqlSampleApp.ReinstateUser", uri);
         }
 
         [TestMethod]
@@ -202,7 +211,7 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.ClientTypes.SayHi(new ClientType { Id = 2 }, "bebo");
             var uri = meRequest.Uri;
-            Assert.AreEqual(@"http://localhost:28000/odata/ClientTypes(2)/Tunnel.SayHi(name='bebo')", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/ClientTypes(2)/IqlSampleApp.SayHi(name='bebo')", uri);
         }
 
         [TestMethod]

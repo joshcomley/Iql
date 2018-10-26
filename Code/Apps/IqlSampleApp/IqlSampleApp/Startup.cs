@@ -5,6 +5,8 @@ using Iql.Conversion;
 using Iql.DotNet;
 using Iql.Server;
 using Iql.Server.OData.Net;
+using IqlSampleApp.Data;
+using IqlSampleApp.Data.Contracts;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,8 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tunnel.App.Data;
-using Tunnel.App.Data.Models.Contracts;
 
 namespace IqlSampleApp
 {
@@ -63,9 +63,9 @@ namespace IqlSampleApp
                 builder.MapODataServiceRoute("odata", "odata", model.Model);
             });
 
-            app.UseIql<ITunnelService>(config =>
+            app.UseIql<IIqlSampleAppService>(config =>
             {
-                config.ConfigureFromOData<ITunnelService>(model.ModelBuilder);
+                config.ConfigureFromOData<IIqlSampleAppService>(model.ModelBuilder);
             });
             using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Brandless.Data.Entities;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ClientType : IDbObject<int>
     {

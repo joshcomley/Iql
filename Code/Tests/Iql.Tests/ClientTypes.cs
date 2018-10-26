@@ -1,4 +1,4 @@
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests
 {

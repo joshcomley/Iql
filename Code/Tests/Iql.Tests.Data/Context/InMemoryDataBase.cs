@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Iql.Tests.Tests.OData;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Data.Context
 {
@@ -10,7 +10,6 @@ namespace Iql.Tests.Data.Context
         public IList<MyCustomReport> MyCustomReports { get; set; } = new List<MyCustomReport>();
         public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
         public IList<Client> Clients { get; set; } = new List<Client>();
-        public IList<ClientCategory> ClientCategories { get; set; } = new List<ClientCategory>();
         public IList<Site> Sites { get; set; } = new List<Site>();
         public IList<SiteInspection> SiteInspections { get; set; } = new List<SiteInspection>();
         public IList<Person> People { get; set; } = new List<Person>();

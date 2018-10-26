@@ -5,7 +5,7 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests
 {
@@ -33,7 +33,7 @@ namespace Iql.Tests.Tests
         public async Task ChangeSinglePropertyAndRevertAndChangeAgainAndSave()
         {
             // Set up
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test", TypeId = 1});
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test", TypeId = 1 });
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2", TypeId = 1 });
 
             var clients = await Db.Clients.ToListAsync();
@@ -176,8 +176,8 @@ namespace Iql.Tests.Tests
             // Set up
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Client 1", TypeId = 1 });
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Client 2", TypeId = 1 });
-            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1" });
-            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2" });
+            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 1, Name = "Site 1", ClientId = 1 });
+            AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
             var client1 = await Db.Clients.GetWithKeyAsync(1);
             var sites = await Db.Sites.ToListAsync();
@@ -207,7 +207,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, clientChange.EntityState.GetChangedProperties().Length);
             Assert.AreEqual(nameof(Client.Name), clientChange.EntityState.GetChangedProperties()[0].Property.Name);
 
-            await Db.SaveChangesAsync();
+            var result = await Db.SaveChangesAsync();
 
             AssertQueueEmpty();
 

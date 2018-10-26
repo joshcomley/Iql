@@ -1,9 +1,9 @@
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public enum PersonInspectionStatus
     {
-        Pass,
-        Fail,
-        PassWithObservations
+        Pass = 1,
+        Fail = 2,
+        PassWithObservations = 3
     }
 }

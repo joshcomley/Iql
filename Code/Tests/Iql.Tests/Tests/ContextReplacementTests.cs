@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests
 {

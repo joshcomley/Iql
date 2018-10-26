@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Iql.Tests.Context;
+using IqlSampleApp.ApiContext.Base;
+using IqlSampleApp.Sets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.ApiContext.Base;
-using Tunnel.App.Data.Entities;
-using Tunnel.Sets;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.DataContext
 {
@@ -75,7 +75,7 @@ namespace Iql.Tests.Tests.DataContext
         [TestMethod]
         public void GetDbSetByLowerCaseName()
         {
-            var someSet = Db.GetDbSetBySetName(nameof(TunnelDataContextBase.PersonInspections).ToLower());
+            var someSet = Db.GetDbSetBySetName(nameof(IqlSampleAppDataContextBase.PersonInspections).ToLower());
             Assert.AreEqual(Db.PersonInspections, someSet);
         }
 

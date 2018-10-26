@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Iql.Data.Queryable;
-using Iql.Entities;
 using Iql.OData.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.DataContext
 {

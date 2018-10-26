@@ -1,15 +1,10 @@
-using System;
-using Tunnel.App.Data.Entities;
-using Tunnel.App.Web.Controllers.Api.Entities;
-using Microsoft.AspNet.OData.Builder;
-using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
-using Brandless.AspNetCore.OData.Extensions.Extensions;
 using Iql.Entities;
 using Iql.Server;
-using Microsoft.OData.Edm;
+using IqlSampleApp.Data.Entities;
+using Microsoft.AspNet.OData.Builder;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
     public class PersonIqlConfigurator : IIqlEntitySetConfigurator
     {

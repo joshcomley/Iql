@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Tunnel.App.Data.Models;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     /// <summary>
     ///     Choose or add a client
@@ -15,7 +15,9 @@ namespace Tunnel.App.Data.Entities
         public int SiteId { get; set; }
         public Site Site { get; set; }
         public List<PersonInspection> PersonInspections { get; set; }
-        public RiskAssessment RiskAssessment { get; set; }
+        //public int? RiskAssessmentId { get; set; }
+        //public RiskAssessment RiskAssessment { get; set; }
+        public List<RiskAssessment> RiskAssessments { get; set; }
 
         //public byte[] Signature { get; set; }
     }

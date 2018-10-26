@@ -1,6 +1,6 @@
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
-namespace Tunnel.App.Web.Controllers.Api.Entities
+namespace IqlSampleApp.Data.Controllers.Api.Entities
 {
     public class ClientTypesController : IqlSampleAppController<ClientType>
     {

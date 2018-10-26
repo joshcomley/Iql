@@ -10,7 +10,7 @@ using Iql.DotNet;
 #endif
 using Iql.Queryable;
 using Iql.Tests.Data.Context;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Context
 {

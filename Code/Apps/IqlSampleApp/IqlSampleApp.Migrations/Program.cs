@@ -1,9 +1,9 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data.EntityFramework.Migration;
+using IqlSampleApp.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Tunnel.App.Data;
 
 namespace IqlSampleApp.Migrations
 {

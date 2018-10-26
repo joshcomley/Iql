@@ -9,18 +9,17 @@ using Iql.Entities.SpecialTypes;
 using Iql.Tests.Data.Context;
 using Iql.Tests.Data.Context.Custom;
 using Iql.Tests.Tests.OData;
+using IqlSampleApp.ApiContext.Base;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
 using Iql.DotNet;
 #endif
-using Tunnel.ApiContext.Base;
-using Tunnel.App.Data.Entities;
-using Tunnel.Sets;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Context
 {
-    public class AppDbContext : TunnelDataContextBase
+    public class AppDbContext : IqlSampleAppDataContextBase
     {
         static AppDbContext()
         {

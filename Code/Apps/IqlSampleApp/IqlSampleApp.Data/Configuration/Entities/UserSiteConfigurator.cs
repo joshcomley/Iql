@@ -1,8 +1,8 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
-using Tunnel.App.Data.Entities;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
     public class UserSiteConfigurator : IODataEntitySetConfigurator
     {

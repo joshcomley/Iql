@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DCodeBrandlessIqlCodeAppsIqlSampleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181025151507_Init")]
-    partial class Init
+    [Migration("20181025181606_AddedMissingFields")]
+    partial class AddedMissingFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,24 @@ namespace DCodeBrandlessIqlCodeAppsIqlSampleApp.Migrations
                 .HasAnnotation("ProductVersion", "3.0.3-alpha0003-1-Debug")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("IqlSampleApp.Data.Entities.ApplicationLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("CreatedDate");
+
+                    b.Property<string>("Kind");
+
+                    b.Property<string>("Message");
+
+                    b.Property<string>("Module");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationLogs");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -165,6 +183,8 @@ namespace DCodeBrandlessIqlCodeAppsIqlSampleApp.Migrations
 
                     b.Property<string>("PasswordHash");
 
+                    b.Property<int>("Permissions");
+
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
@@ -201,11 +221,19 @@ namespace DCodeBrandlessIqlCodeAppsIqlSampleApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("AverageIncome");
+
+                    b.Property<double>("AverageSales");
+
+                    b.Property<int>("Category");
+
                     b.Property<string>("CreatedByUserId");
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
                     b.Property<string>("Description");
+
+                    b.Property<double>("Discount");
 
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()

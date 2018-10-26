@@ -1,6 +1,6 @@
 ﻿using Iql.Entities.DisplayFormatting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.DisplayFormatting
 {

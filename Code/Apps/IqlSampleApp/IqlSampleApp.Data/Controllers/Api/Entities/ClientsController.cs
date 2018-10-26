@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using Tunnel.App.Data.Entities;
-using Microsoft.AspNetCore.Mvc;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Routing;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Tunnel.App.Web.Controllers.Api.Entities
+namespace IqlSampleApp.Data.Controllers.Api.Entities
 {
     public class ClientsController : IqlSampleAppController<Client>
     {

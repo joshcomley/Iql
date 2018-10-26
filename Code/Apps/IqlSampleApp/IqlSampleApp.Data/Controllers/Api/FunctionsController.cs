@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.AspNetCore.OData.Extensions.Controllers;
-using Tunnel.App.Data.Models.Contracts;
-using Microsoft.AspNetCore.Mvc;
+using IqlSampleApp.Data.Contracts;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using Tunnel.App.Data.Entities;
 
-namespace Tunnel.App.Web.Controllers.Api
+namespace IqlSampleApp.Data.Controllers.Api
 {
     [EnableQuery]
     [Route("odata")]
@@ -16,7 +16,7 @@ namespace Tunnel.App.Web.Controllers.Api
         [HttpPost("ValidateField")]
         public virtual Task<IActionResult> ValidateField([FromBody] JObject validation)
         {
-            return this.ValidateFieldInService<ITunnelService>(validation);
+            return this.ValidateFieldInService<IIqlSampleAppService>(validation);
         }
 
         [HttpGet(nameof(SayHi))]

@@ -18,7 +18,7 @@ using Iql.Tests.Context;
 using Iql.Tests.Tests.OData;
 using Iql.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.JavaScript
 {

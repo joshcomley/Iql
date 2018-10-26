@@ -1,7 +1,7 @@
 using System;
-using Brandless.Data.Contracts;
+using Brandless.Data.Entities;
 
-namespace Brandless.Data.Entities
+namespace IqlSampleApp.Data.Entities.Bases
 {
     public interface IRevisionable
     {

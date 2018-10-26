@@ -3,7 +3,7 @@ using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Queryable.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests
 {

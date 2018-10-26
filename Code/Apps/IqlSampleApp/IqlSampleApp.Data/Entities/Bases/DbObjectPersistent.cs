@@ -1,6 +1,7 @@
 using System;
+using Brandless.Data.Entities;
 
-namespace Brandless.Data.Entities
+namespace IqlSampleApp.Data.Entities.Bases
 {
     public class DbObjectPersistent : IHasPersistenceKey
     {

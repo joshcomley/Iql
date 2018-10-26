@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Tunnel.App.Data.Models;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportType : DbObject
     {

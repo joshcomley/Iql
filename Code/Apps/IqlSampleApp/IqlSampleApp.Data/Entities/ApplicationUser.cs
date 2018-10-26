@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Brandless.Data.Entities;
+using IqlSampleApp.Data.Entities.Bases;
 using Microsoft.AspNetCore.Identity;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ApplicationUser : IdentityUser, IDbObject<string>
     {
@@ -14,6 +14,7 @@ namespace Tunnel.App.Data.Entities
         [EmailAddress(ErrorMessage = "Please provide a valid email address")]
         public override string Email { get; set; }
 
+        public virtual UserPermissions Permissions { get; set; }
         public List<UserSite> Sites { get; set; }
         public List<PersonReport> FaultReportsCreated { get; set; }
         public List<ReportRecommendation> FaultRecommendationsCreated { get; set; }
@@ -32,6 +33,7 @@ namespace Tunnel.App.Data.Entities
         public List<ReportReceiverEmailAddress> ReportReceiverEmailAddressesCreated { get; set; }
         public List<RiskAssessment> RiskAssessmentsCreated { get; set; }
         public List<RiskAssessmentAnswer> RiskAssessmentAnswersCreated { get; set; }
+        public List<RiskAssessmentSolution> RiskAssessmentSolutionsCreated { get; set; }
         public List<RiskAssessmentQuestion> RiskAssessmentQuestionsCreated { get; set; }
         public List<PersonLoading> PersonLoadingsCreated { get; set; }
 

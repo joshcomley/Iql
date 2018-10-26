@@ -1,7 +1,7 @@
 using System;
-using Tunnel.App.Data.Models;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     /// <summary>
     ///     If there are ANY faults, then disallow PASS

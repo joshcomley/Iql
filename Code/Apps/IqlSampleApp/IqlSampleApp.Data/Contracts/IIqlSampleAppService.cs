@@ -1,11 +1,12 @@
 using System.Linq;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
-namespace Tunnel.App.Data.Models.Contracts
+namespace IqlSampleApp.Data.Contracts
 {
-    public interface ITunnelService
+    public interface IIqlSampleAppService
     {
         IQueryable<ApplicationUser> Users { get; }
+        IQueryable<ApplicationLog> ApplicationLogs { get; }
         IQueryable<Client> Clients { get; }
         IQueryable<ClientType> ClientTypes { get; }
         IQueryable<DocumentCategory> DocumentCategories { get; }

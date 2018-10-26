@@ -113,7 +113,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                     .Match(path, $@"^{nameof(EntityConfigurationDocument.EntityTypes)}\[(?<Index>\d+)\]")
                     .Groups["Index"].Value);
             }
-            var typeMapping = TypeMappings[objectType];
+            var typeMapping = TypeMappings.ContainsKey(objectType) ? TypeMappings[objectType] : objectType;
             if (reader.Path == nameof(EntityConfigurationDocument.UsersDefinition))
             {
                 typeMapping = typeof(UsersDefinition);
@@ -154,6 +154,10 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             }
             else
             {
+                if (path == "EntityConfigurations[0].Properties[1]")
+                {
+                    int a = 0;
+                }
                 result = serializer.Deserialize(reader, typeMapping);
             }
             if (typeof(IEntityMetadata).IsAssignableFrom(objectType))

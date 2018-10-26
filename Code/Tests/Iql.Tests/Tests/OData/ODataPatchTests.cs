@@ -6,7 +6,7 @@ using Iql.JavaScript.Extensions;
 using Iql.Tests.Context;
 using Iql.Tests.Data.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.OData
 {
@@ -43,6 +43,7 @@ namespace Iql.Tests.Tests.OData
                 var db = NewDb();
                 var map = new PersonTypeMap
                 {
+                    CreatedDate = DateTime.Now,
                     PersonId = 1,
                     TypeId = 1,
                     Description = "Abc",

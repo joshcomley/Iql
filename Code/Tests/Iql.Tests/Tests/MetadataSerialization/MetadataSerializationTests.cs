@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Server.Serialization.Serialization;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.MetadataSerialization
 {

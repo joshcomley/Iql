@@ -1,10 +1,8 @@
-using System;
-using Microsoft.AspNet.OData.Builder;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
-using Microsoft.OData.Edm;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
+using Microsoft.AspNet.OData.Builder;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
     public class RiskAssessmentConfigurator : IODataEntitySetConfigurator
     {
@@ -15,7 +13,7 @@ namespace Tunnel.App.Web.OData.Configuration.Entities
                 .HasRequired(
                     si => si.SiteInspection,
                     (riskAssessment, siteInspection) => riskAssessment.SiteInspectionId == siteInspection.Id,
-                    siteInspection => siteInspection.RiskAssessment
+                    siteInspection => siteInspection.RiskAssessments
                 );
         }
     }

@@ -1,6 +1,6 @@
-using Tunnel.App.Data.Models;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     /// <summary>
     ///     Online only

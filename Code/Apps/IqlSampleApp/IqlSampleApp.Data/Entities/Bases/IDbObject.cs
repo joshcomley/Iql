@@ -1,4 +1,4 @@
-namespace Brandless.Data.Entities
+namespace IqlSampleApp.Data.Entities.Bases
 {
     public interface IDbObject<TKey>
 	{

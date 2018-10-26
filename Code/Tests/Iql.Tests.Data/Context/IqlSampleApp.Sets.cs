@@ -1,7 +1,7 @@
 using Iql.Entities;
-using Tunnel.Sets;
-using Tunnel.ApiContext.Base;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Sets;
+using IqlSampleApp.ApiContext.Base;
+using IqlSampleApp.Data.Entities;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.OData;
@@ -10,15 +10,7 @@ using System.Collections.Generic;
 using Iql.Data.Lists;
 using Iql.OData.Methods;
 using System;
-namespace Tunnel.Sets
-{
-    public class ApplicationLogSet: DbSet<ApplicationLog, Guid>
-    {
-        public ApplicationLogSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
-        {}
-    }
-}
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ApplicationUserSet: DbSet<ApplicationUser, string>
     {
@@ -30,47 +22,49 @@ namespace Tunnel.Sets
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(id, typeof(int), "id", false));
             parameters.Add(new ODataParameter(type, typeof(int), "type", false));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<IEnumerable<ApplicationUser>>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "Tunnel", "ForClient", typeof(ApplicationUser), typeof(ApplicationUser));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<IEnumerable<ApplicationUser>>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "IqlSampleApp", "ForClient", typeof(ApplicationUser), typeof(ApplicationUser));
         }
         public virtual ODataDataMethodRequest<ApplicationUser>Me()
         {
             var parameters = new List<ODataParameter>();
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<ApplicationUser>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "Tunnel", "Me", typeof(ApplicationUser), typeof(ApplicationUser));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<ApplicationUser>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "IqlSampleApp", "Me", typeof(ApplicationUser), typeof(ApplicationUser));
         }
         // Entity methods
         public virtual ODataDataMethodRequest<string>GeneratePasswordResetLink(ApplicationUser bindingParameter)
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Function, ODataMethodScope.Entity, "Tunnel", "GeneratePasswordResetLink", typeof(ApplicationUser), typeof(String));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Function, ODataMethodScope.Entity, "IqlSampleApp", "GeneratePasswordResetLink", typeof(ApplicationUser), typeof(String));
         }
         public virtual ODataDataMethodRequest<string>AccountConfirm(ApplicationUser bindingParameter)
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "AccountConfirm", typeof(ApplicationUser), typeof(String));
-        }
-        public virtual ODataDataMethodRequest<string>SendAccountConfirmationEmail(ApplicationUser bindingParameter)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "SendAccountConfirmationEmail", typeof(ApplicationUser), typeof(String));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "IqlSampleApp", "AccountConfirm", typeof(ApplicationUser), typeof(String));
         }
         public virtual ODataDataMethodRequest<string>SendPasswordResetEmail(ApplicationUser bindingParameter)
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "SendPasswordResetEmail", typeof(ApplicationUser), typeof(String));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "IqlSampleApp", "SendPasswordResetEmail", typeof(ApplicationUser), typeof(String));
         }
         public virtual ODataDataMethodRequest<string>ReinstateUser(ApplicationUser bindingParameter)
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "ReinstateUser", typeof(ApplicationUser), typeof(String));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "IqlSampleApp", "ReinstateUser", typeof(ApplicationUser), typeof(String));
         }
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
+{
+    public class ApplicationLogSet: DbSet<ApplicationLog, Guid>
+    {
+        public ApplicationLogSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
+        {}
+    }
+}
+namespace IqlSampleApp.Sets
 {
     public class ClientSet: DbSet<Client, int>
     {
@@ -80,42 +74,27 @@ namespace Tunnel.Sets
         public virtual ODataDataMethodRequest<IEnumerable<Client>>All()
         {
             var parameters = new List<ODataParameter>();
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<IEnumerable<Client>>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "Tunnel", "All", typeof(Client), typeof(Client));
-        }
-        // Entity methods
-        public virtual ODataDataMethodRequest<int>DoSomething(Client bindingParameter, string title)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(Client), "bindingParameter", true));
-            parameters.Add(new ODataParameter(title, typeof(string), "title", false));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<int>(parameters, ODataMethodType.Function, ODataMethodScope.Entity, "Tunnel", "DoSomething", typeof(Client), typeof(int));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<IEnumerable<Client>>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "IqlSampleApp", "All", typeof(Client), typeof(Client));
         }
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ClientTypeSet: DbSet<ClientType, int>
     {
         public ClientTypeSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
         {}
-        // Collection methods
-        public virtual ODataDataMethodRequest<string>SayHi2(string name)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(name, typeof(string), "name", false));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Function, ODataMethodScope.Collection, "Tunnel", "SayHi2", typeof(ClientType), typeof(String));
-        }
         // Entity methods
         public virtual ODataDataMethodRequest<string>SayHi(ClientType bindingParameter, string name)
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ClientType), "bindingParameter", true));
             parameters.Add(new ODataParameter(name, typeof(string), "name", false));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Function, ODataMethodScope.Entity, "Tunnel", "SayHi", typeof(ClientType), typeof(String));
+            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Function, ODataMethodScope.Entity, "IqlSampleApp", "SayHi", typeof(ClientType), typeof(String));
         }
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class DocumentCategorySet: DbSet<DocumentCategory, int>
     {
@@ -123,7 +102,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class SiteDocumentSet: DbSet<SiteDocument, int>
     {
@@ -131,7 +110,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ReportActionsTakenSet: DbSet<ReportActionsTaken, int>
     {
@@ -139,7 +118,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ReportCategorySet: DbSet<ReportCategory, int>
     {
@@ -147,7 +126,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ReportDefaultRecommendationSet: DbSet<ReportDefaultRecommendation, int>
     {
@@ -155,7 +134,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ReportRecommendationSet: DbSet<ReportRecommendation, int>
     {
@@ -163,7 +142,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ReportTypeSet: DbSet<ReportType, int>
     {
@@ -171,7 +150,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ProjectSet: DbSet<Project, int>
     {
@@ -179,7 +158,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class ReportReceiverEmailAddressSet: DbSet<ReportReceiverEmailAddress, int>
     {
@@ -187,7 +166,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class RiskAssessmentSet: DbSet<RiskAssessment, int>
     {
@@ -195,7 +174,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class RiskAssessmentSolutionSet: DbSet<RiskAssessmentSolution, int>
     {
@@ -203,7 +182,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class RiskAssessmentAnswerSet: DbSet<RiskAssessmentAnswer, int>
     {
@@ -211,7 +190,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class RiskAssessmentQuestionSet: DbSet<RiskAssessmentQuestion, int>
     {
@@ -219,22 +198,15 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class PersonSet: DbSet<Person, int>
     {
         public PersonSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
         {}
-        // Entity methods
-        public virtual ODataDataMethodRequest<string>IncrementVersion(Person bindingParameter)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(Person), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "IncrementVersion", typeof(Person), typeof(String));
-        }
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class PersonInspectionSet: DbSet<PersonInspection, int>
     {
@@ -242,7 +214,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class PersonLoadingSet: DbSet<PersonLoading, int>
     {
@@ -250,7 +222,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class PersonTypeSet: DbSet<PersonType, int>
     {
@@ -258,7 +230,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class PersonTypeMapSet: DbSet<PersonTypeMap, CompositeKey>
     {
@@ -266,7 +238,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class PersonReportSet: DbSet<PersonReport, int>
     {
@@ -274,50 +246,15 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class SiteSet: DbSet<Site, int>
     {
         public SiteSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
         {}
-        // Collection methods
-        public virtual ODataMethodRequest InsertBeneath(int Blah)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(Blah, typeof(int), "Blah", false));
-            return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScope.Collection, "Tunnel", "InsertBeneath", typeof(Site));
-        }
-        // Entity methods
-        public virtual ODataMethodRequest SlideDelete(Site bindingParameter)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(Site), "bindingParameter", true));
-            return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "SlideDelete", typeof(Site));
-        }
-        public virtual ODataMethodRequest MoveToLeftOf(Site bindingParameter, Site newParent)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(Site), "bindingParameter", true));
-            parameters.Add(new ODataParameter(newParent, typeof(Site), "newParent", false));
-            return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "MoveToLeftOf", typeof(Site));
-        }
-        public virtual ODataMethodRequest MoveToRightOf(Site bindingParameter, Site newParent)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(Site), "bindingParameter", true));
-            parameters.Add(new ODataParameter(newParent, typeof(Site), "newParent", false));
-            return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "MoveToRightOf", typeof(Site));
-        }
-        public virtual ODataMethodRequest MoveToUnderneathOf(Site bindingParameter, Site newParent)
-        {
-            var parameters = new List<ODataParameter>();
-            parameters.Add(new ODataParameter(bindingParameter, typeof(Site), "bindingParameter", true));
-            parameters.Add(new ODataParameter(newParent, typeof(Site), "newParent", false));
-            return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, "Tunnel", "MoveToUnderneathOf", typeof(Site));
-        }
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class SiteInspectionSet: DbSet<SiteInspection, int>
     {
@@ -325,7 +262,7 @@ namespace Tunnel.Sets
         {}
     }
 }
-namespace Tunnel.Sets
+namespace IqlSampleApp.Sets
 {
     public class UserSiteSet: DbSet<UserSite, CompositeKey>
     {

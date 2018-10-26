@@ -3,7 +3,7 @@ using System.Text;
 using Haz.App.Data.Entities;
 using Iql.Data.Crud.Operations.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests
 {
@@ -13,6 +13,7 @@ namespace Iql.Tests.Tests
         {
             return new PersonTypeMap
             {
+                CreatedDate = DateTimeOffset.Now,
                 Description = "Some description",
                 Notes = "Some notes",
                 TypeId = 7,

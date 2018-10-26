@@ -9,7 +9,6 @@ namespace Iql.Server.Serialization.Deserialization
         public static EntityConfigurationDocument FromJson(string json)
         {
             var document = DeserializeFromJson<EntityConfigurationDocument>(json);
-
             return document;
         }
 

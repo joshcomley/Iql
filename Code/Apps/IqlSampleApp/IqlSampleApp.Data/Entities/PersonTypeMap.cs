@@ -1,14 +1,12 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using Brandless.Data.Entities;
+using ICreatedDate = IqlSampleApp.Data.Entities.Bases.ICreatedDate;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonTypeMap : IHasGuid, ICreatedDate
     {
-        [Required(ErrorMessage = ":Please enter a title")]
         public string Notes { get; set; }
-        [Required(ErrorMessage = ":Please enter a description")]
         public string Description { get; set; }
         public Person Person { get; set; }
         public int PersonId { get; set; }

@@ -1,56 +1,12 @@
 using Iql.Data;
-using Tunnel.Sets;
-using Tunnel.ApiContext.Base;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Sets;
+using IqlSampleApp.ApiContext.Base;
+using IqlSampleApp.Data.Entities;
 using Iql.Entities.Events;
 using Iql.Data.Lists;
 using System;
 using Iql.Data.Events;
-namespace Tunnel.App.Data.Entities
-{
-    public class ClientCategoryBase: IEntity
-    {
-        protected Boolean _propertyChangingSet;
-        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
-        public EventEmitter<IPropertyChangeEvent>PropertyChanging
-        {
-            get => _propertyChanging;
-            set
-            {
-                _propertyChanging = value;
-                this._propertyChangingSet = value != null;
-            }
-        }
-        protected Boolean _propertyChangedSet;
-        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
-        public EventEmitter<IPropertyChangeEvent>PropertyChanged
-        {
-            get => _propertyChanged;
-            set
-            {
-                _propertyChanged = value;
-                this._propertyChangedSet = value != null;
-            }
-        }
-        protected Boolean _existsChangedSet;
-        protected EventEmitter<ExistsChangeEvent>_existsChanged;
-        public EventEmitter<ExistsChangeEvent>ExistsChanged
-        {
-            get => _existsChanged;
-            set
-            {
-                _existsChanged = value;
-                this._existsChangedSet = value != null;
-            }
-        }
-        public static String ClassName
-        {
-            get;
-            set;
-        } = "ClientCategory";
-    }
-}
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class UserSiteBase: IEntity
     {
@@ -94,7 +50,7 @@ namespace Tunnel.App.Data.Entities
         } = "UserSite";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class SiteInspectionBase: IEntity
     {
@@ -138,7 +94,7 @@ namespace Tunnel.App.Data.Entities
         } = "SiteInspection";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class SiteBase: IEntity
     {
@@ -182,7 +138,7 @@ namespace Tunnel.App.Data.Entities
         } = "Site";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonReportBase: IEntity
     {
@@ -226,7 +182,7 @@ namespace Tunnel.App.Data.Entities
         } = "PersonReport";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonTypeMapBase: IEntity
     {
@@ -270,7 +226,7 @@ namespace Tunnel.App.Data.Entities
         } = "PersonTypeMap";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonTypeBase: IEntity
     {
@@ -314,7 +270,7 @@ namespace Tunnel.App.Data.Entities
         } = "PersonType";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonLoadingBase: IEntity
     {
@@ -358,7 +314,7 @@ namespace Tunnel.App.Data.Entities
         } = "PersonLoading";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonInspectionBase: IEntity
     {
@@ -402,7 +358,7 @@ namespace Tunnel.App.Data.Entities
         } = "PersonInspection";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonBase: IEntity
     {
@@ -446,7 +402,7 @@ namespace Tunnel.App.Data.Entities
         } = "Person";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentQuestionBase: IEntity
     {
@@ -490,7 +446,7 @@ namespace Tunnel.App.Data.Entities
         } = "RiskAssessmentQuestion";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentAnswerBase: IEntity
     {
@@ -534,7 +490,7 @@ namespace Tunnel.App.Data.Entities
         } = "RiskAssessmentAnswer";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentSolutionBase: IEntity
     {
@@ -578,7 +534,7 @@ namespace Tunnel.App.Data.Entities
         } = "RiskAssessmentSolution";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentBase: IEntity
     {
@@ -622,7 +578,7 @@ namespace Tunnel.App.Data.Entities
         } = "RiskAssessment";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportReceiverEmailAddressBase: IEntity
     {
@@ -666,7 +622,7 @@ namespace Tunnel.App.Data.Entities
         } = "ReportReceiverEmailAddress";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ProjectBase: IEntity
     {
@@ -710,7 +666,7 @@ namespace Tunnel.App.Data.Entities
         } = "Project";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportTypeBase: IEntity
     {
@@ -754,7 +710,7 @@ namespace Tunnel.App.Data.Entities
         } = "ReportType";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportRecommendationBase: IEntity
     {
@@ -798,7 +754,7 @@ namespace Tunnel.App.Data.Entities
         } = "ReportRecommendation";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportDefaultRecommendationBase: IEntity
     {
@@ -842,7 +798,7 @@ namespace Tunnel.App.Data.Entities
         } = "ReportDefaultRecommendation";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportCategoryBase: IEntity
     {
@@ -886,7 +842,7 @@ namespace Tunnel.App.Data.Entities
         } = "ReportCategory";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportActionsTakenBase: IEntity
     {
@@ -930,7 +886,7 @@ namespace Tunnel.App.Data.Entities
         } = "ReportActionsTaken";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class SiteDocumentBase: IEntity
     {
@@ -974,7 +930,7 @@ namespace Tunnel.App.Data.Entities
         } = "SiteDocument";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class DocumentCategoryBase: IEntity
     {
@@ -1018,7 +974,7 @@ namespace Tunnel.App.Data.Entities
         } = "DocumentCategory";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ClientTypeBase: IEntity
     {
@@ -1062,7 +1018,7 @@ namespace Tunnel.App.Data.Entities
         } = "ClientType";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ClientBase: IEntity
     {
@@ -1106,51 +1062,7 @@ namespace Tunnel.App.Data.Entities
         } = "Client";
     }
 }
-namespace Tunnel.App.Data.Entities
-{
-    public class ApplicationUserBase: IEntity
-    {
-        protected Boolean _propertyChangingSet;
-        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
-        public EventEmitter<IPropertyChangeEvent>PropertyChanging
-        {
-            get => _propertyChanging;
-            set
-            {
-                _propertyChanging = value;
-                this._propertyChangingSet = value != null;
-            }
-        }
-        protected Boolean _propertyChangedSet;
-        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
-        public EventEmitter<IPropertyChangeEvent>PropertyChanged
-        {
-            get => _propertyChanged;
-            set
-            {
-                _propertyChanged = value;
-                this._propertyChangedSet = value != null;
-            }
-        }
-        protected Boolean _existsChangedSet;
-        protected EventEmitter<ExistsChangeEvent>_existsChanged;
-        public EventEmitter<ExistsChangeEvent>ExistsChanged
-        {
-            get => _existsChanged;
-            set
-            {
-                _existsChanged = value;
-                this._existsChangedSet = value != null;
-            }
-        }
-        public static String ClassName
-        {
-            get;
-            set;
-        } = "ApplicationUser";
-    }
-}
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ApplicationLogBase: IEntity
     {
@@ -1194,7 +1106,51 @@ namespace Tunnel.App.Data.Entities
         } = "ApplicationLog";
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
+{
+    public class ApplicationUserBase: IEntity
+    {
+        protected Boolean _propertyChangingSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanging
+        {
+            get => _propertyChanging;
+            set
+            {
+                _propertyChanging = value;
+                this._propertyChangingSet = value != null;
+            }
+        }
+        protected Boolean _propertyChangedSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanged
+        {
+            get => _propertyChanged;
+            set
+            {
+                _propertyChanged = value;
+                this._propertyChangedSet = value != null;
+            }
+        }
+        protected Boolean _existsChangedSet;
+        protected EventEmitter<ExistsChangeEvent>_existsChanged;
+        public EventEmitter<ExistsChangeEvent>ExistsChanged
+        {
+            get => _existsChanged;
+            set
+            {
+                _existsChanged = value;
+                this._existsChangedSet = value != null;
+            }
+        }
+        public static String ClassName
+        {
+            get;
+            set;
+        } = "ApplicationUser";
+    }
+}
+namespace IqlSampleApp.Data.Entities
 {
     public enum FaultReportStatus
     {
@@ -1202,7 +1158,7 @@ namespace Tunnel.App.Data.Entities
         PassWithObservations = 1
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public enum InspectionFailReason
     {
@@ -1214,7 +1170,7 @@ namespace Tunnel.App.Data.Entities
         NoDesignSupplied = 5
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public enum PersonInspectionStatus
     {
@@ -1223,7 +1179,7 @@ namespace Tunnel.App.Data.Entities
         PassWithObservations = 3
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public enum PersonCategory
     {
@@ -1231,7 +1187,16 @@ namespace Tunnel.App.Data.Entities
         Conventional = 1
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
+{
+    public enum UserType
+    {
+        Super = 1,
+        Client = 2,
+        Candidate = 3
+    }
+}
+namespace IqlSampleApp.Data.Entities
 {
     [Flags] public enum UserPermissions
     {
@@ -1241,279 +1206,7 @@ namespace Tunnel.App.Data.Entities
         Edit = 8
     }
 }
-namespace Tunnel.App.Data.Entities
-{
-    public enum UserType
-    {
-        Super = 1,
-        Client = 2,
-        Candidate = 3
-    }
-}
-namespace Tunnel.App.Data.Entities
-{
-    public class ClientCategory: ClientCategoryBase,
-    IEntity
-    {
-        protected string _title;
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._title;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(Title), this, oldValue, value));
-                    }
-                }
-                _title = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(Title), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected Guid _guid;
-        public Guid Guid
-        {
-            get => _guid;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected int _id;
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(Id), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected string _createdByUserId;
-        public string CreatedByUserId
-        {
-            get => _createdByUserId;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected DateTimeOffset _createdDate;
-        public DateTimeOffset CreatedDate
-        {
-            get => _createdDate;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected string _revisionKey;
-        public string RevisionKey
-        {
-            get => _revisionKey;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected Guid _persistenceKey;
-        public Guid PersistenceKey
-        {
-            get => _persistenceKey;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected ApplicationUser _createdByUser;
-        public ApplicationUser CreatedByUser
-        {
-            get => _createdByUser;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientCategory>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-            }
-        }
-    }
-}
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class UserSite: UserSiteBase,
     IEntity
@@ -1648,7 +1341,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class SiteInspection: SiteInspectionBase,
     IEntity
@@ -1941,14 +1634,23 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
-        protected RiskAssessment _riskAssessment;
-        public RiskAssessment RiskAssessment
+        public Int64 RiskAssessmentsCount
         {
-            get => _riskAssessment;
+            get;
+            set;
+        }
+        protected RelatedList<SiteInspection, RiskAssessment>_riskAssessments;
+        public RelatedList<SiteInspection, RiskAssessment>RiskAssessments
+        {
+            get
+            {
+                this._riskAssessments = this._riskAssessments ?? new RelatedList<SiteInspection, RiskAssessment>(this, nameof(RiskAssessments));
+                return _riskAssessments;
+            }
             set
             {
                 var changedSet = false;
-                var oldValue = this._riskAssessment;
+                var oldValue = this._riskAssessments;
                 var changed = false;
                 if (this._propertyChangingSet)
                 {
@@ -1956,10 +1658,10 @@ namespace Tunnel.App.Data.Entities
                     changedSet = true;
                     if (changed)
                     {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessments), this, oldValue, value));
                     }
                 }
-                _riskAssessment = value;
+                _riskAssessments = value;
                 if (this._propertyChangedSet)
                 {
                     if (! (changedSet))
@@ -1968,7 +1670,7 @@ namespace Tunnel.App.Data.Entities
                     }
                     if (changed)
                     {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessment), this, oldValue, value));
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessments), this, oldValue, value));
                     }
                 }
             }
@@ -2080,7 +1782,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class Site: SiteBase,
     IEntity
@@ -2804,7 +2506,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonReport: PersonReportBase,
     IEntity
@@ -3309,7 +3011,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonTypeMap: PersonTypeMapBase,
     IEntity
@@ -3572,7 +3274,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonType: PersonTypeBase,
     IEntity
@@ -3917,7 +3619,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonLoading: PersonLoadingBase,
     IEntity
@@ -4221,7 +3923,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class PersonInspection: PersonInspectionBase,
     IEntity
@@ -4740,11 +4442,43 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class Person: PersonBase,
     IEntity
     {
+        protected int ? _clientId;
+        public int ? ClientId
+        {
+            get => _clientId;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._clientId;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
+                    }
+                }
+                _clientId = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
+                    }
+                }
+            }
+        }
         protected int ? _typeId;
         public int ? TypeId
         {
@@ -4997,38 +4731,6 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected int ? _clientId;
-        public int ? ClientId
-        {
-            get => _clientId;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._clientId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
-                _clientId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
                     }
                 }
             }
@@ -5373,7 +5075,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentQuestion: RiskAssessmentQuestionBase,
     IEntity
@@ -5677,7 +5379,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentAnswer: RiskAssessmentAnswerBase,
     IEntity
@@ -6036,7 +5738,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessmentSolution: RiskAssessmentSolutionBase,
     IEntity
@@ -6069,6 +5771,38 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _createdByUserId;
+        public string CreatedByUserId
+        {
+            get => _createdByUserId;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._createdByUserId;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
+                    }
+                }
+                _createdByUserId = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
                     }
                 }
             }
@@ -6133,38 +5867,6 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected string _createdByUserId;
-        public string CreatedByUserId
-        {
-            get => _createdByUserId;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
                     }
                 }
             }
@@ -6331,7 +6033,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class RiskAssessment: RiskAssessmentBase,
     IEntity
@@ -6658,43 +6360,11 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportReceiverEmailAddress: ReportReceiverEmailAddressBase,
     IEntity
     {
-        protected string _createdByUserId;
-        public string CreatedByUserId
-        {
-            get => _createdByUserId;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-            }
-        }
         protected int _siteId;
         public int SiteId
         {
@@ -6723,6 +6393,38 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _createdByUserId;
+        public string CreatedByUserId
+        {
+            get => _createdByUserId;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._createdByUserId;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
+                    }
+                }
+                _createdByUserId = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
                     }
                 }
             }
@@ -6985,19 +6687,19 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class Project: ProjectBase,
     IEntity
     {
-        protected int _id;
-        public int Id
+        protected string _createdByUserId;
+        public string CreatedByUserId
         {
-            get => _id;
+            get => _createdByUserId;
             set
             {
                 var changedSet = false;
-                var oldValue = this._id;
+                var oldValue = this._createdByUserId;
                 var changed = false;
                 if (this._propertyChangingSet)
                 {
@@ -7005,10 +6707,10 @@ namespace Tunnel.App.Data.Entities
                     changedSet = true;
                     if (changed)
                     {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
                     }
                 }
-                _id = value;
+                _createdByUserId = value;
                 if (this._propertyChangedSet)
                 {
                     if (! (changedSet))
@@ -7017,7 +6719,7 @@ namespace Tunnel.App.Data.Entities
                     }
                     if (changed)
                     {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
                     }
                 }
             }
@@ -7086,14 +6788,14 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
-        protected string _createdByUserId;
-        public string CreatedByUserId
+        protected Guid _guid;
+        public Guid Guid
         {
-            get => _createdByUserId;
+            get => _guid;
             set
             {
                 var changedSet = false;
-                var oldValue = this._createdByUserId;
+                var oldValue = this._guid;
                 var changed = false;
                 if (this._propertyChangingSet)
                 {
@@ -7101,10 +6803,10 @@ namespace Tunnel.App.Data.Entities
                     changedSet = true;
                     if (changed)
                     {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Guid), this, oldValue, value));
                     }
                 }
-                _createdByUserId = value;
+                _guid = value;
                 if (this._propertyChangedSet)
                 {
                     if (! (changedSet))
@@ -7113,7 +6815,135 @@ namespace Tunnel.App.Data.Entities
                     }
                     if (changed)
                     {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Guid), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected int _id;
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._id;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
+                    }
+                }
+                _id = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected DateTimeOffset _createdDate;
+        public DateTimeOffset CreatedDate
+        {
+            get => _createdDate;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._createdDate;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedDate), this, oldValue, value));
+                    }
+                }
+                _createdDate = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedDate), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _revisionKey;
+        public string RevisionKey
+        {
+            get => _revisionKey;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._revisionKey;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(RevisionKey), this, oldValue, value));
+                    }
+                }
+                _revisionKey = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(RevisionKey), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected Guid _persistenceKey;
+        public Guid PersistenceKey
+        {
+            get => _persistenceKey;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._persistenceKey;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(PersistenceKey), this, oldValue, value));
+                    }
+                }
+                _persistenceKey = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(PersistenceKey), this, oldValue, value));
                     }
                 }
             }
@@ -7152,7 +6982,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportType: ReportTypeBase,
     IEntity
@@ -7520,7 +7350,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportRecommendation: ReportRecommendationBase,
     IEntity
@@ -7911,7 +7741,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportDefaultRecommendation: ReportDefaultRecommendationBase,
     IEntity
@@ -8247,7 +8077,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportCategory: ReportCategoryBase,
     IEntity
@@ -8551,7 +8381,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ReportActionsTaken: ReportActionsTakenBase,
     IEntity
@@ -8878,7 +8708,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class SiteDocument: SiteDocumentBase,
     IEntity
@@ -9269,7 +9099,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class DocumentCategory: DocumentCategoryBase,
     IEntity
@@ -9573,7 +9403,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class ClientType: ClientTypeBase,
     IEntity
@@ -9685,7 +9515,7 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class Client: ClientBase,
     IEntity
@@ -9818,72 +9648,8 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
-        protected string _description;
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._description;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
-                    }
-                }
-                _description = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected decimal _discount;
-        public decimal Discount
-        {
-            get => _discount;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._discount;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
-                    }
-                }
-                _discount = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected float _averageSales;
-        public float AverageSales
+        protected double _averageSales;
+        public double AverageSales
         {
             get => _averageSales;
             set
@@ -9946,14 +9712,14 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
-        protected int ? _categoryId;
-        public int ? CategoryId
+        protected int _category;
+        public int Category
         {
-            get => _categoryId;
+            get => _category;
             set
             {
                 var changedSet = false;
-                var oldValue = this._categoryId;
+                var oldValue = this._category;
                 var changed = false;
                 if (this._propertyChangingSet)
                 {
@@ -9961,10 +9727,10 @@ namespace Tunnel.App.Data.Entities
                     changedSet = true;
                     if (changed)
                     {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CategoryId), this, oldValue, value));
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Category), this, oldValue, value));
                     }
                 }
-                _categoryId = value;
+                _category = value;
                 if (this._propertyChangedSet)
                 {
                     if (! (changedSet))
@@ -9973,7 +9739,71 @@ namespace Tunnel.App.Data.Entities
                     }
                     if (changed)
                     {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CategoryId), this, oldValue, value));
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Category), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _description;
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._description;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
+                    }
+                }
+                _description = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected double _discount;
+        public double Discount
+        {
+            get => _discount;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._discount;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
+                    }
+                }
+                _discount = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
                     }
                 }
             }
@@ -10211,38 +10041,6 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
-        protected ClientCategory _category;
-        public ClientCategory Category
-        {
-            get => _category;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._category;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Category), this, oldValue, value));
-                    }
-                }
-                _category = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Category), this, oldValue, value));
-                    }
-                }
-            }
-        }
         public Int64 PeopleCount
         {
             get;
@@ -10327,13 +10125,13 @@ namespace Tunnel.App.Data.Entities
         }
     }
 }
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
-    public class ApplicationUser: ApplicationUserBase,
+    public class ApplicationLog: ApplicationLogBase,
     IEntity
     {
-        protected string _id;
-        public string Id
+        protected Guid _id;
+        public Guid Id
         {
             get => _id;
             set
@@ -10347,7 +10145,7 @@ namespace Tunnel.App.Data.Entities
                     changedSet = true;
                     if (changed)
                     {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Id), this, oldValue, value));
                     }
                 }
                 _id = value;
@@ -10359,7 +10157,174 @@ namespace Tunnel.App.Data.Entities
                     }
                     if (changed)
                     {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Id), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected DateTimeOffset _createdDate;
+        public DateTimeOffset CreatedDate
+        {
+            get => _createdDate;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._createdDate;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(CreatedDate), this, oldValue, value));
+                    }
+                }
+                _createdDate = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(CreatedDate), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _module;
+        public string Module
+        {
+            get => _module;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._module;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Module), this, oldValue, value));
+                    }
+                }
+                _module = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Module), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _message;
+        public string Message
+        {
+            get => _message;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._message;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Message), this, oldValue, value));
+                    }
+                }
+                _message = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Message), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _kind;
+        public string Kind
+        {
+            get => _kind;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._kind;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Kind), this, oldValue, value));
+                    }
+                }
+                _kind = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Kind), this, oldValue, value));
+                    }
+                }
+            }
+        }
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
+    public class ApplicationUser: ApplicationUserBase,
+    IEntity
+    {
+        protected bool _isLockedOut;
+        public bool IsLockedOut
+        {
+            get => _isLockedOut;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._isLockedOut;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
+                    }
+                }
+                _isLockedOut = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
                     }
                 }
             }
@@ -10396,6 +10361,38 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
+        protected string _id;
+        public string Id
+        {
+            get => _id;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._id;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+                    }
+                }
+                _id = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
+                    }
+                }
+            }
+        }
         protected string _email;
         public string Email
         {
@@ -10424,134 +10421,6 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected string _fullName;
-        public string FullName
-        {
-            get => _fullName;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._fullName;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
-                    }
-                }
-                _fullName = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected bool _emailConfirmed;
-        public bool EmailConfirmed
-        {
-            get => _emailConfirmed;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._emailConfirmed;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
-                    }
-                }
-                _emailConfirmed = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected UserType _userType;
-        public UserType UserType
-        {
-            get => _userType;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._userType;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
-                    }
-                }
-                _userType = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected bool _isLockedOut;
-        public bool IsLockedOut
-        {
-            get => _isLockedOut;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._isLockedOut;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
-                    }
-                }
-                _isLockedOut = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
                     }
                 }
             }
@@ -10588,6 +10457,326 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
+        protected UserType _userType;
+        public UserType UserType
+        {
+            get => _userType;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._userType;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
+                    }
+                }
+                _userType = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _fullName;
+        public string FullName
+        {
+            get => _fullName;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._fullName;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
+                    }
+                }
+                _fullName = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _createdByUserId;
+        public string CreatedByUserId
+        {
+            get => _createdByUserId;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._createdByUserId;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
+                    }
+                }
+                _createdByUserId = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _userName;
+        public string UserName
+        {
+            get => _userName;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._userName;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserName), this, oldValue, value));
+                    }
+                }
+                _userName = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserName), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected bool _emailConfirmed;
+        public bool EmailConfirmed
+        {
+            get => _emailConfirmed;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._emailConfirmed;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+                    }
+                }
+                _emailConfirmed = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected string _phoneNumber;
+        public string PhoneNumber
+        {
+            get => _phoneNumber;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._phoneNumber;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
+                    }
+                }
+                _phoneNumber = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected bool _phoneNumberConfirmed;
+        public bool PhoneNumberConfirmed
+        {
+            get => _phoneNumberConfirmed;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._phoneNumberConfirmed;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
+                    }
+                }
+                _phoneNumberConfirmed = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected bool _twoFactorEnabled;
+        public bool TwoFactorEnabled
+        {
+            get => _twoFactorEnabled;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._twoFactorEnabled;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
+                    }
+                }
+                _twoFactorEnabled = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected DateTimeOffset ? _lockoutEnd;
+        public DateTimeOffset ? LockoutEnd
+        {
+            get => _lockoutEnd;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._lockoutEnd;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
+                    }
+                }
+                _lockoutEnd = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected bool _lockoutEnabled;
+        public bool LockoutEnabled
+        {
+            get => _lockoutEnabled;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._lockoutEnabled;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
+                    }
+                }
+                _lockoutEnabled = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
+                    }
+                }
+            }
+        }
         protected Client _client;
         public Client Client
         {
@@ -10616,6 +10805,38 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected ApplicationUser _createdByUser;
+        public ApplicationUser CreatedByUser
+        {
+            get => _createdByUser;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._createdByUser;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
+                    }
+                }
+                _createdByUser = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
                     }
                 }
             }
@@ -11071,6 +11292,47 @@ namespace Tunnel.App.Data.Entities
                 }
             }
         }
+        public Int64 RiskAssessmentSolutionsCreatedCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<ApplicationUser, RiskAssessmentSolution>_riskAssessmentSolutionsCreated;
+        public RelatedList<ApplicationUser, RiskAssessmentSolution>RiskAssessmentSolutionsCreated
+        {
+            get
+            {
+                this._riskAssessmentSolutionsCreated = this._riskAssessmentSolutionsCreated ?? new RelatedList<ApplicationUser, RiskAssessmentSolution>(this, nameof(RiskAssessmentSolutionsCreated));
+                return _riskAssessmentSolutionsCreated;
+            }
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._riskAssessmentSolutionsCreated;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentSolutionsCreated), this, oldValue, value));
+                    }
+                }
+                _riskAssessmentSolutionsCreated = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentSolutionsCreated), this, oldValue, value));
+                    }
+                }
+            }
+        }
         public Int64 RiskAssessmentAnswersCreatedCount
         {
             get;
@@ -11477,141 +11739,6 @@ namespace Tunnel.App.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
-                    }
-                }
-            }
-        }
-    }
-}
-namespace Tunnel.App.Data.Entities
-{
-    public class ApplicationLog: ApplicationLogBase,
-    IEntity
-    {
-        protected Guid _id;
-        public Guid Id
-        {
-            get => _id;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Id), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected DateTimeOffset _createdDate;
-        public DateTimeOffset CreatedDate
-        {
-            get => _createdDate;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected string _module;
-        public string Module
-        {
-            get => _module;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._module;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Module), this, oldValue, value));
-                    }
-                }
-                _module = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Module), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected string _message;
-        public string Message
-        {
-            get => _message;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._message;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Message), this, oldValue, value));
-                    }
-                }
-                _message = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Message), this, oldValue, value));
                     }
                 }
             }

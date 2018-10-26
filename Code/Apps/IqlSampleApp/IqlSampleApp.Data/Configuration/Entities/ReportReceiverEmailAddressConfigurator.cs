@@ -1,8 +1,8 @@
-using Microsoft.AspNet.OData.Builder;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
+using Microsoft.AspNet.OData.Builder;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
     public class ReportReceiverEmailAddressConfigurator : IODataEntitySetConfigurator
     {

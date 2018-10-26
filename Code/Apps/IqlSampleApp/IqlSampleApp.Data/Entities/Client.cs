@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Tunnel.App.Data.Models;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     public class Client : DbObject
     {
         [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
-
+        public double AverageSales { get; set; }
+        public double AverageIncome { get; set; }
+        public int Category { get; set; }
         public string Description { get; set; }
+        public double Discount { get; set; }
         public List<ApplicationUser> Users { get; set; }
         public List<Person> People { get; set; }
         public List<Site> Sites { get; set; }

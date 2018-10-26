@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Iql.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.Properties
 {

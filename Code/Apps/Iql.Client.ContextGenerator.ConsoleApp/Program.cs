@@ -25,9 +25,9 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             var iqlSampleUrl = "http://localhost:64000/odata/$metadata";
             var scopeUrl = "http://localhost:46000/odata/$metadata";
             var isiteUrl = "http://localhost:48000/odata/$metadata";
-            var tunnelUrl = "http://localhost:28000/odata/$metadata";
+            var iqlUrl = "http://localhost:52396/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("isite")
+            switch ("iql")
             {
                 case "todoot":
                     await GenerateAsync("http://localhost:62000/odata/$metadata", OutputType.TypeScript, @"D:\Code\Apps\Todoot\Code\Web\", @"D:\Code\Apps\Todoot\Code\Web\ClientApp\", @"app\generated\DataContext");
@@ -52,25 +52,25 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     //isiteSettings.ConfigureOData = false;
                     //GenerateWithSettings(isiteUrl, OutputType.CSharp, @"D:\Code\i-site\Code\Api\src\ISite.App.Data\", @"IqlContext", isiteSettings);
                     break;
-                    //case "isite-old":
-                    //    await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site-old\Code\Web\ClientApp\", @"app\generated\DataContext");
-                    //    var isiteOldSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
-                    //    isiteOldSettings.GenerateCountProperties = false;
-                    //    isiteOldSettings.GenerateEntities = false;
-                    //    isiteOldSettings.GenerateEntitySets = false;
-                    //    isiteOldSettings.GenerateDataContext = true;
-                    //    isiteOldSettings.ConfigureOData = false;
-                    //    await GenerateWithSettingsAsync(isiteUrl, OutputType.CSharp, @"D:\Code\i-site-old\Code\Api\src\ISite.App.Data\", @"IqlContext", isiteOldSettings);
-                    //    break;
-                    //case "iqltests":
-                    //    await GenerateAsync(isiteUrl, OutputType.CSharp, @"D:\Code\Iql\Code\Tests\Iql.Tests\", @"Context");
-                    //    break;
-                    //case "tunneliqltests":
-                    //    await GenerateAsync(tunnelUrl, OutputType.CSharp, new[] { @"D:\Code\Iql\Code\Tests\Iql.Tests.Data\", @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\" }.First(Directory.Exists), @"Context");
-                    //    break;
-                    //case "tunneliql":
-                    //    await GenerateAsync(tunnelUrl, OutputType.CSharp, @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\", @"Context");
-                    //    break;
+                //case "isite-old":
+                //    await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site-old\Code\Web\ClientApp\", @"app\generated\DataContext");
+                //    var isiteOldSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
+                //    isiteOldSettings.GenerateCountProperties = false;
+                //    isiteOldSettings.GenerateEntities = false;
+                //    isiteOldSettings.GenerateEntitySets = false;
+                //    isiteOldSettings.GenerateDataContext = true;
+                //    isiteOldSettings.ConfigureOData = false;
+                //    await GenerateWithSettingsAsync(isiteUrl, OutputType.CSharp, @"D:\Code\i-site-old\Code\Api\src\ISite.App.Data\", @"IqlContext", isiteOldSettings);
+                //    break;
+                //case "iqltests":
+                //    await GenerateAsync(isiteUrl, OutputType.CSharp, @"D:\Code\Iql\Code\Tests\Iql.Tests\", @"Context");
+                //    break;
+                //case "tunneliqltests":
+                //    await GenerateAsync(tunnelUrl, OutputType.CSharp, new[] { @"D:\Code\Iql\Code\Tests\Iql.Tests.Data\", @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\" }.First(Directory.Exists), @"Context");
+                //    break;
+                case "iql":
+                    await GenerateAsync(iqlUrl, OutputType.CSharp, @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\", @"Context");
+                    break;
                     //case "hazception-mobile":
                     //    await GenerateAsync(hazceptionUrl, OutputType.TypeScript, @"D:\Code\Hazception.App\Code\Mobile\Hazception\app\", @"DataContext\Generated");
                     //    break;

@@ -1,8 +1,7 @@
-using Tunnel.App.Data;
-using Tunnel.App.Data.Entities;
 using Brandless.AspNetCore.OData.Extensions.Controllers;
+using IqlSampleApp.Data.Entities;
 
-namespace Tunnel.App.Web.Controllers.Api
+namespace IqlSampleApp.Data.Controllers.Api
 {
     public abstract class IqlSampleAppController<TModel> :
         ODataCrudController<ApplicationDbContext, ApplicationDbContext, ApplicationUser, TModel>

@@ -19,7 +19,12 @@ namespace Iql
         {
             // #CloneStart
 
-            throw new NotImplementedException();
+			var expression = new IqlLengthExpression();
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }
@@ -29,7 +34,23 @@ namespace Iql
         {
             // #FlattenStart
 
-            throw new NotImplementedException();
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
+			if(reaction == FlattenReactionKind.Ignore)
+			{
+				return;
+			}
+			if(reaction != FlattenReactionKind.OnlyChildren)
+			{
+				expressions.Add(this);
+			}
+			if(reaction != FlattenReactionKind.IgnoreChildren)
+			{
+				Parent?.FlattenInternal(expressions, checker);
+			}
 
             // #FlattenEnd
         }
@@ -38,7 +59,13 @@ namespace Iql
         {
             // #ReplaceStart
 
-            throw new NotImplementedException();
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
 
             // #ReplaceEnd
         }

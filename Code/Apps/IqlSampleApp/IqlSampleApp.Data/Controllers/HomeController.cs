@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using Iql.Server;
+﻿using Iql.Server;
 using Iql.Server.Serialization.Serialization;
+using IqlSampleApp.Data.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Tunnel.App.Data.Models.Contracts;
 
-namespace Tunnel.App.Data.Controllers
+namespace IqlSampleApp.Data.Controllers
 {
     public class HomeController : Controller
     {
@@ -20,7 +19,7 @@ namespace Tunnel.App.Data.Controllers
         [HttpGet("~/iql")]
         public IActionResult Iql()
         {
-            var entityConfigurationBuilder = _entityConfigurationProvider.Get<ITunnelService>();
+            var entityConfigurationBuilder = _entityConfigurationProvider.Get<IIqlSampleAppService>();
             IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson();
             return Content(IqlJson, "application/json");
         }

@@ -6,7 +6,7 @@ using Iql.Entities;
 using Iql.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.Validation
 {
@@ -21,11 +21,11 @@ namespace Iql.Tests.Tests.Validation
             var db = new AppDbContext();
             db.SiteInspections.Add(inspection);
             var saveChangesResult = await db.SaveChangesAsync();
-            AssertSinglePropertyValidationFailure(
+            AssertPropertyValidationFailures(
                 saveChangesResult,
-                nameof(SiteInspection.Site),
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+                new ExpectedPropertyValidationFailure(nameof(SiteInspection.Site),
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
+                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
         }
 
         [TestMethod]

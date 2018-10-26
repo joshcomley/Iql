@@ -1,11 +1,14 @@
-using System;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Iql.Server;
+using IqlSampleApp.Data.Contracts;
 using Microsoft.AspNet.OData.Builder;
-using Microsoft.OData.Edm;
-using Tunnel.App.Web.Controllers.Api;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
+    public class AllConfigurator2 : AllConfigurator<IIqlSampleAppService>
+    {
+
+    }
     public class GlobalConfigurator : IODataEntitySetConfigurator
     {
         public void Configure(ODataModelBuilder builder)

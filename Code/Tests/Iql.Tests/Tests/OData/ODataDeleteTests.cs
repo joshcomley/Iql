@@ -6,7 +6,7 @@ using Iql.OData;
 using Iql.Tests.Context;
 using Iql.Tests.Data.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.OData
 {

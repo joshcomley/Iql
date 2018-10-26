@@ -97,16 +97,16 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             {
                 Directory.CreateDirectory(ApplicationPath);
             }
-            var outputFullPath = Path.Combine(ApplicationPath, OutputSubFolder);
+            var outputFullPath = string.IsNullOrWhiteSpace(OutputSubFolder) ? ApplicationPath : Path.Combine(ApplicationPath, OutputSubFolder);
             if (!Directory.Exists(outputFullPath))
             {
                 Directory.CreateDirectory(outputFullPath);
             }
-            var odataPath = Path.Combine(outputFullPath, "OData");
-            if (!Directory.Exists(odataPath))
-            {
-                Directory.CreateDirectory(odataPath);
-            }
+            //var odataPath = Path.Combine(outputFullPath, "OData");
+            //if (!Directory.Exists(odataPath))
+            //{
+            //    Directory.CreateDirectory(odataPath);
+            //}
             //var odataConfigurationTypeScript = GenerateODataConfigurationClasses();
             //var odataConfigurationFilePath = Path.Combine(odataPath, nameof(ODataConfiguration) + ".ts");
             //File.WriteAllText(odataConfigurationFilePath, odataConfigurationTypeScript);
@@ -186,11 +186,12 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                     }
                 }
             }
+            var root = Path.Combine(ApplicationRoot, outputFullPath);
 
             var outputFiles = new List<OutputFile>();
             foreach (var fileGroup in fileGroups)
             {
-                var filePath = Path.Combine(ApplicationPath, OutputSubFolder, fileGroup.Key + ".cs");
+                var filePath = Path.Combine(root, fileGroup.Key + ".cs");
                 //(outputType == OutputType.TypeScript ? ".ts" : ".cs"));
                 outputFiles.Add(GetCSharpOutputFile(filePath, fileGroup, potentialImports, WriteBaseClasses, fileGroups));
                 //switch (outputType)
@@ -262,7 +263,12 @@ namespace Iql.OData.TypeScript.Generator.DataContext
 
             foreach (var file in newOutputFiles)
             {
-                var newFilePath = Path.Combine(ApplicationPath, OutputSubFolder, file.Path.Substring(ApplicationRoot.Length));
+                var newFilePath = file.Path;//Path.Combine(root, outputFullPath);
+                var directoryName = Path.GetDirectoryName(newFilePath);
+                if (!Directory.Exists(directoryName))
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
                 File.WriteAllText(newFilePath, file.Contents);
             }
 

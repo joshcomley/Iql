@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Tunnel.App.Data.Models;
+using IqlSampleApp.Data.Entities.Bases;
 
-namespace Tunnel.App.Data.Entities
+namespace IqlSampleApp.Data.Entities
 {
     //public class SiteContact
     //{
@@ -15,7 +15,7 @@ namespace Tunnel.App.Data.Entities
     {
         public string Address { get; set; }
         public string PostCode { get; set; }
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         public Client Client { get; set; }
         public Site Parent { get; set; }
         public List<Site> Children { get; set; }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests
 {
@@ -47,14 +47,14 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.SiteInspections.Add(new SiteInspection { Id = 63 });
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 3, SiteInspectionId = 62 });
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
-            var siteInspections = await Db.SiteInspections.Expand(s => s.RiskAssessment).ToListAsync();
-            Db.DeleteEntity(siteInspections[0].RiskAssessment
+            var siteInspections = await Db.SiteInspections.Expand(s => s.RiskAssessments).ToListAsync();
+            Db.DeleteEntity(siteInspections[0].RiskAssessments[0]
 #if TypeScript
                 , typeof(RiskAssessment)
 #endif
                 );
-            Assert.IsNull(siteInspections[0].RiskAssessment);
-            Assert.IsNotNull(siteInspections[1].RiskAssessment);
+            Assert.AreEqual(0, siteInspections[0].RiskAssessments.Count);
+            Assert.AreEqual(1, siteInspections[1].RiskAssessments.Count);
         }
 
         [TestMethod]
@@ -66,8 +66,8 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessments.Add(new RiskAssessment { Id = 4, SiteInspectionId = 63 });
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 26, RiskAssessmentId = 3 });
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 27, RiskAssessmentId = 4 });
-            var siteInspections = await Db.SiteInspections.ExpandSingle(s => s.RiskAssessment, q => q.Expand(r => r.RiskAssessmentSolution)).ToListAsync();
-            var riskAssessment = siteInspections[0].RiskAssessment;
+            var siteInspections = await Db.SiteInspections.ExpandCollection(s => s.RiskAssessments, q => q.Expand(r => r.RiskAssessmentSolution)).ToListAsync();
+            var riskAssessment = siteInspections[0].RiskAssessments[0];
             var tracking = Db.DataStore.Tracking;
             //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
@@ -155,15 +155,17 @@ namespace Iql.Tests.Tests
 
             changes = Db.DataStore.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
-            var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessment).GetWithKeyAsync(62);
+            var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessments).GetWithKeyAsync(62);
+            // Fetch the DB updates
+            var ra = await Db.RiskAssessments.GetWithKeyAsync(dbRiskAssessment.Id);
             changes = Db.DataStore.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
             queuedOperations = Db.DataStore.GetChanges().ToList();
             Assert.AreEqual(0, queuedOperations.Count);
-            Assert.AreEqual(siteInspection.RiskAssessment.Id, 9);
-            Assert.AreEqual(siteInspection.RiskAssessment.SiteInspectionId, siteInspection.Id);
-            Assert.AreEqual(siteInspection.RiskAssessment.SiteInspection, siteInspection);
-            Assert.AreEqual(62, riskAssessment1.SiteInspectionId);
+            Assert.AreEqual(siteInspection.RiskAssessments[0].Id, 9);
+            Assert.AreEqual(siteInspection.RiskAssessments[0].SiteInspectionId, siteInspection.Id);
+            Assert.AreEqual(siteInspection.RiskAssessments[0].SiteInspection, siteInspection);
+            Assert.AreEqual(61, riskAssessment1.SiteInspectionId);
         }
         public enum OneToOneTestType
         {
@@ -228,8 +230,8 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(siteInspection1.Id, riskAssessment1.SiteInspectionId);
             Assert.AreEqual(siteInspection2, riskAssessment2.SiteInspection);
             Assert.AreEqual(siteInspection2.Id, riskAssessment2.SiteInspectionId);
-            Assert.AreEqual(siteInspection1.RiskAssessment, riskAssessment1);
-            Assert.AreEqual(siteInspection2.RiskAssessment, riskAssessment2);
+            Assert.AreEqual(siteInspection1.RiskAssessments[0], riskAssessment1);
+            Assert.AreEqual(siteInspection2.RiskAssessments[0], riskAssessment2);
         }
 
         [TestMethod]
@@ -245,14 +247,14 @@ namespace Iql.Tests.Tests
             var siteInspections = await Db.SiteInspections.ToListAsync();
             foreach (var inspection in siteInspections)
             {
-                Assert.IsNull(inspection.RiskAssessment);
+                Assert.AreEqual(0, inspection.RiskAssessments.Count);
             }
 
             var riskAssessments = await Db.RiskAssessments.ToListAsync();
             foreach (var inspection in siteInspections)
             {
-                Assert.AreEqual(inspection.RiskAssessment.SiteInspectionId, inspection.RiskAssessment.SiteInspection.Id);
-                Assert.AreEqual(inspection.RiskAssessment.SiteInspectionId, inspection.Id);
+                Assert.AreEqual(inspection.RiskAssessments[0].SiteInspectionId, inspection.RiskAssessments[0].SiteInspection.Id);
+                Assert.AreEqual(inspection.RiskAssessments[0].SiteInspectionId, inspection.Id);
             }
 
             foreach (var riskAssessment in riskAssessments)

@@ -2,20 +2,18 @@ using System;
 using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.AspNetCore.OData.Extensions.Extensions;
-using Microsoft.AspNet.OData.Builder;
-using Tunnel.App.Data.Entities;
-using Tunnel.App.Data.Models.Contracts;
+using IqlSampleApp.Data.Contracts;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Tunnel.App.Data
+namespace IqlSampleApp.Data
 {
     /// <summary>
     ///     Unsecured implementation of ApplicationDbContext
     /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>,
-        ITunnelService
+        IIqlSampleAppService
     {
         public static bool UseSqlite = false;
 
@@ -40,7 +38,7 @@ namespace Tunnel.App.Data
             //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        // Tunnel
+        public DbSet<ApplicationLog> ApplicationLogs { get; set; }
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<ClientType> ClientTypes { get; set; }
@@ -67,34 +65,35 @@ namespace Tunnel.App.Data
         public DbSet<SiteInspection> SiteInspections { get; set; }
         public DbSet<UserSite> UserSites { get; set; }
 
-        IQueryable<ApplicationUser> ITunnelService.Users => Users;
-        IQueryable<Client> ITunnelService.Clients => Clients;
-        IQueryable<ClientType> ITunnelService.ClientTypes => ClientTypes;
-        IQueryable<DocumentCategory> ITunnelService.DocumentCategories => DocumentCategories;
-        IQueryable<ReportActionsTaken> ITunnelService.ReportActionsTaken => ReportActionsTaken;
-        IQueryable<ReportCategory> ITunnelService.ReportCategories => ReportCategories;
-        IQueryable<ReportDefaultRecommendation> ITunnelService.ReportDefaultRecommendations => ReportDefaultRecommendations;
-        IQueryable<ReportRecommendation> ITunnelService.ReportRecommendations => ReportRecommendations;
-        IQueryable<ReportType> ITunnelService.ReportTypes => ReportTypes;
-        IQueryable<Project> ITunnelService.Projects => Projects;
+        IQueryable<ApplicationLog> IIqlSampleAppService.ApplicationLogs => ApplicationLogs;
+        IQueryable<ApplicationUser> IIqlSampleAppService.Users => Users;
+        IQueryable<Client> IIqlSampleAppService.Clients => Clients;
+        IQueryable<ClientType> IIqlSampleAppService.ClientTypes => ClientTypes;
+        IQueryable<DocumentCategory> IIqlSampleAppService.DocumentCategories => DocumentCategories;
+        IQueryable<ReportActionsTaken> IIqlSampleAppService.ReportActionsTaken => ReportActionsTaken;
+        IQueryable<ReportCategory> IIqlSampleAppService.ReportCategories => ReportCategories;
+        IQueryable<ReportDefaultRecommendation> IIqlSampleAppService.ReportDefaultRecommendations => ReportDefaultRecommendations;
+        IQueryable<ReportRecommendation> IIqlSampleAppService.ReportRecommendations => ReportRecommendations;
+        IQueryable<ReportType> IIqlSampleAppService.ReportTypes => ReportTypes;
+        IQueryable<Project> IIqlSampleAppService.Projects => Projects;
 
-        IQueryable<ReportReceiverEmailAddress> ITunnelService.ReportReceiverEmailAddresses =>
+        IQueryable<ReportReceiverEmailAddress> IIqlSampleAppService.ReportReceiverEmailAddresses =>
             ReportReceiverEmailAddresses;
 
-        IQueryable<RiskAssessment> ITunnelService.RiskAssessments => RiskAssessments;
-        IQueryable<RiskAssessmentSolution> ITunnelService.RiskAssessmentSolutions => RiskAssessmentSolutions;
-        IQueryable<RiskAssessmentAnswer> ITunnelService.RiskAssessmentAnswers => RiskAssessmentAnswers;
-        IQueryable<RiskAssessmentQuestion> ITunnelService.RiskAssessmentQuestions => RiskAssessmentQuestions;
-        IQueryable<Person> ITunnelService.People => People;
-        IQueryable<PersonInspection> ITunnelService.PersonInspections => PersonInspections;
-        IQueryable<PersonLoading> ITunnelService.PersonLoadings => PersonLoadings;
-        IQueryable<PersonReport> ITunnelService.PersonReports => PersonReports;
-        IQueryable<PersonType> ITunnelService.PersonTypes => PersonTypes;
-        IQueryable<PersonTypeMap> ITunnelService.PersonTypesMap => PersonTypesMap;
-        IQueryable<Site> ITunnelService.Sites => Sites;
-        IQueryable<SiteDocument> ITunnelService.SiteDocuments => SiteDocuments;
-        IQueryable<SiteInspection> ITunnelService.SiteInspections => SiteInspections;
-        IQueryable<UserSite> ITunnelService.UserSites => UserSites;
+        IQueryable<RiskAssessment> IIqlSampleAppService.RiskAssessments => RiskAssessments;
+        IQueryable<RiskAssessmentSolution> IIqlSampleAppService.RiskAssessmentSolutions => RiskAssessmentSolutions;
+        IQueryable<RiskAssessmentAnswer> IIqlSampleAppService.RiskAssessmentAnswers => RiskAssessmentAnswers;
+        IQueryable<RiskAssessmentQuestion> IIqlSampleAppService.RiskAssessmentQuestions => RiskAssessmentQuestions;
+        IQueryable<Person> IIqlSampleAppService.People => People;
+        IQueryable<PersonInspection> IIqlSampleAppService.PersonInspections => PersonInspections;
+        IQueryable<PersonLoading> IIqlSampleAppService.PersonLoadings => PersonLoadings;
+        IQueryable<PersonReport> IIqlSampleAppService.PersonReports => PersonReports;
+        IQueryable<PersonType> IIqlSampleAppService.PersonTypes => PersonTypes;
+        IQueryable<PersonTypeMap> IIqlSampleAppService.PersonTypesMap => PersonTypesMap;
+        IQueryable<Site> IIqlSampleAppService.Sites => Sites;
+        IQueryable<SiteDocument> IIqlSampleAppService.SiteDocuments => SiteDocuments;
+        IQueryable<SiteInspection> IIqlSampleAppService.SiteInspections => SiteInspections;
+        IQueryable<UserSite> IIqlSampleAppService.UserSites => UserSites;
         public const string ConnectionString = "Server=.;Database=IqlSampleApp;Integrated Security=True;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -113,7 +112,7 @@ namespace Tunnel.App.Data
             if (ODataModel == null)
             {
                 var model = ODataConfiguration
-                    .GetEdmModel<ITunnelService, ApplicationDbContext>(
+                    .GetEdmModel<IIqlSampleAppService, ApplicationDbContext>(
                         serviceProvider,
                         "IqlSampleApp");
                 ODataModel = model;

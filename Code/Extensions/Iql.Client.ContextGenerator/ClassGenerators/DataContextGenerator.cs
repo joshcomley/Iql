@@ -65,6 +65,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             CSharpObjectSerializer = new CSharpObjectSerializer();
         }
 
+        private class MyDataContext : Data.Context.DataContext
+        {
+            public static string InitializePropertiesName = nameof(MyDataContext.InitializeProperties);
+        }
         public GeneratedFile Generate()
         {
             File.FileName = _namespace;
@@ -110,34 +114,41 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                     },
                         ctorParams);
-                    Method("InitializeProperties", null, new EntityTypeDefinition
+                    Method(MyDataContext.InitializePropertiesName, null, new EntityTypeDefinition
                     {
                         Name = "void"
-                    }, () =>
-                    {
-                        if (Settings.GenerateEntitySets)
+                    },
+                        () =>
                         {
-                            foreach (var propertyDefinition in entitySetDefinitions)
+                            if (Settings.GenerateEntitySets)
                             {
-                                var asDbSetParameters = $"{propertyDefinition.EntityType}, {propertyDefinition.KeyType.AsTypeScriptTypeParameter()}, {propertyDefinition.EntitySet.GetDbSetName(NameMapper)}";
-                                AssignProperty(propertyDefinition,
-                                    $"this.{nameof(Data.Context.DataContext.AsCustomDbSet)}{(OutputType == OutputType.CSharp ? $"<{asDbSetParameters}>" : "")}({(OutputType == OutputType.TypeScript ? asDbSetParameters : "")})");
-                                AppendLine();
+                                foreach (var propertyDefinition in entitySetDefinitions)
+                                {
+                                    var asDbSetParameters =
+                                        $"{propertyDefinition.EntityType}, {propertyDefinition.KeyType.AsTypeScriptTypeParameter()}, {propertyDefinition.EntitySet.GetDbSetName(NameMapper)}";
+                                    AssignProperty(propertyDefinition,
+                                        $"this.{nameof(Data.Context.DataContext.AsCustomDbSet)}{(OutputType == OutputType.CSharp ? $"<{asDbSetParameters}>" : "")}({(OutputType == OutputType.TypeScript ? asDbSetParameters : "")})");
+                                    AppendLine();
+                                }
+
+                                if (Settings.ConfigureOData)
+                                {
+                                    foreach (var entitySet in _entitySetDefinitions)
+                                    {
+                                        AppendLine(
+                                            $"this.{odataConfigurationPropertyName}.{nameof(ODataConfiguration.RegisterEntitySet)}<{NameMapper(entitySet.Type.Name)}>({NameOf(entitySet.Name)}{(OutputType == OutputType.TypeScript ? $", {entitySet.Type.Name}" : "")});");
+                                    }
+                                }
                             }
 
                             if (Settings.ConfigureOData)
                             {
-                                foreach (var entitySet in _entitySetDefinitions)
-                                {
-                                    AppendLine($"this.{odataConfigurationPropertyName}.{nameof(ODataConfiguration.RegisterEntitySet)}<{NameMapper(entitySet.Type.Name)}>({NameOf(entitySet.Name)}{(OutputType == OutputType.TypeScript ? $", {entitySet.Type.Name}" : "")});");
-                                }
+                                AppendLine(
+                                    $"this.{nameof(IDataContext.RegisterConfiguration)}<{nameof(ODataConfiguration)}>(this.{odataConfigurationPropertyName}{(OutputType == OutputType.TypeScript ? $", {nameof(ODataConfiguration)}" : "")});");
                             }
-                        }
-                        if (Settings.ConfigureOData)
-                        {
-                            AppendLine($"this.{nameof(IDataContext.RegisterConfiguration)}<{nameof(ODataConfiguration)}>(this.{odataConfigurationPropertyName}{(OutputType == OutputType.TypeScript ? $", {nameof(ODataConfiguration)}" : "")});");
-                        }
-                    });
+                        },
+                        "protected",
+                        modifier: Modifier.Override);
                     if (Settings.ConfigureOData)
                     {
                         var odataConfigurationBackingFieldName = AsBackingFieldName(odataConfigurationPropertyName);
@@ -292,12 +303,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                   false,
                                                   new[]
                                                   {
-                                                  new EntityFunctionParameterDefinition(
-                                                      GetExpressionString(expression)),
-                                                  new EntityFunctionParameterDefinition(
-                                                      String(validation.Key)),
-                                                  new EntityFunctionParameterDefinition(
-                                                      String(validation.Message)),
+                                                      new EntityFunctionParameterDefinition(
+                                                          GetExpressionString(expression)),
+                                                      new EntityFunctionParameterDefinition(
+                                                          String(validation.Message)),
+                                                      new EntityFunctionParameterDefinition(
+                                                          String(validation.Key)),
                                                   });
                                           }
                                       }
@@ -331,18 +342,19 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                   propertyExpression.Parent = iqlRootReference;
                                                   AppendLine();
                                                   Dot();
-                                                  MethodCall(nameof(EntityConfiguration<object>.DefinePropertyValidation),
+                                                  MethodCall(
+                                                      nameof(EntityConfiguration<object>.DefinePropertyValidation),
                                                       false,
                                                       new[]
                                                       {
-                                                      new EntityFunctionParameterDefinition(
-                                                          "p => p." + propertyExpression.PropertyName),
-                                                      new EntityFunctionParameterDefinition(
-                                                          GetExpressionString(expression)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(validation.Key)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(validation.Message)),
+                                                          new EntityFunctionParameterDefinition(
+                                                              "p => p." + propertyExpression.PropertyName),
+                                                          new EntityFunctionParameterDefinition(
+                                                              GetExpressionString(expression)),
+                                                          new EntityFunctionParameterDefinition(
+                                                              String(validation.Message)),
+                                                          new EntityFunctionParameterDefinition(
+                                                              String(validation.Key)),
                                                       });
                                               }
 
@@ -944,9 +956,17 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumOrNullableEnum())
                     {
-                        if (EnumExtensions.IsValidEnumValue(value) && !IsDefaultValue(metadataProperty, value, metadataSolidType))
+                        if (metadataProperty.PropertyType == typeof(PropertyReadKind) &&
+                            Equals(value, PropertyReadKind.Hidden))
                         {
-                            assign = value.ToEnumCodeString();
+                            int a = 0;
+                        }
+                        if (EnumExtensions.IsValidEnumValue(value))
+                        {
+                            if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
+                            {
+                                assign = value.ToEnumCodeString();
+                            }
                         }
                         dealtWith = true;
                     }
@@ -1246,9 +1266,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         // TODO: Get the relationship and set lamdba etc.
                         var nestedLambdaKey = $"{lambdaKey}_p";
                         var method =
-                                Equals(entityConfig, config.Value)
-                                    ? nameof(EntityConfiguration<object>.FindRelationship)
-                                    : nameof(EntityConfiguration<object>.FindCollectionRelationship)
+                                detail.Property.TypeDefinition.IsCollection
+                                    ? nameof(EntityConfiguration<object>.FindCollectionRelationship)
+                                    : nameof(EntityConfiguration<object>.FindRelationship)
                             ;
                         var configured = ConfigreMetadata(detail, null, $"{lambdaKey}_cnf", false, entityConfig);
                         if (!string.IsNullOrWhiteSpace(configured))

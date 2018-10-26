@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data.Entities;
+using IqlSampleApp.Data.Contracts;
+using IqlSampleApp.Data.Controllers.Api.Entities;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
-using Tunnel.App.Data.Entities;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
     public class UserConfigurator : IODataEntitySetConfigurator
     {
@@ -19,6 +21,7 @@ namespace Tunnel.App.Web.OData.Configuration.Entities
             user.Ignore(p => p.SecurityStamp);
             user.Ignore(p => p.PasswordHash);
             user.Ignore(p => p.AccessFailedCount);
+            user.Property(p => p.IsLockedOut);
             ;
             user
                 .HasOptional(
@@ -42,11 +45,48 @@ namespace Tunnel.App.Web.OData.Configuration.Entities
             ApplyCreatedByUser(builder, p => p.ReportReceiverEmailAddressesCreated);
             ApplyCreatedByUser(builder, p => p.RiskAssessmentsCreated);
             ApplyCreatedByUser(builder, p => p.RiskAssessmentAnswersCreated);
+            ApplyCreatedByUser(builder, p => p.RiskAssessmentSolutionsCreated);
             ApplyCreatedByUser(builder, p => p.RiskAssessmentQuestionsCreated);
             ApplyCreatedByUser(builder, p => p.PersonInspectionsCreated);
             ApplyCreatedByUser(builder, p => p.PersonLoadingsCreated);
             ApplyCreatedByUser(builder, p => p.SitesCreated);
             ApplyCreatedByUser(builder, p => p.SiteInspectionsCreated);
+
+            // Tested
+            var forClient = builder
+                .EntityType<ApplicationUser>()
+                .Collection
+                .Function(nameof(UsersController.ForClient))
+                .ReturnsCollectionFromEntitySet<ApplicationUser>(nameof(IIqlSampleAppService.Users));
+            forClient.Parameter<int>("id");
+            forClient.Parameter<int>("type").Optional();
+            // Tested
+            builder.EntityType<ApplicationUser>()
+                .Function(nameof(UsersController.GeneratePasswordResetLink))
+                .Returns<string>();
+            // Tested
+            builder.EntityType<ApplicationUser>()
+                .Action(nameof(UsersController.AccountConfirm))
+                .Returns<string>();
+            //// Tested
+            //builder.EntityType<ApplicationUser>()
+            //    .Action(nameof(UsersController.SendAccountConfirmationEmail))
+            //    .Returns<string>();
+            // Tested
+            builder.EntityType<ApplicationUser>()
+                .Action(nameof(UsersController.SendPasswordResetEmail))
+                .Returns<string>();
+            // Tested
+            builder.EntityType<ApplicationUser>()
+                .Action(nameof(UsersController.ReinstateUser))
+                .Returns<string>();
+            // Tested
+            builder
+                .EntityType<ApplicationUser>()
+                .Collection
+                .Function(nameof(UsersController.Me))
+                //.Returns<string>()
+                .ReturnsFromEntitySet<ApplicationUser>(nameof(IIqlSampleAppService.Users));
         }
 
         private static void ApplyCreatedByUser<T>(ODataModelBuilder builder,

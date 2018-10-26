@@ -1,6 +1,6 @@
-using Tunnel.App.Data.Entities;
+using IqlSampleApp.Data.Entities;
 
-namespace Tunnel.App.Data.Models.Contracts
+namespace IqlSampleApp.Data.Contracts
 {
     public interface IClientObject
     {

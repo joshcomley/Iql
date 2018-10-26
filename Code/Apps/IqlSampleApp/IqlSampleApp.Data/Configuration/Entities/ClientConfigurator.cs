@@ -1,13 +1,10 @@
-using System;
-using Tunnel.App.Data.Entities;
-using Tunnel.App.Data.Models.Contracts;
-using Tunnel.App.Web.Controllers.Api.Entities;
-using Microsoft.AspNet.OData.Builder;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using IqlSampleApp.Data.Contracts;
+using IqlSampleApp.Data.Controllers.Api.Entities;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
-using Microsoft.OData.Edm;
 
-namespace Tunnel.App.Web.OData.Configuration.Entities
+namespace IqlSampleApp.Data.Configuration.Entities
 {
     public class ClientConfigurator : IODataEntitySetConfigurator
     {
@@ -23,7 +20,7 @@ namespace Tunnel.App.Web.OData.Configuration.Entities
                 .EntityType<Client>()
                 .Collection
                 .Function(nameof(ClientsController.All))
-                .ReturnsCollectionFromEntitySet<Client>(nameof(ITunnelService.Clients))
+                .ReturnsCollectionFromEntitySet<Client>(nameof(IIqlSampleAppService.Clients))
                 ;
         }
     }
