@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql
 {
-    public abstract class IqlPolygonExpression : IqlExpression
+    public abstract class IqlPolygonExpression : IqlReferenceExpression
     {
         public List<IqlPointExpression> Points { get; set; }
         protected IqlPolygonExpression(IEnumerable<IqlPointExpression> points, IqlExpressionKind kind, IqlType type) : base(kind, type)

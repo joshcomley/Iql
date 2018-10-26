@@ -91,7 +91,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.FriendlyName = "Client Id";
             }).DefineProperty(p => p.Id, false, IqlType.String).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
-                p.Nullable = true;
+                p.Nullable = false;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
@@ -126,7 +126,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.FullName, false, IqlType.String).ConfigureProperty(p => p.FullName, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "FullName";
-                p.Nullable = true;
+                p.Nullable = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "FullName";
                 p.Title = "FullName";
@@ -434,7 +434,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Name, false, IqlType.String).ConfigureProperty(p => p.Name, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
-                p.Nullable = true;
+                p.Nullable = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Name";
                 p.Title = "Name";
@@ -1320,7 +1320,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Title, false, IqlType.String).ConfigureProperty(p => p.Title, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
-                p.Nullable = true;
+                p.Nullable = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Title";
                 p.Title = "Title";
@@ -2304,7 +2304,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Title, false, IqlType.String).ConfigureProperty(p => p.Title, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
-                p.Nullable = true;
+                p.Nullable = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Title";
                 p.Title = "Title";
@@ -2597,6 +2597,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
                 p.FriendlyName = "Id";
+            }).DefineProperty(p => p.Location, true, IqlType.Unknown).ConfigureProperty(p => p.Location, p => {
+                p.PropertyName = "Location";
+                p.Nullable = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Location";
+                p.Title = "Location";
+                p.FriendlyName = "Location";
             }).DefineProperty(p => p.ParentId, true, IqlType.Integer).ConfigureProperty(p => p.ParentId, p => {
                 p.PropertyName = "ParentId";
                 p.Nullable = true;

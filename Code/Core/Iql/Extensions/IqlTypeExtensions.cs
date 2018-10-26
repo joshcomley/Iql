@@ -105,7 +105,54 @@ namespace Iql.Extensions
                 return IqlType.Guid;
             }
 #endif
-
+            if (type == typeof(IqlGeographyPointExpression))
+            {
+                return IqlType.GeographyPoint;
+            }
+            if (type == typeof(IqlGeographyMultiPointExpression))
+            {
+                return IqlType.GeographyMultiPoint;
+            }
+            if (type == typeof(IqlGeographyPolygonExpression))
+            {
+                return IqlType.GeographyPoint;
+            }
+            if (type == typeof(IqlGeographyMultiPolygonExpression))
+            {
+                return IqlType.GeographyMultiPolygon;
+            }
+            if (type == typeof(IqlGeographyLineExpression))
+            {
+                return IqlType.GeographyLine;
+            }
+            if (type == typeof(IqlGeographyMultiLineExpression))
+            {
+                return IqlType.GeographyMultiLine;
+            }
+            if (type == typeof(IqlGeometryPointExpression))
+            {
+                return IqlType.GeometryPoint;
+            }
+            if (type == typeof(IqlGeometryMultiPointExpression))
+            {
+                return IqlType.GeometryMultiPoint;
+            }
+            if (type == typeof(IqlGeometryPolygonExpression))
+            {
+                return IqlType.GeometryPoint;
+            }
+            if (type == typeof(IqlGeometryMultiPolygonExpression))
+            {
+                return IqlType.GeometryMultiPolygon;
+            }
+            if (type == typeof(IqlGeometryLineExpression))
+            {
+                return IqlType.GeometryLine;
+            }
+            if (type == typeof(IqlGeometryMultiLineExpression))
+            {
+                return IqlType.GeometryMultiLine;
+            }
             if (type.IsEnumerableType())
             {
                 return IqlType.Collection;

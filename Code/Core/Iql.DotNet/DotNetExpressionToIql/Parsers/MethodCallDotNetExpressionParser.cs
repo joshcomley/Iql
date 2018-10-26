@@ -115,6 +115,16 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                 case nameof(Enumerable.All):
                     return new IqlAllExpression((node.Arguments[1] as LambdaExpression).Parameters[0].Name, context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
                         context.Parse(node.Arguments[1], context));
+                case nameof(IqlPointExpression.Intersects):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    var iqlIntersectsExpression = new IqlIntersectsExpression(parent, context.Parse(node.Arguments[0], context) as IqlReferenceExpression);
+                    return iqlIntersectsExpression;
+                case nameof(IqlPointExpression.DistanceFrom):
+                    parent = context.Parse(node.Object, context) as IqlReferenceExpression;
+                    var distanceKindArgument = node.Arguments[1];
+                    var distanceKind = context.Parse(distanceKindArgument, context) as IqlReferenceExpression;
+                    var distanceExpression = new IqlDistanceExpression(parent, context.Parse(node.Arguments[0], context) as IqlReferenceExpression);
+                    return distanceExpression;
             }
             throw new NotImplementedException();
         }

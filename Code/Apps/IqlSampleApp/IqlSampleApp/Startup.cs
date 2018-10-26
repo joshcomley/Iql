@@ -1,15 +1,19 @@
 ﻿using System;
 using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Binding;
+using Brandless.Data;
+using Brandless.Data.Contracts;
 using Iql.Conversion;
 using Iql.DotNet;
 using Iql.Server;
 using Iql.Server.OData.Net;
 using IqlSampleApp.Data;
 using IqlSampleApp.Data.Contracts;
+using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +38,10 @@ namespace IqlSampleApp
             services.AddSingleton<IEdmModelAccessor>(new EdmModelAccessor());
             services.AddSingleton<IDesignTimeDbContextFactory<ApplicationDbContext>>(provider => new DesignTimeAppDbContextBuilder(provider));
             services.AddIql();
+            services.AddSingleton<IRevisionKeyGenerator, StandardRevisionKeyGenerator>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             services.AddOData();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<ApplicationDbContext>(options =>

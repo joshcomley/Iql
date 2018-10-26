@@ -22,11 +22,39 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestIntersects()
         {
-            var query = Db.ApplicationLogs.IncludeCount().WithKey(new Guid("4e9dcf61-4abf-458e-abfc-07c20d5ef248"));
+            var polygon = new IqlGeographyPolygonExpression(
+                new IqlPointExpression[]
+                {
+                    new IqlGeographyPointExpression(1, 2),
+                    new IqlGeographyPointExpression(5, 4),
+                    new IqlGeographyPointExpression(7, 3),
+                    new IqlGeographyPointExpression(1, 2),
+                });
+            var query = Db.Sites.Where(site => site.Location.Intersects(polygon));
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/ApplicationLogs(4e9dcf61-4abf-458e-abfc-07c20d5ef248)", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')", uri);
         }
+
+        [TestMethod]
+        public async Task TestDistance()
+        {
+            var point = new IqlGeographyPointExpression(1, 2);
+            var query = Db.Sites.Where(site => site.Location.DistanceFrom(point, IqlDistanceKind.Kilometers) < 150);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
+        }
+
+        //[TestMethod]
+        //public async Task TestLength()
+        //{
+        //    var point = new IqlGeographyPointExpression(1, 2);
+        //    var query = Db.Sites.Where(site => site.Location.DistanceFrom(point, IqlDistanceKind.Kilometers) < 150);
+        //    var uri = await query.ResolveODataUriAsync();
+        //    uri = Uri.UnescapeDataString(uri);
+        //    Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
+        //}
 
         [TestMethod]
         public async Task TestCountNotSubmittedOnSingleEntity()

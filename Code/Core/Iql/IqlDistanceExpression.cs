@@ -3,23 +3,27 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlDistanceExpression : IqlExpression
+    public class IqlDistanceExpression : IqlExpression, IGeographicExpression
     {
-        public IqlDistanceExpression(IqlExpression parent = null) : base(IqlExpressionKind.Distance, IqlType.Decimal, parent)
-        {
+        public IqlReferenceExpression Point { get; set; }
 
+        public IqlDistanceExpression(IqlReferenceExpression parent, IqlReferenceExpression point) : base(IqlExpressionKind.Distance, IqlType.Decimal, parent)
+        {
+            Point = point;
+            Srid = IqlConstants.DefaultGeographicSrid;
         }
 
         public IqlDistanceExpression() : base(IqlExpressionKind.Distance)
         {
-
+            Srid = IqlConstants.DefaultGeographicSrid;
         }
 
         public override IqlExpression Clone()
         {
             // #CloneStart
 
-			var expression = new IqlDistanceExpression();
+			var expression = new IqlDistanceExpression(null, null);
+			expression.Point = (IqlReferenceExpression)Point?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -49,6 +53,7 @@ namespace Iql
 			}
 			if(reaction != FlattenReactionKind.IgnoreChildren)
 			{
+				Point?.FlattenInternal(expressions, checker);
 				Parent?.FlattenInternal(expressions, checker);
 			}
 
@@ -59,6 +64,7 @@ namespace Iql
         {
             // #ReplaceStart
 
+			Point = (IqlReferenceExpression)context.Replace(this, nameof(Point), null, Point);
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)
@@ -69,5 +75,7 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+        public int Srid { get; set; }
     }
 }

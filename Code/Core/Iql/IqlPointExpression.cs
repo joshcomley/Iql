@@ -2,7 +2,7 @@ using System;
 
 namespace Iql
 {
-    public abstract class IqlPointExpression : IqlExpression
+    public abstract class IqlPointExpression : IqlReferenceExpression
     {
         public double X { get; }
         public double Y { get; }

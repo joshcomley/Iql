@@ -4,6 +4,7 @@ using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
 using Iql.Entities.Events;
 using Iql.Data.Lists;
+using Iql;
 using System;
 using Iql.Data.Events;
 namespace IqlSampleApp.Data.Entities
@@ -1815,6 +1816,38 @@ namespace IqlSampleApp.Data.Entities
                     if (changed)
                     {
                         this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
+                    }
+                }
+            }
+        }
+        protected IqlGeographyPointExpression _location;
+        public IqlGeographyPointExpression Location
+        {
+            get => _location;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._location;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Location), this, oldValue, value));
+                    }
+                }
+                _location = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Location), this, oldValue, value));
                     }
                 }
             }

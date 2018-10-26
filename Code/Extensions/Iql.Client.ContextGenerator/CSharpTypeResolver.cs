@@ -51,6 +51,10 @@ namespace Iql.OData.TypeScript.Generator
                     case "Edm.String":
                         resolvedName = "string";
                         break;
+                    case "GeographyPoint":
+                    case "Edm.GeographyPoint":
+                        resolvedName = "IqlGeographyPointExpression";
+                        break;
                     case "Guid":
                     case "Edm.Guid":
                         resolvedName = $"Guid{nullable}";

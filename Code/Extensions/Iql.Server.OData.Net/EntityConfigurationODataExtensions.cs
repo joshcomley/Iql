@@ -176,11 +176,16 @@ namespace Iql.Server.OData.Net
         {
             var entityConfiguration = builder.EntityType<T>();
             var geographyType = GeographyIqlTypeResolver.Resolve(typeof(TProperty));
-            if (property.PropertyInfo.Name == "ClientId" && property.PropertyInfo.DeclaringType.Name == "Site")
+            var optional = false;
+            if (property is StructuralPropertyConfiguration primitive)
             {
-                int a = 0;
+                optional = primitive.OptionalProperty;
             }
-            entityConfiguration.DefineProperty(expression, property.PropertyInfo.PropertyType.IsNullable(),
+            else
+            {
+                optional = property.PropertyInfo.PropertyType.IsNullable();
+            }
+            entityConfiguration.DefineProperty(expression, optional,
                 geographyType == 0
                     ? property.PropertyInfo.PropertyType.ToIqlType()
                     : geographyType);

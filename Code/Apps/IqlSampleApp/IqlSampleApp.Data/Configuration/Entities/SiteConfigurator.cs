@@ -9,6 +9,8 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(ODataModelBuilder builder)
         {
+            builder.EntityType<Site>()
+                .ComplexProperty(p=>p.Location);
             builder.MapSpatial<Site>(_ => _.EdmLocation, _ => _.Location);
             builder.EntityType<Site>()
                 .HasOptional(s => s.Parent, (left, right) => left.ParentId == right.Id, site => site.Children);

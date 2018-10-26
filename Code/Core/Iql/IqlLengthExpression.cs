@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlLengthExpression : IqlExpression
+    public class IqlLengthExpression : IqlExpression, IGeographicExpression
     {
         public IqlLengthExpression(IqlExpression parent = null) : base(IqlExpressionKind.Length, IqlType.Decimal, parent)
         {
-
+            Srid = IqlConstants.DefaultGeographicSrid;
         }
 
         public IqlLengthExpression() : base(IqlExpressionKind.Length)
         {
-
+            Srid = IqlConstants.DefaultGeographicSrid;
         }
 
         public override IqlExpression Clone()
@@ -69,5 +69,7 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+        public int Srid { get; set; }
     }
 }

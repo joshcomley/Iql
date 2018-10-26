@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
@@ -36,6 +37,18 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             {
                 var dateTimeOffset = (DateTimeOffset)value;
                 return dateTimeOffset.ToString("o");
+            }
+
+            if (value is IqlGeographyPointExpression)
+            {
+                var point = value as IqlGeographyPointExpression;
+                return $"{point.Y} {point.X}";
+            }
+
+            if (value is IqlGeographyPolygonExpression)
+            {
+                var polygon = value as IqlGeographyPolygonExpression;
+                return string.Join(",", polygon.Points.Select(_ => ODataEncode(_)));
             }
 
             if (value is bool)
