@@ -53,6 +53,13 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     $@"geography'SRID={polygon.Srid};POLYGON(({string.Join(",", polygon.Points.Select(_ => $"{_.Y} {_.X}"))}))'";
             }
 
+            if (value is IqlGeographyLineExpression)
+            {
+                var line = value as IqlGeographyLineExpression;
+                return
+                    $@"geography'SRID={line.Srid};LINESTRING({string.Join(",", line.Points.Select(_ => $"{_.Y} {_.X}"))})'";
+            }
+
             if (value is bool)
             {
                 var b = (bool)value;

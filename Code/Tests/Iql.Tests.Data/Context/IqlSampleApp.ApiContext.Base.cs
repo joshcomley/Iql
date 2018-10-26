@@ -2611,6 +2611,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Location";
                 p.Title = "Location";
                 p.FriendlyName = "Location";
+            }).DefineProperty(p => p.Line, true, IqlType.Unknown).ConfigureProperty(p => p.Line, p => {
+                p.PropertyName = "Line";
+                p.Nullable = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Line";
+                p.Title = "Line";
+                p.FriendlyName = "Line";
             }).DefineProperty(p => p.ParentId, true, IqlType.Integer).ConfigureProperty(p => p.ParentId, p => {
                 p.PropertyName = "ParentId";
                 p.Nullable = true;

@@ -67,12 +67,12 @@ namespace Iql.OData.TypeScript.Generator
                     case "Edm.GeographyMultiPolygon":
                         resolvedName = nameof(IqlGeographyMultiPolygonExpression);
                         break;
-                    case "GeographyLine":
-                    case "Edm.GeographyLine":
+                    case "GeographyLineString":
+                    case "Edm.GeographyLineString":
                         resolvedName = nameof(IqlGeographyLineExpression);
                         break;
-                    case "GeographyMultiLine":
-                    case "Edm.GeographyMultiLine":
+                    case "GeographyMultiLineString":
+                    case "Edm.GeographyMultiLineString":
                         resolvedName = nameof(IqlGeographyMultiLineExpression);
                         break;
                     case "Guid":

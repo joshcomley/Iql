@@ -64,6 +64,31 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,$it/Location) lt 150)", uri);
         }
 
+        [TestMethod]
+        public async Task TestLengthLiteral()
+        {
+            var line = new IqlGeographyLineExpression(
+                new IqlPointExpression[]
+                {
+                    new IqlGeographyPointExpression(1, 2),
+                    new IqlGeographyPointExpression(5, 4),
+                    new IqlGeographyPointExpression(7, 3),
+                });
+            var query = Db.Sites.Where(site => site.Line.Length(IqlDistanceKind.Kilometers) < line.Length(IqlDistanceKind.Kilometers));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt 745.451415829943)", uri);
+        }
+
+        [TestMethod]
+        public async Task TestLengthWithDirectValue()
+        {
+            var query = Db.Sites.Where(site => site.Line.Length(IqlDistanceKind.Kilometers) < 150);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt 150)", uri);
+        }
+
         //[TestMethod]
         //public async Task TestLength()
         //{

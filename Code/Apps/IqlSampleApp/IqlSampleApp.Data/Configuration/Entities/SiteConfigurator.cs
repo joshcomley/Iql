@@ -13,6 +13,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 .ComplexProperty(p=>p.Location);
             builder.MapSpatial<Site>(_ => _.EdmLocation, _ => _.Location);
             builder.MapSpatial<Site>(_ => _.EdmArea, _ => _.Area);
+            builder.MapSpatial<Site>(_ => _.EdmLine, _ => _.Line);
             builder.EntityType<Site>()
                 .HasOptional(s => s.Parent, (left, right) => left.ParentId == right.Id, site => site.Children);
             builder.EntityType<Site>()

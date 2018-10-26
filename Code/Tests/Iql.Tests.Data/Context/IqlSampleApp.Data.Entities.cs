@@ -1884,6 +1884,38 @@ namespace IqlSampleApp.Data.Entities
                 }
             }
         }
+        protected IqlGeographyLineExpression _line;
+        public IqlGeographyLineExpression Line
+        {
+            get => _line;
+            set
+            {
+                var changedSet = false;
+                var oldValue = this._line;
+                var changed = false;
+                if (this._propertyChangingSet)
+                {
+                    changed = value != oldValue;
+                    changedSet = true;
+                    if (changed)
+                    {
+                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Line), this, oldValue, value));
+                    }
+                }
+                _line = value;
+                if (this._propertyChangedSet)
+                {
+                    if (! (changedSet))
+                    {
+                        changed = value != oldValue;
+                    }
+                    if (changed)
+                    {
+                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Line), this, oldValue, value));
+                    }
+                }
+            }
+        }
         protected int ? _parentId;
         public int ? ParentId
         {

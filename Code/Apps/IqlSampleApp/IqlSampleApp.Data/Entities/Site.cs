@@ -17,6 +17,20 @@ namespace IqlSampleApp.Data.Entities
 
     public class Site : DbObject
     {
+        private LineStringWrapper _line;
+        public LineString Line
+        {
+            get => _line;
+            set => _line = value;
+        }
+
+        [NotMapped]
+        public GeographyLineString EdmLine
+        {
+            get => _line;
+            set => _line = value;
+        }
+
         private PointWrapper _location;
         public Point Location
         {

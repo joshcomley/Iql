@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
 {
@@ -21,7 +22,8 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     return new IqlAggregateExpression(new IqlFinalExpression<string>("toupper("), action.Parent, new IqlFinalExpression<string>(")"));
                 case IqlExpressionKind.Intersects:
                 case IqlExpressionKind.Distance:
-                    return ResolveGeographic(action);
+                case IqlExpressionKind.Length:
+                    return ResolveGeographic(action, parser);
                 default:
                     ODataErrors.OperationNotSupported(action.Kind);
                     break;
@@ -29,23 +31,36 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             return null;
         }
 
-        private static IqlExpression ResolveGeographic(IqlExpression action)
+        private static IqlExpression ResolveGeographic(IqlExpression action, ODataIqlParserInstance parser)
         {
             var geo = action as IGeographicExpression;
             switch (action.Kind)
             {
                 case IqlExpressionKind.Intersects:
-                {
-                    return new IqlAggregateExpression(new IqlFinalExpression<string>("geo.intersects("), action.Parent,
-                        new IqlFinalExpression<string>($","),
-                        (action as IqlIntersectsExpression).Polygon, new IqlFinalExpression<string>(")"));
-                }
+                    {
+                        return new IqlAggregateExpression(
+                            new IqlFinalExpression<string>("geo.intersects("),
+                            action.Parent,
+                            new IqlFinalExpression<string>($","),
+                            (action as IqlIntersectsExpression).Polygon,
+                            new IqlFinalExpression<string>(")"));
+                    }
                 case IqlExpressionKind.Distance:
-                {
-                    return new IqlAggregateExpression(new IqlFinalExpression<string>("geo.distance("), action.Parent,
-                        new IqlFinalExpression<string>($","),
-                        (action as IqlDistanceExpression).Point, new IqlFinalExpression<string>(")"));
-                }
+                    {
+                        return new IqlAggregateExpression(
+                            new IqlFinalExpression<string>("geo.distance("),
+                            action.Parent,
+                            new IqlFinalExpression<string>($","),
+                            (action as IqlDistanceExpression).Point,
+                            new IqlFinalExpression<string>(")"));
+                    }
+                case IqlExpressionKind.Length:
+                    {
+                        return new IqlAggregateExpression(
+                            new IqlFinalExpression<string>("geo.length("),
+                            action.Parent,
+                            new IqlFinalExpression<string>(")"));
+                    }
             }
             return null;
         }
