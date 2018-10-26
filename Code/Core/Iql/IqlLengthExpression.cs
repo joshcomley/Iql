@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlLengthExpression : IqlExpression, IGeographicExpression
+    public class IqlLengthExpression : IqlReferenceExpression, IGeographicExpression
     {
-        public IqlLengthExpression(IqlExpression parent = null) : base(IqlExpressionKind.Length, IqlType.Decimal, parent)
+        public IqlLengthExpression(IqlReferenceExpression parent = null) : base(IqlExpressionKind.Length, IqlType.Decimal, parent)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
         }
 
-        public IqlLengthExpression() : base(IqlExpressionKind.Length)
+        public IqlLengthExpression() : base(IqlExpressionKind.Length, IqlType.Decimal)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
         }

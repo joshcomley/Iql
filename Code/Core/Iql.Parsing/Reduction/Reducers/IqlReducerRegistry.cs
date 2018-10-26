@@ -18,6 +18,7 @@
             Register(typeof(IqlStringToLowerCaseExpression), () => new IqlStringToLowerCaseExpressionReducer());
             Register(typeof(IqlStringToUpperCaseExpression), () => new IqlStringToUpperCaseExpressionReducer());
             Register(typeof(IqlPropertyExpression), () => new IqlPropertyExpressionReducer());
+            Register(typeof(IqlLengthExpression), () => new IqlLengthExpressionReducer());
             Register(typeof(IqlVariableExpression), () => new IqlVariableExpressionReducer());
             Register(typeof(IqlLiteralExpression), () => new IqlLiteralExpressionReducer());
             Register(typeof(IqlAddExpression), () => new IqlAddExpressionReducer());
