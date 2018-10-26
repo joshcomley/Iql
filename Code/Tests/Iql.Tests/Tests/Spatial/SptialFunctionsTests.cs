@@ -6,7 +6,15 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class SptialFunctionsTests : TestsBase
     {
-        internal static IqlGeographyPolygonExpression BermudaTriangle = IqlGeographyPolygonExpression.From(
+        internal static IqlGeographyLineExpression BermudaTriangleLine = 
+            new IqlGeographyLineExpression(
+                new IqlPointExpression[]
+                {
+                    new IqlGeographyPointExpression(25.774, -80.190), 
+                    new IqlGeographyPointExpression(18.466, -66.118), 
+                    new IqlGeographyPointExpression(32.321, -64.757), 
+                });
+        internal static IqlGeographyPolygonExpression BermudaTrianglePolygon = IqlGeographyPolygonExpression.From(
             new[]
             {
                 new[] {25.774, -80.190}, new[] {18.466, -66.118}, new[] {32.321, -64.757}, new[] {25.774, -80.190}
@@ -34,13 +42,13 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestSuccessfulIntersect()
         {
-            Assert.IsTrue(WithinBermudaTrianglePoint.Intersects(BermudaTriangle));
+            Assert.IsTrue(WithinBermudaTrianglePoint.Intersects(BermudaTrianglePolygon));
         }
 
         [TestMethod]
         public async Task TestFailedIntersect()
         {
-            Assert.IsFalse(NotWithinBermudaTrianglePoint.Intersects(BermudaTriangle));
+            Assert.IsFalse(NotWithinBermudaTrianglePoint.Intersects(BermudaTrianglePolygon));
         }
     }
 }

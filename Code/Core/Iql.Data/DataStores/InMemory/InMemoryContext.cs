@@ -17,6 +17,30 @@ namespace Iql.Data.DataStores.InMemory
 
     public class InMemoryContext<TEntity> : IInMemoryContext where TEntity : class
     {
+        public Dictionary<string, object> Variables { get; }
+            = new Dictionary<string, object>();
+        public object GetVariable(string name)
+        {
+            if (!Variables.ContainsKey(name))
+            {
+                if (!GlobalContext.GlobalVariables.ContainsKey(name))
+                {
+                    return null;
+                }
+
+                var value = GlobalContext.GlobalVariables[name];
+                GlobalContext.GlobalVariables.Remove(name);
+                Variables.Add(name, value);
+
+                if (Variables.ContainsKey(name))
+                {
+                    return Variables[name];
+                }
+            }
+
+            return null;
+        }
+
         private MethodInfo _addMatchesTypedMethod;
         private MethodInfo AddMatchesTypedMethod
         {
@@ -170,6 +194,24 @@ namespace Iql.Data.DataStores.InMemory
                     new[] { matches },
                     type);
             }
+        }
+
+        public double DistanceBetween(IqlPointExpression left, IqlPointExpression right)
+        {
+            if (left == null || right == null)
+            {
+                return 0;
+            }
+            return IqlPointExpression.DistanceBetween(left.X, left.Y, right.X, right.Y);
+        }
+
+        public bool Intersects(IqlPointExpression left, IqlPolygonExpression right)
+        {
+            if (left == null || right == null)
+            {
+                return false;
+            }
+            return IqlPointExpression.IntersectsPolygon(left.X, left.Y, right);
         }
 
         private readonly Dictionary<object, bool> _matched = new Dictionary<object, bool>();

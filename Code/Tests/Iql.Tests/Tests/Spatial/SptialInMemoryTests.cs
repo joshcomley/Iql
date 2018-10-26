@@ -31,7 +31,7 @@ namespace Iql.Tests.Tests
                         Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
                     }
 #endif
-    ).ToListAsync();
+            ).ToListAsync();
             Assert.AreEqual(0, sites.Count);
             sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.NotWithinBermudaTrianglePoint) < 2000
 #if TypeScript
@@ -42,7 +42,107 @@ namespace Iql.Tests.Tests
                         Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
                     }
 #endif
-                                              ).ToListAsync();
+            ).ToListAsync();
+            Assert.AreEqual(1, sites.Count);
+        }
+
+        [TestMethod]
+        public async Task TestInMemoryDistanceReverse()
+        {
+            var site = new Site
+            {
+                Location = SptialFunctionsTests.WithinBermudaTrianglePoint,
+                Id = 3
+            };
+            AppDbContext.InMemoryDb.Sites.Add(site);
+            var sites = await Db.Sites.Where(s => SptialFunctionsTests.BerlinPoint.DistanceFrom(s.Location) < 2000
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(0, sites.Count);
+            sites = await Db.Sites.Where(s => SptialFunctionsTests.NotWithinBermudaTrianglePoint.DistanceFrom(s.Location) < 2000
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(1, sites.Count);
+        }
+
+        [TestMethod]
+        public async Task TestInMemoryIntersects()
+        {
+            var site = new Site
+            {
+                Area = SptialFunctionsTests.BermudaTrianglePolygon,
+                Id = 3
+            };
+            AppDbContext.InMemoryDb.Sites.Add(site);
+            var sites = await Db.Sites.Where(s => SptialFunctionsTests.BerlinPoint.Intersects(s.Area)
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(0, sites.Count);
+            sites = await Db.Sites.Where(s => SptialFunctionsTests.WithinBermudaTrianglePoint.Intersects(s.Area)
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(1, sites.Count);
+        }
+
+
+        [TestMethod]
+        public async Task TestInMemoryLength()
+        {
+            var site = new Site
+            {
+                Line = SptialFunctionsTests.BermudaTriangleLine,
+                Id = 3
+            };
+            AppDbContext.InMemoryDb.Sites.Add(site);
+            var sites = await Db.Sites.Where(s => s.Line.Length() < 1
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(0, sites.Count);
+            sites = await Db.Sites.Where(s => s.Line.Length() > 1
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            ).ToListAsync();
             Assert.AreEqual(1, sites.Count);
         }
     }

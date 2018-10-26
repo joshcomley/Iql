@@ -1,3 +1,5 @@
+using Iql.Data.DataStores.InMemory;
+
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptDistanceActionParser : JavaScriptActionParserBase<IqlDistanceExpression>
@@ -7,7 +9,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             var left = parser.Parse(action.Left).ToCodeString();
             var right = parser.Parse(action.Right).ToCodeString();
             return new IqlFinalExpression<string>(
-                $"({left} != null && {left}).{nameof(IqlPointExpression.DistanceFrom)}({right})");
+                $"context.{nameof(IInMemoryContext.DistanceBetween)}({left}, {right})");
         }
     }
 }
