@@ -20,18 +20,18 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlGeometryMultiPolygonExpression(null);
-			if(Points == null)
+			if(Polygons == null)
 			{
-				expression.Points = null;
+				expression.Polygons = null;
 			}
 			else
 			{
 				var listCopy = new List<IqlPolygonExpression>();
-				for(var i = 0; i < Points.Count; i++)
+				for(var i = 0; i < Polygons.Count; i++)
 				{
-					listCopy.Add((IqlPolygonExpression)Points[i]?.Clone());
+					listCopy.Add((IqlPolygonExpression)Polygons[i]?.Clone());
 				}
-				expression.Points = listCopy;
+				expression.Polygons = listCopy;
 			}
 			expression.Key = Key;
 			expression.Kind = Kind;
@@ -62,11 +62,11 @@ namespace Iql
 			}
 			if(reaction != FlattenReactionKind.IgnoreChildren)
 			{
-				if(Points != null)
+				if(Polygons != null)
 				{
-					for(var i = 0; i < Points.Count; i++)
+					for(var i = 0; i < Polygons.Count; i++)
 					{
-						Points[i]?.FlattenInternal(expressions, checker);
+						Polygons[i]?.FlattenInternal(expressions, checker);
 					}
 				}
 				Parent?.FlattenInternal(expressions, checker);
@@ -79,11 +79,11 @@ namespace Iql
         {
             // #ReplaceStart
 
-			if(Points != null)
+			if(Polygons != null)
 			{
-				for(var i = 0; i < Points.Count; i++)
+				for(var i = 0; i < Polygons.Count; i++)
 				{
-					Points[i] = (IqlPolygonExpression)context.Replace(this, nameof(Points), i, Points[i]);
+					Polygons[i] = (IqlPolygonExpression)context.Replace(this, nameof(Polygons), i, Polygons[i]);
 				}
 			}
 			Parent = context.Replace(this, nameof(Parent), null, Parent);

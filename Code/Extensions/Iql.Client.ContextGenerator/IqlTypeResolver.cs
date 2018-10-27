@@ -38,6 +38,42 @@ namespace Iql.OData.TypeScript.Generator
                 case "DateTimeOffset":
                 case "Edm.DateTimeOffset":
                     return IqlType.Date;
+                case "GeometryPoint":
+                case "Edm.GeometryPoint":
+                    return IqlType.GeometryPoint;
+                case "GeometryMultiPoint":
+                case "Edm.GeometryMultiPoint":
+                    return IqlType.GeometryMultiPoint;
+                case "GeometryPolygon":
+                case "Edm.GeometryPolygon":
+                    return IqlType.GeometryPolygon;
+                case "GeometryMultiPolygon":
+                case "Edm.GeometryMultiPolygon":
+                    return IqlType.GeometryMultiPolygon;
+                case "GeometryLineString":
+                case "Edm.GeometryLineString":
+                    return IqlType.GeometryLine;
+                case "GeometryMultiLineString":
+                case "Edm.GeometryMultiLineString":
+                    return IqlType.GeometryMultiLine;
+                case "GeographyPoint":
+                case "Edm.GeographyPoint":
+                    return IqlType.GeographyPoint;
+                case "GeographyMultiPoint":
+                case "Edm.GeographyMultiPoint":
+                    return IqlType.GeographyMultiPoint;
+                case "GeographyPolygon":
+                case "Edm.GeographyPolygon":
+                    return IqlType.GeographyPolygon;
+                case "GeographyMultiPolygon":
+                case "Edm.GeographyMultiPolygon":
+                    return IqlType.GeographyMultiPolygon;
+                case "GeographyLineString":
+                case "Edm.GeographyLineString":
+                    return IqlType.GeographyLine;
+                case "GeographyMultiLineString":
+                case "Edm.GeographyMultiLineString":
+                    return IqlType.GeographyMultiLine;
             }
 
             if (type.IsEnum)

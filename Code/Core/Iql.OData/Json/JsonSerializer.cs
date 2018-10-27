@@ -9,6 +9,7 @@ using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Iql.OData.Extensions;
 using Iql.Queryable.Extensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Iql.OData.Json
@@ -90,6 +91,29 @@ namespace Iql.OData.Json
                 {
                     continue;
                 }
+
+
+                if (propertyValue != null)
+                {
+                    switch (property.Property.TypeDefinition.Kind)
+                    {
+                        case IqlType.GeometryLine:
+                        case IqlType.GeographyLine:
+                        case IqlType.GeometryMultiLine:
+                        case IqlType.GeographyMultiLine:
+                        case IqlType.GeometryPolygon:
+                        case IqlType.GeographyPolygon:
+                        case IqlType.GeometryMultiPolygon:
+                        case IqlType.GeographyMultiPolygon:
+                        case IqlType.GeometryPoint:
+                        case IqlType.GeographyPoint:
+                        case IqlType.GeometryMultiPoint:
+                        case IqlType.GeographyMultiPoint:
+                            SerializeGeography(obj, property, propertyValue);
+                            continue;
+                    }
+                }
+
                 if (property.Property.TypeDefinition.IsCollection)
                 {
                     obj[property.Property.Name] = new JArray(propertyValue);
@@ -127,6 +151,66 @@ namespace Iql.OData.Json
                 obj[key.Name] = new JValue(entity.GetPropertyValueByName(key.Name));
             }
             return obj;
+        }
+
+        private static void SerializeGeography(JObject obj, IPropertyState property, object propertyValue)
+        {
+            var container = new JObject();
+            obj[property.Property.Name] = container;
+            string typeName = "";
+            object coordinates = null;
+            switch (property.Property.TypeDefinition.Kind)
+            {
+                case IqlType.GeometryLine:
+                case IqlType.GeographyLine:
+                    typeName = "LineString";
+                    coordinates = SerializePoints(propertyValue as IqlLineExpression);
+                    break;
+                case IqlType.GeometryMultiLine:
+                case IqlType.GeographyMultiLine:
+                    typeName = "MultiLineString";
+                    coordinates = (propertyValue as IqlMultiLineExpression).Lines.Select(line => SerializePoints(line)).ToArray();
+                    break;
+                case IqlType.GeometryPolygon:
+                case IqlType.GeographyPolygon:
+                        typeName = "Polygon";
+                        coordinates = SerializePoints(propertyValue as IqlPolygonExpression);
+                    break;
+                case IqlType.GeometryMultiPolygon:
+                case IqlType.GeographyMultiPolygon:
+                    typeName = "MultiPolygon";
+                    coordinates = (propertyValue as IqlMultiPolygonExpression).Polygons.Select(line => SerializePoints(line)).ToArray();
+                    break;
+                case IqlType.GeometryPoint:
+                case IqlType.GeographyPoint:
+                    typeName = "Point";
+                    var point = propertyValue as IqlPointExpression;
+                    coordinates = new double[]
+                    {
+                        point.Y,
+                        point.X
+                    };
+                    break;
+                case IqlType.GeometryMultiPoint:
+                case IqlType.GeographyMultiPoint:
+                    typeName = "MultiPoint";
+                    coordinates = SerializePoints(propertyValue as IqlMultiPointExpression);
+                    break;
+            }
+
+            container["type"] = typeName;
+            var coordinatesValue = JArray.FromObject(coordinates);
+            container["coordinates"] = coordinatesValue;
+        }
+
+        private static double[][] SerializePoints(IPointsExpression line)
+        {
+            var points = line.Points.Select(point => new double[]
+            {
+                point.Y,
+                point.X
+            });
+            return points.ToArray();
         }
     }
 }

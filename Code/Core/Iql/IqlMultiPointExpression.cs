@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Iql
 {
-    public abstract class IqlMultiPointExpression : IqlExpression
+    public abstract class IqlMultiPointExpression : IqlExpression, IPointsExpression
     {
         public List<IqlPointExpression> Points { get; set; }
         protected IqlMultiPointExpression(IEnumerable<IqlPointExpression> points, IqlExpressionKind kind, IqlType type) : base(kind, type)
