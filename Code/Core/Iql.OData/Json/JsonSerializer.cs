@@ -175,8 +175,8 @@ namespace Iql.OData.Json
                     var point = propertyValue as IqlPointExpression;
                     coordinates = new double[]
                     {
-                        point.Y,
-                        point.X
+                        point.X,
+                        point.Y
                     };
                     break;
                 case IqlType.GeometryMultiPoint:
@@ -209,8 +209,8 @@ namespace Iql.OData.Json
         {
             var points = line.Points.Select(point => new double[]
             {
-                point.Y,
-                point.X
+                point.X,
+                point.Y
             });
             return points.ToArray();
         }
@@ -226,6 +226,7 @@ namespace Iql.OData.Json
             {
                 return null;
             }
+
             var coordinates = jObject["coordinates"].ToString();
 
             double[][][] getPolygonPoints()
@@ -246,20 +247,20 @@ namespace Iql.OData.Json
                     throw new NotImplementedException();
                 case IqlType.GeometryPolygon:
                     var arr1 = getPolygonPoints();
-                    return new IqlPolygonExpression(IqlRingExpression.From(Flip(arr1[0])), arr1.Skip(1).Select(_ => IqlRingExpression.From(Flip(_))));
+                    return new IqlPolygonExpression(IqlRingExpression.From(arr1[0]), arr1.Skip(1).Select(_ => IqlRingExpression.From(_)));
                 case IqlType.GeographyPolygon:
                     var arr2 = getPolygonPoints();
-                    return new IqlPolygonExpression(IqlRingExpression.From(Flip(arr2[0])), arr2.Skip(1).Select(_ => IqlRingExpression.From(Flip(_))));
+                    return new IqlPolygonExpression(IqlRingExpression.From(arr2[0]), arr2.Skip(1).Select(_ => IqlRingExpression.From(_)));
                 case IqlType.GeometryMultiPolygon:
                     throw new NotImplementedException();
                 case IqlType.GeographyMultiPolygon:
                     throw new NotImplementedException();
                 case IqlType.GeometryPoint:
                     var geometryPoint = (double[])JsonConvert.DeserializeObject(coordinates, typeof(double[]));
-                    return new IqlPointExpression(geometryPoint[1], geometryPoint[0]);
+                    return new IqlPointExpression(geometryPoint[0], geometryPoint[1]);
                 case IqlType.GeographyPoint:
                     var geographyPoint = (double[])JsonConvert.DeserializeObject(coordinates, typeof(double[]));
-                    return new IqlPointExpression(geographyPoint[1], geographyPoint[0]);
+                    return new IqlPointExpression(geographyPoint[0], geographyPoint[1]);
                 case IqlType.GeometryMultiPoint:
                     throw new NotImplementedException();
                 case IqlType.GeographyMultiPoint:
@@ -269,24 +270,11 @@ namespace Iql.OData.Json
             return null;
         }
 
-        private static double[][] Flip(double[][] arr)
-        {
-            for (var i = 0; i < arr.Length; i++)
-            {
-                var item = arr[i];
-                var x = item[0];
-                item[0] = item[1];
-                item[1] = x;
-            }
-
-            return arr;
-        }
-
         private static IEnumerable<IqlPointExpression> FromODataArray(IqlType type, params double[][] coordinates)
         {
             return coordinates.Select(c => type == IqlType.GeometryPoint
-                ? (IqlPointExpression)new IqlPointExpression(c[1], c[0])
-                : new IqlPointExpression(c[1], c[0]));
+                ? (IqlPointExpression)new IqlPointExpression(c[0], c[1])
+                : new IqlPointExpression(c[0], c[1]));
         }
     }
 }

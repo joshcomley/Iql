@@ -25,10 +25,10 @@ namespace Iql.Tests.Tests.OData
             var polygon = new IqlPolygonExpression(
                 new IqlRingExpression(new IqlPointExpression[]
                 {
-                    new IqlPointExpression(1, 2),
-                    new IqlPointExpression(5, 4),
-                    new IqlPointExpression(7, 3),
-                    new IqlPointExpression(1, 2),
+                    new IqlPointExpression(2, 1),
+                    new IqlPointExpression(4, 5),
+                    new IqlPointExpression(3, 7),
+                    new IqlPointExpression(2, 1),
                 }));
             var query = Db.Sites.Where(site => site.Location.Intersects(polygon)
 #if TypeScript
@@ -67,7 +67,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestDistanceLiteral()
         {
-            var point = new IqlPointExpression(1, 2);
+            var point = new IqlPointExpression(2, 1);
             var query = Db.Sites.Where(site => site.Location.DistanceFrom(point) < 150
 #if TypeScript
                     , 

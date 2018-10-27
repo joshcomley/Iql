@@ -52,8 +52,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                                 $"No property \"{expression.Name}\" found on type \"{rootEntityType.Name}\"");
                         }
                         propertyType = property.PropertyType;
-                        // var p = new propertyParent.entityType();
-                        // var x = p[instance.expression.name].constructor;
                         break;
                 }
 

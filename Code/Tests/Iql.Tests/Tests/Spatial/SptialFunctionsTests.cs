@@ -10,32 +10,31 @@ namespace Iql.Tests.Tests
             new IqlLineExpression(
                 new IqlPointExpression[]
                 {
-                    new IqlPointExpression(25.774, -80.190), 
-                    new IqlPointExpression(18.466, -66.118), 
-                    new IqlPointExpression(32.321, -64.757), 
+                    new IqlPointExpression(-80.190, 25.774), 
+                    new IqlPointExpression(-66.118, 18.466), 
+                    new IqlPointExpression(-64.757, 32.321), 
                 });
         internal static IqlPolygonExpression BermudaTrianglePolygon = IqlPolygonExpression.From(
             new[]
             {
-                new[] {25.774, -80.190}, new[] {18.466, -66.118}, new[] {32.321, -64.757}, new[] {25.774, -80.190}
+                new[] { -80.190, 25.774 }, new[] {-66.118, 18.466}, new[] {-64.757, 32.321}, new[] { -80.190, 25.774 }
             });
 
         internal static IqlPointExpression WithinBermudaTrianglePoint =
-            new IqlPointExpression(25.4691308, -76.6887611);
+            new IqlPointExpression(-76.6887611, 25.4691308);
 
         internal static IqlPointExpression NotWithinBermudaTrianglePoint =
-            new IqlPointExpression(21.687572, -78.2929751);
+            new IqlPointExpression(-78.2929751, 21.687572);
 
         internal static IqlPointExpression BerlinPoint =
-            new IqlPointExpression(52.5067614, 13.2846523);
+            new IqlPointExpression(13.2846523, 52.5067614);
 
         [TestMethod]
         public async Task TestDistance()
         {
-            var distance = IqlPointExpression.DistanceBetween(
-                52.2670518, -2.1379667,
-                51.4466596, -0.2050156,
-                IqlDistanceKind.Kilometers);
+            var distance = IqlPointExpression.DistanceBetween(-2.1379667,
+                52.2670518, -0.2050156,
+                51.4466596, IqlDistanceKind.Kilometers);
             Assert.IsTrue(distance - 161.055460155299 < 0.000001);
         }
 

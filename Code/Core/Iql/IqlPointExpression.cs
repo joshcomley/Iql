@@ -9,10 +9,10 @@ namespace Iql
         public double X { get; set; }
         public double Y { get; set; }
 
-        public IqlPointExpression(double x, double y, IqlType type = IqlType.GeographyPoint, int? srid = null) : base(srid, type)
+        public IqlPointExpression(double xOrLongitude, double yOrLatitude, IqlType type = IqlType.GeographyPoint, int? srid = null) : base(srid, type)
         {
-            X = x;
-            Y = y;
+            X = xOrLongitude;
+            Y = yOrLatitude;
         }
 
         public IqlPointExpression() : base(null, IqlType.GeographyPoint)
@@ -30,11 +30,12 @@ namespace Iql
             return DistanceBetween(point.X, point.Y, X, Y);
         }
 
-        public static double DistanceBetween(double lat1, double lon1, double lat2, double lon2, IqlDistanceKind unit = IqlDistanceKind.Kilometers)
+        public static double DistanceBetween(double xOrLongitude1, double yOrLatitude1, double xOrLongitude2, double yOrLatitude2,
+            IqlDistanceKind unit = IqlDistanceKind.Kilometers)
         {
-            var rlat1 = Math.PI * lat1 / 180;
-            var rlat2 = Math.PI * lat2 / 180;
-            var theta = lon1 - lon2;
+            var rlat1 = Math.PI * yOrLatitude1 / 180;
+            var rlat2 = Math.PI * yOrLatitude2 / 180;
+            var theta = xOrLongitude1 - xOrLongitude2;
             var rtheta = Math.PI * theta / 180;
             var dist =
                 Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) *
@@ -59,17 +60,17 @@ namespace Iql
         /// <summary>
         /// Determines if this point is inside the polygon
         /// </summary>
-        /// <param name="x">The X coordinate.</param>
-        /// <param name="y">The Y coordinate.</param>
+        /// <param name="xOrLongitude">The Y coordinate.</param>
+        /// <param name="yOrLatitude">The X coordinate.</param>
         /// <param name="polygon">The polygon.</param>
         /// <returns>true if the point is inside the polygon; otherwise, false</returns>
-        public static bool IntersectsPolygon(double x, double y, IqlPolygonExpression polygon)
+        public static bool IntersectsPolygon(double xOrLongitude, double yOrLatitude, IqlPolygonExpression polygon)
         {
             if (polygon == null || polygon.OuterRing == null)
             {
                 return false;
             }
-            var inOuter = IqlPointExpression.IntersectsRing(x, y, polygon.OuterRing);
+            var inOuter = IqlPointExpression.IntersectsRing(xOrLongitude, yOrLatitude, polygon.OuterRing);
             if (!inOuter)
             {
                 return false;
@@ -80,17 +81,17 @@ namespace Iql
                 return true;
             }
 
-            return !polygon.InnerRings.Any(_ => IntersectsRing(x, y, _));
+            return !polygon.InnerRings.Any(_ => IntersectsRing(xOrLongitude, yOrLatitude, _));
         }
 
         /// <summary>
         /// Determines if this point is inside the ring
         /// </summary>
-        /// <param name="x">The X coordinate.</param>
-        /// <param name="y">The Y coordinate.</param>
+        /// <param name="yOrLatitude">The X coordinate.</param>
+        /// <param name="xOrLongitude">The Y coordinate.</param>
         /// <param name="ring">The ring.</param>
         /// <returns>true if the point is inside the polygon; otherwise, false</returns>
-        public static bool IntersectsRing(double x, double y, IqlRingExpression ring)
+        public static bool IntersectsRing(double xOrLongitude, double yOrLatitude, IqlRingExpression ring)
         {
             if (ring == null || ring.Points == null)
             {
@@ -100,9 +101,9 @@ namespace Iql
             var j = ring.Points.Count - 1;
             for (var i = 0; i < ring.Points.Count; i++)
             {
-                if (ring.Points[i].Y < y && ring.Points[j].Y >= y || ring.Points[j].Y < y && ring.Points[i].Y >= y)
+                if (ring.Points[i].Y < yOrLatitude && ring.Points[j].Y >= yOrLatitude || ring.Points[j].Y < yOrLatitude && ring.Points[i].Y >= yOrLatitude)
                 {
-                    if (ring.Points[i].X + (y - ring.Points[i].Y) / (ring.Points[j].Y - ring.Points[i].Y) * (ring.Points[j].X - ring.Points[i].X) < x)
+                    if (ring.Points[i].X + (yOrLatitude - ring.Points[i].Y) / (ring.Points[j].Y - ring.Points[i].Y) * (ring.Points[j].X - ring.Points[i].X) < xOrLongitude)
                     {
                         result = !result;
                     }

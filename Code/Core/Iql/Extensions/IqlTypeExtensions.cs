@@ -79,7 +79,7 @@ namespace Iql.Extensions
 #if !TypeScript
             if (type.IsGenericType)
             {
-                return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(x => GetFullName(x)).ToArray()) + ">";
+                return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(_ => GetFullName(_)).ToArray()) + ">";
             }
 #endif
 

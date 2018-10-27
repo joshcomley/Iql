@@ -22,7 +22,7 @@ namespace Iql
 
         public bool Intersects(IqlPointExpression point)
         {
-            return IqlPointExpression.IntersectsPolygon(point.X, point.Y, this);
+            return IqlPointExpression.IntersectsPolygon(point.Y, point.X, this);
         }
 
         public static IqlPolygonExpression From(double[][] points, int? srid = null)

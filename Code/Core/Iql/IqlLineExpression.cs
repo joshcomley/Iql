@@ -26,7 +26,7 @@ namespace Iql
             for (var i = 1; i < Points.Count; i++)
             {
                 var point = Points[i];
-                total += IqlPointExpression.DistanceBetween(current.X, current.Y, point.X, point.Y);
+                total += IqlPointExpression.DistanceBetween(current.Y, current.X, point.Y, point.X);
                 current = point;
             }
             return total;

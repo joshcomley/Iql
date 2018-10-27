@@ -20,10 +20,10 @@ namespace IqlSampleApp.Data
         private static bool _databaseChecked;
         private readonly IServiceProvider _serviceProvider;
 
-        public ApplicationDbContext()
-        {
+        //public ApplicationDbContext()
+        //{
             
-        }
+        //}
         // Uncomment this when running migrations
         public ApplicationDbContext(IServiceProvider serviceProvider)
         {

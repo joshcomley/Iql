@@ -44,7 +44,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             {
                 var point = value as IqlPointExpression;
                 return
-                    $@"geography'SRID={TryGetSrid(value)};POINT({point.Y} {point.X})'";
+                    $@"geography'SRID={TryGetSrid(value)};POINT({point.X} {point.Y})'";
             }
 
             if (value is IqlPolygonExpression)
@@ -88,7 +88,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         private static string SerializePoints(IPointsExpression line, bool wrapInBrackets = false)
         {
-            var serializedPoints = string.Join(",", line.Points.Select(_ => $"{_.Y} {_.X}"));
+            var serializedPoints = string.Join(",", line.Points.Select(_ => $"{_.X} {_.Y}"));
             return
                 wrapInBrackets
                 ? $"({serializedPoints})"
