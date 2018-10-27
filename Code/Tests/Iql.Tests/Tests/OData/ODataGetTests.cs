@@ -43,9 +43,12 @@ namespace Iql.Tests.Tests.OData
         {
             var db = new AppDbContext(new ODataDataStore());
             var sites = await db.Sites.ToListAsync();
-            Assert.AreEqual(1, sites.Count);
-            var site = sites[0];
-            AssertGeographyProperties(site);
+            Assert.AreEqual(2, sites.Count);
+            AssertGeographyProperties(sites[0]);
+            var siteWithNullProperties = sites[1];
+            Assert.IsNull(siteWithNullProperties.Location);
+            Assert.IsNull(siteWithNullProperties.Area);
+            Assert.IsNull(siteWithNullProperties.Line);
         }
 
         [TestMethod]

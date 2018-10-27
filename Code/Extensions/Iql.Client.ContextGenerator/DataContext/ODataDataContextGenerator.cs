@@ -257,7 +257,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
 
             foreach (var file in newOutputFiles)
             {
-                var newFilePath = file.Path;//Path.Combine(root, outputFullPath);
+                var newFilePath = Path.Combine(outputFullPath, file.Path.Substring(ApplicationRoot.Length));
                 var directoryName = Path.GetDirectoryName(newFilePath);
                 if (!Directory.Exists(directoryName))
                 {

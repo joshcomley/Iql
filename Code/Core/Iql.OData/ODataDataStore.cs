@@ -312,7 +312,7 @@ namespace Iql.OData
             {
                 if (property.TypeDefinition.Kind.IsGeographic())
                 {
-                    return JObject.FromObject(JsonSerializer.ConvertODataGeographyToIqlGeography(jvalue as JObject, property.TypeDefinition.Kind));
+                    return jvalue as JObject == null ? null : JObject.FromObject(JsonSerializer.ConvertODataGeographyToIqlGeography(jvalue as JObject, property.TypeDefinition.Kind));
                 }
             }
             if (jvalue is JArray)

@@ -217,6 +217,15 @@ namespace Iql.OData.Json
 
         public static IqlExpression ConvertODataGeographyToIqlGeography(JObject jObject, IqlType geographyType)
         {
+            if (jObject == null)
+            {
+                return null;
+            }
+
+            if (jObject["coordinates"] == null)
+            {
+                return null;
+            }
             var coordinates = jObject["coordinates"].ToString();
 
             double[][][] getPolygonPoints()
