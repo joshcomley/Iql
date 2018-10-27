@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -39,25 +40,31 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 return dateTimeOffset.ToString("o");
             }
 
-            if (value is IqlGeographyPointExpression)
+            if (value is IqlPointExpression)
             {
-                var point = value as IqlGeographyPointExpression;
+                var point = value as IqlPointExpression;
                 return
-                    $@"geography'SRID={point.Srid};POINT({point.Y} {point.X})'";
+                    $@"geography'SRID={TryGetSrid(value)};POINT({point.Y} {point.X})'";
             }
 
-            if (value is IqlGeographyPolygonExpression)
+            if (value is IqlPolygonExpression)
             {
-                var polygon = value as IqlGeographyPolygonExpression;
+                var polygon = value as IqlPolygonExpression;
+                var pointsExpressions = new List<IPointsExpression>();
+                pointsExpressions.Add(polygon.OuterRing);
+                if (polygon.InnerRings != null)
+                {
+                    pointsExpressions.AddRange(polygon.InnerRings);
+                }
                 return
-                    $@"geography'SRID={polygon.Srid};POLYGON(({string.Join(",", polygon.Points.Select(_ => $"{_.Y} {_.X}"))}))'";
+                    $@"geography'SRID={TryGetSrid(value)};POLYGON({string.Join(",", pointsExpressions.Select(_ => SerializePoints(_, true)))})'";
             }
 
-            if (value is IqlGeographyLineExpression)
+            if (value is IqlLineExpression)
             {
-                var line = value as IqlGeographyLineExpression;
+                var line = value as IqlLineExpression;
                 return
-                    $@"geography'SRID={line.Srid};LINESTRING({string.Join(",", line.Points.Select(_ => $"{_.Y} {_.X}"))})'";
+                    $@"geography'SRID={TryGetSrid(value)};LINESTRING({SerializePoints(line)})'";
             }
 
             if (value is bool)
@@ -67,6 +74,25 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             }
 
             return value == null ? "null" : value.ToString();
+        }
+
+        private static int TryGetSrid(object value)
+        {
+            if (value is ISrid)
+            {
+                return (value as ISrid).Srid ?? 0;
+            }
+
+            return 0;
+        }
+
+        private static string SerializePoints(IPointsExpression line, bool wrapInBrackets = false)
+        {
+            var serializedPoints = string.Join(",", line.Points.Select(_ => $"{_.Y} {_.X}"));
+            return
+                wrapInBrackets
+                ? $"({serializedPoints})"
+                : serializedPoints;
         }
     }
 }

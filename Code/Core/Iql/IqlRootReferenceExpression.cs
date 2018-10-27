@@ -28,8 +28,9 @@ namespace Iql
 
 			var expression = new IqlRootReferenceExpression();
 			expression.EntityTypeName = EntityTypeName;
-			expression.Value = Value;
 			expression.VariableName = VariableName;
+			expression.Value = Value;
+			expression.InferredReturnType = InferredReturnType;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

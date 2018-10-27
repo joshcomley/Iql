@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Iql.OData;
 using Iql.Tests.Context;
+using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.OData
@@ -37,5 +38,52 @@ namespace Iql.Tests.Tests.OData
                     .GetWithKeyAsync("this-will-return-null");
         }
 
+        [TestMethod]
+        public async Task TestGeographyGetFromCollection()
+        {
+            var db = new AppDbContext(new ODataDataStore());
+            var sites = await db.Sites.ToListAsync();
+            Assert.AreEqual(1, sites.Count);
+            var site = sites[0];
+            AssertGeographyProperties(site);
+        }
+
+        [TestMethod]
+        public async Task TestGeographyGetFromKey()
+        {
+            var db = new AppDbContext(new ODataDataStore());
+            var site = await db.Sites.GetWithKeyAsync(1);
+            AssertGeographyProperties(site);
+        }
+
+        private static void AssertGeographyProperties(Site site)
+        {
+            Assert.IsNotNull(site);
+            Assert.IsNotNull(site.Area);
+            Assert.IsNotNull(site.Area.OuterRing);
+            Assert.AreEqual(0, site.Area.InnerRings.Count);
+            Assert.AreEqual(4, site.Area.OuterRing.Points.Count);
+            Assert.IsTrue(site.Area is IqlPolygonExpression);
+            Assert.IsTrue(site.Area.OuterRing is IqlRingExpression);
+            AssertPoint(site.Area.OuterRing.Points[0], 25.774, -80.19);
+            AssertPoint(site.Area.OuterRing.Points[1], 18.466, -66.118);
+            AssertPoint(site.Area.OuterRing.Points[2], 32.321, -64.757);
+            AssertPoint(site.Area.OuterRing.Points[3], 25.774, -80.19);
+            Assert.IsNotNull(site.Line);
+            Assert.IsTrue(site.Line is IqlLineExpression);
+            Assert.AreEqual(3, site.Line.Points.Count);
+            AssertPoint(site.Line.Points[0], 25.774, -80.19);
+            AssertPoint(site.Line.Points[1], 18.466, -66.118);
+            AssertPoint(site.Line.Points[2], 32.321, -64.757);
+            Assert.IsNotNull(site.Location);
+            AssertPoint(site.Location, 52.5067614, 13.2846523);
+        }
+
+        private static void AssertPoint(IqlPointExpression point, double x, double y)
+        {
+            Assert.IsTrue(point is IqlPointExpression);
+            Assert.AreEqual(x, point.X);
+            Assert.AreEqual(y, point.Y);
+        }
     }
 }

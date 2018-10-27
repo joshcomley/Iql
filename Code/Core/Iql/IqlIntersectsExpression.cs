@@ -3,18 +3,17 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlIntersectsExpression : IqlExpression, IGeographicExpression
+    public class IqlIntersectsExpression : IqlSridExpression
     {
-        public int Srid { get; set; }
         public IqlReferenceExpression Polygon { get; set; }
 
-        public IqlIntersectsExpression(IqlReferenceExpression parent, IqlReferenceExpression polygon) : base(IqlExpressionKind.Intersects, IqlType.Decimal, parent)
+        public IqlIntersectsExpression(IqlReferenceExpression parent, IqlReferenceExpression polygon, int? srid = null) : base(srid, IqlType.Boolean, parent, IqlExpressionKind.Intersects)
         {
             Polygon = polygon;
             Srid = IqlConstants.DefaultGeographicSrid;
         }
 
-        public IqlIntersectsExpression() : base(IqlExpressionKind.Intersects)
+        public IqlIntersectsExpression() : base(null, IqlType.Boolean, null, IqlExpressionKind.Intersects)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
         }
@@ -24,8 +23,8 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlIntersectsExpression(null, null);
-			expression.Srid = Srid;
 			expression.Polygon = (IqlReferenceExpression)Polygon?.Clone();
+			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

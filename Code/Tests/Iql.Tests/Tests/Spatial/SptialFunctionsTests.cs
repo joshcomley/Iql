@@ -6,28 +6,28 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class SptialFunctionsTests : TestsBase
     {
-        internal static IqlGeographyLineExpression BermudaTriangleLine = 
-            new IqlGeographyLineExpression(
+        internal static IqlLineExpression BermudaTriangleLine = 
+            new IqlLineExpression(
                 new IqlPointExpression[]
                 {
-                    new IqlGeographyPointExpression(25.774, -80.190), 
-                    new IqlGeographyPointExpression(18.466, -66.118), 
-                    new IqlGeographyPointExpression(32.321, -64.757), 
+                    new IqlPointExpression(25.774, -80.190), 
+                    new IqlPointExpression(18.466, -66.118), 
+                    new IqlPointExpression(32.321, -64.757), 
                 });
-        internal static IqlGeographyPolygonExpression BermudaTrianglePolygon = IqlGeographyPolygonExpression.From(
+        internal static IqlPolygonExpression BermudaTrianglePolygon = IqlPolygonExpression.From(
             new[]
             {
                 new[] {25.774, -80.190}, new[] {18.466, -66.118}, new[] {32.321, -64.757}, new[] {25.774, -80.190}
             });
 
-        internal static IqlGeographyPointExpression WithinBermudaTrianglePoint =
-            new IqlGeographyPointExpression(25.4691308, -76.6887611);
+        internal static IqlPointExpression WithinBermudaTrianglePoint =
+            new IqlPointExpression(25.4691308, -76.6887611);
 
-        internal static IqlGeographyPointExpression NotWithinBermudaTrianglePoint =
-            new IqlGeographyPointExpression(21.687572, -78.2929751);
+        internal static IqlPointExpression NotWithinBermudaTrianglePoint =
+            new IqlPointExpression(21.687572, -78.2929751);
 
-        internal static IqlGeographyPointExpression BerlinPoint =
-            new IqlGeographyPointExpression(52.5067614, 13.2846523);
+        internal static IqlPointExpression BerlinPoint =
+            new IqlPointExpression(52.5067614, 13.2846523);
 
         [TestMethod]
         public async Task TestDistance()

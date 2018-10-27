@@ -1,24 +1,44 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Iql.Extensions;
 
 namespace Iql
 {
-    public class IqlGeometryLineExpression : IqlLineExpression
+    public class IqlRingExpression : IqlSridExpression, IPointsExpression
     {
-        public IqlGeometryLineExpression(IEnumerable<IqlPointExpression> points) : base(points, IqlExpressionKind.GeometryLine, IqlType.GeometryLine)
+        public List<IqlPointExpression> Points { get; set; }
+
+        public IqlRingExpression(IEnumerable<IqlPointExpression> points = null, int? srid = null) : base(srid, IqlType.GeographyRing, null, IqlExpressionKind.GeoRing)
         {
+            Points = points?.ToList();
         }
 
-        public IqlGeometryLineExpression() : base(new IqlPointExpression[] { }, IqlExpressionKind.GeometryLine, IqlType.GeometryLine)
+        public IqlRingExpression() : base(null, IqlType.GeographyRing, null, IqlExpressionKind.GeoRing)
         {
 
+        }
+
+        public static IqlRingExpression From(double[][] points, int? srid = null)
+        {
+            var ring = new IqlRingExpression();
+            ring.Points = new List<IqlPointExpression>();
+            foreach (var pair in points)
+            {
+                if (pair.Length < 2)
+                {
+                    throw new Exception("Each points pair must have at least two values");
+                }
+                ring.Points.Add(new IqlPointExpression(pair[0], pair[1], srid.ResolveTypeFromSrid(IqlExpressionKind.GeoPoint), srid));
+            }
+            return ring;
         }
 
         public override IqlExpression Clone()
         {
             // #CloneStart
 
-			var expression = new IqlGeometryLineExpression(null);
+			var expression = new IqlRingExpression();
 			if(Points == null)
 			{
 				expression.Points = null;
@@ -32,6 +52,8 @@ namespace Iql
 				}
 				expression.Points = listCopy;
 			}
+			expression.Srid = Srid;
+			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -41,7 +63,8 @@ namespace Iql
             // #CloneEnd
         }
 
-        internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
+        internal override void FlattenInternal(IList<IqlExpression> expressions,
+            Func<IqlExpression, FlattenReactionKind> checker = null)
         {
             // #FlattenStart
 

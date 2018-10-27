@@ -7,6 +7,28 @@ namespace Iql.Extensions
 {
     public static class IqlTypeExtensions
     {
+        public static bool IsGeographic(this IqlType type)
+        {
+            switch (type)
+            {
+                case IqlType.GeometryLine:
+                case IqlType.GeographyLine:
+                case IqlType.GeometryMultiLine:
+                case IqlType.GeographyMultiLine:
+                case IqlType.GeometryPolygon:
+                case IqlType.GeographyPolygon:
+                case IqlType.GeometryMultiPolygon:
+                case IqlType.GeographyMultiPolygon:
+                case IqlType.GeometryPoint:
+                case IqlType.GeographyPoint:
+                case IqlType.GeometryMultiPoint:
+                case IqlType.GeographyMultiPoint:
+                    return true;
+            }
+
+            return false;
+        }
+
         public static string GetFullName(this Type type)
         {
             if (type == typeof(int))
@@ -105,53 +127,29 @@ namespace Iql.Extensions
                 return IqlType.Guid;
             }
 #endif
-            if (type == typeof(IqlGeographyPointExpression))
+            if (type == typeof(IqlPointExpression))
             {
                 return IqlType.GeographyPoint;
             }
-            if (type == typeof(IqlGeographyMultiPointExpression))
+            if (type == typeof(IqlMultiPointExpression))
             {
                 return IqlType.GeographyMultiPoint;
             }
-            if (type == typeof(IqlGeographyPolygonExpression))
+            if (type == typeof(IqlPolygonExpression))
             {
                 return IqlType.GeographyPoint;
             }
-            if (type == typeof(IqlGeographyMultiPolygonExpression))
+            if (type == typeof(IqlMultiPolygonExpression))
             {
                 return IqlType.GeographyMultiPolygon;
             }
-            if (type == typeof(IqlGeographyLineExpression))
+            if (type == typeof(IqlLineExpression))
             {
                 return IqlType.GeographyLine;
             }
-            if (type == typeof(IqlGeographyMultiLineExpression))
+            if (type == typeof(IqlMultiLineExpression))
             {
                 return IqlType.GeographyMultiLine;
-            }
-            if (type == typeof(IqlGeometryPointExpression))
-            {
-                return IqlType.GeometryPoint;
-            }
-            if (type == typeof(IqlGeometryMultiPointExpression))
-            {
-                return IqlType.GeometryMultiPoint;
-            }
-            if (type == typeof(IqlGeometryPolygonExpression))
-            {
-                return IqlType.GeometryPoint;
-            }
-            if (type == typeof(IqlGeometryMultiPolygonExpression))
-            {
-                return IqlType.GeometryMultiPolygon;
-            }
-            if (type == typeof(IqlGeometryLineExpression))
-            {
-                return IqlType.GeometryLine;
-            }
-            if (type == typeof(IqlGeometryMultiLineExpression))
-            {
-                return IqlType.GeometryMultiLine;
             }
             if (type.IsEnumerableType())
             {

@@ -32,7 +32,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         private static IqlExpression ResolveGeographic(IqlExpression action, ODataIqlParserInstance parser)
         {
-            var geo = action as IGeographicExpression;
+            var geo = action as ISrid;
             switch (action.Kind)
             {
                 case IqlExpressionKind.Intersects:

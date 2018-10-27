@@ -1,16 +1,23 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql
 {
-    public abstract class IqlPointExpression : IqlReferenceExpression
+    public class IqlPointExpression : IqlSridExpression
     {
-        public double X { get; }
-        public double Y { get; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
-        protected IqlPointExpression(double x, double y, IqlExpressionKind kind, IqlType type) : base(kind, type)
+        public IqlPointExpression(double x, double y, IqlType type = IqlType.GeographyPoint, int? srid = null) : base(srid, type)
         {
             X = x;
             Y = y;
+        }
+
+        public IqlPointExpression() : base(null, IqlType.GeographyPoint)
+        {
+
         }
 
         public bool Intersects(IqlPolygonExpression polygon)
@@ -58,17 +65,44 @@ namespace Iql
         /// <returns>true if the point is inside the polygon; otherwise, false</returns>
         public static bool IntersectsPolygon(double x, double y, IqlPolygonExpression polygon)
         {
-            if (polygon.Points == null)
+            if (polygon == null || polygon.OuterRing == null)
+            {
+                return false;
+            }
+            var inOuter = IqlPointExpression.IntersectsRing(x, y, polygon.OuterRing);
+            if (!inOuter)
+            {
+                return false;
+            }
+
+            if (polygon.InnerRings == null)
+            {
+                return true;
+            }
+
+            return !polygon.InnerRings.Any(_ => IntersectsRing(x, y, _));
+        }
+
+        /// <summary>
+        /// Determines if this point is inside the ring
+        /// </summary>
+        /// <param name="x">The X coordinate.</param>
+        /// <param name="y">The Y coordinate.</param>
+        /// <param name="ring">The ring.</param>
+        /// <returns>true if the point is inside the polygon; otherwise, false</returns>
+        public static bool IntersectsRing(double x, double y, IqlRingExpression ring)
+        {
+            if (ring == null || ring.Points == null)
             {
                 return false;
             }
             var result = false;
-            var j = polygon.Points.Count - 1;
-            for (var i = 0; i < polygon.Points.Count; i++)
+            var j = ring.Points.Count - 1;
+            for (var i = 0; i < ring.Points.Count; i++)
             {
-                if (polygon.Points[i].Y < y && polygon.Points[j].Y >= y || polygon.Points[j].Y < y && polygon.Points[i].Y >= y)
+                if (ring.Points[i].Y < y && ring.Points[j].Y >= y || ring.Points[j].Y < y && ring.Points[i].Y >= y)
                 {
-                    if (polygon.Points[i].X + (y - polygon.Points[i].Y) / (polygon.Points[j].Y - polygon.Points[i].Y) * (polygon.Points[j].X - polygon.Points[i].X) < x)
+                    if (ring.Points[i].X + (y - ring.Points[i].Y) / (ring.Points[j].Y - ring.Points[i].Y) * (ring.Points[j].X - ring.Points[i].X) < x)
                     {
                         result = !result;
                     }
@@ -76,6 +110,62 @@ namespace Iql
                 j = i;
             }
             return result;
+        }
+
+        public override IqlExpression Clone()
+        {
+            // #CloneStart
+
+			var expression = new IqlPointExpression(0, 0);
+			expression.Srid = Srid;
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
+            // #CloneEnd
+        }
+
+        internal override void FlattenInternal(IList<IqlExpression> expressions,
+            Func<IqlExpression, FlattenReactionKind> checker = null)
+        {
+            // #FlattenStart
+
+			if(expressions.Contains(this))
+			{
+				return;
+			}
+			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
+			if(reaction == FlattenReactionKind.Ignore)
+			{
+				return;
+			}
+			if(reaction != FlattenReactionKind.OnlyChildren)
+			{
+				expressions.Add(this);
+			}
+			if(reaction != FlattenReactionKind.IgnoreChildren)
+			{
+				Parent?.FlattenInternal(expressions, checker);
+			}
+
+            // #FlattenEnd
+        }
+
+        internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+        {
+            // #ReplaceStart
+
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
+            // #ReplaceEnd
         }
     }
 }

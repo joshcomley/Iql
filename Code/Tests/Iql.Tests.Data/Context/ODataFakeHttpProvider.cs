@@ -13,7 +13,7 @@ namespace Iql.Tests.Data.Context
             {
                 return interceptedResult;
             }
-            var responseData = ODataFakeRequestResults.HttpGetResponse(uri);
+            var responseData = ODataFakeHttpRequestResults.HttpGetResponse(uri);
             return HttpResult.FromString(responseData, responseData != null);
         }
 

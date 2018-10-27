@@ -104,7 +104,7 @@ namespace Iql.Tests.Tests.OData
   ""Id"": 0,
   ""Area"": {
     ""type"": ""Polygon"",
-    ""coordinates"": [
+    ""coordinates"": [ [
       [
         -80.19,
         25.774
@@ -121,7 +121,7 @@ namespace Iql.Tests.Tests.OData
         -80.19,
         25.774
       ]
-    ]
+    ] ]
   },
   ""Location"": {
     ""type"": ""Point"",

@@ -21,11 +21,13 @@ namespace Iql
         GeometryMultiPolygon,
         GeometryLine,
         GeometryMultiLine,
+        GeometryRing,
         GeographyPoint,
         GeographyMultiPoint,
         GeographyPolygon,
         GeographyMultiPolygon,
         GeographyLine,
         GeographyMultiLine,
+        GeographyRing
     }
 }

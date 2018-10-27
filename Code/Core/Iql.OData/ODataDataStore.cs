@@ -223,13 +223,13 @@ namespace Iql.OData
             return result;
         }
 
-        protected async Task<IFlattenedGetDataResult> ParseODataEntityResponseByTypeAsync(
+        protected Task<IFlattenedGetDataResult> ParseODataEntityResponseByTypeAsync(
             Type entityType,
             IHttpResult httpResult,
             bool isCollection,
             IFlattenedGetDataResult result = null)
         {
-            return await (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync))
+            return (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync))
                 .InvokeGeneric(this, new object[] { httpResult, isCollection, result }, entityType);
         }
 
@@ -278,16 +278,16 @@ namespace Iql.OData
             var isValueResult = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TResult)) == null;
             var json = await httpResult.GetResponseTextAsync();
             var odataResultRoot = JObject.Parse(json);
-            ParseObj(odataResultRoot);
+            ParseObj(odataResultRoot, DataContext.EntityConfigurationContext.GetEntityByType(typeof(TResult)), false);
             var value = isValueResult ? odataResultRoot["value"] : odataResultRoot;
             var oDataGetResult =
                 value.ToObject<TResult>();
             return oDataGetResult;
         }
 
-        private static async Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
+        private static Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
         {
-            return await (Task<IODataCollectionResult>)typeof(ODataDataStore).GetMethod(nameof(GetODataCollectionResponseAsync))
+            return (Task<IODataCollectionResult>)typeof(ODataDataStore).GetMethod(nameof(GetODataCollectionResponseAsync))
                 .InvokeGeneric(
                     null,
                     new object[] { httpResult },
@@ -295,24 +295,31 @@ namespace Iql.OData
                 );
         }
 
-        private static async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(IHttpResult httpResult)
+        private async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(IHttpResult httpResult)
         {
             var json = await httpResult.GetResponseTextAsync();
             var odataResultRoot = JObject.Parse(json);
-            ParseObj(odataResultRoot);
+            ParseObj(odataResultRoot, DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)), true);
             var countToken = odataResultRoot["Count"];
             var count = countToken?.ToObject<int?>();
             var values = odataResultRoot["value"].ToObject<TEntity[]>();
             return new ODataCollectionResult<TEntity>(values, count);
         }
 
-        private static void ParseObj(object jvalue)
+        private static JToken ParseObj(JToken jvalue, IEntityConfiguration entityType, bool isCollectionRoot, IProperty property = null)
         {
+            if (property != null)
+            {
+                if (property.TypeDefinition.Kind.IsGeographic())
+                {
+                    return JObject.FromObject(JsonSerializer.ConvertODataGeographyToIqlGeography(jvalue as JObject, property.TypeDefinition.Kind));
+                }
+            }
             if (jvalue is JArray)
             {
                 foreach (var child in (JArray)jvalue)
                 {
-                    ParseObj(child);
+                    ParseObj(child, entityType, isCollectionRoot);
                 }
             }
             else if (jvalue is JObject)
@@ -336,9 +343,35 @@ namespace Iql.OData
                         jobj[before + odataName] = value;
                         jobj.Remove(prop.Name);
                     }
-                    ParseObj(value);
+
+                    if (!isCollectionRoot)
+                    {
+                        var entityProperty = entityType.Properties.SingleOrDefault(p => p.PropertyName == prop.Name);
+                        if (entityProperty != null)
+                        {
+                            if (entityProperty.Kind == PropertyKind.Relationship)
+                            {
+                                jobj[prop.Name] = ParseObj(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, false, entityProperty);
+                            }
+                            else
+                            {
+                                jobj[prop.Name] = ParseObj(value, entityType, false, entityProperty);
+                            }
+                        }
+                    }
+                }
+
+                if (isCollectionRoot)
+                {
+                    var collection = jobj["value"] as JArray;
+                    foreach (var entity in collection)
+                    {
+                        ParseObj(entity, entityType, false);
+                    }
                 }
             }
+
+            return jvalue;
         }
 
         public override async Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
@@ -440,7 +473,7 @@ namespace Iql.OData
 
         private static string GetKeyValue(KeyValue key)
         {
-            if (key.ValueType.Kind != IqlType.Guid && 
+            if (key.ValueType.Kind != IqlType.Guid &&
                 key.ValueType.ConvertedFromType != KnownPrimitiveTypes.Guid &&
                 (key.Value is string ||
                 key.ValueType != null &&

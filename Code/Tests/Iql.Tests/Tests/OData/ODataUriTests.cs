@@ -22,14 +22,14 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestIntersectsLiteral()
         {
-            var polygon = new IqlGeographyPolygonExpression(
-                new IqlPointExpression[]
+            var polygon = new IqlPolygonExpression(
+                new IqlRingExpression(new IqlPointExpression[]
                 {
-                    new IqlGeographyPointExpression(1, 2),
-                    new IqlGeographyPointExpression(5, 4),
-                    new IqlGeographyPointExpression(7, 3),
-                    new IqlGeographyPointExpression(1, 2),
-                });
+                    new IqlPointExpression(1, 2),
+                    new IqlPointExpression(5, 4),
+                    new IqlPointExpression(7, 3),
+                    new IqlPointExpression(1, 2),
+                }));
             var query = Db.Sites.Where(site => site.Location.Intersects(polygon)
 #if TypeScript
                     , 
@@ -67,7 +67,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestDistanceLiteral()
         {
-            var point = new IqlGeographyPointExpression(1, 2);
+            var point = new IqlPointExpression(1, 2);
             var query = Db.Sites.Where(site => site.Location.DistanceFrom(point) < 150
 #if TypeScript
                     , 
@@ -106,12 +106,12 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestLengthLiteral()
         {
-            var line = new IqlGeographyLineExpression(
+            var line = new IqlLineExpression(
                 new IqlPointExpression[]
                 {
-                    new IqlGeographyPointExpression(1, 2),
-                    new IqlGeographyPointExpression(5, 4),
-                    new IqlGeographyPointExpression(7, 3),
+                    new IqlPointExpression(1, 2),
+                    new IqlPointExpression(5, 4),
+                    new IqlPointExpression(7, 3),
                 });
             var query = Db.Sites.Where(site => site.Line.Length() < line.Length()
 #if TypeScript
@@ -155,7 +155,7 @@ namespace Iql.Tests.Tests.OData
         //[TestMethod]
         //public async Task TestLength()
         //{
-        //    var point = new IqlGeographyPointExpression(1, 2);
+        //    var point = new IqlPointExpression(1, 2);
         //    var query = Db.Sites.Where(site => site.Location.DistanceFrom(point, IqlDistanceKind.Kilometers) < 150);
         //    var uri = await query.ResolveODataUriAsync();
         //    uri = Uri.UnescapeDataString(uri);

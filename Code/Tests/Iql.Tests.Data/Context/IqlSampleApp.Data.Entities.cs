@@ -1820,8 +1820,8 @@ namespace IqlSampleApp.Data.Entities
                 }
             }
         }
-        protected IqlGeographyPolygonExpression _area;
-        public IqlGeographyPolygonExpression Area
+        protected IqlPolygonExpression _area;
+        public IqlPolygonExpression Area
         {
             get => _area;
             set
@@ -1852,8 +1852,8 @@ namespace IqlSampleApp.Data.Entities
                 }
             }
         }
-        protected IqlGeographyPointExpression _location;
-        public IqlGeographyPointExpression Location
+        protected IqlPointExpression _location;
+        public IqlPointExpression Location
         {
             get => _location;
             set
@@ -1884,8 +1884,8 @@ namespace IqlSampleApp.Data.Entities
                 }
             }
         }
-        protected IqlGeographyLineExpression _line;
-        public IqlGeographyLineExpression Line
+        protected IqlLineExpression _line;
+        public IqlLineExpression Line
         {
             get => _line;
             set

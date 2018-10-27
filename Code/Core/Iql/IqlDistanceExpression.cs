@@ -3,16 +3,18 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlDistanceExpression : IqlBinaryExpression, IGeographicExpression
+    public class IqlDistanceExpression : IqlBinaryExpression, ISrid
     {
         public IqlDistanceExpression(IqlReferenceExpression left, IqlReferenceExpression right) : base(IqlExpressionKind.Distance, left, right)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
+            ReturnType = IqlType.Decimal;
         }
 
         public IqlDistanceExpression() : base(IqlExpressionKind.Distance)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
+            ReturnType = IqlType.Decimal;
         }
 
         public override IqlExpression Clone()
@@ -77,6 +79,6 @@ namespace Iql
             // #ReplaceEnd
         }
 
-        public int Srid { get; set; }
+        public int? Srid { get; set; }
     }
 }
