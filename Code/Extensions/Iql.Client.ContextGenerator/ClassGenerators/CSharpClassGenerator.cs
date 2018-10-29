@@ -91,11 +91,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             var backingName = $"_{name}";
             backingName = backingName.Substring(0, 2).ToLower() + backingName.Substring(2);
 
+            var set = getterSetter?.Set;
             var afterSet = getterSetter?.AfterSet;
             var beforeSet = getterSetter?.BeforeSet;
             var afterGet = getterSetter?.AfterGet;
             var beforeGet = getterSetter?.BeforeGet;
-            var useBackingField = getterSetter != null && new[] { beforeSet, afterSet, beforeGet, afterGet }.Any(s => s != null);
+            var useBackingField = getterSetter != null && new[] { set, beforeSet, afterSet, beforeGet, afterGet }.Any(s => s != null);
             if (useBackingField)
             {
                 getterSetter.BackingFieldName = backingName;
@@ -160,18 +161,31 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         UseTempStringBuilder(sb, () =>
                         {
-                            beforeSet?.Invoke();
+                            if (set != null)
+                            {
+                                set.Invoke();
+                            }
+                            else
+                            {
+                                beforeSet?.Invoke();
+                            }
                         });
                     });
                 });
-                sb.AppendLine(GetIndentPlus(2) + $"{backingName} = {getterSetter.NewValueName};");
+                if (set == null)
+                {
+                    sb.AppendLine(GetIndentPlus(2) + $"{backingName} = {getterSetter.NewValueName};");
+                }
                 Indent(() =>
                 {
                     Indent(() =>
                     {
                         UseTempStringBuilder(sb, () =>
                         {
-                            afterSet?.Invoke();
+                            if (set == null)
+                            {
+                                afterSet?.Invoke();
+                            }
                         });
                     });
                 });
