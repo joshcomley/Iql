@@ -22,6 +22,61 @@ namespace Iql.Tests.Tests
     public class UnitTest1 : TestsBase
     {
         [TestMethod]
+        public async Task TestAbandonComplexTypeChange()
+        {
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 1235,
+                Location = new IqlPointExpression(10, 20)
+            });
+            var site = await Db.Sites.GetWithKeyAsync(1235);
+            var state = Db.DataStore.Tracking.TrackingSetByType(typeof(Site))
+                .FindMatchingEntityState(site);
+
+            for (var i = 0; i < 10; i++)
+            {
+                var changedProperties = state.GetChangedProperties();
+                Assert.AreEqual(0, changedProperties.Length);
+                site.Location.Y = 30;
+                Assert.AreEqual(site.Location.X, 10);
+                Assert.AreEqual(site.Location.Y, 30);
+                changedProperties = state.GetChangedProperties();
+                Assert.AreEqual(1, changedProperties.Length);
+                Db.AbandonChanges();
+                changedProperties = state.GetChangedProperties();
+                Assert.AreEqual(0, changedProperties.Length);
+                Assert.AreEqual(site.Location.X, 10);
+                Assert.AreEqual(site.Location.Y, 20);
+            }
+        }
+
+
+        [TestMethod]
+        public async Task TestSaveComplexTypeChange()
+        {
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 1235,
+                Location = new IqlPointExpression(10, 20)
+            });
+            var site = await Db.Sites.GetWithKeyAsync(1235);
+            var state = Db.DataStore.Tracking.TrackingSetByType(typeof(Site))
+                .FindMatchingEntityState(site);
+
+            for (var i = 0; i < 10; i++)
+            {
+                var changedProperties = state.GetChangedProperties();
+                Assert.AreEqual(0, changedProperties.Length);
+                site.Location.Y++;
+                changedProperties = state.GetChangedProperties();
+                Assert.AreEqual(1, changedProperties.Length);
+                await Db.SaveChangesAsync();
+                changedProperties = state.GetChangedProperties();
+                Assert.AreEqual(0, changedProperties.Length);
+            }
+        }
+
+        [TestMethod]
         public void TestDetectedPropertyChanges()
         {
             var clientTypes = TestsBlock.AddClientTypes();
@@ -33,7 +88,8 @@ namespace Iql.Tests.Tests
                 .FindProperty(nameof(Client.Name));
             var descriptionProperty = entityConfiguration
                 .FindProperty(nameof(Client.Description));
-            Assert.AreEqual(0, state.GetChangedProperties().Length);
+            var changedProperties = state.GetChangedProperties();
+            Assert.AreEqual(0, changedProperties.Length);
 
             // Change name once
             client.Name = "Me";

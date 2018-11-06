@@ -88,6 +88,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             {
                                 changer = $"{nameof(PointPropertyChanger)}";
                             }
+                            else if (property.TypeInfo.EdmType == "Edm.GeographyPolygon")
+                            {
+                                changer = $"{nameof(PolygonPropertyChanger)}";
+                            }
                             else if (property.TypeInfo.EdmType == "Edm.DateTimeOffset")
                             {
                                 changer = $"{nameof(DatePropertyChanger)}";

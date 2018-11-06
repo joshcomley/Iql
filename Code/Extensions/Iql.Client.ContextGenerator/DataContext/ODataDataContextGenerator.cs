@@ -165,7 +165,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(IqlLineExpression),
                 typeof(IqlMultiLineExpression),
                 typeof(PrimitivePropertyChanger),
-                typeof(PointPropertyChanger)
+                typeof(PointPropertyChanger),
+                typeof(PolygonPropertyChanger)
             };
 
             void WriteBaseClasses(StringBuilder builder, List<GeneratedFile> list)

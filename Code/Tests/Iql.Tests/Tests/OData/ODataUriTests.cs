@@ -20,6 +20,27 @@ namespace Iql.Tests.Tests.OData
     public class ODataUriTests : TestsBase
     {
         [TestMethod]
+        public async Task TestIntersectsWithEmptyPointsListShouldBeIgnored()
+        {
+            var polygon = new IqlPolygonExpression(
+                new IqlRingExpression());
+            var query = Db.Sites.Where(site => site.Location.Intersects(polygon)
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites", uri);
+        }
+
+        [TestMethod]
         public async Task TestIntersectsLiteral()
         {
             var polygon = new IqlPolygonExpression(
@@ -78,7 +99,6 @@ namespace Iql.Tests.Tests.OData
                     }
 #endif
                                                );
-            var iql = await query.ToIqlAsync();
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);

@@ -17,6 +17,7 @@ using Iql.Data.Queryable;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.SpecialTypes;
 using Iql.Extensions;

@@ -37,9 +37,19 @@ namespace Iql.Entities.PropertyChangers
             }
         }
 
-        protected virtual bool AreEquivalent<TValue>(TValue newValue, TValue oldValue)
+        public virtual bool AreEquivalent<TValue>(TValue newValue, TValue oldValue)
         {
             return Equals(newValue, oldValue);
         }
+
+        public virtual TValue CloneValue<TValue>(TValue value)
+        {
+            return value;
+        }
+
+        //public virtual void ApplyTo<TValue>(TValue source, TValue applyTo)
+        //{
+
+        //}
     }
 }

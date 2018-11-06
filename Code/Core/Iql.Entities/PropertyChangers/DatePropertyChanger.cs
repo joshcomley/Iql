@@ -9,5 +9,14 @@ namespace Iql.Entities.PropertyChangers
         {
             return oldValue.Ticks == newValue.Ticks;
         }
+
+        protected override DateTimeOffset CloneValueInternal(DateTimeOffset value)
+        {
+            return value;
+        }
+
+        //protected override void ApplyToInternal(DateTimeOffset value, DateTimeOffset applyTo)
+        //{
+        //}
     }
 }

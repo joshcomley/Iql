@@ -42,7 +42,6 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                 case "isite":
                     // D:\Code\Playgrounds\lazyNinjas
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
-                    //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
                     await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Web\", @"D:\Code\i-site\Code\Web\ClientApp\", @"app\generated\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;

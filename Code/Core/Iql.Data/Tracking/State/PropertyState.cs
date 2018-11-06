@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.Extensions;
+using Iql.Entities.PropertyChangers;
 
 namespace Iql.Data.Tracking.State
 {
@@ -9,7 +11,7 @@ namespace Iql.Data.Tracking.State
     public class PropertyState : IPropertyState
     {
         private bool _hasChanged;
-        private object _oldValue;
+        private object _oldObjectClone;
         private bool _originalValueSet;
         private object _newValue;
 
@@ -19,6 +21,19 @@ namespace Iql.Data.Tracking.State
         {
             Property = property;
             EntityState = entityState;
+            if (!(PropertyChanger is PrimitivePropertyChanger))
+            {
+                // Ensure it is loaded
+                EnsureOldValue();
+            }
+        }
+
+        private PropertyChanger _propertyChanger;
+        private object _oldObject;
+
+        private PropertyChanger PropertyChanger
+        {
+            get { return _propertyChanger = _propertyChanger ?? Property.TypeDefinition.ResovleChanger(); }
         }
 
         public bool HasChanged
@@ -35,7 +50,12 @@ namespace Iql.Data.Tracking.State
                     return RelationshipHasChanged();
                 }
 
-                return _hasChanged;
+                if (PropertyChanger is PrimitivePropertyChanger)
+                {
+                    return _hasChanged;
+                }
+
+                return !PropertyChanger.AreEquivalent(OldValue, Property.GetValue(EntityState.Entity));
             }
         }
 
@@ -43,21 +63,28 @@ namespace Iql.Data.Tracking.State
         {
             get
             {
-                if (!_originalValueSet)
-                {
-                    _originalValueSet = true;
-                    if (EntityState != null)
-                    {
-                        _oldValue = Property.GetValue(EntityState.Entity);
-                    }
-                }
-                return _oldValue;
+                EnsureOldValue();
+                return _oldObjectClone;
             }
             set
             {
                 _originalValueSet = true;
-                _oldValue = value;
-                _hasChanged = !Equals(OldValue, NewValue);
+                _oldObjectClone = PropertyChanger.CloneValue(value);
+                _oldObject = value;
+                _hasChanged = !PropertyChanger.AreEquivalent(OldValue, NewValue);
+            }
+        }
+
+        private void EnsureOldValue()
+        {
+            if (!_originalValueSet)
+            {
+                _originalValueSet = true;
+                if (EntityState != null)
+                {
+                    _oldObject = Property.GetValue(EntityState.Entity);
+                    _oldObjectClone = PropertyChanger.CloneValue(_oldObject);
+                }
             }
         }
 
@@ -87,7 +114,7 @@ namespace Iql.Data.Tracking.State
             set
             {
                 _newValue = value;
-                _hasChanged = !Equals(OldValue, NewValue);
+                _hasChanged = !PropertyChanger.AreEquivalent(OldValue, NewValue);
             }
         }
 
@@ -95,8 +122,10 @@ namespace Iql.Data.Tracking.State
         public IProperty Property { get; }
         public void Reset()
         {
-            OldValue = Property.GetValue(EntityState.Entity);
-            NewValue = OldValue;
+            var newValue = Property.GetValue(EntityState.Entity);
+            _originalValueSet = false;
+            EnsureOldValue();
+            NewValue = newValue;
         }
 
         public IPropertyState Copy()
@@ -112,8 +141,9 @@ namespace Iql.Data.Tracking.State
         {
             if (HasChanged)
             {
-                NewValue = OldValue;
-                EntityState.Entity.SetPropertyValue(Property, OldValue);
+                EntityState.Entity.SetPropertyValue(Property, _oldObjectClone);
+                Reset();
+                //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
             //_hasChanged = false;
         }
