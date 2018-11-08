@@ -13,6 +13,11 @@ namespace Iql.OData.IqlToODataExpression
         {
         }
 
+        public string EncodeIfNecessary(string value)
+        {
+            return Nested ? value : Uri.EscapeDataString(value);
+        }
+
         public bool IsValidRootReferenceName(string name)
         {
             return _validRootReferenceVariables.Contains(name);

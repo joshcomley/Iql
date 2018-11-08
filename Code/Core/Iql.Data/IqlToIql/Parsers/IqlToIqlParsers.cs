@@ -37,7 +37,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     return null;
                 }
 
-                if (polygon.OuterRing.Points == null || polygon.OuterRing.Points.Count < 4)
+                if (polygon.OuterRing.Points == null || polygon.OuterRing.Points.Count < 3)
                 {
                     return null;
                 }

@@ -68,6 +68,32 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestNonRingPolygoinBecomesRing()
+        {
+            var polygon = new IqlPolygonExpression(
+                new IqlRingExpression(new IqlPointExpression[]
+                {
+                    new IqlPointExpression(2, 1),
+                    new IqlPointExpression(4, 5),
+                    new IqlPointExpression(3, 7)
+                }));
+            var query = Db.Sites.Where(site => site.Location.Intersects(polygon)
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')", uri);
+        }
+
+        [TestMethod]
         public async Task TestIntersectsReference()
         {
             var query = Db.Sites.Where(site => site.Location.Intersects(site.Area)

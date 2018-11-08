@@ -57,7 +57,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     pointsExpressions.AddRange(polygon.InnerRings);
                 }
                 return
-                    $@"geography'SRID={TryGetSrid(value)};POLYGON({string.Join(",", pointsExpressions.Select(_ => SerializePoints(_, true)))})'";
+                    $@"geography'SRID={TryGetSrid(value)};POLYGON({string.Join(",", pointsExpressions.Select(_ => SerializePoints(_, true, true)))})'";
             }
 
             if (value is IqlLineExpression)
@@ -86,9 +86,19 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             return 0;
         }
 
-        private static string SerializePoints(IPointsExpression line, bool wrapInBrackets = false)
+        private static string SerializePoints(IPointsExpression line, bool isRing = false, bool wrapInBrackets = false)
         {
-            var serializedPoints = string.Join(",", line.Points.Select(_ => $"{RoundForOData(_.X)} {RoundForOData(_.Y)}"));
+            var pointsCopy = line.Points.ToList();
+            if (isRing && pointsCopy.Count > 0)
+            {
+                var first = pointsCopy[0];
+                var last = pointsCopy[pointsCopy.Count - 1];
+                if (pointsCopy.Count == 1 || (first.X != last.X || first.Y != last.Y))
+                {
+                    pointsCopy.Add(new IqlPointExpression(first.X, first.Y));
+                }
+            }
+            var serializedPoints = string.Join(",", pointsCopy.Select(_ => $"{RoundForOData(_.X)} {RoundForOData(_.Y)}"));
             return
                 wrapInBrackets
                 ? $"({serializedPoints})"

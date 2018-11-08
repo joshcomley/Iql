@@ -22,6 +22,29 @@ namespace Iql.Tests.Tests
     public class UnitTest1 : TestsBase
     {
         [TestMethod]
+        public async Task TestCreateReportCategory()
+        {
+            var reportCategory = new ReportCategory();
+            reportCategory.Name = "Abc";
+            Db.ReportCategories.Add(reportCategory);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+        }
+
+        [TestMethod]
+        public async Task TestAbandonNewEntity()
+        {
+            var reportType = new ReportType();
+            Db.ReportTypes.Add(reportType);
+            Db.AbandonChangesForEntity(reportType);
+            var reportCategory = new ReportCategory();
+            reportCategory.Name = "Abc";
+            Db.ReportCategories.Add(reportCategory);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+        }
+
+        [TestMethod]
         public async Task TestAbandonComplexTypeChange()
         {
             AppDbContext.InMemoryDb.Sites.Add(new Site

@@ -16,13 +16,37 @@ namespace Iql.Queryable
         EvaluateContext EvaluateContext { get; }
         Type ItemType { get; }
         List<IQueryOperation> Operations { get; }
-        Task<IEnumerable> ToListAsync();
         IQueryableBase Copy();
         IQueryableBase New();
         IQueryableBase Skip(int skip);
         IQueryableBase Take(int take);
         IQueryableBase Reverse();
         IQueryableBase Then(IQueryOperation operation);
+        Task<IEnumerable> ToListAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            );
+        Task<object> FirstAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<object> LastAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<object> FirstOrDefaultAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<object> LastOrDefaultAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
 
         IQueryableBase Where(LambdaExpression expression
 #if TypeScript

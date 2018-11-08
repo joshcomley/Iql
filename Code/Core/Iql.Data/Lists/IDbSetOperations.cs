@@ -126,8 +126,16 @@ namespace Iql.Data.Lists
         );
 
         Task<SaveChangesResult> SaveChangesAsync(T entity);
-        Task<DbList<T>> ToListAsync();
-        Task<GetDataResult<T>> ToListWithResponseAsync();
+        Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<GetDataResult<T>> ToListWithResponseAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         //UpdateEntityResult<T> Update(T entity);
         Task<T> GetWithKeyAsync(TKey key);
         Task<DbList<T>> GetWithKeysAsync(IEnumerable<TKey> key);
