@@ -385,7 +385,9 @@ namespace Iql.OData
             var responseData = await httpResult.GetResponseTextAsync();
             if (httpResult.Success)
             {
-                operation.Result.RemoteEntity = JsonConvert.DeserializeObject<TEntity>(responseData);
+                var odataResultRoot = JObject.Parse(responseData);
+                ParseObj(odataResultRoot, DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)), false);
+                operation.Result.RemoteEntity = odataResultRoot.ToObject<TEntity>();
             }
             operation.Result.Success = httpResult.Success;
             ParseValidation(operation.Result, operation.Operation.Entity, responseData);

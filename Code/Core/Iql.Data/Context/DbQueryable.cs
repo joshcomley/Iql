@@ -17,6 +17,7 @@ using Iql.Data.Queryable;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.SpecialTypes;
 using Iql.Extensions;
@@ -293,7 +294,7 @@ namespace Iql.Data.Context
             return ResolveSingleOrDefault(result);
         }
 
-        public async Task<T> FirstAsync(Expression<Func<T, bool>> expression = null
+        public override async Task<T> FirstAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -336,7 +337,7 @@ namespace Iql.Data.Context
             return ResolveFirst(result);
         }
 
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
+        public override async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -380,7 +381,7 @@ namespace Iql.Data.Context
         }
 
 
-        public async Task<T> LastAsync(Expression<Func<T, bool>> expression = null
+        public override async Task<T> LastAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -423,7 +424,7 @@ namespace Iql.Data.Context
             return ResolveLast(result);
         }
 
-        public async Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression = null
+        public override async Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -482,21 +483,38 @@ namespace Iql.Data.Context
             return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration).Expression;
         }
 
-        public override async Task<DbList<T>> ToListAsync()
+        public override async Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             var result = await ToListWithResponseAsync();
             return result?.Data;
         }
 
-        public async Task<GetDataResult<T>> ToListWithResponseAsync()
+        public async Task<GetDataResult<T>> ToListWithResponseAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
-            var getDataOperation = new GetDataOperation<T>(this, DataContext);
+            var dbQueryable = this;
+            if (expression != null)
+            {
+                dbQueryable = dbQueryable.Where(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                );
+            }
+            var getDataOperation = new GetDataOperation<T>(dbQueryable, DataContext);
             var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(EntityConfiguration.Type.Name);
             if (specialTypeMap != null && specialTypeMap.EntityConfiguration != EntityConfiguration)
             {
                 var mappedType = specialTypeMap.EntityConfiguration.Type;
                 var dbSet = DataContext.GetDbSetByEntityType(mappedType);
-                return await (Task<GetDataResult<T>>)MappedToListWithResponseAsyncMethod.InvokeGeneric(this,
+                return await (Task<GetDataResult<T>>)MappedToListWithResponseAsyncMethod.InvokeGeneric(dbQueryable,
                     new object[] { dbSet, specialTypeMap, getDataOperation },
                     mappedType);
             }

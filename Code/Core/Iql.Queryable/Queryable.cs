@@ -221,11 +221,92 @@ namespace Iql.Queryable
 
         public Type ItemType { get; }
 
-        public abstract Task<TResult> ToListAsync();
+        public abstract Task<TResult> ToListAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        public abstract Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            );
+        public abstract Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            );
+        public abstract Task<T> FirstAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            );
+        public abstract Task<T> LastAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            );
 
-        async Task<IEnumerable> IQueryableBase.ToListAsync()
+        async Task<IEnumerable> IQueryableBase.ToListAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
         {
-            return await ToListAsync();
+            return await ToListAsync((Expression<Func<T, bool>>) expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+
+        async Task<object> IQueryableBase.FirstOrDefaultAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+        {
+            return await FirstOrDefaultAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+        async Task<object> IQueryableBase.LastOrDefaultAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await LastOrDefaultAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+        async Task<object> IQueryableBase.FirstAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await FirstAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+        async Task<object> IQueryableBase.LastAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await LastAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+                );
         }
         public abstract TQueryable New();
         public bool HasDefaults { get; set; }

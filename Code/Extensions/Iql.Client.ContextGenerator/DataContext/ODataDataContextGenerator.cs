@@ -21,6 +21,7 @@ using Iql.Data.Methods;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Metadata;
+using Iql.Entities.PropertyChangers;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
@@ -162,7 +163,10 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(IqlPolygonExpression),
                 typeof(IqlMultiPolygonExpression),
                 typeof(IqlLineExpression),
-                typeof(IqlMultiLineExpression)
+                typeof(IqlMultiLineExpression),
+                typeof(PrimitivePropertyChanger),
+                typeof(PointPropertyChanger),
+                typeof(PolygonPropertyChanger)
             };
 
             void WriteBaseClasses(StringBuilder builder, List<GeneratedFile> list)

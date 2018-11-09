@@ -15,7 +15,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
             if (!string.IsNullOrWhiteSpace(filter))
             {
-                odataParts.Add($"$filter={filter}");
+                odataParts.Add($"$filter={parser.EncodeIfNecessary(filter)}");
             }
 
             var expands = new List<string>();
@@ -34,7 +34,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
             if (expands.Any())
             {
-                odataParts.Add($"$expand={string.Join(",", expands)}");
+                odataParts.Add($"$expand={parser.EncodeIfNecessary(string.Join(",", expands))}");
             }
 
             var orderBys = new List<string>();
@@ -53,7 +53,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
             if (orderBys.Any())
             {
-                odataParts.Add($"$orderby={string.Join(",", orderBys)}");
+                odataParts.Add($"$orderby={parser.EncodeIfNecessary(string.Join(",", orderBys))}");
             }
 
             if (action.Skip.HasValue && action.Skip > 0)

@@ -4,6 +4,7 @@ using System.Linq;
 using Iql.Data;
 using Iql.Data.Lists;
 using Iql.Entities.Events;
+using Iql.Entities.PropertyChangers;
 using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Extensions;
@@ -80,65 +81,37 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 });
                         }
 
-                        getterSetter.BeforeSet = () =>
+                        getterSetter.Set = () =>
                         {
-                            Let(() => VariableAccessor(changedSetVariable), () => Append("false"));
-                            var backingField = new PropertyDefinition(getterSetter.BackingFieldName);
-                            Let(() => { VariableAccessor(oldValue); },
-                                () => { VariableAccessor(backingField); });
-                            Let(() => { VariableAccessor(changedVariable); },
-                                () => { Append("false"); });
-                            If(
-                                () => VariableAccessor(new PropertyDefinition("_propertyChangingSet")),
-                                () =>
-                                {
-                                    SetIsChanged(backingField);
-                                    AssignProperty(changedSetVariable, () => { Append("true"); });
-                                    If(() => VariableAccessor(changedVariable), () =>
-                                    {
-                                        PropertyAccessor(new EntitySetPropertyDefinition
-                                        {
-                                            Name = nameof(IEntity.PropertyChanging)
-                                        });
-                                        MethodCall(nameof(EventEmitter<object>.Emit), true,
-                                            new EntitySetPropertyDefinition
-                                            {
-                                                Name = "() => " + NewInstanceIdentifier(
-                                                           $"{nameof(PropertyChangeEvent<object>)}<{NameMapper(_entityType.Name)}>",
-                                                           NameOf(property.Name), "this", "oldValue",
-                                                           getterSetter.NewValueName)
-                                            });
-                                        CloseLine();
-                                    });
-                                });
-                        };
-                        getterSetter.AfterSet = () =>
-                        {
-                            var backingField = new PropertyDefinition(getterSetter.BackingFieldName);
-                            If(
-                                () => VariableAccessor(new PropertyDefinition("_propertyChangedSet")),
-                                () =>
-                                {
-                                    If(() => Not(() => VariableAccessor(changedSetVariable)),
-                                        () =>
-                                        {
-                                            SetIsChanged(backingField);
-                                        });
-                                    If(() =>
-                                    {
-                                        VariableAccessor(changedVariable);
-                                    }, () =>
-                                    {
-                                        PropertyAccessor(new EntitySetPropertyDefinition { Name = nameof(IEntity.PropertyChanged) });
-                                        MethodCall(nameof(EventEmitter<object>.Emit), true,
-                                            new EntitySetPropertyDefinition
-                                            {
-                                                Name = "() => " + NewInstanceIdentifier(
-                                                           $"{nameof(PropertyChangeEvent<object>)}<{NameMapper(_entityType.Name)}>", NameOf(property.Name), "this", "oldValue", getterSetter.NewValueName)
-                                            });
-                                        CloseLine();
-                                    });
-                                });
+                            string changer;
+                            if (property.TypeInfo.EdmType == "Edm.GeographyPoint")
+                            {
+                                changer = $"{nameof(PointPropertyChanger)}";
+                            }
+                            else if (property.TypeInfo.EdmType == "Edm.GeographyPolygon")
+                            {
+                                changer = $"{nameof(PolygonPropertyChanger)}";
+                            }
+                            else if (property.TypeInfo.EdmType == "Edm.DateTimeOffset")
+                            {
+                                changer = $"{nameof(DatePropertyChanger)}";
+                            }
+                            else
+                            {
+                                changer = $"{nameof(PrimitivePropertyChanger)}";
+                            }
+
+                            var typeName = TypeResolver.ResolveTypeNameFromODataName(property.TypeInfo).Name;
+                            var changeLine =
+                                $"{changer}.{nameof(PrimitivePropertyChanger.Instance)}.{nameof(PropertyChanger.ChangeProperty)}(" +
+                                $"this, " +
+                                $"{String(property.Name)}, " +
+                                $"{getterSetter.BackingFieldName}, " +
+                                $"value, " +
+                                $"_propertyChanging, " +
+                                $"_propertyChanged, " +
+                                $"newValue => this.{getterSetter.BackingFieldName} = newValue);";
+                            AppendLine(changeLine);
                         };
                         var navigationProperty = property as NavigationPropertyDefinition;
                         if (navigationProperty != null && navigationProperty.EntityType.IsCollection)

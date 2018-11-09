@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Iql.Data.Queryable;
 using Iql.OData.Extensions;
+using Iql.Tests.Data.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
@@ -20,7 +22,8 @@ namespace Iql.Tests.Tests.DataContext
                 );
             var query = collection.BuildQueryFromPropertyGroup<Site>(Db);
             var uri = await query.ResolveODataUriAsync();
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children/$count,CreatedByUser($expand=Client($expand=Type))", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children%2F%24count%2CCreatedByUser(%24expand%3DClient(%24expand%3DType))", uri.NormaliseEncodedUri());
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children/$count,CreatedByUser($expand=Client($expand=Type))", Uri.UnescapeDataString(uri));
         }
     }
 }

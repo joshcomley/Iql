@@ -6,6 +6,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
     {
         public string NewValueName { get; set; }
         public string BackingFieldName { get; set; }
+        public Action Set { get; set; }
         public Action BeforeSet { get; set; }
         public Action AfterSet { get; set; }
         public Action BeforeGet { get; set; }

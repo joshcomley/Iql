@@ -1,9 +1,30 @@
 ﻿using System;
+using Iql.Extensions;
 
 namespace Iql.Entities.Extensions
 {
     public static class TypeDefinitionExtensions
     {
+        public static IqlType ToIqlType(this ITypeDefinition type)
+        {
+            if (type == null)
+            {
+                return IqlType.Unknown;
+            }
+
+            if (type.ConvertedFromType == KnownPrimitiveTypes.Guid)
+            {
+                return IqlType.Guid;
+            }
+
+            if (type.Kind != IqlType.Unknown)
+            {
+                return type.Kind;
+            }
+
+            return type.Type.ToIqlType();
+        }
+
         public static ITypeDefinition ChangeKind(this ITypeDefinition typeDefinition, IqlType kind)
         {
             return new TypeDetail(

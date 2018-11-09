@@ -3,6 +3,7 @@ using Iql.Data.Extensions;
 using Iql.Data.Lists;
 using Iql.Data.Queryable;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.NestedSets;
 
 namespace Iql.Data.NestedSets

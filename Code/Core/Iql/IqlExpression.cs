@@ -270,6 +270,8 @@ namespace Iql
                     return typeof(IqlPolygonExpression);
                 case IqlExpressionKind.GeoMultiPolygon:
                     return typeof(IqlMultiPolygonExpression);
+                case IqlExpressionKind.GeoRing:
+                    return typeof(IqlRingExpression);
                 case IqlExpressionKind.Intersects:
                     return typeof(IqlIntersectsExpression);
                 case IqlExpressionKind.Length:

@@ -195,23 +195,32 @@ namespace Iql.OData.Json
         {
             var outerRing = polygon.OuterRing;
             var all = new List<double[][]>();
-            all.Add(SerializePoints(outerRing));
+            all.Add(SerializePoints(outerRing, true));
             if (polygon.InnerRings != null)
             {
-                all.AddRange(polygon.InnerRings.Select(_ => SerializePoints(_)));
+                all.AddRange(polygon.InnerRings.Select(_ => SerializePoints(_, true)));
             }
 
             var result = all.ToArray();
             return result;
         }
 
-        private static double[][] SerializePoints(IPointsExpression line)
+        private static double[][] SerializePoints(IPointsExpression line, bool isRing = false)
         {
             var points = line.Points.Select(point => new double[]
             {
                 point.X,
                 point.Y
-            });
+            }).ToList();
+            if (isRing && points.Count > 0)
+            {
+                var first = points[0];
+                var last = points[points.Count - 1];
+                if (points.Count == 1 || (first[0] != last[0] || first[1] != last[1]))
+                {
+                    points.Add(new double[] {first[0], first[1]});
+                }
+            }
             return points.ToArray();
         }
 

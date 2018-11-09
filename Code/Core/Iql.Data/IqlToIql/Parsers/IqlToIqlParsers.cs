@@ -3,10 +3,49 @@ using System.Linq;
 using Iql.Data.Extensions;
 using Iql.Data.Queryable;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.SpecialTypes;
 
 namespace Iql.Data.IqlToIql.Parsers
 {
+
+    public class IqlToIqlIntersectsParser : IqlToIqlActionParserBase<IqlIntersectsExpression>
+    {
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlIntersectsExpression action, IqlToIqlParserInstance parser)
+        {
+            if (action.Polygon == null)
+            {
+                return null;
+            }
+
+            if (action.Polygon.Kind == IqlExpressionKind.Literal)
+            {
+                var literal = action.Polygon as IqlLiteralExpression;
+                if (literal == null)
+                {
+                    return null;
+                }
+
+                var polygon = literal.Value as IqlPolygonExpression;
+                if (polygon == null)
+                {
+                    return null;
+                }
+
+                if (polygon.OuterRing == null)
+                {
+                    return null;
+                }
+
+                if (polygon.OuterRing.Points == null || polygon.OuterRing.Points.Count < 3)
+                {
+                    return null;
+                }
+            }
+            return action;
+        }
+    }
+
     public class IqlToIqlLambdaParser : IqlToIqlActionParserBase<IqlLambdaExpression>
     {
         public override IqlExpression ToQueryStringTyped<TEntity>(IqlLambdaExpression action, IqlToIqlParserInstance parser)
