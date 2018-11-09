@@ -836,5 +836,26 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello2')&$orderby=$it/Name",
                 uri);
         }
+
+
+        [TestMethod]
+        public async Task TestOrderByDistance()
+        {
+            var point = new IqlPointExpression(2, 1);
+            var query = Db.Sites.OrderBy(site => site.Location.DistanceFrom(point) < 150
+#if TypeScript
+                    , 
+                    new EvaluateContext
+                    {
+                        Context = this,
+                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                    }
+#endif
+            );
+            var iql = await query.ToIqlAsync();
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$orderby=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
+        }
     }
 }
