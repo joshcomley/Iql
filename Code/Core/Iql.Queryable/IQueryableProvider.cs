@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Iql.Entities;
 using Iql.Parsing.Expressions.QueryExpressions;
 #if TypeScript
 using Iql.Parsing;
@@ -26,11 +27,13 @@ namespace Iql.Queryable
 
         //TQueryable OrderByOperation<TProperty>(OrderByOperation operation, EvaluateContext evaluateContext = null);
 
+        TQueryable ApplyRelationshipFilters(IProperty relatedProperty, T entity);
+
         TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
-            );
+        );
 
         TQueryable OrderByQuery(PropertyQueryExpression expression
 #if TypeScript

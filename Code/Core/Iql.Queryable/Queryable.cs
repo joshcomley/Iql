@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Entities;
+using Iql.Entities.Rules.Relationship;
 using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Parsing.Expressions.QueryExpressions;
@@ -53,6 +55,34 @@ namespace Iql.Queryable
             , evaluateContext
 #endif
                 );
+        }
+
+        public TQueryable ApplyRelationshipFilters(IProperty relatedProperty, T entity)
+        {
+#if TypeScript
+            var ctx = new RelationshipFilterContext<T>();
+            ctx.Owner = (T)entity;
+            var context = new EvaluateContext(e => ctx);
+#endif
+            var query = this;
+            var relationshipRules = relatedProperty.RelationshipFilterRules.All.ToList();
+            for (var i = 0; i < relationshipRules.Count; i++)
+            {
+                var filterRule = relationshipRules[i];
+                var filterFunction = filterRule.Run(entity);
+                query = query.Where((Expression<Func<T, bool>>)filterFunction
+#if TypeScript
+                    , context
+#endif
+                );
+            }
+
+            return (TQueryable) query;
+        }
+
+        IQueryableBase IQueryableBase.ApplyRelationshipFilters(IProperty relatedProperty, object entity)
+        {
+            return ApplyRelationshipFilters(relatedProperty, (T) entity);
         }
 
         IQueryableBase IQueryableBase.Where(LambdaExpression expression

@@ -2,10 +2,11 @@ using Iql.Data;
 using IqlSampleApp.Sets;
 using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
-using Iql.Entities.Events;
+using Iql.Entities.PropertyChangers;
 using Iql.Data.Lists;
 using Iql;
 using System;
+using Iql.Entities.Events;
 using Iql.Data.Events;
 namespace IqlSampleApp.Data.Entities
 {
@@ -93,6 +94,50 @@ namespace IqlSampleApp.Data.Entities
             get;
             set;
         } = "SiteInspection";
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
+    public class SiteAreaBase: IEntity
+    {
+        protected Boolean _propertyChangingSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanging
+        {
+            get => _propertyChanging;
+            set
+            {
+                _propertyChanging = value;
+                this._propertyChangingSet = value != null;
+            }
+        }
+        protected Boolean _propertyChangedSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanged
+        {
+            get => _propertyChanged;
+            set
+            {
+                _propertyChanged = value;
+                this._propertyChangedSet = value != null;
+            }
+        }
+        protected Boolean _existsChangedSet;
+        protected EventEmitter<ExistsChangeEvent>_existsChanged;
+        public EventEmitter<ExistsChangeEvent>ExistsChanged
+        {
+            get => _existsChanged;
+            set
+            {
+                _existsChanged = value;
+                this._existsChangedSet = value != null;
+            }
+        }
+        public static String ClassName
+        {
+            get;
+            set;
+        } = "SiteArea";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -1218,30 +1263,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
-                _siteId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteId", _siteId, value, _propertyChanging, _propertyChanged, newValue => this._siteId = newValue);
             }
         }
         protected string _userId;
@@ -1250,30 +1272,7 @@ namespace IqlSampleApp.Data.Entities
             get => _userId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._userId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
-                    }
-                }
-                _userId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(UserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "UserId", _userId, value, _propertyChanging, _propertyChanged, newValue => this._userId = newValue);
             }
         }
         protected ApplicationUser _user;
@@ -1282,30 +1281,7 @@ namespace IqlSampleApp.Data.Entities
             get => _user;
             set
             {
-                var changedSet = false;
-                var oldValue = this._user;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
-                    }
-                }
-                _user = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(User), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "User", _user, value, _propertyChanging, _propertyChanged, newValue => this._user = newValue);
             }
         }
         protected Site _site;
@@ -1314,30 +1290,7 @@ namespace IqlSampleApp.Data.Entities
             get => _site;
             set
             {
-                var changedSet = false;
-                var oldValue = this._site;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
-                    }
-                }
-                _site = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<UserSite>(nameof(Site), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
             }
         }
     }
@@ -1353,30 +1306,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected int _siteId;
@@ -1385,30 +1315,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
-                _siteId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteId", _siteId, value, _propertyChanging, _propertyChanged, newValue => this._siteId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -1417,30 +1324,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected DateTimeOffset _startTime;
@@ -1449,30 +1333,7 @@ namespace IqlSampleApp.Data.Entities
             get => _startTime;
             set
             {
-                var changedSet = false;
-                var oldValue = this._startTime;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
-                    }
-                }
-                _startTime = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(StartTime), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "StartTime", _startTime, value, _propertyChanging, _propertyChanged, newValue => this._startTime = newValue);
             }
         }
         protected DateTimeOffset _endTime;
@@ -1481,30 +1342,7 @@ namespace IqlSampleApp.Data.Entities
             get => _endTime;
             set
             {
-                var changedSet = false;
-                var oldValue = this._endTime;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
-                    }
-                }
-                _endTime = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(EndTime), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "EndTime", _endTime, value, _propertyChanging, _propertyChanged, newValue => this._endTime = newValue);
             }
         }
         protected Guid _guid;
@@ -1513,30 +1351,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -1545,30 +1360,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -1577,30 +1369,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -1609,30 +1378,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 RiskAssessmentsCount
@@ -1650,30 +1396,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessments;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessments), this, oldValue, value));
-                    }
-                }
-                _riskAssessments = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(RiskAssessments), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessments", _riskAssessments, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessments = newValue);
             }
         }
         public Int64 PersonInspectionsCount
@@ -1691,30 +1414,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._personInspections;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
-                    }
-                }
-                _personInspections = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(PersonInspections), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonInspections", _personInspections, value, _propertyChanging, _propertyChanged, newValue => this._personInspections = newValue);
             }
         }
         protected Site _site;
@@ -1723,30 +1423,7 @@ namespace IqlSampleApp.Data.Entities
             get => _site;
             set
             {
-                var changedSet = false;
-                var oldValue = this._site;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
-                    }
-                }
-                _site = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(Site), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -1755,30 +1432,113 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteInspection>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
+            }
+        }
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
+    public class SiteArea: SiteAreaBase,
+    IEntity
+    {
+        protected int _id;
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
+            }
+        }
+        protected int _siteId;
+        public int SiteId
+        {
+            get => _siteId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteId", _siteId, value, _propertyChanging, _propertyChanged, newValue => this._siteId = newValue);
+            }
+        }
+        protected string _createdByUserId;
+        public string CreatedByUserId
+        {
+            get => _createdByUserId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
+            }
+        }
+        protected Guid _guid;
+        public Guid Guid
+        {
+            get => _guid;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
+            }
+        }
+        protected DateTimeOffset _createdDate;
+        public DateTimeOffset CreatedDate
+        {
+            get => _createdDate;
+            set
+            {
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
+            }
+        }
+        protected string _revisionKey;
+        public string RevisionKey
+        {
+            get => _revisionKey;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
+            }
+        }
+        protected Guid _persistenceKey;
+        public Guid PersistenceKey
+        {
+            get => _persistenceKey;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
+            }
+        }
+        public Int64 PeopleCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<SiteArea, Person>_people;
+        public RelatedList<SiteArea, Person>People
+        {
+            get
+            {
+                this._people = this._people ?? new RelatedList<SiteArea, Person>(this, nameof(People));
+                return _people;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "People", _people, value, _propertyChanging, _propertyChanged, newValue => this._people = newValue);
+            }
+        }
+        protected Site _site;
+        public Site Site
+        {
+            get => _site;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
+            }
+        }
+        protected ApplicationUser _createdByUser;
+        public ApplicationUser CreatedByUser
+        {
+            get => _createdByUser;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -1794,62 +1554,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Id), this, oldValue, value));
-                    }
-                }
-            }
-        }
-        protected IqlPolygonExpression _area;
-        public IqlPolygonExpression Area
-        {
-            get => _area;
-            set
-            {
-                var changedSet = false;
-                var oldValue = this._area;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Area), this, oldValue, value));
-                    }
-                }
-                _area = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Area), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected IqlPointExpression _location;
@@ -1858,30 +1563,16 @@ namespace IqlSampleApp.Data.Entities
             get => _location;
             set
             {
-                var changedSet = false;
-                var oldValue = this._location;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Location), this, oldValue, value));
-                    }
-                }
-                _location = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Location), this, oldValue, value));
-                    }
-                }
+                PointPropertyChanger.Instance.ChangeProperty(this, "Location", _location, value, _propertyChanging, _propertyChanged, newValue => this._location = newValue);
+            }
+        }
+        protected IqlPolygonExpression _area;
+        public IqlPolygonExpression Area
+        {
+            get => _area;
+            set
+            {
+                PolygonPropertyChanger.Instance.ChangeProperty(this, "Area", _area, value, _propertyChanging, _propertyChanged, newValue => this._area = newValue);
             }
         }
         protected IqlLineExpression _line;
@@ -1890,30 +1581,7 @@ namespace IqlSampleApp.Data.Entities
             get => _line;
             set
             {
-                var changedSet = false;
-                var oldValue = this._line;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Line), this, oldValue, value));
-                    }
-                }
-                _line = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Line), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Line", _line, value, _propertyChanging, _propertyChanged, newValue => this._line = newValue);
             }
         }
         protected int ? _parentId;
@@ -1922,30 +1590,7 @@ namespace IqlSampleApp.Data.Entities
             get => _parentId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._parentId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
-                    }
-                }
-                _parentId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(ParentId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ParentId", _parentId, value, _propertyChanging, _propertyChanged, newValue => this._parentId = newValue);
             }
         }
         protected int ? _clientId;
@@ -1954,30 +1599,7 @@ namespace IqlSampleApp.Data.Entities
             get => _clientId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._clientId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
-                _clientId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ClientId", _clientId, value, _propertyChanging, _propertyChanged, newValue => this._clientId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -1986,30 +1608,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _address;
@@ -2018,30 +1617,7 @@ namespace IqlSampleApp.Data.Entities
             get => _address;
             set
             {
-                var changedSet = false;
-                var oldValue = this._address;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
-                    }
-                }
-                _address = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Address), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Address", _address, value, _propertyChanging, _propertyChanged, newValue => this._address = newValue);
             }
         }
         protected string _postCode;
@@ -2050,30 +1626,7 @@ namespace IqlSampleApp.Data.Entities
             get => _postCode;
             set
             {
-                var changedSet = false;
-                var oldValue = this._postCode;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
-                    }
-                }
-                _postCode = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(PostCode), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PostCode", _postCode, value, _propertyChanging, _propertyChanged, newValue => this._postCode = newValue);
             }
         }
         protected string _name;
@@ -2082,30 +1635,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected int _left;
@@ -2114,30 +1644,7 @@ namespace IqlSampleApp.Data.Entities
             get => _left;
             set
             {
-                var changedSet = false;
-                var oldValue = this._left;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
-                    }
-                }
-                _left = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Left), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Left", _left, value, _propertyChanging, _propertyChanged, newValue => this._left = newValue);
             }
         }
         protected int _right;
@@ -2146,30 +1653,7 @@ namespace IqlSampleApp.Data.Entities
             get => _right;
             set
             {
-                var changedSet = false;
-                var oldValue = this._right;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
-                    }
-                }
-                _right = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Right), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Right", _right, value, _propertyChanging, _propertyChanged, newValue => this._right = newValue);
             }
         }
         protected Guid _guid;
@@ -2178,30 +1662,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -2210,30 +1671,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -2242,30 +1680,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -2274,30 +1689,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 DocumentsCount
@@ -2315,30 +1707,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._documents;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
-                    }
-                }
-                _documents = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Documents), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Documents", _documents, value, _propertyChanging, _propertyChanged, newValue => this._documents = newValue);
             }
         }
         public Int64 AdditionalSendReportsToCount
@@ -2356,30 +1725,25 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._additionalSendReportsTo;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
-                    }
-                }
-                _additionalSendReportsTo = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(AdditionalSendReportsTo), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "AdditionalSendReportsTo", _additionalSendReportsTo, value, _propertyChanging, _propertyChanged, newValue => this._additionalSendReportsTo = newValue);
+            }
+        }
+        public Int64 PeopleCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<Site, Person>_people;
+        public RelatedList<Site, Person>People
+        {
+            get
+            {
+                this._people = this._people ?? new RelatedList<Site, Person>(this, nameof(People));
+                return _people;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "People", _people, value, _propertyChanging, _propertyChanged, newValue => this._people = newValue);
             }
         }
         protected Site _parent;
@@ -2388,30 +1752,7 @@ namespace IqlSampleApp.Data.Entities
             get => _parent;
             set
             {
-                var changedSet = false;
-                var oldValue = this._parent;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
-                    }
-                }
-                _parent = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Parent), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Parent", _parent, value, _propertyChanging, _propertyChanged, newValue => this._parent = newValue);
             }
         }
         public Int64 ChildrenCount
@@ -2429,30 +1770,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._children;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
-                    }
-                }
-                _children = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Children), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Children", _children, value, _propertyChanging, _propertyChanged, newValue => this._children = newValue);
             }
         }
         protected Client _client;
@@ -2461,30 +1779,7 @@ namespace IqlSampleApp.Data.Entities
             get => _client;
             set
             {
-                var changedSet = false;
-                var oldValue = this._client;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
-                    }
-                }
-                _client = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Client), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Client", _client, value, _propertyChanging, _propertyChanged, newValue => this._client = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -2493,30 +1788,25 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
+            }
+        }
+        public Int64 AreasCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<Site, SiteArea>_areas;
+        public RelatedList<Site, SiteArea>Areas
+        {
+            get
+            {
+                this._areas = this._areas ?? new RelatedList<Site, SiteArea>(this, nameof(Areas));
+                return _areas;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Areas", _areas, value, _propertyChanging, _propertyChanged, newValue => this._areas = newValue);
             }
         }
         public Int64 SiteInspectionsCount
@@ -2534,30 +1824,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteInspections;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
-                    }
-                }
-                _siteInspections = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(SiteInspections), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspections", _siteInspections, value, _propertyChanging, _propertyChanged, newValue => this._siteInspections = newValue);
             }
         }
         public Int64 UsersCount
@@ -2575,30 +1842,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._users;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
-                    }
-                }
-                _users = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Site>(nameof(Users), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Users", _users, value, _propertyChanging, _propertyChanged, newValue => this._users = newValue);
             }
         }
     }
@@ -2614,30 +1858,7 @@ namespace IqlSampleApp.Data.Entities
             get => _personId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._personId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
-                    }
-                }
-                _personId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersonId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonId", _personId, value, _propertyChanging, _propertyChanged, newValue => this._personId = newValue);
             }
         }
         protected int _typeId;
@@ -2646,30 +1867,7 @@ namespace IqlSampleApp.Data.Entities
             get => _typeId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._typeId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
-                _typeId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TypeId", _typeId, value, _propertyChanging, _propertyChanged, newValue => this._typeId = newValue);
             }
         }
         protected int _id;
@@ -2678,30 +1876,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -2710,30 +1885,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _title;
@@ -2742,30 +1894,7 @@ namespace IqlSampleApp.Data.Entities
             get => _title;
             set
             {
-                var changedSet = false;
-                var oldValue = this._title;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
-                    }
-                }
-                _title = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Title), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Title", _title, value, _propertyChanging, _propertyChanged, newValue => this._title = newValue);
             }
         }
         protected FaultReportStatus _status;
@@ -2774,30 +1903,7 @@ namespace IqlSampleApp.Data.Entities
             get => _status;
             set
             {
-                var changedSet = false;
-                var oldValue = this._status;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
-                    }
-                }
-                _status = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Status), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Status", _status, value, _propertyChanging, _propertyChanged, newValue => this._status = newValue);
             }
         }
         protected Guid _guid;
@@ -2806,30 +1912,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -2838,30 +1921,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -2870,30 +1930,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -2902,30 +1939,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 ActionsTakenCount
@@ -2943,30 +1957,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._actionsTaken;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
-                    }
-                }
-                _actionsTaken = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(ActionsTaken), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ActionsTaken", _actionsTaken, value, _propertyChanging, _propertyChanged, newValue => this._actionsTaken = newValue);
             }
         }
         public Int64 RecommendationsCount
@@ -2984,30 +1975,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._recommendations;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
-                    }
-                }
-                _recommendations = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Recommendations), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Recommendations", _recommendations, value, _propertyChanging, _propertyChanged, newValue => this._recommendations = newValue);
             }
         }
         protected Person _person;
@@ -3016,30 +1984,7 @@ namespace IqlSampleApp.Data.Entities
             get => _person;
             set
             {
-                var changedSet = false;
-                var oldValue = this._person;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
-                    }
-                }
-                _person = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Person), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Person", _person, value, _propertyChanging, _propertyChanged, newValue => this._person = newValue);
             }
         }
         protected ReportType _type;
@@ -3048,30 +1993,7 @@ namespace IqlSampleApp.Data.Entities
             get => _type;
             set
             {
-                var changedSet = false;
-                var oldValue = this._type;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
-                    }
-                }
-                _type = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(Type), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Type", _type, value, _propertyChanging, _propertyChanged, newValue => this._type = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -3080,30 +2002,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonReport>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -3119,30 +2018,7 @@ namespace IqlSampleApp.Data.Entities
             get => _personId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._personId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
-                    }
-                }
-                _personId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(PersonId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonId", _personId, value, _propertyChanging, _propertyChanged, newValue => this._personId = newValue);
             }
         }
         protected int _typeId;
@@ -3151,30 +2027,7 @@ namespace IqlSampleApp.Data.Entities
             get => _typeId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._typeId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
-                _typeId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TypeId", _typeId, value, _propertyChanging, _propertyChanged, newValue => this._typeId = newValue);
             }
         }
         protected string _notes;
@@ -3183,30 +2036,7 @@ namespace IqlSampleApp.Data.Entities
             get => _notes;
             set
             {
-                var changedSet = false;
-                var oldValue = this._notes;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
-                    }
-                }
-                _notes = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Notes), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Notes", _notes, value, _propertyChanging, _propertyChanged, newValue => this._notes = newValue);
             }
         }
         protected string _description;
@@ -3215,30 +2045,7 @@ namespace IqlSampleApp.Data.Entities
             get => _description;
             set
             {
-                var changedSet = false;
-                var oldValue = this._description;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
-                    }
-                }
-                _description = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Description), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Description", _description, value, _propertyChanging, _propertyChanged, newValue => this._description = newValue);
             }
         }
         protected Guid _guid;
@@ -3247,30 +2054,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -3279,30 +2063,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected Person _person;
@@ -3311,30 +2072,7 @@ namespace IqlSampleApp.Data.Entities
             get => _person;
             set
             {
-                var changedSet = false;
-                var oldValue = this._person;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
-                    }
-                }
-                _person = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Person), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Person", _person, value, _propertyChanging, _propertyChanged, newValue => this._person = newValue);
             }
         }
         protected PersonType _type;
@@ -3343,30 +2081,7 @@ namespace IqlSampleApp.Data.Entities
             get => _type;
             set
             {
-                var changedSet = false;
-                var oldValue = this._type;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
-                    }
-                }
-                _type = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonTypeMap>(nameof(Type), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Type", _type, value, _propertyChanging, _propertyChanged, newValue => this._type = newValue);
             }
         }
     }
@@ -3382,30 +2097,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -3414,30 +2106,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _title;
@@ -3446,30 +2115,7 @@ namespace IqlSampleApp.Data.Entities
             get => _title;
             set
             {
-                var changedSet = false;
-                var oldValue = this._title;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
-                    }
-                }
-                _title = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Title), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Title", _title, value, _propertyChanging, _propertyChanged, newValue => this._title = newValue);
             }
         }
         protected Guid _guid;
@@ -3478,30 +2124,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -3510,30 +2133,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -3542,30 +2142,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -3574,30 +2151,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 PeopleCount
@@ -3615,30 +2169,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._people;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
-                    }
-                }
-                _people = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(People), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "People", _people, value, _propertyChanging, _propertyChanged, newValue => this._people = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -3647,30 +2178,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 PeopleMapCount
@@ -3688,30 +2196,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._peopleMap;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
-                    }
-                }
-                _peopleMap = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonType>(nameof(PeopleMap), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PeopleMap", _peopleMap, value, _propertyChanging, _propertyChanged, newValue => this._peopleMap = newValue);
             }
         }
     }
@@ -3727,30 +2212,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -3759,30 +2221,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _name;
@@ -3791,30 +2230,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected Guid _guid;
@@ -3823,30 +2239,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -3855,30 +2248,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -3887,30 +2257,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -3919,30 +2266,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 PeopleCount
@@ -3960,30 +2284,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._people;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
-                    }
-                }
-                _people = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(People), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "People", _people, value, _propertyChanging, _propertyChanged, newValue => this._people = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -3992,30 +2293,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonLoading>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -4031,30 +2309,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteInspectionId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteInspectionId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
-                    }
-                }
-                _siteInspectionId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspectionId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspectionId", _siteInspectionId, value, _propertyChanging, _propertyChanged, newValue => this._siteInspectionId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -4063,30 +2318,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected int _personId;
@@ -4095,30 +2327,7 @@ namespace IqlSampleApp.Data.Entities
             get => _personId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._personId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
-                    }
-                }
-                _personId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersonId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonId", _personId, value, _propertyChanging, _propertyChanged, newValue => this._personId = newValue);
             }
         }
         protected PersonInspectionStatus _inspectionStatus;
@@ -4127,30 +2336,7 @@ namespace IqlSampleApp.Data.Entities
             get => _inspectionStatus;
             set
             {
-                var changedSet = false;
-                var oldValue = this._inspectionStatus;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
-                    }
-                }
-                _inspectionStatus = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(InspectionStatus), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InspectionStatus", _inspectionStatus, value, _propertyChanging, _propertyChanged, newValue => this._inspectionStatus = newValue);
             }
         }
         protected DateTimeOffset _startTime;
@@ -4159,30 +2345,7 @@ namespace IqlSampleApp.Data.Entities
             get => _startTime;
             set
             {
-                var changedSet = false;
-                var oldValue = this._startTime;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
-                    }
-                }
-                _startTime = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(StartTime), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "StartTime", _startTime, value, _propertyChanging, _propertyChanged, newValue => this._startTime = newValue);
             }
         }
         protected DateTimeOffset _endTime;
@@ -4191,30 +2354,7 @@ namespace IqlSampleApp.Data.Entities
             get => _endTime;
             set
             {
-                var changedSet = false;
-                var oldValue = this._endTime;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
-                    }
-                }
-                _endTime = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(EndTime), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "EndTime", _endTime, value, _propertyChanging, _propertyChanged, newValue => this._endTime = newValue);
             }
         }
         protected InspectionFailReason _reasonForFailure;
@@ -4223,30 +2363,7 @@ namespace IqlSampleApp.Data.Entities
             get => _reasonForFailure;
             set
             {
-                var changedSet = false;
-                var oldValue = this._reasonForFailure;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
-                    }
-                }
-                _reasonForFailure = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(ReasonForFailure), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ReasonForFailure", _reasonForFailure, value, _propertyChanging, _propertyChanged, newValue => this._reasonForFailure = newValue);
             }
         }
         protected bool _isDesignRequired;
@@ -4255,30 +2372,7 @@ namespace IqlSampleApp.Data.Entities
             get => _isDesignRequired;
             set
             {
-                var changedSet = false;
-                var oldValue = this._isDesignRequired;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
-                    }
-                }
-                _isDesignRequired = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(IsDesignRequired), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "IsDesignRequired", _isDesignRequired, value, _propertyChanging, _propertyChanged, newValue => this._isDesignRequired = newValue);
             }
         }
         protected string _drawingNumber;
@@ -4287,30 +2381,7 @@ namespace IqlSampleApp.Data.Entities
             get => _drawingNumber;
             set
             {
-                var changedSet = false;
-                var oldValue = this._drawingNumber;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
-                    }
-                }
-                _drawingNumber = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(DrawingNumber), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "DrawingNumber", _drawingNumber, value, _propertyChanging, _propertyChanged, newValue => this._drawingNumber = newValue);
             }
         }
         protected Guid _guid;
@@ -4319,30 +2390,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -4351,30 +2399,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -4383,30 +2408,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -4415,30 +2417,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -4447,30 +2426,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected SiteInspection _siteInspection;
@@ -4479,30 +2435,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteInspection;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteInspection;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
-                    }
-                }
-                _siteInspection = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(SiteInspection), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspection", _siteInspection, value, _propertyChanging, _propertyChanged, newValue => this._siteInspection = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -4511,30 +2444,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<PersonInspection>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -4550,30 +2460,25 @@ namespace IqlSampleApp.Data.Entities
             get => _clientId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._clientId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
-                _clientId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ClientId", _clientId, value, _propertyChanging, _propertyChanged, newValue => this._clientId = newValue);
+            }
+        }
+        protected int ? _siteId;
+        public int ? SiteId
+        {
+            get => _siteId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteId", _siteId, value, _propertyChanging, _propertyChanged, newValue => this._siteId = newValue);
+            }
+        }
+        protected int ? _siteAreaId;
+        public int ? SiteAreaId
+        {
+            get => _siteAreaId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteAreaId", _siteAreaId, value, _propertyChanging, _propertyChanged, newValue => this._siteAreaId = newValue);
             }
         }
         protected int ? _typeId;
@@ -4582,30 +2487,7 @@ namespace IqlSampleApp.Data.Entities
             get => _typeId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._typeId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
-                _typeId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TypeId", _typeId, value, _propertyChanging, _propertyChanged, newValue => this._typeId = newValue);
             }
         }
         protected int ? _loadingId;
@@ -4614,30 +2496,7 @@ namespace IqlSampleApp.Data.Entities
             get => _loadingId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._loadingId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
-                    }
-                }
-                _loadingId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(LoadingId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "LoadingId", _loadingId, value, _propertyChanging, _propertyChanged, newValue => this._loadingId = newValue);
             }
         }
         protected int _id;
@@ -4646,30 +2505,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -4678,30 +2514,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _key;
@@ -4710,30 +2523,7 @@ namespace IqlSampleApp.Data.Entities
             get => _key;
             set
             {
-                var changedSet = false;
-                var oldValue = this._key;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
-                    }
-                }
-                _key = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Key), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key", _key, value, _propertyChanging, _propertyChanged, newValue => this._key = newValue);
             }
         }
         protected string _title;
@@ -4742,30 +2532,7 @@ namespace IqlSampleApp.Data.Entities
             get => _title;
             set
             {
-                var changedSet = false;
-                var oldValue = this._title;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
-                    }
-                }
-                _title = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Title), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Title", _title, value, _propertyChanging, _propertyChanged, newValue => this._title = newValue);
             }
         }
         protected string _description;
@@ -4774,30 +2541,7 @@ namespace IqlSampleApp.Data.Entities
             get => _description;
             set
             {
-                var changedSet = false;
-                var oldValue = this._description;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
-                    }
-                }
-                _description = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Description), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Description", _description, value, _propertyChanging, _propertyChanged, newValue => this._description = newValue);
             }
         }
         protected PersonCategory _category;
@@ -4806,30 +2550,7 @@ namespace IqlSampleApp.Data.Entities
             get => _category;
             set
             {
-                var changedSet = false;
-                var oldValue = this._category;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
-                    }
-                }
-                _category = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Category), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Category", _category, value, _propertyChanging, _propertyChanged, newValue => this._category = newValue);
             }
         }
         protected Guid _guid;
@@ -4838,30 +2559,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -4870,30 +2568,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -4902,30 +2577,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -4934,30 +2586,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected Client _client;
@@ -4966,30 +2595,25 @@ namespace IqlSampleApp.Data.Entities
             get => _client;
             set
             {
-                var changedSet = false;
-                var oldValue = this._client;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
-                    }
-                }
-                _client = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Client), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Client", _client, value, _propertyChanging, _propertyChanged, newValue => this._client = newValue);
+            }
+        }
+        protected Site _site;
+        public Site Site
+        {
+            get => _site;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
+            }
+        }
+        protected SiteArea _siteArea;
+        public SiteArea SiteArea
+        {
+            get => _siteArea;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteArea", _siteArea, value, _propertyChanging, _propertyChanged, newValue => this._siteArea = newValue);
             }
         }
         protected PersonType _type;
@@ -4998,30 +2622,7 @@ namespace IqlSampleApp.Data.Entities
             get => _type;
             set
             {
-                var changedSet = false;
-                var oldValue = this._type;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
-                    }
-                }
-                _type = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Type), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Type", _type, value, _propertyChanging, _propertyChanged, newValue => this._type = newValue);
             }
         }
         protected PersonLoading _loading;
@@ -5030,30 +2631,7 @@ namespace IqlSampleApp.Data.Entities
             get => _loading;
             set
             {
-                var changedSet = false;
-                var oldValue = this._loading;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
-                    }
-                }
-                _loading = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Loading), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Loading", _loading, value, _propertyChanging, _propertyChanged, newValue => this._loading = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -5062,30 +2640,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 TypesCount
@@ -5103,30 +2658,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._types;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
-                    }
-                }
-                _types = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Types), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Types", _types, value, _propertyChanging, _propertyChanged, newValue => this._types = newValue);
             }
         }
         public Int64 ReportsCount
@@ -5144,30 +2676,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._reports;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
-                    }
-                }
-                _reports = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Person>(nameof(Reports), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Reports", _reports, value, _propertyChanging, _propertyChanged, newValue => this._reports = newValue);
             }
         }
     }
@@ -5183,30 +2692,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -5215,30 +2701,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _name;
@@ -5247,30 +2710,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected Guid _guid;
@@ -5279,30 +2719,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -5311,30 +2728,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -5343,30 +2737,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -5375,30 +2746,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 AnswersCount
@@ -5416,30 +2764,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._answers;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
-                    }
-                }
-                _answers = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(Answers), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Answers", _answers, value, _propertyChanging, _propertyChanged, newValue => this._answers = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -5448,30 +2773,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentQuestion>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -5487,30 +2789,7 @@ namespace IqlSampleApp.Data.Entities
             get => _questionId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._questionId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
-                    }
-                }
-                _questionId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(QuestionId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "QuestionId", _questionId, value, _propertyChanging, _propertyChanged, newValue => this._questionId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -5519,30 +2798,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _specificHazard;
@@ -5551,30 +2807,7 @@ namespace IqlSampleApp.Data.Entities
             get => _specificHazard;
             set
             {
-                var changedSet = false;
-                var oldValue = this._specificHazard;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
-                    }
-                }
-                _specificHazard = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(SpecificHazard), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SpecificHazard", _specificHazard, value, _propertyChanging, _propertyChanged, newValue => this._specificHazard = newValue);
             }
         }
         protected string _precautionsToControlHazard;
@@ -5583,30 +2816,7 @@ namespace IqlSampleApp.Data.Entities
             get => _precautionsToControlHazard;
             set
             {
-                var changedSet = false;
-                var oldValue = this._precautionsToControlHazard;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
-                    }
-                }
-                _precautionsToControlHazard = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PrecautionsToControlHazard), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PrecautionsToControlHazard", _precautionsToControlHazard, value, _propertyChanging, _propertyChanged, newValue => this._precautionsToControlHazard = newValue);
             }
         }
         protected Guid _guid;
@@ -5615,30 +2825,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -5647,30 +2834,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -5679,30 +2843,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -5711,30 +2852,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -5743,30 +2861,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected RiskAssessmentQuestion _question;
@@ -5775,30 +2870,7 @@ namespace IqlSampleApp.Data.Entities
             get => _question;
             set
             {
-                var changedSet = false;
-                var oldValue = this._question;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
-                    }
-                }
-                _question = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(Question), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Question", _question, value, _propertyChanging, _propertyChanged, newValue => this._question = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -5807,30 +2879,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentAnswer>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -5846,30 +2895,7 @@ namespace IqlSampleApp.Data.Entities
             get => _riskAssessmentId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessmentId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
-                    }
-                }
-                _riskAssessmentId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessmentId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessmentId", _riskAssessmentId, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessmentId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -5878,30 +2904,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected Guid _guid;
@@ -5910,30 +2913,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -5942,30 +2922,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -5974,30 +2931,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -6006,30 +2940,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -6038,30 +2949,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected RiskAssessment _riskAssessment;
@@ -6070,30 +2958,7 @@ namespace IqlSampleApp.Data.Entities
             get => _riskAssessment;
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessment;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessment), this, oldValue, value));
-                    }
-                }
-                _riskAssessment = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(RiskAssessment), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessment", _riskAssessment, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessment = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -6102,30 +2967,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessmentSolution>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -6141,30 +2983,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteInspectionId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteInspectionId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
-                    }
-                }
-                _siteInspectionId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspectionId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspectionId", _siteInspectionId, value, _propertyChanging, _propertyChanged, newValue => this._siteInspectionId = newValue);
             }
         }
         protected int _id;
@@ -6173,30 +2992,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -6205,30 +3001,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected Guid _guid;
@@ -6237,30 +3010,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -6269,30 +3019,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -6301,30 +3028,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -6333,30 +3037,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected SiteInspection _siteInspection;
@@ -6365,30 +3046,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteInspection;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteInspection;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
-                    }
-                }
-                _siteInspection = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(SiteInspection), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspection", _siteInspection, value, _propertyChanging, _propertyChanged, newValue => this._siteInspection = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -6397,30 +3055,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         protected RiskAssessmentSolution _riskAssessmentSolution;
@@ -6429,30 +3064,7 @@ namespace IqlSampleApp.Data.Entities
             get => _riskAssessmentSolution;
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessmentSolution;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(RiskAssessmentSolution), this, oldValue, value));
-                    }
-                }
-                _riskAssessmentSolution = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<RiskAssessment>(nameof(RiskAssessmentSolution), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessmentSolution", _riskAssessmentSolution, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessmentSolution = newValue);
             }
         }
     }
@@ -6468,30 +3080,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
-                _siteId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteId", _siteId, value, _propertyChanging, _propertyChanged, newValue => this._siteId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -6500,30 +3089,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _emailAddress;
@@ -6532,30 +3098,7 @@ namespace IqlSampleApp.Data.Entities
             get => _emailAddress;
             set
             {
-                var changedSet = false;
-                var oldValue = this._emailAddress;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
-                    }
-                }
-                _emailAddress = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(EmailAddress), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "EmailAddress", _emailAddress, value, _propertyChanging, _propertyChanged, newValue => this._emailAddress = newValue);
             }
         }
         protected Guid _guid;
@@ -6564,30 +3107,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -6596,30 +3116,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -6628,30 +3125,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -6660,30 +3134,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -6692,30 +3143,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected Site _site;
@@ -6724,30 +3152,7 @@ namespace IqlSampleApp.Data.Entities
             get => _site;
             set
             {
-                var changedSet = false;
-                var oldValue = this._site;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
-                    }
-                }
-                _site = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(Site), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -6756,30 +3161,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportReceiverEmailAddress>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -6795,30 +3177,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _title;
@@ -6827,30 +3186,7 @@ namespace IqlSampleApp.Data.Entities
             get => _title;
             set
             {
-                var changedSet = false;
-                var oldValue = this._title;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
-                    }
-                }
-                _title = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Title), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Title", _title, value, _propertyChanging, _propertyChanged, newValue => this._title = newValue);
             }
         }
         protected string _description;
@@ -6859,30 +3195,7 @@ namespace IqlSampleApp.Data.Entities
             get => _description;
             set
             {
-                var changedSet = false;
-                var oldValue = this._description;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
-                    }
-                }
-                _description = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Description), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Description", _description, value, _propertyChanging, _propertyChanged, newValue => this._description = newValue);
             }
         }
         protected Guid _guid;
@@ -6891,30 +3204,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -6923,30 +3213,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -6955,30 +3222,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -6987,30 +3231,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -7019,30 +3240,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -7051,30 +3249,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Project>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -7090,30 +3265,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected int _categoryId;
@@ -7122,30 +3274,7 @@ namespace IqlSampleApp.Data.Entities
             get => _categoryId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._categoryId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
-                    }
-                }
-                _categoryId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CategoryId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CategoryId", _categoryId, value, _propertyChanging, _propertyChanged, newValue => this._categoryId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -7154,30 +3283,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -7186,30 +3292,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected string _name;
@@ -7218,30 +3301,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected Guid _guid;
@@ -7250,30 +3310,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -7282,30 +3319,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -7314,30 +3328,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected ReportCategory _category;
@@ -7346,30 +3337,7 @@ namespace IqlSampleApp.Data.Entities
             get => _category;
             set
             {
-                var changedSet = false;
-                var oldValue = this._category;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
-                    }
-                }
-                _category = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(Category), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Category", _category, value, _propertyChanging, _propertyChanged, newValue => this._category = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -7378,30 +3346,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 FaultReportsCount
@@ -7419,30 +3364,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultReports;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
-                    }
-                }
-                _faultReports = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportType>(nameof(FaultReports), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultReports", _faultReports, value, _propertyChanging, _propertyChanged, newValue => this._faultReports = newValue);
             }
         }
     }
@@ -7458,30 +3380,7 @@ namespace IqlSampleApp.Data.Entities
             get => _reportId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._reportId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
-                    }
-                }
-                _reportId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(ReportId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ReportId", _reportId, value, _propertyChanging, _propertyChanged, newValue => this._reportId = newValue);
             }
         }
         protected int _recommendationId;
@@ -7490,30 +3389,7 @@ namespace IqlSampleApp.Data.Entities
             get => _recommendationId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._recommendationId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
-                    }
-                }
-                _recommendationId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(RecommendationId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RecommendationId", _recommendationId, value, _propertyChanging, _propertyChanged, newValue => this._recommendationId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -7522,30 +3398,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _notes;
@@ -7554,30 +3407,7 @@ namespace IqlSampleApp.Data.Entities
             get => _notes;
             set
             {
-                var changedSet = false;
-                var oldValue = this._notes;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
-                    }
-                }
-                _notes = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Notes), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Notes", _notes, value, _propertyChanging, _propertyChanged, newValue => this._notes = newValue);
             }
         }
         protected Guid _guid;
@@ -7586,30 +3416,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -7618,30 +3425,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -7650,30 +3434,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -7682,30 +3443,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -7714,30 +3452,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected PersonReport _personReport;
@@ -7746,30 +3461,7 @@ namespace IqlSampleApp.Data.Entities
             get => _personReport;
             set
             {
-                var changedSet = false;
-                var oldValue = this._personReport;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
-                    }
-                }
-                _personReport = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(PersonReport), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonReport", _personReport, value, _propertyChanging, _propertyChanged, newValue => this._personReport = newValue);
             }
         }
         protected ReportDefaultRecommendation _recommendation;
@@ -7778,30 +3470,7 @@ namespace IqlSampleApp.Data.Entities
             get => _recommendation;
             set
             {
-                var changedSet = false;
-                var oldValue = this._recommendation;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
-                    }
-                }
-                _recommendation = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(Recommendation), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Recommendation", _recommendation, value, _propertyChanging, _propertyChanged, newValue => this._recommendation = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -7810,30 +3479,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportRecommendation>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -7849,30 +3495,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -7881,30 +3504,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _name;
@@ -7913,30 +3513,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected string _text;
@@ -7945,30 +3522,7 @@ namespace IqlSampleApp.Data.Entities
             get => _text;
             set
             {
-                var changedSet = false;
-                var oldValue = this._text;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
-                    }
-                }
-                _text = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Text), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Text", _text, value, _propertyChanging, _propertyChanged, newValue => this._text = newValue);
             }
         }
         protected Guid _guid;
@@ -7977,30 +3531,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -8009,30 +3540,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -8041,30 +3549,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -8073,30 +3558,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -8105,30 +3567,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 RecommendationsCount
@@ -8146,30 +3585,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._recommendations;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
-                    }
-                }
-                _recommendations = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportDefaultRecommendation>(nameof(Recommendations), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Recommendations", _recommendations, value, _propertyChanging, _propertyChanged, newValue => this._recommendations = newValue);
             }
         }
     }
@@ -8185,30 +3601,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -8217,30 +3610,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _name;
@@ -8249,30 +3619,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected Guid _guid;
@@ -8281,30 +3628,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -8313,30 +3637,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -8345,30 +3646,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -8377,30 +3655,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -8409,30 +3664,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 ReportTypesCount
@@ -8450,30 +3682,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._reportTypes;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
-                    }
-                }
-                _reportTypes = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportCategory>(nameof(ReportTypes), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ReportTypes", _reportTypes, value, _propertyChanging, _propertyChanged, newValue => this._reportTypes = newValue);
             }
         }
     }
@@ -8489,30 +3698,7 @@ namespace IqlSampleApp.Data.Entities
             get => _faultReportId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultReportId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
-                    }
-                }
-                _faultReportId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(FaultReportId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultReportId", _faultReportId, value, _propertyChanging, _propertyChanged, newValue => this._faultReportId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -8521,30 +3707,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _notes;
@@ -8553,30 +3716,7 @@ namespace IqlSampleApp.Data.Entities
             get => _notes;
             set
             {
-                var changedSet = false;
-                var oldValue = this._notes;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
-                    }
-                }
-                _notes = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Notes), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Notes", _notes, value, _propertyChanging, _propertyChanged, newValue => this._notes = newValue);
             }
         }
         protected Guid _guid;
@@ -8585,30 +3725,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -8617,30 +3734,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -8649,30 +3743,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -8681,30 +3752,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -8713,30 +3761,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected PersonReport _personReport;
@@ -8745,30 +3770,7 @@ namespace IqlSampleApp.Data.Entities
             get => _personReport;
             set
             {
-                var changedSet = false;
-                var oldValue = this._personReport;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
-                    }
-                }
-                _personReport = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(PersonReport), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonReport", _personReport, value, _propertyChanging, _propertyChanged, newValue => this._personReport = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -8777,30 +3779,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ReportActionsTaken>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -8816,30 +3795,7 @@ namespace IqlSampleApp.Data.Entities
             get => _categoryId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._categoryId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
-                    }
-                }
-                _categoryId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CategoryId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CategoryId", _categoryId, value, _propertyChanging, _propertyChanged, newValue => this._categoryId = newValue);
             }
         }
         protected int _siteId;
@@ -8848,30 +3804,7 @@ namespace IqlSampleApp.Data.Entities
             get => _siteId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
-                _siteId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(SiteId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteId", _siteId, value, _propertyChanging, _propertyChanged, newValue => this._siteId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -8880,30 +3813,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _title;
@@ -8912,30 +3822,7 @@ namespace IqlSampleApp.Data.Entities
             get => _title;
             set
             {
-                var changedSet = false;
-                var oldValue = this._title;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
-                    }
-                }
-                _title = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Title), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Title", _title, value, _propertyChanging, _propertyChanged, newValue => this._title = newValue);
             }
         }
         protected Guid _guid;
@@ -8944,30 +3831,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected int _id;
@@ -8976,30 +3840,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -9008,30 +3849,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -9040,30 +3858,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -9072,30 +3867,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected DocumentCategory _category;
@@ -9104,30 +3876,7 @@ namespace IqlSampleApp.Data.Entities
             get => _category;
             set
             {
-                var changedSet = false;
-                var oldValue = this._category;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
-                    }
-                }
-                _category = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Category), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Category", _category, value, _propertyChanging, _propertyChanged, newValue => this._category = newValue);
             }
         }
         protected Site _site;
@@ -9136,30 +3885,7 @@ namespace IqlSampleApp.Data.Entities
             get => _site;
             set
             {
-                var changedSet = false;
-                var oldValue = this._site;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
-                    }
-                }
-                _site = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(Site), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -9168,30 +3894,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<SiteDocument>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
     }
@@ -9207,30 +3910,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -9239,30 +3919,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _name;
@@ -9271,30 +3928,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected Guid _guid;
@@ -9303,30 +3937,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -9335,30 +3946,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -9367,30 +3955,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -9399,30 +3964,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -9431,30 +3973,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 DocumentsCount
@@ -9472,30 +3991,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._documents;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
-                    }
-                }
-                _documents = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<DocumentCategory>(nameof(Documents), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Documents", _documents, value, _propertyChanging, _propertyChanged, newValue => this._documents = newValue);
             }
         }
     }
@@ -9511,30 +4007,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _name;
@@ -9543,30 +4016,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         public Int64 ClientsCount
@@ -9584,30 +4034,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._clients;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
-                    }
-                }
-                _clients = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ClientType>(nameof(Clients), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Clients", _clients, value, _propertyChanging, _propertyChanged, newValue => this._clients = newValue);
             }
         }
     }
@@ -9623,30 +4050,7 @@ namespace IqlSampleApp.Data.Entities
             get => _typeId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._typeId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
-                _typeId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(TypeId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TypeId", _typeId, value, _propertyChanging, _propertyChanged, newValue => this._typeId = newValue);
             }
         }
         protected int _id;
@@ -9655,30 +4059,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _createdByUserId;
@@ -9687,30 +4068,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _name;
@@ -9719,30 +4077,7 @@ namespace IqlSampleApp.Data.Entities
             get => _name;
             set
             {
-                var changedSet = false;
-                var oldValue = this._name;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
-                    }
-                }
-                _name = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Name), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected double _averageSales;
@@ -9751,30 +4086,7 @@ namespace IqlSampleApp.Data.Entities
             get => _averageSales;
             set
             {
-                var changedSet = false;
-                var oldValue = this._averageSales;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageSales), this, oldValue, value));
-                    }
-                }
-                _averageSales = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageSales), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "AverageSales", _averageSales, value, _propertyChanging, _propertyChanged, newValue => this._averageSales = newValue);
             }
         }
         protected double _averageIncome;
@@ -9783,30 +4095,7 @@ namespace IqlSampleApp.Data.Entities
             get => _averageIncome;
             set
             {
-                var changedSet = false;
-                var oldValue = this._averageIncome;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageIncome), this, oldValue, value));
-                    }
-                }
-                _averageIncome = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(AverageIncome), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "AverageIncome", _averageIncome, value, _propertyChanging, _propertyChanged, newValue => this._averageIncome = newValue);
             }
         }
         protected int _category;
@@ -9815,30 +4104,7 @@ namespace IqlSampleApp.Data.Entities
             get => _category;
             set
             {
-                var changedSet = false;
-                var oldValue = this._category;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Category), this, oldValue, value));
-                    }
-                }
-                _category = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Category), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Category", _category, value, _propertyChanging, _propertyChanged, newValue => this._category = newValue);
             }
         }
         protected string _description;
@@ -9847,30 +4113,7 @@ namespace IqlSampleApp.Data.Entities
             get => _description;
             set
             {
-                var changedSet = false;
-                var oldValue = this._description;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
-                    }
-                }
-                _description = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Description), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Description", _description, value, _propertyChanging, _propertyChanged, newValue => this._description = newValue);
             }
         }
         protected double _discount;
@@ -9879,30 +4122,7 @@ namespace IqlSampleApp.Data.Entities
             get => _discount;
             set
             {
-                var changedSet = false;
-                var oldValue = this._discount;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
-                    }
-                }
-                _discount = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Discount), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Discount", _discount, value, _propertyChanging, _propertyChanged, newValue => this._discount = newValue);
             }
         }
         protected Guid _guid;
@@ -9911,30 +4131,7 @@ namespace IqlSampleApp.Data.Entities
             get => _guid;
             set
             {
-                var changedSet = false;
-                var oldValue = this._guid;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
-                    }
-                }
-                _guid = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Guid), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Guid", _guid, value, _propertyChanging, _propertyChanged, newValue => this._guid = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -9943,30 +4140,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _revisionKey;
@@ -9975,30 +4149,7 @@ namespace IqlSampleApp.Data.Entities
             get => _revisionKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._revisionKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
-                _revisionKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(RevisionKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
             }
         }
         protected Guid _persistenceKey;
@@ -10007,30 +4158,7 @@ namespace IqlSampleApp.Data.Entities
             get => _persistenceKey;
             set
             {
-                var changedSet = false;
-                var oldValue = this._persistenceKey;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
-                _persistenceKey = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(PersistenceKey), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         public Int64 UsersCount
@@ -10048,30 +4176,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._users;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
-                    }
-                }
-                _users = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Users), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Users", _users, value, _propertyChanging, _propertyChanged, newValue => this._users = newValue);
             }
         }
         protected ClientType _type;
@@ -10080,30 +4185,7 @@ namespace IqlSampleApp.Data.Entities
             get => _type;
             set
             {
-                var changedSet = false;
-                var oldValue = this._type;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
-                    }
-                }
-                _type = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Type), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Type", _type, value, _propertyChanging, _propertyChanged, newValue => this._type = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -10112,30 +4194,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 PeopleCount
@@ -10153,30 +4212,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._people;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
-                    }
-                }
-                _people = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(People), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "People", _people, value, _propertyChanging, _propertyChanged, newValue => this._people = newValue);
             }
         }
         public Int64 SitesCount
@@ -10194,30 +4230,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._sites;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
-                    }
-                }
-                _sites = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<Client>(nameof(Sites), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Sites", _sites, value, _propertyChanging, _propertyChanged, newValue => this._sites = newValue);
             }
         }
     }
@@ -10233,30 +4246,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected DateTimeOffset _createdDate;
@@ -10265,30 +4255,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdDate;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdDate;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
-                _createdDate = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(CreatedDate), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
             }
         }
         protected string _module;
@@ -10297,30 +4264,7 @@ namespace IqlSampleApp.Data.Entities
             get => _module;
             set
             {
-                var changedSet = false;
-                var oldValue = this._module;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Module), this, oldValue, value));
-                    }
-                }
-                _module = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Module), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Module", _module, value, _propertyChanging, _propertyChanged, newValue => this._module = newValue);
             }
         }
         protected string _message;
@@ -10329,30 +4273,7 @@ namespace IqlSampleApp.Data.Entities
             get => _message;
             set
             {
-                var changedSet = false;
-                var oldValue = this._message;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Message), this, oldValue, value));
-                    }
-                }
-                _message = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Message), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Message", _message, value, _propertyChanging, _propertyChanged, newValue => this._message = newValue);
             }
         }
         protected string _kind;
@@ -10361,30 +4282,7 @@ namespace IqlSampleApp.Data.Entities
             get => _kind;
             set
             {
-                var changedSet = false;
-                var oldValue = this._kind;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Kind), this, oldValue, value));
-                    }
-                }
-                _kind = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationLog>(nameof(Kind), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Kind", _kind, value, _propertyChanging, _propertyChanged, newValue => this._kind = newValue);
             }
         }
     }
@@ -10400,30 +4298,7 @@ namespace IqlSampleApp.Data.Entities
             get => _isLockedOut;
             set
             {
-                var changedSet = false;
-                var oldValue = this._isLockedOut;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
-                    }
-                }
-                _isLockedOut = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(IsLockedOut), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "IsLockedOut", _isLockedOut, value, _propertyChanging, _propertyChanged, newValue => this._isLockedOut = newValue);
             }
         }
         protected int ? _clientId;
@@ -10432,30 +4307,7 @@ namespace IqlSampleApp.Data.Entities
             get => _clientId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._clientId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
-                _clientId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ClientId", _clientId, value, _propertyChanging, _propertyChanged, newValue => this._clientId = newValue);
             }
         }
         protected string _id;
@@ -10464,30 +4316,7 @@ namespace IqlSampleApp.Data.Entities
             get => _id;
             set
             {
-                var changedSet = false;
-                var oldValue = this._id;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
-                    }
-                }
-                _id = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Id), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
             }
         }
         protected string _email;
@@ -10496,30 +4325,7 @@ namespace IqlSampleApp.Data.Entities
             get => _email;
             set
             {
-                var changedSet = false;
-                var oldValue = this._email;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
-                    }
-                }
-                _email = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Email), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Email", _email, value, _propertyChanging, _propertyChanged, newValue => this._email = newValue);
             }
         }
         protected UserPermissions _permissions;
@@ -10528,30 +4334,7 @@ namespace IqlSampleApp.Data.Entities
             get => _permissions;
             set
             {
-                var changedSet = false;
-                var oldValue = this._permissions;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Permissions), this, oldValue, value));
-                    }
-                }
-                _permissions = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Permissions), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Permissions", _permissions, value, _propertyChanging, _propertyChanged, newValue => this._permissions = newValue);
             }
         }
         protected UserType _userType;
@@ -10560,30 +4343,7 @@ namespace IqlSampleApp.Data.Entities
             get => _userType;
             set
             {
-                var changedSet = false;
-                var oldValue = this._userType;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
-                    }
-                }
-                _userType = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserType), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "UserType", _userType, value, _propertyChanging, _propertyChanged, newValue => this._userType = newValue);
             }
         }
         protected string _fullName;
@@ -10592,30 +4352,7 @@ namespace IqlSampleApp.Data.Entities
             get => _fullName;
             set
             {
-                var changedSet = false;
-                var oldValue = this._fullName;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
-                    }
-                }
-                _fullName = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FullName), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FullName", _fullName, value, _propertyChanging, _propertyChanged, newValue => this._fullName = newValue);
             }
         }
         protected string _createdByUserId;
@@ -10624,30 +4361,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUserId;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUserId;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
-                _createdByUserId = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUserId), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
         protected string _userName;
@@ -10656,30 +4370,7 @@ namespace IqlSampleApp.Data.Entities
             get => _userName;
             set
             {
-                var changedSet = false;
-                var oldValue = this._userName;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserName), this, oldValue, value));
-                    }
-                }
-                _userName = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(UserName), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "UserName", _userName, value, _propertyChanging, _propertyChanged, newValue => this._userName = newValue);
             }
         }
         protected bool _emailConfirmed;
@@ -10688,30 +4379,7 @@ namespace IqlSampleApp.Data.Entities
             get => _emailConfirmed;
             set
             {
-                var changedSet = false;
-                var oldValue = this._emailConfirmed;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
-                    }
-                }
-                _emailConfirmed = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(EmailConfirmed), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "EmailConfirmed", _emailConfirmed, value, _propertyChanging, _propertyChanged, newValue => this._emailConfirmed = newValue);
             }
         }
         protected string _phoneNumber;
@@ -10720,30 +4388,7 @@ namespace IqlSampleApp.Data.Entities
             get => _phoneNumber;
             set
             {
-                var changedSet = false;
-                var oldValue = this._phoneNumber;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
-                    }
-                }
-                _phoneNumber = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumber), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PhoneNumber", _phoneNumber, value, _propertyChanging, _propertyChanged, newValue => this._phoneNumber = newValue);
             }
         }
         protected bool _phoneNumberConfirmed;
@@ -10752,30 +4397,7 @@ namespace IqlSampleApp.Data.Entities
             get => _phoneNumberConfirmed;
             set
             {
-                var changedSet = false;
-                var oldValue = this._phoneNumberConfirmed;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
-                    }
-                }
-                _phoneNumberConfirmed = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PhoneNumberConfirmed), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PhoneNumberConfirmed", _phoneNumberConfirmed, value, _propertyChanging, _propertyChanged, newValue => this._phoneNumberConfirmed = newValue);
             }
         }
         protected bool _twoFactorEnabled;
@@ -10784,30 +4406,7 @@ namespace IqlSampleApp.Data.Entities
             get => _twoFactorEnabled;
             set
             {
-                var changedSet = false;
-                var oldValue = this._twoFactorEnabled;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
-                    }
-                }
-                _twoFactorEnabled = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(TwoFactorEnabled), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TwoFactorEnabled", _twoFactorEnabled, value, _propertyChanging, _propertyChanged, newValue => this._twoFactorEnabled = newValue);
             }
         }
         protected DateTimeOffset ? _lockoutEnd;
@@ -10816,30 +4415,7 @@ namespace IqlSampleApp.Data.Entities
             get => _lockoutEnd;
             set
             {
-                var changedSet = false;
-                var oldValue = this._lockoutEnd;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
-                    }
-                }
-                _lockoutEnd = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnd), this, oldValue, value));
-                    }
-                }
+                DatePropertyChanger.Instance.ChangeProperty(this, "LockoutEnd", _lockoutEnd, value, _propertyChanging, _propertyChanged, newValue => this._lockoutEnd = newValue);
             }
         }
         protected bool _lockoutEnabled;
@@ -10848,30 +4424,7 @@ namespace IqlSampleApp.Data.Entities
             get => _lockoutEnabled;
             set
             {
-                var changedSet = false;
-                var oldValue = this._lockoutEnabled;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
-                    }
-                }
-                _lockoutEnabled = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(LockoutEnabled), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "LockoutEnabled", _lockoutEnabled, value, _propertyChanging, _propertyChanged, newValue => this._lockoutEnabled = newValue);
             }
         }
         protected Client _client;
@@ -10880,30 +4433,7 @@ namespace IqlSampleApp.Data.Entities
             get => _client;
             set
             {
-                var changedSet = false;
-                var oldValue = this._client;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
-                    }
-                }
-                _client = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Client), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Client", _client, value, _propertyChanging, _propertyChanged, newValue => this._client = newValue);
             }
         }
         protected ApplicationUser _createdByUser;
@@ -10912,30 +4442,7 @@ namespace IqlSampleApp.Data.Entities
             get => _createdByUser;
             set
             {
-                var changedSet = false;
-                var oldValue = this._createdByUser;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
-                _createdByUser = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(CreatedByUser), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
             }
         }
         public Int64 ClientsCreatedCount
@@ -10953,30 +4460,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._clientsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
-                    }
-                }
-                _clientsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ClientsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ClientsCreated", _clientsCreated, value, _propertyChanging, _propertyChanged, newValue => this._clientsCreated = newValue);
             }
         }
         public Int64 DocumentCategoriesCreatedCount
@@ -10994,30 +4478,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._documentCategoriesCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
-                    }
-                }
-                _documentCategoriesCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(DocumentCategoriesCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "DocumentCategoriesCreated", _documentCategoriesCreated, value, _propertyChanging, _propertyChanged, newValue => this._documentCategoriesCreated = newValue);
             }
         }
         public Int64 SiteDocumentsCreatedCount
@@ -11035,30 +4496,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteDocumentsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
-                    }
-                }
-                _siteDocumentsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteDocumentsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteDocumentsCreated", _siteDocumentsCreated, value, _propertyChanging, _propertyChanged, newValue => this._siteDocumentsCreated = newValue);
             }
         }
         public Int64 FaultActionsTakenCreatedCount
@@ -11076,30 +4514,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultActionsTakenCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
-                    }
-                }
-                _faultActionsTakenCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultActionsTakenCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultActionsTakenCreated", _faultActionsTakenCreated, value, _propertyChanging, _propertyChanged, newValue => this._faultActionsTakenCreated = newValue);
             }
         }
         public Int64 FaultCategoriesCreatedCount
@@ -11117,30 +4532,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultCategoriesCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
-                    }
-                }
-                _faultCategoriesCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultCategoriesCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultCategoriesCreated", _faultCategoriesCreated, value, _propertyChanging, _propertyChanged, newValue => this._faultCategoriesCreated = newValue);
             }
         }
         public Int64 FaultDefaultRecommendationsCreatedCount
@@ -11158,30 +4550,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultDefaultRecommendationsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
-                    }
-                }
-                _faultDefaultRecommendationsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultDefaultRecommendationsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultDefaultRecommendationsCreated", _faultDefaultRecommendationsCreated, value, _propertyChanging, _propertyChanged, newValue => this._faultDefaultRecommendationsCreated = newValue);
             }
         }
         public Int64 FaultRecommendationsCreatedCount
@@ -11199,30 +4568,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultRecommendationsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
-                    }
-                }
-                _faultRecommendationsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultRecommendationsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultRecommendationsCreated", _faultRecommendationsCreated, value, _propertyChanging, _propertyChanged, newValue => this._faultRecommendationsCreated = newValue);
             }
         }
         public Int64 FaultTypesCreatedCount
@@ -11240,30 +4586,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultTypesCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
-                    }
-                }
-                _faultTypesCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultTypesCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultTypesCreated", _faultTypesCreated, value, _propertyChanging, _propertyChanged, newValue => this._faultTypesCreated = newValue);
             }
         }
         public Int64 ProjectCreatedCount
@@ -11281,30 +4604,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._projectCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
-                    }
-                }
-                _projectCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ProjectCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ProjectCreated", _projectCreated, value, _propertyChanging, _propertyChanged, newValue => this._projectCreated = newValue);
             }
         }
         public Int64 ReportReceiverEmailAddressesCreatedCount
@@ -11322,30 +4622,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._reportReceiverEmailAddressesCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
-                    }
-                }
-                _reportReceiverEmailAddressesCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(ReportReceiverEmailAddressesCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ReportReceiverEmailAddressesCreated", _reportReceiverEmailAddressesCreated, value, _propertyChanging, _propertyChanged, newValue => this._reportReceiverEmailAddressesCreated = newValue);
             }
         }
         public Int64 RiskAssessmentsCreatedCount
@@ -11363,30 +4640,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessmentsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
-                    }
-                }
-                _riskAssessmentsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessmentsCreated", _riskAssessmentsCreated, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessmentsCreated = newValue);
             }
         }
         public Int64 RiskAssessmentSolutionsCreatedCount
@@ -11404,30 +4658,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessmentSolutionsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentSolutionsCreated), this, oldValue, value));
-                    }
-                }
-                _riskAssessmentSolutionsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentSolutionsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessmentSolutionsCreated", _riskAssessmentSolutionsCreated, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessmentSolutionsCreated = newValue);
             }
         }
         public Int64 RiskAssessmentAnswersCreatedCount
@@ -11445,30 +4676,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessmentAnswersCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
-                    }
-                }
-                _riskAssessmentAnswersCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentAnswersCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessmentAnswersCreated", _riskAssessmentAnswersCreated, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessmentAnswersCreated = newValue);
             }
         }
         public Int64 RiskAssessmentQuestionsCreatedCount
@@ -11486,30 +4694,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._riskAssessmentQuestionsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
-                    }
-                }
-                _riskAssessmentQuestionsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(RiskAssessmentQuestionsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RiskAssessmentQuestionsCreated", _riskAssessmentQuestionsCreated, value, _propertyChanging, _propertyChanged, newValue => this._riskAssessmentQuestionsCreated = newValue);
             }
         }
         public Int64 PeopleCreatedCount
@@ -11527,30 +4712,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._peopleCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
-                    }
-                }
-                _peopleCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PeopleCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PeopleCreated", _peopleCreated, value, _propertyChanging, _propertyChanged, newValue => this._peopleCreated = newValue);
             }
         }
         public Int64 PersonInspectionsCreatedCount
@@ -11568,30 +4730,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._personInspectionsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
-                    }
-                }
-                _personInspectionsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonInspectionsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonInspectionsCreated", _personInspectionsCreated, value, _propertyChanging, _propertyChanged, newValue => this._personInspectionsCreated = newValue);
             }
         }
         public Int64 PersonLoadingsCreatedCount
@@ -11609,30 +4748,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._personLoadingsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
-                    }
-                }
-                _personLoadingsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonLoadingsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonLoadingsCreated", _personLoadingsCreated, value, _propertyChanging, _propertyChanged, newValue => this._personLoadingsCreated = newValue);
             }
         }
         public Int64 PersonTypesCreatedCount
@@ -11650,30 +4766,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._personTypesCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
-                    }
-                }
-                _personTypesCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(PersonTypesCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersonTypesCreated", _personTypesCreated, value, _propertyChanging, _propertyChanged, newValue => this._personTypesCreated = newValue);
             }
         }
         public Int64 FaultReportsCreatedCount
@@ -11691,30 +4784,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._faultReportsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
-                    }
-                }
-                _faultReportsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(FaultReportsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FaultReportsCreated", _faultReportsCreated, value, _propertyChanging, _propertyChanged, newValue => this._faultReportsCreated = newValue);
             }
         }
         public Int64 SitesCreatedCount
@@ -11732,30 +4802,25 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._sitesCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
-                    }
-                }
-                _sitesCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SitesCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SitesCreated", _sitesCreated, value, _propertyChanging, _propertyChanged, newValue => this._sitesCreated = newValue);
+            }
+        }
+        public Int64 SiteAreasCreatedCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<ApplicationUser, SiteArea>_siteAreasCreated;
+        public RelatedList<ApplicationUser, SiteArea>SiteAreasCreated
+        {
+            get
+            {
+                this._siteAreasCreated = this._siteAreasCreated ?? new RelatedList<ApplicationUser, SiteArea>(this, nameof(SiteAreasCreated));
+                return _siteAreasCreated;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteAreasCreated", _siteAreasCreated, value, _propertyChanging, _propertyChanged, newValue => this._siteAreasCreated = newValue);
             }
         }
         public Int64 SiteInspectionsCreatedCount
@@ -11773,30 +4838,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._siteInspectionsCreated;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
-                    }
-                }
-                _siteInspectionsCreated = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(SiteInspectionsCreated), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspectionsCreated", _siteInspectionsCreated, value, _propertyChanging, _propertyChanged, newValue => this._siteInspectionsCreated = newValue);
             }
         }
         public Int64 SitesCount
@@ -11814,30 +4856,7 @@ namespace IqlSampleApp.Data.Entities
             }
             set
             {
-                var changedSet = false;
-                var oldValue = this._sites;
-                var changed = false;
-                if (this._propertyChangingSet)
-                {
-                    changed = value != oldValue;
-                    changedSet = true;
-                    if (changed)
-                    {
-                        this.PropertyChanging.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
-                    }
-                }
-                _sites = value;
-                if (this._propertyChangedSet)
-                {
-                    if (! (changedSet))
-                    {
-                        changed = value != oldValue;
-                    }
-                    if (changed)
-                    {
-                        this.PropertyChanged.Emit(() => new PropertyChangeEvent<ApplicationUser>(nameof(Sites), this, oldValue, value));
-                    }
-                }
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Sites", _sites, value, _propertyChanging, _propertyChanged, newValue => this._sites = newValue);
             }
         }
     }

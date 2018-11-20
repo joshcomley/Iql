@@ -12,6 +12,9 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             //model.ModelConfiguration();
             var model = builder.EntityType<Person>();
+            model.DefineRelationshipFilterRule(
+                _ => _.SiteArea,
+                context => siteArea => siteArea.SiteId == context.Owner.SiteId);
             model.DefineDisplayFormatter(p => p.Title);
             model.DefineDisplayFormatter(p => p.Title + " (" + p.Id + ")", "Report");
             model.DefineEntityValidation(
@@ -45,6 +48,16 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     s => s.Client,
                     (person, client) => person.ClientId == client.Id,
                     client => client.People);
+            builder.EntityType<Person>()
+                .HasOptional(
+                    s => s.Site,
+                    (person, site) => person.SiteId == site.Id,
+                    site => site.People);
+            builder.EntityType<Person>()
+                .HasOptional(
+                    s => s.SiteArea,
+                    (person, siteArea) => person.SiteAreaId == siteArea.Id,
+                    siteArea => siteArea.People);
             builder.EntityType<Person>()
                 .HasOptional(s => s.Type,
                     (person, type) => person.TypeId == type.Id,

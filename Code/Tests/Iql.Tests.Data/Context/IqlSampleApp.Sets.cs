@@ -256,6 +256,14 @@ namespace IqlSampleApp.Sets
 }
 namespace IqlSampleApp.Sets
 {
+    public class SiteAreaSet: DbSet<SiteArea, int>
+    {
+        public SiteAreaSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
+        {}
+    }
+}
+namespace IqlSampleApp.Sets
+{
     public class SiteInspectionSet: DbSet<SiteInspection, int>
     {
         public SiteInspectionSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)

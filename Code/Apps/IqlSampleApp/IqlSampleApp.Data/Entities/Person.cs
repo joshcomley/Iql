@@ -11,8 +11,10 @@ namespace IqlSampleApp.Data.Entities
     /// </summary>
     public class Person : DbObject
     {
-//        public Site Site { get; set; }
-//        public int SiteId { get; set; }
+        public Site Site { get; set; }
+        public int? SiteId { get; set; }
+        public SiteArea SiteArea { get; set; }
+        public int? SiteAreaId { get; set; }
         public string Key { get; set; }
         //public string Location { get; set; }
 

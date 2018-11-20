@@ -850,6 +850,17 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestRelationshipFilterRuleUri()
+        {
+            var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);
+
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Users/$count",
+                uri);
+        }
+
+        [TestMethod]
         public async Task TestResolveUriFromIQueryable()
         {
             IQueryableBase query = Db.Clients.Where(c => c.Name == "hello");

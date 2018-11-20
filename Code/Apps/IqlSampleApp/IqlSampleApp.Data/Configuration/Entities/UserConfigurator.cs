@@ -50,6 +50,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             ApplyCreatedByUser(builder, p => p.PersonInspectionsCreated);
             ApplyCreatedByUser(builder, p => p.PersonLoadingsCreated);
             ApplyCreatedByUser(builder, p => p.SitesCreated);
+            ApplyCreatedByUser(builder, p => p.SiteAreasCreated);
             ApplyCreatedByUser(builder, p => p.SiteInspectionsCreated);
 
             // Tested

@@ -41,6 +41,7 @@ namespace IqlSampleApp.ApiContext.Base
             this.PersonTypesMap = this.AsCustomDbSet<PersonTypeMap, CompositeKey, PersonTypeMapSet>();
             this.PersonReports = this.AsCustomDbSet<PersonReport, int, PersonReportSet>();
             this.Sites = this.AsCustomDbSet<Site, int, SiteSet>();
+            this.SiteAreas = this.AsCustomDbSet<SiteArea, int, SiteAreaSet>();
             this.SiteInspections = this.AsCustomDbSet<SiteInspection, int, SiteInspectionSet>();
             this.UserSites = this.AsCustomDbSet<UserSite, CompositeKey, UserSiteSet>();
             this.ODataConfiguration.RegisterEntitySet<ApplicationUser>(nameof(Users));
@@ -67,6 +68,7 @@ namespace IqlSampleApp.ApiContext.Base
             this.ODataConfiguration.RegisterEntitySet<PersonTypeMap>(nameof(PersonTypesMap));
             this.ODataConfiguration.RegisterEntitySet<PersonReport>(nameof(PersonReports));
             this.ODataConfiguration.RegisterEntitySet<Site>(nameof(Sites));
+            this.ODataConfiguration.RegisterEntitySet<SiteArea>(nameof(SiteAreas));
             this.ODataConfiguration.RegisterEntitySet<SiteInspection>(nameof(SiteInspections));
             this.ODataConfiguration.RegisterEntitySet<UserSite>(nameof(UserSites));
             this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
@@ -337,6 +339,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SitesCreated";
                 p.Title = "SitesCreated";
                 p.FriendlyName = "Sites Created";
+            }).DefineCollectionProperty(p => p.SiteAreasCreated, p => p.SiteAreasCreatedCount).ConfigureProperty(p => p.SiteAreasCreated, p => {
+                p.PropertyName = "SiteAreasCreated";
+                p.Nullable = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "SiteAreasCreated";
+                p.Title = "SiteAreasCreated";
+                p.FriendlyName = "Site Areas Created";
             }).DefineCollectionProperty(p => p.SiteInspectionsCreated, p => p.SiteInspectionsCreatedCount).ConfigureProperty(p => p.SiteInspectionsCreated, p => {
                 p.PropertyName = "SiteInspectionsCreated";
                 p.Nullable = false;
@@ -886,7 +895,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
-            }).DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter some actions taken notes", "4").DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "Please enter at least five characters for notes", "5");
+            }).DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter some actions taken notes", "5").DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "Please enter at least five characters for notes", "6");
             builder.EntityType<ReportActionsTaken>().HasOne(p => p.PersonReport).WithMany(p => p.ActionsTaken).WithConstraint(p => p.FaultReportId, p => p.Id);
             builder.EntityType<ReportActionsTaken>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultActionsTakenCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportActionsTaken>().Configure(p => {
@@ -1894,6 +1903,20 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientId";
                 p.Title = "ClientId";
                 p.FriendlyName = "Client Id";
+            }).DefineProperty(p => p.SiteId, true, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
+                p.PropertyName = "SiteId";
+                p.Nullable = true;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "SiteId";
+                p.Title = "SiteId";
+                p.FriendlyName = "Site Id";
+            }).DefineProperty(p => p.SiteAreaId, true, IqlType.Integer).ConfigureProperty(p => p.SiteAreaId, p => {
+                p.PropertyName = "SiteAreaId";
+                p.Nullable = true;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "SiteAreaId";
+                p.Title = "SiteAreaId";
+                p.FriendlyName = "Site Area Id";
             }).DefineProperty(p => p.TypeId, true, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
                 p.PropertyName = "TypeId";
                 p.Nullable = true;
@@ -2002,6 +2025,20 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
                 p.FriendlyName = "Client";
+            }).DefineProperty(p => p.Site, true, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
+                p.PropertyName = "Site";
+                p.Nullable = true;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Site";
+                p.Title = "Site";
+                p.FriendlyName = "Site";
+            }).DefineProperty(p => p.SiteArea, true, IqlType.Unknown).ConfigureProperty(p => p.SiteArea, p => {
+                p.PropertyName = "SiteArea";
+                p.Nullable = true;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "SiteArea";
+                p.Title = "SiteArea";
+                p.FriendlyName = "Site Area";
             }).DefineProperty(p => p.Type, true, IqlType.Unknown).ConfigureProperty(p => p.Type, p => {
                 p.PropertyName = "Type";
                 p.Nullable = true;
@@ -2038,8 +2075,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Reports";
                 p.Title = "Reports";
                 p.FriendlyName = "Reports";
-            }).DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "Please enter either a title or a description", "NoTitleOrDescription").DefineEntityValidation(entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper())) && ((entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()))), "If the name is 'Josh' please match it in the description", "JoshCheck").DefineDisplayFormatter(entity => entity.Title, "Default").DefineDisplayFormatter(entity => (((entity.Title + " (") + entity.Id) + ")"), "Report").DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person title", "EmptyTitle").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "Please enter less than fifty characters", "TitleMaxLength").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "Please enter at least three characters for the person's title", "TitleMinLength").DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person description", "EmptyDescription");
+            }).DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "Please enter either a title or a description", "NoTitleOrDescription").DefineEntityValidation(entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper())) && ((entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()))), "If the name is 'Josh' please match it in the description", "JoshCheck").DefineDisplayFormatter(entity => entity.Title, "Default").DefineDisplayFormatter(entity => (((entity.Title + " (") + entity.Id) + ")"), "Report").DefineRelationshipFilterRule(p => p.SiteArea, entity => entity2 => (entity2.SiteId == entity.Owner.SiteId), "1", "").DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person title", "EmptyTitle").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "Please enter less than fifty characters", "TitleMaxLength").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "Please enter at least three characters for the person's title", "TitleMinLength").DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person description", "EmptyDescription");
             builder.EntityType<Person>().HasOne(p => p.Client).WithMany(p => p.People).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.EntityType<Person>().HasOne(p => p.Site).WithMany(p => p.People).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.EntityType<Person>().HasOne(p => p.SiteArea).WithMany(p => p.People).WithConstraint(p => p.SiteAreaId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.Type).WithMany(p => p.People).WithConstraint(p => p.TypeId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.Loading).WithMany(p => p.People).WithConstraint(p => p.LoadingId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.CreatedByUser).WithMany(p => p.PeopleCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -2273,7 +2312,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
-            }).DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter a loading name", "1");
+            }).DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter a loading name", "2");
             builder.EntityType<PersonLoading>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonLoadingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<PersonLoading>().Configure(p => {
                 p.TitlePropertyName = "Name";
@@ -2575,7 +2614,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
-            }).DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a valid report title", "2").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "Please enter less than five characters", "3");
+            }).DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a valid report title", "3").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "Please enter less than five characters", "4");
             builder.EntityType<PersonReport>().HasOne(p => p.Person).WithMany(p => p.Reports).WithConstraint(p => p.PersonId, p => p.Id);
             builder.EntityType<PersonReport>().HasOne(p => p.Type).WithMany(p => p.FaultReports).WithConstraint(p => p.TypeId, p => p.Id);
             builder.EntityType<PersonReport>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultReportsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -2597,13 +2636,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
                 p.FriendlyName = "Id";
-            }).DefineProperty(p => p.Area, true, IqlType.GeographyPolygon).ConfigureProperty(p => p.Area, p => {
-                p.PropertyName = "Area";
-                p.Nullable = true;
-                p.Kind = PropertyKind.Primitive;
-                p.Name = "Area";
-                p.Title = "Area";
-                p.FriendlyName = "Area";
             }).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
                 p.PropertyName = "Location";
                 p.Nullable = true;
@@ -2611,6 +2643,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Location";
                 p.Title = "Location";
                 p.FriendlyName = "Location";
+            }).DefineProperty(p => p.Area, true, IqlType.GeographyPolygon).ConfigureProperty(p => p.Area, p => {
+                p.PropertyName = "Area";
+                p.Nullable = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Area";
+                p.Title = "Area";
+                p.FriendlyName = "Area";
             }).DefineProperty(p => p.Line, true, IqlType.GeographyLine).ConfigureProperty(p => p.Line, p => {
                 p.PropertyName = "Line";
                 p.Nullable = true;
@@ -2732,6 +2771,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "AdditionalSendReportsTo";
                 p.Title = "AdditionalSendReportsTo";
                 p.FriendlyName = "Additional Send Reports To";
+            }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
+                p.PropertyName = "People";
+                p.Nullable = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "People";
+                p.Title = "People";
+                p.FriendlyName = "People";
             }).DefineProperty(p => p.Parent, true, IqlType.Unknown).ConfigureProperty(p => p.Parent, p => {
                 p.PropertyName = "Parent";
                 p.Nullable = true;
@@ -2761,6 +2807,13 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+            }).DefineCollectionProperty(p => p.Areas, p => p.AreasCount).ConfigureProperty(p => p.Areas, p => {
+                p.PropertyName = "Areas";
+                p.Nullable = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Areas";
+                p.Title = "Areas";
+                p.FriendlyName = "Areas";
             }).DefineCollectionProperty(p => p.SiteInspections, p => p.SiteInspectionsCount).ConfigureProperty(p => p.SiteInspections, p => {
                 p.PropertyName = "SiteInspections";
                 p.Nullable = false;
@@ -2788,6 +2841,104 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
                 p.FriendlyName = "Site";
+            });
+            builder.EntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+                p.PropertyName = "Id";
+                p.Nullable = false;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.Key;
+                p.Name = "Id";
+                p.Title = "Id";
+                p.FriendlyName = "Id";
+            }).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
+                p.PropertyName = "SiteId";
+                p.Nullable = false;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "SiteId";
+                p.Title = "SiteId";
+                p.FriendlyName = "Site Id";
+            }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
+                p.PropertyName = "CreatedByUserId";
+                p.Nullable = true;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "CreatedByUserId";
+                p.Title = "CreatedByUserId";
+                p.FriendlyName = "Created By User Id";
+            }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
+                p.PropertyName = "Guid";
+                p.Nullable = false;
+                p.ReadKind = PropertyReadKind.Hidden;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Guid";
+                p.Title = "Guid";
+                p.FriendlyName = "Guid";
+            }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
+                p.PropertyName = "CreatedDate";
+                p.Nullable = false;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "CreatedDate";
+                p.Title = "CreatedDate";
+                p.FriendlyName = "Created Date";
+            }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "RevisionKey";
+                p.Nullable = true;
+                p.ReadKind = PropertyReadKind.Hidden;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "RevisionKey";
+                p.Title = "RevisionKey";
+                p.FriendlyName = "Revision Key";
+                p.Hints = new List<string>(new[]
+                {
+                    "Iql:Version"
+                });
+            }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
+                p.PropertyName = "PersistenceKey";
+                p.Nullable = false;
+                p.ReadKind = PropertyReadKind.Hidden;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "PersistenceKey";
+                p.Title = "PersistenceKey";
+                p.FriendlyName = "Persistence Key";
+            }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
+                p.PropertyName = "People";
+                p.Nullable = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "People";
+                p.Title = "People";
+                p.FriendlyName = "People";
+            }).DefineProperty(p => p.Site, false, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
+                p.PropertyName = "Site";
+                p.Nullable = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Site";
+                p.Title = "Site";
+                p.FriendlyName = "Site";
+            }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
+                p.PropertyName = "CreatedByUser";
+                p.Nullable = true;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "CreatedByUser";
+                p.Title = "CreatedByUser";
+                p.FriendlyName = "Created By User";
+            });
+            builder.EntityType<SiteArea>().HasOne(p => p.Site).WithMany(p => p.Areas).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.EntityType<SiteArea>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteAreasCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.EntityType<SiteArea>().Configure(p => {
+                p.TitlePropertyName = "RevisionKey";
+                p.SetFriendlyName = "Site Areas";
+                p.SetName = "SiteAreas";
+                p.DefaultSortExpression = "CreatedDate";
+                p.DefaultSortDescending = true;
+                p.Name = "SiteArea";
+                p.Title = "SiteArea";
+                p.FriendlyName = "Site Area";
             });
             builder.EntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
@@ -3053,6 +3204,11 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Sites Created";
                     rel_cnf.FriendlyName = "Sites Created";
                 });
+                rel.FindCollectionRelationship(rel_p => rel_p.SiteAreasCreated).Configure(rel_cnf => {
+                    rel_cnf.Name = "SiteAreasCreated";
+                    rel_cnf.Title = "Site Areas Created";
+                    rel_cnf.FriendlyName = "Site Areas Created";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteInspectionsCreated).Configure(rel_cnf => {
                     rel_cnf.Name = "SiteInspectionsCreated";
                     rel_cnf.Title = "Site Inspections Created";
@@ -3138,6 +3294,11 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Additional Send Reports To";
                     rel_cnf.FriendlyName = "Additional Send Reports To";
                 });
+                rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
+                    rel_cnf.Name = "People";
+                    rel_cnf.Title = "People";
+                    rel_cnf.FriendlyName = "People";
+                });
                 rel.FindRelationship(rel_p => rel_p.Parent).Configure(rel_cnf => {
                     rel_cnf.Name = "Parent";
                     rel_cnf.Title = "Parent";
@@ -3157,6 +3318,11 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
+                });
+                rel.FindCollectionRelationship(rel_p => rel_p.Areas).Configure(rel_cnf => {
+                    rel_cnf.Name = "Areas";
+                    rel_cnf.Title = "Areas";
+                    rel_cnf.FriendlyName = "Areas";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteInspections).Configure(rel_cnf => {
                     rel_cnf.Name = "SiteInspections";
@@ -3356,6 +3522,16 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Client";
                     rel_cnf.FriendlyName = "Client";
                 });
+                rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
+                    rel_cnf.Name = "Site";
+                    rel_cnf.Title = "Site";
+                    rel_cnf.FriendlyName = "Site";
+                });
+                rel.FindRelationship(rel_p => rel_p.SiteArea).Configure(rel_cnf => {
+                    rel_cnf.Name = "SiteArea";
+                    rel_cnf.Title = "Site Area";
+                    rel_cnf.FriendlyName = "Site Area";
+                });
                 rel.FindRelationship(rel_p => rel_p.Type).Configure(rel_cnf => {
                     rel_cnf.Name = "Type";
                     rel_cnf.Title = "Type";
@@ -3380,6 +3556,23 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Name = "Reports";
                     rel_cnf.Title = "Reports";
                     rel_cnf.FriendlyName = "Reports";
+                });
+            });
+            builder.EntityType<SiteArea>().Configure(rel => {
+                rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
+                    rel_cnf.Name = "People";
+                    rel_cnf.Title = "People";
+                    rel_cnf.FriendlyName = "People";
+                });
+                rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
+                    rel_cnf.Name = "Site";
+                    rel_cnf.Title = "Site";
+                    rel_cnf.FriendlyName = "Site";
+                });
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
                 });
             });
             builder.EntityType<PersonType>().Configure(rel => {
@@ -3564,6 +3757,11 @@ namespace IqlSampleApp.ApiContext.Base
             set;
         }
         public SiteSet Sites
+        {
+            get;
+            set;
+        }
+        public SiteAreaSet SiteAreas
         {
             get;
             set;

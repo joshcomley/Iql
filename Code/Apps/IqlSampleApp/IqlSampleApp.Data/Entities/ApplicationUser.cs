@@ -38,6 +38,7 @@ namespace IqlSampleApp.Data.Entities
         public List<PersonLoading> PersonLoadingsCreated { get; set; }
 
         public List<Site> SitesCreated { get; set; }
+        public List<SiteArea> SiteAreasCreated { get; set; }
 
         //public override string NormalizedEmail { get; set; }
         [Required(ErrorMessage = "Please select a user type")]

@@ -102,32 +102,34 @@ namespace Iql.Tests.Tests.OData
                 var compressed = body.CompressJson();
                 Assert.AreEqual(@"{
   ""Id"": 0,
-  ""Area"": {
-    ""type"": ""Polygon"",
-    ""coordinates"": [ [
-      [
-        -80.19,
-        25.774
-      ],
-      [
-        -66.118,
-        18.466
-      ],
-      [
-        -64.757,
-        32.321
-      ],
-      [
-        -80.19,
-        25.774
-      ]
-    ] ]
-  },
   ""Location"": {
     ""type"": ""Point"",
     ""coordinates"": [
       13.2846523,
       52.5067614
+    ]
+  },
+  ""Area"": {
+    ""type"": ""Polygon"",
+    ""coordinates"": [
+      [
+        [
+          -80.19,
+          25.774
+        ],
+        [
+          -66.118,
+          18.466
+        ],
+        [
+          -64.757,
+          32.321
+        ],
+        [
+          -80.19,
+          25.774
+        ]
+      ]
     ]
   },
   ""Line"": {

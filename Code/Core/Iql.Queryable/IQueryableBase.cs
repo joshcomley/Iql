@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Entities;
 using Iql.Parsing;
 using Iql.Parsing.Expressions.QueryExpressions;
 
@@ -47,6 +48,8 @@ namespace Iql.Queryable
             , EvaluateContext evaluateContext = null
 #endif
         );
+
+        IQueryableBase ApplyRelationshipFilters(IProperty relatedProperty, object entity);
 
         IQueryableBase Where(LambdaExpression expression
 #if TypeScript

@@ -61,6 +61,7 @@ namespace IqlSampleApp.Data
         public DbSet<PersonType> PersonTypes { get; set; }
         public DbSet<PersonTypeMap> PersonTypesMap { get; set; }
         public DbSet<Site> Sites { get; set; }
+        public DbSet<SiteArea> SiteAreas { get; set; }
         public DbSet<SiteDocument> SiteDocuments { get; set; }
         public DbSet<SiteInspection> SiteInspections { get; set; }
         public DbSet<UserSite> UserSites { get; set; }
@@ -91,6 +92,7 @@ namespace IqlSampleApp.Data
         IQueryable<PersonType> IIqlSampleAppService.PersonTypes => PersonTypes;
         IQueryable<PersonTypeMap> IIqlSampleAppService.PersonTypesMap => PersonTypesMap;
         IQueryable<Site> IIqlSampleAppService.Sites => Sites;
+        IQueryable<SiteArea> IIqlSampleAppService.SiteAreas => SiteAreas;
         IQueryable<SiteDocument> IIqlSampleAppService.SiteDocuments => SiteDocuments;
         IQueryable<SiteInspection> IIqlSampleAppService.SiteInspections => SiteInspections;
         IQueryable<UserSite> IIqlSampleAppService.UserSites => UserSites;
