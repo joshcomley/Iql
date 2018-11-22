@@ -27,7 +27,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             var isiteUrl = "http://localhost:48000/odata/$metadata";
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("iql")
+            switch ("isite")
             {
                 case "todoot":
                     await GenerateAsync("http://localhost:62000/odata/$metadata", OutputType.TypeScript, @"D:\Code\Apps\Todoot\Code\Web\", @"D:\Code\Apps\Todoot\Code\Web\ClientApp\", @"app\generated\DataContext");
@@ -86,7 +86,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                 //    await GenerateAsync(tunnelUrl, OutputType.CSharp, new[] { @"D:\Code\Iql\Code\Tests\Iql.Tests.Data\", @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\" }.First(Directory.Exists), @"Context");
                 //    break;
                 case "iql":
-                    await GenerateAsync(iqlUrl, OutputType.CSharp, @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\", @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\");
+                    await GenerateAsync(iqlUrl, OutputType.CSharp, @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\", @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\", "Context");
                     break;
                     //case "hazception-mobile":
                     //    await GenerateAsync(hazceptionUrl, OutputType.TypeScript, @"D:\Code\Hazception.App\Code\Mobile\Hazception\app\", @"DataContext\Generated");

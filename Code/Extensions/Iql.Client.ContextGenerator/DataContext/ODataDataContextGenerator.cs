@@ -166,7 +166,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(IqlMultiLineExpression),
                 typeof(PrimitivePropertyChanger),
                 typeof(PointPropertyChanger),
-                typeof(PolygonPropertyChanger)
+                typeof(PolygonPropertyChanger),
+                typeof(PropertyService),
             };
 
             void WriteBaseClasses(StringBuilder builder, List<GeneratedFile> list)
@@ -244,14 +245,13 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 defaultConversionSettings.MetadataReferences.AddReference<MediaKeyBase>("@brandless/iql.entities", true);
                 defaultConversionSettings.MetadataReferences.AddReference<IqlParserRegistry>("@brandless/iql.parsing", true);
                 defaultConversionSettings.MetadataReferences.AddReference<EvaluateContext>("@brandless/iql.conversion", true);
-                var ccol = new CSharpObjectSerializer().SerializeToString(conversionCollections);
                 var result = await CSharpToTypescriptConverter.ConvertToTypeScript(
                     conversionCollections,
                     defaultConversionSettings
                 );
                 foreach (var convertedFile in result.OutputFiles)
                 {
-                    newOutputFiles.Add(new OutputFile(convertedFile.Path, convertedFile.GetContents()));
+                    newOutputFiles.Add(new OutputFile(Path.Combine(outputFullPath, convertedFile.Path.Substring(ApplicationRoot.Length)), convertedFile.GetContents()));
                 }
             }
             else
@@ -261,7 +261,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
 
             foreach (var file in newOutputFiles)
             {
-                var newFilePath = Path.Combine(outputFullPath, file.Path.Substring(ApplicationRoot.Length));
+                var newFilePath = file.Path;
                 var directoryName = Path.GetDirectoryName(newFilePath);
                 if (!Directory.Exists(directoryName))
                 {
