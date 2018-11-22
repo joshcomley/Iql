@@ -66,6 +66,16 @@ namespace Iql.Data.Context
         TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
 
         Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
+        public DbQueryable<T> ApplyRelationshipFiltersByExpression<TProperty>(
+            Expression<Func<TProperty, T>> relatedProperty,
+            TProperty entity)
+        {
+            var relatedConfiguration = this.EntityConfiguration.Builder.GetEntityByType(
+                typeof(TProperty) ?? entity.GetType());
+            var property = relatedConfiguration.FindNestedPropertyByLambdaExpression(relatedProperty);
+            return ApplyRelationshipFilters(property, entity);
+        }
+
         IDbQueryable IDbQueryable.WithKeys(IEnumerable<object> keys)
         {
             return WithKeys(keys);

@@ -11,6 +11,6 @@ namespace Iql.Entities.Rules.Relationship
 
         public override Func<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>> Run => _ => TypedInvoker(_);
 
-        Func<object, LambdaExpression> IRuleBase<LambdaExpression>.Run => (Func<object, LambdaExpression>) Run;
+        Func<object, LambdaExpression> IRuleBase<LambdaExpression>.Run => _ => Run((RelationshipFilterContext<TEntity>) _);
     }
 }
