@@ -852,11 +852,15 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestRelationshipFilterRuleUri()
         {
-            var query = Db.Clients.Where(c => c.Name == "hello").Expand(c => c.UsersCount);
-
+            var person = new Person();
+            person.SiteId = 12;
+            var query = Db.SiteAreas.ApplyRelationshipFiltersByExpression(
+                p => p.SiteArea,
+                person
+                );
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Users/$count",
+            Assert.AreEqual(@"http://localhost:28000/odata/SiteAreas?$filter=($it/SiteId eq 12)",
                 uri);
         }
 

@@ -27,7 +27,7 @@ namespace Iql.Queryable
 
         //TQueryable OrderByOperation<TProperty>(OrderByOperation operation, EvaluateContext evaluateContext = null);
 
-        TQueryable ApplyRelationshipFilters(IProperty relatedProperty, T entity);
+        TQueryable ApplyRelationshipFilters<TProperty>(IProperty relatedProperty, TProperty entity);
 
         TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression
 #if TypeScript

@@ -57,11 +57,11 @@ namespace Iql.Queryable
                 );
         }
 
-        public TQueryable ApplyRelationshipFilters(IProperty relatedProperty, T entity)
+        public TQueryable ApplyRelationshipFilters<TProperty>(IProperty relatedProperty, TProperty entity)
         {
+            var ctx = new RelationshipFilterContext<TProperty>();
+            ctx.Owner = entity;
 #if TypeScript
-            var ctx = new RelationshipFilterContext<T>();
-            ctx.Owner = (T)entity;
             var context = new EvaluateContext(e => ctx);
 #endif
             var query = this;
@@ -69,20 +69,19 @@ namespace Iql.Queryable
             for (var i = 0; i < relationshipRules.Count; i++)
             {
                 var filterRule = relationshipRules[i];
-                var filterFunction = filterRule.Run(entity);
+                var filterFunction = filterRule.Run(ctx);
                 query = query.Where((Expression<Func<T, bool>>)filterFunction
 #if TypeScript
                     , context
 #endif
                 );
             }
-
-            return (TQueryable) query;
+            return (TQueryable)query;
         }
 
         IQueryableBase IQueryableBase.ApplyRelationshipFilters(IProperty relatedProperty, object entity)
         {
-            return ApplyRelationshipFilters(relatedProperty, (T) entity);
+            return ApplyRelationshipFilters(relatedProperty, entity);
         }
 
         IQueryableBase IQueryableBase.Where(LambdaExpression expression
