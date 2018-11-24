@@ -31,7 +31,7 @@ namespace Iql
         }
 
         public static double DistanceBetween(double xOrLongitude1, double yOrLatitude1, double xOrLongitude2, double yOrLatitude2,
-            IqlDistanceKind unit = IqlDistanceKind.Kilometers)
+            IqlDistanceKind unit = IqlDistanceKind.Meters)
         {
             var rlat1 = Math.PI * yOrLatitude1 / 180;
             var rlat2 = Math.PI * yOrLatitude2 / 180;
@@ -46,12 +46,14 @@ namespace Iql
 
             switch (unit)
             {
-                case IqlDistanceKind.Kilometers: //Kilometers -> default
-                    return dist * 1.609344;
+                case IqlDistanceKind.Meters: //Meters -> default
+                    return dist * 1000;
+                case IqlDistanceKind.Kilometers: //Kilometers
+                    return dist;
                 case IqlDistanceKind.NauticalMiles: //Nautical Miles 
                     return dist * 0.8684;
                 case IqlDistanceKind.Miles: //Miles
-                    return dist;
+                    return dist * 0.621369647819236;
             }
 
             return dist;

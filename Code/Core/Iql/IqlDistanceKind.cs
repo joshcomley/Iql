@@ -2,8 +2,9 @@ namespace Iql
 {
     public enum IqlDistanceKind
     {
-        Kilometers = 0,
-        Miles = 1,
-        NauticalMiles = 2
+        Meters = 0,
+        Kilometers = 1,
+        Miles = 2,
+        NauticalMiles = 3
     }
 }

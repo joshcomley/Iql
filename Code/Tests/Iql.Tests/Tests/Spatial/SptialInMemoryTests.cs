@@ -22,7 +22,7 @@ namespace Iql.Tests.Tests
                 Id = 3
             };
             AppDbContext.InMemoryDb.Sites.Add(site);
-            var sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.BerlinPoint) < 2000
+            var sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.BerlinPoint) < 300000
 #if TypeScript
                     , 
                     new EvaluateContext
@@ -33,7 +33,7 @@ namespace Iql.Tests.Tests
 #endif
             ).ToListAsync();
             Assert.AreEqual(0, sites.Count);
-            sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.NotWithinBermudaTrianglePoint) < 2000
+            sites = await Db.Sites.Where(s => s.Location.DistanceFrom(SptialFunctionsTests.NotWithinBermudaTrianglePoint) < 300000
 #if TypeScript
                     , 
                     new EvaluateContext
@@ -55,7 +55,7 @@ namespace Iql.Tests.Tests
                 Id = 3
             };
             AppDbContext.InMemoryDb.Sites.Add(site);
-            var sites = await Db.Sites.Where(s => SptialFunctionsTests.BerlinPoint.DistanceFrom(s.Location) < 2000
+            var sites = await Db.Sites.Where(s => SptialFunctionsTests.BerlinPoint.DistanceFrom(s.Location) < 300000
 #if TypeScript
                     , 
                     new EvaluateContext
@@ -66,7 +66,7 @@ namespace Iql.Tests.Tests
 #endif
             ).ToListAsync();
             Assert.AreEqual(0, sites.Count);
-            sites = await Db.Sites.Where(s => SptialFunctionsTests.NotWithinBermudaTrianglePoint.DistanceFrom(s.Location) < 2000
+            sites = await Db.Sites.Where(s => SptialFunctionsTests.NotWithinBermudaTrianglePoint.DistanceFrom(s.Location) < 300000
 #if TypeScript
                     , 
                     new EvaluateContext

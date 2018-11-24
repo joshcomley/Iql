@@ -26,11 +26,11 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 #endif
             );
             return new IqlFinalExpression<Expression>(Expression.Call(null, DistanceBetweenMethod,
-                    Expression.Property(leftOutput.Expression, nameof(IqlPointExpression.Y)),
                     Expression.Property(leftOutput.Expression, nameof(IqlPointExpression.X)),
-                    Expression.Property(rightOutput.Expression, nameof(IqlPointExpression.Y)),
+                    Expression.Property(leftOutput.Expression, nameof(IqlPointExpression.Y)),
                     Expression.Property(rightOutput.Expression, nameof(IqlPointExpression.X)),
-                    Expression.Constant(IqlDistanceKind.Kilometers)
+                    Expression.Property(rightOutput.Expression, nameof(IqlPointExpression.Y)),
+                    Expression.Constant(IqlDistanceKind.Meters)
                 )
             );
         }

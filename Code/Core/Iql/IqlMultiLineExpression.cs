@@ -17,7 +17,7 @@ namespace Iql
 
         }
 
-        public double Length(IqlDistanceKind unit = IqlDistanceKind.Kilometers)
+        public double Length(IqlDistanceKind unit = IqlDistanceKind.Meters)
         {
             if (Lines == null)
             {
