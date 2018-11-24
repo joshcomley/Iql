@@ -1,5 +1,6 @@
 using Iql.Data;
 using IqlSampleApp.Sets;
+using IqlSampleApp.ApiContext.Base.Properties;
 using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
 using Iql.Entities.PropertyChangers;

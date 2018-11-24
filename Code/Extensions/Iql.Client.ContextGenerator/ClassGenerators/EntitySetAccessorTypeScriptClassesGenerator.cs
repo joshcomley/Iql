@@ -39,6 +39,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     files.Add(dataContextGenerator.Generate());
                 }
 
+                var propertyServiceGenerator = new PropertyServiceGenerator(
+                    _schema,
+                    $"{setGroup.Key}.ApiContext.Base.Properties",
+                    $"{setGroup.Key}PropertyServiceBase",
+                    setGroup.Select(s => s),
+                    outputType,
+                    Settings);
+                files.Add(propertyServiceGenerator.Generate());
+
                 if (Settings.GenerateEntitySets)
                 {
                     var dbSetsGenerator = new DbSetsGenerator(
