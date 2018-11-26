@@ -21,8 +21,8 @@ namespace Iql.Entities
             return PropertyGroup ?? this;
         }
 
-        public bool Internal => PropertyGroup != null;
-        public bool IsHiddenOrInternal => IsHidden || Internal;
+        public override bool Internal => PropertyGroup != null;
+
         public ISimpleProperty PropertyGroup
         {
             get
@@ -163,31 +163,6 @@ namespace Iql.Entities
 
         public string PropertyName { get; set; }
 
-        public bool IsReadOnly => ResolveAutoReadOnly();
-
-        public bool IsHidden => EditKind == PropertyEditKind.Hidden && ReadKind == PropertyReadKind.Hidden;
-
-
-        private bool ResolveAutoReadOnly()
-        {
-            if (EditKind == PropertyEditKind.Display || EditKind == PropertyEditKind.Hidden)
-            {
-                return true;
-            }
-
-            if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
-            {
-                return true;
-            }
-
-            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public abstract Func<object, object> GetValue { get; set; }
         public abstract Func<object, object, object> SetValue { get; set; }
 
@@ -197,6 +172,15 @@ namespace Iql.Entities
         {
             Nullable = nullable;
             return (IProperty)this;
+        }
+
+        protected override bool ResolveAutoReadOnly()
+        {
+            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
+            {
+                return true;
+            }
+            return base.ResolveAutoReadOnly();
         }
 
         protected PropertyBase() : base(null, null)

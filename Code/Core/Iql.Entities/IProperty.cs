@@ -17,6 +17,10 @@ namespace Iql.Entities
         EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged { get; }
         PropertyReadKind ReadKind { get; set; }
         PropertyEditKind EditKind { get; set; }
+        bool IsReadOnly { get; }
+        bool IsHidden { get; }
+        bool Internal { get; }
+        bool IsHiddenOrInternal { get; }
         bool SupportsInlineEditing { get; set; }
         bool PromptBeforeEdit { get; set; }
         string Placeholder { get; set; }

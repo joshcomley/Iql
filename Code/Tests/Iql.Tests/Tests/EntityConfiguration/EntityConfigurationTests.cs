@@ -16,6 +16,16 @@ namespace Iql.Tests.Tests.EntityConfiguration
     public class EntityConfigurationTests : TestsBase
     {
         [TestMethod]
+        public void RelationshipEditAndReadKindShouldUsePropertyEditAndReadKind()
+        {
+            var site = Db.EntityConfigurationContext.EntityType<Site>();
+            var property = site.FindPropertyByExpression(l => l.CreatedByUser);
+            var relationship = site.Relationships.Single(r => r.Source.Property == property);
+            Assert.AreEqual(PropertyEditKind.Hidden, property.EditKind);
+            Assert.AreEqual(PropertyEditKind.Hidden, relationship.Source.EditKind);
+        }
+
+        [TestMethod]
         public void MediaKeyShouldBeParseable()
         {
             var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);

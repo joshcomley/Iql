@@ -10,6 +10,24 @@ namespace Iql.Entities
     public abstract class SimplePropertyGroupBase<T> : PropertyGroupBase<T>, ISimpleProperty
         where T : IConfigurable<T>
     {
+        public virtual bool Internal => false;
+        public virtual bool IsHiddenOrInternal => IsHidden || Internal;
+        public virtual bool IsReadOnly => ResolveAutoReadOnly();
+        public virtual bool IsHidden => EditKind == PropertyEditKind.Hidden && ReadKind == PropertyReadKind.Hidden;
+        protected virtual bool ResolveAutoReadOnly()
+        {
+            if (EditKind == PropertyEditKind.Display || EditKind == PropertyEditKind.Hidden)
+            {
+                return true;
+            }
+
+            if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
+            {
+                return true;
+            }
+
+            return false;
+        }
         private PropertyEditKind _editKind = PropertyEditKind.Edit;
         private PropertyReadKind _readKind = PropertyReadKind.Display;
 
@@ -27,7 +45,7 @@ namespace Iql.Entities
         public EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged => _readKindChanged =
             _readKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyReadKind>>();
 
-        public PropertyReadKind ReadKind
+        public virtual PropertyReadKind ReadKind
         {
             get => _readKind;
             set
@@ -41,7 +59,7 @@ namespace Iql.Entities
             }
         }
 
-        public PropertyEditKind EditKind
+        public virtual PropertyEditKind EditKind
         {
             get => _editKind;
             set

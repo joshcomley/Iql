@@ -11,6 +11,37 @@ namespace Iql.Entities.Relationships
     {
         private IProperty[] _constraints;
 
+        private bool _readKindSet;
+        private PropertyReadKind _readKindTemp = PropertyReadKind.Display;
+        public override PropertyReadKind ReadKind
+        {
+            get => Property?.ReadKind ?? _readKindTemp;
+            set
+            {
+                _readKindSet = true;
+                if (Property != null)
+                {
+                    Property.ReadKind = value;
+                }
+                _readKindTemp = value;
+            }
+        }
+        private bool _editKindSet;
+        private PropertyEditKind _editKindTemp = PropertyEditKind.Display;
+        public override PropertyEditKind EditKind
+        {
+            get => Property?.EditKind ?? _editKindTemp;
+            set
+            {
+                _editKindSet = true;
+                if (Property != null)
+                {
+                    Property.EditKind = value;
+                }
+                _editKindTemp = value;
+            }
+        }
+
         protected RelationshipDetailBase(
             IRelationship relationship,
             RelationshipSide relationshipSide) : base(null, null)
@@ -39,7 +70,23 @@ namespace Iql.Entities.Relationships
         public IRelationship Relationship { get; }
         public Type Type => EntityConfiguration?.Type;
         public bool IsCollection { get; }
-        public IProperty Property { get; set; }
+
+        public IProperty Property
+        {
+            get => _property;
+            set
+            {
+                if (_readKindSet && _property != null)
+                {
+                    _property.ReadKind = ReadKind;
+                }
+                if (_editKindSet && _property != null)
+                {
+                    _property.EditKind = EditKind;
+                }
+                _property = value;
+            }
+        }
 
         public IProperty CountProperty
         {
@@ -61,6 +108,8 @@ namespace Iql.Entities.Relationships
 
         private readonly List<object> _beingMarkedAsDirty = new List<object>();
         private EventSubscription _constraintsSubscription;
+        private IProperty _property;
+
         public void MarkDirty(object entity)
         {
             if (entity != null && !_beingMarkedAsDirty.Contains(entity))
