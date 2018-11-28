@@ -99,25 +99,43 @@ namespace Iql.Entities
             SetValue = (o, v) => PropertySetterTyped((TOwner)o, (TProperty)v);
         }
 
-        public new ValidationCollection<TOwner> ValidationRules { get; private set; } = new ValidationCollection<TOwner>();
+        public new ValidationCollection<TOwner> ValidationRules => (ValidationCollection<TOwner>) base.ValidationRules;
+
         IRuleCollection<IBinaryRule> IPropertyGroup.ValidationRules
         {
             get => ValidationRules;
-            set => ValidationRules = (ValidationCollection<TOwner>)value;
+            set => throw new NotImplementedException();
         }
 
-        public new DisplayRuleCollection<TOwner> DisplayRules { get; private set; } = new DisplayRuleCollection<TOwner>();
+        protected override IRuleCollection<IDisplayRule> NewDisplayRulesCollection()
+        {
+            return new DisplayRuleCollection<TOwner>();
+        }
+
+        protected override IRuleCollection<IBinaryRule> NewValidationRulesCollection()
+        {
+            return new ValidationCollection<TOwner>();
+        }
+
+        protected override IRuleCollection<IRelationshipRule> NewRelationshipFilterRulesCollection()
+        {
+            return new RelationshipRuleCollection<TOwner, TElementType>();
+        }
+
+        public new DisplayRuleCollection<TOwner> DisplayRules => (DisplayRuleCollection<TOwner>) base.DisplayRules;
+
         IRuleCollection<IDisplayRule> IPropertyGroup.DisplayRules
         {
             get => DisplayRules;
-            set => DisplayRules = (DisplayRuleCollection<TOwner>)value;
+            set => throw new NotImplementedException();
         }
 
-        public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules { get; private set; } = new RelationshipRuleCollection<TOwner, TElementType>();
-        IRuleCollection<IRelationshipRule> IPropertyMetadata.RelationshipFilterRules
+        public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules => (RelationshipRuleCollection<TOwner, TElementType>) base.RelationshipFilterRules;
+
+        IRuleCollection<IRelationshipRule> IPropertyGroup.RelationshipFilterRules
         {
             get => RelationshipFilterRules;
-            set => RelationshipFilterRules = (RelationshipRuleCollection<TOwner, TElementType>)value;
+            set => throw new NotImplementedException();
         }
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }

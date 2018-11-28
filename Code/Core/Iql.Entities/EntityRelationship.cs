@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Iql.Entities.Relationships;
 
 namespace Iql.Entities
@@ -8,7 +9,24 @@ namespace Iql.Entities
         public bool ThisIsTarget { get; }
         public IRelationshipDetail ThisEnd { get; }
         public IRelationshipDetail OtherEnd { get; }
-        public EntityRelationship(IRelationship relationship, bool thisIsTarget)
+
+        private static readonly Dictionary<IRelationship, EntityRelationship> TargetMappings
+            = new Dictionary<IRelationship, EntityRelationship>();
+        private static readonly Dictionary<IRelationship, EntityRelationship> SourceMappings
+            = new Dictionary<IRelationship, EntityRelationship>();
+
+        public static EntityRelationship Get(IRelationship relationship, bool thisIsTarget)
+        {
+            var mapping = thisIsTarget ? TargetMappings : SourceMappings;
+            if (!mapping.ContainsKey(relationship))
+            {
+                mapping.Add(relationship, new EntityRelationship(relationship, thisIsTarget));
+            }
+
+            return mapping[relationship];
+        }
+
+        private EntityRelationship(IRelationship relationship, bool thisIsTarget)
         {
             Relationship = relationship;
             ThisIsTarget = thisIsTarget;

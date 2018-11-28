@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Display;
+using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Validation;
 using Iql.Extensions;
 
 namespace Iql.Entities.Relationships
@@ -49,6 +53,21 @@ namespace Iql.Entities.Relationships
             LambdaExpression expression,
             Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
         {
+        }
+
+        protected override IRuleCollection<IRelationshipRule> NewRelationshipFilterRulesCollection()
+        {
+            return new RelationshipRuleCollection<T, TProperty>();
+        }
+
+        protected override IRuleCollection<IDisplayRule> NewDisplayRulesCollection()
+        {
+            return new DisplayRuleCollection<T>();
+        }
+
+        protected override IRuleCollection<IBinaryRule> NewValidationRulesCollection()
+        {
+            return new ValidationCollection<T>();
         }
     }
 

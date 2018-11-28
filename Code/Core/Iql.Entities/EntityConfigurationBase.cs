@@ -280,7 +280,7 @@ namespace Iql.Entities
                     {
                         if (Equals(ends[i].EntityConfiguration, this))
                         {
-                            var relationshipMatch = new EntityRelationship(relationship, i == 1);
+                            var relationshipMatch = EntityRelationship.Get(relationship, i == 1);
                             list.Add(relationshipMatch);
                         }
                     }

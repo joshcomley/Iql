@@ -24,7 +24,6 @@ namespace Iql.Entities
 
     public interface IPropertyMetadata : ISimpleProperty
     {
-        IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         IEnumerable<IRelationship> Relationships { get; }
         ITypeDefinition TypeDefinition { get; set; }
         PropertySearchKind SearchKind { get; set; }

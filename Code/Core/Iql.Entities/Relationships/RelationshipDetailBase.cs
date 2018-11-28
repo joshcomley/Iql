@@ -4,6 +4,8 @@ using Iql.Entities.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.Rules;
+using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Entities.Relationships
 {

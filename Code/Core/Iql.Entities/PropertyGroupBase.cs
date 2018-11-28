@@ -2,120 +2,58 @@ using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using System;
 using System.Linq;
-using Iql.Entities.Events;
 using Iql.Entities.Extensions;
+using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Validation;
 
 namespace Iql.Entities
 {
-    public abstract class SimplePropertyGroupBase<T> : PropertyGroupBase<T>, ISimpleProperty
-        where T : IConfigurable<T>
-    {
-        public virtual bool Internal => false;
-        public virtual bool IsHiddenOrInternal => IsHidden || Internal;
-        public virtual bool IsReadOnly => ResolveAutoReadOnly();
-        public virtual bool IsHidden => EditKind == PropertyEditKind.Hidden && ReadKind == PropertyReadKind.Hidden;
-        protected virtual bool ResolveAutoReadOnly()
-        {
-            if (EditKind == PropertyEditKind.Display || EditKind == PropertyEditKind.Hidden)
-            {
-                return true;
-            }
-
-            if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
-            {
-                return true;
-            }
-
-            return false;
-        }
-        private PropertyEditKind _editKind = PropertyEditKind.Edit;
-        private PropertyReadKind _readKind = PropertyReadKind.Display;
-
-        protected SimplePropertyGroupBase(IEntityConfiguration entityConfiguration, string key) : base(entityConfiguration, key)
-        {
-        }
-
-        private EventEmitter<ValueChangedEvent<PropertyEditKind>> _editKindChanged;
-
-        public EventEmitter<ValueChangedEvent<PropertyEditKind>> EditKindChanged => _editKindChanged =
-            _editKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyEditKind>>();
-
-        private EventEmitter<ValueChangedEvent<PropertyReadKind>> _readKindChanged;
-
-        public EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged => _readKindChanged =
-            _readKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyReadKind>>();
-
-        public virtual PropertyReadKind ReadKind
-        {
-            get => _readKind;
-            set
-            {
-                var oldValue = _readKind;
-                _readKind = value;
-                if (oldValue != value && _readKindChanged != null)
-                {
-                    ReadKindChanged.Emit(() => new ValueChangedEvent<PropertyReadKind>(oldValue, value));
-                }
-            }
-        }
-
-        public virtual PropertyEditKind EditKind
-        {
-            get => _editKind;
-            set
-            {
-                var oldValue = _editKind;
-                _editKind = value;
-                if (oldValue != value && _editKindChanged != null)
-                {
-                    EditKindChanged.Emit(() => new ValueChangedEvent<PropertyEditKind>(oldValue, value));
-                }
-            }
-        }
-
-        public bool SupportsInlineEditing { get; set; } = true;
-        public bool PromptBeforeEdit { get; set; } = false;
-        public string Placeholder { get; set; }
-        public bool Sortable { get; set; } = true;
-        public ISimpleProperty SetReadOnlyAndHidden()
-        {
-            SetReadOnly().SetHidden();
-            return this;
-        }
-
-        public ISimpleProperty SetReadOnly()
-        {
-            ReadKind = PropertyReadKind.Display;
-            EditKind = PropertyEditKind.Hidden;
-            return this;
-        }
-
-        public ISimpleProperty SetHidden()
-        {
-            EditKind = PropertyEditKind.Hidden;
-            ReadKind = PropertyReadKind.Hidden;
-            return this;
-        }
-
-        public virtual ISimpleProperty ResolvePrimaryProperty()
-        {
-            return this;
-        }
-    }
-
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
         where T : IConfigurable<T>
     {
         protected IEntityConfiguration _entityConfiguration;
+        private IRuleCollection<IRelationshipRule> _relationshipFilterRules;
+        private IRuleCollection<IBinaryRule> _validationRules;
+        private IRuleCollection<IDisplayRule> _displayRules;
         public string Key { get; set; }
         public string GroupName => this.ResolveGroupName();
 
         public abstract PropertyKind Kind { get; set; }
 
         public virtual IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ?? GetGroupProperties().Where(p => p != null).Select(p => p.EntityConfiguration).FirstOrDefault();
+        public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules
+        {
+            get => _relationshipFilterRules = _relationshipFilterRules ?? NewRelationshipFilterRulesCollection();
+            set => _relationshipFilterRules = value;
+        }
 
-        public IRuleCollection<IBinaryRule> ValidationRules { get; set; }
-        public IRuleCollection<IDisplayRule> DisplayRules { get; set; }
+        protected virtual IRuleCollection<IRelationshipRule> NewRelationshipFilterRulesCollection()
+        {
+            return null;
+        }
+
+        public virtual IRuleCollection<IBinaryRule> ValidationRules
+        {
+            get => _validationRules = _validationRules ?? NewValidationRulesCollection();
+            set => _validationRules = value;
+        }
+
+        protected virtual IRuleCollection<IBinaryRule> NewValidationRulesCollection()
+        {
+            return null;
+        }
+
+        public virtual IRuleCollection<IDisplayRule> DisplayRules
+        {
+            get => _displayRules = _displayRules ?? NewDisplayRulesCollection();
+            set => _displayRules = value;
+        }
+
+        protected virtual IRuleCollection<IDisplayRule> NewDisplayRulesCollection()
+        {
+            return null;
+        }
+
         public abstract IPropertyGroup[] GetGroupProperties();
 
         protected PropertyGroupBase(IEntityConfiguration entityConfiguration, string key)

@@ -33,7 +33,7 @@ namespace Iql.Entities.Extensions
 
         private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type, object>();
         public static object DefaultValue(this ITypeDefinition type, bool ignoreNullable = false)
-        {
+        {            
 #if TypeScript
             if (type.Nullable && !ignoreNullable)
             {

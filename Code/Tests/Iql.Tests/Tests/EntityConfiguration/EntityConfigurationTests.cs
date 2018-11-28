@@ -16,6 +16,27 @@ namespace Iql.Tests.Tests.EntityConfiguration
     public class EntityConfigurationTests : TestsBase
     {
         [TestMethod]
+        public void DisplayRuleOnRelationshipShouldBeAppliedToRelationshipDetail()
+        {
+            var site = Db.EntityConfigurationContext.EntityType<Site>();
+            var clientProperty = site.FindProperty(nameof(Site.Client));
+            Assert.AreEqual(0, clientProperty.DisplayRules.All.Count());
+            Assert.AreEqual(0, clientProperty.Relationship.ThisEnd.DisplayRules.All.Count());
+            site.DefinePropertyDisplayRule(p => p.Client, _ => _.Id == 17);
+            Assert.AreEqual(1, clientProperty.DisplayRules.All.Count());
+            Assert.AreEqual(1, clientProperty.Relationship.ThisEnd.DisplayRules.All.Count());
+        }
+
+        [TestMethod]
+        public void PreBuiltRelationshipFilterRuleShouldBeAppliedToRelationshipDetail()
+        {
+            var person = Db.EntityConfigurationContext.EntityType<Person>();
+            var clientProperty = person.FindProperty(nameof(Person.SiteArea));
+            Assert.AreEqual(1, clientProperty.RelationshipFilterRules.All.Count());
+            Assert.AreEqual(1, clientProperty.Relationship.ThisEnd.RelationshipFilterRules.All.Count());
+        }
+
+        [TestMethod]
         public void RelationshipEditAndReadKindShouldUsePropertyEditAndReadKind()
         {
             var site = Db.EntityConfigurationContext.EntityType<Site>();

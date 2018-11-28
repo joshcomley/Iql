@@ -92,7 +92,7 @@ namespace Iql.Entities
 
         public bool HasDefaultValue()
         {
-            // Avoid for loop in most casesS
+            // Avoid for loop in most cases
             if (Keys.Length == 1)
             {
                 return Keys[0].HasDefaultValue;

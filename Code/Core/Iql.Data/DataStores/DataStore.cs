@@ -611,8 +611,8 @@ namespace Iql.Data.DataStores
         {
             ForAnEntityAcrossAllDataStores<TEntity>(entityKey, (dataTracker, key) =>
             {
-                var state = dataTracker.DataStore.Tracking.TrackingSet<TEntity>()
-                    .GetEntityStateByKey(key);
+                var trackingSet = dataTracker.DataStore.Tracking.TrackingSet<TEntity>();
+                var state = trackingSet.GetEntityStateByKey(key);
                 dataTracker.RemoveEntityByKey<TEntity>(entityKey);
                 var iEntity = state?.Entity as IEntity;
                 iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));

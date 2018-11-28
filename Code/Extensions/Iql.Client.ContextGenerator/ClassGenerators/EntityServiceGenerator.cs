@@ -1,3 +1,4 @@
+using System;
 using Brandless.ObjectSerializer;
 using Iql.Entities;
 using Iql.OData.TypeScript.Generator.DataContext;
@@ -11,14 +12,14 @@ using Iql.Parsing;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
-    public class PropertyServiceGenerator : ClassGenerator
+    public class EntityServiceGenerator : ClassGenerator
     {
         private CSharpObjectSerializer CSharpObjectSerializer { get; }
         private readonly string _className;
         private readonly IEnumerable<EntitySetDefinition> _entitySetDefinitions;
         private readonly string _namespace;
 
-        public PropertyServiceGenerator(ODataSchema schema,
+        public EntityServiceGenerator(ODataSchema schema,
             string @namespace,
             string className,
             IEnumerable<EntitySetDefinition> entitySetDefinitions,
@@ -51,6 +52,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         ctorParams);
                     foreach (var entitySetDefinition in _entitySetDefinitions)
                     {
+                        GenerateType(entitySetDefinition.Type.Name);
                         foreach (var property in entitySetDefinition.Type.Properties)
                         {
                             GenerateProperty(entitySetDefinition.Type.Name, property.Name);
@@ -59,6 +61,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }, nameof(PropertyService));
             File.Contents = Contents();
             return File;
+        }
+
+        private void GenerateType(string type)
+        {
+            AppendLine($"public {nameof(Type)} TypeOf{type} => typeof({type});");
         }
 
         private void GenerateProperty(string type, string property)

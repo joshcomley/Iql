@@ -18,7 +18,12 @@ namespace Iql.Entities
     {
         public override ISimpleProperty ResolvePrimaryProperty()
         {
-            return PropertyGroup ?? this;
+            var propertyGroup = PropertyGroup;
+            if (propertyGroup == null)
+            {
+                return this;
+            }
+            return propertyGroup;
         }
 
         public override bool Internal => PropertyGroup != null;
@@ -108,7 +113,6 @@ namespace Iql.Entities
             return _inferredWithPath;
         }
 
-        public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
 
@@ -126,7 +130,26 @@ namespace Iql.Entities
                 }
                 return CountRelationship?.Relationship;
             }
-            set => _relationship = value;
+            set
+            {
+                if (_relationship != null)
+                {
+                    if (_relationship != value)
+                    {
+                        throw new ArgumentException("A relationship can only be assigned once.");
+                    }
+                }
+                else
+                {
+                    _relationship = value;
+                    if (_relationship != null && _relationship.ThisEnd.Property == this)
+                    {
+                        _relationship.ThisEnd.ValidationRules = ValidationRules;
+                        _relationship.ThisEnd.DisplayRules = DisplayRules;
+                        _relationship.ThisEnd.RelationshipFilterRules = RelationshipFilterRules;
+                    }
+                }
+            }
         }
 
         public override PropertyKind Kind { get; set; }

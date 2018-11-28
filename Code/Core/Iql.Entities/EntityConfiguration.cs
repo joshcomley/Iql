@@ -620,7 +620,7 @@ namespace Iql.Entities
             )
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
-            var validationCollection = (ValidationCollection<T>)propertyDefinition.ValidationRules;
+            var validationCollection = (ValidationCollection<T>)propertyDefinition.ResolvePrimaryProperty().ValidationRules;
             validationCollection.Add(new ValidationRule<T>(validation, key, message));
             return this;
         }
@@ -634,7 +634,7 @@ namespace Iql.Entities
             DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
-            var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.DisplayRules;
+            var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.ResolvePrimaryProperty().DisplayRules;
             var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
             rule.AppliesToKind = appliesToKind;
             rule.Kind = kind;
@@ -647,7 +647,8 @@ namespace Iql.Entities
             string message = null
             )
         {
-            var ruleCollection = (RelationshipRuleCollection<T, TProperty>)propertyDefinition.RelationshipFilterRules;
+            var primaryProperty = propertyDefinition.ResolvePrimaryProperty();
+            var ruleCollection = (RelationshipRuleCollection<T, TProperty>)primaryProperty.RelationshipFilterRules;
             ruleCollection.Add(new RelationshipFilterRule<T, TProperty>(filterRule, key, message));
         }
 
