@@ -179,7 +179,7 @@ namespace Iql.Entities
 
         public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression)
         {
-            InferredWith = expression;
+            SetInferredWithExpression(expression);
             return this;
         }
 
@@ -199,7 +199,7 @@ namespace Iql.Entities
 
         IProperty IProperty.IsInferredWithExpression(LambdaExpression expression)
         {
-            InferredWith = expression;
+            SetInferredWithExpression(expression);
             return this;
         }
 

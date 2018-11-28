@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Entities.Relationships;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Relationship;
-using Iql.Entities.ValueResolvers;
 
 namespace Iql.Entities
 {
@@ -30,7 +27,7 @@ namespace Iql.Entities
         string PropertyName { get; set; }
         bool Searchable { get; set; }
         bool? Nullable { get; set; }
-        LambdaExpression InferredWith { get; set; }
-        IqlPropertyPath GetInferredWithPath();
+        void SetInferredWithExpression(LambdaExpression value);
+        IqlExpression InferredWithIql { get; set; }
     }
 }

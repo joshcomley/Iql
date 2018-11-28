@@ -38,7 +38,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                 {
                     iql = IqlXmlSerializer.DeserializeFromXml(xml);
                 }
-                document.SetValueAtPropertyPath(mapping.Key + "Iql", iql);
+                document.SetValueAtPropertyPath($"{mapping.Key}Iql", iql);
             }
         }
     }

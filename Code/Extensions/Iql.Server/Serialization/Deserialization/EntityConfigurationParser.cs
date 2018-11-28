@@ -72,6 +72,7 @@ namespace Iql.Server.Serialization.Deserialization
             lambdaExpressionConverter = new LambdaExpressionConverter<T>();
             settings.Converters.Add(lambdaExpressionConverter);
             settings.Converters.Add(new MetadataCollectionConverter());
+            settings.Converters.Add(new IqlExpressionConverter());
             return settings;
         }
     }

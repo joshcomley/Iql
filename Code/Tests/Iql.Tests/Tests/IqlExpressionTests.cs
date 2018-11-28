@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Conversion;
 using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,6 +15,34 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class IqlExpressionTests : TestsBase
     {
+        [TestMethod]
+        public void FlattenIqlDynamicExpressionShouldYieldPropertyExpressions()
+        {
+            Expression<Func<Person, string>> expression = _ => _.Description + " - " + _.Client.CreatedByUser.ClientId;
+            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
+            var propertyExpressions = iql.TopLevelPropertyExpressions();
+            Assert.AreEqual(2, propertyExpressions.Length);
+            Assert.AreEqual(nameof(Person.Description), propertyExpressions[0].PropertyName);
+            Assert.AreEqual(nameof(ApplicationUser.ClientId), propertyExpressions[1].PropertyName);
+            var processedIql = iql.ReplaceWith((context, iqlExpression) =>
+            {
+                if (iqlExpression == propertyExpressions[0])
+                {
+                    return new IqlLiteralExpression("First", IqlType.String);
+                }
+
+                if (iqlExpression == propertyExpressions[1])
+                {
+                    return new IqlLiteralExpression("Second", IqlType.String);
+                }
+
+                return iqlExpression;
+            });
+            var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql);
+            var compiledLambda = processedLambda.Compile();
+            var result = compiledLambda.DynamicInvoke(new object[] {null});
+        }
+
         [TestMethod]
         public async Task SimpleQueryableToIql()
         {

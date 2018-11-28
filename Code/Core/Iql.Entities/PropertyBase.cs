@@ -2,13 +2,12 @@ using Iql.Entities.Extensions;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
 using Iql.Entities.Relationships;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Relationship;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Iql.Conversion;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 
@@ -95,23 +94,51 @@ namespace Iql.Entities
             }
         }
 
-        public LambdaExpression InferredWith { get; set; }
-        private LambdaExpression _inferredWithPathResolvedWith;
-        private IqlPropertyPath _inferredWithPath;
-        public IqlPropertyPath GetInferredWithPath()
+        public void SetInferredWithExpression(LambdaExpression value)
         {
-            if (InferredWith == null)
-            {
-                return null;
-            }
-
-            if (_inferredWithPathResolvedWith != InferredWith)
-            {
-                _inferredWithPathResolvedWith = InferredWith;
-                _inferredWithPath = IqlPropertyPath.FromLambdaExpression(InferredWith, EntityConfiguration);
-            }
-            return _inferredWithPath;
+            // This expression is lazy converted to IQL on demand
+            _inferredWithExpression = value;
         }
+
+        public IqlExpression InferredWithIql
+        {
+            get
+            {
+                // Lazy convert the expression
+                if (_inferredWithExpression != null)
+                {
+                    _inferredWithIql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
+                        _inferredWithExpression, EntityConfiguration.Type).Expression;
+                    _inferredWithExpression = null;
+                }
+                return _inferredWithIql;
+            }
+            set
+            {
+                _inferredWithExpression = null;
+                _inferredWithIql = value;
+            }
+        }
+
+        // Help avoid triggering lazy evaluation of inferred IQL expression
+        public bool HasInferredWith => _inferredWithExpression != null || _inferredWithIql != null;
+
+        //private LambdaExpression _inferredWithPathResolvedWith;
+        //private IqlPropertyPath _inferredWithPath;
+        //public IqlPropertyPath GetInferredWithPath()
+        //{
+        //    if (GetInferredWithExpression() == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    if (_inferredWithPathResolvedWith != GetInferredWithExpression())
+        //    {
+        //        _inferredWithPathResolvedWith = GetInferredWithExpression();
+        //        _inferredWithPath = IqlPropertyPath.FromLambdaExpression(GetInferredWithExpression(), EntityConfiguration);
+        //    }
+        //    return _inferredWithPath;
+        //}
 
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
@@ -157,6 +184,8 @@ namespace Iql.Entities
         private bool _searchKindSet;
         private bool? _readOnly;
         private EntityRelationship _relationship;
+        private LambdaExpression _inferredWithExpression;
+        private IqlExpression _inferredWithIql;
 
         public PropertySearchKind SearchKind
         {
@@ -199,6 +228,10 @@ namespace Iql.Entities
 
         protected override bool ResolveAutoReadOnly()
         {
+            if (HasInferredWith)
+            {
+                return true;
+            }
             if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
             {
                 return true;

@@ -272,10 +272,11 @@ namespace Iql.Server.OData.Net
             KeyValuePair<string, object>[] entityKey = null;
             foreach (var property in EntityConfiguration.Properties)
             {
-                if (property.InferredWith != null)
+                if (property.InferredWithIql != null)
                 {
                     entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
-                    var path = IqlPropertyPath.FromLambdaExpression(property.InferredWith, property.EntityConfiguration);
+                    var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
+                        property.InferredWithIql as IqlPropertyExpression);
                     var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
                     //postedValues[property.Name] = new JObject(value);
                     if (property.Kind.HasFlag(PropertyKind.Primitive))

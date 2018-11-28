@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql
 {
@@ -293,6 +294,38 @@ namespace Iql
             return ReplaceExpressions(context);
         }
         internal abstract IqlExpression ReplaceExpressions(ReplaceContext context);
+
+        public IqlPropertyExpression[] TopLevelPropertyExpressions()
+        {
+            var expressions = Flatten()
+                .Where(_=>_.Kind == IqlExpressionKind.Property)
+                .Select(_ => _ as IqlPropertyExpression)
+                .ToArray();
+            return expressions.Where(_ =>
+            {
+                for (var i = 0; i < expressions.Length; i++)
+                {
+                    var expression = expressions[i];
+                    if (expression == _)
+                    {
+                        continue;
+                    }
+
+                    var parent = expression.Parent;
+                    while (parent != null)
+                    {
+                        if (parent == _)
+                        {
+                            return false;
+                        }
+                        parent = parent.Parent;
+                    }
+                }
+
+                return true;
+            }).ToArray();
+        }
+
         public virtual IqlExpression[] Flatten(Func<IqlExpression, FlattenReactionKind> checker = null)
         {
             var list = new List<IqlExpression>();

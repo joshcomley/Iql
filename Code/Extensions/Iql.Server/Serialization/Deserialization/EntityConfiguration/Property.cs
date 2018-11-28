@@ -15,7 +15,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         public Dictionary<string, object> CustomInformation { get; }
         public IProperty IsInferredWithExpression(LambdaExpression expression)
         {
-            InferredWith = expression;
+            SetInferredWithExpression(expression);
             return this;
         }
     }

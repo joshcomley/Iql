@@ -780,7 +780,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     var value = metadataProperty.GetValue(metadata);
                     var nullAllowed =
                         metadata is IPropertyMetadata &&
-                        metadataProperty.Name == nameof(IPropertyMetadata.InferredWith);
+                        metadataProperty.Name == nameof(IPropertyMetadata.InferredWithIql);
                     if (value == null && !nullAllowed)
                     {
                         continue;
@@ -808,20 +808,20 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         // We will do this at the end when we're sure all relationships and other
                         // property groups are configured
                     }
-                    if (metadata is IProperty &&
-                        metadataProperty.Name == nameof(IPropertyMetadata.InferredWith))
-                    {
-                        dealtWith = true;
-                        var property = metadata as Property;
-                        if (property.InferredWithIql != null)
-                        {
-                            sb.AppendLine();
-                            var path = IqlPropertyPath.FromPropertyExpression(sourceEntityConfiguration as IEntityConfiguration,
-                                (property.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
-                            sb.AppendLine(
-                                $"{lambdaKey}.{nameof(IEntityProperty<object>.IsInferredWith)}({lambdaKey}_inf => {lambdaKey}_inf.{path.GetPathToHere(".")});");
-                        }
-                    }
+                    //if (metadata is IProperty &&
+                    //    metadataProperty.Name == nameof(IPropertyMetadata.GetInferredWithExpression()))
+                    //{
+                    //    dealtWith = true;
+                    //    var property = metadata as Property;
+                    //    if (property.InferredWithIql != null)
+                    //    {
+                    //        sb.AppendLine();
+                    //        var path = IqlPropertyPath.FromPropertyExpression(sourceEntityConfiguration as IEntityConfiguration,
+                    //            (property.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
+                    //        sb.AppendLine(
+                    //            $"{lambdaKey}.{nameof(IEntityProperty<object>.IsInferredWith)}({lambdaKey}_inf => {lambdaKey}_inf.{path.GetPathToHere(".")});");
+                    //    }
+                    //}
                     else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
                     {
                         dealtWith = true;
