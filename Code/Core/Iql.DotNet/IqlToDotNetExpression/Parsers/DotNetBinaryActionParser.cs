@@ -116,10 +116,15 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         private static readonly Dictionary<Type, MethodInfo> ToStringMethods = new Dictionary<Type, MethodInfo>();
         private static Expression AsToString(Expression expression)
         {
-            MethodInfo toStringMethod = ToStringMethods.Ensure(expression.Type,
+            var toStringMethod = ToStringMethods.Ensure(expression.Type,
                 () => expression.Type.GetMethods()
                     .First(m => m.Name == nameof(ToString) && m.GetParameters().Length == 0));
-            expression = Expression.Call(Expression.Coalesce(expression, Expression.Constant("")), toStringMethod);
+            var canBeNull = !expression.Type.IsValueType || (Nullable.GetUnderlyingType(expression.Type) != null);
+            expression = Expression.Call(
+                canBeNull
+                    ? Expression.Coalesce(expression, Expression.Constant(""))
+                    : expression,
+                toStringMethod);
             return expression;
         }
 
