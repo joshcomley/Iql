@@ -24,7 +24,12 @@ namespace Iql.Entities
             object entity,
             Type entityType = null)
         {
-            return EvaluateLambdaInternalAsync(expression, entity, entityType, null, false).Result;
+            var iql = ProcessIqlExpression(expression, entity, entityType, null, out var propertyExpressions, out var lookup);
+            foreach (var item in lookup.Keys.ToArray())
+            {
+                lookup[item] = item.Evaluate(entity);
+            }
+            return ProcessLambdaInternal(entity, lookup, iql, propertyExpressions);
         }
 
         public static Task<object> EvaluateExpressionAsync<T>(
@@ -36,55 +41,61 @@ namespace Iql.Entities
             return EvaluateLambdaAsync(expression, entity, dataContext);
         }
 
-        public static Task<object> EvaluateLambdaAsync(
+        public static async Task<object> EvaluateLambdaAsync(
             LambdaExpression expression,
             object entity,
             IDataContext dataContext,
             Type entityType = null)
         {
-            return EvaluateLambdaInternalAsync(expression, entity, entityType, dataContext, true);
+            var iql = ProcessIqlExpression(expression, entity, entityType, dataContext, out var propertyExpressions, out var lookup);
+            foreach (var item in lookup.Keys.ToArray())
+            {
+                lookup[item] = await item.EvaluateAsync(entity, dataContext);
+            }
+            return ProcessLambdaInternal(entity, lookup, iql, propertyExpressions);
         }
 
-        private static async Task<object> EvaluateLambdaInternalAsync(
-            LambdaExpression expression,
-            object entity,
-            Type entityType,
-            IDataContext dataContext,
-            bool isAsync)
+        private static IqlExpression ProcessIqlExpression(LambdaExpression expression, object entity, Type entityType,
+            IDataContext dataContext, out IqlPropertyExpression[] propertyExpressions, out Dictionary<IqlPropertyPath, object> lookup)
         {
             entityType = entityType ?? entity.GetType();
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, entityType).Expression;
-            var propertyExpressions = iql.TopLevelPropertyExpressions();
-            var lookup = new Dictionary<IqlExpression, object>();
+            propertyExpressions = iql.TopLevelPropertyExpressions();
+            lookup = new Dictionary<IqlPropertyPath, object>();
             for (var i = 0; i < propertyExpressions.Length; i++)
             {
                 var propertyExpression = propertyExpressions[i];
                 var path = IqlPropertyPath.FromPropertyExpression(
-                    (dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(entityType)).GetEntityByType(entityType),
+                    (dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(entityType))
+                    .GetEntityByType(entityType),
                     propertyExpression);
-                object value = null;
-                if (!isAsync)
-                {
-                    value = path.Evaluate(entity);
-                }
-                else
-                {
-                    value = await path.EvaluateAsync(entity, dataContext);
-                }
-                lookup.Add(propertyExpression, value);
+                lookup.Add(path, null);
+            }
+
+            return iql;
+        }
+
+        private static object ProcessLambdaInternal(object entity, Dictionary<IqlPropertyPath, object> lookup, IqlExpression iql,
+            IqlPropertyExpression[] propertyExpressions)
+        {
+            var expressionResultLookup = new Dictionary<IqlExpression, object>();
+            foreach (var item in lookup)
+            {
+                expressionResultLookup.Add(item.Key.Expression, item.Value);
             }
 
             var processedIql = iql.ReplaceWith((context, iqlExpression) =>
             {
                 if (propertyExpressions.Contains(iqlExpression))
                 {
-                    return new IqlLiteralExpression(lookup[iqlExpression]);
+                    return new IqlLiteralExpression(expressionResultLookup[iqlExpression]);
                 }
+
                 return iqlExpression;
             });
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql);
             var compiledLambda = processedLambda.Compile();
-            var result = compiledLambda.DynamicInvoke(new object[] { entity });
+            var result = compiledLambda.DynamicInvoke(new object[] {entity});
             return result;
         }
     }
