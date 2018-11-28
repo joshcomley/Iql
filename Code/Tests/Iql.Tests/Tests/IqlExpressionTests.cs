@@ -30,6 +30,16 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public void EvaluateComplexExpressionWithDeadEndSynchronouslyTest()
+        {
+            var person = new Person();
+            person.Description = "Person Description";
+            person.Client = new Client();
+            var result = ExpressionEvaluator.EvaluateExpression(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
+            Assert.AreEqual("Person Description - ", result);
+        }
+
+        [TestMethod]
         public async Task EvaluateComplexExpressionAsynchronouslyTest()
         {
             var person = new Person();
@@ -47,6 +57,20 @@ namespace Iql.Tests.Tests
             });
             var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
             Assert.AreEqual("Asynchronous Person Description - 9", result);
+        }
+
+        [TestMethod]
+        public async Task EvaluateComplexExpressionWithDeadEndAsynchronouslyTest()
+        {
+            var person = new Person();
+            person.Description = "Asynchronous Person Description";
+            person.ClientId = 8;
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 8
+            });
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
+            Assert.AreEqual("Asynchronous Person Description - ", result);
         }
 
         [TestMethod]

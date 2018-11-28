@@ -119,7 +119,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             MethodInfo toStringMethod = ToStringMethods.Ensure(expression.Type,
                 () => expression.Type.GetMethods()
                     .First(m => m.Name == nameof(ToString) && m.GetParameters().Length == 0));
-            expression = Expression.Call(expression, toStringMethod);
+            expression = Expression.Call(Expression.Coalesce(expression, Expression.Constant("")), toStringMethod);
             return expression;
         }
 
