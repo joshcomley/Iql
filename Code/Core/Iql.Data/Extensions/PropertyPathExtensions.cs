@@ -20,11 +20,19 @@ namespace Iql.Data.Extensions
                 result = result.GetPropertyValueByName(part.PropertyName);
                 if (result == null)
                 {
-                    if (part.Property.Kind.HasFlag(PropertyKind.Relationship) &&
-                        dataContext.DataStore.Tracking.IsTracked(parent))
+                    if (part.Property.Kind.HasFlag(PropertyKind.Relationship))
                     {
-                        await dataContext.LoadRelationshipPropertyAsync(parent, part.Property);
-                        result = parent.GetPropertyValueByName(part.PropertyName);
+                        if (dataContext.DataStore.Tracking.IsTracked(parent))
+                        {
+                            await dataContext.LoadRelationshipPropertyAsync(parent, part.Property);
+                            result = parent.GetPropertyValueByName(part.PropertyName);
+                        }
+                        else
+                        {
+                            var key = part.Property.Relationship.ThisEnd.GetCompositeKey(parent, true);
+                            result = await dataContext.GetDbSetByEntityType(part.Property.Relationship.OtherEnd.Type)
+                                .GetWithKeyAsync(key);
+                        }
                         if (result == null)
                         {
                             return null;

@@ -41,6 +41,19 @@ namespace Iql.Data.Context
             return null;
         }
 
+        public static EntityConfigurationBuilder FindBuilderForEntityType(Type entityType)
+        {
+            foreach (var lookup in EntityConfigurationsBuilders)
+            {
+                if (lookup.Value.IsEntityType(entityType))
+                {
+                    return lookup.Value;
+                }
+            }
+
+            return null;
+        }
+
         public static IDataContext FindDataContextForEntity(object entity)
         {
             var tracker = FindTrackingForEntity(entity);

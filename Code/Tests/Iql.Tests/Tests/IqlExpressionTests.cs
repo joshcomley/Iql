@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Context;
+using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,7 +18,39 @@ namespace Iql.Tests.Tests
     public class IqlExpressionTests : TestsBase
     {
         [TestMethod]
-        public void FlattenIqlDynamicExpressionShouldYieldPropertyExpressions()
+        public void EvaluateComplexExpressionSynchronouslyTest()
+        {
+            var person = new Person();
+            person.Description = "Person Description";
+            person.Client = new Client();
+            person.Client.CreatedByUser = new ApplicationUser();
+            person.Client.CreatedByUser.ClientId = 7;
+            var result = ExpressionEvaluator.EvaluateExpression(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
+            Assert.AreEqual("Person Description - 7", result);
+        }
+
+        [TestMethod]
+        public async Task EvaluateComplexExpressionAsynchronouslyTest()
+        {
+            var person = new Person();
+            person.Description = "Asynchronous Person Description";
+            person.ClientId = 8;
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 8,
+                CreatedByUserId = "myuser"
+            });
+            AppDbContext.InMemoryDb.Users.Add(new ApplicationUser
+            {
+                Id = "myuser",
+                ClientId = 9
+            });
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
+            Assert.AreEqual("Asynchronous Person Description - 9", result);
+        }
+
+        [TestMethod]
+        public void TopLevelPropertyExpressionsTest()
         {
             Expression<Func<Person, string>> expression = _ => _.Description + " - " + _.Client.CreatedByUser.ClientId;
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
@@ -24,23 +58,6 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(2, propertyExpressions.Length);
             Assert.AreEqual(nameof(Person.Description), propertyExpressions[0].PropertyName);
             Assert.AreEqual(nameof(ApplicationUser.ClientId), propertyExpressions[1].PropertyName);
-            var processedIql = iql.ReplaceWith((context, iqlExpression) =>
-            {
-                if (iqlExpression == propertyExpressions[0])
-                {
-                    return new IqlLiteralExpression("First", IqlType.String);
-                }
-
-                if (iqlExpression == propertyExpressions[1])
-                {
-                    return new IqlLiteralExpression("Second", IqlType.String);
-                }
-
-                return iqlExpression;
-            });
-            var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql);
-            var compiledLambda = processedLambda.Compile();
-            var result = compiledLambda.DynamicInvoke(new object[] {null});
         }
 
         [TestMethod]

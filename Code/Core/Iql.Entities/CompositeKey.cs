@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Iql.Entities.Extensions;
 
 namespace Iql.Entities
 {
+    [DebuggerDisplay("{KeyString}")]
     public class CompositeKey
     {
         public object TryGetValue(string name)
@@ -79,6 +82,8 @@ namespace Iql.Entities
             );
             return compositeKey;
         }
+
+        private string KeyString => this.AsKeyString();
 
         public static List<CompositeKey> All { get; set; }
         = new List<CompositeKey>();
