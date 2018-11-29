@@ -6,8 +6,7 @@
             IqlLiteralExpression action,
             DotNetStringIqlParserInstance parser)
         {
-            // "null"
-            var value = action.Value == null ? "" : action.Value.ToString();
+            var value = action.Value == null ? "null" : action.Value.ToString();
             if (action.Value != null && action.ReturnType == IqlType.String)
             {
                 value = $@"""{value}""";

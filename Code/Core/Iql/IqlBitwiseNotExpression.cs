@@ -31,29 +31,13 @@ namespace Iql
 			// #CloneEnd
 		}
 
-		internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
+		internal override void FlattenInternal(IqlFlattenContext context)
         {
 			// #FlattenStart
 
-			if(expressions.Contains(this))
-			{
-				return;
-			}
-			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
-			if(reaction == FlattenReactionKind.Ignore)
-			{
-				return;
-			}
-			if(reaction != FlattenReactionKind.OnlyChildren)
-			{
-				expressions.Add(this);
-			}
-			if(reaction != FlattenReactionKind.IgnoreChildren)
-			{
-				Left?.FlattenInternal(expressions, checker);
-				Right?.FlattenInternal(expressions, checker);
-				Parent?.FlattenInternal(expressions, checker);
-			}
+				context.Flatten(Left);
+				context.Flatten(Right);
+				context.Flatten(Parent);
 
 			// #FlattenEnd
         }

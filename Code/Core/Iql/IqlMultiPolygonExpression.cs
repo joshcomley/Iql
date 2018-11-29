@@ -51,35 +51,18 @@ namespace Iql
             // #CloneEnd
         }
 
-        internal override void FlattenInternal(IList<IqlExpression> expressions,
-            Func<IqlExpression, FlattenReactionKind> checker = null)
+        internal override void FlattenInternal(IqlFlattenContext context)
         {
             // #FlattenStart
 
-			if(expressions.Contains(this))
-			{
-				return;
-			}
-			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
-			if(reaction == FlattenReactionKind.Ignore)
-			{
-				return;
-			}
-			if(reaction != FlattenReactionKind.OnlyChildren)
-			{
-				expressions.Add(this);
-			}
-			if(reaction != FlattenReactionKind.IgnoreChildren)
-			{
 				if(Polygons != null)
 				{
 					for(var i = 0; i < Polygons.Count; i++)
 					{
-						Polygons[i]?.FlattenInternal(expressions, checker);
+						context.Flatten(Polygons[i]);
 					}
 				}
-				Parent?.FlattenInternal(expressions, checker);
-			}
+				context.Flatten(Parent);
 
             // #FlattenEnd
         }

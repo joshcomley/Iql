@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
-using Iql.Data.Context;
-using Iql.Data.Extensions;
+using Iql.Data;
 using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,15 +46,26 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Clients.Add(new Client
             {
                 Id = 8,
-                CreatedByUserId = "myuser"
+                CreatedByUserId = "myuser",
+                Name = "My Client"
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 9,
+                CreatedByUserId = "myuser",
+                Name = "My Other Client"
             });
             AppDbContext.InMemoryDb.Users.Add(new ApplicationUser
             {
                 Id = "myuser",
                 ClientId = 9
             });
-            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
-            Assert.AreEqual("Asynchronous Person Description - 9", result);
+            Expression<Func<Person, object>> expression =
+                _ => _.Description + ": " + (_.CreatedByUserId == null ? "No User" : "Has User") + " - " + (_.Client.CreatedByUser.ClientId == null ? "No Client" : _.Client.CreatedByUser.Client.Name);
+            //var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
+            //var xml = IqlXmlSerializer.SerializeToXml(iql);
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(expression, person, Db);
+            Assert.AreEqual("Asynchronous Person Description: No User - My Other Client", result);
         }
 
         [TestMethod]
@@ -80,8 +89,8 @@ namespace Iql.Tests.Tests
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
             var propertyExpressions = iql.TopLevelPropertyExpressions();
             Assert.AreEqual(2, propertyExpressions.Length);
-            Assert.AreEqual(nameof(Person.Description), propertyExpressions[0].PropertyName);
-            Assert.AreEqual(nameof(ApplicationUser.ClientId), propertyExpressions[1].PropertyName);
+            Assert.AreEqual(nameof(Person.Description), (propertyExpressions[0].Expression as IqlPropertyExpression).PropertyName);
+            Assert.AreEqual(nameof(ApplicationUser.ClientId), (propertyExpressions[1].Expression as IqlPropertyExpression).PropertyName);
         }
 
         [TestMethod]
@@ -254,7 +263,7 @@ namespace Iql.Tests.Tests
                 left,
                 right
             );
-            var flattened = and.Flatten();
+            var flattened = and.Flatten().Select(_ => _.Expression).ToArray();
             Assert.AreEqual(6, flattened.Length);
             Assert.IsTrue(flattened.Contains(root));
             Assert.IsTrue(flattened.Contains(property));

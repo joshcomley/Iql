@@ -274,6 +274,7 @@ namespace Iql.Server.OData.Net
             {
                 if (property.InferredWithIql != null)
                 {
+                    var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
                     entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
                     var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
                         property.InferredWithIql as IqlPropertyExpression);

@@ -6,7 +6,7 @@ using Iql.DotNet.Extensions;
 namespace Iql.DotNet.DotNetExpressionToIql.Parsers
 {
     public class BinaryDotNetExpressionParser<T> : DotNetExpressionParserBase<T, BinaryExpression>
-    {
+        {
         public override bool CanHandleNode(Expression node)
         {
             var supportedTypes = new[]

@@ -295,18 +295,17 @@ namespace Iql
         }
         internal abstract IqlExpression ReplaceExpressions(ReplaceContext context);
 
-        public IqlPropertyExpression[] TopLevelPropertyExpressions()
+        public IqlFlattenedExpression[] TopLevelPropertyExpressions()
         {
             var expressions = Flatten()
-                .Where(_=>_.Kind == IqlExpressionKind.Property)
-                .Select(_ => _ as IqlPropertyExpression)
+                .Where(_=>_.Expression.Kind == IqlExpressionKind.Property)
                 .ToArray();
             return expressions.Where(_ =>
             {
                 for (var i = 0; i < expressions.Length; i++)
                 {
-                    var expression = expressions[i];
-                    if (expression == _)
+                    var expression = expressions[i].Expression;
+                    if (expression == _.Expression)
                     {
                         continue;
                     }
@@ -314,7 +313,7 @@ namespace Iql
                     var parent = expression.Parent;
                     while (parent != null)
                     {
-                        if (parent == _)
+                        if (parent == _.Expression)
                         {
                             return false;
                         }
@@ -326,11 +325,11 @@ namespace Iql
             }).ToArray();
         }
 
-        public virtual IqlExpression[] Flatten(Func<IqlExpression, FlattenReactionKind> checker = null)
+        public virtual IqlFlattenedExpression[] Flatten(Func<IqlExpression, FlattenReactionKind> checker = null)
         {
-            var list = new List<IqlExpression>();
-            FlattenInternal(list, checker);
-            return list.ToArray();
+            var context = new IqlFlattenContext(checker);
+            context.Flatten(this);
+            return context.FlattenedExpressions.ToArray();
         }
 
         protected FlattenReactionKind CheckFlatten(Func<IqlExpression, FlattenReactionKind> checker)
@@ -342,6 +341,6 @@ namespace Iql
             return checker(this);
         }
 
-        internal abstract void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker);
+        internal abstract void FlattenInternal(IqlFlattenContext context);
     }
 }

@@ -75,15 +75,23 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                 left = Expression.Convert(left, right.Type);
             }
 
-            void EnsureCompatibleType(Type from, Type to)
+            void EnsureCompatibleType(Type from, Type to, Type convertTo = null)
             {
                 if (left.Type == to && right.Type == from)
                 {
-                    right = Expression.Convert(right, left.Type);
+                    right = Expression.Convert(right, convertTo ?? left.Type);
+                    if (convertTo != null)
+                    {
+                        left = Expression.Convert(left, convertTo);
+                    }
                 }
                 else if (right.Type == to && left.Type == from)
                 {
-                    left = Expression.Convert(left, right.Type);
+                    left = Expression.Convert(left, convertTo ?? right.Type);
+                    if (convertTo != null)
+                    {
+                        right = Expression.Convert(right, convertTo);
+                    }
                 }
             }
 
@@ -98,6 +106,18 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             EnsureCompatibleType(typeof(float), typeof(double));
             EnsureCompatibleType(typeof(decimal), typeof(float));
             EnsureCompatibleType(typeof(decimal), typeof(double));
+
+            EnsureCompatibleType(typeof(object), typeof(int), typeof(int?));
+            EnsureCompatibleType(typeof(object), typeof(long), typeof(int?));
+            EnsureCompatibleType(typeof(object), typeof(short), typeof(int?));
+
+            EnsureCompatibleType(typeof(object), typeof(ulong), typeof(ulong?));
+            EnsureCompatibleType(typeof(object), typeof(uint), typeof(uint?));
+            EnsureCompatibleType(typeof(object), typeof(ushort), typeof(ushort?));
+
+            EnsureCompatibleType(typeof(object), typeof(double), typeof(double?));
+            EnsureCompatibleType(typeof(object), typeof(float), typeof(float?));
+            EnsureCompatibleType(typeof(object), typeof(decimal), typeof(decimal?));
 
             if (right is ConstantExpression)
             {

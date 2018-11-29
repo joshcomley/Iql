@@ -104,51 +104,35 @@ namespace Iql
 			// #CloneEnd
 		}
 
-		internal override void FlattenInternal(IList<IqlExpression> expressions, Func<IqlExpression, FlattenReactionKind> checker = null)
+		internal override void FlattenInternal(IqlFlattenContext context)
         {
 			// #FlattenStart
 
-			if(expressions.Contains(this))
-			{
-				return;
-			}
-			var reaction = checker == null ? FlattenReactionKind.Continue : checker(this);
-			if(reaction == FlattenReactionKind.Ignore)
-			{
-				return;
-			}
-			if(reaction != FlattenReactionKind.OnlyChildren)
-			{
-				expressions.Add(this);
-			}
-			if(reaction != FlattenReactionKind.IgnoreChildren)
-			{
-				DataSet?.FlattenInternal(expressions, checker);
+				context.Flatten(DataSet);
 				if(OrderBys != null)
 				{
 					for(var i = 0; i < OrderBys.Count; i++)
 					{
-						OrderBys[i]?.FlattenInternal(expressions, checker);
+						context.Flatten(OrderBys[i]);
 					}
 				}
 				if(Expands != null)
 				{
 					for(var i = 0; i < Expands.Count; i++)
 					{
-						Expands[i]?.FlattenInternal(expressions, checker);
+						context.Flatten(Expands[i]);
 					}
 				}
-				Filter?.FlattenInternal(expressions, checker);
-				WithKey?.FlattenInternal(expressions, checker);
+				context.Flatten(Filter);
+				context.Flatten(WithKey);
 				if(Parameters != null)
 				{
 					for(var i = 0; i < Parameters.Count; i++)
 					{
-						Parameters[i]?.FlattenInternal(expressions, checker);
+						context.Flatten(Parameters[i]);
 					}
 				}
-				Parent?.FlattenInternal(expressions, checker);
-			}
+				context.Flatten(Parent);
 
 			// #FlattenEnd
         }
