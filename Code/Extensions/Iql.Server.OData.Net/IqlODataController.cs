@@ -10,6 +10,7 @@ using Brandless.AspNetCore.OData.Extensions.Controllers;
 using Brandless.Data.EntityFramework.Crud;
 using Brandless.Data.Models;
 using Brandless.Data.Mptt;
+using Iql.Data;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Files;
@@ -269,39 +270,44 @@ namespace Iql.Server.OData.Net
 
         protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
         {
-            KeyValuePair<string, object>[] entityKey = null;
             foreach (var property in EntityConfiguration.Properties)
             {
                 if (property.InferredWithIql != null)
                 {
-                    var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
-                    entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
-                    var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
-                        property.InferredWithIql as IqlPropertyExpression);
-                    var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
-                    //postedValues[property.Name] = new JObject(value);
-                    if (property.Kind.HasFlag(PropertyKind.Primitive))
-                    {
-                        if (value != null &&
-                            property.TypeDefinition.Type == typeof(string) &&
-                            !(value is string))
-                        {
-                            value = value.ToString();
-                        }
+                    var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
+                        property.InferredWithIql,
+                        Builder,
+                        currentEntity,
+                        async (entity, type, path, flattenedExpression) => await ProcessPropertyPathAsync(currentEntity, patch, path));
+                    property.SetValue(currentEntity, evaluatedValue);
+                    //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
+                    //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
+                    //var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
+                    //    property.InferredWithIql as IqlPropertyExpression);
+                    //var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
+                    ////postedValues[property.Name] = new JObject(value);
+                    //if (property.Kind.HasFlag(PropertyKind.Primitive))
+                    //{
+                    //    if (value != null &&
+                    //        property.TypeDefinition.Type == typeof(string) &&
+                    //        !(value is string))
+                    //    {
+                    //        value = value.ToString();
+                    //    }
 
-                        patch?.TrySetPropertyValue(property.Name, value);
-                        property.SetValue(currentEntity, value);
-                    }
-                    if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
-                    {
-                        var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
-                        foreach (var constraint in key.Keys)
-                        {
-                            //postedValues[constraint.Name] = new JValue(constraint.Value);
-                            currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
-                            patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
-                        }
-                    }
+                    //    patch?.TrySetPropertyValue(property.Name, value);
+                    //    property.SetValue(currentEntity, value);
+                    //}
+                    //if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
+                    //{
+                    //    var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
+                    //    foreach (var constraint in key.Keys)
+                    //    {
+                    //        //postedValues[constraint.Name] = new JValue(constraint.Value);
+                    //        currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
+                    //        patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
+                    //    }
+                    //}
                 }
             }
 

@@ -17,6 +17,7 @@ namespace IqlSampleApp.Data.Entities
 
     public class Site : DbObject
     {
+        public string FullAddress { get; set; }
         public List<SiteArea> Areas { get; set; }
         public List<Person> People { get; set; }
         private LineStringWrapper _line;

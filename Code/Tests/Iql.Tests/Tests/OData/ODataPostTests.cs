@@ -86,6 +86,7 @@ namespace Iql.Tests.Tests.OData
                 var db = NewDb();
                 var site = new Site
                 {
+                    FullAddress = "abc",
                     Area = SptialFunctionsTests.BermudaTrianglePolygon,
                     Line = SptialFunctionsTests.BermudaTriangleLine,
                     Location = SptialFunctionsTests.BerlinPoint,
@@ -149,6 +150,7 @@ namespace Iql.Tests.Tests.OData
       ]
     ]
   },
+  ""FullAddress"": ""abc"",
   ""Left"": 0,
   ""Right"": 0,
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",

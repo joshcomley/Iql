@@ -1,6 +1,6 @@
 using Iql.Data;
 using IqlSampleApp.Sets;
-using IqlSampleApp.ApiContext.Base.Properties;
+using IqlSampleApp.ApiContext.Base.EntityService;
 using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
 using Iql.Entities.PropertyChangers;
@@ -1610,6 +1610,15 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
+            }
+        }
+        protected string _fullAddress;
+        public string FullAddress
+        {
+            get => _fullAddress;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "FullAddress", _fullAddress, value, _propertyChanging, _propertyChanged, newValue => this._fullAddress = newValue);
             }
         }
         protected string _address;

@@ -16,7 +16,7 @@ namespace Iql.Data
         public static object EvaluateExpression<T>(
             Expression<Func<T, object>> expression,
             T entity,
-            EntityConfigurationBuilder builder = null)
+            IEntityConfigurationBuilder builder = null)
             where T : class
         {
             return EvaluateLambda(expression, entity, builder, typeof(T));
@@ -25,7 +25,7 @@ namespace Iql.Data
         public static object EvaluateLambda(
             LambdaExpression expression,
             object entity,
-            EntityConfigurationBuilder builder = null,
+            IEntityConfigurationBuilder builder = null,
             Type entityType = null)
         {
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, entityType).Expression;
@@ -113,7 +113,7 @@ namespace Iql.Data
 
         public static async Task<object> EvaluateIqlCustomAsync(
             IqlExpression expression,
-            EntityConfigurationBuilder builder,
+            IEntityConfigurationBuilder builder,
             object entity,
             Func<object, Type, IqlPropertyPath, IqlFlattenedExpression, Task<object>> evaluatorAsync,
             Type entityType = null)
@@ -144,7 +144,7 @@ namespace Iql.Data
         private static IqlExpression ProcessIqlExpression(
             IqlExpression iql,
             Type entityType,
-            EntityConfigurationBuilder builder,
+            IEntityConfigurationBuilder builder,
             out IqlFlattenedExpression[] propertyExpressions, out Dictionary<IqlPropertyPath, object> lookup)
         {
             builder = builder ?? DataContext.FindBuilderForEntityType(entityType);

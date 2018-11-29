@@ -14,6 +14,26 @@ namespace Iql.Tests.Tests.Validation
     public class ValidationTests : TestsBase
     {
         [TestMethod]
+        public async Task EmptyInferredWithShouldFailValidationIfValidateClientSideIsTrue()
+        {
+            Db.EntityConfigurationContext.ValidateInferredWithClientSide = true;
+            var site = new Site();
+            Db.Sites.Add(site);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsFalse(result.Success);
+        }
+
+        [TestMethod]
+        public async Task EmptyInferredWithShouldSucceedValidationIfValidateClientSideIsFalse()
+        {
+            Db.EntityConfigurationContext.ValidateInferredWithClientSide = false;
+            var site = new Site();
+            Db.Sites.Add(site);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+        }
+
+        [TestMethod]
         public async Task AddingAnEntityWithANonValidatedButNonNullablePropertySetToNullShouldFailAutoValidation()
         {
             var inspection = EntityHelper.NewSiteInspection();

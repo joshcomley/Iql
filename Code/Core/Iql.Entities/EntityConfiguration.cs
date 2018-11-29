@@ -229,6 +229,12 @@ namespace Iql.Entities
         public PropertyValidationResult<T> ValidateEntityPropertyInternal(T entity, IProperty property, bool hasSetDefaultValue)
         {
             var validationResult = new PropertyValidationResult<T>(entity, property);
+
+            if (property.HasInferredWith && Builder.ValidateInferredWithClientSide == false)
+            {
+                return validationResult;
+            }
+
             foreach (var validation in property.ValidationRules.All)
             {
                 if (!validation.Run(entity))
@@ -485,7 +491,7 @@ namespace Iql.Entities
                 if (property != null)
                 {
                     property.Kind = property.Kind | PropertyKind.Key;
-                    property.Relationship = null;
+                    //property.Relationship = null;
                 }
             }
         }

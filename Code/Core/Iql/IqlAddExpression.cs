@@ -6,8 +6,8 @@ namespace Iql
     public class IqlAddExpression : IqlBinaryExpression
     {
         public IqlAddExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.Add, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.Add, left, right)
         {
         }
 

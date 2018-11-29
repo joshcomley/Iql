@@ -1,10 +1,26 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Iql.Entities;
+using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
+    public class SiteIqlConfigurator : IIqlEntitySetConfigurator
+    {
+        public void Configure(IEntityConfigurationBuilder builder)
+        {
+            builder.EntityType<Site>()
+                .ConfigureProperty(_ => _.FullAddress,
+                    _ =>
+                    {
+                        _.IsInferredWith(site => site.Address + "\n" + site.PostCode);
+                    })
+                .DefinePropertyValidation(_ => _.FullAddress, _ => _.FullAddress == null || _.FullAddress == "");
+        }
+    }
+
     public class SiteConfigurator : IODataEntitySetConfigurator
     {
         public void Configure(ODataModelBuilder builder)

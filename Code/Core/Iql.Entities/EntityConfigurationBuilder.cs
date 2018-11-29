@@ -153,6 +153,8 @@ namespace Iql.Entities
             return _entities[type];
         }
 
+        public bool ValidateInferredWithClientSide { get; set; }
+
         public SpecialTypeDefinition GetSpecialTypeMap(string name)
         {
             return GetEntityByTypeName(name).SpecialTypeDefinition;

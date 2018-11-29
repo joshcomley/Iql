@@ -21,6 +21,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />

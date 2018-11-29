@@ -8,6 +8,7 @@ namespace Iql.Entities
 {
     public interface IEntityConfigurationBuilder : IEntityConfigurationContainer
     {
+        bool ValidateInferredWithClientSide { get; set; }
         SpecialTypeDefinition GetSpecialTypeMap(string name);
         SpecialTypeDefinition UsersDefinition { get; set; }
         SpecialTypeDefinition UserSettingsDefinition { get; set; }

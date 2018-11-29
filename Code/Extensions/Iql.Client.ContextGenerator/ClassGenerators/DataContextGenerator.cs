@@ -1115,7 +1115,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             }
                         }
                         dealtWith = true;
-                        if (!skip)
+                        if (!skip && value != null)
                         {
                             var serialized = CSharpObjectSerializer.Serialize(value);
                             // HACK ALERT
