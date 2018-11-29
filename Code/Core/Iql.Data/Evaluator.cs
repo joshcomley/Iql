@@ -27,7 +27,7 @@ namespace Iql.Entities
             var iql = ProcessIqlExpression(expression, entity, entityType, null, out var propertyExpressions, out var lookup);
             foreach (var item in lookup.Keys.ToArray())
             {
-                lookup[item] = item.Evaluate(entity);
+                lookup[item] = item.Evaluate(entity) ?? "";
             }
             return ProcessLambdaInternal(entity, lookup, iql, propertyExpressions);
         }
@@ -50,7 +50,7 @@ namespace Iql.Entities
             var iql = ProcessIqlExpression(expression, entity, entityType, dataContext, out var propertyExpressions, out var lookup);
             foreach (var item in lookup.Keys.ToArray())
             {
-                lookup[item] = await item.EvaluateAsync(entity, dataContext);
+                lookup[item] = await item.EvaluateAsync(entity, dataContext) ?? "";
             }
             return ProcessLambdaInternal(entity, lookup, iql, propertyExpressions);
         }
@@ -95,7 +95,7 @@ namespace Iql.Entities
             });
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql);
             var compiledLambda = processedLambda.Compile();
-            var result = compiledLambda.DynamicInvoke(new object[] {entity});
+            var result = compiledLambda.DynamicInvoke(new object[] { entity });
             return result;
         }
     }
