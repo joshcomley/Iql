@@ -8,12 +8,6 @@ namespace Iql.Server.Serialization.Serialization.Converters
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            //if (value != null)
-            //{
-            //    writer.WriteValue((value as IProperty).Name);
-            //}
-            //writer.WriteValue((value as IProperty).Name);
-            //writer.WriteRaw("{}");
             if (value != null)
             {
                 writer.WriteValue((value as Type).ToIqlType().ToString());

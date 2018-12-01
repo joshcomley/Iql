@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
     public interface IRelationshipDetailMetadata : ISimpleProperty
     {
+        List<ValueMapping> ValueMappings { get; set; }
+        List<RelationshipMapping> RelationshipMappings { get; set; }
         bool AllowInlineEditing { get; set; }
         RelationshipSide RelationshipSide { get; }
         Type Type { get; }

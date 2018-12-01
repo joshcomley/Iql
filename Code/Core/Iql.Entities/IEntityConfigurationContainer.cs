@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Iql.Entities.Enums;
+using Iql.Entities.Relationships;
 
 namespace Iql.Entities
 {
@@ -7,5 +8,6 @@ namespace Iql.Entities
     {
         IEnumerable<IEntityConfiguration> AllEntityTypes();
         IEnumerable<IEnumConfiguration> AllEnumTypes();
+        IEnumerable<IRelationship> AllRelationships();
     }
 }

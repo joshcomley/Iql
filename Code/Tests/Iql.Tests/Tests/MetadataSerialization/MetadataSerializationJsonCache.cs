@@ -3,6 +3,7 @@
     public class MetadataSerializationJsonCache
     {
         public const string Json = @"{
+  ""UsersDefinition"": null,
   ""CustomReportsDefinition"": {
     ""UserIdProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyUserId\"",\""Kind\"":1,\""Children\"":null}"",
     ""NameProperty"": ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyName\"",\""Kind\"":1,\""Children\"":null}"",
@@ -43,244 +44,10 @@
       ""Key"": {
         ""HasRelationshipKeys"": false,
         ""Properties"": [
-          ""{\""Type\"":\""ApplicationLog\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
-        ]
-      },
-      ""TitlePropertyName"": null,
-      ""PreviewPropertyName"": null,
-      ""ManageKind"": 62,
-      ""SetFriendlyName"": ""Application Logs"",
-      ""SetName"": ""ApplicationLogs"",
-      ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
-      ""EditDisplay"": [],
-      ""ReadDisplay"": [],
-      ""Properties"": [
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": ""Guid"",
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Id__"",
-  ""Key"": null,
-  ""Kind"": 11,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Id"",
-  ""Title"": ""Id"",
-  ""FriendlyName"": ""Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 8
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__CreatedDate__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""CreatedDate"",
-  ""Title"": ""CreatedDate"",
-  ""FriendlyName"": ""Created Date"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Module"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Module__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Module"",
-  ""Title"": ""Module"",
-  ""FriendlyName"": ""Module"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Message"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Message__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Message"",
-  ""Title"": ""Message"",
-  ""FriendlyName"": ""Message"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-}
-      ],
-      ""Relationships"": [],
-      ""Files"": [],
-      ""Metadata"": {
-        ""All"": []
-      },
-      ""Name"": ""ApplicationLog"",
-      ""Title"": ""ApplicationLog"",
-      ""FriendlyName"": ""Application Log"",
-      ""GroupPath"": null,
-      ""Description"": null,
-      ""Hints"": [],
-      ""HelpTexts"": []
-    },
-    {
-      ""Geographics"": [],
-      ""NestedSets"": [],
-      ""DateRanges"": [],
-      ""DisplayFormatting"": {
-        ""All"": [],
-        ""Default"": null
-      },
-      ""EntityValidation"": {
-        ""All"": []
-      },
-      ""Key"": {
-        ""HasRelationshipKeys"": false,
-        ""Properties"": [
           ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""FullName"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Users"",
@@ -292,9 +59,6 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -304,17 +68,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -322,6 +86,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -340,249 +107,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 5
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""ClientId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__ClientId__"",
-  ""Key"": null,
-  ""Kind"": 19,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""ClientId"",
-  ""Title"": ""ClientId"",
-  ""FriendlyName"": ""Client Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Email"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Email__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Email"",
-  ""Title"": ""Email"",
-  ""FriendlyName"": ""Email"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""FullName"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__FullName__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""FullName"",
-  ""Title"": ""FullName"",
-  ""FriendlyName"": ""Full Name"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 7
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""EmailConfirmed"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__EmailConfirmed__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""EmailConfirmed"",
-  ""Title"": ""EmailConfirmed"",
-  ""FriendlyName"": ""Email Confirmed"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 9
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""UserType"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__UserType__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""UserType"",
-  ""Title"": ""UserType"",
-  ""FriendlyName"": ""User Type"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -592,17 +116,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""IsLockedOut"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -610,6 +134,9 @@
   ""GroupName"": ""__IsLockedOut__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -628,9 +155,104 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""ClientId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__ClientId__"",
+  ""Key"": null,
+  ""Kind"": 19,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""ClientId"",
+  ""Title"": ""ClientId"",
+  ""FriendlyName"": ""Client Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Email"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Email__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Email"",
+  ""Title"": ""Email"",
+  ""FriendlyName"": ""Email"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [
+    ""Iql:EmailAddress""
+  ],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -640,17 +262,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Permissions"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -658,6 +280,9 @@
   ""GroupName"": ""__Permissions__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -676,9 +301,486 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""UserType"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserType__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UserType"",
+  ""Title"": ""UserType"",
+  ""FriendlyName"": ""User Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""FullName"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FullName__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FullName"",
+  ""Title"": ""FullName"",
+  ""FriendlyName"": ""Full Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""UserName"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UserName__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UserName"",
+  ""Title"": ""UserName"",
+  ""FriendlyName"": ""User Name"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""EmailConfirmed"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__EmailConfirmed__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""EmailConfirmed"",
+  ""Title"": ""EmailConfirmed"",
+  ""FriendlyName"": ""Email Confirmed"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""PhoneNumber"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PhoneNumber__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PhoneNumber"",
+  ""Title"": ""PhoneNumber"",
+  ""FriendlyName"": ""Phone Number"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PhoneNumberConfirmed"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PhoneNumberConfirmed__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PhoneNumberConfirmed"",
+  ""Title"": ""PhoneNumberConfirmed"",
+  ""FriendlyName"": ""Phone Number Confirmed"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TwoFactorEnabled"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TwoFactorEnabled__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TwoFactorEnabled"",
+  ""Title"": ""TwoFactorEnabled"",
+  ""FriendlyName"": ""Two Factor Enabled"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""LockoutEnd"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__LockoutEnd__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""LockoutEnd"",
+  ""Title"": ""LockoutEnd"",
+  ""FriendlyName"": ""Lockout End"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 7
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""LockoutEnabled"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__LockoutEnabled__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""LockoutEnabled"",
+  ""Title"": ""LockoutEnabled"",
+  ""FriendlyName"": ""Lockout Enabled"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -688,17 +790,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Client"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -706,6 +808,9 @@
   ""GroupName"": ""__Client__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -724,9 +829,54 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -736,17 +886,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ClientsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -754,6 +904,9 @@
   ""GroupName"": ""__ClientsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -772,9 +925,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -784,17 +934,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ClientsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -802,6 +952,9 @@
   ""GroupName"": ""__ClientsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -820,9 +973,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -832,17 +982,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""DocumentCategoriesCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -850,6 +1000,9 @@
   ""GroupName"": ""__DocumentCategoriesCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -868,9 +1021,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -880,17 +1030,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""DocumentCategoriesCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -898,6 +1048,9 @@
   ""GroupName"": ""__DocumentCategoriesCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -916,9 +1069,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -928,17 +1078,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteDocumentsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -946,6 +1096,9 @@
   ""GroupName"": ""__SiteDocumentsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -964,9 +1117,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -976,17 +1126,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteDocumentsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -994,6 +1144,9 @@
   ""GroupName"": ""__SiteDocumentsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1012,9 +1165,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1024,17 +1174,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultActionsTakenCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1042,6 +1192,9 @@
   ""GroupName"": ""__FaultActionsTakenCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1060,9 +1213,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1072,17 +1222,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultActionsTakenCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1090,6 +1240,9 @@
   ""GroupName"": ""__FaultActionsTakenCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1108,9 +1261,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1120,17 +1270,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultCategoriesCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1138,6 +1288,9 @@
   ""GroupName"": ""__FaultCategoriesCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1156,9 +1309,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1168,17 +1318,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultCategoriesCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1186,6 +1336,9 @@
   ""GroupName"": ""__FaultCategoriesCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1204,9 +1357,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1216,17 +1366,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultDefaultRecommendationsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1234,6 +1384,9 @@
   ""GroupName"": ""__FaultDefaultRecommendationsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1252,9 +1405,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1264,17 +1414,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultDefaultRecommendationsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1282,6 +1432,9 @@
   ""GroupName"": ""__FaultDefaultRecommendationsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1300,9 +1453,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1312,17 +1462,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultRecommendationsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1330,6 +1480,9 @@
   ""GroupName"": ""__FaultRecommendationsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1348,9 +1501,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1360,17 +1510,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultRecommendationsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1378,6 +1528,9 @@
   ""GroupName"": ""__FaultRecommendationsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1396,9 +1549,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1408,17 +1558,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultTypesCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1426,6 +1576,9 @@
   ""GroupName"": ""__FaultTypesCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1444,9 +1597,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1456,17 +1606,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultTypesCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1474,6 +1624,9 @@
   ""GroupName"": ""__FaultTypesCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1492,9 +1645,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1504,17 +1654,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ProjectCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1522,6 +1672,9 @@
   ""GroupName"": ""__ProjectCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1540,9 +1693,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1552,17 +1702,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ProjectCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1570,6 +1720,9 @@
   ""GroupName"": ""__ProjectCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1588,9 +1741,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1600,17 +1750,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReportReceiverEmailAddressesCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1618,6 +1768,9 @@
   ""GroupName"": ""__ReportReceiverEmailAddressesCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1636,9 +1789,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1648,17 +1798,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReportReceiverEmailAddressesCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1666,6 +1816,9 @@
   ""GroupName"": ""__ReportReceiverEmailAddressesCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1684,9 +1837,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1696,17 +1846,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1714,6 +1864,9 @@
   ""GroupName"": ""__RiskAssessmentsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1732,9 +1885,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1744,17 +1894,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1762,6 +1912,9 @@
   ""GroupName"": ""__RiskAssessmentsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1780,9 +1933,102 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentSolutionsCreated"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentSolutionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolutionsCreated"",
+  ""Title"": ""RiskAssessmentSolutionsCreated"",
+  ""FriendlyName"": ""Risk Assessment Solutions Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentSolutionsCreatedCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentSolutionsCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolutionsCreatedCount"",
+  ""Title"": ""RiskAssessmentSolutionsCreatedCount"",
+  ""FriendlyName"": ""Risk Assessment Solutions Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1792,17 +2038,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentAnswersCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1810,6 +2056,9 @@
   ""GroupName"": ""__RiskAssessmentAnswersCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1828,9 +2077,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1840,17 +2086,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentAnswersCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1858,6 +2104,9 @@
   ""GroupName"": ""__RiskAssessmentAnswersCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1876,9 +2125,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1888,17 +2134,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentQuestionsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1906,6 +2152,9 @@
   ""GroupName"": ""__RiskAssessmentQuestionsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1924,9 +2173,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -1936,17 +2182,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentQuestionsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -1954,6 +2200,9 @@
   ""GroupName"": ""__RiskAssessmentQuestionsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -1972,9 +2221,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -1984,17 +2230,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2002,6 +2248,9 @@
   ""GroupName"": ""__PeopleCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2020,9 +2269,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2032,17 +2278,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2050,6 +2296,9 @@
   ""GroupName"": ""__PeopleCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2068,9 +2317,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2080,17 +2326,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonInspectionsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2098,6 +2344,9 @@
   ""GroupName"": ""__PersonInspectionsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2116,9 +2365,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2128,17 +2374,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonInspectionsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2146,6 +2392,9 @@
   ""GroupName"": ""__PersonInspectionsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2164,9 +2413,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2176,17 +2422,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonLoadingsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2194,6 +2440,9 @@
   ""GroupName"": ""__PersonLoadingsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2212,9 +2461,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2224,17 +2470,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonLoadingsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2242,6 +2488,9 @@
   ""GroupName"": ""__PersonLoadingsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2260,9 +2509,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2272,17 +2518,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonTypesCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2290,6 +2536,9 @@
   ""GroupName"": ""__PersonTypesCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2308,9 +2557,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2320,17 +2566,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonTypesCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2338,6 +2584,9 @@
   ""GroupName"": ""__PersonTypesCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2356,9 +2605,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2368,17 +2614,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultReportsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2386,6 +2632,9 @@
   ""GroupName"": ""__FaultReportsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2404,9 +2653,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2416,17 +2662,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultReportsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2434,6 +2680,9 @@
   ""GroupName"": ""__FaultReportsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2452,9 +2701,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2464,17 +2710,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SitesCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2482,6 +2728,9 @@
   ""GroupName"": ""__SitesCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2500,9 +2749,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2512,17 +2758,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SitesCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2530,6 +2776,9 @@
   ""GroupName"": ""__SitesCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2548,9 +2797,102 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteAreasCreated"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteAreasCreated__"",
+  ""Key"": null,
+  ""Kind"": 5,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteAreasCreated"",
+  ""Title"": ""SiteAreasCreated"",
+  ""FriendlyName"": ""Site Areas Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteAreasCreatedCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteAreasCreatedCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteAreasCreatedCount"",
+  ""Title"": ""SiteAreasCreatedCount"",
+  ""FriendlyName"": ""Site Areas Created Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2560,17 +2902,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspectionsCreated"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2578,6 +2920,9 @@
   ""GroupName"": ""__SiteInspectionsCreated__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2596,9 +2941,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2608,17 +2950,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspectionsCreatedCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2626,6 +2968,9 @@
   ""GroupName"": ""__SiteInspectionsCreatedCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2644,9 +2989,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -2656,17 +2998,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Sites"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2674,6 +3016,9 @@
   ""GroupName"": ""__Sites__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2692,9 +3037,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -2704,17 +3046,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SitesCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2722,6 +3064,9 @@
   ""GroupName"": ""__SitesCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -2750,6 +3095,83 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [
+    {
+      ""Container"": null,
+      ""Expression"": {
+        ""Body"": {
+          ""Value"": 12.0,
+          ""InferredReturnType"": 6,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 26,
+          ""ReturnType"": 6,
+          ""Parent"": null
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""ApplicationUser"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
+  ""RelationshipMappings"": [
+    {
+      ""Container"": null,
+      ""Expression"": {
+        ""Body"": {
+          ""PropertyName"": ""CreatedByUser"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""EntityTypeName"": ""ApplicationUser"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""ApplicationUser"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -2760,6 +3182,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2767,8 +3193,15 @@
   ""GroupName"": ""__ClientId_Client__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -2781,6 +3214,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -2791,6 +3226,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2798,8 +3237,15 @@
   ""GroupName"": ""__Id_Users__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -2823,6 +3269,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -2832,7 +3280,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2840,8 +3292,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -2854,6 +3313,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -2864,6 +3325,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2871,8 +3336,15 @@
   ""GroupName"": ""__Id_ClientsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -2896,6 +3368,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -2905,7 +3379,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2913,8 +3391,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -2927,6 +3412,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -2937,6 +3424,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2944,8 +3435,15 @@
   ""GroupName"": ""__Id_DocumentCategoriesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -2969,6 +3467,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -2978,7 +3478,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -2986,8 +3490,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3000,6 +3511,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3010,6 +3523,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3017,8 +3534,15 @@
   ""GroupName"": ""__Id_SiteDocumentsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3042,6 +3566,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3051,7 +3577,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3059,8 +3589,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3073,6 +3610,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3083,6 +3622,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3090,8 +3633,15 @@
   ""GroupName"": ""__Id_FaultActionsTakenCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3115,6 +3665,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3124,7 +3676,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3132,8 +3688,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3146,6 +3709,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3156,6 +3721,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3163,8 +3732,15 @@
   ""GroupName"": ""__Id_FaultCategoriesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3188,6 +3764,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3197,7 +3775,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3205,8 +3787,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3219,6 +3808,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3229,6 +3820,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3236,8 +3831,15 @@
   ""GroupName"": ""__Id_FaultDefaultRecommendationsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3261,6 +3863,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3270,7 +3874,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3278,8 +3886,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3292,6 +3907,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3302,6 +3919,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3309,8 +3930,15 @@
   ""GroupName"": ""__Id_FaultRecommendationsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3334,6 +3962,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3343,7 +3973,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3351,8 +3985,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3365,6 +4006,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3375,6 +4018,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3382,8 +4029,15 @@
   ""GroupName"": ""__Id_FaultTypesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3407,6 +4061,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3416,7 +4072,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3424,8 +4084,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3438,6 +4105,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3448,6 +4117,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3455,8 +4128,15 @@
   ""GroupName"": ""__Id_ProjectCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3480,6 +4160,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3489,7 +4171,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3497,8 +4183,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3511,6 +4204,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3521,6 +4216,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3528,8 +4227,15 @@
   ""GroupName"": ""__Id_ReportReceiverEmailAddressesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3553,6 +4259,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3562,7 +4270,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3570,8 +4282,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3584,6 +4303,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3594,6 +4315,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3601,8 +4326,15 @@
   ""GroupName"": ""__Id_RiskAssessmentsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3620,22 +4352,28 @@
         {
           ""Constraints"": [
             {
-              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
               ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
   ""IsCollection"": false,
-  ""Property"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""Property"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentSolutionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3643,8 +4381,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3657,6 +4402,107 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentSolutionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentSolutionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentSolutionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolutionsCreated"",
+  ""Title"": ""Risk Assessment Solutions Created"",
+  ""FriendlyName"": ""Risk Assessment Solutions Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentAnswersCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3667,6 +4513,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3674,8 +4524,15 @@
   ""GroupName"": ""__Id_RiskAssessmentAnswersCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3699,6 +4556,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3708,7 +4567,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3716,8 +4579,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3730,6 +4600,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3740,6 +4612,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3747,8 +4623,15 @@
   ""GroupName"": ""__Id_RiskAssessmentQuestionsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3772,6 +4655,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3781,7 +4666,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3789,8 +4678,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3803,6 +4699,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3813,6 +4711,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3820,8 +4722,15 @@
   ""GroupName"": ""__Id_PeopleCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3845,6 +4754,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3854,7 +4765,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3862,8 +4777,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3876,6 +4798,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3886,6 +4810,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3893,8 +4821,15 @@
   ""GroupName"": ""__Id_PersonInspectionsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3918,6 +4853,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -3927,7 +4864,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3935,8 +4876,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3949,6 +4897,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -3959,6 +4909,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -3966,8 +4920,15 @@
   ""GroupName"": ""__Id_PersonLoadingsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -3991,6 +4952,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -4000,7 +4963,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4008,8 +4975,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4022,6 +4996,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -4032,6 +5008,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4039,8 +5019,15 @@
   ""GroupName"": ""__Id_PersonTypesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4064,6 +5051,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -4073,7 +5062,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4081,8 +5074,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4095,6 +5095,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -4105,6 +5107,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4112,8 +5118,15 @@
   ""GroupName"": ""__Id_FaultReportsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4137,6 +5150,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -4146,7 +5161,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4154,8 +5173,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4168,6 +5194,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -4178,6 +5206,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4185,8 +5217,15 @@
   ""GroupName"": ""__Id_SitesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4204,22 +5243,28 @@
         {
           ""Constraints"": [
             {
-              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
               ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
   ""IsCollection"": false,
-  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""Property"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteAreasCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4227,8 +5272,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4241,6 +5293,107 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteAreasCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteAreasCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteAreasCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteAreasCreated"",
+  ""Title"": ""Site Areas Created"",
+  ""FriendlyName"": ""Site Areas Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteInspectionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -4251,6 +5404,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4258,8 +5415,15 @@
   ""GroupName"": ""__Id_SiteInspectionsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4283,6 +5447,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -4293,6 +5459,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4300,8 +5470,15 @@
   ""GroupName"": ""__UserId_User__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4314,6 +5491,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -4324,6 +5503,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4331,8 +5514,15 @@
   ""GroupName"": ""__Id_Sites__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -4369,6 +5559,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4376,6 +5570,7 @@
   ""GroupName"": ""__AverageIncome_AverageIncome__"",
   ""Key"": ""MyGeographic"",
   ""Kind"": 8,
+  ""RelationshipFilterRules"": null,
   ""ValidationRules"": null,
   ""DisplayRules"": null,
   ""Metadata"": {
@@ -4408,6 +5603,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4415,6 +5614,7 @@
   ""GroupName"": ""__AverageIncome_AverageSales__"",
   ""Key"": null,
   ""Kind"": 8,
+  ""RelationshipFilterRules"": null,
   ""ValidationRules"": null,
   ""DisplayRules"": null,
   ""Metadata"": {
@@ -4443,14 +5643,14 @@
           ""{\""Type\"":\""Client\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Clients"",
       ""SetName"": ""Clients"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [
         ""{\""Type\"":\""Client\"",\""Paths\"":\""Name\"",\""Kind\"":1,\""Children\"":null}"",
         {
@@ -4461,6 +5661,10 @@
             {
               ""Kind"": 8,
               ""Path"": ""Type/Name"",
+              ""Internal"": false,
+              ""IsHiddenOrInternal"": false,
+              ""IsReadOnly"": false,
+              ""IsHidden"": false,
               ""EditKindChanged"": {},
               ""ReadKindChanged"": {},
               ""ReadKind"": 1,
@@ -4471,6 +5675,7 @@
               ""Sortable"": true,
               ""Key"": null,
               ""GroupName"": ""__Name__"",
+              ""RelationshipFilterRules"": null,
               ""ValidationRules"": null,
               ""DisplayRules"": null,
               ""Metadata"": {
@@ -4499,6 +5704,7 @@
               ],
               ""Key"": null,
               ""GroupName"": ""__Description_Category__"",
+              ""RelationshipFilterRules"": null,
               ""ValidationRules"": null,
               ""DisplayRules"": null,
               ""Metadata"": {
@@ -4517,6 +5723,7 @@
           ],
           ""Key"": null,
           ""GroupName"": ""___Id_Type_Location___"",
+          ""RelationshipFilterRules"": null,
           ""ValidationRules"": null,
           ""DisplayRules"": null,
           ""Metadata"": {
@@ -4539,9 +5746,6 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -4551,17 +5755,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Users"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4569,6 +5773,9 @@
   ""GroupName"": ""__Users__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -4587,9 +5794,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -4599,17 +5803,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4617,6 +5821,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -4635,9 +5842,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -4647,17 +5851,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""TypeId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4665,6 +5869,9 @@
   ""GroupName"": ""__TypeId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -4683,9 +5890,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -4695,17 +5899,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4713,6 +5917,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -4731,9 +5938,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -4743,17 +5947,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4761,6 +5965,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -4779,105 +5986,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Description__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Description"",
-  ""Title"": ""Description"",
-  ""FriendlyName"": ""Description"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 6
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Discount"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Discount__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Discount"",
-  ""Title"": ""Discount"",
-  ""FriendlyName"": ""Discount"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -4887,17 +5995,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""AverageSales"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4905,6 +6013,9 @@
   ""GroupName"": ""__AverageSales__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -4923,9 +6034,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -4935,17 +6043,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""AverageIncome"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -4953,19 +6061,14 @@
   ""GroupName"": ""__AverageIncome__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
   ""DisplayRules"": {
-    ""All"": [
-      {
-        ""Kind"": 1,
-        ""AppliesToKind"": 1,
-        ""Key"": ""7bb7aa15-224d-46b0-ad2c-f864965a8c6f"",
-        ""Message"": """",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Client</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlPropertyExpression\"">\r\n      <Kind>Property</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <EntityTypeName>Client</EntityTypeName>\r\n        <VariableName>entity</VariableName>\r\n      </Parent>\r\n      <PropertyName>AverageSales</PropertyName>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Decimal</ReturnType>\r\n      <Value xsi:type=\""xsd:float\"">0</Value>\r\n      <InferredReturnType>Decimal</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      }
-    ]
+    ""All"": []
   },
   ""Metadata"": {
     ""All"": []
@@ -4979,413 +6082,26 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 5
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""CategoryId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__CategoryId__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""CategoryId"",
-  ""Title"": ""CategoryId"",
-  ""FriendlyName"": ""Category Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": ""Guid"",
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Guid__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Guid"",
-  ""Title"": ""Guid"",
-  ""FriendlyName"": ""Guid"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 8
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__CreatedDate__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""CreatedDate"",
-  ""Title"": ""CreatedDate"",
-  ""FriendlyName"": ""Created Date"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__RevisionKey__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""RevisionKey"",
-  ""Title"": ""RevisionKey"",
-  ""FriendlyName"": ""Revision Key"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": ""Guid"",
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__PersistenceKey__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""PersistenceKey"",
-  ""Title"": ""PersistenceKey"",
-  ""FriendlyName"": ""Persistence Key"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
     ""ConvertedFromType"": null,
     ""Nullable"": false,
     ""Kind"": 5
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""UsersCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__UsersCount__"",
-  ""Key"": null,
-  ""Kind"": 35,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""UsersCount"",
-  ""Title"": ""UsersCount"",
-  ""FriendlyName"": ""Users Count"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 1
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Type"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Type__"",
-  ""Key"": null,
-  ""Kind"": 5,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Type"",
-  ""Title"": ""Type"",
-  ""FriendlyName"": ""Type"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 1
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__CreatedByUser__"",
-  ""Key"": null,
-  ""Kind"": 5,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""CreatedByUser"",
-  ""Title"": ""CreatedByUser"",
-  ""FriendlyName"": ""Created By User"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 1
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Category"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5393,6 +6109,9 @@
   ""GroupName"": ""__Category__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -5411,9 +6130,440 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 6
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Discount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Discount__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Discount"",
+  ""Title"": ""Discount"",
+  ""FriendlyName"": ""Discount"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [
+    ""Iql:Version""
+  ],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""UsersCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__UsersCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""UsersCount"",
+  ""Title"": ""UsersCount"",
+  ""FriendlyName"": ""Users Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Type"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Type__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Type"",
+  ""Title"": ""Type"",
+  ""FriendlyName"": ""Type"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -5423,17 +6573,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""People"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5441,6 +6591,9 @@
   ""GroupName"": ""__People__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -5459,9 +6612,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -5471,17 +6621,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5489,6 +6639,9 @@
   ""GroupName"": ""__PeopleCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -5507,9 +6660,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -5519,17 +6669,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Sites"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5537,6 +6687,9 @@
   ""GroupName"": ""__Sites__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -5555,9 +6708,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -5567,17 +6717,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SitesCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5585,6 +6735,9 @@
   ""GroupName"": ""__SitesCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -5613,6 +6766,83 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [
+    {
+      ""Container"": null,
+      ""Expression"": {
+        ""Body"": {
+          ""Value"": 12.0,
+          ""InferredReturnType"": 6,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 26,
+          ""ReturnType"": 6,
+          ""Parent"": null
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""ApplicationUser"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
+  ""RelationshipMappings"": [
+    {
+      ""Container"": null,
+      ""Expression"": {
+        ""Body"": {
+          ""PropertyName"": ""CreatedByUser"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""EntityTypeName"": ""ApplicationUser"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""ApplicationUser"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -5623,6 +6853,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5630,8 +6864,15 @@
   ""GroupName"": ""__ClientId_Client__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5644,6 +6885,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -5654,6 +6897,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5661,8 +6908,15 @@
   ""GroupName"": ""__Id_Users__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5686,6 +6940,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -5696,6 +6952,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5703,8 +6963,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5717,6 +6984,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -5727,6 +6996,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5734,8 +7007,15 @@
   ""GroupName"": ""__Id_Clients__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5759,6 +7039,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -5768,7 +7050,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5776,8 +7062,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5790,6 +7083,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -5800,6 +7095,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5807,8 +7106,15 @@
   ""GroupName"": ""__Id_ClientsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5832,6 +7138,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -5842,6 +7150,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5849,8 +7161,15 @@
   ""GroupName"": ""__ClientId_Client__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5863,6 +7182,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -5873,6 +7194,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5880,8 +7205,15 @@
   ""GroupName"": ""__Id_People__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -5905,6 +7237,90 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [
+    {
+      ""Container"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Name\"",\""Kind\"":1,\""Children\"":null}"",
+      ""Expression"": {
+        ""Body"": {
+          ""Value"": ""test@123.com"",
+          ""InferredReturnType"": 4,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 26,
+          ""ReturnType"": 4,
+          ""Parent"": null
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""Site"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
+  ""RelationshipMappings"": [
+    {
+      ""Container"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":6,\""Children\"":null}"",
+      ""Expression"": {
+        ""Body"": {
+          ""PropertyName"": ""Type"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""PropertyName"": ""Client"",
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 30,
+            ""ReturnType"": 1,
+            ""Parent"": {
+              ""EntityTypeName"": ""Site"",
+              ""VariableName"": ""_"",
+              ""Value"": null,
+              ""InferredReturnType"": 1,
+              ""IsIqlExpression"": true,
+              ""Key"": null,
+              ""Kind"": 28,
+              ""ReturnType"": 1,
+              ""Parent"": null
+            }
+          }
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""Site"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
   ""AllowInlineEditing"": true,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -5915,6 +7331,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5922,8 +7342,15 @@
   ""GroupName"": ""__ClientId_Client__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": [
       {
@@ -5941,6 +7368,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": true,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -5951,6 +7380,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -5958,8 +7391,15 @@
   ""GroupName"": ""__Id_Sites__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -6020,6 +7460,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6027,6 +7471,7 @@
   ""GroupName"": ""__Description_Name__"",
   ""Key"": ""my-file"",
   ""Kind"": 8,
+  ""RelationshipFilterRules"": null,
   ""ValidationRules"": null,
   ""DisplayRules"": null,
   ""Metadata"": {
@@ -6090,14 +7535,14 @@
       ""Key"": {
         ""HasRelationshipKeys"": false,
         ""Properties"": [
-          ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+          ""{\""Type\"":\""ApplicationLog\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Module"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
-      ""SetFriendlyName"": ""Client Types"",
-      ""SetName"": ""ClientTypes"",
+      ""SetFriendlyName"": ""Application Logs"",
+      ""SetName"": ""ApplicationLogs"",
       ""SetNameSet"": true,
       ""DefaultSortExpression"": null,
       ""DefaultSortDescending"": false,
@@ -6105,77 +7550,26 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
-    ""IsCollection"": true,
-    ""ConvertedFromType"": null,
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
     ""Nullable"": false,
-    ""Kind"": 2
+    ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Clients"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
+  ""PropertyName"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Clients__"",
-  ""Key"": null,
-  ""Kind"": 5,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Clients"",
-  ""Title"": ""Clients"",
-  ""FriendlyName"": ""Clients"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 5
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
   ""IsReadOnly"": true,
   ""IsHidden"": false,
   ""Internal"": false,
   ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6183,6 +7577,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6201,9 +7598,336 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Module"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Module__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Module"",
+  ""Title"": ""Module"",
+  ""FriendlyName"": ""Module"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Message"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Message__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Message"",
+  ""Title"": ""Message"",
+  ""FriendlyName"": ""Message"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Kind"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Kind__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Kind"",
+  ""Title"": ""Kind"",
+  ""FriendlyName"": ""Kind"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
+      ],
+      ""Relationships"": [],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""ApplicationLog"",
+      ""Title"": ""ApplicationLog"",
+      ""FriendlyName"": ""Application Log"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""ClientType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": ""Name"",
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Client Types"",
+      ""SetName"": ""ClientTypes"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": null,
+      ""DefaultSortDescending"": false,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Clients"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Clients__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Clients"",
+  ""Title"": ""Clients"",
+  ""FriendlyName"": ""Clients"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6213,17 +7937,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6231,6 +7955,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6249,9 +7976,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6261,17 +7985,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ClientsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6279,6 +8003,9 @@
   ""GroupName"": ""__ClientsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6307,6 +8034,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -6317,6 +8046,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6324,8 +8057,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -6338,6 +8078,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -6348,6 +8090,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6355,8 +8101,15 @@
   ""GroupName"": ""__Id_Clients__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -6401,21 +8154,18 @@
           ""{\""Type\"":\""DocumentCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Document Categories"",
       ""SetName"": ""DocumentCategories"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6425,17 +8175,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6443,6 +8193,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6461,9 +8214,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6473,17 +8223,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6491,6 +8241,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6509,9 +8262,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6521,17 +8271,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6539,6 +8289,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6557,9 +8310,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6569,17 +8319,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6587,6 +8337,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6605,9 +8358,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6617,17 +8367,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6635,6 +8385,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6653,9 +8406,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6665,17 +8415,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6683,6 +8433,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6697,13 +8450,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6713,17 +8465,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6731,6 +8483,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6749,9 +8504,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6761,17 +8513,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6779,6 +8531,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6797,9 +8552,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -6809,17 +8561,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Documents"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6827,6 +8579,9 @@
   ""GroupName"": ""__Documents__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6845,9 +8600,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -6857,17 +8609,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""DocumentsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6875,6 +8627,9 @@
   ""GroupName"": ""__DocumentsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -6903,6 +8658,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -6912,7 +8669,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6920,8 +8681,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -6934,6 +8702,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -6944,6 +8714,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6951,8 +8725,15 @@
   ""GroupName"": ""__Id_DocumentCategoriesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -6976,6 +8757,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -6986,6 +8769,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -6993,8 +8780,15 @@
   ""GroupName"": ""__CategoryId_Category__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7007,6 +8801,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -7017,6 +8813,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7024,8 +8824,15 @@
   ""GroupName"": ""__Id_Documents__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7070,21 +8877,18 @@
           ""{\""Type\"":\""SiteDocument\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Title"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Site Documents"",
       ""SetName"": ""SiteDocuments"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7094,17 +8898,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7112,6 +8916,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7130,9 +8937,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7142,17 +8946,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CategoryId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7160,6 +8964,9 @@
   ""GroupName"": ""__CategoryId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7178,9 +8985,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7190,17 +8994,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7208,6 +9012,9 @@
   ""GroupName"": ""__SiteId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7226,9 +9033,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7238,17 +9042,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7256,6 +9060,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7274,9 +9081,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7286,17 +9090,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Title"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7304,6 +9108,9 @@
   ""GroupName"": ""__Title__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7322,9 +9129,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7334,17 +9138,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7352,6 +9156,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7370,9 +9177,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7382,17 +9186,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7400,6 +9204,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7418,9 +9225,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7430,17 +9234,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7448,6 +9252,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7462,13 +9269,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7478,17 +9284,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7496,6 +9302,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7514,9 +9323,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7526,17 +9332,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Category"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7544,6 +9350,9 @@
   ""GroupName"": ""__Category__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7562,9 +9371,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7574,17 +9380,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Site"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7592,6 +9398,9 @@
   ""GroupName"": ""__Site__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7610,9 +9419,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7622,17 +9428,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7640,6 +9446,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7668,6 +9477,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -7678,6 +9489,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7685,8 +9500,15 @@
   ""GroupName"": ""__CategoryId_Category__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7699,6 +9521,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -7709,6 +9533,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7716,8 +9544,15 @@
   ""GroupName"": ""__Id_Documents__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7741,6 +9576,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -7751,6 +9588,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7758,8 +9599,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7772,6 +9620,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -7782,6 +9632,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7789,8 +9643,15 @@
   ""GroupName"": ""__Id_Documents__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7814,6 +9675,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -7823,7 +9686,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7831,8 +9698,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7845,6 +9719,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -7855,6 +9731,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7862,8 +9742,15 @@
   ""GroupName"": ""__Id_SiteDocumentsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -7908,21 +9795,18 @@
           ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""FullAddress"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Sites"",
       ""SetName"": ""Sites"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -7932,17 +9816,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Documents"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7950,6 +9834,9 @@
   ""GroupName"": ""__Documents__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -7968,9 +9855,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -7980,17 +9864,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -7998,6 +9882,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8016,9 +9903,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -8028,17 +9912,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""AdditionalSendReportsTo"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8046,6 +9930,9 @@
   ""GroupName"": ""__AdditionalSendReportsTo__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8064,9 +9951,198 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""People"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__People__"",
+  ""Key"": null,
+  ""Kind"": 5,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 20
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Location"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Location__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Location"",
+  ""Title"": ""Location"",
+  ""FriendlyName"": ""Location"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 22
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Area"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Area__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Area"",
+  ""Title"": ""Area"",
+  ""FriendlyName"": ""Area"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 24
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Line"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Line__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Line"",
+  ""Title"": ""Line"",
+  ""FriendlyName"": ""Line"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8076,17 +10152,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ParentId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8094,6 +10170,9 @@
   ""GroupName"": ""__ParentId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8112,9 +10191,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8124,17 +10200,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ClientId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8142,6 +10218,9 @@
   ""GroupName"": ""__ClientId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8160,9 +10239,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8172,17 +10248,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8190,6 +10266,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8208,9 +10287,138 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""FullAddress"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": {
+    ""Body"": {
+      ""Left"": {
+        ""Left"": {
+          ""PropertyName"": ""Address"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""EntityTypeName"": ""Site"",
+            ""VariableName"": ""site"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        },
+        ""Right"": {
+          ""Value"": ""\n"",
+          ""InferredReturnType"": 4,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 26,
+          ""ReturnType"": 4,
+          ""Parent"": null
+        },
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 15,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      },
+      ""Right"": {
+        ""PropertyName"": ""PostCode"",
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 30,
+        ""ReturnType"": 1,
+        ""Parent"": {
+          ""EntityTypeName"": ""Site"",
+          ""VariableName"": ""site"",
+          ""Value"": null,
+          ""InferredReturnType"": 1,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 28,
+          ""ReturnType"": 1,
+          ""Parent"": null
+        }
+      },
+      ""IsIqlExpression"": true,
+      ""Key"": null,
+      ""Kind"": 15,
+      ""ReturnType"": 1,
+      ""Parent"": null
+    },
+    ""Parameters"": [
+      {
+        ""EntityTypeName"": ""Site"",
+        ""VariableName"": ""site"",
+        ""Value"": null,
+        ""InferredReturnType"": 1,
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 28,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    ],
+    ""IsIqlExpression"": true,
+    ""Key"": null,
+    ""Kind"": 55,
+    ""ReturnType"": 1,
+    ""Parent"": null
+  },
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__FullAddress__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""7"",
+        ""Message"": """",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Site</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""FullAddress"",
+  ""Title"": ""FullAddress"",
+  ""FriendlyName"": ""Full Address"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8220,17 +10428,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Address"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8238,6 +10446,9 @@
   ""GroupName"": ""__Address__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8256,9 +10467,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8268,17 +10476,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""PostCode"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8286,6 +10494,9 @@
   ""GroupName"": ""__PostCode__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8301,17 +10512,9 @@
   ""GroupPath"": null,
   ""Description"": null,
   ""Hints"": [],
-  ""HelpTexts"": [
-    {
-      ""Text"": ""A name is useful"",
-      ""Kind"": 1
-    }
-  ]
+  ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8321,17 +10524,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8339,6 +10542,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8357,9 +10563,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8369,17 +10572,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Left"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8387,6 +10590,9 @@
   ""GroupName"": ""__Left__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8405,9 +10611,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8417,17 +10620,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Right"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8435,6 +10638,9 @@
   ""GroupName"": ""__Right__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8453,9 +10659,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8465,17 +10668,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8483,6 +10686,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8501,9 +10707,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8513,17 +10716,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8531,6 +10734,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8549,9 +10755,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8561,17 +10764,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8579,6 +10782,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8593,13 +10799,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8609,17 +10814,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8627,6 +10832,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8645,9 +10853,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8657,17 +10862,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""DocumentsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8675,6 +10880,9 @@
   ""GroupName"": ""__DocumentsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8693,9 +10901,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8705,17 +10910,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""AdditionalSendReportsToCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8723,6 +10928,9 @@
   ""GroupName"": ""__AdditionalSendReportsToCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8741,9 +10949,54 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCount"",
+  ""Title"": ""PeopleCount"",
+  ""FriendlyName"": ""People Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8753,17 +11006,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Parent"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8771,6 +11024,9 @@
   ""GroupName"": ""__Parent__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8789,9 +11045,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -8801,17 +11054,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Children"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8819,6 +11072,9 @@
   ""GroupName"": ""__Children__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8837,9 +11093,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8849,17 +11102,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ChildrenCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8867,6 +11120,9 @@
   ""GroupName"": ""__ChildrenCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8885,9 +11141,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8897,17 +11150,61 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Client"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Site</EntityTypeName>\r\n      <VariableName>_</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlPropertyExpression\"">\r\n      <Kind>Property</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <EntityTypeName>Site</EntityTypeName>\r\n        <VariableName>_</VariableName>\r\n      </Parent>\r\n      <PropertyName>CreatedByUser</PropertyName>\r\n    </Parent>\r\n    <PropertyName>Client</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>"",
+  ""InferredWithIql"": {
+    ""Body"": {
+      ""PropertyName"": ""Client"",
+      ""IsIqlExpression"": true,
+      ""Key"": null,
+      ""Kind"": 30,
+      ""ReturnType"": 1,
+      ""Parent"": {
+        ""PropertyName"": ""CreatedByUser"",
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 30,
+        ""ReturnType"": 1,
+        ""Parent"": {
+          ""EntityTypeName"": ""Site"",
+          ""VariableName"": ""_"",
+          ""Value"": null,
+          ""InferredReturnType"": 1,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 28,
+          ""ReturnType"": 1,
+          ""Parent"": null
+        }
+      }
+    },
+    ""Parameters"": [
+      {
+        ""EntityTypeName"": ""Site"",
+        ""VariableName"": ""_"",
+        ""Value"": null,
+        ""InferredReturnType"": 1,
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 28,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    ],
+    ""IsIqlExpression"": true,
+    ""Key"": null,
+    ""Kind"": 55,
+    ""ReturnType"": 1,
+    ""Parent"": null
+  },
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8915,6 +11212,9 @@
   ""GroupName"": ""__Client__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8933,9 +11233,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -8945,17 +11242,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -8963,6 +11260,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -8981,9 +11281,102 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Areas"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Areas__"",
+  ""Key"": null,
+  ""Kind"": 5,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Areas"",
+  ""Title"": ""Areas"",
+  ""FriendlyName"": ""Areas"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""AreasCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__AreasCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""AreasCount"",
+  ""Title"": ""AreasCount"",
+  ""FriendlyName"": ""Areas Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -8993,17 +11386,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspections"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9011,6 +11404,9 @@
   ""GroupName"": ""__SiteInspections__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9029,9 +11425,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9041,17 +11434,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspectionsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9059,6 +11452,9 @@
   ""GroupName"": ""__SiteInspectionsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9077,9 +11473,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -9089,17 +11482,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Users"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9107,6 +11500,9 @@
   ""GroupName"": ""__Users__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9125,9 +11521,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9137,17 +11530,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""UsersCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9155,6 +11548,9 @@
   ""GroupName"": ""__UsersCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9183,6 +11579,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -9193,6 +11591,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9200,8 +11602,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9214,6 +11623,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9224,6 +11635,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9231,8 +11646,15 @@
   ""GroupName"": ""__Id_Documents__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9256,6 +11678,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -9266,6 +11690,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9273,8 +11701,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9287,6 +11722,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9297,6 +11734,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9304,8 +11745,15 @@
   ""GroupName"": ""__Id_AdditionalSendReportsTo__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9323,12 +11771,113 @@
         {
           ""Constraints"": [
             {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
               ""SourceKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""ParentId\"",\""Kind\"":1,\""Children\"":null}"",
               ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -9339,6 +11888,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9346,8 +11899,15 @@
   ""GroupName"": ""__ParentId_Parent__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9360,6 +11920,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9370,6 +11932,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9377,8 +11943,15 @@
   ""GroupName"": ""__Id_Children__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9402,6 +11975,90 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [
+    {
+      ""Container"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Name\"",\""Kind\"":1,\""Children\"":null}"",
+      ""Expression"": {
+        ""Body"": {
+          ""Value"": ""test@123.com"",
+          ""InferredReturnType"": 4,
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 26,
+          ""ReturnType"": 4,
+          ""Parent"": null
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""Site"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
+  ""RelationshipMappings"": [
+    {
+      ""Container"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":6,\""Children\"":null}"",
+      ""Expression"": {
+        ""Body"": {
+          ""PropertyName"": ""Type"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""PropertyName"": ""Client"",
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 30,
+            ""ReturnType"": 1,
+            ""Parent"": {
+              ""EntityTypeName"": ""Site"",
+              ""VariableName"": ""_"",
+              ""Value"": null,
+              ""InferredReturnType"": 1,
+              ""IsIqlExpression"": true,
+              ""Key"": null,
+              ""Kind"": 28,
+              ""ReturnType"": 1,
+              ""Parent"": null
+            }
+          }
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""Site"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
   ""AllowInlineEditing"": true,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -9412,6 +12069,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9419,8 +12080,15 @@
   ""GroupName"": ""__ClientId_Client__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": [
       {
@@ -9438,6 +12106,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": true,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9448,6 +12118,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9455,8 +12129,15 @@
   ""GroupName"": ""__Id_Sites__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9480,6 +12161,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -9489,7 +12172,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9497,8 +12184,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9511,6 +12205,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9521,6 +12217,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9528,8 +12228,15 @@
   ""GroupName"": ""__Id_SitesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9547,22 +12254,28 @@
         {
           ""Constraints"": [
             {
-              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
               ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
   ""IsCollection"": false,
-  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""Property"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AreasCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9570,8 +12283,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9584,6 +12304,107 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Areas\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AreasCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Areas__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Areas"",
+  ""Title"": ""Areas"",
+  ""FriendlyName"": ""Areas"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""SiteInspectionsCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9594,6 +12415,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9601,8 +12426,15 @@
   ""GroupName"": ""__Id_SiteInspections__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9626,6 +12458,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -9636,6 +12470,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9643,8 +12481,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9657,6 +12502,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -9667,6 +12514,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9674,8 +12525,15 @@
   ""GroupName"": ""__Id_Users__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -9720,21 +12578,18 @@
           ""{\""Type\"":\""ReportActionsTaken\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Notes"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Report Actions Taken"",
       ""SetName"": ""ReportActionsTaken"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9744,17 +12599,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9762,6 +12617,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9780,9 +12638,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9792,17 +12647,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultReportId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9810,6 +12665,9 @@
   ""GroupName"": ""__FaultReportId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9828,9 +12686,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9840,17 +12695,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9858,6 +12713,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9876,9 +12734,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9888,17 +12743,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Notes"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9906,17 +12761,20 @@
   ""GroupName"": ""__Notes__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": [
       {
-        ""Key"": ""47ccc5d8-f230-4b25-86de-d1afd67eed27"",
+        ""Key"": ""5"",
         ""Message"": ""Please enter some actions taken notes"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       },
       {
-        ""Key"": ""35b9cd02-9abf-45a9-bb18-3aa63ed7c251"",
+        ""Key"": ""6"",
         ""Message"": ""Please enter at least five characters for notes"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlStringLengthExpression\"">\r\n      <Kind>StringLength</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Parent xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Notes</PropertyName>\r\n      </Parent>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Value xsi:type=\""xsd:int\"">5</Value>\r\n      <InferredReturnType>Integer</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlStringLengthExpression\"">\r\n      <Kind>StringLength</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Parent xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Notes</PropertyName>\r\n      </Parent>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Value xsi:type=\""xsd:int\"">5</Value>\r\n      <InferredReturnType>Integer</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -9935,9 +12793,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9947,17 +12802,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -9965,6 +12820,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -9983,9 +12841,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -9995,17 +12850,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10013,6 +12868,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10031,9 +12889,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10043,17 +12898,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10061,6 +12916,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10075,13 +12933,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10091,17 +12948,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10109,6 +12966,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10127,9 +12987,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10139,17 +12996,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonReport"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10157,6 +13014,9 @@
   ""GroupName"": ""__PersonReport__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10175,9 +13035,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10187,17 +13044,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10205,6 +13062,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10233,6 +13093,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -10243,6 +13105,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10250,8 +13116,15 @@
   ""GroupName"": ""__FaultReportId_PersonReport__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -10264,6 +13137,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -10274,6 +13149,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10281,8 +13160,15 @@
   ""GroupName"": ""__Id_ActionsTaken__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -10306,6 +13192,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -10315,7 +13203,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10323,8 +13215,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -10337,6 +13236,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -10347,6 +13248,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10354,8 +13259,15 @@
   ""GroupName"": ""__Id_FaultActionsTakenCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -10400,21 +13312,18 @@
           ""{\""Type\"":\""PersonReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Title"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Person Reports"",
       ""SetName"": ""PersonReports"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -10424,17 +13333,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ActionsTaken"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10442,6 +13351,9 @@
   ""GroupName"": ""__ActionsTaken__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10460,9 +13372,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10472,17 +13381,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10490,6 +13399,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10508,9 +13420,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -10520,17 +13429,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Recommendations"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10538,6 +13447,9 @@
   ""GroupName"": ""__Recommendations__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10556,9 +13468,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10568,17 +13477,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10586,6 +13495,9 @@
   ""GroupName"": ""__PersonId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10604,9 +13516,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10616,17 +13525,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""TypeId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10634,6 +13543,9 @@
   ""GroupName"": ""__TypeId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10652,9 +13564,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10664,17 +13573,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10682,6 +13591,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10700,9 +13612,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10712,17 +13621,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Title"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10730,17 +13639,20 @@
   ""GroupName"": ""__Title__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": [
       {
-        ""Key"": ""a83392af-4778-4e9c-8188-91079e422f99"",
+        ""Key"": ""3"",
         ""Message"": ""Please enter a valid report title"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       },
       {
-        ""Key"": ""ed0047b2-28bf-448a-a8d7-6fb24f21b4c5"",
+        ""Key"": ""4"",
         ""Message"": ""Please enter less than five characters"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">5</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">5</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -10759,9 +13671,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10771,17 +13680,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Status"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10789,6 +13698,9 @@
   ""GroupName"": ""__Status__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10807,9 +13719,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10819,17 +13728,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10837,6 +13746,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10855,9 +13767,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10867,17 +13776,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10885,6 +13794,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10903,9 +13815,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10915,17 +13824,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10933,6 +13842,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10947,13 +13859,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -10963,17 +13874,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -10981,6 +13892,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -10999,9 +13913,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11011,17 +13922,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ActionsTakenCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11029,6 +13940,9 @@
   ""GroupName"": ""__ActionsTakenCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11047,9 +13961,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11059,17 +13970,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RecommendationsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11077,6 +13988,9 @@
   ""GroupName"": ""__RecommendationsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11095,9 +14009,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11107,17 +14018,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Person"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11125,6 +14036,9 @@
   ""GroupName"": ""__Person__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11143,9 +14057,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11155,17 +14066,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Type"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11173,6 +14084,9 @@
   ""GroupName"": ""__Type__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11191,9 +14105,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11203,17 +14114,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11221,6 +14132,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11249,6 +14163,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -11259,6 +14175,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11266,8 +14186,15 @@
   ""GroupName"": ""__FaultReportId_PersonReport__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11280,6 +14207,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -11290,6 +14219,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11297,8 +14230,15 @@
   ""GroupName"": ""__Id_ActionsTaken__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11322,6 +14262,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -11332,6 +14274,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11339,8 +14285,15 @@
   ""GroupName"": ""__ReportId_PersonReport__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11353,6 +14306,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -11363,6 +14318,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11370,8 +14329,15 @@
   ""GroupName"": ""__Id_Recommendations__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11395,6 +14361,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -11405,6 +14373,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11412,8 +14384,15 @@
   ""GroupName"": ""__PersonId_Person__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11426,6 +14405,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -11436,6 +14417,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11443,8 +14428,15 @@
   ""GroupName"": ""__Id_Reports__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11468,6 +14460,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -11478,6 +14472,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11485,8 +14483,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11499,6 +14504,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -11509,6 +14516,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11516,8 +14527,15 @@
   ""GroupName"": ""__Id_FaultReports__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11541,6 +14559,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -11550,7 +14570,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11558,8 +14582,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11572,6 +14603,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -11582,6 +14615,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11589,8 +14626,15 @@
   ""GroupName"": ""__Id_FaultReportsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -11635,21 +14679,18 @@
           ""{\""Type\"":\""ReportCategory\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Report Categories"",
       ""SetName"": ""ReportCategories"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11659,17 +14700,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11677,6 +14718,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11695,9 +14739,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11707,17 +14748,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11725,6 +14766,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11743,9 +14787,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11755,17 +14796,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11773,6 +14814,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11791,9 +14835,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11803,17 +14844,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11821,6 +14862,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11839,9 +14883,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11851,17 +14892,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11869,6 +14910,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11887,9 +14931,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11899,17 +14940,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11917,6 +14958,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11931,13 +14975,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11947,17 +14990,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -11965,6 +15008,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -11983,9 +15029,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -11995,17 +15038,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12013,6 +15056,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12031,9 +15077,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -12043,17 +15086,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReportTypes"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12061,6 +15104,9 @@
   ""GroupName"": ""__ReportTypes__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12079,9 +15125,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12091,17 +15134,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReportTypesCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12109,6 +15152,9 @@
   ""GroupName"": ""__ReportTypesCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12137,6 +15183,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -12146,7 +15194,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12154,8 +15206,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12168,6 +15227,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -12178,6 +15239,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12185,8 +15250,15 @@
   ""GroupName"": ""__Id_FaultCategoriesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12210,6 +15282,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -12220,6 +15294,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12227,8 +15305,15 @@
   ""GroupName"": ""__CategoryId_Category__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12241,6 +15326,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -12251,6 +15338,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12258,8 +15349,15 @@
   ""GroupName"": ""__Id_ReportTypes__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12304,21 +15402,18 @@
           ""{\""Type\"":\""ReportDefaultRecommendation\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Report Default Recommendations"",
       ""SetName"": ""ReportDefaultRecommendations"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12328,17 +15423,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12346,6 +15441,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12364,9 +15462,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12376,17 +15471,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12394,6 +15489,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12412,9 +15510,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12424,17 +15519,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12442,6 +15537,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12460,9 +15558,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12472,17 +15567,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Text"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12490,6 +15585,9 @@
   ""GroupName"": ""__Text__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12508,9 +15606,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12520,17 +15615,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12538,6 +15633,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12556,9 +15654,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12568,17 +15663,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12586,6 +15681,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12604,9 +15702,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12616,17 +15711,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12634,6 +15729,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12648,13 +15746,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12664,17 +15761,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12682,6 +15779,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12700,9 +15800,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12712,17 +15809,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12730,6 +15827,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12748,9 +15848,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -12760,17 +15857,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Recommendations"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12778,6 +15875,9 @@
   ""GroupName"": ""__Recommendations__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12796,9 +15896,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -12808,17 +15905,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RecommendationsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12826,6 +15923,9 @@
   ""GroupName"": ""__RecommendationsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -12854,6 +15954,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -12863,7 +15965,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12871,8 +15977,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12885,6 +15998,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -12895,6 +16010,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12902,8 +16021,15 @@
   ""GroupName"": ""__Id_FaultDefaultRecommendationsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12927,6 +16053,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -12937,6 +16065,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12944,8 +16076,15 @@
   ""GroupName"": ""__RecommendationId_Recommendation__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -12958,6 +16097,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -12968,6 +16109,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -12975,8 +16120,15 @@
   ""GroupName"": ""__Id_Recommendations__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13021,21 +16173,18 @@
           ""{\""Type\"":\""ReportRecommendation\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Notes"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Report Recommendations"",
       ""SetName"": ""ReportRecommendations"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13045,17 +16194,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13063,6 +16212,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13081,9 +16233,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13093,17 +16242,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReportId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13111,6 +16260,9 @@
   ""GroupName"": ""__ReportId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13129,9 +16281,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13141,17 +16290,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RecommendationId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13159,6 +16308,9 @@
   ""GroupName"": ""__RecommendationId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13177,9 +16329,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13189,17 +16338,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13207,6 +16356,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13225,9 +16377,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13237,17 +16386,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Notes"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13255,6 +16404,9 @@
   ""GroupName"": ""__Notes__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13273,9 +16425,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13285,17 +16434,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13303,6 +16452,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13321,9 +16473,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13333,17 +16482,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13351,6 +16500,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13369,9 +16521,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13381,17 +16530,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13399,6 +16548,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13413,13 +16565,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13429,17 +16580,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13447,6 +16598,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13465,9 +16619,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13477,17 +16628,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonReport"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13495,6 +16646,9 @@
   ""GroupName"": ""__PersonReport__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13513,9 +16667,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13525,17 +16676,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Recommendation"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13543,6 +16694,9 @@
   ""GroupName"": ""__Recommendation__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13561,9 +16715,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13573,17 +16724,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13591,6 +16742,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13619,6 +16773,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -13629,6 +16785,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13636,8 +16796,15 @@
   ""GroupName"": ""__ReportId_PersonReport__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13650,6 +16817,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -13660,6 +16829,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13667,8 +16840,15 @@
   ""GroupName"": ""__Id_Recommendations__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13692,6 +16872,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -13702,6 +16884,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13709,8 +16895,15 @@
   ""GroupName"": ""__RecommendationId_Recommendation__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13723,6 +16916,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -13733,6 +16928,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13740,8 +16939,15 @@
   ""GroupName"": ""__Id_Recommendations__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13765,6 +16971,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -13774,7 +16982,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13782,8 +16994,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13796,6 +17015,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -13806,6 +17027,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13813,8 +17038,15 @@
   ""GroupName"": ""__Id_FaultRecommendationsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -13859,21 +17091,18 @@
           ""{\""Type\"":\""ReportType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Report Types"",
       ""SetName"": ""ReportTypes"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13883,17 +17112,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13901,6 +17130,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13919,9 +17151,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13931,17 +17160,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CategoryId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13949,6 +17178,9 @@
   ""GroupName"": ""__CategoryId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -13967,9 +17199,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -13979,17 +17208,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -13997,6 +17226,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14015,9 +17247,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14027,17 +17256,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14045,6 +17274,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14063,9 +17295,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14075,17 +17304,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14093,6 +17322,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14111,9 +17343,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14123,17 +17352,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14141,6 +17370,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14159,9 +17391,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14171,17 +17400,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14189,6 +17418,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14207,9 +17439,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14219,17 +17448,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14237,6 +17466,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14251,13 +17483,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14267,17 +17498,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Category"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14285,6 +17516,9 @@
   ""GroupName"": ""__Category__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14303,9 +17537,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14315,17 +17546,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14333,6 +17564,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14351,9 +17585,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -14363,17 +17594,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultReports"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14381,6 +17612,9 @@
   ""GroupName"": ""__FaultReports__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14399,9 +17633,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14411,17 +17642,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""FaultReportsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14429,6 +17660,9 @@
   ""GroupName"": ""__FaultReportsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14457,6 +17691,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -14467,6 +17703,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14474,8 +17714,15 @@
   ""GroupName"": ""__CategoryId_Category__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14488,6 +17735,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -14498,6 +17747,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14505,8 +17758,15 @@
   ""GroupName"": ""__Id_ReportTypes__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14530,6 +17790,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -14539,7 +17801,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14547,8 +17813,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14561,6 +17834,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -14571,6 +17846,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14578,8 +17857,15 @@
   ""GroupName"": ""__Id_FaultTypesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14603,6 +17889,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -14613,6 +17901,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14620,8 +17912,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14634,6 +17933,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -14644,6 +17945,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14651,8 +17956,15 @@
   ""GroupName"": ""__Id_FaultReports__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14697,21 +18009,18 @@
           ""{\""Type\"":\""Project\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Title"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Projects"",
       ""SetName"": ""Projects"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14721,17 +18030,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14739,6 +18048,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14757,105 +18069,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Title__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Title"",
-  ""Title"": ""Title"",
-  ""FriendlyName"": ""Title"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Description__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Description"",
-  ""Title"": ""Description"",
-  ""FriendlyName"": ""Description"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14865,17 +18078,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14883,6 +18096,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14901,9 +18117,296 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""Title"",
+  ""FriendlyName"": ""Title"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [
+    ""Iql:Version""
+  ],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -14913,17 +18416,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14931,6 +18434,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -14959,6 +18465,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -14968,7 +18476,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -14976,8 +18488,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -14990,6 +18509,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -15000,6 +18521,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15007,8 +18532,15 @@
   ""GroupName"": ""__Id_ProjectCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -15053,21 +18585,18 @@
           ""{\""Type\"":\""ReportReceiverEmailAddress\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""EmailAddress"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Report Receiver Email Addresses"",
       ""SetName"": ""ReportReceiverEmailAddresses"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15077,17 +18606,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15095,6 +18624,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15113,57 +18645,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__CreatedByUserId__"",
-  ""Key"": null,
-  ""Kind"": 19,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""CreatedByUserId"",
-  ""Title"": ""CreatedByUserId"",
-  ""FriendlyName"": ""Created By User Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15173,17 +18654,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15191,6 +18672,9 @@
   ""GroupName"": ""__SiteId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15209,9 +18693,54 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15221,17 +18750,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""EmailAddress"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15239,6 +18768,9 @@
   ""GroupName"": ""__EmailAddress__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15257,9 +18789,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15269,17 +18798,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15287,6 +18816,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15305,9 +18837,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15317,17 +18846,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15335,6 +18864,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15353,9 +18885,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15365,17 +18894,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15383,6 +18912,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15397,13 +18929,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15413,17 +18944,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15431,6 +18962,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15449,9 +18983,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15461,17 +18992,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Site"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15479,6 +19010,9 @@
   ""GroupName"": ""__Site__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15497,9 +19031,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15509,17 +19040,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15527,6 +19058,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15555,6 +19089,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -15565,6 +19101,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15572,8 +19112,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -15586,6 +19133,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -15596,6 +19145,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15603,8 +19156,15 @@
   ""GroupName"": ""__Id_AdditionalSendReportsTo__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -15628,6 +19188,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -15637,7 +19199,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15645,8 +19211,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -15659,6 +19232,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -15669,6 +19244,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15676,8 +19255,15 @@
   ""GroupName"": ""__Id_ReportReceiverEmailAddressesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -15722,21 +19308,18 @@
           ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""RevisionKey"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Risk Assessments"",
       ""SetName"": ""RiskAssessments"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15746,17 +19329,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15764,6 +19347,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15782,9 +19368,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15794,17 +19377,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspectionId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15812,6 +19395,9 @@
   ""GroupName"": ""__SiteInspectionId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15830,9 +19416,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15842,17 +19425,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15860,6 +19443,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15878,9 +19464,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15890,17 +19473,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15908,6 +19491,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15926,9 +19512,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15938,17 +19521,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -15956,6 +19539,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -15974,9 +19560,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -15986,17 +19569,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16004,6 +19587,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16018,13 +19604,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16034,17 +19619,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16052,6 +19637,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16070,9 +19658,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16082,17 +19667,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspection"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16100,6 +19685,9 @@
   ""GroupName"": ""__SiteInspection__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16118,9 +19706,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16130,17 +19715,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16148,6 +19733,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16166,9 +19754,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16178,17 +19763,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentSolution"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16196,6 +19781,9 @@
   ""GroupName"": ""__RiskAssessmentSolution__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16222,18 +19810,24 @@
               ""TargetKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
-          ""Kind"": 0,
+          ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
   ""IsCollection"": false,
   ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""SiteInspection\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": null,
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessmentsCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16241,8 +19835,15 @@
   ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -16255,31 +19856,44 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
-  ""IsCollection"": false,
-  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessment\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": null,
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessments\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessmentsCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
   ""Sortable"": true,
-  ""GroupName"": ""__Id_RiskAssessment__"",
+  ""GroupName"": ""__Id_RiskAssessments__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
-  ""Name"": ""RiskAssessment"",
-  ""Title"": ""Risk Assessment"",
-  ""FriendlyName"": ""Risk Assessment"",
+  ""Name"": ""RiskAssessments"",
+  ""Title"": ""Risk Assessments"",
+  ""FriendlyName"": ""Risk Assessments"",
   ""GroupPath"": null,
   ""Description"": null,
   ""Hints"": [],
@@ -16297,6 +19911,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -16306,7 +19922,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16314,8 +19934,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -16328,6 +19955,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -16338,6 +19967,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16345,8 +19978,15 @@
   ""GroupName"": ""__Id_RiskAssessmentsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -16370,6 +20010,8 @@
           ],
           ""Kind"": 0,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -16380,6 +20022,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16387,8 +20033,15 @@
   ""GroupName"": ""__RiskAssessmentId_RiskAssessment__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -16401,6 +20054,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -16411,6 +20066,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16418,8 +20077,15 @@
   ""GroupName"": ""__Id_RiskAssessmentSolution__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -16464,48 +20130,48 @@
           ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""RevisionKey"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Site Inspections"",
       ""SetName"": ""SiteInspections"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
-    ""IsCollection"": false,
+    ""IsCollection"": true,
     ""ConvertedFromType"": null,
     ""Nullable"": false,
-    ""Kind"": 1
+    ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessment"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
+  ""PropertyName"": ""RiskAssessments"",
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
   ""Sortable"": true,
-  ""GroupName"": ""__RiskAssessment__"",
+  ""GroupName"": ""__RiskAssessments__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16515,18 +20181,15 @@
   ""Metadata"": {
     ""All"": []
   },
-  ""Name"": ""RiskAssessment"",
-  ""Title"": ""RiskAssessment"",
-  ""FriendlyName"": ""Risk Assessment"",
+  ""Name"": ""RiskAssessments"",
+  ""Title"": ""RiskAssessments"",
+  ""FriendlyName"": ""Risk Assessments"",
   ""GroupPath"": null,
   ""Description"": null,
   ""Hints"": [],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16536,17 +20199,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16554,6 +20217,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16572,9 +20238,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -16584,17 +20247,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonInspections"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16602,6 +20265,9 @@
   ""GroupName"": ""__PersonInspections__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16620,9 +20286,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16632,17 +20295,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16650,6 +20313,9 @@
   ""GroupName"": ""__SiteId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16668,9 +20334,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16680,17 +20343,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16698,6 +20361,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16716,9 +20382,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16728,17 +20391,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""StartTime"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16746,6 +20409,9 @@
   ""GroupName"": ""__StartTime__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16764,9 +20430,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16776,17 +20439,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""EndTime"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16794,6 +20457,9 @@
   ""GroupName"": ""__EndTime__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16812,9 +20478,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16824,17 +20487,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16842,6 +20505,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16860,9 +20526,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16872,17 +20535,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16890,6 +20553,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16908,9 +20574,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16920,17 +20583,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16938,6 +20601,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -16952,13 +20618,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -16968,17 +20633,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -16986,6 +20651,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17004,9 +20672,54 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""RiskAssessmentsCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RiskAssessmentsCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentsCount"",
+  ""Title"": ""RiskAssessmentsCount"",
+  ""FriendlyName"": ""Risk Assessments Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17016,17 +20729,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonInspectionsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17034,6 +20747,9 @@
   ""GroupName"": ""__PersonInspectionsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17052,9 +20768,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17064,17 +20777,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Site"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17082,6 +20795,9 @@
   ""GroupName"": ""__Site__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17100,9 +20816,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17112,17 +20825,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17130,6 +20843,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17156,18 +20872,24 @@
               ""TargetKeyProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
-          ""Kind"": 0,
+          ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
   ""IsCollection"": false,
   ""Property"": ""{\""Type\"":\""RiskAssessment\"",\""Paths\"":\""SiteInspection\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": null,
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessmentsCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17175,8 +20897,15 @@
   ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17189,31 +20918,44 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
-  ""IsCollection"": false,
-  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessment\"",\""Kind\"":1,\""Children\"":null}"",
-  ""CountProperty"": null,
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessments\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteInspection\"",\""Paths\"":\""RiskAssessmentsCount\"",\""Kind\"":1,\""Children\"":null}"",
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
   ""Sortable"": true,
-  ""GroupName"": ""__Id_RiskAssessment__"",
+  ""GroupName"": ""__Id_RiskAssessments__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
-  ""Name"": ""RiskAssessment"",
-  ""Title"": ""Risk Assessment"",
-  ""FriendlyName"": ""Risk Assessment"",
+  ""Name"": ""RiskAssessments"",
+  ""Title"": ""Risk Assessments"",
+  ""FriendlyName"": ""Risk Assessments"",
   ""GroupPath"": null,
   ""Description"": null,
   ""Hints"": [],
@@ -17231,6 +20973,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -17241,6 +20985,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17248,8 +20996,15 @@
   ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17262,6 +21017,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -17272,6 +21029,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17279,8 +21040,15 @@
   ""GroupName"": ""__Id_PersonInspections__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17304,6 +21072,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -17314,6 +21084,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17321,8 +21095,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17335,6 +21116,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -17345,6 +21128,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17352,8 +21139,15 @@
   ""GroupName"": ""__Id_SiteInspections__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17377,6 +21171,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -17386,7 +21182,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17394,8 +21194,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17408,6 +21215,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -17418,6 +21227,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17425,8 +21238,15 @@
   ""GroupName"": ""__Id_SiteInspectionsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17471,21 +21291,18 @@
           ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""RevisionKey"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Risk Assessment Solutions"",
       ""SetName"": ""RiskAssessmentSolutions"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17495,17 +21312,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17513,6 +21330,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17531,9 +21351,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17543,17 +21360,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessmentId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17561,6 +21378,9 @@
   ""GroupName"": ""__RiskAssessmentId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17579,57 +21399,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": ""Guid"",
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Guid__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Guid"",
-  ""Title"": ""Guid"",
-  ""FriendlyName"": ""Guid"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17637,26 +21406,29 @@
     ""Nullable"": true,
     ""Kind"": 4
   },
-  ""SearchKind"": 3,
+  ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
   ""Sortable"": true,
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
-  ""Kind"": 3,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17675,9 +21447,54 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17687,17 +21504,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17705,6 +21522,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17723,9 +21543,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17735,17 +21552,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17753,6 +21570,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17767,13 +21587,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17783,17 +21602,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17801,6 +21620,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17819,9 +21641,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17831,17 +21650,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""RiskAssessment"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17849,6 +21668,9 @@
   ""GroupName"": ""__RiskAssessment__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17867,9 +21689,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -17879,24 +21698,27 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
   ""Sortable"": true,
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
-  ""Kind"": 3,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -17925,6 +21747,8 @@
           ],
           ""Kind"": 0,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -17935,6 +21759,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17942,8 +21770,15 @@
   ""GroupName"": ""__RiskAssessmentId_RiskAssessment__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17956,6 +21791,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -17966,6 +21803,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -17973,8 +21814,15 @@
   ""GroupName"": ""__Id_RiskAssessmentSolution__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -17988,6 +21836,105 @@
 },
           ""ConstraintKey"": ""Id"",
           ""QualifiedConstraintKey"": ""RiskAssessment:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""RiskAssessmentSolution\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentSolutionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentSolutionsCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""RiskAssessmentSolutionsCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_RiskAssessmentSolutionsCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RiskAssessmentSolutionsCreated"",
+  ""Title"": ""Risk Assessment Solutions Created"",
+  ""FriendlyName"": ""Risk Assessment Solutions Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
         }
       ],
       ""Files"": [],
@@ -18019,21 +21966,18 @@
           ""{\""Type\"":\""RiskAssessmentAnswer\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""SpecificHazard"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Risk Assessment Answers"",
       ""SetName"": ""RiskAssessmentAnswers"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18043,17 +21987,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18061,6 +22005,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18079,9 +22026,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18091,17 +22035,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""QuestionId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18109,6 +22053,9 @@
   ""GroupName"": ""__QuestionId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18127,9 +22074,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18139,17 +22083,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18157,6 +22101,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18175,9 +22122,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18187,17 +22131,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""SpecificHazard"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18205,6 +22149,9 @@
   ""GroupName"": ""__SpecificHazard__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18223,9 +22170,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18235,17 +22179,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""PrecautionsToControlHazard"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18253,6 +22197,9 @@
   ""GroupName"": ""__PrecautionsToControlHazard__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18271,9 +22218,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18283,17 +22227,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18301,6 +22245,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18319,9 +22266,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18331,17 +22275,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18349,6 +22293,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18367,9 +22314,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18379,17 +22323,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18397,6 +22341,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18411,13 +22358,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18427,17 +22373,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18445,6 +22391,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18463,9 +22412,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18475,17 +22421,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Question"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18493,6 +22439,9 @@
   ""GroupName"": ""__Question__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18511,9 +22460,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18523,17 +22469,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18541,6 +22487,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18569,6 +22518,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -18579,6 +22530,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18586,8 +22541,15 @@
   ""GroupName"": ""__QuestionId_Question__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -18600,6 +22562,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -18610,6 +22574,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18617,8 +22585,15 @@
   ""GroupName"": ""__Id_Answers__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -18642,6 +22617,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -18651,7 +22628,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18659,8 +22640,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -18673,6 +22661,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -18683,6 +22673,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18690,8 +22684,15 @@
   ""GroupName"": ""__Id_RiskAssessmentAnswersCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -18736,21 +22737,18 @@
           ""{\""Type\"":\""RiskAssessmentQuestion\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Risk Assessment Questions"",
       ""SetName"": ""RiskAssessmentQuestions"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -18760,17 +22758,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Answers"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18778,6 +22776,9 @@
   ""GroupName"": ""__Answers__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18796,9 +22797,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18808,17 +22806,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18826,6 +22824,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18844,9 +22845,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18856,17 +22854,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18874,6 +22872,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18892,9 +22893,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18904,17 +22902,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18922,6 +22920,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18940,9 +22941,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -18952,17 +22950,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -18970,6 +22968,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -18988,9 +22989,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19000,17 +22998,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19018,6 +23016,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19036,9 +23037,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19048,17 +23046,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19066,6 +23064,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19080,13 +23081,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19096,17 +23096,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19114,6 +23114,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19132,9 +23135,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19144,17 +23144,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""AnswersCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19162,6 +23162,9 @@
   ""GroupName"": ""__AnswersCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19180,9 +23183,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19192,17 +23192,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19210,6 +23210,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19238,6 +23241,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -19248,6 +23253,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19255,8 +23264,15 @@
   ""GroupName"": ""__QuestionId_Question__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -19269,6 +23285,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -19279,6 +23297,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19286,8 +23308,15 @@
   ""GroupName"": ""__Id_Answers__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -19311,6 +23340,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -19320,7 +23351,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19328,8 +23363,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -19342,6 +23384,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -19352,6 +23396,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19359,8 +23407,15 @@
   ""GroupName"": ""__Id_RiskAssessmentQuestionsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -19396,26 +23451,33 @@
         ""All"": [
           {
             ""Key"": ""Default"",
-            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <PropertyName>Title</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <PropertyName>Title</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>""
           },
           {
             ""Key"": ""Report"",
-            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>Person</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Title</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Id</PropertyName>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>Person</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Title</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Id</PropertyName>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          },
+          {
+            ""Key"": ""ReportLong"",
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlAddExpression\"">\r\n          <Kind>Add</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlAddExpression\"">\r\n            <Kind>Add</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Value xsi:type=\""xsd:string\""> - </Value>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Left>\r\n          <Right xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Type</PropertyName>\r\n                </Parent>\r\n                <PropertyName>CreatedByUser</PropertyName>\r\n              </Parent>\r\n              <PropertyName>Client</PropertyName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Id</PropertyName>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           }
         ],
-        ""Default"": null
+        ""Default"": {
+          ""Key"": ""Default"",
+          ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <PropertyName>Title</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        }
       },
       ""EntityValidation"": {
         ""All"": [
           {
             ""Key"": ""NoTitleOrDescription"",
             ""Message"": ""Please enter either a title or a description"",
-            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           },
           {
             ""Key"": ""JoshCheck"",
             ""Message"": ""If the name is 'Josh' please match it in the description"",
-            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           }
         ]
       },
@@ -19425,21 +23487,18 @@
           ""{\""Type\"":\""Person\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Key"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""People"",
       ""SetName"": ""People"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19449,17 +23508,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19467,6 +23526,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19485,370 +23547,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 5
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""TypeId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__TypeId__"",
-  ""Key"": null,
-  ""Kind"": 19,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""TypeId"",
-  ""Title"": ""TypeId"",
-  ""FriendlyName"": ""Type Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 5
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""LoadingId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__LoadingId__"",
-  ""Key"": null,
-  ""Kind"": 19,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""LoadingId"",
-  ""Title"": ""LoadingId"",
-  ""FriendlyName"": ""Loading Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 5,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__CreatedByUserId__"",
-  ""Key"": null,
-  ""Kind"": 19,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""CreatedByUserId"",
-  ""Title"": ""CreatedByUserId"",
-  ""FriendlyName"": ""Created By User Id"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Key"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Key__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Key"",
-  ""Title"": ""Key"",
-  ""FriendlyName"": ""Key"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": true,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": true,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Title__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": [
-      {
-        ""Key"": ""EmptyTitle"",
-        ""Message"": ""Please enter a person title"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      },
-      {
-        ""Key"": ""TitleMaxLength"",
-        ""Message"": ""Please enter less than fifty characters"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">50</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      },
-      {
-        ""Key"": ""TitleMinLength"",
-        ""Message"": ""Please enter at least three characters for the person's title"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsLessThanExpression\"">\r\n      <Kind>IsLessThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">3</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      }
-    ]
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Title"",
-  ""Title"": ""__key2"",
-  ""FriendlyName"": ""Key me2"",
-  ""GroupPath"": null,
-  ""Description"": ""Some key2"",
-  ""Hints"": [
-    ""!2"",
-    ""Open2""
-  ],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 4
-  },
-  ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Description__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": [
-      {
-        ""Key"": ""EmptyDescription"",
-        ""Message"": ""Please enter a person description"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      }
-    ]
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Description"",
-  ""Title"": ""Description"",
-  ""FriendlyName"": ""Description"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
-  ""Relationships"": [],
-  ""TypeDefinition"": {
-    ""IsCollection"": false,
-    ""ConvertedFromType"": null,
-    ""Nullable"": false,
-    ""Kind"": 9
-  },
-  ""SearchKind"": 1,
-  ""PropertyName"": ""Category"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
-  ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
-  ""EditKindChanged"": {},
-  ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
-  ""SupportsInlineEditing"": true,
-  ""PromptBeforeEdit"": false,
-  ""Placeholder"": null,
-  ""Sortable"": true,
-  ""GroupName"": ""__Category__"",
-  ""Key"": null,
-  ""Kind"": 3,
-  ""ValidationRules"": {
-    ""All"": []
-  },
-  ""DisplayRules"": {
-    ""All"": []
-  },
-  ""Metadata"": {
-    ""All"": []
-  },
-  ""Name"": ""Category"",
-  ""Title"": ""Category"",
-  ""FriendlyName"": ""Category"",
-  ""GroupPath"": null,
-  ""Description"": null,
-  ""Hints"": [],
-  ""HelpTexts"": []
-},
-        {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19858,17 +23556,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ClientId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19876,6 +23574,9 @@
   ""GroupName"": ""__ClientId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19894,9 +23595,460 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId__"",
+  ""Key"": null,
+  ""Kind"": 19,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteId"",
+  ""Title"": ""SiteId"",
+  ""FriendlyName"": ""Site Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteAreaId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteAreaId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteAreaId"",
+  ""Title"": ""SiteAreaId"",
+  ""FriendlyName"": ""Site Area Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""TypeId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__TypeId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""TypeId"",
+  ""Title"": ""TypeId"",
+  ""FriendlyName"": ""Type Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""LoadingId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__LoadingId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""LoadingId"",
+  ""Title"": ""LoadingId"",
+  ""FriendlyName"": ""Loading Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Key"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Key__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Key"",
+  ""Title"": ""Key"",
+  ""FriendlyName"": ""Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Title"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Title__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""EmptyTitle"",
+        ""Message"": ""Please enter a person title"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      },
+      {
+        ""Key"": ""TitleMaxLength"",
+        ""Message"": ""Please enter less than fifty characters"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">50</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      },
+      {
+        ""Key"": ""TitleMinLength"",
+        ""Message"": ""Please enter at least three characters for the person's title"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsLessThanExpression\"">\r\n      <Kind>IsLessThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">3</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Title"",
+  ""Title"": ""Title"",
+  ""FriendlyName"": ""Title"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""Description"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Description__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": [
+      {
+        ""Key"": ""EmptyDescription"",
+        ""Message"": ""Please enter a person description"",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Description"",
+  ""Title"": ""Description"",
+  ""FriendlyName"": ""Description"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 9
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Category"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Category__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Category"",
+  ""Title"": ""Category"",
+  ""FriendlyName"": ""Category"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19906,17 +24058,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19924,6 +24076,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19942,9 +24097,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -19954,17 +24106,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -19972,6 +24124,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -19990,9 +24145,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20002,17 +24154,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20020,6 +24172,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20034,13 +24189,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20050,17 +24204,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20068,6 +24222,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20086,9 +24243,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20098,17 +24252,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Client"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20116,6 +24270,9 @@
   ""GroupName"": ""__Client__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20134,9 +24291,108 @@
   ""HelpTexts"": []
 },
         {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Site"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Site__"",
+  ""Key"": null,
+  ""Kind"": 5,
   ""RelationshipFilterRules"": {
     ""All"": []
   },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteArea"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteArea__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": [
+      {
+        ""Key"": ""1"",
+        ""Message"": """",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteArea"",
+  ""Title"": ""SiteArea"",
+  ""FriendlyName"": ""Site Area"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20146,17 +24402,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Type"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20164,6 +24420,9 @@
   ""GroupName"": ""__Type__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20182,15 +24441,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": [
-      {
-        ""Key"": ""7e279234-9d63-441c-81af-eedc56623ddb"",
-        ""Message"": """",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <EntityTypeName>PersonLoading</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <EntityTypeName>PersonLoading</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>Name</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Variable</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>Title</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      }
-    ]
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20200,17 +24450,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Loading"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20218,6 +24468,9 @@
   ""GroupName"": ""__Loading__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20236,9 +24489,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20248,17 +24498,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20266,6 +24516,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20284,9 +24537,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -20296,17 +24546,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Types"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20314,6 +24564,9 @@
   ""GroupName"": ""__Types__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20332,9 +24585,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20344,17 +24594,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""TypesCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20362,6 +24612,9 @@
   ""GroupName"": ""__TypesCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20380,9 +24633,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -20392,17 +24642,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Reports"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20410,6 +24660,9 @@
   ""GroupName"": ""__Reports__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20428,9 +24681,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -20440,17 +24690,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReportsCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20458,6 +24708,9 @@
   ""GroupName"": ""__ReportsCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -20486,6 +24739,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -20496,6 +24751,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20503,8 +24762,15 @@
   ""GroupName"": ""__ClientId_Client__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20517,6 +24783,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -20527,6 +24795,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20534,8 +24806,15 @@
   ""GroupName"": ""__Id_People__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20553,12 +24832,260 @@
         {
           ""Constraints"": [
             {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""SiteAreaId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [
+    {
+      ""Container"": null,
+      ""Expression"": {
+        ""Body"": {
+          ""PropertyName"": ""Site"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""EntityTypeName"": ""Person"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""Person"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""SiteArea\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteAreaId_SiteArea__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": [
+      {
+        ""Key"": ""1"",
+        ""Message"": """",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteArea"",
+  ""Title"": ""Site Area"",
+  ""FriendlyName"": ""Site Area"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""SiteArea:Id""
+        },
+        {
+          ""Constraints"": [
+            {
               ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}"",
               ""TargetKeyProperty"": ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
             }
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -20569,6 +25096,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20576,8 +25107,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20590,6 +25128,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -20600,6 +25140,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20607,8 +25151,15 @@
   ""GroupName"": ""__Id_People__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20632,6 +25183,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -20642,6 +25195,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20649,8 +25206,15 @@
   ""GroupName"": ""__LoadingId_Loading__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20663,6 +25227,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -20673,6 +25239,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20680,8 +25250,15 @@
   ""GroupName"": ""__Id_People__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20705,6 +25282,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -20714,7 +25293,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20722,8 +25305,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20736,6 +25326,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -20746,6 +25338,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20753,8 +25349,15 @@
   ""GroupName"": ""__Id_PeopleCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20778,6 +25381,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -20788,6 +25393,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20795,8 +25404,15 @@
   ""GroupName"": ""__PersonId_Person__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20809,6 +25425,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -20819,6 +25437,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20826,8 +25448,15 @@
   ""GroupName"": ""__Id_Types__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20851,6 +25480,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -20861,6 +25492,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20868,8 +25503,15 @@
   ""GroupName"": ""__PersonId_Person__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20882,6 +25524,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -20892,6 +25536,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20899,8 +25547,15 @@
   ""GroupName"": ""__Id_Reports__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -20921,14 +25576,929 @@
         ""All"": []
       },
       ""Name"": ""Person"",
-      ""Title"": ""PERSON"",
-      ""FriendlyName"": ""A person"",
+      ""Title"": ""Person"",
+      ""FriendlyName"": ""Person"",
       ""GroupPath"": null,
-      ""Description"": ""Hello"",
-      ""Hints"": [
-        ""%"",
-        ""Print""
+      ""Description"": null,
+      ""Hints"": [],
+      ""HelpTexts"": []
+    },
+    {
+      ""Geographics"": [],
+      ""NestedSets"": [],
+      ""DateRanges"": [],
+      ""DisplayFormatting"": {
+        ""All"": [],
+        ""Default"": null
+      },
+      ""EntityValidation"": {
+        ""All"": []
+      },
+      ""Key"": {
+        ""HasRelationshipKeys"": false,
+        ""Properties"": [
+          ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+        ]
+      },
+      ""TitlePropertyName"": ""RevisionKey"",
+      ""PreviewPropertyName"": null,
+      ""ManageKind"": 62,
+      ""SetFriendlyName"": ""Site Areas"",
+      ""SetName"": ""SiteAreas"",
+      ""SetNameSet"": true,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
+      ""EditDisplay"": [],
+      ""ReadDisplay"": [],
+      ""Properties"": [
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": true,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 2
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""People"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__People__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Id"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id__"",
+  ""Key"": null,
+  ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Id"",
+  ""Title"": ""Id"",
+  ""FriendlyName"": ""Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""SiteId"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteId"",
+  ""Title"": ""SiteId"",
+  ""FriendlyName"": ""Site Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUserId"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId__"",
+  ""Key"": null,
+  ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUserId"",
+  ""Title"": ""CreatedByUserId"",
+  ""FriendlyName"": ""Created By User Id"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Guid"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Guid__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Guid"",
+  ""Title"": ""Guid"",
+  ""FriendlyName"": ""Guid"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 8
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedDate"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedDate__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedDate"",
+  ""Title"": ""CreatedDate"",
+  ""FriendlyName"": ""Created Date"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 3,
+  ""PropertyName"": ""RevisionKey"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__RevisionKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""RevisionKey"",
+  ""Title"": ""RevisionKey"",
+  ""FriendlyName"": ""Revision Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [
+    ""Iql:Version""
+  ],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": ""Guid"",
+    ""Nullable"": false,
+    ""Kind"": 4
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PersistenceKey"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PersistenceKey__"",
+  ""Key"": null,
+  ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PersistenceKey"",
+  ""Title"": ""PersistenceKey"",
+  ""FriendlyName"": ""Persistence Key"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 5
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""PeopleCount"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__PeopleCount__"",
+  ""Key"": null,
+  ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""PeopleCount"",
+  ""Title"": ""PeopleCount"",
+  ""FriendlyName"": ""People Count"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": false,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""Site"",
+  ""Searchable"": true,
+  ""Nullable"": false,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Site__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+        {
+  ""Relationships"": [],
+  ""TypeDefinition"": {
+    ""IsCollection"": false,
+    ""ConvertedFromType"": null,
+    ""Nullable"": true,
+    ""Kind"": 1
+  },
+  ""SearchKind"": 1,
+  ""PropertyName"": ""CreatedByUser"",
+  ""Searchable"": true,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""CreatedByUser"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+}
       ],
+      ""Relationships"": [
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""Person\"",\""Paths\"":\""SiteAreaId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [
+    {
+      ""Container"": null,
+      ""Expression"": {
+        ""Body"": {
+          ""PropertyName"": ""Site"",
+          ""IsIqlExpression"": true,
+          ""Key"": null,
+          ""Kind"": 30,
+          ""ReturnType"": 1,
+          ""Parent"": {
+            ""EntityTypeName"": ""Person"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        },
+        ""Parameters"": [
+          {
+            ""EntityTypeName"": ""Person"",
+            ""VariableName"": ""_"",
+            ""Value"": null,
+            ""InferredReturnType"": 1,
+            ""IsIqlExpression"": true,
+            ""Key"": null,
+            ""Kind"": 28,
+            ""ReturnType"": 1,
+            ""Parent"": null
+          }
+        ],
+        ""IsIqlExpression"": true,
+        ""Key"": null,
+        ""Kind"": 55,
+        ""ReturnType"": 1,
+        ""Parent"": null
+      }
+    }
+  ],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""Person\"",\""Paths\"":\""SiteArea\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteAreaId_SiteArea__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": [
+      {
+        ""Key"": ""1"",
+        ""Message"": """",
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+      }
+    ]
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteArea"",
+  ""Title"": ""Site Area"",
+  ""FriendlyName"": ""Site Area"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""People\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""PeopleCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_People__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""People"",
+  ""Title"": ""People"",
+  ""FriendlyName"": ""People"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""SiteArea:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""SiteId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""Site\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AreasCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__SiteId_Site__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Site"",
+  ""Title"": ""Site"",
+  ""FriendlyName"": ""Site"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""Site\"",\""Paths\"":\""Areas\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""Site\"",\""Paths\"":\""AreasCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_Areas__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""Areas"",
+  ""Title"": ""Areas"",
+  ""FriendlyName"": ""Areas"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""Site:Id""
+        },
+        {
+          ""Constraints"": [
+            {
+              ""SourceKeyProperty"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""CreatedByUserId\"",\""Kind\"":1,\""Children\"":null}"",
+              ""TargetKeyProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
+            }
+          ],
+          ""Kind"": 1,
+          ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 0,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": false,
+  ""Property"": ""{\""Type\"":\""SiteArea\"",\""Paths\"":\""CreatedByUser\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteAreasCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""CreatedByUser"",
+  ""Title"": ""Created By User"",
+  ""FriendlyName"": ""Created By User"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
+  ""AllowInlineEditing"": false,
+  ""RelationshipSide"": 1,
+  ""Type"": ""Unknown"",
+  ""IsCollection"": true,
+  ""Property"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteAreasCreated\"",\""Kind\"":1,\""Children\"":null}"",
+  ""CountProperty"": ""{\""Type\"":\""ApplicationUser\"",\""Paths\"":\""SiteAreasCreatedCount\"",\""Kind\"":1,\""Children\"":null}"",
+  ""EditKindChanged"": {},
+  ""ReadKindChanged"": {},
+  ""ReadKind"": 1,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
+  ""SupportsInlineEditing"": true,
+  ""PromptBeforeEdit"": false,
+  ""Placeholder"": null,
+  ""Sortable"": true,
+  ""GroupName"": ""__Id_SiteAreasCreated__"",
+  ""Key"": null,
+  ""Kind"": 8,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
+  ""Metadata"": {
+    ""All"": []
+  },
+  ""Name"": ""SiteAreasCreated"",
+  ""Title"": ""Site Areas Created"",
+  ""FriendlyName"": ""Site Areas Created"",
+  ""GroupPath"": null,
+  ""Description"": null,
+  ""Hints"": [],
+  ""HelpTexts"": []
+},
+          ""ConstraintKey"": ""Id"",
+          ""QualifiedConstraintKey"": ""ApplicationUser:Id""
+        }
+      ],
+      ""Files"": [],
+      ""Metadata"": {
+        ""All"": []
+      },
+      ""Name"": ""SiteArea"",
+      ""Title"": ""SiteArea"",
+      ""FriendlyName"": ""Site Area"",
+      ""GroupPath"": null,
+      ""Description"": null,
+      ""Hints"": [],
       ""HelpTexts"": []
     },
     {
@@ -20948,21 +26518,18 @@
           ""{\""Type\"":\""PersonType\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Title"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Person Types"",
       ""SetName"": ""PersonTypes"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -20972,17 +26539,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""People"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -20990,6 +26557,9 @@
   ""GroupName"": ""__People__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21008,9 +26578,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21020,17 +26587,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21038,6 +26605,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21056,9 +26626,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21068,17 +26635,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21086,6 +26653,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21104,9 +26674,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21116,17 +26683,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Title"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21134,6 +26701,9 @@
   ""GroupName"": ""__Title__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21152,9 +26722,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21164,17 +26731,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21182,6 +26749,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21200,9 +26770,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21212,17 +26779,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21230,6 +26797,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21248,9 +26818,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21260,17 +26827,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21278,6 +26845,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21292,13 +26862,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21308,17 +26877,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21326,6 +26895,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21344,9 +26916,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21356,17 +26925,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21374,6 +26943,9 @@
   ""GroupName"": ""__PeopleCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21392,9 +26964,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21404,17 +26973,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21422,6 +26991,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21440,9 +27012,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -21452,17 +27021,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleMap"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21470,6 +27039,9 @@
   ""GroupName"": ""__PeopleMap__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21488,9 +27060,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21500,17 +27069,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleMapCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21518,6 +27087,9 @@
   ""GroupName"": ""__PeopleMapCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21546,6 +27118,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -21556,6 +27130,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21563,8 +27141,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -21577,6 +27162,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -21587,6 +27174,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21594,8 +27185,15 @@
   ""GroupName"": ""__Id_People__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -21619,6 +27217,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -21628,7 +27228,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21636,8 +27240,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -21650,6 +27261,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -21660,6 +27273,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21667,8 +27284,15 @@
   ""GroupName"": ""__Id_PersonTypesCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -21692,6 +27316,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -21702,6 +27328,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21709,8 +27339,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -21723,6 +27360,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -21733,6 +27372,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21740,8 +27383,15 @@
   ""GroupName"": ""__Id_PeopleMap__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -21786,21 +27436,18 @@
           ""{\""Type\"":\""PersonLoading\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Name"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Person Loadings"",
       ""SetName"": ""PersonLoadings"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": true,
@@ -21810,17 +27457,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""People"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21828,6 +27475,9 @@
   ""GroupName"": ""__People__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21846,9 +27496,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21858,17 +27505,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21876,6 +27523,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21894,9 +27544,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21906,17 +27553,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21924,6 +27571,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -21942,9 +27592,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -21954,17 +27601,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -21972,12 +27619,15 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": [
       {
-        ""Key"": ""ad594498-422a-42c1-8867-5ceed666fe17"",
+        ""Key"": ""2"",
         ""Message"": ""Please enter a loading name"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonLoading</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonLoading</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -21996,9 +27646,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22008,17 +27655,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22026,6 +27673,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22044,9 +27694,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22056,17 +27703,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22074,6 +27721,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22092,9 +27742,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22104,17 +27751,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22122,6 +27769,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22136,13 +27786,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22152,17 +27801,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22170,6 +27819,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22188,9 +27840,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22200,17 +27849,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PeopleCount"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22218,6 +27867,9 @@
   ""GroupName"": ""__PeopleCount__"",
   ""Key"": null,
   ""Kind"": 35,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22236,9 +27888,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22248,17 +27897,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22266,6 +27915,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22294,6 +27946,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -22304,6 +27958,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22311,8 +27969,15 @@
   ""GroupName"": ""__LoadingId_Loading__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -22325,6 +27990,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -22335,6 +28002,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22342,8 +28013,15 @@
   ""GroupName"": ""__Id_People__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -22367,6 +28045,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -22376,7 +28056,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22384,8 +28068,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -22398,6 +28089,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -22408,6 +28101,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22415,8 +28112,15 @@
   ""GroupName"": ""__Id_PersonLoadingsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -22461,21 +28165,18 @@
           ""{\""Type\"":\""PersonInspection\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""DrawingNumber"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Person Inspections"",
       ""SetName"": ""PersonInspections"",
       ""SetNameSet"": true,
-      ""DefaultSortExpression"": null,
-      ""DefaultSortDescending"": false,
+      ""DefaultSortExpression"": ""CreatedDate"",
+      ""DefaultSortDescending"": true,
       ""EditDisplay"": [],
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22485,17 +28186,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22503,6 +28204,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22521,9 +28225,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22533,17 +28234,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspectionId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22551,6 +28252,9 @@
   ""GroupName"": ""__SiteInspectionId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22569,9 +28273,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22581,17 +28282,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUserId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22599,6 +28300,9 @@
   ""GroupName"": ""__CreatedByUserId__"",
   ""Key"": null,
   ""Kind"": 19,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22617,9 +28321,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22629,17 +28330,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22647,6 +28348,9 @@
   ""GroupName"": ""__PersonId__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22665,9 +28369,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22677,17 +28378,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""InspectionStatus"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22695,6 +28396,9 @@
   ""GroupName"": ""__InspectionStatus__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22713,9 +28417,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22725,17 +28426,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""StartTime"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22743,6 +28444,9 @@
   ""GroupName"": ""__StartTime__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22761,9 +28465,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22773,17 +28474,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""EndTime"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22791,6 +28492,9 @@
   ""GroupName"": ""__EndTime__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22809,9 +28513,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22821,17 +28522,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""ReasonForFailure"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22839,6 +28540,9 @@
   ""GroupName"": ""__ReasonForFailure__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22857,9 +28561,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22869,17 +28570,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""IsDesignRequired"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22887,6 +28588,9 @@
   ""GroupName"": ""__IsDesignRequired__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22905,9 +28609,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22917,17 +28618,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""DrawingNumber"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22935,6 +28636,9 @@
   ""GroupName"": ""__DrawingNumber__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -22953,9 +28657,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -22965,17 +28666,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -22983,6 +28684,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23001,9 +28705,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23013,17 +28714,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23031,6 +28732,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23049,9 +28753,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23061,17 +28762,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""RevisionKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23079,6 +28780,9 @@
   ""GroupName"": ""__RevisionKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23093,13 +28797,12 @@
   ""FriendlyName"": ""Revision Key"",
   ""GroupPath"": null,
   ""Description"": null,
-  ""Hints"": [],
+  ""Hints"": [
+    ""Iql:Version""
+  ],
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23109,17 +28812,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersistenceKey"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
+  ""ReadKind"": 2,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23127,6 +28830,9 @@
   ""GroupName"": ""__PersistenceKey__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23145,9 +28851,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23157,17 +28860,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteInspection"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23175,6 +28878,9 @@
   ""GroupName"": ""__SiteInspection__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23193,9 +28899,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23205,17 +28908,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedByUser"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23223,6 +28926,9 @@
   ""GroupName"": ""__CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23251,6 +28957,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -23261,6 +28969,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23268,8 +28980,15 @@
   ""GroupName"": ""__SiteInspectionId_SiteInspection__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23282,6 +29001,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -23292,6 +29013,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23299,8 +29024,15 @@
   ""GroupName"": ""__Id_PersonInspections__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23324,6 +29056,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -23333,7 +29067,11 @@
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23341,8 +29079,15 @@
   ""GroupName"": ""__CreatedByUserId_CreatedByUser__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23355,6 +29100,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -23365,6 +29112,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23372,8 +29123,15 @@
   ""GroupName"": ""__Id_PersonInspectionsCreated__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23410,13 +29168,7 @@
         ""Default"": null
       },
       ""EntityValidation"": {
-        ""All"": [
-          {
-            ""Key"": ""IqlEntityValidation"",
-            ""Message"": ""You have not entered a description"",
-            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n    <Kind>IsEqualTo</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlConditionExpression\"">\r\n      <Kind>Condition</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Description</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Test>\r\n      <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </IfTrue>\r\n      <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n        <Kind>StringToUpperCase</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Description</PropertyName>\r\n        </Parent>\r\n      </IfFalse>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-          }
-        ]
+        ""All"": []
       },
       ""Key"": {
         ""HasRelationshipKeys"": true,
@@ -23425,7 +29177,7 @@
           ""{\""Type\"":\""PersonTypeMap\"",\""Paths\"":\""TypeId\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""Notes"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""Person Types Map"",
@@ -23437,9 +29189,6 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23449,17 +29198,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""PersonId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23467,6 +29216,9 @@
   ""GroupName"": ""__PersonId__"",
   ""Key"": null,
   ""Kind"": 27,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23485,9 +29237,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23497,17 +29246,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""TypeId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23515,6 +29264,9 @@
   ""GroupName"": ""__TypeId__"",
   ""Key"": null,
   ""Kind"": 27,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23533,29 +29285,26 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
     ""ConvertedFromType"": null,
-    ""Nullable"": false,
+    ""Nullable"": true,
     ""Kind"": 4
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Notes"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23563,14 +29312,11 @@
   ""GroupName"": ""__Notes__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
-    ""All"": [
-      {
-        ""Key"": ""You have not entered any notes"",
-        ""Message"": ""IqlNotesPropertyValidation"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n    <Kind>IsEqualTo</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlConditionExpression\"">\r\n      <Kind>Condition</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Notes</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Test>\r\n      <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </IfTrue>\r\n      <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n        <Kind>StringToUpperCase</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <EntityTypeName>PersonTypeMap</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Notes</PropertyName>\r\n        </Parent>\r\n      </IfFalse>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
-      }
-    ]
+    ""All"": []
   },
   ""DisplayRules"": {
     ""All"": []
@@ -23587,29 +29333,26 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
     ""ConvertedFromType"": null,
-    ""Nullable"": false,
+    ""Nullable"": true,
     ""Kind"": 4
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Description"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23617,6 +29360,9 @@
   ""GroupName"": ""__Description__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23635,9 +29381,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23647,17 +29390,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Guid"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
-  ""ReadKind"": 1,
-  ""EditKind"": 1,
+  ""ReadKind"": 2,
+  ""EditKind"": 5,
+  ""IsReadOnly"": true,
+  ""IsHidden"": true,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23665,6 +29408,9 @@
   ""GroupName"": ""__Guid__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23683,9 +29429,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23695,17 +29438,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""CreatedDate"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
-  ""EditKind"": 5,
+  ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23713,6 +29456,9 @@
   ""GroupName"": ""__CreatedDate__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23731,9 +29477,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23743,17 +29486,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Person"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23761,6 +29504,9 @@
   ""GroupName"": ""__Person__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23779,9 +29525,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -23791,17 +29534,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Type"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23809,6 +29552,9 @@
   ""GroupName"": ""__Type__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -23837,6 +29583,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -23847,6 +29595,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23854,8 +29606,15 @@
   ""GroupName"": ""__PersonId_Person__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23868,6 +29627,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -23878,6 +29639,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23885,8 +29650,15 @@
   ""GroupName"": ""__Id_Types__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23910,6 +29682,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -23920,6 +29694,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23927,8 +29705,15 @@
   ""GroupName"": ""__TypeId_Type__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -23941,6 +29726,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -23951,6 +29738,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -23958,8 +29749,15 @@
   ""GroupName"": ""__Id_PeopleMap__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -24005,7 +29803,7 @@
           ""{\""Type\"":\""UserSite\"",\""Paths\"":\""UserId\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""UserId"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""User Sites"",
@@ -24017,9 +29815,6 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24029,17 +29824,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SiteId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24047,6 +29842,9 @@
   ""GroupName"": ""__SiteId__"",
   ""Key"": null,
   ""Kind"": 27,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24065,9 +29863,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24077,17 +29872,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""UserId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24095,6 +29890,9 @@
   ""GroupName"": ""__UserId__"",
   ""Key"": null,
   ""Kind"": 27,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24113,29 +29911,26 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
     ""ConvertedFromType"": null,
-    ""Nullable"": false,
+    ""Nullable"": true,
     ""Kind"": 1
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""User"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
-  ""Nullable"": false,
-  ""InferredWith"": null,
+  ""Nullable"": true,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24143,6 +29938,9 @@
   ""GroupName"": ""__User__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24161,9 +29959,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24173,17 +29968,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Site"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": true,
-  ""IsHiddenOrInternal"": true,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": true,
+  ""IsHiddenOrInternal"": true,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24191,6 +29986,9 @@
   ""GroupName"": ""__Site__"",
   ""Key"": null,
   ""Kind"": 5,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24219,6 +30017,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -24229,6 +30029,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24236,8 +30040,15 @@
   ""GroupName"": ""__UserId_User__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -24250,6 +30061,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -24260,6 +30073,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24267,8 +30084,15 @@
   ""GroupName"": ""__Id_Sites__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -24292,6 +30116,8 @@
           ],
           ""Kind"": 1,
           ""Source"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 0,
   ""Type"": ""Unknown"",
@@ -24302,6 +30128,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24309,8 +30139,15 @@
   ""GroupName"": ""__SiteId_Site__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -24323,6 +30160,8 @@
   ""HelpTexts"": []
 },
           ""Target"": {
+  ""ValueMappings"": [],
+  ""RelationshipMappings"": [],
   ""AllowInlineEditing"": false,
   ""RelationshipSide"": 1,
   ""Type"": ""Unknown"",
@@ -24333,6 +30172,10 @@
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24340,8 +30183,15 @@
   ""GroupName"": ""__Id_Users__"",
   ""Key"": null,
   ""Kind"": 8,
-  ""ValidationRules"": null,
-  ""DisplayRules"": null,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
+  ""ValidationRules"": {
+    ""All"": []
+  },
+  ""DisplayRules"": {
+    ""All"": []
+  },
   ""Metadata"": {
     ""All"": []
   },
@@ -24386,7 +30236,7 @@
           ""{\""Type\"":\""MyCustomReport\"",\""Paths\"":\""MyId\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""MyUserId"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 62,
       ""SetFriendlyName"": ""My Custom Reports"",
@@ -24398,9 +30248,6 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24410,17 +30257,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""MyId"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24428,6 +30275,9 @@
   ""GroupName"": ""__MyId__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24446,9 +30296,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24458,17 +30305,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MyUserId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24476,6 +30323,9 @@
   ""GroupName"": ""__MyUserId__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24494,9 +30344,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24506,17 +30353,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MyName"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24524,6 +30371,9 @@
   ""GroupName"": ""__MyName__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24542,9 +30392,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24554,17 +30401,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MyEntityType"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24572,6 +30419,9 @@
   ""GroupName"": ""__MyEntityType__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24590,9 +30440,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24602,17 +30449,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MyIql"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24620,6 +30467,9 @@
   ""GroupName"": ""__MyIql__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24638,9 +30488,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24650,17 +30497,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MyFields"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24668,6 +30515,9 @@
   ""GroupName"": ""__MyFields__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24686,9 +30536,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24698,17 +30545,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MySort"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24716,6 +30563,9 @@
   ""GroupName"": ""__MySort__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24734,9 +30584,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24746,17 +30593,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""MySortDescending"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24764,6 +30611,9 @@
   ""GroupName"": ""__MySortDescending__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24782,9 +30632,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24794,17 +30641,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""MySearch"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24812,6 +30659,9 @@
   ""GroupName"": ""__MySearch__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24860,7 +30710,7 @@
           ""{\""Type\"":\""IqlCustomReport\"",\""Paths\"":\""Id\"",\""Kind\"":1,\""Children\"":null}""
         ]
       },
-      ""TitlePropertyName"": null,
+      ""TitlePropertyName"": ""UserId"",
       ""PreviewPropertyName"": null,
       ""ManageKind"": 1,
       ""SetFriendlyName"": ""Iql Custom Report"",
@@ -24872,9 +30722,6 @@
       ""ReadDisplay"": [],
       ""Properties"": [
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24884,17 +30731,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""Id"",
-  ""IsReadOnly"": true,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": true,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24902,6 +30749,9 @@
   ""GroupName"": ""__Id__"",
   ""Key"": null,
   ""Kind"": 11,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24920,9 +30770,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24932,17 +30779,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""UserId"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24950,6 +30797,9 @@
   ""GroupName"": ""__UserId__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -24968,9 +30818,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -24980,17 +30827,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Name"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": false,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -24998,6 +30845,9 @@
   ""GroupName"": ""__Name__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -25016,9 +30866,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -25028,17 +30875,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""EntityType"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -25046,6 +30893,9 @@
   ""GroupName"": ""__EntityType__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -25064,9 +30914,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -25076,17 +30923,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Iql"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -25094,6 +30941,9 @@
   ""GroupName"": ""__Iql__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -25112,9 +30962,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -25124,17 +30971,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Fields"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -25142,6 +30989,9 @@
   ""GroupName"": ""__Fields__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -25160,9 +31010,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -25172,17 +31019,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Sort"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -25190,6 +31037,9 @@
   ""GroupName"": ""__Sort__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -25208,9 +31058,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -25220,17 +31067,17 @@
   },
   ""SearchKind"": 1,
   ""PropertyName"": ""SortDescending"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -25238,6 +31085,9 @@
   ""GroupName"": ""__SortDescending__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },
@@ -25256,9 +31106,6 @@
   ""HelpTexts"": []
 },
         {
-  ""RelationshipFilterRules"": {
-    ""All"": []
-  },
   ""Relationships"": [],
   ""TypeDefinition"": {
     ""IsCollection"": false,
@@ -25268,17 +31115,17 @@
   },
   ""SearchKind"": 3,
   ""PropertyName"": ""Search"",
-  ""IsReadOnly"": false,
-  ""IsHidden"": false,
-  ""Internal"": false,
-  ""IsHiddenOrInternal"": false,
   ""Searchable"": true,
   ""Nullable"": true,
-  ""InferredWith"": null,
+  ""InferredWithIql"": null,
   ""EditKindChanged"": {},
   ""ReadKindChanged"": {},
   ""ReadKind"": 1,
   ""EditKind"": 1,
+  ""IsReadOnly"": false,
+  ""IsHidden"": false,
+  ""Internal"": false,
+  ""IsHiddenOrInternal"": false,
   ""SupportsInlineEditing"": true,
   ""PromptBeforeEdit"": false,
   ""Placeholder"": null,
@@ -25286,6 +31133,9 @@
   ""GroupName"": ""__Search__"",
   ""Key"": null,
   ""Kind"": 3,
+  ""RelationshipFilterRules"": {
+    ""All"": []
+  },
   ""ValidationRules"": {
     ""All"": []
   },

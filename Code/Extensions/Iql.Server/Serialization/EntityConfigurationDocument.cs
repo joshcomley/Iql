@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Iql.Entities;
 using Iql.Entities.Enums;
+using Iql.Entities.Relationships;
 using Iql.Entities.SpecialTypes;
 using Iql.Server.Serialization.Deserialization;
 
@@ -13,6 +14,7 @@ namespace Iql.Server.Serialization
         public SpecialTypeDefinition UserSettingsDefinition { get; set; }
         public List<IEnumConfiguration> EnumTypes { get; set; } = new List<IEnumConfiguration>();
         public List<IEntityConfiguration> EntityTypes { get; set; } = new List<IEntityConfiguration>();
+        public List<IRelationship> Relationships { get; set; } = new List<IRelationship>();
 
         public static EntityConfigurationDocument FromJson(string json)
         {
@@ -27,6 +29,11 @@ namespace Iql.Server.Serialization
         public IEnumerable<IEnumConfiguration> AllEnumTypes()
         {
             return EnumTypes;
+        }
+
+        public IEnumerable<IRelationship> AllRelationships()
+        {
+            return Relationships;
         }
     }
 }

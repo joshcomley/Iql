@@ -361,17 +361,16 @@ namespace Iql.Server.OData.Net
         private async Task<object> ProcessPropertyPathAsync(T currentEntity, Delta<T> patch, IqlPropertyPath path)
         {
             var patchEntity = patch == null ? currentEntity : patch.GetInstance();
-            JToken currentPostedValues = JObject.FromObject(patchEntity);
+            var propertyNames = patch == null ? new string[] { } : patch.GetChangedPropertyNames().ToArray();
             object current = null;
             foreach (var pathPart in path.PropertyPath)
             {
                 var isRelationship = pathPart.Property.Kind.HasFlag(PropertyKind.Relationship);
                 var hasPostedRelationshipKey = false;
                 var hasPostedValue = false;
-                if (currentPostedValues.HasProperty(pathPart.PropertyName))
+                if (propertyNames.Contains(pathPart.PropertyName))
                 {
                     hasPostedValue = true;
-                    currentPostedValues = currentPostedValues.GetPropertyValue(pathPart.PropertyName);
                     if (current == null)
                     {
                         current = patchEntity;
@@ -383,14 +382,13 @@ namespace Iql.Server.OData.Net
                     hasPostedRelationshipKey = true;
                     foreach (var constraint in pathPart.Property.Relationship.ThisEnd.Constraints)
                     {
-                        if (!currentPostedValues.HasProperty(constraint.PropertyName))
+                        if (!propertyNames.Contains(constraint.PropertyName))
                         {
                             hasPostedRelationshipKey = false;
                             break;
                         }
                     }
 
-                    currentPostedValues = null;
                     if (hasPostedRelationshipKey)
                     {
                         var dic = new List<KeyValuePair<string, object>>();
@@ -434,6 +432,7 @@ namespace Iql.Server.OData.Net
                     }
                     current = current.GetPropertyValueByName(pathPart.PropertyName);
                 }
+                propertyNames = new string[] { };
             }
             return current;
         }

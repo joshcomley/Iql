@@ -22,6 +22,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Metadata;
 using Iql.Entities.PropertyChangers;
+using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
@@ -162,6 +163,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(IqlMultiPointExpression),
                 typeof(IqlPolygonExpression),
                 typeof(IqlMultiPolygonExpression),
+                typeof(ValueMapping),
+                typeof(RelationshipMapping),
                 typeof(IqlLineExpression),
                 typeof(IqlMultiLineExpression),
                 typeof(PrimitivePropertyChanger),

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
+using Iql.Entities.Relationships;
 using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
@@ -98,6 +99,18 @@ namespace Iql.Entities
         public IEnumerable<IEnumConfiguration> AllEnumTypes()
         {
             return _enumTypes.Values.ToArray();
+        }
+
+        public IEnumerable<IRelationship> AllRelationships()
+        {
+            var relationships = new List<IRelationship>();
+            var entityTypes = AllEntityTypes().ToArray();
+            for (var i = 0; i < entityTypes.Length; i++)
+            {
+                var entityType = entityTypes[i];
+                relationships.AddRange(entityType.Relationships);
+            }
+            return relationships.Distinct().ToArray();
         }
 
         public void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action)

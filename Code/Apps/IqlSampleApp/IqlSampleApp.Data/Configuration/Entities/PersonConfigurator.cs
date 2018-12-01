@@ -12,6 +12,9 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             //model.ModelConfiguration();
             var model = builder.EntityType<Person>();
+            model
+                .FindRelationship(_ => _.SiteArea)
+                .CreateWithRelationshipValue(_ => _.Site, _ => _.Site);
             model.DefineRelationshipFilterRule(
                 _ => _.SiteArea,
                 context => siteArea => siteArea.SiteId == context.Owner.SiteId);

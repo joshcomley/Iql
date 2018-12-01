@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Iql.Server.Serialization.Deserialization.Converters
 {
     public class LambdaExpressionConverter<T> : JsonConverter
-    where T : class
+        where T : class
     {
         private Dictionary<string, string> ExpressionMappings { get; } = new Dictionary<string, string>();
 

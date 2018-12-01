@@ -1,46 +1,14 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.Validation;
-using Iql.Extensions;
 
 namespace Iql.Entities.Relationships
 {
-    public abstract class RelationshipDetailTypedBase<T, TProperty, TConfigurable> : RelationshipDetailBase,
-            IConfigurable<TConfigurable>
-        //, IConfigurable<RelationshipDetail<T, TProperty>>
-        where T : class
-        where TConfigurable : RelationshipDetailTypedBase<T, TProperty, TConfigurable>
-    {
-        protected override string ResolveName()
-        {
-            return Property?.Name;
-        }
-
-        protected RelationshipDetailTypedBase(
-            IRelationship relationship,
-            RelationshipSide relationshipSide,
-            IEntityConfigurationBuilder configuration,
-            LambdaExpression expression,
-            Type elementType) : base(relationship,
-            relationshipSide)
-        {
-            var entityConfiguration = configuration.EntityType<T>();
-            var property = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(expression).Expression;
-            Property = entityConfiguration.FindOrDefineProperty<TProperty>(property.PropertyName, elementType, elementType.ToIqlType());
-        }
-
-        public TConfigurable Configure(Action<TConfigurable> action)
-        {
-            action(this as TConfigurable);
-            return this as TConfigurable;
-        }
-    }
-
     public class RelationshipDetail<T, TProperty> :
         RelationshipDetailTypedBase<T, TProperty,
         RelationshipDetail<T, TProperty>>
@@ -53,6 +21,42 @@ namespace Iql.Entities.Relationships
             LambdaExpression expression,
             Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
         {
+        }
+
+        public RelationshipDetail<T, TProperty> CreateWithRelationshipValue<TRelationship>(
+            Expression<Func<TProperty, TRelationship>> relationship,
+            Expression<Func<T, TRelationship>> expression
+        )
+        {
+            var property = OtherSide.EntityConfiguration.FindNestedPropertyByLambdaExpression(relationship);
+            var container = property.Relationship.ThisEnd;
+            var mapping = RelationshipMappings.FirstOrDefault(_ => _.Container == container);
+            if (mapping == null)
+            {
+                mapping = new RelationshipMapping();
+                RelationshipMappings.Add(mapping);
+            }
+            mapping.Container = container;
+            var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type);
+            mapping.Expression = expressionResult.Expression;
+            return this;
+        }
+
+        public RelationshipDetail<T, TProperty> CreateWithPropertyValue<TNestedProperty>(
+            Expression<Func<TProperty, TNestedProperty>> property,
+            Expression<Func<T, TNestedProperty>> expression
+        )
+        {
+            var container = OtherSide.EntityConfiguration.FindNestedPropertyByLambdaExpression(property);
+            var mapping = ValueMappings.FirstOrDefault(_ => _.Container == container);
+            if (mapping == null)
+            {
+                mapping = new ValueMapping();
+                ValueMappings.Add(mapping);
+            }
+            mapping.Container = container;
+            mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression;
+            return this;
         }
 
         protected override IRuleCollection<IRelationshipRule> NewRelationshipFilterRulesCollection()
@@ -68,20 +72,6 @@ namespace Iql.Entities.Relationships
         protected override IRuleCollection<IBinaryRule> NewValidationRulesCollection()
         {
             return new ValidationCollection<T>();
-        }
-    }
-
-    public class CollectionRelationshipDetail<T, TProperty>
-        : RelationshipDetailTypedBase<T, IEnumerable<TProperty>, CollectionRelationshipDetail<T, TProperty>>
-        where T : class
-    {
-        public CollectionRelationshipDetail(
-            IRelationship relationship,
-            RelationshipSide relationshipSide,
-            IEntityConfigurationBuilder configuration,
-            LambdaExpression expression,
-            Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
-        {
         }
     }
 }

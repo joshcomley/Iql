@@ -92,12 +92,17 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             var path = reader.Path;
             var value = reader.Value;
             var existingValue2 = existingValue;
+            if (path.Contains("RelationshipMappings") && 
+                (value != null || existingValue2 != null))
+            {
+                int a = 0;
+            }
             //if (reader.TokenType != JsonToken.StartObject)
             //{
             //    var result2 = reader.Read();
             //    return result2;
             //}
-            var isConvertedProperty = (objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string &&
+            var isConvertedProperty = (objectType == typeof(IRelationshipDetail) || objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string &&
                                       !string.IsNullOrWhiteSpace(reader.Value as string) &&
                                       (reader.Value as string).StartsWith("{");
             if (isConvertedProperty)
@@ -133,31 +138,42 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             //    int a = 0;
             //}
             object result = null;
-            if (objectType == typeof(IPropertyGroup))
+            if (objectType == typeof(IPropertyGroup) || objectType == typeof(IRelationshipDetail))
             {
-                var jobj = serializer.Deserialize(reader, typeMapping) as JObject;
-                if (jobj.ContainsKey("Path"))
+                if (objectType == typeof(IRelationshipDetail))
                 {
-                    var propertyPath = EntityConfigurationParser.DeserializeFromJson<PropertyPathJson>(jobj.ToString(), Details);
-                    var entityConfigIndex = Details.CurrentEntityConfigurationIndex;
-                    Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration((IEntityConfiguration)doc.EntityTypes[entityConfigIndex]));
-                    result = propertyPath;
-                    //serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyPath));
+                    int a = 0;
                 }
-                else
+                var jobj = serializer.Deserialize(reader) as JObject;
+                if (jobj != null)
                 {
-                    var propertyCollection = EntityConfigurationParser.DeserializeFromJson<PropertyCollection>(jobj.ToString(), Details);
-                    result = propertyCollection;
-                    //result = serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyCollection));
-                    //result = jobj.ToObject<PropertyCollection>(serializer);
+                    if (jobj.ContainsKey("Path"))
+                    {
+                        var propertyPath = EntityConfigurationParser.DeserializeFromJson<PropertyPathJson>(jobj.ToString(), Details);
+                        var entityConfigIndex = Details.CurrentEntityConfigurationIndex;
+                        Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration(doc.EntityTypes[entityConfigIndex]));
+                        result = propertyPath;
+                        //serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyPath));
+                    }
+                    else
+                    {
+                        if (objectType == typeof(IPropertyGroup))
+                        {
+                            var propertyCollection = EntityConfigurationParser.DeserializeFromJson<PropertyCollection>(jobj.ToString(), Details);
+                            result = propertyCollection;
+                        }
+                        else
+                        {
+                            var relationshipDetail = EntityConfigurationParser.DeserializeFromJson<RelationshipDetail>(jobj.ToString(), Details);
+                            result = relationshipDetail;
+                        }
+                        //result = serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyCollection));
+                        //result = jobj.ToObject<PropertyCollection>(serializer);
+                    }
                 }
             }
             else
             {
-                if (path == "EntityConfigurations[0].Properties[1]")
-                {
-                    int a = 0;
-                }
                 result = serializer.Deserialize(reader, typeMapping);
             }
             if (typeof(IEntityMetadata).IsAssignableFrom(objectType))

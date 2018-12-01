@@ -802,7 +802,36 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         continue;
                     }
-                    if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.EditDisplay))
+
+                    if (metadata is IRelationshipDetailMetadata &&
+                        metadataProperty.Name == nameof(IRelationshipDetail.ValueMappings))
+                    {
+                        var valueMappings = value as IList<ValueMapping>;
+                        foreach (var valueMapping in valueMappings)
+                        {
+                            sb.AppendLine($@"{lambdaKey}.{nameof(IRelationshipDetail.ValueMappings)}.{nameof(IList.Add)}(
+new {nameof(ValueMapping)} {{
+    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(valueMapping.Container.Name)}),
+    {nameof(ValueMapping.Expression)} = {CSharpObjectSerializer.Serialize(valueMapping.Expression).Initialiser}
+}});");
+                        }
+                        dealtWith = true;
+                    }
+                    else if (metadata is IRelationshipDetailMetadata &&
+                        metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
+                    {
+                        var mappings = value as IList<RelationshipMapping>;
+                        foreach (var mapping in mappings)
+                        {
+                            sb.AppendLine($@"{lambdaKey}.{nameof(IRelationshipDetail.RelationshipMappings)}.{nameof(IList.Add)}(
+new {nameof(RelationshipMapping)} {{
+    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindRelationshipByName)}({String(mapping.Container.Property.Name)}).{nameof(EntityRelationship.ThisEnd)},
+    {nameof(ValueMapping.Expression)} = {CSharpObjectSerializer.Serialize(mapping.Expression).Initialiser}
+}});");
+                        }
+                        dealtWith = true;
+                    }
+                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.EditDisplay))
                     {
                         dealtWith = true;
                         // We will do this at the end when we're sure all relationships and other

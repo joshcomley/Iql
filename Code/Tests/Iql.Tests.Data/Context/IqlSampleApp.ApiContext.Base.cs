@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Iql.OData.Methods;
 using Iql;
+using Iql.Entities.Relationships;
 namespace IqlSampleApp.ApiContext.Base
 {
     public class IqlSampleAppDataContextBase: DataContext
@@ -3170,6 +3171,67 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ApplicationUser>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
+                    rel_cnf.ValueMappings.Add(new ValueMapping
+                    {
+                        Container = rel_cnf.EntityConfiguration.FindProperty("AverageIncome"),
+                        Expression = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = 12F,
+                                InferredReturnType = IqlType.Decimal,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Decimal
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ApplicationUser",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    });
+                    rel_cnf.RelationshipMappings.Add(new RelationshipMapping
+                    {
+                        Container = rel_cnf.EntityConfiguration.FindRelationshipByName("CreatedByUser").ThisEnd,
+                        Expression = new IqlLambdaExpression
+                        {
+                            Body = new IqlPropertyExpression
+                            {
+                                PropertyName = "CreatedByUser",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ApplicationUser",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ApplicationUser",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    });
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Client";
                     rel_cnf.Title = "Client";
@@ -3321,17 +3383,17 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Users";
                     rel_cnf.FriendlyName = "Users";
                 });
-                rel.FindRelationship(rel_p => rel_p.Type).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "Type";
-                    rel_cnf.Title = "Type";
-                    rel_cnf.FriendlyName = "Type";
-                });
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
+                });
+                rel.FindRelationship(rel_p => rel_p.Type).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Type";
+                    rel_cnf.Title = "Type";
+                    rel_cnf.FriendlyName = "Type";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
@@ -3369,6 +3431,12 @@ namespace IqlSampleApp.ApiContext.Base
                 });
             });
             builder.EntityType<SiteDocument>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
                 rel.FindRelationship(rel_p => rel_p.Category).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Category";
@@ -3381,14 +3449,20 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site";
                     rel_cnf.FriendlyName = "Site";
                 });
+            });
+            builder.EntityType<Site>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
-            });
-            builder.EntityType<Site>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Client";
+                    rel_cnf.Title = "Client";
+                    rel_cnf.FriendlyName = "Client";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.Documents).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Documents";
@@ -3419,18 +3493,6 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Children";
                     rel_cnf.FriendlyName = "Children";
                 });
-                rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "Client";
-                    rel_cnf.Title = "Client";
-                    rel_cnf.FriendlyName = "Client";
-                });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
-                });
                 rel.FindCollectionRelationship(rel_p => rel_p.Areas).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Areas";
@@ -3451,20 +3513,26 @@ namespace IqlSampleApp.ApiContext.Base
                 });
             });
             builder.EntityType<ReportActionsTaken>().Configure(rel => {
-                rel.FindRelationship(rel_p => rel_p.PersonReport).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "PersonReport";
-                    rel_cnf.Title = "Person Report";
-                    rel_cnf.FriendlyName = "Person Report";
-                });
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
+                rel.FindRelationship(rel_p => rel_p.PersonReport).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "PersonReport";
+                    rel_cnf.Title = "Person Report";
+                    rel_cnf.FriendlyName = "Person Report";
+                });
             });
             builder.EntityType<PersonReport>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.ActionsTaken).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "ActionsTaken";
@@ -3488,12 +3556,6 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Name = "Type";
                     rel_cnf.Title = "Type";
                     rel_cnf.FriendlyName = "Type";
-                });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
                 });
             });
             builder.EntityType<ReportCategory>().Configure(rel => {
@@ -3525,6 +3587,12 @@ namespace IqlSampleApp.ApiContext.Base
                 });
             });
             builder.EntityType<ReportRecommendation>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
                 rel.FindRelationship(rel_p => rel_p.PersonReport).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PersonReport";
@@ -3537,20 +3605,8 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Recommendation";
                     rel_cnf.FriendlyName = "Recommendation";
                 });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
-                });
             });
             builder.EntityType<ReportType>().Configure(rel => {
-                rel.FindRelationship(rel_p => rel_p.Category).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "Category";
-                    rel_cnf.Title = "Category";
-                    rel_cnf.FriendlyName = "Category";
-                });
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
@@ -3563,6 +3619,12 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Fault Reports";
                     rel_cnf.FriendlyName = "Fault Reports";
                 });
+                rel.FindRelationship(rel_p => rel_p.Category).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Category";
+                    rel_cnf.Title = "Category";
+                    rel_cnf.FriendlyName = "Category";
+                });
             });
             builder.EntityType<Project>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
@@ -3573,34 +3635,46 @@ namespace IqlSampleApp.ApiContext.Base
                 });
             });
             builder.EntityType<ReportReceiverEmailAddress>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
                 rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Site";
                     rel_cnf.Title = "Site";
                     rel_cnf.FriendlyName = "Site";
                 });
+            });
+            builder.EntityType<RiskAssessment>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
-            });
-            builder.EntityType<RiskAssessment>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.SiteInspection).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteInspection";
                     rel_cnf.Title = "Site Inspection";
                     rel_cnf.FriendlyName = "Site Inspection";
                 });
+            });
+            builder.EntityType<SiteInspection>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
-            });
-            builder.EntityType<SiteInspection>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Site";
+                    rel_cnf.Title = "Site";
+                    rel_cnf.FriendlyName = "Site";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessments).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "RiskAssessments";
@@ -3613,18 +3687,6 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Person Inspections";
                     rel_cnf.FriendlyName = "Person Inspections";
                 });
-                rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "Site";
-                    rel_cnf.Title = "Site";
-                    rel_cnf.FriendlyName = "Site";
-                });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
-                });
             });
             builder.EntityType<RiskAssessmentSolution>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
@@ -3635,34 +3697,40 @@ namespace IqlSampleApp.ApiContext.Base
                 });
             });
             builder.EntityType<RiskAssessmentAnswer>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
                 rel.FindRelationship(rel_p => rel_p.Question).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Question";
                     rel_cnf.Title = "Question";
                     rel_cnf.FriendlyName = "Question";
                 });
+            });
+            builder.EntityType<RiskAssessmentQuestion>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
-            });
-            builder.EntityType<RiskAssessmentQuestion>().Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.Answers).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Answers";
                     rel_cnf.Title = "Answers";
                     rel_cnf.FriendlyName = "Answers";
                 });
+            });
+            builder.EntityType<Person>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
-            });
-            builder.EntityType<Person>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Client";
@@ -3675,7 +3743,47 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site";
                     rel_cnf.FriendlyName = "Site";
                 });
+                rel.FindCollectionRelationship(rel_p => rel_p.Reports).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Reports";
+                    rel_cnf.Title = "Reports";
+                    rel_cnf.FriendlyName = "Reports";
+                });
                 rel.FindRelationship(rel_p => rel_p.SiteArea).Configure(rel_cnf => {
+                    rel_cnf.RelationshipMappings.Add(new RelationshipMapping
+                    {
+                        Container = rel_cnf.EntityConfiguration.FindRelationshipByName("Site").ThisEnd,
+                        Expression = new IqlLambdaExpression
+                        {
+                            Body = new IqlPropertyExpression
+                            {
+                                PropertyName = "Site",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Person",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Person",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    });
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteArea";
                     rel_cnf.Title = "Site Area";
@@ -3693,31 +3801,19 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Loading";
                     rel_cnf.FriendlyName = "Loading";
                 });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
-                });
                 rel.FindCollectionRelationship(rel_p => rel_p.Types).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Types";
                     rel_cnf.Title = "Types";
                     rel_cnf.FriendlyName = "Types";
                 });
-                rel.FindCollectionRelationship(rel_p => rel_p.Reports).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "Reports";
-                    rel_cnf.Title = "Reports";
-                    rel_cnf.FriendlyName = "Reports";
-                });
             });
             builder.EntityType<SiteArea>().Configure(rel => {
-                rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
-                    rel_cnf.Name = "People";
-                    rel_cnf.Title = "People";
-                    rel_cnf.FriendlyName = "People";
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
                 });
                 rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
@@ -3725,25 +3821,25 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site";
                     rel_cnf.FriendlyName = "Site";
                 });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
-                });
-            });
-            builder.EntityType<PersonType>().Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
                 });
+            });
+            builder.EntityType<PersonType>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
+                });
+                rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "People";
+                    rel_cnf.Title = "People";
+                    rel_cnf.FriendlyName = "People";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PeopleMap).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
@@ -3753,31 +3849,31 @@ namespace IqlSampleApp.ApiContext.Base
                 });
             });
             builder.EntityType<PersonLoading>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
                 });
+            });
+            builder.EntityType<PersonInspection>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
                 });
-            });
-            builder.EntityType<PersonInspection>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.SiteInspection).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteInspection";
                     rel_cnf.Title = "Site Inspection";
                     rel_cnf.FriendlyName = "Site Inspection";
-                });
-                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
-                    rel_cnf.Name = "CreatedByUser";
-                    rel_cnf.Title = "Created By User";
-                    rel_cnf.FriendlyName = "Created By User";
                 });
             });
             builder.EntityType<PersonTypeMap>().Configure(rel => {

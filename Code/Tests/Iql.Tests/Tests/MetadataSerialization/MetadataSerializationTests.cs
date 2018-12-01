@@ -17,15 +17,24 @@ namespace Iql.Tests.Tests.MetadataSerialization
         [TestMethod]
         public void TestSerializeDeserialize()
         {
-            return;
             var db = new AppDbContext();
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
+            sitesConfig.FindRelationship(_ => _.Client)
+                .CreateWithRelationshipValue(_ => _.Type, _ => _.Client.Type);
+            sitesConfig.FindRelationship(_ => _.Client).CreateWithPropertyValue(_ => _.Name, _ => "test@123.com");
             var clientRelationship = sitesConfig.FindRelationship(r => r.Client);
+            var sitesRelationship = clientConfig.FindCollectionRelationship(r => r.Sites);
+            Assert.AreEqual(clientRelationship.OtherSide, sitesRelationship);
+            Assert.AreEqual(clientRelationship, sitesRelationship.OtherSide);
+            Assert.AreEqual(clientRelationship.Relationship, sitesRelationship.Relationship);
+            Assert.AreNotEqual(clientRelationship, sitesRelationship);
+            Assert.AreEqual(clientRelationship, clientRelationship.OtherSide.OtherSide);
+            Assert.AreEqual(clientRelationship.Relationship, clientRelationship.OtherSide.Relationship);
+            Assert.AreNotEqual(clientRelationship, clientRelationship.OtherSide);
             clientRelationship.Metadata.Set("NumberSeven", 7);
             clientRelationship.AllowInlineEditing = true;
             sitesConfig.FindPropertyByExpression(c => c.Client).IsInferredWith(_ => _.CreatedByUser.Client);
-            var sitesRelationship = clientConfig.FindCollectionRelationship(r => r.Sites);
             sitesRelationship.AllowInlineEditing = true;
             clientConfig
                 .HasGeographic(c => c.AverageIncome, c => c.AverageIncome, "MyGeographic");
@@ -65,14 +74,26 @@ namespace Iql.Tests.Tests.MetadataSerialization
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
             Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.EditDisplay[1] as IPropertyCollection).ContentAlignment);
-            var json = 
+            var json =
                 false
                 // For speedy debugging
-                ? MetadataSerializationJsonCache.Json 
+                ? MetadataSerializationJsonCache.Json
                 : db.EntityConfigurationContext.ToJson();
 
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
+            var siteContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));
+            var siteClientRelationship = siteContentParsed.FindRelationshipByName(nameof(Site.Client)).ThisEnd;
+            var clientTypeRelationship = clientContentParsed.FindRelationshipByName(nameof(Client.Type)).ThisEnd;
+            var valueMappings = siteClientRelationship.ValueMappings;
+            Assert.AreEqual(1, valueMappings.Count);
+            var valueMapping = valueMappings[0];
+            var clientNameProperty = clientContentParsed.FindProperty(nameof(Site.Name));
+            Assert.AreEqual(clientNameProperty, valueMapping.Container);
+            Assert.IsNotNull(valueMapping.Expression);
+            var relationshipMappings = siteClientRelationship.RelationshipMappings;
+            Assert.AreEqual(1, relationshipMappings.Count);
+            Assert.AreEqual(clientTypeRelationship, relationshipMappings[0].Container);
             var propertyPath = (clientContentParsed.EditDisplay[1] as PropertyCollection).Properties[0];
             Assert.IsTrue(propertyPath is PropertyPath);
             Assert.AreEqual("Type/Name", (propertyPath as PropertyPath).Path);

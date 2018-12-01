@@ -4,8 +4,6 @@ using Iql.Entities.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.Rules;
-using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Entities.Relationships
 {
@@ -64,8 +62,9 @@ namespace Iql.Entities.Relationships
             }
         }
 
+        public List<ValueMapping> ValueMappings { get; set; } = new List<ValueMapping>();
+        public List<RelationshipMapping> RelationshipMappings { get; set; } = new List<RelationshipMapping>();
         public bool AllowInlineEditing { get; set; }
-
         public IRelationshipDetail OtherSide =>
             RelationshipSide == RelationshipSide.Source ? Relationship?.Target : Relationship?.Source;
         public RelationshipSide RelationshipSide { get; }

@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')",
+      "launchUrl": "iql",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data.Entities;
+using Iql.Entities;
+using Iql.Server;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Controllers.Api.Entities;
 using IqlSampleApp.Data.Entities;
@@ -10,6 +12,17 @@ using Microsoft.AspNet.OData.Builder;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
+    public class UserIqlConfigurator : IIqlEntitySetConfigurator
+    {
+        public void Configure(IEntityConfigurationBuilder builder)
+        {
+            builder.EntityType<ApplicationUser>()
+                .FindRelationship(_ => _.Client)
+                .CreateWithRelationshipValue(_ => _.CreatedByUser, _ => _.CreatedByUser)
+                .CreateWithPropertyValue(_ => _.AverageIncome, _ => 12);
+        }
+    }
+
     public class UserConfigurator : IODataEntitySetConfigurator
     {
         public void Configure(ODataModelBuilder builder)

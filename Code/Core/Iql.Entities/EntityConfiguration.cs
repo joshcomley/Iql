@@ -664,7 +664,11 @@ namespace Iql.Entities
             string key = null,
             string message = null)
         {
-            var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
+            var propertyDefinition = FindOrDefineProperty<TProperty>(
+                ResolvePropertyIql(property).PropertyName,
+                typeof(TProperty),
+                null
+            );
             AddRelationshipFilterRule(filterRule, propertyDefinition, key, message);
             return this;
         }

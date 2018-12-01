@@ -12,8 +12,8 @@ namespace Iql.Server.Serialization.Deserialization
             return document;
         }
 
-        internal static T DeserializeFromJson<T>(string json, SerializerDetails details  = null)
-        where T : class
+        internal static T DeserializeFromJson<T>(string json, SerializerDetails details = null)
+            where T : class
         {
             var settings = NewJsonSerializerSettings<T>(details,
                 out var interfaceTypeResolver,
@@ -37,6 +37,14 @@ namespace Iql.Server.Serialization.Deserialization
                     preFinaliser(result as EntityConfigurationDocument);
                 }
                 interfaceTypeResolver.Finalise(result, result as EntityConfigurationDocument);
+                foreach (var relationship in (result as EntityConfigurationDocument).AllRelationships())
+                {
+                    relationship.Source.EntityConfiguration.Relationships.Add(relationship);
+                    if (relationship.Source.EntityConfiguration != relationship.Target.EntityConfiguration)
+                    {
+                        relationship.Target.EntityConfiguration.Relationships.Add(relationship);
+                    }
+                }
                 foreach (var config in (result as EntityConfigurationDocument).EntityTypes)
                 {
                     var rels = config.AllRelationships();
@@ -57,7 +65,7 @@ namespace Iql.Server.Serialization.Deserialization
             }
             return result;
         }
-        
+
         public static JsonSerializerSettings NewJsonSerializerSettings<T>(
             SerializerDetails details,
             out InterfaceConverter<T> interfaceTypeResolver,
