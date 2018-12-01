@@ -18,7 +18,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             builder.EntityType<ApplicationUser>()
                 .FindRelationship(_ => _.Client)
-                .CreateWithRelationshipValue(_ => _.CreatedByUser, _ => _.CreatedByUser)
+                .CreateWithRelationshipValue(_ => _.CreatedByUser, ctx => _ => ctx.Owner.CreatedByUser)
                 .CreateWithPropertyValue(_ => _.AverageIncome, _ => 12);
         }
     }

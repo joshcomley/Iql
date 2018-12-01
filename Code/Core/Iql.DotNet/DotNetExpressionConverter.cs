@@ -23,11 +23,12 @@ namespace Iql.DotNet
 #endif
         )
         {
-            return new ExpressionResult<IqlExpression>(
-                DotNetExpressionToIqlExpressionParser<TEntity>.Parse(
-                    lambda
-                )
-            );
+            return new ExpressionResult<IqlExpression>(DotNetExpressionToIqlExpressionConverter.Parse(lambda));
+            //return new ExpressionResult<IqlExpression>(
+            //    DotNetExpressionToIqlExpressionParser<TEntity>.Parse(
+            //        lambda
+            //    )
+            //);
         }
 
         public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql

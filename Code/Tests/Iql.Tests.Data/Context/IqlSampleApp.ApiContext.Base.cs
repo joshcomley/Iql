@@ -2077,7 +2077,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Reports";
                 p.Title = "Reports";
                 p.FriendlyName = "Reports";
-            }).DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "Please enter either a title or a description", "NoTitleOrDescription").DefineEntityValidation(entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper())) && ((entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()))), "If the name is 'Josh' please match it in the description", "JoshCheck").DefineDisplayFormatter(entity => entity.Title, "Default").DefineDisplayFormatter(entity => (((entity.Title + " (") + entity.Id) + ")"), "Report").DefineRelationshipFilterRule(p => p.SiteArea, entity => entity2 => (entity2.SiteId == entity.Owner.SiteId), "1", "").DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person title", "EmptyTitle").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "Please enter less than fifty characters", "TitleMaxLength").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "Please enter at least three characters for the person's title", "TitleMinLength").DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person description", "EmptyDescription");
+            }).DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "Please enter either a title or a description", "NoTitleOrDescription").DefineEntityValidation(entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper())) && ((entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()))), "If the name is 'Josh' please match it in the description", "JoshCheck").DefineDisplayFormatter(entity => entity.Title, "Default").DefineDisplayFormatter(entity => (((entity.Title + " (") + entity.Id) + ")"), "Report").DefineRelationshipFilterRule(p => p.Loading, entity => entity2 => ((entity2.Name == null ? null : entity2.Name.ToUpper()) == ("some constant" == null ? null : "some constant".ToUpper())), "1", "").DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person title", "EmptyTitle").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "Please enter less than fifty characters", "TitleMaxLength").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "Please enter at least three characters for the person's title", "TitleMinLength").DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person description", "EmptyDescription");
             builder.EntityType<Person>().HasOne(p => p.Client).WithMany(p => p.People).WithConstraint(p => p.ClientId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.Site).WithMany(p => p.People).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.SiteArea).WithMany(p => p.People).WithConstraint(p => p.SiteAreaId, p => p.Id);
@@ -3196,33 +3196,56 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        UseForFiltering = true
                     });
                     rel_cnf.RelationshipMappings.Add(new RelationshipMapping
                     {
                         Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("CreatedByUser").Relationship.ThisEnd,
                         Expression = new IqlLambdaExpression
                         {
-                            Body = new IqlPropertyExpression
+                            Body = new IqlLambdaExpression
                             {
-                                PropertyName = "CreatedByUser",
-                                Kind = IqlExpressionKind.Property,
-                                ReturnType = IqlType.Unknown,
-                                Parent = new IqlRootReferenceExpression
+                                Body = new IqlPropertyExpression
                                 {
-                                    EntityTypeName = "ApplicationUser",
-                                    VariableName = "_",
-                                    InferredReturnType = IqlType.Unknown,
-                                    Kind = IqlExpressionKind.RootReference,
-                                    ReturnType = IqlType.Unknown
-                                }
+                                    PropertyName = "CreatedByUser",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlPropertyExpression
+                                    {
+                                        PropertyName = "Owner",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlVariableExpression
+                                        {
+                                            EntityTypeName = "RelationshipFilterContext<ApplicationUser>",
+                                            VariableName = "ctx",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.Variable,
+                                            ReturnType = IqlType.Unknown
+                                        }
+                                    }
+                                },
+                                Parameters = new List<IqlRootReferenceExpression>
+                                {
+                                    new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "Client",
+                                        VariableName = "_",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                },
+                                Kind = IqlExpressionKind.Lambda,
+                                ReturnType = IqlType.Unknown
                             },
                             Parameters = new List<IqlRootReferenceExpression>
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ApplicationUser",
-                                    VariableName = "_",
+                                    EntityTypeName = "RelationshipFilterContext<ApplicationUser>",
+                                    VariableName = "ctx",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
                                     ReturnType = IqlType.Unknown
@@ -3230,7 +3253,8 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        UseForFiltering = true
                     });
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Client";
@@ -3755,26 +3779,48 @@ namespace IqlSampleApp.ApiContext.Base
                         Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("Site").Relationship.ThisEnd,
                         Expression = new IqlLambdaExpression
                         {
-                            Body = new IqlPropertyExpression
+                            Body = new IqlLambdaExpression
                             {
-                                PropertyName = "Site",
-                                Kind = IqlExpressionKind.Property,
-                                ReturnType = IqlType.Unknown,
-                                Parent = new IqlRootReferenceExpression
+                                Body = new IqlPropertyExpression
                                 {
-                                    EntityTypeName = "Person",
-                                    VariableName = "_",
-                                    InferredReturnType = IqlType.Unknown,
-                                    Kind = IqlExpressionKind.RootReference,
-                                    ReturnType = IqlType.Unknown
-                                }
+                                    PropertyName = "Site",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlPropertyExpression
+                                    {
+                                        PropertyName = "Owner",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlVariableExpression
+                                        {
+                                            EntityTypeName = "RelationshipFilterContext<Person>",
+                                            VariableName = "ctx",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.Variable,
+                                            ReturnType = IqlType.Unknown
+                                        }
+                                    }
+                                },
+                                Parameters = new List<IqlRootReferenceExpression>
+                                {
+                                    new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "SiteArea",
+                                        VariableName = "_",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                },
+                                Kind = IqlExpressionKind.Lambda,
+                                ReturnType = IqlType.Unknown
                             },
                             Parameters = new List<IqlRootReferenceExpression>
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
-                                    VariableName = "_",
+                                    EntityTypeName = "RelationshipFilterContext<Person>",
+                                    VariableName = "ctx",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
                                     ReturnType = IqlType.Unknown
@@ -3782,7 +3828,8 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        UseForFiltering = true
                     });
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteArea";

@@ -71,7 +71,7 @@ namespace Iql.DotNet.DotNetExpressionToIql
                 context.RootVariableNames.Add(parameterExpression.Name);
                 context.RootVariableTypes.Add(parameterExpression.Type);
             }
-            if (!context.ContainsRoot(exp))
+            if (exp.NodeType != ExpressionType.Quote && !context.ContainsRoot(exp))
             {
                 var value = exp.GetValue();
                 var type = exp.Type;

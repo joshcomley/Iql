@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Iql.Entities;
 using Iql.Parsing.Expressions.QueryExpressions;
 #if TypeScript
@@ -8,7 +9,7 @@ using Iql.Parsing;
 
 namespace Iql.Queryable
 {
-    public interface IQueryableProvider<T, out TQueryable> : IQueryable<T>
+    public interface IQueryableProvider<T, TQueryable> : IQueryable<T>
         where T : class
         where TQueryable : IQueryableProvider<T, TQueryable>
     {
@@ -27,7 +28,7 @@ namespace Iql.Queryable
 
         //TQueryable OrderByOperation<TProperty>(OrderByOperation operation, EvaluateContext evaluateContext = null);
 
-        TQueryable ApplyRelationshipFilters<TProperty>(IProperty relatedProperty, TProperty entity);
+        Task<TQueryable> ApplyRelationshipFiltersAsync<TProperty>(IProperty relatedProperty, TProperty entity);
 
         TQueryable OrderBy<TProperty>(Expression<Func<T, TProperty>> expression
 #if TypeScript

@@ -130,7 +130,7 @@ namespace Iql.Tests.Tests.Serialization
           <Kind>Property</Kind>
           <ReturnType>Unknown</ReturnType>
           <Parent xsi:type=""IqlVariableExpression"">
-            <Kind>Literal</Kind>
+            <Kind>Variable</Kind>
             <ReturnType>Unknown</ReturnType>
             <InferredReturnType>Unknown</InferredReturnType>
             <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>

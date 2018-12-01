@@ -57,7 +57,7 @@ namespace Iql.Queryable
                 );
         }
 
-        public TQueryable ApplyRelationshipFilters<TProperty>(IProperty relatedProperty, TProperty entity)
+        public virtual Task<TQueryable> ApplyRelationshipFiltersAsync<TProperty>(IProperty relatedProperty, TProperty entity)
         {
             var ctx = new RelationshipFilterContext<TProperty>();
             ctx.Owner = entity;
@@ -76,12 +76,14 @@ namespace Iql.Queryable
 #endif
                 );
             }
-            return (TQueryable)query;
+
+            return Task.FromResult((TQueryable)query);
         }
 
-        IQueryableBase IQueryableBase.ApplyRelationshipFilters(IProperty relatedProperty, object entity)
+        async Task<IQueryableBase> IQueryableBase.ApplyRelationshipFiltersAsync(IProperty relatedProperty, object entity)
         {
-            return ApplyRelationshipFilters(relatedProperty, entity);
+            var applyRelationshipFilters = ApplyRelationshipFiltersAsync(relatedProperty, entity);
+            return await applyRelationshipFilters;
         }
 
         IQueryableBase IQueryableBase.Where(LambdaExpression expression

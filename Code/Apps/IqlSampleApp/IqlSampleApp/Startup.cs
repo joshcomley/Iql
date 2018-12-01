@@ -5,6 +5,7 @@ using Brandless.Data;
 using Brandless.Data.Contracts;
 using Iql.Conversion;
 using Iql.DotNet;
+using Iql.DotNet.Serialization;
 using Iql.Server;
 using Iql.Server.OData.Net;
 using IqlSampleApp.Data;

@@ -31,9 +31,9 @@ namespace Iql.Tests.Tests.EntityConfiguration
         public void PreBuiltRelationshipFilterRuleShouldBeAppliedToRelationshipDetail()
         {
             var person = Db.EntityConfigurationContext.EntityType<Person>();
-            var clientProperty = person.FindProperty(nameof(Person.SiteArea));
-            Assert.AreEqual(1, clientProperty.RelationshipFilterRules.All.Count());
-            Assert.AreEqual(1, clientProperty.Relationship.ThisEnd.RelationshipFilterRules.All.Count());
+            var loadingProperty = person.FindProperty(nameof(Person.Loading));
+            Assert.AreEqual(1, loadingProperty.RelationshipFilterRules.All.Count());
+            Assert.AreEqual(1, loadingProperty.Relationship.ThisEnd.RelationshipFilterRules.All.Count());
         }
 
         [TestMethod]

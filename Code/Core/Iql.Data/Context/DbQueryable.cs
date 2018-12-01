@@ -19,6 +19,7 @@ using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
+using Iql.Entities.Rules.Relationship;
 using Iql.Entities.SpecialTypes;
 using Iql.Extensions;
 using Iql.Parsing;
@@ -50,6 +51,33 @@ namespace Iql.Data.Context
             //TrackingSet = TrackingSetCollection.GetSet<T>();
         }
 
+        public override async Task<DbQueryable<T>> ApplyRelationshipFiltersAsync<TProperty>(IProperty relatedProperty, TProperty entity)
+        {
+            var query = this;
+            var ctx = new RelationshipFilterContext<TProperty>();
+            ctx.Owner = entity;
+#if TypeScript
+            var context = new EvaluateContext(e => ctx);
+#endif
+            query = await base.ApplyRelationshipFiltersAsync(relatedProperty, entity);
+            for (var i = 0; i < relatedProperty.Relationship.ThisEnd.RelationshipMappings.Count; i++)
+            {
+                var relationshipMapping = relatedProperty.Relationship.ThisEnd.RelationshipMappings[i];
+                if (relationshipMapping.UseForFiltering)
+                {
+                    var filterRule = await relationshipMapping.GetRelationshipRuleAsync(relatedProperty, entity, DataContext);
+                    var filterFunction = filterRule.Run(ctx);
+                    query = query.Where((Expression<Func<T, bool>>)filterFunction
+#if TypeScript
+                    , context
+#endif
+                    );
+                }
+            }
+
+            return query;
+        }
+
         public IEntityConfiguration EntityConfiguration { get; set; }
 
         public ITrackingSet TrackingSet
@@ -66,14 +94,14 @@ namespace Iql.Data.Context
         TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
 
         Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
-        public DbQueryable<T> ApplyRelationshipFiltersByExpression<TProperty>(
+        public async Task<DbQueryable<T>> ApplyRelationshipFiltersByExpressionAsync<TProperty>(
             Expression<Func<TProperty, T>> relatedProperty,
             TProperty entity)
         {
             var relatedConfiguration = this.EntityConfiguration.Builder.GetEntityByType(
                 typeof(TProperty) ?? entity.GetType());
             var property = relatedConfiguration.FindNestedPropertyByLambdaExpression(relatedProperty);
-            return ApplyRelationshipFilters(property, entity);
+            return await ApplyRelationshipFiltersAsync(property, entity);
         }
 
         IDbQueryable IDbQueryable.WithKeys(IEnumerable<object> keys)

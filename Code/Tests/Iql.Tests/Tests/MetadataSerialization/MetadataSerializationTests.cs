@@ -21,7 +21,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
             sitesConfig.FindRelationship(_ => _.Client)
-                .CreateWithRelationshipValue(_ => _.Type, _ => _.Client.Type);
+                .CreateWithRelationshipValue(_ => _.Type, ctx => _ => ctx.Owner.Client.Type);
             sitesConfig.FindRelationship(_ => _.Client).CreateWithPropertyValue(_ => _.Name, _ => "test@123.com");
             var clientRelationship = sitesConfig.FindRelationship(r => r.Client);
             var sitesRelationship = clientConfig.FindCollectionRelationship(r => r.Sites);

@@ -49,7 +49,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        IQueryableBase ApplyRelationshipFilters(IProperty relatedProperty, object entity);
+        Task<IQueryableBase> ApplyRelationshipFiltersAsync(IProperty relatedProperty, object entity);
 
         IQueryableBase Where(LambdaExpression expression
 #if TypeScript

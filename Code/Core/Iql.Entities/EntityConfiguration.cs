@@ -647,7 +647,8 @@ namespace Iql.Entities
             return this;
         }
 
-        private static void AddRelationshipFilterRule<TProperty>(Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
+        private static void AddRelationshipFilterRule<TProperty>(
+            Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, bool>>>> filterRule,
             IProperty propertyDefinition,
             string key = null,
             string message = null

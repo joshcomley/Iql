@@ -9,11 +9,12 @@ namespace Iql
         public IqlVariableExpression(
             string variableName = null,
             object value = null,
-            Type entityType = null) : base(IqlExpressionKind.Variable, entityType.ToIqlType())
+            Type entityType = null) : base(null, entityType.ToIqlType())
         {
             VariableName = variableName;
             Value = value;
             EntityTypeName = entityType?.GetFullName();
+            Kind = IqlExpressionKind.Variable;
         }
         
         public IqlVariableExpression() : this(null, null)

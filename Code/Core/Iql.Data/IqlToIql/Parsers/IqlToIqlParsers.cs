@@ -18,7 +18,8 @@ namespace Iql.Data.IqlToIql.Parsers
                 return null;
             }
 
-            if (action.Polygon.Kind == IqlExpressionKind.Literal)
+            if (action.Polygon.Kind == IqlExpressionKind.Literal ||
+                action.Polygon.Kind == IqlExpressionKind.Variable)
             {
                 var literal = action.Polygon as IqlLiteralExpression;
                 if (literal == null)

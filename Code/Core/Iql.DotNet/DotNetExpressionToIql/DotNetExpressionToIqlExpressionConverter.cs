@@ -11,6 +11,7 @@ namespace Iql.DotNet.DotNetExpressionToIql
             return new DotNetExpressionToIqlExpressionParser<T>()
                 .ToIqlExpression(exp);
         }
+
         public static IqlExpression Parse(LambdaExpression expression)
         {
             var parameter = expression.Parameters.First();

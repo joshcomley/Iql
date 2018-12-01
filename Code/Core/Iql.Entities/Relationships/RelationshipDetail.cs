@@ -25,7 +25,7 @@ namespace Iql.Entities.Relationships
 
         public RelationshipDetail<T, TProperty> CreateWithRelationshipValue<TRelationship>(
             Expression<Func<TProperty, TRelationship>> relationship,
-            Expression<Func<T, TRelationship>> expression,
+            Expression<Func<RelationshipFilterContext<T>, Expression<Func<TProperty, TRelationship>>>> expression,
             bool useForFiltering = true
         )
         {
@@ -38,9 +38,9 @@ namespace Iql.Entities.Relationships
                 RelationshipMappings.Add(mapping);
             }
             mapping.Container = container;
-            var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type);
+            var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(RelationshipFilterContext<T>));
             mapping.UseForFiltering = useForFiltering;
-            mapping.Expression = expressionResult.Expression;
+            mapping.Expression = expressionResult.Expression as IqlLambdaExpression;
             return this;
         }
 
@@ -59,7 +59,7 @@ namespace Iql.Entities.Relationships
             }
             mapping.Container = container;
             mapping.UseForFiltering = useForFiltering;
-            mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression;
+            mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression as IqlLambdaExpression;
             return this;
         }
 

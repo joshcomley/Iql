@@ -12,12 +12,17 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             //model.ModelConfiguration();
             var model = builder.EntityType<Person>();
+            //model
+            //    .FindRelationship(_ => _.SiteArea)
+            //    .CreateWithRelationshipValue(_ => _.Site, ctx => _ => _.Site.Parent);
             model
                 .FindRelationship(_ => _.SiteArea)
-                .CreateWithRelationshipValue(_ => _.Site, _ => _.Site);
+                .CreateWithRelationshipValue(_ => _.Site, ctx => _ => ctx.Owner.Site);
+
             model.DefineRelationshipFilterRule(
-                _ => _.SiteArea,
-                context => siteArea => siteArea.SiteId == context.Owner.SiteId);
+                _ => _.Loading,
+                context => loading => loading.Name == "some constant");
+
             model.DefineDisplayFormatter(p => p.Title);
             model.DefineDisplayFormatter(p => p.Title + " (" + p.Id + ")", "Report");
             model.DefineEntityValidation(

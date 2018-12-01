@@ -803,18 +803,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         continue;
                     }
 
-                    void PrintMapping<T>(string suffix = "")
+                    void PrintMapping<TMapping, T>(
+                        Func<T, string> entityPropertyName, 
+                        string suffix = "")
+                    where TMapping : IMapping<T>
                     {
-                        var mappings = (IList<IMapping<T>>) value;
+                        var mappings = (IEnumerable<IMapping<T>>) value;
                         if (mappings != null)
                         {
                             foreach (var mapping in mappings)
                             {
                                 sb.AppendLine($@"{lambdaKey}.{metadataProperty.Name}.{nameof(IList.Add)}(
-new {nameof(ValueMapping)} {{
-    {nameof(IMapping<object>.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(mapping.Container.Name)}){suffix},
+new {typeof(TMapping).Name} {{
+    {nameof(IMapping<object>.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(entityPropertyName(mapping.Container))}){suffix},
     {nameof(IMapping<object>.Expression)} = {CSharpObjectSerializer.Serialize(mapping.Expression).Initialiser},
-    {nameof(IMapping<object>.UseForFiltering)} = {mapping.UseForFiltering}
+    {nameof(IMapping<object>.UseForFiltering)} = {mapping.UseForFiltering.ToString().ToLower()}
 }});");
                             }
                         }
@@ -822,13 +825,13 @@ new {nameof(ValueMapping)} {{
                     if (metadata is IRelationshipDetailMetadata &&
                         metadataProperty.Name == nameof(IRelationshipDetail.ValueMappings))
                     {
-                        PrintMapping<IProperty>();
+                        PrintMapping<ValueMapping, IProperty>(_ => _.Name);
                         dealtWith = true;
                     }
                     else if (metadata is IRelationshipDetailMetadata &&
                         metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
                     {
-                        PrintMapping<IRelationshipDetail>($".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
+                        PrintMapping<RelationshipMapping, IRelationshipDetail>(_ => _.Property.Name, $".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
                         dealtWith = true;
                     }
                     else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.EditDisplay))
