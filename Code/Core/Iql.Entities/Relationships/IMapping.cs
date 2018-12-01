@@ -4,5 +4,6 @@ namespace Iql.Entities.Relationships
     {
         T Container { get; set; }
         IqlExpression Expression { get; set; }
+        bool UseForFiltering { get; set; }
     }
 }

@@ -25,7 +25,8 @@ namespace Iql.Entities.Relationships
 
         public RelationshipDetail<T, TProperty> CreateWithRelationshipValue<TRelationship>(
             Expression<Func<TProperty, TRelationship>> relationship,
-            Expression<Func<T, TRelationship>> expression
+            Expression<Func<T, TRelationship>> expression,
+            bool useForFiltering = true
         )
         {
             var property = OtherSide.EntityConfiguration.FindNestedPropertyByLambdaExpression(relationship);
@@ -38,13 +39,15 @@ namespace Iql.Entities.Relationships
             }
             mapping.Container = container;
             var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type);
+            mapping.UseForFiltering = useForFiltering;
             mapping.Expression = expressionResult.Expression;
             return this;
         }
 
         public RelationshipDetail<T, TProperty> CreateWithPropertyValue<TNestedProperty>(
             Expression<Func<TProperty, TNestedProperty>> property,
-            Expression<Func<T, TNestedProperty>> expression
+            Expression<Func<T, TNestedProperty>> expression,
+            bool useForFiltering = true
         )
         {
             var container = OtherSide.EntityConfiguration.FindNestedPropertyByLambdaExpression(property);
@@ -55,6 +58,7 @@ namespace Iql.Entities.Relationships
                 ValueMappings.Add(mapping);
             }
             mapping.Container = container;
+            mapping.UseForFiltering = useForFiltering;
             mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression;
             return this;
         }

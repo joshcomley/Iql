@@ -803,32 +803,32 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         continue;
                     }
 
+                    void PrintMapping<T>(string suffix = "")
+                    {
+                        var mappings = (IList<IMapping<T>>) value;
+                        if (mappings != null)
+                        {
+                            foreach (var mapping in mappings)
+                            {
+                                sb.AppendLine($@"{lambdaKey}.{metadataProperty.Name}.{nameof(IList.Add)}(
+new {nameof(ValueMapping)} {{
+    {nameof(IMapping<object>.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(mapping.Container.Name)}){suffix},
+    {nameof(IMapping<object>.Expression)} = {CSharpObjectSerializer.Serialize(mapping.Expression).Initialiser},
+    {nameof(IMapping<object>.UseForFiltering)} = {mapping.UseForFiltering}
+}});");
+                            }
+                        }
+                    }
                     if (metadata is IRelationshipDetailMetadata &&
                         metadataProperty.Name == nameof(IRelationshipDetail.ValueMappings))
                     {
-                        var valueMappings = value as IList<ValueMapping>;
-                        foreach (var valueMapping in valueMappings)
-                        {
-                            sb.AppendLine($@"{lambdaKey}.{nameof(IRelationshipDetail.ValueMappings)}.{nameof(IList.Add)}(
-new {nameof(ValueMapping)} {{
-    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(valueMapping.Container.Name)}),
-    {nameof(ValueMapping.Expression)} = {CSharpObjectSerializer.Serialize(valueMapping.Expression).Initialiser}
-}});");
-                        }
+                        PrintMapping<IProperty>();
                         dealtWith = true;
                     }
                     else if (metadata is IRelationshipDetailMetadata &&
                         metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
                     {
-                        var mappings = value as IList<RelationshipMapping>;
-                        foreach (var mapping in mappings)
-                        {
-                            sb.AppendLine($@"{lambdaKey}.{nameof(IRelationshipDetail.RelationshipMappings)}.{nameof(IList.Add)}(
-new {nameof(RelationshipMapping)} {{
-    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(mapping.Container.Property.Name)}).{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)},
-    {nameof(ValueMapping.Expression)} = {CSharpObjectSerializer.Serialize(mapping.Expression).Initialiser}
-}});");
-                        }
+                        PrintMapping<IRelationshipDetail>($".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
                         dealtWith = true;
                     }
                     else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.EditDisplay))
