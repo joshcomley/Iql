@@ -3173,7 +3173,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
                     rel_cnf.ValueMappings.Add(new ValueMapping
                     {
-                        Container = rel_cnf.EntityConfiguration.FindProperty("AverageIncome"),
+                        Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("AverageIncome"),
                         Expression = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
@@ -3200,7 +3200,7 @@ namespace IqlSampleApp.ApiContext.Base
                     });
                     rel_cnf.RelationshipMappings.Add(new RelationshipMapping
                     {
-                        Container = rel_cnf.EntityConfiguration.FindRelationshipByName("CreatedByUser").ThisEnd,
+                        Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("CreatedByUser").Relationship.ThisEnd,
                         Expression = new IqlLambdaExpression
                         {
                             Body = new IqlPropertyExpression
@@ -3752,7 +3752,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindRelationship(rel_p => rel_p.SiteArea).Configure(rel_cnf => {
                     rel_cnf.RelationshipMappings.Add(new RelationshipMapping
                     {
-                        Container = rel_cnf.EntityConfiguration.FindRelationshipByName("Site").ThisEnd,
+                        Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("Site").Relationship.ThisEnd,
                         Expression = new IqlLambdaExpression
                         {
                             Body = new IqlPropertyExpression

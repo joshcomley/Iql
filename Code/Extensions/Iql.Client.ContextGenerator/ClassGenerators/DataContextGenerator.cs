@@ -811,7 +811,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         {
                             sb.AppendLine($@"{lambdaKey}.{nameof(IRelationshipDetail.ValueMappings)}.{nameof(IList.Add)}(
 new {nameof(ValueMapping)} {{
-    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(valueMapping.Container.Name)}),
+    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(valueMapping.Container.Name)}),
     {nameof(ValueMapping.Expression)} = {CSharpObjectSerializer.Serialize(valueMapping.Expression).Initialiser}
 }});");
                         }
@@ -825,7 +825,7 @@ new {nameof(ValueMapping)} {{
                         {
                             sb.AppendLine($@"{lambdaKey}.{nameof(IRelationshipDetail.RelationshipMappings)}.{nameof(IList.Add)}(
 new {nameof(RelationshipMapping)} {{
-    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindRelationshipByName)}({String(mapping.Container.Property.Name)}).{nameof(EntityRelationship.ThisEnd)},
+    {nameof(ValueMapping.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(mapping.Container.Property.Name)}).{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)},
     {nameof(ValueMapping.Expression)} = {CSharpObjectSerializer.Serialize(mapping.Expression).Initialiser}
 }});");
                         }
