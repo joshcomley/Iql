@@ -814,8 +814,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             foreach (var mapping in mappings)
                             {
                                 sb.AppendLine($@"{lambdaKey}.{metadataProperty.Name}.{nameof(IList.Add)}(
-new {typeof(TMapping).Name} {{
-    {nameof(IMapping<object>.Container)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(entityPropertyName(mapping.Container))}){suffix},
+new {typeof(TMapping).Name}({lambdaKey}) {{
+    {nameof(IMapping<object>.Property)} = {lambdaKey}.{nameof(IRelationshipDetail.OtherSide)}.{nameof(IRelationshipDetail.EntityConfiguration)}.{nameof(IEntityConfiguration.FindProperty)}({String(entityPropertyName(mapping.Property))}){suffix},
     {nameof(IMapping<object>.Expression)} = {CSharpObjectSerializer.Serialize(mapping.Expression).Initialiser},
     {nameof(IMapping<object>.UseForFiltering)} = {mapping.UseForFiltering.ToString().ToLower()}
 }});");

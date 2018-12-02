@@ -16,6 +16,12 @@ namespace Iql.Tests.Tests.EntityConfiguration
     public class EntityConfigurationTests : TestsBase
     {
         [TestMethod]
+        public async Task CreatingEntityFromRelationshipShouldAutoEvaluateAndPopulateFields()
+        {
+
+        }
+
+        [TestMethod]
         public void DisplayRuleOnRelationshipShouldBeAppliedToRelationshipDetail()
         {
             var site = Db.EntityConfigurationContext.EntityType<Site>();

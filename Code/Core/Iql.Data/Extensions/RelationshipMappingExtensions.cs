@@ -24,25 +24,28 @@ namespace Iql.Data.Extensions
 
         private static MethodInfo GetRelationshipFilterRuleMethod { get; }
 
-        public static Task<IRelationshipRule> GetRelationshipRuleAsync(
+        public static object CreateEntityForRelationship(
             this RelationshipMapping mapping,
-            IProperty relatedProperty,
-            object entity,
-            IDataContext dataContext)
+            IDataContext dataContext,
+            object parent)
+        {
+            return null;
+        }
+
+        public static Task<IRelationshipRule> GetRelationshipRuleAsync(
+            this RelationshipMapping mapping)
         {
             return (Task<IRelationshipRule>)GetRelationshipFilterRuleMethod.InvokeGeneric(
                 null,
-                new object[] { mapping, relatedProperty, entity, dataContext },
-                entity.GetType(),
-                mapping.Container.OtherSide.Type,
-                mapping.Container.EntityConfiguration.Type);
+                new object[] { mapping },
+                mapping.Container.EntityConfiguration.Type,
+                mapping.Property.OtherSide.Type,
+                mapping.Property.EntityConfiguration.Type);
         }
+
         private static async Task<IRelationshipRule>
             GetRelationshipFilterRuleAsync<TEntity, TProperty, TRelationship>(
-                RelationshipMapping mapping,
-                IProperty relatedProperty,
-                TEntity entity,
-                IDataContext dataContext)
+                RelationshipMapping mapping)
         {
             var existingLambda = mapping.Expression as IqlLambdaExpression;
             var innerLambda = existingLambda.Body as IqlLambdaExpression;
@@ -79,24 +82,24 @@ namespace Iql.Data.Extensions
             }
 
             var path = IqlPropertyPath.FromPropertyExpression(
-                dataContext.EntityConfigurationContext.GetEntityByType(pathType),
+                mapping.Container.EntityConfiguration.Builder.GetEntityByType(pathType),
                 propertyExpression);
             var equalityExpessions = new List<IqlExpression>();
-            for (var i = 0; i < mapping.Container.Constraints.Length; i++)
+            for (var i = 0; i < mapping.Property.Constraints.Length; i++)
             {
-                var thisEndConstraint = mapping.Container.Constraints[i];
+                var thisEndConstraint = mapping.Property.Constraints[i];
                 var otherEndConstraint = path.Property.Relationship.ThisEnd.Constraints[i];
                 var p = propertyExpression.Clone() as IqlPropertyExpression;
                 p.Parent = rootRefBackup ?? p.Parent;
                 p.PropertyName = otherEndConstraint.PropertyName;
                 equalityExpessions.Add(GetEqualityExpression(
-                    mapping.Container.EntityConfiguration.Name,
+                    mapping.Property.EntityConfiguration.Name,
                     thisEndConstraint.PropertyName,
                     p));
             }
             var iql = CreateRelationshipFilterIql(
-                relatedProperty.EntityConfiguration.Name,
                 mapping.Container.EntityConfiguration.Name,
+                mapping.Property.EntityConfiguration.Name,
                 equalityExpessions.And()
             );
             //iql = CreateRelationshipFilterIql();

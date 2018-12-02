@@ -27,6 +27,14 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                     .Where(p => !new string[]{nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration)}.Contains(p.PropertyName))
                     .ToList();
             }
+
+            if (typeof(RelationshipMapping).IsAssignableFrom(type) ||
+                typeof(ValueMapping).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => p.PropertyName != nameof(IMapping<object>.Container))
+                    .ToList();
+            }
             if (typeof(IEntityConfiguration).IsAssignableFrom(type))
             {
                 return base.CreateProperties(typeof(IEntityMetadata), memberSerialization);

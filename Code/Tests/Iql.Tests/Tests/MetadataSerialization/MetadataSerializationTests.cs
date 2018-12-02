@@ -89,11 +89,11 @@ namespace Iql.Tests.Tests.MetadataSerialization
             Assert.AreEqual(1, valueMappings.Count);
             var valueMapping = valueMappings[0];
             var clientNameProperty = clientContentParsed.FindProperty(nameof(Site.Name));
-            Assert.AreEqual(clientNameProperty, valueMapping.Container);
+            Assert.AreEqual(clientNameProperty, valueMapping.Property);
             Assert.IsNotNull(valueMapping.Expression);
             var relationshipMappings = siteClientRelationship.RelationshipMappings;
             Assert.AreEqual(1, relationshipMappings.Count);
-            Assert.AreEqual(clientTypeRelationship, relationshipMappings[0].Container);
+            Assert.AreEqual(clientTypeRelationship, relationshipMappings[0].Property);
             var propertyPath = (clientContentParsed.EditDisplay[1] as PropertyCollection).Properties[0];
             Assert.IsTrue(propertyPath is PropertyPath);
             Assert.AreEqual("Type/Name", (propertyPath as PropertyPath).Path);

@@ -31,13 +31,13 @@ namespace Iql.Entities.Relationships
         {
             var property = OtherSide.EntityConfiguration.FindNestedPropertyByLambdaExpression(relationship);
             var container = property.Relationship.ThisEnd;
-            var mapping = RelationshipMappings.FirstOrDefault(_ => _.Container == container);
+            var mapping = RelationshipMappings.FirstOrDefault(_ => _.Property == container);
             if (mapping == null)
             {
-                mapping = new RelationshipMapping();
+                mapping = new RelationshipMapping(this);
                 RelationshipMappings.Add(mapping);
             }
-            mapping.Container = container;
+            mapping.Property = container;
             var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(RelationshipFilterContext<T>));
             mapping.UseForFiltering = useForFiltering;
             mapping.Expression = expressionResult.Expression as IqlLambdaExpression;
@@ -51,13 +51,13 @@ namespace Iql.Entities.Relationships
         )
         {
             var container = OtherSide.EntityConfiguration.FindNestedPropertyByLambdaExpression(property);
-            var mapping = ValueMappings.FirstOrDefault(_ => _.Container == container);
+            var mapping = ValueMappings.FirstOrDefault(_ => _.Property == container);
             if (mapping == null)
             {
-                mapping = new ValueMapping();
+                mapping = new ValueMapping(this);
                 ValueMappings.Add(mapping);
             }
-            mapping.Container = container;
+            mapping.Property = container;
             mapping.UseForFiltering = useForFiltering;
             mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression as IqlLambdaExpression;
             return this;

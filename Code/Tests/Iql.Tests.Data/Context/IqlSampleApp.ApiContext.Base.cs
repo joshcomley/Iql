@@ -3171,9 +3171,9 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ApplicationUser>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
-                    rel_cnf.ValueMappings.Add(new ValueMapping
+                    rel_cnf.ValueMappings.Add(new ValueMapping(rel_cnf)
                     {
-                        Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("AverageIncome"),
+                        Property = rel_cnf.OtherSide.EntityConfiguration.FindProperty("AverageIncome"),
                         Expression = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
@@ -3199,9 +3199,9 @@ namespace IqlSampleApp.ApiContext.Base
                         },
                         UseForFiltering = true
                     });
-                    rel_cnf.RelationshipMappings.Add(new RelationshipMapping
+                    rel_cnf.RelationshipMappings.Add(new RelationshipMapping(rel_cnf)
                     {
-                        Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("CreatedByUser").Relationship.ThisEnd,
+                        Property = rel_cnf.OtherSide.EntityConfiguration.FindProperty("CreatedByUser").Relationship.ThisEnd,
                         Expression = new IqlLambdaExpression
                         {
                             Body = new IqlLambdaExpression
@@ -3774,9 +3774,9 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Reports";
                 });
                 rel.FindRelationship(rel_p => rel_p.SiteArea).Configure(rel_cnf => {
-                    rel_cnf.RelationshipMappings.Add(new RelationshipMapping
+                    rel_cnf.RelationshipMappings.Add(new RelationshipMapping(rel_cnf)
                     {
-                        Container = rel_cnf.OtherSide.EntityConfiguration.FindProperty("Site").Relationship.ThisEnd,
+                        Property = rel_cnf.OtherSide.EntityConfiguration.FindProperty("Site").Relationship.ThisEnd,
                         Expression = new IqlLambdaExpression
                         {
                             Body = new IqlLambdaExpression
