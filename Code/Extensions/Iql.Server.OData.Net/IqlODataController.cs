@@ -278,7 +278,7 @@ namespace Iql.Server.OData.Net
                         property.InferredWithIql,
                         Builder,
                         currentEntity,
-                        async (entity, type, path, flattenedExpression) => await ProcessPropertyPathAsync(currentEntity, patch, path));
+                        async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
                     property.SetValue(currentEntity, evaluatedValue);
                     //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
                     //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);

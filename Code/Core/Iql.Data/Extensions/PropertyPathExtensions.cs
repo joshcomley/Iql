@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Entities;
 using Iql.Extensions;
@@ -7,15 +8,24 @@ namespace Iql.Data.Extensions
 {
     public static class PropertyPathExtensions
     {
-        public static async Task<object> EvaluateAsync(this IqlPropertyPath propertyPath, object entity, IDataContext dataContext)
+        public static async Task<IqlPropertyPathEvaluationResult> EvaluateAsync(this IqlPropertyPath propertyPath, object entity, IDataContext dataContext)
         {
+            var evaluationResult = new IqlPropertyPathEvaluationResult(
+                false,
+                entity,
+                propertyPath,
+                new IqlPropertyPathEvaluated[] { });
             if (entity == null)
             {
-                return null;
+                return evaluationResult;
             }
+
+            var success = true;
+            var results = new List<IqlPropertyPathEvaluated>();
             var result = entity;
-            foreach (var part in propertyPath.PropertyPath)
+            for (var i = 0; i < propertyPath.PropertyPath.Length; i++)
             {
+                var part = propertyPath.PropertyPath[i];
                 var parent = result;
                 result = result.GetPropertyValueByName(part.PropertyName);
                 if (result == null)
@@ -33,23 +43,54 @@ namespace Iql.Data.Extensions
                             result = await dataContext.GetDbSetByEntityType(part.Property.Relationship.OtherEnd.Type)
                                 .GetWithKeyAsync(key);
                         }
+
+                        results.Add(new IqlPropertyPathEvaluated(
+                            evaluationResult,
+                            part,
+                            parent,
+                            result,
+                            propertyPath.PropertyPath.Length,
+                            i));
+
                         if (result == null)
                         {
-                            return null;
+                            success = i == propertyPath.PropertyPath.Length - 1;
+                            break;
                         }
                     }
                     else
                     {
-                        return null;
+                        results.Add(new IqlPropertyPathEvaluated(
+                            evaluationResult,
+                            part,
+                            parent,
+                            null,
+                            propertyPath.PropertyPath.Length,
+                            i));
+                        break;
                     }
                 }
+                else
+                {
+                    results.Add(new IqlPropertyPathEvaluated(
+                        evaluationResult,
+                        part,
+                        parent,
+                        result,
+                        propertyPath.PropertyPath.Length,
+                        i));
+                }
             }
-            return result;
+
+            evaluationResult.Success = success;
+            evaluationResult.Results = results.ToArray();
+            return evaluationResult;
         }
 
         public static async Task<T> EvaluateAsAsync<T>(this IqlPropertyPath propertyPath, object entity, IDataContext dataContext)
         {
-            return (T)await propertyPath.EvaluateAsync(entity, dataContext);
+            var result = await propertyPath.EvaluateAsync(entity, dataContext);
+            return (T)result.Value;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Iql.Data.Context
                 var relationshipMapping = relatedProperty.Relationship.ThisEnd.RelationshipMappings[i];
                 if (relationshipMapping.UseForFiltering)
                 {
-                    var filterRule = await relationshipMapping.GetRelationshipRuleAsync();
+                    var filterRule = relationshipMapping.BuildRelationshipFilterRule();
                     var filterFunction = filterRule.Run(ctx);
                     query = query.Where((Expression<Func<T, bool>>)filterFunction
 #if TypeScript

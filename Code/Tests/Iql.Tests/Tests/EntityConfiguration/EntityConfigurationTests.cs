@@ -16,9 +16,26 @@ namespace Iql.Tests.Tests.EntityConfiguration
     public class EntityConfigurationTests : TestsBase
     {
         [TestMethod]
-        public async Task CreatingEntityFromRelationshipShouldAutoEvaluateAndPopulateFields()
+        public async Task CreatingEntityFromRelationshipShouldAutoEvaluateAndPopulateFieldsWithRelationshipValue()
         {
+            var personConfig = Db.EntityConfigurationContext.EntityType<Person>();
+            var person = new Person();
+            person.Site = new Site();
+            person.Site.Name = "Test 123";
+            var siteAreaRelationship = personConfig.FindRelationship(_ => _.SiteArea);
+            var siteArea = (SiteArea)await siteAreaRelationship.CreateEntityForRelationshipAsync(Db, person);
+            Assert.AreEqual(siteArea.Site, person.Site);
+        }
 
+        [TestMethod]
+        public async Task CreatingEntityFromRelationshipShouldAutoEvaluateAndPopulateFieldsWithRelationshipKeyValue()
+        {
+            var personConfig = Db.EntityConfigurationContext.EntityType<Person>();
+            var person = new Person();
+            person.SiteId = 7;
+            var siteAreaRelationship = personConfig.FindRelationship(_ => _.SiteArea);
+            var siteArea = (SiteArea)await siteAreaRelationship.CreateEntityForRelationshipAsync(Db, person);
+            Assert.AreEqual(person.SiteId, siteArea.SiteId);
         }
 
         [TestMethod]

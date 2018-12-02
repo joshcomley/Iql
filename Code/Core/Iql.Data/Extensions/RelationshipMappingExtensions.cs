@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Iql.Conversion;
 using Iql.Data.Context;
-using Iql.Data.Queryable;
 using Iql.Entities;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Relationship;
@@ -17,181 +16,131 @@ namespace Iql.Data.Extensions
     {
         static RelationshipMappingExtensions()
         {
-            GetRelationshipFilterRuleMethod = typeof(RelationshipMappingExtensions).GetMethod(
-                nameof(GetRelationshipFilterRuleAsync),
+            EvaluateExpressionTypedAsyncInternalMethod = typeof(RelationshipMappingExtensions).GetMethod(
+                nameof(EvaluateExpressionTypedAsyncInternal),
                 BindingFlags.NonPublic | BindingFlags.Static);
         }
 
-        private static MethodInfo GetRelationshipFilterRuleMethod { get; }
+        private static MethodInfo EvaluateExpressionTypedAsyncInternalMethod { get; }
 
-        public static object CreateEntityForRelationship(
-            this RelationshipMapping mapping,
+        public static async Task<object> CreateEntityForRelationshipAsync(
+            this IRelationshipDetail relationship,
             IDataContext dataContext,
             object parent)
         {
-            return null;
-        }
-
-        public static Task<IRelationshipRule> GetRelationshipRuleAsync(
-            this RelationshipMapping mapping)
-        {
-            return (Task<IRelationshipRule>)GetRelationshipFilterRuleMethod.InvokeGeneric(
-                null,
-                new object[] { mapping },
-                mapping.Container.EntityConfiguration.Type,
-                mapping.Property.OtherSide.Type,
-                mapping.Property.EntityConfiguration.Type);
-        }
-
-        private static async Task<IRelationshipRule>
-            GetRelationshipFilterRuleAsync<TEntity, TProperty, TRelationship>(
-                RelationshipMapping mapping)
-        {
-            var existingLambda = mapping.Expression as IqlLambdaExpression;
-            var innerLambda = existingLambda.Body as IqlLambdaExpression;
-            var propertyExpression = innerLambda.Body.Clone() as IqlPropertyExpression;
-            var current = propertyExpression as IqlExpression;
-            var lastParent = current;
-            IqlExpression rootRefBackup = null;
-            Type pathType = null;
-            while (true)
+            var allMappings = new List<IMappingBase>();
+            allMappings.AddRange(relationship.RelationshipMappings);
+            allMappings.AddRange(relationship.ValueMappings);
+            var type = relationship.OtherSide.EntityConfiguration.Type;
+            var entity = Activator.CreateInstance(type);
+            for (var i = 0; i < allMappings.Count; i++)
             {
-                if (current.Parent == null)
+                var mapping = allMappings[i];
+                var result = await EvaluateMappingAsync(
+                    mapping,
+                    entity,
+                    dataContext,
+                    parent);
+                if (result.Value == null)
                 {
-                    break;
-                }
-
-                if (current.Parent.Kind == IqlExpressionKind.Property &&
-                    current.Parent.Parent != null &&
-                    (current.Parent.Parent.Kind == IqlExpressionKind.RootReference ||
-                     current.Parent.Parent.Kind == IqlExpressionKind.Variable))
-                {
-                    rootRefBackup = current.Parent;
-                    current.Parent = new IqlRootReferenceExpression();
-                    pathType = typeof(TEntity);
-                    break;
-                }
-
-                if (current.Parent.Kind == IqlExpressionKind.RootReference &&
-                    (current.Parent as IqlRootReferenceExpression).EntityTypeName == typeof(TProperty).Name)
-                {
-                    pathType = typeof(TProperty);
-                    break;
-                }
-                current = current.Parent;
-            }
-
-            var path = IqlPropertyPath.FromPropertyExpression(
-                mapping.Container.EntityConfiguration.Builder.GetEntityByType(pathType),
-                propertyExpression);
-            var equalityExpessions = new List<IqlExpression>();
-            for (var i = 0; i < mapping.Property.Constraints.Length; i++)
-            {
-                var thisEndConstraint = mapping.Property.Constraints[i];
-                var otherEndConstraint = path.Property.Relationship.ThisEnd.Constraints[i];
-                var p = propertyExpression.Clone() as IqlPropertyExpression;
-                p.Parent = rootRefBackup ?? p.Parent;
-                p.PropertyName = otherEndConstraint.PropertyName;
-                equalityExpessions.Add(GetEqualityExpression(
-                    mapping.Property.EntityConfiguration.Name,
-                    thisEndConstraint.PropertyName,
-                    p));
-            }
-            var iql = CreateRelationshipFilterIql(
-                mapping.Container.EntityConfiguration.Name,
-                mapping.Property.EntityConfiguration.Name,
-                equalityExpessions.And()
-            );
-            //iql = CreateRelationshipFilterIql();
-            iql.ReplaceWith((context, expression) =>
-            {
-                if (expression is IqlVariableExpression &&
-                    (expression as IqlVariableExpression).EntityTypeName == iql.Parameters[0].EntityTypeName)
-                {
-                    return iql.Parameters[0];
-                }
-                if (expression is IqlVariableExpression &&
-                    (expression as IqlVariableExpression).EntityTypeName == (iql.Body as IqlLambdaExpression).Parameters[0].EntityTypeName)
-                {
-                    return (iql.Body as IqlLambdaExpression).Parameters[0];
-                }
-                return expression;
-            });
-            var expression1 = IqlConverter.Instance.ConvertIqlToExpression<RelationshipFilterContext<TEntity>>(iql);
-            var rule = new RelationshipFilterRule<TEntity, TRelationship>((Expression<Func<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>>>)expression1, null, null);
-            return rule;
-        }
-
-        private static IqlLambdaExpression CreateRelationshipFilterIql(
-            string ownerTypeName,
-            string childTypeName,
-            IqlExpression body)
-        {
-            return new IqlLambdaExpression
-            {
-                Body = new IqlLambdaExpression
-                {
-                    Body = body,
-                    Parameters = new List<IqlRootReferenceExpression>
+                    if (result.Results.Length == 1)
                     {
-                        new IqlRootReferenceExpression
+                        var last = result.Results[0];
+                        if (last.Success && last.Value == null && last.Parent != null &&
+                            last.Source.Property.Relationship != null)
                         {
-                            EntityTypeName = childTypeName,
-                            VariableName = "child",
-                            InferredReturnType = IqlType.Unknown,
-                            Kind = IqlExpressionKind.RootReference,
-                            ReturnType = IqlType.Unknown
+                            var parentConstraints = last.Source.Property.Relationship.ThisEnd.GetCompositeKey(last.Parent);
+                            var ourConstraints = (mapping.Property as IRelationshipDetail).Constraints;
+                            for (var j = 0; j < parentConstraints.Keys.Length; j++)
+                            {
+                                var constraint = parentConstraints.Keys[j];
+                                entity.SetPropertyValueByName(ourConstraints[j].Name, constraint.Value);
+                            }
                         }
-                    },
-                    Kind = IqlExpressionKind.Lambda,
-                    ReturnType = IqlType.Unknown
-                },
-                Parameters = new List<IqlRootReferenceExpression>
-                {
-                    new IqlRootReferenceExpression
-                    {
-                        EntityTypeName = $"{nameof(RelationshipFilterContext<object>)}<{ownerTypeName}>",
-                        VariableName = "context",
-                        InferredReturnType = IqlType.Unknown,
-                        Kind = IqlExpressionKind.RootReference,
-                        ReturnType = IqlType.Unknown
                     }
-                },
-                Kind = IqlExpressionKind.Lambda,
-                ReturnType = IqlType.Unknown
-            };
-        }
-
-        private static IqlIsEqualToExpression GetEqualityExpression(
-            string childTypeName, 
-            string childPropertyName, 
-            IqlExpression propertyIql)
-        {
-            return new IqlIsEqualToExpression
-            {
-                Left = GetChildPropertyExpression(childTypeName, childPropertyName),
-                Right = propertyIql,
-                Kind = IqlExpressionKind.IsEqualTo,
-                ReturnType = IqlType.Unknown
-            };
-        }
-
-        private static IqlPropertyExpression GetChildPropertyExpression(string childTypeName, string childPropertyName)
-        {
-            return new IqlPropertyExpression
-            {
-                PropertyName = childPropertyName,
-                Kind = IqlExpressionKind.Property,
-                ReturnType = IqlType.Unknown,
-                Parent = new IqlRootReferenceExpression
-                {
-                    EntityTypeName = childTypeName,
-                    VariableName = "child",
-                    InferredReturnType = IqlType.Unknown,
-                    Kind = IqlExpressionKind.RootReference,
-                    ReturnType = IqlType.Unknown
                 }
-            };
+                else
+                {
+                    mapping.SetValue(entity, result.Value);
+                }
+                mapping.SetValue(entity, result.Value);
+            }
+
+            return entity;
+        }
+
+        public static async Task<IqlExpressonEvaluationResult> EvaluateMappingAsync(
+            this IMappingBase mapping,
+            object entity,
+            IDataContext dataContext,
+            object parent)
+        {
+            var parentType = mapping.Container.EntityConfiguration.Type;
+            Type childType = null;
+            var isRelationship = false;
+            if (mapping.Property is IProperty)
+            {
+                childType = (mapping.Property as IProperty).TypeDefinition.Type;
+            }
+            else
+            {
+                childType = (mapping.Property as IRelationshipDetail).OtherSide.EntityConfiguration.Type;
+                isRelationship = true;
+            }
+            var result = await (Task<IqlExpressonEvaluationResult>)EvaluateExpressionTypedAsyncInternalMethod.InvokeGeneric(
+                null,
+                new object[]
+                {
+                    mapping.Expression,
+                    entity,
+                    dataContext,
+                    parent
+                },
+                parentType,
+                childType);
+            if (result == null && isRelationship)
+            {
+                int a = 0;
+            }
+            return result;
+        }
+
+        public static async Task<T> EvaluateExpressionTypedAsync<TParent, T>(
+            this IqlExpression expression,
+            object entity,
+            IDataContext dataContext,
+            TParent parent)
+        {
+            var result = await EvaluateExpressionTypedAsyncInternal<TParent, T>(
+                expression,
+                entity,
+                dataContext,
+                parent);
+            return (T)result.Value;
+        }
+
+        private static async Task<IqlExpressonEvaluationResult> EvaluateExpressionTypedAsyncInternal<TParent, T>(
+            this IqlExpression expression,
+            object entity,
+            IDataContext dataContext,
+            TParent parent)
+        {
+            var ctx = new RelationshipFilterContext<TParent>();
+            ctx.Owner = parent;
+            var result = await expression.EvaluateIqlPathAsync(
+                ctx,
+                dataContext,
+                typeof(T));
+            if (result.Value is LambdaExpression)
+            {
+                var exp = result.Value as LambdaExpression;
+                result.Value = exp.Compile().DynamicInvoke(new object[] { entity });
+                if (result.Value is IqlPropertyPathEvaluationResult)
+                {
+                    result.Value = (result.Value as IqlPropertyPathEvaluationResult).Value;
+                }
+            }
+            return result;
         }
     }
 }
