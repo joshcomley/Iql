@@ -10,7 +10,7 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.Data" Version="0.0.40017-10098-1-Debug" />
+        <PackageReference Include="Brandless.Data" Version="0.0.40017-10101-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
