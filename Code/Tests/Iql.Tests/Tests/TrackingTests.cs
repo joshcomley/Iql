@@ -6,6 +6,7 @@ using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Http;
 using Iql.Data.Lists;
+using Iql.Entities.Exceptions;
 using Iql.OData;
 using Iql.Queryable.Extensions;
 using Iql.Tests.Context;
@@ -348,7 +349,7 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task RemovingAPivotEntityAndAddingAnEquivalentWithChangedPropertiesShouldCreateASingleUpdateRequest()
+        public async Task RemovingAPivotEntityAndAddingAnEquivalentWithChangedPropertiesShouldThrowDuplicateKeyException()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
             {
@@ -375,72 +376,75 @@ namespace Iql.Tests.Tests
                 TypeId = 1,
                 Description = "Def"
             };
-            var addedMap = person.Types.Add(newEquivalentTypeMap);
-            var newEquivalentTypeMapState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
-                .FindMatchingEntityState(newEquivalentTypeMap);
-            Assert.AreEqual(addedMap, newEquivalentTypeMap);
+            ShouldThrowException<DuplicateKeyException>(() =>
+            {
+                var addedMap = person.Types.Add(newEquivalentTypeMap);
+            });
+            //var newEquivalentTypeMapState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
+            //    .FindMatchingEntityState(newEquivalentTypeMap);
+            //Assert.AreEqual(addedMap, newEquivalentTypeMap);
 
-            var changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(1, changes.Length, "Expecting only a single change");
-            Assert.AreEqual(changes[0].Type, QueuedOperationType.Update, "Queued operation is not an update operation");
-            var update = changes[0].Operation as IUpdateEntityOperation;
-            var changedProperties = update.EntityState.GetChangedProperties();
-            Assert.AreEqual(1, changedProperties.Length, "Only the 'Description' property should have changed");
-            var changedProperty = changedProperties[0];
-            Assert.AreEqual(nameof(PersonTypeMap.Description), changedProperty.Property.Name);
-            Assert.AreEqual("Abc", changedProperty.OldValue);
-            Assert.AreEqual("Def", changedProperty.NewValue);
+            //var changes = Db.DataStore.GetChanges();
+            //Assert.AreEqual(1, changes.Length, "Expecting only a single change");
+            //Assert.AreEqual(changes[0].Type, QueuedOperationType.Update, "Queued operation is not an update operation");
+            //var update = changes[0].Operation as IUpdateEntityOperation;
+            //var changedProperties = update.EntityState.GetChangedProperties();
+            //Assert.AreEqual(1, changedProperties.Length, "Only the 'Description' property should have changed");
+            //var changedProperty = changedProperties[0];
+            //Assert.AreEqual(nameof(PersonTypeMap.Description), changedProperty.Property.Name);
+            //Assert.AreEqual("Abc", changedProperty.OldValue);
+            //Assert.AreEqual("Def", changedProperty.NewValue);
         }
 
-        [TestMethod]
-        public async Task RepeatedRemovingAndAddingOfPivotShouldStillResultInNoChanges()
-        {
-            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
-            {
-                Id = 1
-            });
-            AppDbContext.InMemoryDb.People.Add(new Person
-            {
-                Id = 1
-            });
-            PersonTypeMap newTypeMap()
-            {
-                return new PersonTypeMap
-                {
-                    PersonId = 1,
-                    TypeId = 1
-                };
-            }
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(newTypeMap());
+        //[TestMethod]
+        //public async Task RepeatedRemovingAndAddingOfPivotShouldStillResultInNoChanges()
+        //{
+        //    AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+        //    {
+        //        Id = 1
+        //    });
+        //    AppDbContext.InMemoryDb.People.Add(new Person
+        //    {
+        //        Id = 1
+        //    });
+        //    PersonTypeMap newTypeMap()
+        //    {
+        //        return new PersonTypeMap
+        //        {
+        //            PersonId = 1,
+        //            TypeId = 1
+        //        };
+        //    }
+        //    AppDbContext.InMemoryDb.PeopleTypeMap.Add(newTypeMap());
 
-            var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
-            var typeMap = person.Types[0];
-            person.Types.Remove(typeMap);
+        //    var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
+        //    var typeMap = person.Types[0];
+        //    person.Types.Remove(typeMap);
 
-            var unusedMaps = new List<PersonTypeMap>();
-            for (var i = 0; i < 10; i++)
-            {
-                var personTypeMap = newTypeMap();
-                unusedMaps.Add(personTypeMap);
-                person.Types.Add(personTypeMap);
-                person.Types.Remove(personTypeMap);
-            }
+        //    var unusedMaps = new List<PersonTypeMap>();
+        //    for (var i = 0; i < 10; i++)
+        //    {
+        //        var personTypeMap = newTypeMap();
+        //        unusedMaps.Add(personTypeMap);
+        //        person.Types.Add(personTypeMap);
+        //        person.Types.Remove(personTypeMap);
+        //    }
 
-            var personTypeMapFinal = newTypeMap();
-            person.Types.Add(personTypeMapFinal);
+        //    var personTypeMapFinal = newTypeMap();
+        //    person.Types.Add(personTypeMapFinal);
 
-            var changes = Db.DataStore.Tracking.GetChanges().ToArray();
-            Assert.AreEqual(0, changes.Length, "There should be no changes");
+        //    var changes = Db.DataStore.Tracking.GetChanges().ToArray();
+        //    Assert.AreEqual(0, changes.Length, "There should be no changes");
 
-            unusedMaps[3].PersonId = 4;
-            unusedMaps[3].Description = "Abc123";
-            changes = Db.DataStore.Tracking.GetChanges().ToArray();
-            Assert.AreEqual(1, changes.Length);
-            var addEntityOperation = changes[0].Operation as IEntityCrudOperationBase;
-            Assert.IsNotNull(addEntityOperation);
-            Assert.AreEqual(OperationType.Add, addEntityOperation.Type);
-            Assert.AreEqual(unusedMaps[3], addEntityOperation.Entity);
-        }
+        //    unusedMaps[3].PersonId = 4;
+        //    unusedMaps[3].Description = "Abc123";
+        //    changes = Db.DataStore.Tracking.GetChanges().ToArray();
+        //    Assert.AreEqual(1, changes.Length);
+        //    var addEntityOperation = changes[0].Operation as IEntityCrudOperationBase;
+        //    Assert.IsNotNull(addEntityOperation);
+        //    Assert.AreEqual(OperationType.Add, addEntityOperation.Type);
+        //    Assert.AreEqual(unusedMaps[3], addEntityOperation.Entity);
+        //}
 
         [TestMethod]
         public async Task RemovingAPivotEntityAndAddingAnEquivalentAndSavingShouldKeepOriginalTracked()
@@ -471,22 +475,25 @@ namespace Iql.Tests.Tests
                 TypeId = 1
             };
             typeMap.Description = "A new description for the old type map";
-            var addedMap = person.Types.Add(newEquivalentTypeMap);
-            Assert.AreEqual(addedMap, newEquivalentTypeMap);
+            ShouldThrowException<DuplicateKeyException>(() =>
+            {
+                var addedMap = person.Types.Add(newEquivalentTypeMap);
+            });
+            //Assert.AreEqual(addedMap, newEquivalentTypeMap);
 
-            var changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(0, changes.Length, "Expecting no changes");
+            //var changes = Db.DataStore.GetChanges();
+            //Assert.AreEqual(0, changes.Length, "Expecting no changes");
 
-            Assert.IsTrue(Db.DataStore.Tracking.IsTracked(typeMap, typeof(PersonTypeMap)), "Entity should still be tracked");
-            await Db.SaveChangesAsync();
-            Assert.IsTrue(Db.DataStore.Tracking.IsTracked(typeMap, typeof(PersonTypeMap)), "Entity should still be tracked");
-            typeMap.PersonId = 2;
-            changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(1, changes.Length, "Expecting a single add change");
-            var addOperation = changes[0].Operation as IEntityCrudOperationBase;
-            Assert.IsNotNull(addOperation);
-            Assert.AreEqual(OperationType.Add, addOperation.Type);
-            Assert.AreEqual(typeMap, addOperation.Entity);
+            //Assert.IsTrue(Db.DataStore.Tracking.IsTracked(typeMap, typeof(PersonTypeMap)), "Entity should still be tracked");
+            //await Db.SaveChangesAsync();
+            //Assert.IsTrue(Db.DataStore.Tracking.IsTracked(typeMap, typeof(PersonTypeMap)), "Entity should still be tracked");
+            //typeMap.PersonId = 2;
+            //changes = Db.DataStore.GetChanges();
+            //Assert.AreEqual(1, changes.Length, "Expecting a single add change");
+            //var addOperation = changes[0].Operation as IEntityCrudOperationBase;
+            //Assert.IsNotNull(addOperation);
+            //Assert.AreEqual(OperationType.Add, addOperation.Type);
+            //Assert.AreEqual(typeMap, addOperation.Entity);
         }
 
         [TestMethod]
@@ -547,7 +554,7 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
-        public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentShouldCreateNoChangeRequests()
+        public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentShouldThrowDuplicateKeyException()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
             {
@@ -576,11 +583,14 @@ namespace Iql.Tests.Tests
                 PersonId = 1,
                 TypeId = 1
             };
-            var addedMap = person.Types.Add(newEquivalentTypeMap);
-            Assert.AreEqual(addedMap, newEquivalentTypeMap);
+            ShouldThrowException<DuplicateKeyException>(() =>
+            {
+                var addedMap = person.Types.Add(newEquivalentTypeMap);
+            });
+            //Assert.AreEqual(addedMap, newEquivalentTypeMap);
 
-            changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(0, changes.Length, "Expecting no changes");
+            //changes = Db.DataStore.GetChanges();
+            //Assert.AreEqual(0, changes.Length, "Expecting no changes");
         }
 
         [TestMethod]
@@ -606,67 +616,92 @@ namespace Iql.Tests.Tests
             var changes = Db.DataStore.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
             Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
-            await Db.SaveChangesAsync();
+            var result = await Db.SaveChangesAsync();
             changes = Db.DataStore.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 
+        //[TestMethod]
+        //public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentThenChangingTheEquivalentKeyShouldThrowDuplicateKeyException()
+        //{
+        //    AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+        //    {
+        //        Id = 1
+        //    });
+        //    AppDbContext.InMemoryDb.People.Add(new Person
+        //    {
+        //        Id = 1
+        //    });
+        //    AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+        //    {
+        //        PersonId = 1,
+        //        TypeId = 1
+        //    });
+        //    var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
+        //    Assert.AreEqual(1, person.Types.Count);
+        //    var typeMap = person.Types[0];
+        //    person.Types.Remove(typeMap);
+        //    var changes = Db.DataStore.GetChanges();
+        //    Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
+        //    Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
+
+        //    Assert.AreEqual(0, person.Types.Count);
+        //    var newEquivalentTypeMap = new PersonTypeMap
+        //    {
+        //        PersonId = 1,
+        //        TypeId = 1
+        //    };
+        //    var addedMap = person.Types.Add(newEquivalentTypeMap);
+        //    Assert.AreEqual(addedMap, newEquivalentTypeMap);
+
+        //    changes = Db.DataStore.GetChanges();
+        //    Assert.AreEqual(0, changes.Length, "Expecting no changes");
+
+        //    newEquivalentTypeMap.PersonId = 4;
+        //    changes = Db.DataStore.GetChanges();
+        //    Assert.AreEqual(1, changes.Length);
+        //    var updateOperation = changes[0].Operation as IUpdateEntityOperation;
+        //    Assert.IsNotNull(updateOperation);
+        //    Assert.AreEqual(OperationType.Update, updateOperation.Type);
+        //    var changedProperties = updateOperation.EntityState.GetChangedProperties();
+        //    Assert.AreEqual(2, changedProperties.Length);
+        //    var personIdPropertyState = changedProperties.FirstOrDefault(p => p.Property.Name == nameof(PersonTypeMap.PersonId));
+        //    Assert.IsNotNull(personIdPropertyState);
+        //    Assert.AreEqual(1, personIdPropertyState.OldValue);
+        //    Assert.AreEqual(4, personIdPropertyState.NewValue);
+        //    var personPropertyState = changedProperties.FirstOrDefault(p => p.Property.Name == nameof(PersonTypeMap.PersonId));
+        //    Assert.IsNotNull(personPropertyState);
+        //    Assert.AreEqual(1, personPropertyState.OldValue);
+        //    Assert.AreEqual(4, personPropertyState.NewValue);
+        //}
+
         [TestMethod]
-        public async Task RemovingAPivotEntityAndAddingAnUnchangedEquivalentThenChangingTheEquivalentKeyShouldOnlyCreateAnUpdateRequest()
+        public async Task RemovingAPivotEntityAndAddingAnChangedEquivalentThenChangingTheEquivalentKeyToMatchTheRemovedPivotShouldThrowDuplicateKeyException()
         {
-            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            var newEquivalentTypeMap = await SetupPivotTest();
+            ShouldThrowException<DuplicateKeyException>(() =>
             {
-                Id = 1
+                newEquivalentTypeMap.TypeId = 1;
             });
-            AppDbContext.InMemoryDb.People.Add(new Person
-            {
-                Id = 1
-            });
-            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
-            {
-                PersonId = 1,
-                TypeId = 1
-            });
-            var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
-            Assert.AreEqual(1, person.Types.Count);
-            var typeMap = person.Types[0];
-            person.Types.Remove(typeMap);
-            var changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
-
-            Assert.AreEqual(0, person.Types.Count);
-            var newEquivalentTypeMap = new PersonTypeMap
-            {
-                PersonId = 1,
-                TypeId = 1
-            };
-            var addedMap = person.Types.Add(newEquivalentTypeMap);
-            Assert.AreEqual(addedMap, newEquivalentTypeMap);
-
-            changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(0, changes.Length, "Expecting no changes");
-
-            newEquivalentTypeMap.PersonId = 4;
-            changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(1, changes.Length);
-            var updateOperation = changes[0].Operation as IUpdateEntityOperation;
-            Assert.IsNotNull(updateOperation);
-            Assert.AreEqual(OperationType.Update, updateOperation.Type);
-            var changedProperties = updateOperation.EntityState.GetChangedProperties();
-            Assert.AreEqual(2, changedProperties.Length);
-            var personIdPropertyState = changedProperties.FirstOrDefault(p => p.Property.Name == nameof(PersonTypeMap.PersonId));
-            Assert.IsNotNull(personIdPropertyState);
-            Assert.AreEqual(1, personIdPropertyState.OldValue);
-            Assert.AreEqual(4, personIdPropertyState.NewValue);
-            var personPropertyState = changedProperties.FirstOrDefault(p => p.Property.Name == nameof(PersonTypeMap.PersonId));
-            Assert.IsNotNull(personPropertyState);
-            Assert.AreEqual(1, personPropertyState.OldValue);
-            Assert.AreEqual(4, personPropertyState.NewValue);
+            //changes = Db.DataStore.GetChanges();
+            //Assert.AreEqual(2, changes.Length);
+            //Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type);
+            //Assert.AreEqual(QueuedOperationType.Add, changes[1].Type);
+            //var result = await Db.SaveChangesAsync();
+            //Assert.IsTrue(result.Success);
         }
 
         [TestMethod]
-        public async Task RemovingAPivotEntityAndAddingAnChangedEquivalentThenChangingTheEquivalentKeyToMatchTheRemovedPivotShouldOnlyCreateAnUpdateRequest()
+        public async Task RemovingAPivotEntityAndAddingAnChangedEquivalentThenCommittingTheRemovalThenChangingTheEquivalentKeyToMatchTheRemovedPivotShouldNotThrowDuplicateKeyException()
+        {
+            var newEquivalentTypeMap = await SetupPivotTest();
+            var result = await Db.SaveChangesAsync();
+            newEquivalentTypeMap.TypeId = 1;
+            //var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+        }
+
+        private static async Task<PersonTypeMap> SetupPivotTest()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
             {
@@ -699,11 +734,11 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(addedMap, newEquivalentTypeMap);
 
             changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(2, changes.Length, "Expecting no changes");
-
-            newEquivalentTypeMap.TypeId = 1;
-            changes = Db.DataStore.GetChanges();
-            Assert.AreEqual(0, changes.Length);
+            Assert.AreEqual(2, changes.Length);
+            Assert.AreEqual(2, changes.Length);
+            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type);
+            Assert.AreEqual(QueuedOperationType.Add, changes[1].Type);
+            return newEquivalentTypeMap;
         }
 
         [TestMethod]

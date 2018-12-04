@@ -619,12 +619,6 @@ namespace Iql.Data.Context
             return DataContext.DataStore.Delete(entity);
         }
 
-        public async Task<SaveChangesResult> SaveChangesAsync(T entity)
-        {
-            return await DataContext.DataStore.SaveChangesAsync(
-                new SaveChangesOperation(DataContext));
-        }
-
         private DbQueryable<T> UseWhereIfExists(Expression<Func<T, bool>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null

@@ -93,6 +93,7 @@ namespace Iql.Tests.Tests.Validation
             var changes = db.DataStore.GetChanges();
             //Assert.AreEqual(1, changes.Length);
             var saveChangesResult = await db.SaveChangesAsync();
+            Assert.IsFalse(saveChangesResult.Success);
             changes = db.DataStore.GetChanges();
             Assert.AreEqual(1, changes.Length);
             AssertPropertyValidationFailures(

@@ -243,7 +243,7 @@ namespace Iql.Entities
                 }
             }
 
-            if (!property.Kind.HasFlag(PropertyKind.Count) && !property.Kind.HasFlag(PropertyKind.Key))
+            if (!property.Kind.HasFlag(PropertyKind.Count) && (!property.Kind.HasFlag(PropertyKind.Key) || property.Kind.HasFlag(PropertyKind.RelationshipKey)))
             {
                 var propertyValue = property.GetValue(entity);
                 if (!validationResult.HasValidationFailures() &&

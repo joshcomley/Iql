@@ -29,20 +29,6 @@ namespace Iql.Data.Tracking
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
         public List<ITrackingSet> Sets { get; set; }
 
-        public List<IEntityCrudOperationBase> GetInserts()
-        {
-            var inserts = new List<IEntityCrudOperationBase>();
-            foreach (var set in Sets)
-            {
-                inserts.AddRange(set.GetInserts());
-            }
-
-            inserts = inserts
-                .OrderBy(operation => GetPendingDependencyCount(operation.Entity, operation.EntityType))
-                .ToList();
-            return inserts;
-        }
-
         public int GetPendingDependencyCount(object entity, Type entityType = null)
         {
             var count = 0;
@@ -68,24 +54,38 @@ namespace Iql.Data.Tracking
             return count;
         }
 
-        public List<IEntityCrudOperationBase> GetDeletions()
+        public List<IEntityCrudOperationBase> GetInserts(object[] entities = null)
         {
-            var deletions = new List<IEntityCrudOperationBase>();
+            var inserts = new List<IEntityCrudOperationBase>();
             foreach (var set in Sets)
             {
-                deletions.AddRange(set.GetDeletions());
+                inserts.AddRange(set.GetInserts(entities));
             }
-            return deletions;
+
+            inserts = inserts
+                .OrderBy(operation => GetPendingDependencyCount(operation.Entity, operation.EntityType))
+                .ToList();
+            return inserts;
         }
 
-        public List<IUpdateEntityOperation> GetUpdates()
+        public List<IUpdateEntityOperation> GetUpdates(object[] entities = null)
         {
             var updates = new List<IUpdateEntityOperation>();
             foreach (var set in Sets)
             {
-                updates.AddRange(set.GetUpdates());
+                updates.AddRange(set.GetUpdates(entities));
             }
             return updates;
+        }
+
+        public List<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
+        {
+            var deletions = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                deletions.AddRange(set.GetDeletions(entities));
+            }
+            return deletions;
         }
 
         public ITrackingSet TrackingSetByType(Type type)
@@ -172,50 +172,53 @@ namespace Iql.Data.Tracking
         //    }
         //}
 
-        private IEnumerable<IQueuedOperation> GetQueuedOperations()
+        private IEnumerable<IQueuedOperation> GetQueuedOperations(object[] entities = null)
         {
             var changes = new List<IQueuedOperation>();
-            GetUpdates().ForEach(update =>
-            {
-                var queuedOperation =
-                    Activator.CreateInstance(
-                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                changes.Add((IQueuedOperation)queuedOperation);
-            });
-            GetInserts().ForEach(insert =>
-            {
-                var queuedOperation =
-                    Activator.CreateInstance(
-                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
-                changes.Add((IQueuedOperation)queuedOperation);
-            });
-            GetDeletions().ForEach(deletion =>
+            GetDeletions(entities).ForEach(deletion =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
                         typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
                 changes.Add((IQueuedOperation)queuedOperation);
             });
+            GetUpdates(entities).ForEach(update =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            GetInserts(entities).ForEach(insert =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
             return changes;
         }
 
-        public IEnumerable<IQueuedOperation> GetChanges()
+        public IEnumerable<IQueuedOperation> GetChanges(object[] entities = null)
         {
             var queue = new List<IQueuedOperation>();
-            foreach (var operation in GetQueuedOperations())
+            var queuedOperations = GetQueuedOperations(entities).ToArray();
+            for (var i = 0; i < queuedOperations.Length; i++)
             {
+                var operation = queuedOperations[i];
                 var filteredOperation = GetType()
-                    .GetMethod(nameof(Filter))
-                    .InvokeGeneric(this, new object[]
-                    {
-                        operation
-                    }, operation.Operation.EntityType)
+                        .GetMethod(nameof(Filter))
+                        .InvokeGeneric(this, new object[]
+                        {
+                            operation
+                        }, operation.Operation.EntityType)
                     as IQueuedOperation;
                 if (filteredOperation != null)
                 {
                     queue.Add(filteredOperation);
                 }
             }
+
             return queue;
         }
 

@@ -544,9 +544,9 @@ namespace Iql.Data.Context
             }
         }
 
-        public async Task<SaveChangesResult> SaveChangesAsync()
+        public async Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null)
         {
-            return await DataStore.SaveChangesAsync(new SaveChangesOperation(this));
+            return await DataStore.SaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray()));
         }
 
         public bool IsIdMatch(object left, object right, Type type)

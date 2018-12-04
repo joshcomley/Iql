@@ -18,9 +18,11 @@ namespace Iql.Entities
         PropertyReadKind ReadKind { get; set; }
         PropertyEditKind EditKind { get; set; }
         bool IsReadOnly { get; }
-        bool IsHidden { get; }
-        bool Internal { get; }
-        bool IsHiddenOrInternal { get; }
+        bool MarkedReadOnly { get; set; }
+        bool HasReadOnly { get; }
+        bool IsHiddenFromRead { get; }
+        bool IsHiddenFromEdit { get; }
+        bool IsInternal { get; }
         bool SupportsInlineEditing { get; set; }
         bool PromptBeforeEdit { get; set; }
         string Placeholder { get; set; }

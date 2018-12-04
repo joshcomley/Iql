@@ -11,8 +11,23 @@ namespace Iql.Tests.Tests.DataContext
     public class DataContextTests : TestsBase
     {
         [TestMethod]
-        public async Task UpdatingADeletedEntityShouldUntrackTheEntity()
+        public async Task SavingChangesToASingleEntityWithMultipleEntitiesChanged()
         {
+            var  clientType = new ClientType();
+            clientType.Name = "Test 1";
+            var documentCategory = new DocumentCategory();
+            documentCategory.Name = "Test 2";
+            Db.ClientTypes.Add(clientType);
+            Db.DocumentCategories.Add(documentCategory);
+            var result = await Db.SaveChangesAsync(new[] {clientType});
+            Assert.AreEqual(1, result.Results.Count);
+            var primaryResult = result.Results[0];
+            Assert.AreEqual(primaryResult.LocalEntity, clientType);
+        }
+
+        [TestMethod]
+            public async Task UpdatingADeletedEntityShouldUntrackTheEntity()
+            {
             var id = 156187;
             var clientRemote = new Client
             {

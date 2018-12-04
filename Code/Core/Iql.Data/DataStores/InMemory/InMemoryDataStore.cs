@@ -92,23 +92,29 @@ namespace Iql.Data.DataStores.InMemory
                         }
                     }
                 });
-            var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(clone, typeof(TEntity));
-            foreach (var grouping in flattenObjectGraph)
-            {
-                var trackingSet = InMemoryTrackingSetCollection.TrackingSetByType(grouping.Key);
-                foreach (var entity in grouping.Value)
-                {
-                    if (!trackingSet.IsMatchingEntityTracked(entity))
-                    {
-                        trackingSet.TrackEntity(entity, null, entity != clone);
-                    }
-                }
-            }
-            InMemoryRelationshipObserver.ObserveAll(flattenObjectGraph);
+            TrackGraph(clone, true);
             data.Add(clone);
             operation.Result.Success = true;
             operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);
+        }
+
+        private void TrackGraph(object clone, bool isAdd)
+        {
+            //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(clone, clone.GetType());
+            //foreach (var grouping in flattenObjectGraph)
+            //{
+            //    var trackingSet = InMemoryTrackingSetCollection.TrackingSetByType(grouping.Key);
+            //    foreach (var entity in grouping.Value)
+            //    {
+            //        if (!trackingSet.IsMatchingEntityTracked(entity))
+            //        {
+            //            trackingSet.TrackEntity(entity, null, isAdd && !Equals(entity, clone));
+            //        }
+            //    }
+            //}
+
+            //InMemoryRelationshipObserver.ObserveAll(flattenObjectGraph);
         }
 
         public int NextIdInteger(IList data, IProperty property)
@@ -202,6 +208,13 @@ namespace Iql.Data.DataStores.InMemory
             operation.Result.Root = clonedResult;
             operation.Result.Success = true;
             operation.Result.Data = dictionary;
+            foreach (var list in dictionary)
+            {
+                foreach (var entity in list.Value)
+                {
+                    TrackGraph(entity, false);
+                }
+            }
             return operation.Result;
             // Now convert IQL to a native expression
             // Then run that native expression

@@ -12,6 +12,10 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             //model.ModelConfiguration();
             var model = builder.EntityType<Person>();
+            model.ConfigureProperty(_ => _.Client, p =>
+            {
+                p.IsInferredWith(_ => _.Site.Client);
+            });
             //model
             //    .FindRelationship(_ => _.SiteArea)
             //    .CreateWithRelationshipValue(_ => _.Site, ctx => _ => _.Site.Parent);

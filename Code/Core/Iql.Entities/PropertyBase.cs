@@ -25,7 +25,7 @@ namespace Iql.Entities
             return propertyGroup;
         }
 
-        public override bool Internal => PropertyGroup != null;
+        public override bool IsInternal => PropertyGroup != null;
 
         public ISimpleProperty PropertyGroup
         {
@@ -226,17 +226,34 @@ namespace Iql.Entities
             return (IProperty)this;
         }
 
-        protected override bool ResolveAutoReadOnly()
+        public override bool IsReadOnly
         {
-            if (HasInferredWith)
+            get
             {
-                return true;
+                if (Relationship != null)
+                {
+                    return Relationship.ThisEnd.IsReadOnly;
+                }
+
+                return HasReadOnly;
             }
-            if (Kind.HasFlag(PropertyKind.Relationship) && Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
+        }
+
+        public override bool HasReadOnly
+        {
+            get
             {
-                return true;
+                if (HasInferredWith)
+                {
+                    return true;
+                }
+                if (Kind.HasFlag(PropertyKind.Relationship) &&
+                    Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
+                {
+                    return true;
+                }
+                return base.HasReadOnly;
             }
-            return base.ResolveAutoReadOnly();
         }
 
         protected PropertyBase() : base(null, null)

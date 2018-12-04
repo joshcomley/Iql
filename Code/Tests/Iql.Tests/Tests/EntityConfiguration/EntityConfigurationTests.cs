@@ -65,8 +65,8 @@ namespace Iql.Tests.Tests.EntityConfiguration
             var site = Db.EntityConfigurationContext.EntityType<Site>();
             var property = site.FindPropertyByExpression(l => l.CreatedByUser);
             var relationship = site.Relationships.Single(r => r.Source.Property == property);
-            Assert.AreEqual(PropertyEditKind.Hidden, property.EditKind);
-            Assert.AreEqual(PropertyEditKind.Hidden, relationship.Source.EditKind);
+            Assert.AreEqual(PropertyEditKind.Edit, property.EditKind);
+            Assert.AreEqual(PropertyEditKind.Edit, relationship.Source.EditKind);
         }
 
         [TestMethod]

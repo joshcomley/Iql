@@ -15,6 +15,7 @@ namespace Iql.Data.Extensions
                 entity,
                 propertyPath,
                 new IqlPropertyPathEvaluated[] { });
+
             if (entity == null)
             {
                 return evaluationResult;

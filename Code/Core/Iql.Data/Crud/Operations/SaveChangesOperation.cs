@@ -4,8 +4,13 @@ namespace Iql.Data.Crud.Operations
 {
     public class SaveChangesOperation : CrudOperation
     {
-        public SaveChangesOperation(IDataContext dataContext) : base(OperationType.SaveChanges, dataContext)
+        public object[] Entities { get; }
+
+        public SaveChangesOperation(
+            IDataContext dataContext,
+            object[] entities = null) : base(OperationType.SaveChanges, dataContext)
         {
+            Entities = entities;
         }
     }
 }

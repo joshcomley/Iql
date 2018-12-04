@@ -60,10 +60,7 @@ namespace Iql.Entities.Events
                     }
                     catch(Exception e)
                     {
-                        if (e is AttemptingToAssignRemotelyGeneratedKeyException)
-                        {
-                            throw e;
-                        }
+                        ValidateException(e);
                     }
                 }
                 if (afterEvent != null)
@@ -74,10 +71,7 @@ namespace Iql.Entities.Events
                     }
                     catch (Exception e)
                     {
-                        if (e is AttemptingToAssignRemotelyGeneratedKeyException)
-                        {
-                            throw e;
-                        }
+                        ValidateException(e);
                     }
                 }
 
@@ -85,6 +79,21 @@ namespace Iql.Entities.Events
             }
 
             return default(TEvent);
+        }
+
+        private static void ValidateException(Exception e)
+        {
+            if (e != null)
+            {
+                if (e is AttemptingToAssignRemotelyGeneratedKeyException ||
+                    e is DuplicateKeyException)
+                {
+                    throw e;
+                }
+#if !TypeScript
+                ValidateException(e.InnerException);
+#endif
+            }
         }
 
         public void UnsubscribeAll()

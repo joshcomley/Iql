@@ -7,6 +7,7 @@ namespace Iql.Tests.Data.Context
     public class InMemoryDataBase
     {
         public IList<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+        public IList<DocumentCategory> DocumentCategories { get; set; } = new List<DocumentCategory>();
         public IList<MyCustomReport> MyCustomReports { get; set; } = new List<MyCustomReport>();
         public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
         public IList<Client> Clients { get; set; } = new List<Client>();

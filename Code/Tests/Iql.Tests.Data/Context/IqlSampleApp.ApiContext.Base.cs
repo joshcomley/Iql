@@ -96,7 +96,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.String).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -429,7 +429,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -437,7 +437,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -491,6 +491,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -498,7 +499,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -509,6 +510,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -522,6 +524,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -543,7 +546,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -609,7 +612,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -617,7 +620,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -635,6 +638,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -642,7 +646,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -653,6 +657,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -666,6 +671,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -673,7 +679,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -714,7 +720,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -732,6 +738,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -739,7 +746,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -747,7 +754,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -758,6 +765,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -771,6 +779,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -792,7 +801,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -821,7 +830,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -839,6 +848,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -846,7 +856,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -854,7 +864,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -865,6 +875,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -878,6 +889,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -892,7 +904,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -913,7 +925,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportCategory>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -921,7 +933,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -939,6 +951,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -946,7 +959,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -957,6 +970,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -970,6 +984,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -977,7 +992,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1004,7 +1019,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportDefaultRecommendation>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1012,7 +1027,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1038,6 +1053,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1045,7 +1061,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1056,6 +1072,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1069,6 +1086,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1076,7 +1094,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1117,7 +1135,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1135,6 +1153,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1142,7 +1161,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1150,7 +1169,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1161,6 +1180,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1174,6 +1194,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1195,7 +1216,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1217,7 +1238,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportType>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1232,7 +1253,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1242,6 +1263,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1259,6 +1281,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1266,7 +1289,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1277,6 +1300,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1295,7 +1319,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1323,7 +1347,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Project>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1349,6 +1373,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1356,7 +1381,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1364,7 +1389,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1375,6 +1400,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1388,6 +1414,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1395,7 +1422,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1422,7 +1449,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1440,6 +1467,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1447,7 +1475,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1455,7 +1483,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1466,6 +1494,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1479,6 +1508,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1493,7 +1523,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1521,7 +1551,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1529,7 +1559,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1539,6 +1569,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1546,7 +1577,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1557,6 +1588,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1570,6 +1602,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1584,7 +1617,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1619,7 +1652,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1629,6 +1662,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1636,7 +1670,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1644,7 +1678,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1655,6 +1689,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1668,6 +1703,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1682,7 +1718,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1710,7 +1746,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1736,6 +1772,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1743,7 +1780,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1751,7 +1788,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1762,6 +1799,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1775,6 +1813,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1789,7 +1828,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1810,7 +1849,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessmentQuestion>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1818,7 +1857,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1836,6 +1875,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1843,7 +1883,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1854,6 +1894,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1867,6 +1908,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1881,7 +1923,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1936,7 +1978,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1944,7 +1986,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1985,6 +2027,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1992,7 +2035,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2003,6 +2046,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2016,6 +2060,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2023,6 +2068,42 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Client, true, IqlType.Unknown).ConfigureProperty(p => p.Client, p => {
                 p.PropertyName = "Client";
                 p.Nullable = true;
+                p.InferredWithIql = new IqlLambdaExpression
+                {
+                    Body = new IqlPropertyExpression
+                    {
+                        PropertyName = "Client",
+                        Kind = IqlExpressionKind.Property,
+                        ReturnType = IqlType.Unknown,
+                        Parent = new IqlPropertyExpression
+                        {
+                            PropertyName = "Site",
+                            Kind = IqlExpressionKind.Property,
+                            ReturnType = IqlType.Unknown,
+                            Parent = new IqlRootReferenceExpression
+                            {
+                                EntityTypeName = "Person",
+                                VariableName = "_",
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.RootReference,
+                                ReturnType = IqlType.Unknown
+                            }
+                        }
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "Person",
+                            VariableName = "_",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                };
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "Client";
                 p.Title = "Client";
@@ -2058,7 +2139,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2104,7 +2185,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2164,6 +2245,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2171,7 +2253,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2179,7 +2261,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2190,6 +2272,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2203,6 +2286,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2217,7 +2301,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2238,7 +2322,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonLoading>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2246,7 +2330,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2264,6 +2348,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2271,7 +2356,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2282,6 +2367,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2295,6 +2381,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2309,7 +2396,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2329,7 +2416,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonType>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2337,7 +2424,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2355,6 +2442,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2362,7 +2450,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2373,6 +2461,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2386,6 +2475,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2400,7 +2490,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2459,6 +2549,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2466,6 +2557,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2491,6 +2583,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.TitlePropertyName = "Notes";
                 p.SetFriendlyName = "Person Types Map";
                 p.SetName = "PersonTypesMap";
+                p.DefaultSortExpression = "CreatedDate";
+                p.DefaultSortDescending = true;
                 p.Name = "PersonTypeMap";
                 p.Title = "PersonTypeMap";
                 p.FriendlyName = "Person Type Map";
@@ -2512,7 +2606,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2520,7 +2614,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2545,6 +2639,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2552,7 +2647,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2563,6 +2658,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2576,6 +2672,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2611,7 +2708,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2633,7 +2730,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Site>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2676,7 +2773,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2793,6 +2890,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2800,7 +2898,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2811,6 +2909,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2824,6 +2923,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2873,7 +2973,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2916,7 +3016,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2931,7 +3031,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2941,6 +3041,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2948,7 +3049,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2959,6 +3060,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2972,6 +3074,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2993,7 +3096,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -3014,7 +3117,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -3029,7 +3132,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -3053,6 +3156,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -3060,7 +3164,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -3071,6 +3175,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = true;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -3084,6 +3189,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -3112,7 +3218,7 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
-                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -3408,7 +3514,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Users";
                 });
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3442,7 +3548,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<DocumentCategory>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3456,7 +3562,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<SiteDocument>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3476,7 +3582,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<Site>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3538,7 +3644,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportActionsTaken>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3552,7 +3658,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<PersonReport>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3584,7 +3690,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportCategory>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3598,7 +3704,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportDefaultRecommendation>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3612,7 +3718,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportRecommendation>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3632,7 +3738,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportType>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3652,7 +3758,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<Project>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3660,7 +3766,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportReceiverEmailAddress>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3674,7 +3780,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<RiskAssessment>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3688,7 +3794,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<SiteInspection>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3714,7 +3820,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<RiskAssessmentSolution>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3722,7 +3828,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<RiskAssessmentAnswer>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3736,7 +3842,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<RiskAssessmentQuestion>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3750,7 +3856,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<Person>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3857,7 +3963,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<SiteArea>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3877,7 +3983,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<PersonType>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3897,7 +4003,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<PersonLoading>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";
@@ -3911,7 +4017,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<PersonInspection>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "CreatedByUser";
                     rel_cnf.Title = "Created By User";
                     rel_cnf.FriendlyName = "Created By User";

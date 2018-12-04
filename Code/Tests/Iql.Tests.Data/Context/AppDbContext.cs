@@ -49,6 +49,7 @@ namespace Iql.Tests.Context
 
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
+            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.DocumentCategories);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.MyCustomReports);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
             InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);

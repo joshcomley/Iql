@@ -158,6 +158,12 @@ namespace Iql.Entities
             return FromPropertyExpression(entityConfigurationContext, propertyExpression.Body as IqlPropertyExpression);
         }
 
+        public static IqlPropertyPath FromExpression<T>(Expression<Func<T, object>> expression,
+            IEntityConfiguration entityConfigurationContext)
+        {
+            return FromLambdaExpression(expression, entityConfigurationContext);
+        }
+
         public static IqlPropertyPath FromString(string path,
             IEntityConfiguration entityConfigurationContext,
             IqlPropertyExpression parent = null)

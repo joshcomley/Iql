@@ -61,7 +61,7 @@ namespace Iql.Tests.Tests
                 exceptionCount++;
                 Assert.IsTrue(e is TException || e.InnerException is TException);
             }
-            Assert.AreEqual(exceptionCount, 1);
+            Assert.AreEqual(exceptionCount, 1, $"Expected exception {typeof(TException).Name} not thrown.");
         }
     }
 }

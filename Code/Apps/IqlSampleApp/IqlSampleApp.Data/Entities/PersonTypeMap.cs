@@ -1,6 +1,5 @@
 using System;
 using Brandless.Data.Entities;
-using ICreatedDate = IqlSampleApp.Data.Entities.Bases.ICreatedDate;
 
 namespace IqlSampleApp.Data.Entities
 {

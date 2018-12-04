@@ -6,7 +6,7 @@ namespace IqlSampleApp.Data.Entities
     /// <summary>
     ///     Scan a person tag
     ///     Choose a person category
-    ///     Choose a scafoold type
+    ///     Choose a scaffold type
     ///     Choose a person loading type
     /// </summary>
     public class Person : DbObject
@@ -37,7 +37,6 @@ namespace IqlSampleApp.Data.Entities
 
 //        public List<PersonInspection> PersonInspections { get; set; }
         public Client Client { get; set; }
-
         public int? ClientId { get; set; }
     }
 }

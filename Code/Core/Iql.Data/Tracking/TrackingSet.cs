@@ -196,6 +196,13 @@ namespace Iql.Data.Tracking
             return EntitiesByKey.ContainsKey(keyString)
                 ? EntitiesByKey[keyString]
                 : null;
+            //var keyString = key.AsKeyString();
+            //var state = EntitiesByKey.ContainsKey(keyString)
+            //    ? EntitiesByKey[keyString]
+            //    : null;
+            //state = state ??
+            //        (EntitiesByRemoteKey.ContainsKey(keyString) ? EntitiesByRemoteKey[keyString].State : null);
+            //return state;
         }
 
         public bool KeyIsTracked(CompositeKey key)
@@ -247,14 +254,20 @@ namespace Iql.Data.Tracking
             var keyString = compositeKey.AsKeyString();
             if (EntitiesByRemoteKey.ContainsKey(keyString))
             {
+                var mapping = EntitiesByRemoteKey[keyString];
                 EntitiesByRemoteKey.Remove(keyString);
+                if (mapping.State != null)
+                {
+                    RemoveEntity((T) mapping.State.Entity);
+                }
             }
         }
 
         public void RemoveEntity(T entity)
         {
             var state = GetOrSetEntityState(entity);
-            RemoveEntityByKey(state.CurrentKey);
+            var stateKey = state.KeyBeforeChanges();
+            RemoveEntityByKey(stateKey);
             entity = (T)state.Entity;
             if (_entityObservers.ContainsKey(entity))
             {
@@ -612,15 +625,15 @@ namespace Iql.Data.Tracking
                 {
                     var remoteKeyMap = EntitiesByRemoteKey[oldKeyString];
                     remoteKeyMap.OldPropertyValues = remoteKeyMap.State.PropertyStates.Select(p => p.Copy()).ToArray();
-                    remoteKeyMap.State = null;
+                    //remoteKeyMap.State = null;
                 }
             }
 
-            if (!state.IsNew && state.CurrentKey.HasDefaultValue())
-            {
-                state.IsNew = true;
-            }
-            else if (state.IsNew)
+            //if (!state.IsNew && state.CurrentKey.HasDefaultValue())
+            //{
+            //    state.IsNew = true;
+            //}
+            if (state.IsNew)
             {
                 if (EntitiesByRemoteKey.ContainsKey(keyString))
                 {
@@ -716,13 +729,17 @@ namespace Iql.Data.Tracking
             return null;
         }
 
-        public IEnumerable<IEntityCrudOperationBase> GetInserts()
+        public IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null)
         {
             var inserts = new List<AddEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
             {
+                if (ShouldIgnoreEntity(entity, entities))
+                {
+                    continue;
+                }
                 var entityState = GetOrSetEntityState(entity);
-                if (entityState.IsNew && !entityState.MarkedForAnyDeletion && entityState.IsInsertable())
+                if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
                 {
                     inserts.Add(new AddEntityOperation<T>((T)entity, DataContext));
                 }
@@ -730,35 +747,58 @@ namespace Iql.Data.Tracking
             return inserts;
         }
 
-        public IEnumerable<IEntityCrudOperationBase> GetDeletions()
+        private static bool ShouldIgnoreEntity(object entity, object[] entities)
+        {
+            if (entities == null || entities.Length == 0)
+            {
+                return false;
+            }
+            return !entities.Contains(entity);
+        }
+
+        public IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
         {
             var deletions = new List<DeleteEntityOperation<T>>();
-            foreach (var entity in EntitiesByObject.Keys)
-            {
-                var entityState = GetOrSetEntityState(entity);
-                if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
-                {
-                    deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, DataContext));
-                }
-            }
             foreach (var key in EntitiesByRemoteKey)
             {
-                if (key.Value.State == null)
+                if (!key.Value.State.MarkedForAnyDeletion ||
+                    ShouldIgnoreEntity(key.Value.State.Entity, entities))
                 {
-                    deletions.Add(new DeleteEntityOperation<T>(
-                        key.Value.Key,
-                        null,
-                        DataContext));
+                    continue;
+                }
+                deletions.Add(new DeleteEntityOperation<T>(
+                    key.Value.Key,
+                    (T) key.Value.State.Entity,
+                    DataContext));
+            }
+            foreach (var entity in EntitiesByObject.Keys)
+            {
+                if (ShouldIgnoreEntity(entity, entities))
+                {
+                    continue;
+                }
+
+                if (deletions.All(_ => _.Entity != entity))
+                {
+                    var entityState = GetOrSetEntityState(entity);
+                    if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
+                    {
+                        deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, DataContext));
+                    }
                 }
             }
             return deletions;
         }
 
-        public IEnumerable<IUpdateEntityOperation> GetUpdates()
+        public IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null)
         {
             var updates = new List<UpdateEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
             {
+                if (ShouldIgnoreEntity(entity, entities))
+                {
+                    continue;
+                }
                 var entityState = GetOrSetEntityState(entity);
                 if (!entityState.IsNew &&
                     !entityState.MarkedForAnyDeletion &&
@@ -864,9 +904,5 @@ namespace Iql.Data.Tracking
                 AbandonChangesForEntityState((IEntityState<T>) state);
             }
         }
-    }
-
-    internal class DuplicateKeyException : Exception
-    {
     }
 }

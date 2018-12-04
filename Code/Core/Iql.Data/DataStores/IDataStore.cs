@@ -17,8 +17,8 @@ namespace Iql.Data.DataStores
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();
         DataTracker DataTracker { get; }
-        IQueuedOperation[] GetChanges();
-        IQueuedOperation[] GetUpdates();
+        IQueuedOperation[] GetChanges(object[] entities = null);
+        IQueuedOperation[] GetUpdates(object[] entities = null);
         IDataContext DataContext { get; set; }
         IRelationshipObserver RelationshipObserver { get; }
         TrackingSetCollection Tracking { get; }

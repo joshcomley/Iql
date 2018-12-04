@@ -5,23 +5,30 @@ namespace Iql.Entities
     public abstract class SimplePropertyGroupBase<T> : PropertyGroupBase<T>, ISimpleProperty
         where T : IConfigurable<T>
     {
-        public virtual bool Internal => false;
-        public virtual bool IsHiddenOrInternal => IsHidden || Internal;
-        public virtual bool IsReadOnly => ResolveAutoReadOnly();
-        public virtual bool IsHidden => EditKind == PropertyEditKind.Hidden && ReadKind == PropertyReadKind.Hidden;
-        protected virtual bool ResolveAutoReadOnly()
+        public bool MarkedReadOnly { get; set; }
+        public virtual bool IsInternal => false;
+        public virtual bool IsReadOnly => HasReadOnly;
+        public virtual bool IsHiddenFromEdit =>
+            IsInternal || EditKind == PropertyEditKind.Hidden;
+        public virtual bool IsHiddenFromRead =>
+            IsInternal || ReadKind == PropertyReadKind.Hidden;
+
+        public virtual bool HasReadOnly
         {
-            if (EditKind == PropertyEditKind.Display || EditKind == PropertyEditKind.Hidden)
+            get
             {
-                return true;
-            }
+                if (MarkedReadOnly)
+                {
+                    return true;
+                }
 
-            if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
-            {
-                return true;
-            }
+                if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
+                {
+                    return true;
+                }
 
-            return false;
+                return false;
+            }
         }
         private PropertyEditKind _editKind = PropertyEditKind.Edit;
         private PropertyReadKind _readKind = PropertyReadKind.Display;
@@ -80,8 +87,7 @@ namespace Iql.Entities
 
         public ISimpleProperty SetReadOnly()
         {
-            ReadKind = PropertyReadKind.Display;
-            EditKind = PropertyEditKind.Hidden;
+            MarkedReadOnly = true;
             return this;
         }
 

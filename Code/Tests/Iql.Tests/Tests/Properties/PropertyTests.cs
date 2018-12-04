@@ -1,11 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Threading.Tasks;
+using Iql.Data.Extensions;
+using Iql.Tests.Context;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.Properties
 {
     [TestClass]
-    public class PropertyTests :TestsBase
+    public class PropertyTests : TestsBase
     {
+        [TestMethod]
+        public async Task TestPopulateInferredValue()
+        {
+            var person = new Person();
+            person.SiteId = 87;
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 87,
+                Name = "My site",
+                ClientId = 107
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 107,
+                Name = "My client"
+            });
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(person.ClientId, 107);
+            Assert.IsNotNull(person.Client);
+        }
+
         [TestMethod]
         public void TestPropertyResolveFriendlyName()
         {
