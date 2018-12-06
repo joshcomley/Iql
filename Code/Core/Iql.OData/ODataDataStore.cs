@@ -157,7 +157,7 @@ namespace Iql.OData
             string name,
             Type entityType)
         {
-            var baseUri = Configuration.ApiUriBase;
+            var baseUri = Configuration.ApiUriBase();
             var bindingParameterName = "bindingParameter";
             switch (methodScope)
             {
@@ -442,7 +442,7 @@ namespace Iql.OData
         {
             var configuration = Configuration;
             var entitySetName = configuration.GetEntitySetNameByType(entityType);
-            var apiUriBase = configuration.ApiUriBase;
+            var apiUriBase = configuration.ApiUriBase();
             if (!apiUriBase.EndsWith("/"))
             {
                 apiUriBase += "/";

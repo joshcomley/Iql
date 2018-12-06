@@ -43,5 +43,8 @@
     <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0003\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </Content>
+    <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0011\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
   </ItemGroup>
 </Project>

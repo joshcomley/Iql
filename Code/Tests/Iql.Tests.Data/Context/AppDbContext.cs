@@ -65,7 +65,7 @@ namespace Iql.Tests.Context
             var defaultQueries = new EntityDefaultQueryConfiguration();
             defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
             RegisterConfiguration(defaultQueries);
-            ODataConfiguration.ApiUriBase = @"http://localhost:28000/odata";
+            ODataConfiguration.ApiUriBase = () => @"http://localhost:28000/odata";
             ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
         }
 

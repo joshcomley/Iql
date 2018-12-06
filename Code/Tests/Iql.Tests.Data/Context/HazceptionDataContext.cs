@@ -50,7 +50,7 @@ namespace Iql.Tests.Context
                 var inMemoryDb = new HazceptionDataStore().GetData();
                 InMemoryDb = inMemoryDb;
             }
-            ODataConfiguration.ApiUriBase = @"http://localhost:58000/odata";
+            ODataConfiguration.ApiUriBase = () => @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             this.ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
         }

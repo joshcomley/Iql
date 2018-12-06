@@ -10,7 +10,7 @@ namespace Iql.OData
         public IEntityConfigurationBuilder Builder { get; }
         private readonly Dictionary<Type, string> _entitySets = new Dictionary<Type, string>();
         public IHttpProvider HttpProvider { get; set; }
-        public string ApiUriBase { get; set; }
+        public Func<string> ApiUriBase { get; set; }
 
         public ODataConfiguration(IEntityConfigurationBuilder builder)
         {

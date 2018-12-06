@@ -21,6 +21,7 @@ namespace Iql.Tests.Tests.Validation
             Db.Sites.Add(site);
             var result = await Db.SaveChangesAsync();
             Assert.IsFalse(result.Success);
+            Db.EntityConfigurationContext.ValidateInferredWithClientSide = false;
         }
 
         [TestMethod]
