@@ -7,9 +7,16 @@
             DotNetStringIqlParserInstance parser)
         {
             var value = action.Value == null ? "null" : action.Value.ToString();
-            if (action.Value != null && action.ReturnType == IqlType.String)
+            if (action.Value != null)
             {
-                value = $@"""{value}""";
+                if (action.ReturnType == IqlType.String)
+                {
+                    value = $@"""{value}""";
+                }
+                else
+                {
+                    value = value.ToLower();
+                }
             }
             IqlExpression expression =
                 new IqlFinalExpression<string>(
