@@ -1,3 +1,5 @@
+using System;
+using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql.Entities;
 using Iql.Server;
@@ -16,6 +18,9 @@ namespace IqlSampleApp.Data.Configuration.Entities
             {
                 p.IsInferredWith(_ => _.Site.Client);
             });
+            model.DefineRelationshipFilterRule(
+                _ => _.Site,
+                context => context.Owner.ClientId == 0 ? (Expression<Func<Site, bool>>)(site => true) : site => site.ClientId == context.Owner.ClientId);
             //model
             //    .FindRelationship(_ => _.SiteArea)
             //    .CreateWithRelationshipValue(_ => _.Site, ctx => _ => _.Site.Parent);
