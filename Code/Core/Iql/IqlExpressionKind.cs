@@ -68,6 +68,8 @@ namespace Iql
         Intersects = 64,
         Length = 65,
         Distance = 66,
-        GeoRing = 67
+        GeoRing = 67,
+        CurrentUser = 68,
+        CurrentUserId = 69
     }
 }
