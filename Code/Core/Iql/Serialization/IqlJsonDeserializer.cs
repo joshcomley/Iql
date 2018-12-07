@@ -49,6 +49,10 @@ namespace Iql.Serialization
             }
 
 #if !TypeScript
+            if (type == typeof(object))
+            {
+                return value;
+            }
             return Convert.ChangeType(value, type);
 #else
             if (type == typeof(String) && !(value is String))

@@ -83,6 +83,11 @@ namespace Iql.Extensions
             }
 #endif
 
+            if (type == typeof(object))
+            {
+                return "object";
+            }
+
             return type.Name;
         }
 

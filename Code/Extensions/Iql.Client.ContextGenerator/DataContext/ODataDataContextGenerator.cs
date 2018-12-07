@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -150,6 +151,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(ODataMethodRequest),
                 typeof(IPropertyChangeEvent),
                 typeof(PropertyKind),
+                typeof(Expression),
                 typeof(Func<>),
                 typeof(Enum),
                 typeof(IDataContext),

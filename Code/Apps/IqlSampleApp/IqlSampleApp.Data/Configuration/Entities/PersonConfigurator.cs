@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Iql;
 using Iql.Entities;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
@@ -17,6 +18,10 @@ namespace IqlSampleApp.Data.Configuration.Entities
             model.ConfigureProperty(_ => _.Client, p =>
             {
                 p.IsInferredWith(_ => _.Site.Client);
+            });
+            model.ConfigureProperty(_ => _.CreatedByUserId, p =>
+            {
+                p.IsInferredWith(_ => new IqlCurrentUserIdExpression());
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,

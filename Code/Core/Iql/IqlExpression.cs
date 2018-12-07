@@ -279,6 +279,10 @@ namespace Iql
                     return typeof(IqlLengthExpression);
                 case IqlExpressionKind.Distance:
                     return typeof(IqlDistanceExpression);
+                case IqlExpressionKind.CurrentUser:
+                    return typeof(IqlCurrentUserExpression);
+                case IqlExpressionKind.CurrentUserId:
+                    return typeof(IqlCurrentUserIdExpression);
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }
