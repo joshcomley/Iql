@@ -53,7 +53,6 @@ namespace Iql
 				expression.Points = listCopy;
 			}
 			expression.Srid = Srid;
-			expression.Srid = Srid;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

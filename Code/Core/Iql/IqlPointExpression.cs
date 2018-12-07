@@ -119,13 +119,15 @@ namespace Iql
         {
             // #CloneStart
 
-            var expression = new IqlPointExpression(0, 0);
-            expression.Srid = Srid;
-            expression.Key = Key;
-            expression.Kind = Kind;
-            expression.ReturnType = ReturnType;
-            expression.Parent = Parent?.Clone();
-            return expression;
+			var expression = new IqlPointExpression(0, 0);
+			expression.X = X;
+			expression.Y = Y;
+			expression.Srid = Srid;
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }
@@ -134,7 +136,7 @@ namespace Iql
         {
             // #FlattenStart
 
-            context.Flatten(Parent);
+				context.Flatten(Parent);
 
             // #FlattenEnd
         }
@@ -143,13 +145,13 @@ namespace Iql
         {
             // #ReplaceStart
 
-            Parent = context.Replace(this, nameof(Parent), null, Parent);
-            var replaced = context.Replacer(context, this);
-            if (replaced != this)
-            {
-                return replaced;
-            }
-            return this;
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
 
             // #ReplaceEnd
         }

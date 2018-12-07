@@ -9,21 +9,38 @@ namespace Iql
         public override IqlExpression Clone()
         {
             // #CloneStart
-            throw new System.NotImplementedException();
+
+			var expression = new IqlCurrentUserExpression();
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
+
             // #CloneEnd
         }
 
         internal override IqlExpression ReplaceExpressions(ReplaceContext context)
         {
             // #ReplaceStart
-            throw new System.NotImplementedException();
+
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
+
             // #ReplaceEnd
         }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
             // #FlattenStart
-            throw new System.NotImplementedException();
+
+				context.Flatten(Parent);
+
             // #FlattenEnd
         }
     }

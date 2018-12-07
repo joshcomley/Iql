@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Iql
 {
     public class IqlAddExpression : IqlBinaryExpression
@@ -16,7 +19,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlAddExpression(null, null);
+			var expression = new IqlAddExpression();
 			expression.Left = Left?.Clone();
 			expression.Right = Right?.Clone();
 			expression.Key = Key;
