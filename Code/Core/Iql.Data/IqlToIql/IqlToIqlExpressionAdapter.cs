@@ -18,6 +18,8 @@ namespace Iql.Data.IqlToIql
         {
             EntityConfigurationContext = entityConfigurationContext;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
+            Registry.Register(typeof(IqlLiteralExpression), () => new IqlToIqlLiteralParser());
+            Registry.Register(typeof(IqlSpecialValueExpression), () => new IqlToIqlSpecialValueParser());
             Registry.Register(typeof(IqlIntersectsExpression), () => new IqlToIqlIntersectsParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new IqlToIqlLambdaParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new IqlToIqlPropertyParser());

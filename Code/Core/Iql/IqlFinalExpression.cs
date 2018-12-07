@@ -41,7 +41,12 @@ namespace Iql
 			// #FlattenEnd
         }
 
-		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+        public override object ResolveValue()
+        {
+            return Value;
+        }
+
+        internal override IqlExpression ReplaceExpressions(ReplaceContext context)
 		{
 			// #ReplaceStart
 

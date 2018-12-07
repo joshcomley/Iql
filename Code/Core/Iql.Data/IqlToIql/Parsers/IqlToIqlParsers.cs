@@ -4,10 +4,35 @@ using Iql.Data.Extensions;
 using Iql.Data.Queryable;
 using Iql.Entities;
 using Iql.Entities.Extensions;
-using Iql.Entities.SpecialTypes;
 
 namespace Iql.Data.IqlToIql.Parsers
 {
+    public class IqlToIqlLiteralParser : IqlToIqlActionParserBase<IqlLiteralExpression>
+    {
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlLiteralExpression action, IqlToIqlParserInstance parser)
+        {
+            var value = action.Value;
+            if (value is IqlExpression)
+            {
+                value = parser.Parse(value as IqlExpression).Expression;
+            }
+
+            if (value is IqlFinalExpressionBase)
+            {
+                value = (value as IqlFinalExpressionBase).ResolveValue();
+            }
+            action.Value = value;
+            return action;
+        }
+    }
+
+    public class IqlToIqlSpecialValueParser : IqlToIqlActionParserBase<IqlSpecialValueExpression>
+    {
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlSpecialValueExpression action, IqlToIqlParserInstance parser)
+        {
+            return null;
+        }
+    }
 
     public class IqlToIqlIntersectsParser : IqlToIqlActionParserBase<IqlIntersectsExpression>
     {

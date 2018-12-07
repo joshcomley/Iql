@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Extensions;
+using Iql.Data.IqlToIql;
 using Iql.Entities;
 using Iql.Entities.Rules.Relationship;
 
@@ -271,6 +272,8 @@ namespace Iql.Data
             out IqlFlattenedExpression[] propertyExpressions, out Dictionary<IqlPropertyPath, object> lookup)
         {
             builder = builder ?? DataContext.FindBuilderForEntityType(entityType);
+            iql = iql.Process(builder.GetEntityByType(
+                entityType));
             propertyExpressions = iql.TopLevelPropertyExpressions();
             lookup = new Dictionary<IqlPropertyPath, object>();
             if (entity is IRelationshipFilterContext)

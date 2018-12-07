@@ -5,5 +5,7 @@ namespace Iql
         protected IqlFinalExpressionBase(IqlExpressionKind kind, IqlType? returnType, IqlExpression parent = null) : base(kind, returnType, parent)
         {
         }
+
+        public abstract object ResolveValue();
     }
 }

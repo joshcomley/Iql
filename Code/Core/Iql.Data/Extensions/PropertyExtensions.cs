@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.IqlToIql;
 using Iql.Entities;
 using Iql.Extensions;
 
@@ -27,7 +28,8 @@ namespace Iql.Data.Extensions
         {
             if (property.HasInferredWith)
             {
-                var value = await property.InferredWithIql.EvaluateIqlAsync(entity, dataContext);
+                var inferredWithIql = property.InferredWithIql;
+                var value = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
                 property.SetValue(entity, value);
                 if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
                 {
