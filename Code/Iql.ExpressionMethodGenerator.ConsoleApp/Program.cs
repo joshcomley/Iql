@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Iql.ExpressionMethodGenerator.ConsoleApp
+﻿namespace Iql.ExpressionMethodGenerator.ConsoleApp
 {
     class Program
     {
