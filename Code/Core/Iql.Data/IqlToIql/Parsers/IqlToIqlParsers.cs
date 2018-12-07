@@ -14,7 +14,7 @@ namespace Iql.Data.IqlToIql.Parsers
             var value = action.Value;
             if (value is IqlExpression)
             {
-                value = (await parser.Parse(value as IqlExpression)).Expression;
+                value = (await parser.ParseAsync(value as IqlExpression)).Expression;
             }
 
             if (value is IqlFinalExpressionBase)
@@ -83,7 +83,7 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlLambdaExpression action, IqlToIqlParserContext parser)
         {
-            action.Body = (await parser.Parse(action.Body)).Expression;
+            action.Body = (await parser.ParseAsync(action.Body)).Expression;
             if (action.Body == null)
             {
                 return null;
@@ -92,7 +92,7 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.Parameters.Count; i++)
                 {
-                    action.Parameters[i] = (IqlRootReferenceExpression)(await parser.Parse(action.Parameters[i])).Expression;
+                    action.Parameters[i] = (IqlRootReferenceExpression)(await parser.ParseAsync(action.Parameters[i])).Expression;
                     var iqlRootReferenceExpression = action.Parameters[i];
                     if (!string.IsNullOrWhiteSpace(iqlRootReferenceExpression.EntityTypeName))
                     {
@@ -103,7 +103,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     }
                 }
             }
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
             return action;
         }
     }
@@ -128,7 +128,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     action.ReturnType = mappedProperty.TypeDefinition.ToIqlType();
                 }
             });
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
             return action;
         }
     }
@@ -141,10 +141,10 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.Expressions.Count; i++)
                 {
-                    action.Expressions[i] = (IqlExpression)(await parser.Parse(action.Expressions[i])).Expression;
+                    action.Expressions[i] = (IqlExpression)(await parser.ParseAsync(action.Expressions[i])).Expression;
                 }
             }
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -185,17 +185,17 @@ namespace Iql.Data.IqlToIql.Parsers
                 }
             }
 
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             if (literal != null &&
                 (action.Kind == IqlExpressionKind.IsEqualTo && Equals(literal.Value, false)) ||
                 (action.Kind == IqlExpressionKind.IsNotEqualTo && Equals(literal.Value, true)))
             {
-                return (await parser.ReplaceAndParse(new IqlNotExpression(lr.SingleOrDefault(l => l != literal) ?? literal))).Expression;
+                return (await parser.ReplaceAndParseAsync(new IqlNotExpression(lr.SingleOrDefault(l => l != literal) ?? literal))).Expression;
             }
 
-            action.Left = (await parser.Parse(action.Left)).Expression;
-            action.Right = (await parser.Parse(action.Right)).Expression;
+            action.Left = (await parser.ParseAsync(action.Left)).Expression;
+            action.Right = (await parser.ParseAsync(action.Right)).Expression;
 
             if (action.Left == null && action.Right != null)
             {
@@ -257,12 +257,12 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.Expands.Count; i++)
                 {
-                    action.Expands[i] = (IqlExpandExpression)(await parser.Parse(action.Expands[i])).Expression;
+                    action.Expands[i] = (IqlExpandExpression)(await parser.ParseAsync(action.Expands[i])).Expression;
                 }
             }
-            action.Filter = (IqlExpression)(await parser.Parse(action.Filter)).Expression;
-            action.WithKey = (IqlWithKeyExpression)(await parser.Parse(action.WithKey)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Filter = (IqlExpression)(await parser.ParseAsync(action.Filter)).Expression;
+            action.WithKey = (IqlWithKeyExpression)(await parser.ParseAsync(action.WithKey)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -277,19 +277,19 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.OrderBys.Count; i++)
                 {
-                    action.OrderBys[i] = (IqlOrderByExpression)(await parser.Parse(action.OrderBys[i])).Expression;
+                    action.OrderBys[i] = (IqlOrderByExpression)(await parser.ParseAsync(action.OrderBys[i])).Expression;
                 }
             }
             if (action.Expands != null)
             {
                 for (var i = 0; i < action.Expands.Count; i++)
                 {
-                    action.Expands[i] = (IqlExpandExpression)(await parser.Parse(action.Expands[i])).Expression;
+                    action.Expands[i] = (IqlExpandExpression)(await parser.ParseAsync(action.Expands[i])).Expression;
                 }
             }
-            action.Filter = (IqlExpression)(await parser.Parse(action.Filter)).Expression;
-            action.WithKey = (IqlWithKeyExpression)(await parser.Parse(action.WithKey)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Filter = (IqlExpression)(await parser.ParseAsync(action.Filter)).Expression;
+            action.WithKey = (IqlWithKeyExpression)(await parser.ParseAsync(action.WithKey)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -300,7 +300,7 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlDataSetQueryExpression action, IqlToIqlParserContext parser)
         {
-            action.DataSet = (IqlDataSetReferenceExpression)(await parser.Parse(action.DataSet)).Expression;
+            action.DataSet = (IqlDataSetReferenceExpression)(await parser.ParseAsync(action.DataSet)).Expression;
             var reference = (IqlDataSetReferenceExpression)action.DataSet;
             if (reference != null)
             {
@@ -313,19 +313,19 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.OrderBys.Count; i++)
                 {
-                    action.OrderBys[i] = (IqlOrderByExpression)(await parser.Parse(action.OrderBys[i])).Expression;
+                    action.OrderBys[i] = (IqlOrderByExpression)(await parser.ParseAsync(action.OrderBys[i])).Expression;
                 }
             }
             if (action.Expands != null)
             {
                 for (var i = 0; i < action.Expands.Count; i++)
                 {
-                    action.Expands[i] = (IqlExpandExpression)(await parser.Parse(action.Expands[i])).Expression;
+                    action.Expands[i] = (IqlExpandExpression)(await parser.ParseAsync(action.Expands[i])).Expression;
                 }
             }
-            action.Filter = (IqlExpression)(await parser.Parse(action.Filter)).Expression;
-            action.WithKey = (IqlWithKeyExpression)(await parser.Parse(action.WithKey)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Filter = (IqlExpression)(await parser.ParseAsync(action.Filter)).Expression;
+            action.WithKey = (IqlWithKeyExpression)(await parser.ParseAsync(action.WithKey)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -336,7 +336,7 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlExpandExpression action, IqlToIqlParserContext parser)
         {
-            var property = (await parser.Parse(action.NavigationProperty)).Expression;
+            var property = (await parser.ParseAsync(action.NavigationProperty)).Expression;
             if (property is IqlPropertyExpression)
             {
                 action.NavigationProperty = (IqlPropertyExpression)property;
@@ -354,7 +354,7 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 action.Count = true;
             }
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -365,7 +365,7 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlExpression action, IqlToIqlParserContext parser)
         {
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -376,8 +376,8 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlNotExpression action, IqlToIqlParserContext parser)
         {
-            action.Expression = (IqlExpression)(await parser.Parse(action.Expression)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Expression = (IqlExpression)(await parser.ParseAsync(action.Expression)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             if (action.Expression.Kind == IqlExpressionKind.StringIncludes)
             {
@@ -405,8 +405,8 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlOrderByExpression action, IqlToIqlParserContext parser)
         {
-            action.OrderExpression = (IqlExpression)(await parser.Parse(action.OrderExpression)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.OrderExpression = (IqlExpression)(await parser.ParseAsync(action.OrderExpression)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -417,8 +417,8 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlParenthesisExpression action, IqlToIqlParserContext parser)
         {
-            action.Expression = (IqlExpression)(await parser.Parse(action.Expression)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Expression = (IqlExpression)(await parser.ParseAsync(action.Expression)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action.Expression == null ? null : action;
         }
@@ -429,8 +429,8 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlParentValueExpression action, IqlToIqlParserContext parser)
         {
-            action.Value = (IqlExpression)(await parser.Parse(action.Value)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Value = (IqlExpression)(await parser.ParseAsync(action.Value)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             if (action.Value == null && action.Kind == IqlExpressionKind.All)
             {
@@ -446,9 +446,9 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlStringSubStringExpression action, IqlToIqlParserContext parser)
         {
-            action.Take = (IqlReferenceExpression)(await parser.Parse(action.Take)).Expression;
-            action.Value = (IqlExpression)(await parser.Parse(action.Value)).Expression;
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Take = (IqlReferenceExpression)(await parser.ParseAsync(action.Take)).Expression;
+            action.Value = (IqlExpression)(await parser.ParseAsync(action.Value)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }
@@ -463,10 +463,10 @@ namespace Iql.Data.IqlToIql.Parsers
             {
                 for (var i = 0; i < action.KeyEqualToExpressions.Count; i++)
                 {
-                    action.KeyEqualToExpressions[i] = (IqlIsEqualToExpression)(await parser.Parse(action.KeyEqualToExpressions[i])).Expression;
+                    action.KeyEqualToExpressions[i] = (IqlIsEqualToExpression)(await parser.ParseAsync(action.KeyEqualToExpressions[i])).Expression;
                 }
             }
-            action.Parent = (IqlExpression)(await parser.Parse(action.Parent)).Expression;
+            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
 
             return action;
         }

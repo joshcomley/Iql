@@ -26,22 +26,27 @@ namespace Iql.Parsing
         {
         }
 
-
-
-        public TParserOutput ReplaceAndParse(IqlExpression expression
+        public abstract TParserOutput ParseExpression(IqlExpression expression
 #if TypeScript
-            , EvaluateContext evaluateContext = null
+                    , EvaluateContext evaluateContext = null
 #endif
-        )
+                );
+
+
+        public TParserOutput Parse(IqlExpression expression
+#if TypeScript
+                    , EvaluateContext evaluateContext = null
+#endif
+                )
         {
-            Ancestors[Ancestors.Count - 1] = expression;
-            return ParseInternal(expression,
-                false
+            // Here: figure out the path from the root entity
+            return ParseInternal(expression, true
 #if TypeScript
-, evaluateContext
+        , evaluateContext
 #endif
-            );
+                    );
         }
+
 
         public TParserOutput[] ParseAll(IEnumerable<IqlExpression> expressions)
         {
@@ -58,28 +63,6 @@ namespace Iql.Parsing
             }
 
             return result.ToArray();
-        }
-
-        public abstract TParserOutput ParseExpression(IqlExpression expression
-#if TypeScript
-                    , EvaluateContext evaluateContext = null
-#endif
-                );
-
-
-
-        public TParserOutput Parse(IqlExpression expression
-#if TypeScript
-                    , EvaluateContext evaluateContext = null
-#endif
-                )
-        {
-            // Here: figure out the path from the root entity
-            return ParseInternal(expression, true
-#if TypeScript
-        , evaluateContext
-#endif
-                    );
         }
 
         protected virtual TParserOutput ParseInternal(IqlExpression expression,

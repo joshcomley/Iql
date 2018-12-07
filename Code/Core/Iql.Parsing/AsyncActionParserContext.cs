@@ -28,14 +28,14 @@ namespace Iql.Parsing
         }
 
 
-        public Task<TParserOutput> ReplaceAndParse(IqlExpression expression
+        public Task<TParserOutput> ReplaceAndParseAsync(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
             Ancestors[Ancestors.Count - 1] = expression;
-            return ParseInternal(expression,
+            return ParseInternalAsync(expression,
                 false
 #if TypeScript
 , evaluateContext
@@ -43,7 +43,7 @@ namespace Iql.Parsing
             );
         }
 
-        public async Task<TParserOutput[]> ParseAll(IEnumerable<IqlExpression> expressions)
+        public async Task<TParserOutput[]> ParseAllAsync(IEnumerable<IqlExpression> expressions)
         {
             if (expressions == null)
             {
@@ -54,13 +54,13 @@ namespace Iql.Parsing
             for (var i = 0; i < iqlExpressions.Length; i++)
             {
                 var expression = iqlExpressions[i];
-                result.Add(await Parse(expression));
+                result.Add(await ParseAsync(expression));
             }
 
             return result.ToArray();
         }
 
-        public abstract Task<TParserOutput> ParseExpression(IqlExpression expression
+        public abstract Task<TParserOutput> ParseExpressionAsync(IqlExpression expression
 #if TypeScript
                     , EvaluateContext evaluateContext = null
 #endif
@@ -68,21 +68,21 @@ namespace Iql.Parsing
 
 
 
-        public Task<TParserOutput> Parse(IqlExpression expression
+        public Task<TParserOutput> ParseAsync(IqlExpression expression
 #if TypeScript
                     , EvaluateContext evaluateContext = null
 #endif
                 )
         {
             // Here: figure out the path from the root entity
-            return ParseInternal(expression, true
+            return ParseInternalAsync(expression, true
 #if TypeScript
         , evaluateContext
 #endif
                     );
         }
 
-        protected virtual async Task<TParserOutput> ParseInternal(IqlExpression expression,
+        protected virtual async Task<TParserOutput> ParseInternalAsync(IqlExpression expression,
             bool appendToAncestors
 #if TypeScript
                     , EvaluateContext evaluateContext = null
@@ -96,7 +96,7 @@ namespace Iql.Parsing
             }
             IncrementPath(expression);
             var index = appendToAncestors ? Ancestors.Count - 1 : -1;
-            var result = await ParseExpression(expression);
+            var result = await ParseExpressionAsync(expression);
             if (expression != null)
             {
                 if (!OutputMap.ContainsKey(expression))
@@ -114,7 +114,7 @@ namespace Iql.Parsing
             return result;
         }
 
-        public virtual async Task<string> ParseAsString(IqlExpression expression
+        public virtual async Task<string> ParseAsStringAsync(IqlExpression expression
 #if TypeScript
                     , EvaluateContext evaluateContext = null
 #endif
@@ -138,7 +138,7 @@ namespace Iql.Parsing
                     var str1 = "";
                     foreach (var element in aggregate.Expressions)
                     {
-                        str1 += (await Parse(element
+                        str1 += (await ParseAsync(element
 #if TypeScript
                                 , evaluateContext
 #endif
@@ -181,7 +181,7 @@ namespace Iql.Parsing
 
         public async Task<object> ParseActionAsync(IqlExpression expression)
         {
-            return await Parse(expression);
+            return await ParseAsync(expression);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Iql.Data.IqlToIql
             new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver())
         { }
 
-        public override async Task<IqlToIqlIqlOutput> ParseExpression(IqlExpression expression
+        public override async Task<IqlToIqlIqlOutput> ParseExpressionAsync(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
