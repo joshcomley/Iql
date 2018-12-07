@@ -129,16 +129,16 @@ namespace Iql.Data
             return Finalise(entity, processResult.lookup, iql, processResult.propertyExpressions);
         }
 
-        public static Task<object> EvaluateExpressionAsync<T>(
+        public static Task<object> EvaluateExpressionWithDbAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,
             IDataContext dataContext)
             where T : class
         {
-            return EvaluateLambdaAsync(expression, entity, dataContext);
+            return EvaluateLambdaWithDbAsync(expression, entity, dataContext);
         }
 
-        public static async Task<object> EvaluateLambdaAsync(
+        public static async Task<object> EvaluateLambdaWithDbAsync(
             LambdaExpression expression,
             object entity,
             IDataContext dataContext,
