@@ -1,6 +1,9 @@
+// DO NOT EDIT - this code was auto generated from "AsyncActionParserContext.cs"
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
@@ -9,9 +12,9 @@ namespace Iql.Parsing
 {
     public abstract class ActionParserContext<TIqlData, TQueryAdapter, TOutput, TParserOutput, TConverter> :
         ActionParserContextBase<
-            IqlParserRegistry, 
-            TIqlData, 
-            TQueryAdapter, 
+            IqlParserRegistry,
+            TIqlData,
+            TQueryAdapter,
             TOutput,
             TParserOutput,
             ActionParserContext<TIqlData, TQueryAdapter, TOutput, TParserOutput, TConverter>,
@@ -26,27 +29,21 @@ namespace Iql.Parsing
         {
         }
 
-        public abstract TParserOutput ParseExpression(IqlExpression expression
-#if TypeScript
-                    , EvaluateContext evaluateContext = null
-#endif
-                );
 
-
-        public TParserOutput Parse(IqlExpression expression
+        public TParserOutput ReplaceAndParse(IqlExpression expression
 #if TypeScript
-                    , EvaluateContext evaluateContext = null
+            , EvaluateContext evaluateContext = null
 #endif
-                )
+        )
         {
-            // Here: figure out the path from the root entity
-            return ParseInternal(expression, true
+            Ancestors[Ancestors.Count - 1] = expression;
+            return ParseInternal(expression,
+                false
 #if TypeScript
-        , evaluateContext
+, evaluateContext
 #endif
-                    );
+            );
         }
-
 
         public TParserOutput[] ParseAll(IEnumerable<IqlExpression> expressions)
         {
@@ -63,6 +60,28 @@ namespace Iql.Parsing
             }
 
             return result.ToArray();
+        }
+
+        public abstract TParserOutput ParseExpression(IqlExpression expression
+#if TypeScript
+                    , EvaluateContext evaluateContext = null
+#endif
+                );
+
+
+
+        public TParserOutput Parse(IqlExpression expression
+#if TypeScript
+                    , EvaluateContext evaluateContext = null
+#endif
+                )
+        {
+            // Here: figure out the path from the root entity
+            return ParseInternal(expression, true
+#if TypeScript
+        , evaluateContext
+#endif
+                    );
         }
 
         protected virtual TParserOutput ParseInternal(IqlExpression expression,

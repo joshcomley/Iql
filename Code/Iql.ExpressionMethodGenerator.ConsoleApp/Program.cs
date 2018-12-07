@@ -6,6 +6,7 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
     {
         static void Main(string[] args)
         {
+            AsyncNonAsyncSync.Sync();
             Flatten.Generate();
             Clone.Generate();
             Replace.Generate();
