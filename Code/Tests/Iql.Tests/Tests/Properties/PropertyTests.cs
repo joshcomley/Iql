@@ -26,6 +26,7 @@ namespace Iql.Tests.Tests.Properties
                 Name = "My client"
             });
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(person.CreatedByUserId, "abc");
             Assert.AreEqual(person.ClientId, 107);
             Assert.IsNotNull(person.Client);
         }
