@@ -6,7 +6,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     public class ODataActionParser : ODataActionParserBase<IqlExpression>
     {
         public override IqlExpression ToQueryString(IqlExpression action,
-            ODataIqlParserInstance parser)
+            ODataIqlParserContext parser)
         {
             switch (action.Kind)
             {
@@ -30,7 +30,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             return null;
         }
 
-        private static IqlExpression ResolveGeographic(IqlExpression action, ODataIqlParserInstance parser)
+        private static IqlExpression ResolveGeographic(IqlExpression action, ODataIqlParserContext parser)
         {
             var geo = action as ISrid;
             switch (action.Kind)

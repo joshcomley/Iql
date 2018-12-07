@@ -7,7 +7,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetInvocationParser : DotNetActionParserBase<IqlInvocationExpression>
     {
         public override IqlExpression ToQueryString(IqlInvocationExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var dotNetOutput = parser.Parse(action.Parent
 #if TypeScript
@@ -26,7 +26,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         }
 
         private IEnumerable<Expression> ResolveArguments(MethodInfo methodInfo, IqlInvocationExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var parameterInfos = methodInfo.GetParameters();
             for (var i = 0; i < action.Parameters.Count; i++)

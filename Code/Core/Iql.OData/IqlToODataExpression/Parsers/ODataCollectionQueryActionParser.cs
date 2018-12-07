@@ -8,7 +8,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 {
     public class ODataCollectionQueryActionParser : ODataActionParserBase<IqlCollectitonQueryExpression>
     {
-        public override IqlExpression ToQueryString(IqlCollectitonQueryExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlCollectitonQueryExpression action, ODataIqlParserContext parser)
         {
             var odataParts = new List<string>();
             var filter = action.Filter == null ? null : parser.Parse(action.Filter).ToCodeString();
@@ -109,7 +109,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     }
     public class ODataWithKeyActionParser : ODataActionParserBase<IqlWithKeyExpression>
     {
-        public override IqlExpression ToQueryString(IqlWithKeyExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlWithKeyExpression action, ODataIqlParserContext parser)
         {
             var compositeKey = new CompositeKey(action.KeyEqualToExpressions.Count);
             for (var i = 0; i < action.KeyEqualToExpressions.Count; i++)
@@ -145,7 +145,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     }
     public class ODataExpandActionParser : ODataActionParserBase<IqlExpandExpression>
     {
-        public override IqlExpression ToQueryString(IqlExpandExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlExpandExpression action, ODataIqlParserContext parser)
         {
             var expandProperty = parser.Parse(action.NavigationProperty).ToCodeString();
             if (action.Query != null)
@@ -173,7 +173,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     }
     public class ODataOrderByActionParser : ODataActionParserBase<IqlOrderByExpression>
     {
-        public override IqlExpression ToQueryString(IqlOrderByExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlOrderByExpression action, ODataIqlParserContext parser)
         {
             var orderBy = parser.Parse(action.OrderExpression).ToCodeString();
             if (action.Descending)

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Types;
 using Iql.Entities;
@@ -7,13 +8,14 @@ using Iql.Parsing;
 
 namespace Iql.Data.IqlToIql
 {
-    public class IqlToIqlParserInstance : ActionParserInstance<IqlToIqlIqlData, IqlToIqlExpressionAdapter,
+    public class IqlToIqlParserContext : AsyncActionParserContext<IqlToIqlIqlData, IqlToIqlExpressionAdapter,
         string, IqlToIqlIqlOutput, IExpressionConverter>
     {
-        public IqlToIqlParserInstance(IEntityConfiguration entityConfiguration) : base(
+        public IqlToIqlParserContext(IEntityConfiguration entityConfiguration) : base(
             new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver())
         { }
-        public override IqlToIqlIqlOutput ParseExpression(IqlExpression expression
+
+        public override async Task<IqlToIqlIqlOutput> ParseExpression(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -28,8 +30,7 @@ namespace Iql.Data.IqlToIql
             {
                 throw new Exception("No parser found for " + expression.GetType().Name);
             }
-
-            var result = parser.ToQueryString(expression, this);
+            var result = await parser.ToQueryStringAsync(expression, this);
             //return result == null ? null : new IqlToIqlIqlOutput(result);
             return new IqlToIqlIqlOutput(result);
         }

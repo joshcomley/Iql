@@ -7,7 +7,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetLambdaParser : DotNetActionParserBase<IqlLambdaExpression>
     {
         public override IqlExpression ToQueryString(IqlLambdaExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var parameters = new List<ParameterExpression>();
             foreach (var parameter in action.Parameters)

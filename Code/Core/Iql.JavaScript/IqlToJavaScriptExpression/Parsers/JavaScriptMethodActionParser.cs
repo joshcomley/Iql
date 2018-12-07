@@ -9,7 +9,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         where TAction : IqlExpression
     {
         public override IqlExpression ToQueryString(TAction action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             return JavaScriptMethod(
                 parser,
@@ -18,7 +18,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 ResolveMethodArguments(action).ToArray());
         }
 
-        public IqlExpression JavaScriptMethod(JavaScriptIqlParserInstance parser, string name, IqlExpression caller,
+        public IqlExpression JavaScriptMethod(JavaScriptIqlParserContext parser, string name, IqlExpression caller,
             IqlExpression[] args)
         {
             var arr = new List<IqlExpression>();

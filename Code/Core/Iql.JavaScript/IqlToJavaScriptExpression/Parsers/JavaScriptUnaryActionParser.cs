@@ -5,7 +5,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     public class JavaScriptUnaryActionParser : JavaScriptActionParserBase<IqlUnaryExpression>
     {
         public override IqlExpression ToQueryString(IqlUnaryExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             return new IqlAggregateExpression(
                 new IqlFinalExpression<string>(ResolveOperator(action)),

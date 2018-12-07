@@ -3,7 +3,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     public class ODataUnaryActionParser : ODataActionParserBase<IqlUnaryExpression>
     {
         public override IqlExpression ToQueryString(IqlUnaryExpression action,
-            ODataIqlParserInstance parser)
+            ODataIqlParserContext parser)
         {
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(

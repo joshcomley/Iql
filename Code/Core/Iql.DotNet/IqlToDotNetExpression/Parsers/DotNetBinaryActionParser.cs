@@ -23,7 +23,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
         public override IqlExpression ToQueryString(
             IqlBinaryExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var isStringComparison =
                 (action.Kind == IqlExpressionKind.IsEqualTo || action.Kind == IqlExpressionKind.IsNotEqualTo) &&

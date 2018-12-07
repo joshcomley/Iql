@@ -50,7 +50,7 @@ namespace Iql.Tests.Tests.DotNet
                 declarationsSb.AppendLine(
                     $@"    public class {name} : IqlToIqlActionParserBase<{type.Name}>
     {{
-        public override IqlExpression ToQueryStringTyped<TEntity>({type.Name} action, IqlToIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>({type.Name} action, IqlToIqlParserContext parser)
         {{
             {propertySb.ToString()}
             return action;

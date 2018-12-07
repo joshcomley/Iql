@@ -5,7 +5,7 @@ using Iql.Parsing;
 
 namespace Iql.Data.IqlToIql
 {
-    public class IqlToIqlExpressionAdapter : IqlExpressionAdapter<IqlToIqlIqlData>
+    public class IqlToIqlExpressionAdapter : AsyncIqlExpressionAdapter<IqlToIqlIqlData>
     {
         public IEntityConfigurationBuilder EntityConfigurationContext { get; }
 

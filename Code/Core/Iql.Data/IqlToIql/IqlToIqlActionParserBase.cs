@@ -4,12 +4,12 @@ using Iql.Parsing;
 namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlActionParserBase<TIqlExpression> :
-        ActionParser<TIqlExpression,
+        AsyncActionParser<TIqlExpression,
             IqlToIqlIqlData,
             IqlToIqlExpressionAdapter,
             string,
             IqlToIqlIqlOutput,
-            IqlToIqlParserInstance,
+            IqlToIqlParserContext,
             IExpressionConverter>
         where TIqlExpression : IqlExpression
     { }

@@ -2,7 +2,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 {
     public class ODataDistanceParser : ODataActionParserBase<IqlDistanceExpression>
     {
-        public override IqlExpression ToQueryString(IqlDistanceExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlDistanceExpression action, ODataIqlParserContext parser)
         {
             return new IqlAggregateExpression(
                 new IqlFinalExpression<string>("geo.distance("),

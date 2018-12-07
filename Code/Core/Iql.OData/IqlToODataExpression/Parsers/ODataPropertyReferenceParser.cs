@@ -5,7 +5,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         protected string Separator { get; } = "/";
 
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
-            ODataIqlParserInstance parser)
+            ODataIqlParserContext parser)
         {
             var property = new IqlFinalExpression<string>(action.PropertyName);
             if (action.Parent != null)

@@ -2,7 +2,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptLengthActionParser : JavaScriptActionParserBase<IqlLengthExpression>
     {
-        public override IqlExpression ToQueryString(IqlLengthExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlLengthExpression action, JavaScriptIqlParserContext parser)
         {
             var line = parser.Parse(action.Parent).ToCodeString();
             return new IqlFinalExpression<string>(

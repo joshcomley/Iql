@@ -16,7 +16,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         public static MethodInfo StringSubStringWithTakeMethod { get; set; }
 
         public override IqlExpression ToQueryString(IqlStringSubStringExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript

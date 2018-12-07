@@ -43,7 +43,7 @@ namespace Iql.DotNet
         public LambdaExpression ConvertIql(IqlExpression expression, Type type = null)
         {
             var adapter = new DotNetIqlExpressionAdapter("entity");
-            var parser = new DotNetIqlParserInstance(adapter, type, this);
+            var parser = new DotNetIqlParserContext(adapter, type, this);
             var dotNetExpression = parser.Parse(expression
 #if TypeScript
                 , null
@@ -68,7 +68,7 @@ namespace Iql.DotNet
         )
         {
             var adapter = new DotNetStringIqlExpressionAdapter("entity");
-            var parser = new DotNetStringIqlParserInstance(adapter, this);
+            var parser = new DotNetStringIqlParserContext(adapter, this);
             var dotNetExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext

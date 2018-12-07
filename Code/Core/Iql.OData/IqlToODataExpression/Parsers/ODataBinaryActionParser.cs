@@ -6,7 +6,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     public class ODataBinaryActionParser : ODataActionParserBase<IqlBinaryExpression>
     {
         public override IqlExpression ToQueryString(IqlBinaryExpression action,
-            ODataIqlParserInstance parser)
+            ODataIqlParserContext parser)
         {
             if (action.Left is IqlPropertyExpression &&
                 action.Right is IqlEnumLiteralExpression &&

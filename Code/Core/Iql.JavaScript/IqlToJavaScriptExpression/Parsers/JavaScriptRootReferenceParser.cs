@@ -4,7 +4,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     {
         public override IqlExpression ToQueryString(
             IqlRootReferenceExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             var rootEntityName = parser.GetRootEntityName(action);
             return new IqlFinalExpression<string>(rootEntityName);

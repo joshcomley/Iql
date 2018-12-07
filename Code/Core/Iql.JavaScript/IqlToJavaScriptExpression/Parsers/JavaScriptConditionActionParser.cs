@@ -2,7 +2,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptConditionActionParser : JavaScriptActionParserBase<IqlConditionExpression>
     {
-        public override IqlExpression ToQueryString(IqlConditionExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlConditionExpression action, JavaScriptIqlParserContext parser)
         {
             return new IqlAggregateExpression(
                 new IqlFinalExpression<string>("("),

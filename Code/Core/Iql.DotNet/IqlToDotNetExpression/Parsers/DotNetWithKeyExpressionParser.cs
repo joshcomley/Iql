@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetWithKeyExpressionParser : DotNetActionParserBase<IqlWithKeyExpression>
     {
         public override IqlExpression ToQueryString(IqlWithKeyExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             Expression exp = null;
             foreach (var keyItem in action.KeyEqualToExpressions)

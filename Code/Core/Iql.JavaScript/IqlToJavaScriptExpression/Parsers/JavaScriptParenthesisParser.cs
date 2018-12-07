@@ -3,7 +3,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     public class JavaScriptParenthesisParser : JavaScriptActionParserBase<IqlParenthesisExpression>
     {
         public override IqlExpression ToQueryString(IqlParenthesisExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             return new IqlAggregateExpression(
                 new IqlFinalExpression<string>("("),

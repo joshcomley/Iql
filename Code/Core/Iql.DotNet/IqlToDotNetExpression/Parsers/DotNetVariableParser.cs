@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetVariableParser : DotNetActionParserBase<IqlVariableExpression>
     {
         public override IqlExpression ToQueryString(IqlVariableExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var expression = parser.GetParameterExpression(action.VariableName)
                              ?? (Expression) Expression.Constant(action.VariableName);

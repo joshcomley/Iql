@@ -8,7 +8,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         where TAction : IqlExpression
     {
         public override IqlExpression ToQueryString(TAction action,
-            ODataIqlParserInstance parser)
+            ODataIqlParserContext parser)
         {
             var methodArguments = ResolveMethodArguments(action);
             var methodName = ResolveMethodName(action);

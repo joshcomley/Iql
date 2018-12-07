@@ -5,7 +5,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         protected string Separator = ".";
 
         public override IqlExpression ToQueryString(IqlStringLengthExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             return new IqlAggregateExpression(
                 action.Parent,

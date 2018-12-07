@@ -2,7 +2,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 {
     public class ODataCountActionParser : ODataActionParserBase<IqlCountExpression>
     {
-        public override IqlExpression ToQueryString(IqlCountExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlCountExpression action, ODataIqlParserContext parser)
         {
             ODataOutput filter = null;
             if (action.Value != null)

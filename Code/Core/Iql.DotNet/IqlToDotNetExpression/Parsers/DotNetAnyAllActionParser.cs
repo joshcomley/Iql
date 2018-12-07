@@ -8,7 +8,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {
     public class DotNetAnyAllActionParser : DotNetActionParserBase<IqlAnyAllExpression>
     {
-        public override IqlExpression ToQueryString(IqlAnyAllExpression action, DotNetIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlAnyAllExpression action, DotNetIqlParserContext parser)
         {
             MethodInfo method = null;
             switch (action.Kind)

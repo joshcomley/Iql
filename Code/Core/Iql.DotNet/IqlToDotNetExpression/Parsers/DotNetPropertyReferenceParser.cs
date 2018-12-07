@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetPropertyReferenceParser : DotNetActionParserBase<IqlPropertyExpression>
     {
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var dotNetOutput = parser.Parse(action.Parent
 #if TypeScript

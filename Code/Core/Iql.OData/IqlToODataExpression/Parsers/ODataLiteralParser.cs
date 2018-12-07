@@ -8,7 +8,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     public class ODataLiteralParser : ODataActionParserBase<IqlLiteralExpression>
     {
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
-            ODataIqlParserInstance parser)
+            ODataIqlParserContext parser)
         {
             var value = action.Value;
             return new IqlFinalExpression<string>(ODataEncode(value, action.ReturnType));

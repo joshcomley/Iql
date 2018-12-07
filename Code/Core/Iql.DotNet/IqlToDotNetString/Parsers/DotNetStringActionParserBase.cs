@@ -9,7 +9,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
             DotNetStringIqlExpressionAdapter,
             string,
             DotNetStringOutput,
-            DotNetStringIqlParserInstance,
+            DotNetStringIqlParserContext,
             DotNetExpressionConverter>
         where TIqlExpression : IqlExpression { }
 }

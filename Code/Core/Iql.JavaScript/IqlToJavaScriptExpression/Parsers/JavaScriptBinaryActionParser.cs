@@ -19,7 +19,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
         public override IqlExpression ToQueryString(
             IqlBinaryExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             var spacer = new IqlFinalExpression<string>(" ");
             var isStringComparison = false;
@@ -70,7 +70,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         }
 
         private IqlExpression CoalesceOrUpperCase(IqlExpression left,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             if (left.Kind == IqlExpressionKind.Literal && (left as IqlLiteralExpression).Value != null)
             {

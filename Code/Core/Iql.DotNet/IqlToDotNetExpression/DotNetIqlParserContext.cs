@@ -31,9 +31,9 @@ namespace Iql.DotNet.IqlToDotNetExpression
             return base.VisitParameter(node);
         }
     }
-    public class DotNetIqlParserInstance : ActionParserInstance<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput, DotNetExpressionConverter>
+    public class DotNetIqlParserContext : ActionParserContext<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput, DotNetExpressionConverter>
     {
-        public DotNetIqlParserInstance(DotNetIqlExpressionAdapter adapter, Type currentEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
+        public DotNetIqlParserContext(DotNetIqlExpressionAdapter adapter, Type currentEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
         {
         }
 

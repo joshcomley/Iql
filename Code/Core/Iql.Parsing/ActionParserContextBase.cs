@@ -9,11 +9,16 @@ using Iql.Parsing.Types;
 
 namespace Iql.Parsing
 {
-    public abstract class ActionParserInstance<TIqlData, TQueryAdapter, TOutput, TParserOutput, TConverter> : IActionParserInstance
-        where TQueryAdapter : IIqlExpressionAdapter<TIqlData>
+    public abstract class ActionParserContextBase<TRegistry, TIqlData, TQueryAdapter, TOutput, TParserOutput, TParserContext, TConverter, TActionParserBase>
+        where TRegistry : RegistryStore<IqlExpression, TActionParserBase>
+        where TActionParserBase : class
+        where TQueryAdapter : IIqlExpressionAdapter<TIqlData, TRegistry, TActionParserBase>
         where TParserOutput : IParserOutput
+        where TParserContext : ActionParserContextBase<TRegistry, TIqlData, TQueryAdapter, TOutput, TParserOutput, TParserContext, TConverter, TActionParserBase>
         where TConverter : IExpressionConverter
     {
+        public TConverter Converter { get; set; }
+
         public bool Nested => TypeStack.Count > 1 || Ancestors.Any(a =>
                                   a.Kind == IqlExpressionKind.Expand ||
                                   a.Kind == IqlExpressionKind.Count ||
@@ -21,7 +26,7 @@ namespace Iql.Parsing
                                   a.Kind == IqlExpressionKind.All
                                   );
 
-        protected ActionParserInstance(TQueryAdapter adapter, Type currentEntityType, TConverter converter, ITypeResolver typeResolver)
+        protected ActionParserContextBase(TQueryAdapter adapter, Type currentEntityType, TConverter converter, ITypeResolver typeResolver)
         {
             Adapter = adapter;
             SetEntityType(currentEntityType);
@@ -48,7 +53,6 @@ namespace Iql.Parsing
             }
             TypeStack.Add(type);
         }
-        public TConverter Converter { get; }
         public ITypeResolver TypeResolver { get; }
         private readonly Dictionary<string, string> _rootEntityNames = new Dictionary<string, string>();
         private string _rootEntityName;
@@ -93,20 +97,6 @@ namespace Iql.Parsing
             }
 
             return _rootEntityNames[name];
-        }
-
-        public TParserOutput[] ParseAll(IEnumerable<IqlExpression> expressions)
-        {
-            if (expressions == null)
-            {
-                return new TParserOutput[] { };
-            }
-            var result = new List<TParserOutput>();
-            foreach (var expression in expressions)
-            {
-                result.Add(Parse(expression));
-            }
-            return result.ToArray();
         }
 
         public List<IqlExpression> Ancestors { get; } = new List<IqlExpression>();
@@ -185,70 +175,9 @@ namespace Iql.Parsing
 
         public Dictionary<IqlExpression, List<TParserOutput>> OutputMap { get; } = new Dictionary<IqlExpression, List<TParserOutput>>();
 
-        public TParserOutput ReplaceAndParse(IqlExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
-        {
-            Ancestors[Ancestors.Count - 1] = expression;
-            return ParseInternal(expression,
-                false
-#if TypeScript
-, evaluateContext
-#endif
-            );
-        }
-
-        public TParserOutput Parse(IqlExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
-        {
-            // Here: figure out the path from the root entity
-            return ParseInternal(expression, true
-#if TypeScript
-, evaluateContext
-#endif
-            );
-        }
-
-        protected virtual TParserOutput ParseInternal(IqlExpression expression,
-            bool appendToAncestors
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
-        {
-            // Here: figure out the path from the root entity
-            if (appendToAncestors)
-            {
-                Ancestors.Add(expression);
-            }
-            IncrementPath(expression);
-            var index = appendToAncestors ? Ancestors.Count - 1 : -1;
-            var result = ParseExpression(expression);
-            if (expression != null)
-            {
-                if (!OutputMap.ContainsKey(expression))
-                {
-                    OutputMap.Add(expression, new List<TParserOutput>());
-                }
-                OutputMap[expression].Add(result);
-            }
-
-            if (index != -1)
-            {
-                Ancestors.RemoveAt(index);
-            }
-            DecrementPath(expression);
-            return result;
-        }
-
         //protected IqlPropertyPath Path { get; } = new IqlPropertyPath();
         protected string EntityPath { get; } = "";
-        private void IncrementPath(IqlExpression expression)
+        protected void IncrementPath(IqlExpression expression)
         {
             //if (Path == null || Path.IsEmpty)
             //{
@@ -277,7 +206,7 @@ namespace Iql.Parsing
         }
 
         private bool IsRoot => Ancestors.Count == 1;
-        private void DecrementPath(IqlExpression expression)
+        protected void DecrementPath(IqlExpression expression)
         {
             switch (expression?.Kind)
             {
@@ -306,103 +235,6 @@ namespace Iql.Parsing
                 return null;
             }
             return Ancestors[Ancestors.Count - 2];
-        }
-
-        public abstract TParserOutput ParseExpression(IqlExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        );
-
-        public virtual string ParseAsString(IqlExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-            )
-        {
-            while (true)
-            {
-                if (expression == null)
-                {
-                    return "";
-                }
-                var finalExpression = expression as IqlFinalExpression<string>;
-                if (finalExpression != null)
-                {
-                    return finalExpression.Value;
-                }
-                var aggregateExpression = expression as IqlAggregateExpression;
-                if (aggregateExpression != null)
-                {
-                    var aggregate = aggregateExpression;
-                    var str1 = "";
-                    aggregate.Expressions.ForEach(element =>
-                    {
-                        str1 += Parse(element
-#if TypeScript
-                        , evaluateContext
-#endif
-                        ).ToCodeString();
-                    });
-                    return str1;
-                }
-                var oldExpression = Expression;
-                Expression = expression;
-                var parser = Adapter.Registry.Resolve(IqlExpression.ResolveExpressionType(Expression));
-                if (parser == null)
-                {
-                    throw new Exception("No parser found for " + expression.GetType().Name);
-                }
-                var result = parser.ToQueryString(expression, this);
-                // Reduce result
-                var reducer = new IqlReducer(
-#if TypeScript
-                            evaluateContext
-#endif
-                );
-                reducer.Ancestors = Ancestors.ToList();
-                result = reducer.ReduceStaticContent(result);
-
-                if (result != null)
-                {
-                    if (result is IqlFinalExpressionBase)
-                    {
-                        return (result as IqlFinalExpression<string>).Value;
-                    }
-                    expression = result;
-                    continue;
-                }
-                Expression = oldExpression;
-                return null;
-            }
-        }
-
-        object IActionParserInstance.Parse(IqlExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext
-#endif
-        )
-        {
-            return Parse(expression
-#if TypeScript
-            , evaluateContext
-#endif
-                );
-        }
-        //     }
-        //         return "";
-
-        //    public void parse<TAction extends IqlExpression>(action: TAction): string {
-    }
-
-    public class LambdaAndParameter
-    {
-        public IqlParameteredLambdaExpression LambdaExpression { get; set; }
-        public IqlRootReferenceExpression ParameterExpression { get; set; }
-        public LambdaAndParameter(IqlParameteredLambdaExpression lambdaExpression, IqlRootReferenceExpression parameterExpression)
-        {
-            LambdaExpression = lambdaExpression;
-            ParameterExpression = parameterExpression;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptExpandQueryParser : JavaScriptActionParserBase<IqlExpandExpression>
     {
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlExpandExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlExpandExpression action, JavaScriptIqlParserContext parser)
         {
             return new IqlFinalExpression<string>(
                 $".{nameof(InMemoryContext<TEntity>.Expand)}({action.SerializeDeserialize()})"
@@ -20,7 +20,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
     public class JavaScriptOrderByQueryParser : JavaScriptActionParserBase<IqlOrderByExpression>
     {
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlOrderByExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlOrderByExpression action, JavaScriptIqlParserContext parser)
         {
             var js = parser.Parse(action.OrderExpression).ToCodeString();
             return new IqlFinalExpression<string>(
@@ -31,7 +31,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
     public class JavaScriptWithKeyQueryParser : JavaScriptActionParserBase<IqlWithKeyExpression>
     {
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlWithKeyExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlWithKeyExpression action, JavaScriptIqlParserContext parser)
         {
             var iqlAnd = action.KeyEqualToExpressions.And();
             var javaScriptOutput = parser.Parse(iqlAnd);
@@ -44,7 +44,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
     public class JavaScriptCollectionQueryParser : JavaScriptActionParserBase<IqlCollectitonQueryExpression>
     {
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, JavaScriptIqlParserContext parser)
         {
             var queryParts = new List<string>();
             if (action.Filter != null)

@@ -3,7 +3,7 @@
     public class DotNetStringStringTrimExpressionParser : DotNetStringActionParserBase<IqlStringTrimExpression>
     {
         public override IqlExpression ToQueryString(IqlStringTrimExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript

@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetNotExpressionParser : DotNetActionParserBase<IqlNotExpression>
     {
         public override IqlExpression ToQueryString(IqlNotExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(

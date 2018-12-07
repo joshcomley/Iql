@@ -9,7 +9,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             JavaScriptIqlExpressionAdapter,
             string,
             JavaScriptOutput,
-            JavaScriptIqlParserInstance,
+            JavaScriptIqlParserContext,
             JavaScriptExpressionConverter>
         where TIqlExpression : IqlExpression { }
 }

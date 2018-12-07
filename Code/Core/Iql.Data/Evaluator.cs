@@ -12,6 +12,19 @@ using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Data
 {
+    class ProcessExpressionResult
+    {
+        public IqlFlattenedExpression[] propertyExpressions { get; set; }
+        public Dictionary<IqlPropertyPath, object> lookup { get; set; }
+        public IqlExpression expression { get; set; }
+
+        public ProcessExpressionResult(IqlFlattenedExpression[] propertyExpressions, Dictionary<IqlPropertyPath, object> lookup, IqlExpression expression)
+        {
+            this.propertyExpressions = propertyExpressions;
+            this.lookup = lookup;
+            this.expression = expression;
+        }
+    }
     public class IqlExpressonEvaluatedResult
     {
         public IqlExpression Expression { get; }
@@ -92,28 +105,28 @@ namespace Iql.Data
     }
     public static class ExpressionEvaluator
     {
-        public static object EvaluateExpression<T>(
+        public static Task<object> EvaluateExpressionAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,
             IEntityConfigurationBuilder builder = null)
             where T : class
         {
-            return EvaluateLambda(expression, entity, builder, typeof(T));
+            return EvaluateLambdaAsync(expression, entity, builder, typeof(T));
         }
 
-        public static object EvaluateLambda(
+        public static async Task<object> EvaluateLambdaAsync(
             LambdaExpression expression,
             object entity,
             IEntityConfigurationBuilder builder = null,
             Type entityType = null)
         {
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, entityType).Expression;
-            ProcessIqlExpression(iql, entity, entityType, builder, out var propertyExpressions, out var lookup);
-            foreach (var item in lookup.Keys.ToArray())
+            var processResult = await ProcessIqlExpressionAsync(iql, entity, entityType, builder);
+            foreach (var item in processResult.lookup.Keys.ToArray())
             {
-                lookup[item] = item.Evaluate(entity) ?? ResolveNull(item, propertyExpressions.First(_ => _.Expression == item.Expression));
+                processResult.lookup[item] = item.Evaluate(entity) ?? ResolveNull(item, processResult.propertyExpressions.First(_ => _.Expression == item.Expression));
             }
-            return Finalise(entity, lookup, iql, propertyExpressions);
+            return Finalise(entity, processResult.lookup, iql, processResult.propertyExpressions);
         }
 
         public static Task<object> EvaluateExpressionAsync<T>(
@@ -227,14 +240,12 @@ namespace Iql.Data
             Type entityType = null)
         {
             entityType = entityType ?? entity.GetType();
-            var iql = ProcessIqlExpression(
+            var processResult = await ProcessIqlExpressionAsync(
                 expression.Clone(),
                 entity,
                 entityType,
-                builder,
-                out var propertyExpressions,
-                out var lookup);
-            var iqlPropertyPaths = lookup.Keys.ToArray();
+                builder);
+            var iqlPropertyPaths = processResult.lookup.Keys.ToArray();
             for (var i = 0; i < iqlPropertyPaths.Length; i++)
             {
                 var item = iqlPropertyPaths[i];
@@ -244,16 +255,16 @@ namespace Iql.Data
                     e = (e as IRelationshipFilterContext).Owner;
                 }
 
-                lookup[item] = await evaluatorAsync(
+                processResult.lookup[item] = await evaluatorAsync(
                     e,
                     entityType, 
                     item,
-                    propertyExpressions.First(_ => _.Expression == item.Expression),
+                    processResult.propertyExpressions.First(_ => _.Expression == item.Expression),
                     iqlPropertyPaths.Length,
                     i);
             }
 
-            return Finalise(entity, lookup, iql, propertyExpressions);
+            return Finalise(entity, processResult.lookup, processResult.expression, processResult.propertyExpressions);
         }
 
         //private static IqlExpression ProcessLambdaExpression(LambdaExpression expression, object entity, Type entityType,
@@ -264,22 +275,21 @@ namespace Iql.Data
         //    return ProcessIqlExpression(iql, entityType, dataContext, out propertyExpressions, out lookup);
         //}
 
-        private static IqlExpression ProcessIqlExpression(
+        private static async Task<ProcessExpressionResult> ProcessIqlExpressionAsync(
             IqlExpression iql,
             object entity,
             Type entityType,
-            IEntityConfigurationBuilder builder,
-            out IqlFlattenedExpression[] propertyExpressions, out Dictionary<IqlPropertyPath, object> lookup)
+            IEntityConfigurationBuilder builder)
         {
             builder = builder ?? DataContext.FindBuilderForEntityType(entityType);
-            iql = iql.Process(builder.GetEntityByType(
-                entityType));
-            propertyExpressions = iql.TopLevelPropertyExpressions();
-            lookup = new Dictionary<IqlPropertyPath, object>();
+            var propertyExpressions = iql.TopLevelPropertyExpressions();
+            var lookup = new Dictionary<IqlPropertyPath, object>();
             if (entity is IRelationshipFilterContext)
             {
                 entityType = (entity as IRelationshipFilterContext).Owner.GetType();
             }
+            iql = await iql.ProcessAsync(builder.GetEntityByType(
+                entityType));
             for (var i = 0; i < propertyExpressions.Length; i++)
             {
                 var propertyExpression = propertyExpressions[i];
@@ -288,7 +298,10 @@ namespace Iql.Data
                     propertyExpression.Expression as IqlPropertyExpression);
                 lookup.Add(path, null);
             }
-            return iql;
+            return new ProcessExpressionResult(
+                propertyExpressions,
+                lookup,
+                iql);
         }
 
         private static object Finalise(object entity, 

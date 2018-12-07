@@ -6,7 +6,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptVariableActionParser : JavaScriptActionParserBase<IqlVariableExpression>
     {
-        public override IqlExpression ToQueryString(IqlVariableExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlVariableExpression action, JavaScriptIqlParserContext parser)
         {
             if (parser.IsParameterName(action.VariableName))
             {

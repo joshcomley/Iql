@@ -1,11 +1,11 @@
 namespace Iql.Parsing
 {
-    public interface IActionParserInstance
+    public interface IActionParserContext
     {
-        object Parse(IqlExpression expression
+        object ParseAction(IqlExpression expression
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
-            );
+        );
     }
 }

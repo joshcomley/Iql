@@ -16,24 +16,24 @@ namespace Iql.Tests.Tests
     public class IqlExpressionTests : TestsBase
     {
         [TestMethod]
-        public void EvaluateComplexExpressionSynchronouslyTest()
+        public async Task EvaluateComplexExpressionSynchronouslyTest()
         {
             var person = new Person();
             person.Description = "Person Description";
             person.Client = new Client();
             person.Client.CreatedByUser = new ApplicationUser();
             person.Client.CreatedByUser.ClientId = 7;
-            var result = ExpressionEvaluator.EvaluateExpression(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
             Assert.AreEqual("Person Description - 7", result);
         }
 
         [TestMethod]
-        public void EvaluateComplexExpressionWithDeadEndSynchronouslyTest()
+        public async Task EvaluateComplexExpressionWithDeadEndSynchronouslyTest()
         {
             var person = new Person();
             person.Description = "Person Description";
             person.Client = new Client();
-            var result = ExpressionEvaluator.EvaluateExpression(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
             Assert.AreEqual("Person Description - ", result);
         }
 

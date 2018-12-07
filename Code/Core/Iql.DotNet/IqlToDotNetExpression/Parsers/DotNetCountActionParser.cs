@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {
     public class DotNetCountActionParser : DotNetActionParserBase<IqlCountExpression>
     {
-        public override IqlExpression ToQueryString(IqlCountExpression action, DotNetIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlCountExpression action, DotNetIqlParserContext parser)
         {
             var method = typeof(Enumerable).GetMethods().Single(m =>
                 m.Name == nameof(Enumerable.LongCount) && m.GetParameters().Length == 2);

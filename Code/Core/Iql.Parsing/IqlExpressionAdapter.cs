@@ -1,16 +1,10 @@
 namespace Iql.Parsing
 {
     public abstract class IqlExpressionAdapter<TIqlData>
-        : IIqlExpressionAdapter<TIqlData>
+        : IqlExpressionAdapterBase<TIqlData, IqlParserRegistry, IActionParserBase>
     {
         protected IqlExpressionAdapter()
         {
-            Registry = new IqlParserRegistry();
         }
-
-
-        public abstract TIqlData NewData();
-
-        public IqlParserRegistry Registry { get; set; }
     }
 }

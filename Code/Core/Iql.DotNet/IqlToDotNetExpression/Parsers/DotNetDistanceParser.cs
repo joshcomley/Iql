@@ -13,7 +13,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
         public static MethodInfo DistanceBetweenMethod { get; set; }
 
-        public override IqlExpression ToQueryString(IqlDistanceExpression action, DotNetIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlDistanceExpression action, DotNetIqlParserContext parser)
         {
             var leftOutput = parser.Parse(action.Left
 #if TypeScript

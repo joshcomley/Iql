@@ -277,7 +277,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         )
         {
             var adapter = new JavaScriptIqlExpressionAdapter();
-            var parser = new JavaScriptIqlParserInstance(adapter, rootEntityType, this);
+            var parser = new JavaScriptIqlParserContext(adapter, rootEntityType, this);
             var javascriptExpression = parser.Parse(
                 expression
 #if TypeScript

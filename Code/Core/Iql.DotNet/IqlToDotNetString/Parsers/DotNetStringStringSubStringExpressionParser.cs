@@ -3,7 +3,7 @@
     public class DotNetStringStringSubStringExpressionParser : DotNetStringActionParserBase<IqlStringSubStringExpression>
     {
         public override IqlExpression ToQueryString(IqlStringSubStringExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript

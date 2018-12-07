@@ -3,7 +3,7 @@
     public class DotNetStringStringLengthExpressionParser : DotNetStringActionParserBase<IqlStringLengthExpression>
     {
         public override IqlExpression ToQueryString(IqlStringLengthExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript

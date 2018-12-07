@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetRootReferenceParser : DotNetActionParserBase<IqlRootReferenceExpression>
     {
         public override IqlExpression ToQueryString(IqlRootReferenceExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var parameter = parser.GetParameterExpression(action.VariableName);
             IqlExpression expression =

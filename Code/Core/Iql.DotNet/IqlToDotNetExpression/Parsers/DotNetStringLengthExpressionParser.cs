@@ -14,7 +14,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         public static MethodInfo StringTrimMethod { get; set; }
 
         public override IqlExpression ToQueryString(IqlStringLengthExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript

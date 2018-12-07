@@ -4,7 +4,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     {
         public override IqlExpression ToQueryString(
             IqlCountExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             return new IqlParenthesisExpression(
                 new IqlAggregateExpression(

@@ -4,7 +4,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     {
         public override IqlExpression ToQueryString(
             IqlAnyAllExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             switch (action.Kind)
             {

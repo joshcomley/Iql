@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
     public class DotNetStringPropertyReferenceParser : DotNetStringActionParserBase<IqlPropertyExpression>
     {
         public override IqlExpression ToQueryString(IqlPropertyExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             var exp = parser.Parse(
                 action.Parent

@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
     public class DotNetStringConditionExpressionParser : DotNetStringActionParserBase<IqlConditionExpression>
     {
         public override IqlExpression ToQueryString(IqlConditionExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             if (action.IfTrue.Kind == IqlExpressionKind.Lambda)
             {

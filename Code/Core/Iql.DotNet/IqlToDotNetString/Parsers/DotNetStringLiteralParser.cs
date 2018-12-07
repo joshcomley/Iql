@@ -4,7 +4,7 @@
     {
         public override IqlExpression ToQueryString(
             IqlLiteralExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             var value = action.Value == null ? "null" : action.Value.ToString();
             if (action.Value != null)

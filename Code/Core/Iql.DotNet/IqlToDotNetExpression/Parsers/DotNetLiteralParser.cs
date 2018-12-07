@@ -5,7 +5,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
     public class DotNetLiteralParser : DotNetActionParserBase<IqlLiteralExpression>
     {
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(

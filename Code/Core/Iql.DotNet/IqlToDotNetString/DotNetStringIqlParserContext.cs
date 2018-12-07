@@ -3,9 +3,9 @@ using Iql.Parsing;
 
 namespace Iql.DotNet.IqlToDotNetString
 {
-    public class DotNetStringIqlParserInstance : ActionParserInstance<DotNetStringIqlData, DotNetStringIqlExpressionAdapter, string, DotNetStringOutput, DotNetExpressionConverter>
+    public class DotNetStringIqlParserContext : ActionParserContext<DotNetStringIqlData, DotNetStringIqlExpressionAdapter, string, DotNetStringOutput, DotNetExpressionConverter>
     {
-        public DotNetStringIqlParserInstance(DotNetStringIqlExpressionAdapter adapter, DotNetExpressionConverter expressionConverter) : base(adapter, null, expressionConverter, new TypeResolver())
+        public DotNetStringIqlParserContext(DotNetStringIqlExpressionAdapter adapter, DotNetExpressionConverter expressionConverter) : base(adapter, null, expressionConverter, new TypeResolver())
         {
             RootVariableName = adapter.RootVariableName;
         }

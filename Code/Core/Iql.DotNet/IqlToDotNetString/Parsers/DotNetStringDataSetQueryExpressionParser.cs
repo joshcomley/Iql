@@ -16,7 +16,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
 
         internal static MethodInfo EnumerableWhereMethod { get; set; }
 
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, DotNetIqlParserInstance parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, DotNetIqlParserContext parser)
         {
             throw new NotImplementedException();
         }

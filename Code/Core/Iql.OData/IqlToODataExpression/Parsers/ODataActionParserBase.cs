@@ -8,7 +8,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
         ODataIqlExpressionAdapter,
         string,
         ODataOutput,
-        ODataIqlParserInstance,
+        ODataIqlParserContext,
         ODataExpressionConverter>
         where TIqlExpression : IqlExpression { }
 }

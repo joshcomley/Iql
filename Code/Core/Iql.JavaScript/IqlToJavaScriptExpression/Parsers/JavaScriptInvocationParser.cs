@@ -5,7 +5,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     public class JavaScriptInvocationParser : JavaScriptActionParserBase<IqlInvocationExpression>
     {
         public override IqlExpression ToQueryString(IqlInvocationExpression action,
-            JavaScriptIqlParserInstance parser)
+            JavaScriptIqlParserContext parser)
         {
             var parentOutput = action.Parent != null
                 ? parser.Parse(action.Parent

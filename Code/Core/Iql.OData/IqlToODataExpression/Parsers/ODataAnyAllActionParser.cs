@@ -5,7 +5,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 {
     public class ODataAnyAllActionParser : ODataActionParserBase<IqlAnyAllExpression>
     {
-        public override IqlExpression ToQueryString(IqlAnyAllExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlAnyAllExpression action, ODataIqlParserContext parser)
         {
             string methodName = null;
             switch (action.Kind)

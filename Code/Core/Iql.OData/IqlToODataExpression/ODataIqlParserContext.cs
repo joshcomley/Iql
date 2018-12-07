@@ -6,10 +6,10 @@ using Iql.Parsing;
 
 namespace Iql.OData.IqlToODataExpression
 {
-    public class ODataIqlParserInstance : ActionParserInstance<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput, ODataExpressionConverter>
+    public class ODataIqlParserContext : ActionParserContext<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput, ODataExpressionConverter>
     {
         private List<string> _validRootReferenceVariables = new List<string>();
-        public ODataIqlParserInstance(ODataIqlExpressionAdapter adapter, Type currentEntityType, ODataExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
+        public ODataIqlParserContext(ODataIqlExpressionAdapter adapter, Type currentEntityType, ODataExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
         {
         }
 

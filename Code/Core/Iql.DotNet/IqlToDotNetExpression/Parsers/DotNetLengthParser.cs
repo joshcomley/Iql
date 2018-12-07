@@ -15,7 +15,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
         public override IqlExpression ToQueryString(
             IqlLengthExpression action,
-            DotNetIqlParserInstance parser)
+            DotNetIqlParserContext parser)
         {
             var line = parser.Parse(action.Parent
 #if TypeScript

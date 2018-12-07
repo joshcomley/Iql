@@ -1099,8 +1099,7 @@ namespace Iql.Data.Context
                 )
                 .ReduceStaticContent(queryExpression);
 
-            var parser = new IqlToIqlParserInstance(EntityConfiguration);
-            parser.Parse(result);
+            await result.ProcessAsync(EntityConfiguration);
             return result;
         }
     }

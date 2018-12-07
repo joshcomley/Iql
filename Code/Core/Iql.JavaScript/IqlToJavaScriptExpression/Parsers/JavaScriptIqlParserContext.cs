@@ -6,9 +6,9 @@ using Iql.Parsing;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
-    public class JavaScriptIqlParserInstance : ActionParserInstance<JavaScriptIqlData, JavaScriptIqlExpressionAdapter, string, JavaScriptOutput, JavaScriptExpressionConverter>
+    public class JavaScriptIqlParserContext : ActionParserContext<JavaScriptIqlData, JavaScriptIqlExpressionAdapter, string, JavaScriptOutput, JavaScriptExpressionConverter>
     {
-        public JavaScriptIqlParserInstance(JavaScriptIqlExpressionAdapter adapter, Type currentEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
+        public JavaScriptIqlParserContext(JavaScriptIqlExpressionAdapter adapter, Type currentEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
         {
         }
 

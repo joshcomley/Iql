@@ -6,7 +6,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
     {
         public override IqlExpression ToQueryString(
             IqlLambdaExpression action,
-            DotNetStringIqlParserInstance parser)
+            DotNetStringIqlParserContext parser)
         {
             var parameters = "";
             if (action.Parameters != null)

@@ -2,7 +2,7 @@
 {
     public class ODataLambdaActionParser : ODataActionParserBase<IqlLambdaExpression>
     {
-        public override IqlExpression ToQueryString(IqlLambdaExpression action, ODataIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlLambdaExpression action, ODataIqlParserContext parser)
         {
             return new IqlFinalExpression<string>(parser.Parse(action.Body).ToCodeString());
         }

@@ -4,7 +4,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptLambdaActionParser : JavaScriptActionParserBase<IqlLambdaExpression>
     {
-        public override IqlExpression ToQueryString(IqlLambdaExpression action, JavaScriptIqlParserInstance parser)
+        public override IqlExpression ToQueryString(IqlLambdaExpression action, JavaScriptIqlParserContext parser)
         {
             var parameters = action.Parameters == null
                 ? ""
