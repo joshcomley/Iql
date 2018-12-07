@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Iql.ExpressionMethodGenerator.ConsoleApp
 {
-    public class Clone
+    public class Clone : MethodGenerator
     {
         public static void Generate()
         {
@@ -15,7 +15,7 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
             foreach (var type in iqlTypes)
             {
                 var simpleName = type.SimpleName();
-                var files = Directory.GetFiles(@"D:\Code\Brandless\Iql\Code\Core\Iql", simpleName + ".cs");
+                var files = Directory.GetFiles(ResolveIqlDirectory(), simpleName + ".cs");
                 var file = files[0];
                 var lines = File.ReadAllLines(file).ToList();
                 if (!lines.Any(l => l.Contains("public override IqlExpression Clone()")))
