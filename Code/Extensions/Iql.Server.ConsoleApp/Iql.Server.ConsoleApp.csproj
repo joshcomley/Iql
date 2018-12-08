@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10014-1-Debug" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0017-1-Debug" />
+    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0018-1-Debug" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
@@ -42,6 +42,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
     </Content>
     <Content Update="C:\Users\joshc\.nuget\packages\typesharp.core\0.0.6-preview0017-1-debug\contentFiles\any\netstandard2.0\Translation\ClassTranslationTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Update="C:\Users\joshc\.nuget\packages\typesharp.core\0.0.6-preview0018-1-debug\contentFiles\any\netstandard2.0\Translation\ClassTranslationTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </Content>
   </ItemGroup>
