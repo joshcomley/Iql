@@ -11,11 +11,12 @@ using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Relationships;
+using Iql.Entities.Services;
 using Iql.Parsing;
 
 namespace Iql.Data.Context
 {
-    public interface IDataContext
+    public interface IDataContext : IServiceProviderProvider
     {
         bool IsTracked(object entity);
         UsersManager UsersManager { get; }

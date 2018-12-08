@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Iql.Data.Extensions;
+using Iql.Entities.Services;
 using Iql.Tests.Context;
+using Iql.Tests.Tests.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
@@ -25,9 +27,51 @@ namespace Iql.Tests.Tests.Properties
                 Id = 107,
                 Name = "My client"
             });
+
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
-            Assert.AreEqual(person.CreatedByUserId, "abc");
-            Assert.AreEqual(person.ClientId, 107);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual("testuserid", person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.Unregister<TestCurrentUserResolver>();
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual("testuserid", person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual("testuserid", person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
         }
 

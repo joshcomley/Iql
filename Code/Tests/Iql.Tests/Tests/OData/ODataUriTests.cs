@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Entities.Services;
 using Iql.OData;
 using Iql.OData.Extensions;
 using Iql.Queryable;
@@ -10,6 +11,7 @@ using Iql.Parsing.Expressions;
 using Iql.Queryable.Expressions;
 #endif
 using Iql.Tests.Context;
+using Iql.Tests.Tests.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
@@ -149,8 +151,25 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-        public async Task TestLengthLiteral()
+        public async Task TestCurrentUserId()
         {
+            var query = Db.People.WhereEquals(new IqlIsEqualToExpression(
+                new IqlPropertyExpression(
+                    nameof(Person.CreatedByUserId),
+                    new IqlRootReferenceExpression()),
+                new IqlCurrentUserIdExpression()));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq null)",
+                uri);
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual($@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
+                uri);
+        }
+
+        [TestMethod]
+            public async Task TestLengthLiteral()
+            {
             var line = new IqlLineExpression(
                 new IqlPointExpression[]
                 {

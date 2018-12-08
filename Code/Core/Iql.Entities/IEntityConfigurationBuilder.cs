@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Entities.Enums;
+using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationBuilder : IEntityConfigurationContainer
+    public interface IEntityConfigurationBuilder : IEntityConfigurationContainer, IServiceProviderProvider
     {
         bool ValidateInferredWithClientSide { get; set; }
         SpecialTypeDefinition GetSpecialTypeMap(string name);

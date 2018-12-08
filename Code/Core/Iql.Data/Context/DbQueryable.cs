@@ -1099,7 +1099,7 @@ namespace Iql.Data.Context
                 )
                 .ReduceStaticContent(queryExpression);
 
-            await result.ProcessAsync(EntityConfiguration);
+            await result.ProcessAsync(EntityConfiguration, DataContext);
             return result;
         }
     }

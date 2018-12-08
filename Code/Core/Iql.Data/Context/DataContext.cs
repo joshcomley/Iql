@@ -16,6 +16,7 @@ using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
+using Iql.Entities.Services;
 using Iql.Extensions;
 using Iql.Parsing;
 
@@ -817,6 +818,21 @@ namespace Iql.Data.Context
         public bool IsTracked(object entity)
         {
             return DataStore.Tracking.IsTracked(entity);
+        }
+
+        private IqlServiceProvider _serviceProvider;
+        public IqlServiceProvider ServiceProvider
+        {
+            get
+            {
+                _serviceProvider = _serviceProvider ?? new IqlServiceProvider();
+                if (EntityConfigurationContext != null)
+                {
+                    _serviceProvider.BaseProvider = EntityConfigurationContext.ServiceProvider;
+                }
+
+                return _serviceProvider;
+            }
         }
     }
 }

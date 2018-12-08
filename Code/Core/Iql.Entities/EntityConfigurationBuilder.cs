@@ -5,6 +5,7 @@ using System.Linq;
 using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
+using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
@@ -165,6 +166,8 @@ namespace Iql.Entities
             }
             return _entities[type];
         }
+
+        public IqlServiceProvider ServiceProvider { get; } = new IqlServiceProvider();
 
         public bool ValidateInferredWithClientSide { get; set; }
 

@@ -9,6 +9,7 @@ using Iql.Data.Extensions;
 using Iql.Data.IqlToIql;
 using Iql.Entities;
 using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Services;
 
 namespace Iql.Data
 {
@@ -121,7 +122,7 @@ namespace Iql.Data
             Type entityType = null)
         {
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, entityType).Expression;
-            var processResult = await ProcessIqlExpressionAsync(iql, entity, entityType, builder);
+            var processResult = await ProcessIqlExpressionAsync(iql, entity, entityType, builder, builder);
             foreach (var item in processResult.lookup.Keys.ToArray())
             {
                 processResult.lookup[item] = item.Evaluate(entity) ?? ResolveNull(item, processResult.propertyExpressions.First(_ => _.Expression == item.Expression));
@@ -158,6 +159,7 @@ namespace Iql.Data
             return EvaluateIqlCustomAsync(
                 expression,
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(entityType),
+                dataContext,
                 entity,
                 async (e, type, propertyPath, flattenedExpression, length, i) =>
                     (await propertyPath.EvaluateAsync(e, dataContext)).Value
@@ -175,6 +177,7 @@ namespace Iql.Data
             var value = await EvaluateIqlCustomAsync(
                 expression,
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(entityType),
+                dataContext,
                 entity,
                 async (e, type, propertyPath, flattenedExpression, length, i) =>
                 {
@@ -235,6 +238,7 @@ namespace Iql.Data
         public static async Task<object> EvaluateIqlCustomAsync(
             IqlExpression expression,
             IEntityConfigurationBuilder builder,
+            IServiceProviderProvider serviceProviderProvider,
             object entity,
             Func<object, Type, IqlPropertyPath, IqlFlattenedExpression, int, int, Task<object>> evaluatorAsync,
             Type entityType = null)
@@ -244,7 +248,8 @@ namespace Iql.Data
                 expression.Clone(),
                 entity,
                 entityType,
-                builder);
+                builder,
+                serviceProviderProvider);
             var iqlPropertyPaths = processResult.lookup.Keys.ToArray();
             for (var i = 0; i < iqlPropertyPaths.Length; i++)
             {
@@ -279,9 +284,11 @@ namespace Iql.Data
             IqlExpression iql,
             object entity,
             Type entityType,
-            IEntityConfigurationBuilder builder)
+            IEntityConfigurationBuilder builder,
+            IServiceProviderProvider serviceProviderProvider)
         {
             builder = builder ?? DataContext.FindBuilderForEntityType(entityType);
+            serviceProviderProvider = serviceProviderProvider ?? builder;
             var propertyExpressions = iql.TopLevelPropertyExpressions();
             var lookup = new Dictionary<IqlPropertyPath, object>();
             if (entity is IRelationshipFilterContext)
@@ -289,7 +296,7 @@ namespace Iql.Data
                 entityType = (entity as IRelationshipFilterContext).Owner.GetType();
             }
             iql = await iql.ProcessAsync(builder.GetEntityByType(
-                entityType));
+                entityType), serviceProviderProvider);
             for (var i = 0; i < propertyExpressions.Length; i++)
             {
                 var propertyExpression = propertyExpressions[i];
@@ -332,6 +339,10 @@ namespace Iql.Data
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql);
             var compiledLambda = processedLambda.Compile();
             var result = compiledLambda.DynamicInvoke(new object[] { entity });
+            if (result is IqlLiteralExpression)
+            {
+                result = (result as IqlLiteralExpression).Value;
+            }
             return result;
         }
     }

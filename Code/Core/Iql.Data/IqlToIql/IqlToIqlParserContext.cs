@@ -3,17 +3,22 @@ using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Types;
 using Iql.Entities;
+using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 using Iql.Parsing;
 
 namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlParserContext : AsyncActionParserContext<IqlToIqlIqlData, IqlToIqlExpressionAdapter,
-        string, IqlToIqlIqlOutput, IExpressionConverter>
+        string, IqlToIqlIqlOutput, IExpressionConverter>, IServiceProviderProvider
     {
-        public IqlToIqlParserContext(IEntityConfiguration entityConfiguration) : base(
+        public IqlServiceProvider ServiceProvider { get; }
+
+        public IqlToIqlParserContext(IEntityConfiguration entityConfiguration, IqlServiceProvider serviceProvider) : base(
             new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver())
-        { }
+        {
+            ServiceProvider = serviceProvider;
+        }
 
         public override async Task<IqlToIqlIqlOutput> ParseExpressionAsync(IqlExpression expression
 #if TypeScript

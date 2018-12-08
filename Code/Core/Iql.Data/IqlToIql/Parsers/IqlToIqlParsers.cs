@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Iql.Data.Queryable;
 using Iql.Entities;
 using Iql.Entities.Extensions;
+using Iql.Entities.Services;
 
 namespace Iql.Data.IqlToIql.Parsers
 {
@@ -17,9 +18,20 @@ namespace Iql.Data.IqlToIql.Parsers
                 value = (await parser.ParseAsync(value as IqlExpression)).Expression;
             }
 
-            if (value is IqlFinalExpressionBase)
+            while (true)
             {
-                value = (value as IqlFinalExpressionBase).ResolveValue();
+                if (value is IqlFinalExpressionBase)
+                {
+                    value = (value as IqlFinalExpressionBase).ResolveValue();
+                }
+                else if (value is IqlLiteralExpression)
+                {
+                    value = (value as IqlLiteralExpression).Value;
+                }
+                else
+                {
+                    break;
+                }
             }
             action.Value = value;
             return action;
@@ -30,12 +42,23 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlSpecialValueExpression action, IqlToIqlParserContext parser)
         {
+            var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
             switch (action.Kind)
             {
                 case IqlExpressionKind.CurrentUserId:
-                    return new IqlFinalExpression<string>("abc");
+                    object currentUserId = null;
+                    if (currentUserService != null)
+                    {
+                        currentUserId = await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
+                    }
+                    return new IqlLiteralExpression(currentUserId);
                 case IqlExpressionKind.CurrentUser:
-                    return new IqlFinalExpression<object>(null);
+                    object currentUser = null;
+                    if (currentUserService != null)
+                    {
+                        currentUser = await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                    }
+                    return new IqlLiteralExpression(currentUser);
             }
             return action;
         }
@@ -347,7 +370,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     parser.Adapter.EntityConfigurationContext.EntityType<TEntity>(),
                     action.NavigationProperty);
                 action.Query = (IqlCollectitonQueryExpression)(await action.Query.ProcessAsync(parser.Adapter.EntityConfigurationContext.GetEntityByType(
-                    path.Property.TypeDefinition.ElementType)));
+                    path.Property.TypeDefinition.ElementType), parser));
             }
 
             if (property is IqlCountExpression)
