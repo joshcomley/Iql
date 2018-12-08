@@ -14,6 +14,7 @@ using Iql.Data;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.Services;
 using Iql.Extensions;
 using Iql.Server.Extensions;
 using Iql.Server.Media;
@@ -268,6 +269,11 @@ namespace Iql.Server.OData.Net
             }
         }
 
+        public virtual IServiceProviderProvider ResolveServiceProviderProvider()
+        {
+            return Builder;
+        }
+
         protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
         {
             foreach (var property in EntityConfiguration.Properties)
@@ -277,6 +283,7 @@ namespace Iql.Server.OData.Net
                     var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
                         property.InferredWithIql,
                         Builder,
+                        ResolveServiceProviderProvider(),
                         currentEntity,
                         async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
                     property.SetValue(currentEntity, evaluatedValue);
