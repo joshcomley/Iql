@@ -1604,6 +1604,14 @@ namespace IqlSampleApp.ApiContext.Base.EntityService
             }
         }
         public Type TypeOfPerson => typeof(Person);
+        private IProperty _Person_Location = null;
+        public IProperty Person_Location
+        {
+            get
+            {
+                return _Person_Location = _Person_Location ?? FindPropertyByName<Person>("Location");
+            }
+        }
         private IProperty _Person_ClientId = null;
         public IProperty Person_ClientId
         {

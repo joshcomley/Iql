@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using IqlSampleApp.Data.Entities.Bases;
+using Microsoft.AspNetCore.OData.NetTopology.Conversion;
+using Microsoft.Spatial;
+using NetTopologySuite.Geometries;
 
 namespace IqlSampleApp.Data.Entities
 {
@@ -38,5 +42,19 @@ namespace IqlSampleApp.Data.Entities
 //        public List<PersonInspection> PersonInspections { get; set; }
         public Client Client { get; set; }
         public int? ClientId { get; set; }
+
+        private PointWrapper _location;
+        public Point Location
+        {
+            get => _location;
+            set => _location = value;
+        }
+
+        [NotMapped]
+        public GeographyPoint EdmLocation
+        {
+            get => _location;
+            set => _location = value;
+        }
     }
 }

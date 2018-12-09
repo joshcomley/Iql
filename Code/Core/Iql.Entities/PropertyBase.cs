@@ -94,11 +94,17 @@ namespace Iql.Entities
             }
         }
 
-        public void SetInferredWithExpression(LambdaExpression value)
+        public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, bool onlyIfNull = false)
         {
             // This expression is lazy converted to IQL on demand
             _inferredWithExpression = value;
+            InferredWithForNewOnly = onlyIfNew;
+            InferredWithForNullOnly = onlyIfNull;
         }
+
+        public bool InferredWithForNullOnly { get; set; }
+
+        public bool InferredWithForNewOnly { get; set; }
 
         public IqlExpression InferredWithIql
         {

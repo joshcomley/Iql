@@ -11,7 +11,7 @@ namespace Iql.Entities
         IValueResolver<T> DefaultValueResolver { get; set; }
         IEntityProperty<T> UseLiteralDefaultValue(object value);
         IEntityProperty<T> UseFunctionDefaultValue(Func<T, Task<object>> resolver);
-        IEntityProperty<T> IsInferredWith(Expression<Func<T, object>> expression);
+        IEntityProperty<T> IsInferredWith(Expression<Func<T, object>> expression, bool onlyIfNew = false, bool onlyIfNull = false);
         IEntityProperty<T> Configure(Action<IEntityProperty<T>> action);
     }
 }

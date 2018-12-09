@@ -2464,6 +2464,15 @@ namespace IqlSampleApp.Data.Entities
     public class Person: PersonBase,
     IEntity
     {
+        protected IqlPointExpression _location;
+        public IqlPointExpression Location
+        {
+            get => _location;
+            set
+            {
+                PointPropertyChanger.Instance.ChangeProperty(this, "Location", _location, value, _propertyChanging, _propertyChanged, newValue => this._location = newValue);
+            }
+        }
         protected int ? _clientId;
         public int ? ClientId
         {

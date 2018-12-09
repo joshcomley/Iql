@@ -177,9 +177,9 @@ namespace Iql.Entities
             return UseFunctionDefaultValue(async owner => (TElementType) await resolver(owner));
         }
 
-        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression)
+        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, bool onlyIfNull = false)
         {
-            SetInferredWithExpression(expression);
+            SetInferredWithExpression(expression, onlyIfNew, onlyIfNull);
             return this;
         }
 
@@ -192,14 +192,14 @@ namespace Iql.Entities
             return this;
         }
 
-        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression)
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, bool onlyIfNull = false)
         {
-            return IsInferredWith(expression);
+            return IsInferredWith(expression, onlyIfNew, onlyIfNull);
         }
 
-        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression)
+        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, bool onlyIfNull = false)
         {
-            SetInferredWithExpression(expression);
+            SetInferredWithExpression(expression, onlyIfNew, onlyIfNull);
             return this;
         }
 

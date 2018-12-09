@@ -6,6 +6,7 @@ using Iql.Entities;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
@@ -21,7 +22,11 @@ namespace IqlSampleApp.Data.Configuration.Entities
             });
             model.ConfigureProperty(_ => _.CreatedByUserId, p =>
             {
-                p.IsInferredWith(_ => new IqlCurrentUserIdExpression());
+                p.IsInferredWith(_ => new IqlCurrentUserIdExpression(), true);
+            });
+            model.ConfigureProperty(_ => _.Location, p =>
+            {
+                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, true);
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,
@@ -65,6 +70,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(ODataModelBuilder builder)
         {
+            builder.MapSpatial<Person>(_ => _.EdmLocation, _ => _.Location);
             builder.EntityType<Person>()
                 .HasOptional(
                     s => s.Client,

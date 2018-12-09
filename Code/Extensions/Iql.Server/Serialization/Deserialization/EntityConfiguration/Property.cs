@@ -9,11 +9,10 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
     [DebuggerDisplay("{Name}")]
     public class Property : PropertyBase, IProperty
     {
-        public IqlExpression InferredWithIql { get; set; }
         public override Func<object, object> GetValue { get; set; }
         public override Func<object, object, object> SetValue { get; set; }
         public Dictionary<string, object> CustomInformation { get; }
-        public IProperty IsInferredWithExpression(LambdaExpression expression)
+        public IProperty IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, bool onlyIfNull = false)
         {
             SetInferredWithExpression(expression);
             return this;

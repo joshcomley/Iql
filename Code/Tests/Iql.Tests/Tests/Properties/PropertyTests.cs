@@ -12,7 +12,106 @@ namespace Iql.Tests.Tests.Properties
     public class PropertyTests : TestsBase
     {
         [TestMethod]
-        public async Task TestPopulateInferredValue()
+        public async Task PopulateNewExistingInferredWithValueTest()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 177,
+                SiteId = 87,
+                Title = "My person"
+            });
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 87,
+                Name = "My site",
+                ClientId = 107
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 107,
+                Name = "My client"
+            });
+            var person = await Db.People.GetWithKeyAsync(177);
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(null, person.Location);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(null, person.Location);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
+            Db.ServiceProvider.RegisterInstance(new TestCurrentLocationResolver());
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.Location);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            var currentLatitude = 51.5054597;
+            TestCurrentLocationResolver.CurrentLatitude = currentLatitude;
+            var currentLongitude = -0.0775452;
+            TestCurrentLocationResolver.CurrentLongitude = currentLongitude;
+            Db.ServiceProvider.Unregister<TestCurrentUserResolver>();
+
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.IsNotNull(person.Location);
+            Assert.AreEqual(TestCurrentLocationResolver.CurrentLongitude, person.Location.X);
+            Assert.AreEqual(TestCurrentLocationResolver.CurrentLatitude, person.Location.Y);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+            var location = person.Location;
+
+            TestCurrentLocationResolver.CurrentLatitude = 41.5054597;
+            TestCurrentLocationResolver.CurrentLongitude = -1.0775452;
+
+            Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(location, person.Location);
+            Assert.AreEqual(currentLongitude, person.Location.X);
+            Assert.AreEqual(currentLatitude, person.Location.Y);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(location, person.Location);
+            Assert.AreEqual(currentLongitude, person.Location.X);
+            Assert.AreEqual(currentLatitude, person.Location.Y);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            person.Location = null;
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.IsNotNull(person.Location);
+            Assert.AreEqual(TestCurrentLocationResolver.CurrentLongitude, person.Location.X);
+            Assert.AreEqual(TestCurrentLocationResolver.CurrentLatitude, person.Location.Y);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.IsNotNull(person.Location);
+            Assert.AreEqual(TestCurrentLocationResolver.CurrentLongitude, person.Location.X);
+            Assert.AreEqual(TestCurrentLocationResolver.CurrentLatitude, person.Location.Y);
+            Assert.AreEqual(107, person.ClientId);
+            Assert.IsNotNull(person.Client);
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            Db.ServiceProvider.Unregister<IqlCurrentLocationService>();
+        }
+
+        [TestMethod]
+        public async Task PopulateNewEntityInferredWithValueTest()
         {
             var person = new Person();
             person.SiteId = 87;
@@ -73,6 +172,8 @@ namespace Iql.Tests.Tests.Properties
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            Db.ServiceProvider.Unregister<IqlCurrentLocationService>();
         }
 
         [TestMethod]
