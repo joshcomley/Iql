@@ -58,6 +58,6 @@ namespace Iql.Entities
         Func<object, object, object> SetValue { get; }
         Dictionary<string, object> CustomInformation { get; }
         IProperty SetNullable(bool nullable = true);
-        IProperty IsInferredWithExpression(LambdaExpression expression);
+        IProperty IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, bool onlyIfNull = false);
     }
 }

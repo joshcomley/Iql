@@ -38,28 +38,58 @@ namespace Iql.Data.IqlToIql.Parsers
         }
     }
 
+    //public class IqlToIqlDistanceParser : IqlToIqlActionParserBase<IqlDistanceExpression>
+    //{
+    //    public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlDistanceExpression action, IqlToIqlParserContext parser)
+    //    {
+    //        action.Right = (await parser.ParseAsync(action.Right)).Expression;
+    //        action.Left = (await parser.ParseAsync(action.Left)).Expression;
+    //        if (action.Right == null || action.Left == null)
+    //        {
+    //            return null;
+    //        }
+    //        return action;
+    //    }
+    //}
+
     public class IqlToIqlSpecialValueParser : IqlToIqlActionParserBase<IqlSpecialValueExpression>
     {
-        public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlSpecialValueExpression action, IqlToIqlParserContext parser)
+        public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlSpecialValueExpression action,
+            IqlToIqlParserContext parser)
         {
-            var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
             switch (action.Kind)
             {
+                case IqlExpressionKind.CurrentLocation:
+                    {
+                        var currentLocationService = parser.ServiceProvider.Resolve<IqlCurrentLocationService>();
+                        if (currentLocationService != null)
+                        {
+                            return new IqlLiteralExpression(await currentLocationService.ResolveCurrentLocationAsync(parser.ServiceProvider));
+                        }
+                        return null;
+                    }
                 case IqlExpressionKind.CurrentUserId:
-                    object currentUserId = null;
-                    if (currentUserService != null)
                     {
-                        currentUserId = await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
+                        var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
+                        object currentUserId = null;
+                        if (currentUserService != null)
+                        {
+                            currentUserId = await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
+                        }
+                        return new IqlLiteralExpression(currentUserId);
                     }
-                    return new IqlLiteralExpression(currentUserId);
                 case IqlExpressionKind.CurrentUser:
-                    object currentUser = null;
-                    if (currentUserService != null)
                     {
-                        currentUser = await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                        var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
+                        object currentUser = null;
+                        if (currentUserService != null)
+                        {
+                            currentUser = await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                        }
+                        return new IqlLiteralExpression(currentUser);
                     }
-                    return new IqlLiteralExpression(currentUser);
             }
+
             return action;
         }
     }
@@ -219,14 +249,14 @@ namespace Iql.Data.IqlToIql.Parsers
 
             action.Left = (await parser.ParseAsync(action.Left)).Expression;
             action.Right = (await parser.ParseAsync(action.Right)).Expression;
-
+            var canSimplify = action.Kind == IqlExpressionKind.Or || action.Kind == IqlExpressionKind.And;
             if (action.Left == null && action.Right != null)
             {
-               return action.Right;
+                return canSimplify ? action.Right : null;
             }
             if (action.Left != null && action.Right == null)
             {
-                return action.Left;
+                return canSimplify ? action.Left : null;
             }
             if (action.Left == null && action.Right == null)
             {

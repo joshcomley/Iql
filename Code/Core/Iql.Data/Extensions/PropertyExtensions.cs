@@ -28,6 +28,16 @@ namespace Iql.Data.Extensions
         {
             if (property.HasInferredWith)
             {
+                if (property.InferredWithForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
+                {
+                    return;
+                }
+
+                if (property.InferredWithForNullOnly && property.GetValue(entity) != null)
+                {
+                    return;
+                }
+
                 var inferredWithIql = property.InferredWithIql;
                 var value = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
                 property.SetValue(entity, value);

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Brandless.ObjectSerializer;
+using Iql.DotNet.Serialization;
 using Iql.Entities.Services;
 using Iql.OData;
 using Iql.OData.Extensions;
@@ -165,6 +168,128 @@ namespace Iql.Tests.Tests.OData
             uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual($@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
                 uri);
+        }
+
+        [TestMethod]
+        public async Task TestCurrentLocation()
+        {
+            //            var point = new IqlPointExpression(2, 1);
+            //            var query = Db.People.Where(site => site.Location.DistanceFrom(point) < 500
+            //#if TypeScript
+            //                    , 
+            //                    new EvaluateContext
+            //                    {
+            //                        Context = this,
+            //                        Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+            //                    }
+            //#endif
+            //            );
+            //            var iql = await query.ToIqlAsync();
+            //            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            //            var xml = new CSharpObjectSerializer().Serialize(iql).Initialiser;
+            //            var iql2 = new IqlDataSetQueryExpression
+            //            {
+            //                DataSet = new IqlDataSetReferenceExpression
+            //                {
+            //                    Name = "People",
+            //                    Kind = IqlExpressionKind.DataSetReference,
+            //                    ReturnType = IqlType.Collection
+            //                },
+            //                Filter = new IqlLambdaExpression
+            //                {
+            //                    Body = new IqlIsLessThanExpression
+            //                    {
+            //                        Left = new IqlDistanceExpression
+            //                        {
+            //                            Srid = 4326,
+            //                            Left = new IqlPropertyExpression
+            //                            {
+            //                                PropertyName = "Location",
+            //                                Kind = IqlExpressionKind.Property,
+            //                                ReturnType = IqlType.Unknown,
+            //                                Parent = new IqlRootReferenceExpression
+            //                                {
+            //                                    EntityTypeName = "Person",
+            //                                    VariableName = "site",
+            //                                    InferredReturnType = IqlType.Unknown,
+            //                                    Kind = IqlExpressionKind.RootReference,
+            //                                    ReturnType = IqlType.Unknown
+            //                                }
+            //                            },
+            //                            Right = new IqlLiteralExpression
+            //                            {
+            //                                Value = new IqlPointExpression
+            //                                {
+            //                                    X = 2,
+            //                                    Y = 1,
+            //                                    Srid = 4326,
+            //                                    Kind = IqlExpressionKind.GeoPoint,
+            //                                    ReturnType = IqlType.GeographyPoint
+            //                                },
+            //                                InferredReturnType = IqlType.GeographyPoint,
+            //                                Kind = IqlExpressionKind.Literal,
+            //                                ReturnType = IqlType.GeographyPoint
+            //                            },
+            //                            Kind = IqlExpressionKind.Distance,
+            //                            ReturnType = IqlType.Decimal
+            //                        },
+            //                        Right = new IqlLiteralExpression
+            //                        {
+            //                            Value = 500,
+            //                            InferredReturnType = IqlType.Decimal,
+            //                            Kind = IqlExpressionKind.Literal,
+            //                            ReturnType = IqlType.Decimal
+            //                        },
+            //                        Kind = IqlExpressionKind.IsLessThan,
+            //                        ReturnType = IqlType.Unknown
+            //                    },
+            //                    Parameters = new List<IqlRootReferenceExpression>
+            //                    {
+            //                        new IqlRootReferenceExpression
+            //                        {
+            //                            EntityTypeName = "Person",
+            //                            VariableName = "site",
+            //                            InferredReturnType = IqlType.Unknown,
+            //                            Kind = IqlExpressionKind.RootReference,
+            //                            ReturnType = IqlType.Unknown
+            //                        }
+            //                    },
+            //                    Kind = IqlExpressionKind.Lambda,
+            //                    ReturnType = IqlType.Unknown
+            //                },
+            //                Parameters = new List<IqlRootReferenceExpression>
+            //                {
+            //                    new IqlRootReferenceExpression
+            //                    {
+            //                        EntityTypeName = "Person",
+            //                        InferredReturnType = IqlType.Unknown,
+            //                        Kind = IqlExpressionKind.RootReference,
+            //                        ReturnType = IqlType.Unknown
+            //                    }
+            //                },
+            //                Kind = IqlExpressionKind.DataSetQuery,
+            //                ReturnType = IqlType.Class
+            //            };
+            var query = Db.People.WhereEquals(new IqlIsLessThanExpression(
+                new IqlDistanceExpression(
+                    new IqlPropertyExpression(
+                        nameof(Person.Location),
+                        new IqlRootReferenceExpression()),
+                    new IqlCurrentLocationExpression()),
+                new IqlLiteralExpression(500)));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/People", uri);
+            Db.ServiceProvider.RegisterInstance<IqlCurrentLocationService>(new TestCurrentLocationResolver());
+            var currentLatitude = 51.5054597;
+            TestCurrentLocationResolver.CurrentLatitude = currentLatitude;
+            var currentLongitude = -0.0775452;
+            TestCurrentLocationResolver.CurrentLongitude = currentLongitude;
+            uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/People?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(-0.077545 51.50546)') lt 500)",
+                uri);
+            TestCurrentLocationResolver.CurrentLatitude = null;
+            TestCurrentLocationResolver.CurrentLongitude = null;
+            Db.ServiceProvider.Unregister<IqlCurrentLocationService>();
         }
 
         [TestMethod]

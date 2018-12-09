@@ -822,6 +822,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             }
                         }
                     }
+
                     if (metadata is IRelationshipDetailMetadata &&
                         metadataProperty.Name == nameof(IRelationshipDetail.ValueMappings))
                     {
@@ -988,11 +989,6 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                     }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumOrNullableEnum())
                     {
-                        if (metadataProperty.PropertyType == typeof(PropertyReadKind) &&
-                            Equals(value, PropertyReadKind.Hidden))
-                        {
-                            int a = 0;
-                        }
                         if (EnumExtensions.IsValidEnumValue(value))
                         {
                             if (!IsDefaultValue(metadataProperty, value, metadataSolidType))

@@ -70,6 +70,7 @@ namespace Iql
         Distance = 66,
         GeoRing = 67,
         CurrentUser = 68,
-        CurrentUserId = 69
+        CurrentUserId = 69,
+        CurrentLocation = 70
     }
 }

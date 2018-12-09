@@ -27,7 +27,9 @@ namespace Iql.Entities
         string PropertyName { get; set; }
         bool Searchable { get; set; }
         bool? Nullable { get; set; }
-        void SetInferredWithExpression(LambdaExpression value);
+        void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, bool onlyIfNull = false);
         IqlExpression InferredWithIql { get; set; }
-    }
+        bool InferredWithForNewOnly { get; set; }
+        bool InferredWithForNullOnly { get; set; }
+}
 }

@@ -283,6 +283,8 @@ namespace Iql
                     return typeof(IqlCurrentUserExpression);
                 case IqlExpressionKind.CurrentUserId:
                     return typeof(IqlCurrentUserIdExpression);
+                case IqlExpressionKind.CurrentLocation:
+                    return typeof(IqlCurrentLocationExpression);
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }

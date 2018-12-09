@@ -1941,7 +1941,42 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "RiskAssessmentQuestion";
                 p.FriendlyName = "Risk Assessment Question";
             });
-            builder.EntityType<Person>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.ClientId, true, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
+            builder.EntityType<Person>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
+                p.PropertyName = "Location";
+                p.Nullable = true;
+                p.InferredWithIql = new IqlLambdaExpression
+                {
+                    Body = new IqlLiteralExpression
+                    {
+                        Value = new IqlCurrentLocationExpression
+                        {
+                            Kind = IqlExpressionKind.CurrentLocation,
+                            ReturnType = IqlType.Unknown
+                        },
+                        InferredReturnType = IqlType.Unknown,
+                        Kind = IqlExpressionKind.Literal,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "Person",
+                            VariableName = "_",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                };
+                p.InferredWithForNullOnly = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Location";
+                p.Title = "Location";
+                p.FriendlyName = "Location";
+            }).DefineProperty(p => p.ClientId, true, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
                 p.PropertyName = "ClientId";
                 p.Nullable = true;
                 p.Kind = PropertyKind.RelationshipKey;
@@ -2014,6 +2049,7 @@ namespace IqlSampleApp.ApiContext.Base
                     Kind = IqlExpressionKind.Lambda,
                     ReturnType = IqlType.Unknown
                 };
+                p.InferredWithForNewOnly = true;
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
