@@ -249,7 +249,7 @@ namespace Iql.Entities
         {
             get
             {
-                if (HasInferredWith)
+                if (HasInferredWith && !InferredWithForNewOnly && !InferredWithForNullOnly)
                 {
                     return true;
                 }
