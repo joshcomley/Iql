@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlNowExpression : IqlExpression
+    public class IqlNowExpression : IqlSpecialValueExpression
     {
-        public IqlNowExpression() : base(IqlExpressionKind.Now, IqlType.Date)
+        public IqlNowExpression() : base(IqlExpressionKind.Now)
         {
+            ReturnType = IqlType.Date;
         }
 
 		public override IqlExpression Clone()

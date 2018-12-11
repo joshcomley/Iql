@@ -5,6 +5,7 @@ using System.Reflection;
 using Brandless.Data.Contracts;
 using Brandless.Data.Entities;
 using Iql.Entities;
+using Iql.Entities.InferredValues;
 using Iql.Entities.NestedSets;
 using Microsoft.AspNetCore.Identity;
 
@@ -57,7 +58,7 @@ namespace Iql.Server
 
                 foreach (var methodInfo in methodInfos)
                 {
-                    methodInfo.Invoke(this, new object[] {builder});
+                    methodInfo.Invoke(this, new object[] { builder });
                 }
 
                 var entityConfiguration = builder.GetEntityByType(entityType);
@@ -87,7 +88,11 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                config.ConfigureProperty(p => p.CreatedDate, p => p.SetReadOnly());
+                config.ConfigureProperty(p => p.CreatedDate, p =>
+                {
+                    p.SetReadOnly();
+                    p.IsInferredWith(_ => new IqlNowExpression(), true, InferredValueMode.IfNullOrEmpty);
+                });
                 config.DefaultSortExpression = nameof(ICreatedDate.CreatedDate);
                 config.DefaultSortDescending = true;
             });
@@ -102,7 +107,11 @@ namespace Iql.Server
                 config.ConfigureProperty(p => p.Id, p => p.SetReadOnly());
                 config.ConfigureProperty(p => p.CreatedDate, p => p.SetReadOnly());
                 config.ConfigureProperty(p => p.CreatedByUser, p => p.SetReadOnly());
-                config.ConfigureProperty(p => p.CreatedByUserId, p => p.SetReadOnly());
+                config.ConfigureProperty(p => p.CreatedByUserId, p =>
+                {
+                    p.IsInferredWith(_ => new IqlCurrentUserIdExpression(), true, InferredValueMode.IfNullOrEmpty);
+                    p.SetReadOnly();
+                });
                 config.ConfigureProperty(p => p.Guid, p => p.SetHidden());
                 config.ConfigureProperty(p => p.PersistenceKey, p => p.SetReadOnlyAndHidden());
             });

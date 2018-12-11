@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 
@@ -15,6 +16,16 @@ namespace Iql.Entities.Extensions
 
         public static bool IsDefaultValue(this object value, ITypeDefinition type)
         {
+            if (type.ToIqlType() == IqlType.Date)
+            {
+                if (Equals(value, null))
+                {
+                    return true;
+                }
+                var defaultDate = (DateTimeOffset)type.DefaultValue();
+                var date = (DateTimeOffset) value;
+                return defaultDate.Ticks == date.Ticks;
+            }
             return Equals(value, null) || Equals(type.DefaultValue(), value);
         }
 

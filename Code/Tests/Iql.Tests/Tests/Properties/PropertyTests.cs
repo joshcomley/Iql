@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Iql.Data.Extensions;
 using Iql.Entities.Services;
 using Iql.Tests.Context;
@@ -128,6 +129,7 @@ namespace Iql.Tests.Tests.Properties
             });
 
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.IsTrue(person.CreatedDate > DateTimeOffset.Now.AddSeconds(-10));
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(null, person.Description);
             Assert.AreEqual(107, person.ClientId);
@@ -148,7 +150,7 @@ namespace Iql.Tests.Tests.Properties
 
             Db.ServiceProvider.Unregister<TestCurrentUserResolver>();
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
-            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
@@ -160,7 +162,7 @@ namespace Iql.Tests.Tests.Properties
 
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
-            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
@@ -172,7 +174,7 @@ namespace Iql.Tests.Tests.Properties
 
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
-            Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();

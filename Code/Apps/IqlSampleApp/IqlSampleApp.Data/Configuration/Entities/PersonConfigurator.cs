@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql;
 using Iql.Entities;
+using Iql.Entities.InferredValues;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
@@ -22,13 +23,9 @@ namespace IqlSampleApp.Data.Configuration.Entities
             });
             model.ConfigureProperty(_ => _.Description,
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.Category == PersonCategory.AutoDescription); });
-            model.ConfigureProperty(_ => _.CreatedByUserId, p =>
-            {
-                p.IsInferredWith(_ => new IqlCurrentUserIdExpression(), true);
-            });
             model.ConfigureProperty(_ => _.Location, p =>
             {
-                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, true);
+                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueMode.IfNull);
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,

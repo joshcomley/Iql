@@ -79,15 +79,15 @@ namespace Iql.Data.IqlToIql.Parsers
                         return new IqlLiteralExpression(currentUserId);
                     }
                 case IqlExpressionKind.CurrentUser:
+                {
+                    var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
+                    object currentUser = null;
+                    if (currentUserService != null)
                     {
-                        var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
-                        object currentUser = null;
-                        if (currentUserService != null)
-                        {
-                            currentUser = await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
-                        }
-                        return new IqlLiteralExpression(currentUser);
+                        currentUser = await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
                     }
+                    return new IqlLiteralExpression(currentUser);
+                }
             }
 
             return action;

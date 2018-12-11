@@ -485,7 +485,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Client",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -555,7 +589,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Client",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -688,7 +756,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "DocumentCategory",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -717,7 +819,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "DocumentCategory",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -798,7 +934,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "SiteDocument",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -836,7 +1006,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "SiteDocument",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -919,7 +1123,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportActionsTaken",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -957,7 +1195,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportActionsTaken",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1032,7 +1304,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportCategory",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1061,7 +1367,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportCategory",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1135,7 +1475,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportDefaultRecommendation",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1173,7 +1547,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportDefaultRecommendation",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1254,7 +1662,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportRecommendation",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1292,7 +1734,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportRecommendation",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1384,7 +1860,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportType",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1424,7 +1934,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportType",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1487,7 +2031,41 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Project>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Project",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1534,7 +2112,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Project",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1599,7 +2211,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportReceiverEmailAddress",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1637,7 +2283,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "ReportReceiverEmailAddress",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1720,7 +2400,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessment",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1740,7 +2454,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessment",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1822,7 +2570,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessmentSolution",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1851,7 +2633,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessmentSolution",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -1925,7 +2741,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessmentAnswer",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -1972,7 +2822,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessmentAnswer",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -2047,7 +2931,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessmentQuestion",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -2076,7 +2994,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "RiskAssessmentQuestion",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -2145,8 +3097,8 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        InferredWithForNullOnly = true,
-                        InferredWithForNewOnly = false,
+                        Mode = InferredValueMode.IfNull,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
@@ -2236,8 +3188,8 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        InferredWithForNullOnly = false,
-                        InferredWithForNewOnly = true,
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
@@ -2298,8 +3250,8 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        InferredWithForNullOnly = false,
-                        InferredWithForNewOnly = false,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithConditionIql = new IqlLambdaExpression
                         {
                             Body = new IqlIsEqualToExpression
@@ -2403,7 +3355,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Person",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -2443,8 +3429,8 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        InferredWithForNullOnly = false,
-                        InferredWithForNewOnly = false,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlPropertyExpression
@@ -2572,7 +3558,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonInspection",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -2658,7 +3678,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonInspection",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -2733,7 +3787,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonLoading",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -2762,7 +3850,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonLoading",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -2836,7 +3958,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonType",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -2865,7 +4021,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonType",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -2983,7 +4173,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonTypeMap",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -3046,7 +4270,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonReport",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -3083,7 +4341,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "PersonReport",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -3223,7 +4515,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Site",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -3237,8 +4563,8 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        InferredWithForNullOnly = false,
-                        InferredWithForNewOnly = false,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlAddExpression
@@ -3363,7 +4689,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Site",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -3511,7 +4871,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "SiteArea",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -3531,7 +4925,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "SiteArea",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
@@ -3622,7 +5050,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "SiteInspection",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
@@ -3658,7 +5120,41 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
                 p.PropertyName = "CreatedDate";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "SiteInspection",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.MarkedReadOnly = true;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";

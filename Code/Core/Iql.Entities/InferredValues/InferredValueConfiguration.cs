@@ -11,8 +11,8 @@ namespace Iql.Entities.InferredValues
         }
         public IPropertyMetadata Property { get; set; }
         public string Key { get; set; }
-        public bool InferredWithForNullOnly { get; set; }
-        public bool InferredWithForNewOnly { get; set; }
+        public InferredValueMode Mode { get; set; } = InferredValueMode.Always;
+        public bool ForNewOnly { get; set; }
 
         private LambdaExpression _inferredWithExpression;
         private LambdaExpression _inferredWithConditionExpression;
@@ -59,12 +59,13 @@ namespace Iql.Entities.InferredValues
             }
         }
 
-        public IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, bool onlyIfNull = false)
+        public IInferredValueConfiguration SetInferredWithExpression(
+            LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
         {
             // This expression is lazy converted to IQL on demand
             _inferredWithExpression = value;
-            InferredWithForNewOnly = onlyIfNew;
-            InferredWithForNullOnly = onlyIfNull;
+            ForNewOnly = onlyIfNew;
+            Mode = mode;
             return this;
         }
 

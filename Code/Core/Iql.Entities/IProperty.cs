@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Entities.Events;
 using Iql.Entities.Geography;
+using Iql.Entities.InferredValues;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
@@ -59,6 +60,6 @@ namespace Iql.Entities
         Func<object, object, object> SetValue { get; }
         Dictionary<string, object> CustomInformation { get; }
         IProperty SetNullable(bool nullable = true);
-        IProperty IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, bool onlyIfNull = false);
+        IProperty IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always);
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Entities.InferredValues;
 using Iql.Entities.ValueResolvers;
 using Iql.Extensions;
 
@@ -177,9 +178,9 @@ namespace Iql.Entities
             return UseFunctionDefaultValue(async owner => (TElementType) await resolver(owner));
         }
 
-        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, bool onlyIfNull = false)
+        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
         {
-            SetInferredWithExpression(expression, onlyIfNew, onlyIfNull);
+            SetInferredWithExpression(expression, onlyIfNew, mode);
             return this;
         }
 
@@ -199,9 +200,9 @@ namespace Iql.Entities
             return this;
         }
 
-        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, bool onlyIfNull = false)
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
         {
-            return IsInferredWith(expression, onlyIfNew, onlyIfNull);
+            return IsInferredWith(expression, onlyIfNew, mode);
         }
 
         IEntityProperty<TOwner> IEntityProperty<TOwner>.IsConditionallyInferredWith(Expression<Func<TOwner, object>> expression, Expression<Func<TOwner, bool>> condition)
@@ -209,9 +210,9 @@ namespace Iql.Entities
             return IsConditionallyInferredWith(expression, condition);
         }
 
-        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, bool onlyIfNull = false)
+        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
         {
-            SetInferredWithExpression(expression, onlyIfNew, onlyIfNull);
+            SetInferredWithExpression(expression, onlyIfNew, mode);
             return this;
         }
 

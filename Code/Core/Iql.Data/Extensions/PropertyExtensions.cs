@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Entities;
+using Iql.Entities.Extensions;
+using Iql.Entities.InferredValues;
 using Iql.Extensions;
 
 namespace Iql.Data.Extensions
@@ -37,12 +39,19 @@ namespace Iql.Data.Extensions
                             return;
                         }
                     }
-                    if (inferredWith.InferredWithForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
+                    if (inferredWith.ForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
                     {
                         return;
                     }
 
-                    if (inferredWith.InferredWithForNullOnly && property.GetValue(entity) != null)
+                    if (inferredWith.Mode == InferredValueMode.IfNull && property.GetValue(entity) != null)
+                    {
+                        return;
+                    }
+
+                    if (inferredWith.Mode == InferredValueMode.IfNullOrEmpty &&
+                        property.GetValue(entity) != null &&
+                        !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {
                         return;
                     }

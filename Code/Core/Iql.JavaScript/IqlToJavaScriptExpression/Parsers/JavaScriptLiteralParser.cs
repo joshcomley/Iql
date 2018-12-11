@@ -22,6 +22,11 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         {
             if (action.Value != null && action.Value is IqlExpression)
             {
+                var exp = action.Value as IqlExpression;
+                if (exp.Kind == IqlExpressionKind.Now)
+                {
+                    return new IqlFinalExpression<string>("new Date()");
+                }
                 return new IqlFinalExpression<string>(
                     "JSON.parse(`" + JsonConvert.SerializeObject(action.Value) + "`)");
             }

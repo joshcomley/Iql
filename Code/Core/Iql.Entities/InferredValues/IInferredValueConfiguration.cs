@@ -8,10 +8,10 @@ namespace Iql.Entities.InferredValues
         string Key { get; set; }
         IqlExpression InferredWithIql { get; set; }
         IqlExpression InferredWithConditionIql { get; set; }
-        bool InferredWithForNewOnly { get; set; }
-        bool InferredWithForNullOnly { get; set; }
+        bool ForNewOnly { get; set; }
+        InferredValueMode Mode { get; set; }
         bool HasCondition { get; }
-        IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, bool onlyIfNull = false);
+        IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always);
         IInferredValueConfiguration SetConditionallyInferredWithExpression(LambdaExpression expression, LambdaExpression condition);
     }
 }
