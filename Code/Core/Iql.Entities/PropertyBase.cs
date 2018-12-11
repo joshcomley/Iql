@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Conversion;
+using Iql.Entities.InferredValues;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 
@@ -94,73 +95,39 @@ namespace Iql.Entities
             }
         }
 
+        public IList<IInferredValueConfiguration> InferredValueConfigurations
+        {
+            get => _inferredValueConfigurations;
+            set
+            {
+                _inferredValueConfigurations = value;
+                if (value != null)
+                {
+                    for (var i = 0; i < value.Count; i++)
+                    {
+                        var item = value[i];
+                        item.Property = this;
+                    }
+                }
+            }
+        }
+
         public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, bool onlyIfNull = false)
         {
-            // This expression is lazy converted to IQL on demand
-            _inferredWithExpression = value;
-            InferredWithForNewOnly = onlyIfNew;
-            InferredWithForNullOnly = onlyIfNull;
+            InferredValueConfigurations.Add(new InferredValueConfiguration(this)
+                .SetInferredWithExpression(value, onlyIfNew, onlyIfNull));
         }
 
         public void SetConditionallyInferredWithExpression(
             LambdaExpression expression, LambdaExpression condition)
         {
-            _inferredWithExpression = expression;
-            _inferredWithConditionExpression = condition;
-        }
-
-        public bool InferredWithForNullOnly { get; set; }
-
-        public bool InferredWithForNewOnly { get; set; }
-
-        private LambdaExpression _inferredWithExpression;
-        private LambdaExpression _inferredWithConditionExpression;
-        private IqlExpression _inferredWithConditionIql;
-        private IqlExpression _inferredWithIql;
-
-        public IqlExpression InferredWithConditionIql
-        {
-            get
-            {
-                // Lazy convert the expression
-                if (_inferredWithConditionExpression != null)
-                {
-                    _inferredWithConditionIql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
-                        _inferredWithConditionExpression, EntityConfiguration.Type).Expression;
-                    _inferredWithConditionExpression = null;
-                }
-                return _inferredWithConditionIql;
-            }
-            set
-            {
-                _inferredWithConditionExpression = null;
-                _inferredWithConditionIql = value;
-            }
-        }
-
-        public IqlExpression InferredWithIql
-        {
-            get
-            {
-                // Lazy convert the expression
-                if (_inferredWithExpression != null)
-                {
-                    _inferredWithIql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
-                        _inferredWithExpression, EntityConfiguration.Type).Expression;
-                    _inferredWithExpression = null;
-                }
-                return _inferredWithIql;
-            }
-            set
-            {
-                _inferredWithExpression = null;
-                _inferredWithIql = value;
-            }
+            InferredValueConfigurations.Add(new InferredValueConfiguration(this)
+                .SetConditionallyInferredWithExpression(expression, condition));
         }
 
         // Help avoid triggering lazy evaluation of inferred IQL expression
-        public bool HasInferredWith => _inferredWithExpression != null || _inferredWithIql != null;
-        public bool HasInferredWithCondition => _inferredWithConditionExpression != null || _inferredWithConditionIql != null;
+        public bool HasInferredWith => InferredValueConfigurations.Any();
+        public bool HasInferredWithCondition => InferredValueConfigurations.Any(_ => _.HasCondition);
 
         //private LambdaExpression _inferredWithPathResolvedWith;
         //private IqlPropertyPath _inferredWithPath;
@@ -223,6 +190,7 @@ namespace Iql.Entities
         private bool _searchKindSet;
         private bool? _readOnly;
         private EntityRelationship _relationship;
+        private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
 
         public PropertySearchKind SearchKind
         {
@@ -280,10 +248,11 @@ namespace Iql.Entities
         {
             get
             {
-                if (HasInferredWith && !InferredWithForNewOnly && !InferredWithForNullOnly)
-                {
-                    return true;
-                }
+                // TODO: x1 Resolve whether this is read only (async?)
+                //if (HasInferredWith && !InferredWithForNewOnly && !InferredWithForNullOnly)
+                //{
+                //    return true;
+                //}
                 if (Kind.HasFlag(PropertyKind.Relationship) &&
                     Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
                 {

@@ -21,6 +21,7 @@ using Iql.Data.Lists;
 using Iql.Data.Methods;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Entities.InferredValues;
 using Iql.Entities.Metadata;
 using Iql.Entities.PropertyChangers;
 using Iql.Entities.Relationships;
@@ -160,6 +161,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(DisplayRuleAppliesToKind),
                 typeof(EntityManageKind),
                 typeof(HelpTextKind),
+                typeof(IInferredValueConfiguration),
+                typeof(InferredValueConfiguration),
                 typeof(HelpText),
                 typeof(IqlPointExpression),
                 typeof(IqlMultiPointExpression),

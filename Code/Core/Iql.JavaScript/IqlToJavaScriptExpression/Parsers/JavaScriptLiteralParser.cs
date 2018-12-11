@@ -35,9 +35,15 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 if (action.Value != null)
                 {
                     // ReSharper disable once RedundantCast
+#if !TypeScript
+                    str = Regex.Replace(str, @"\\", @"\\\\");
+                    str = Regex.Replace(str, @"'", @"\\\\'");
+                    str = Regex.Replace(str, @"""", @"\\\""");
+#else
                     str = Regex.Replace(str, (string)"\\", @"\\");
                     str = Regex.Replace(str, @"'", @"\'");
                     str = Regex.Replace(str, @"""", @"\""");
+#endif
                     return new IqlAggregateExpression(
                         new IqlFinalExpression<string>("'"),
                         new IqlFinalExpression<string>(str),

@@ -4,6 +4,7 @@ using System.Linq;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Geography;
+using Iql.Entities.InferredValues;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
@@ -38,6 +39,12 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             if (typeof(IEntityConfiguration).IsAssignableFrom(type))
             {
                 return base.CreateProperties(typeof(IEntityMetadata), memberSerialization);
+            }
+            if (typeof(IInferredValueConfiguration).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(typeof(IInferredValueConfiguration), memberSerialization)
+                    .Where(p => p.PropertyName != nameof(IInferredValueConfiguration.Property))
+                    .ToList();
             }
             if (typeof(IProperty).IsAssignableFrom(type))
             {

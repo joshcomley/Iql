@@ -26,53 +26,57 @@ namespace Iql.Data.Extensions
         {
             if (property.HasInferredWith)
             {
-                if (property.HasInferredWithCondition)
+                for (var i = 0; i < property.InferredValueConfigurations.Count; i++)
                 {
-                    var conditionResult = await property.InferredWithConditionIql.EvaluateIqlAsync(entity, dataContext);
-                    if (!Equals(conditionResult, true))
+                    var inferredWith = property.InferredValueConfigurations[i];
+                    if (inferredWith.HasCondition)
+                    {
+                        var conditionResult = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(entity, dataContext);
+                        if (!Equals(conditionResult, true))
+                        {
+                            return;
+                        }
+                    }
+                    if (inferredWith.InferredWithForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
                     {
                         return;
                     }
-                }
-                if (property.InferredWithForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
-                {
-                    return;
-                }
 
-                if (property.InferredWithForNullOnly && property.GetValue(entity) != null)
-                {
-                    return;
-                }
-
-                var inferredWithIql = property.InferredWithIql;
-                var value = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
-                property.SetValue(entity, value);
-                if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
-                {
-                    if (value != null)
+                    if (inferredWith.InferredWithForNullOnly && property.GetValue(entity) != null)
                     {
-                        var compositeKey = property.Relationship.ThisEnd.GetCompositeKey(
-                            entity,
+                        return;
+                    }
+
+                    var inferredWithIql = inferredWith.InferredWithIql;
+                    var value = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
+                    property.SetValue(entity, value);
+                    if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                    {
+                        if (value != null)
+                        {
+                            var compositeKey = property.Relationship.ThisEnd.GetCompositeKey(
+                                entity,
+                                true);
+                            var dbSet = dataContext.GetDbSetByEntityType(
+                                property.Relationship.OtherEnd.Type);
+                            var relatedEntity = await dbSet.GetWithKeyAsync(compositeKey);
+                            property.Relationship.ThisEnd.Property.SetValue(entity, relatedEntity);
+                        }
+                        else
+                        {
+                            property.Relationship.ThisEnd.Property.SetValue(entity, null);
+                        }
+                    }
+                    if (property.Kind.HasFlag(PropertyKind.Relationship))
+                    {
+                        var compositeKey = property.Relationship.OtherEnd.GetCompositeKey(
+                            value,
                             true);
-                        var dbSet = dataContext.GetDbSetByEntityType(
-                            property.Relationship.OtherEnd.Type);
-                        var relatedEntity = await dbSet.GetWithKeyAsync(compositeKey);
-                        property.Relationship.ThisEnd.Property.SetValue(entity, relatedEntity);
-                    }
-                    else
-                    {
-                        property.Relationship.ThisEnd.Property.SetValue(entity, null);
-                    }
-                }
-                if (property.Kind.HasFlag(PropertyKind.Relationship))
-                {
-                    var compositeKey = property.Relationship.OtherEnd.GetCompositeKey(
-                        value,
-                        true);
-                    for (var i = 0; i < compositeKey.Keys.Length; i++)
-                    {
-                        var key = compositeKey.Keys[i];
-                        entity.SetPropertyValueByName(key.Name, key.Value);
+                        for (var j = 0; j < compositeKey.Keys.Length; j++)
+                        {
+                            var key = compositeKey.Keys[j];
+                            entity.SetPropertyValueByName(key.Name, key.Value);
+                        }
                     }
                 }
             }

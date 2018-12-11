@@ -6,6 +6,7 @@ using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Enums;
 using Iql.Entities.Geography;
+using Iql.Entities.InferredValues;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
@@ -48,6 +49,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             Map<IEntityConfiguration, EntityConfiguration.EntityConfiguration>();
             Map<IEntityMetadata, EntityConfiguration.EntityConfiguration>();
             Map<IProperty, Property>();
+            Map<IInferredValueConfiguration, InferredValueConfiguration>();
             Map<ITypeDefinition, TypeDetail>();
             Map<IRelationship, Relationship>();
             Map<IRelationshipDetail, RelationshipDetail>();

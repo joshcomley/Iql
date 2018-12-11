@@ -278,44 +278,45 @@ namespace Iql.Server.OData.Net
         {
             foreach (var property in EntityConfiguration.Properties)
             {
-                if (property.InferredWithIql != null)
-                {
-                    var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
-                        property.InferredWithIql,
-                        Builder,
-                        ResolveServiceProviderProvider(),
-                        currentEntity,
-                        async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
-                    property.SetValue(currentEntity, evaluatedValue);
-                    //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
-                    //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
-                    //var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
-                    //    property.InferredWithIql as IqlPropertyExpression);
-                    //var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
-                    ////postedValues[property.Name] = new JObject(value);
-                    //if (property.Kind.HasFlag(PropertyKind.Primitive))
-                    //{
-                    //    if (value != null &&
-                    //        property.TypeDefinition.Type == typeof(string) &&
-                    //        !(value is string))
-                    //    {
-                    //        value = value.ToString();
-                    //    }
+                // TODO: x1 Implement inferred with using TrySetInferredValueAsync
+                //if (property.InferredWithIql != null)
+                //{
+                //    var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
+                //        property.InferredWithIql,
+                //        Builder,
+                //        ResolveServiceProviderProvider(),
+                //        currentEntity,
+                //        async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
+                //    property.SetValue(currentEntity, evaluatedValue);
+                //    //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
+                //    //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
+                //    //var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
+                //    //    property.InferredWithIql as IqlPropertyExpression);
+                //    //var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
+                //    ////postedValues[property.Name] = new JObject(value);
+                //    //if (property.Kind.HasFlag(PropertyKind.Primitive))
+                //    //{
+                //    //    if (value != null &&
+                //    //        property.TypeDefinition.Type == typeof(string) &&
+                //    //        !(value is string))
+                //    //    {
+                //    //        value = value.ToString();
+                //    //    }
 
-                    //    patch?.TrySetPropertyValue(property.Name, value);
-                    //    property.SetValue(currentEntity, value);
-                    //}
-                    //if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
-                    //{
-                    //    var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
-                    //    foreach (var constraint in key.Keys)
-                    //    {
-                    //        //postedValues[constraint.Name] = new JValue(constraint.Value);
-                    //        currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
-                    //        patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
-                    //    }
-                    //}
-                }
+                //    //    patch?.TrySetPropertyValue(property.Name, value);
+                //    //    property.SetValue(currentEntity, value);
+                //    //}
+                //    //if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
+                //    //{
+                //    //    var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
+                //    //    foreach (var constraint in key.Keys)
+                //    //    {
+                //    //        //postedValues[constraint.Name] = new JValue(constraint.Value);
+                //    //        currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
+                //    //        patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
+                //    //    }
+                //    //}
+                //}
             }
 
             if (EntityConfiguration.Files != null)

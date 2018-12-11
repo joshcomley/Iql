@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
+using Iql.Entities.InferredValues;
 using Iql.Entities.Relationships;
 
 namespace Iql.Entities
@@ -28,9 +29,6 @@ namespace Iql.Entities
         bool Searchable { get; set; }
         bool? Nullable { get; set; }
         void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, bool onlyIfNull = false);
-        IqlExpression InferredWithIql { get; set; }
-        IqlExpression InferredWithConditionIql { get; set; }
-        bool InferredWithForNewOnly { get; set; }
-        bool InferredWithForNullOnly { get; set; }
-}
+        IList<IInferredValueConfiguration> InferredValueConfigurations { get; set; }
+    }
 }

@@ -973,11 +973,20 @@ namespace Iql.Data.Context
                 var inferredWithIgnored = false;
                 if (property.HasInferredWithCondition)
                 {
-                    var result = await property.InferredWithConditionIql.EvaluateIqlAsync(entity, this, typeof(T));
-                    if (!Equals(result, true))
+                    for (var i = 0; i < property.InferredValueConfigurations.Count; i++)
                     {
-                        inferredWithIgnored = true;
+                        var inferredWith = property.InferredValueConfigurations[i];
+                        if (inferredWith.HasCondition)
+                        {
+                            var result = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(entity, this, typeof(T));
+                            if (!Equals(result, true))
+                            {
+                                inferredWithIgnored = true;
+                                break;
+                            }
+                        }
                     }
+
                 }
                 if (!inferredWithIgnored && EntityConfigurationContext.ValidateInferredWithClientSide == false)
                 {

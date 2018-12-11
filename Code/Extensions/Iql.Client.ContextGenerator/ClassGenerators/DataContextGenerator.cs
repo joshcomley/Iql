@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Iql.Entities.InferredValues;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.SpecialTypes;
 using Iql.Server.Serialization.Deserialization.EntityConfiguration;
@@ -779,8 +780,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     catch { }
                     var value = metadataProperty.GetValue(metadata);
                     var nullAllowed =
-                        metadata is IPropertyMetadata &&
-                        metadataProperty.Name == nameof(IPropertyMetadata.InferredWithIql);
+                        metadata is IInferredValueConfiguration &&
+                        metadataProperty.Name == nameof(IInferredValueConfiguration.InferredWithIql);
                     if (value == null && !nullAllowed)
                     {
                         continue;
@@ -996,6 +997,12 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 assign = value.ToEnumCodeString();
                             }
                         }
+                        dealtWith = true;
+                    }
+                    else if (metadataProperty.Name == nameof(IPropertyMetadata.InferredValueConfigurations))
+                    {
+                        var output = CSharpObjectSerializer.Serialize(value);
+                        sb.Append($"{lambdaKey}.{metadataProperty.Name} = {output.Initialiser};");
                         dealtWith = true;
                     }
                     else if (typeof(IFile).IsAssignableFrom(metadataProperty.DeclaringType) && metadataProperty.Name == nameof(IFile.Previews))
