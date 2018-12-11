@@ -17,6 +17,7 @@ namespace Iql.DotNet.IqlToDotNetString
             Registry.Register(typeof(IqlLambdaExpression), () => new DotNetStringLambdaParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new DotNetStringPropertyReferenceParser());
             Registry.Register(typeof(IqlRootReferenceExpression), () => new DotNetStringRootReferenceParser());
+            Registry.Register(typeof(IqlEnumLiteralExpression), () => new DotNetStringEnumLiteralParser());
             Registry.Register(typeof(IqlLiteralExpression), () => new DotNetStringLiteralParser());
             Registry.Register(typeof(IqlStringSubStringExpression), () => new DotNetStringStringSubStringExpressionParser());
             Registry.Register(typeof(IqlStringLengthExpression), () => new DotNetStringStringLengthExpressionParser());

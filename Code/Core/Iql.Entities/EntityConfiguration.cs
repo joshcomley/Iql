@@ -27,9 +27,6 @@ namespace Iql.Entities
     {
         public virtual EntityConfigurationBuilder Builder { get; }
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
-        private class DefaultValuePlaceholder { }
-
-        private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
 
         public SpecialTypeDefinition SpecialTypeDefinition { get; set; }
 
@@ -165,189 +162,6 @@ namespace Iql.Entities
             return result.ToArray();
         }
 
-        IEntityValidationResult IEntityConfiguration.ValidateEntity(object entity)
-        {
-            return ValidateEntity((T)entity);
-        }
-
-        IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByExpression<TProperty>(object entity,
-            Expression<Func<object, TProperty>> expression)
-        {
-            var property = FindPropertyByLambdaExpression(expression);
-            return ValidateEntityProperty((T)entity, property);
-        }
-
-        IPropertyValidationResult IEntityConfiguration.ValidateEntityPropertyByName(object entity, string property)
-        {
-            return ValidateEntityPropertyByName((T)entity, property);
-        }
-
-        IPropertyValidationResult IEntityConfiguration.ValidateEntityProperty(object entity, IProperty property)
-        {
-            return ValidateEntityProperty((T)entity, property);
-        }
-
-        public EntityValidationResult<T> ValidateEntity(T entity)
-        {
-            var validationResult = new EntityValidationResult<T>(entity);
-
-            foreach (var validation in EntityValidation.All)
-            {
-                if (!validation.Run(entity))
-                {
-                    validationResult.AddFailure(validation.Key, validation.Message);
-                }
-            }
-
-            foreach (var property in Properties)
-            {
-                var result = ValidateEntityProperty(entity, property);
-                if (result.HasValidationFailures())
-                {
-                    validationResult.AddPropertyValidationResult(result);
-                }
-            }
-
-            return validationResult;
-        }
-
-        public PropertyValidationResult<T> ValidateEntityPropertyByExpression<TProperty>(T entity, Expression<Func<T, TProperty>> property)
-        {
-            return ValidateEntityProperty(entity, FindPropertyByLambdaExpression(property));
-        }
-
-        public PropertyValidationResult<T> ValidateEntityPropertyByName(T entity, string property)
-        {
-            return ValidateEntityProperty(entity, FindProperty(property));
-        }
-
-        public PropertyValidationResult<T> ValidateEntityProperty(T entity, IProperty property)
-        {
-            return ValidateEntityPropertyInternal(entity, property, false);
-        }
-
-        public PropertyValidationResult<T> ValidateEntityPropertyInternal(T entity, IProperty property, bool hasSetDefaultValue)
-        {
-            var validationResult = new PropertyValidationResult<T>(entity, property);
-
-            if (property.HasInferredWith && Builder.ValidateInferredWithClientSide == false)
-            {
-                return validationResult;
-            }
-
-            foreach (var validation in property.ValidationRules.All)
-            {
-                if (!validation.Run(entity))
-                {
-                    validationResult.AddFailure(validation.Key, validation.Message);
-                }
-            }
-
-            if (!property.Kind.HasFlag(PropertyKind.Count) && (!property.Kind.HasFlag(PropertyKind.Key) || property.Kind.HasFlag(PropertyKind.RelationshipKey)))
-            {
-                var propertyValue = property.GetValue(entity);
-                if (!validationResult.HasValidationFailures() &&
-                PropertyValueIsIllegallyEmpty(property, entity, propertyValue)
-            )
-                {
-                    if (!hasSetDefaultValue)
-                    {
-                        // Mimic default values for 
-                        object newValue = DefaultValuePlaceholderInstance;
-                        if (property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid ||
-                            property.TypeDefinition.Kind == IqlType.Date ||
-                            property.TypeDefinition.Kind == IqlType.Enum)
-                        {
-                            newValue = property.TypeDefinition.DefaultValue();
-                        }
-                        if (!Equals(newValue, DefaultValuePlaceholderInstance))
-                        {
-                            property.SetValue(entity, newValue);
-                            return ValidateEntityPropertyInternal(entity, property, true);
-                        }
-                    }
-                    validationResult.AddFailure(
-                        DefaultRequiredAutoValidationFailureKey,
-                        DefaultRequiredAutoValidationFailureMessage);
-                }
-            }
-            return validationResult;
-        }
-
-        private static bool PropertyValueIsIllegallyEmpty(IProperty property, object entity, object propertyValue)
-        {
-            if (property.IsReadOnly)
-            {
-                return false;
-            }
-
-            if (property.TypeDefinition.Nullable && property.Nullable != false)
-            {
-                return false;
-            }
-
-            if (property.Kind.HasFlag(PropertyKind.Relationship) &&
-                propertyValue == null)
-            {
-                if (!property.Relationship.ThisIsTarget)
-                {
-                    var properties = property.Relationship.ThisEnd.Constraints;
-                    for (var i = 0; i < properties.Length; i++)
-                    {
-                        var constraint = properties[i];
-                        var constraintValue = constraint.GetValue(entity);
-                        if (Equals(null, constraintValue) ||
-                            Equals(constraint.TypeDefinition.DefaultValue(), constraintValue))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            else if (Equals(null, propertyValue) && property.TypeDefinition.Nullable == false)
-            {
-                object defaultValue;
-                switch (property.TypeDefinition.Kind)
-                {
-                    case IqlType.Integer:
-                    case IqlType.Decimal:
-                    case IqlType.Enum:
-                    case IqlType.Boolean:
-                    case IqlType.Date:
-                        defaultValue = property.TypeDefinition.DefaultValue();
-                        break;
-                    default:
-                        return true;
-                }
-                property.SetValue(entity, defaultValue);
-                propertyValue = defaultValue;
-            }
-
-            if (property.TypeDefinition.Kind == IqlType.Enum)
-            {
-                var stringValue = Enum.ToObject(property.TypeDefinition.Type, propertyValue).ToString();
-                if (string.IsNullOrWhiteSpace(stringValue) || Regex.IsMatch(stringValue, @"^\d+$"))
-                {
-                    return true;
-                }
-            }
-
-            if (property.TypeDefinition.Kind == IqlType.Date)
-            {
-                if (propertyValue.IsDefaultValue(property.TypeDefinition))
-                {
-                    return true;
-                }
-            }
-
-            if (property.TypeDefinition.Type == typeof(string) && Equals(propertyValue, ""))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         private IProperty FindOrDefinePropertyInternal(
             string propertyName,
             Type propertyType,
@@ -452,6 +266,10 @@ namespace Iql.Entities
             return (IEntityProperty<T>)FindNestedPropertyByLambdaExpression(property);
         }
 
+        IProperty IEntityConfiguration.FindPropertyByLambdaExpression(LambdaExpression property)
+        {
+            return FindPropertyByLambdaExpression(property);
+        }
 
         public IEntityProperty<T> FindPropertyByExpression<TProperty>(Expression<Func<T, TProperty>> property)
         {

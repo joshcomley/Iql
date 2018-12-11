@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Iql.Data.Context;
-using Iql.Data.IqlToIql;
 using Iql.Entities;
 using Iql.Extensions;
 
@@ -28,6 +26,14 @@ namespace Iql.Data.Extensions
         {
             if (property.HasInferredWith)
             {
+                if (property.HasInferredWithCondition)
+                {
+                    var conditionResult = await property.InferredWithConditionIql.EvaluateIqlAsync(entity, dataContext);
+                    if (!Equals(conditionResult, true))
+                    {
+                        return;
+                    }
+                }
                 if (property.InferredWithForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
                 {
                     return;

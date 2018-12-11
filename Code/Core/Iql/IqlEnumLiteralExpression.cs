@@ -9,11 +9,15 @@ namespace Iql
     {
         private readonly object _enumType;
 
-        public IqlEnumLiteralExpression(object enumType, string nameSpace = null)
+        public IqlEnumLiteralExpression(object enumType = null, string nameSpace = null)
             : base(null, IqlType.Enum, IqlExpressionKind.EnumLiteral)
         {
             _enumType = enumType;
             Namespace = nameSpace;
+        }
+
+        public IqlEnumLiteralExpression() : base(null, IqlType.Enum, IqlExpressionKind.EnumLiteral)
+        {
         }
 
         public object EnumType()
@@ -27,10 +31,6 @@ namespace Iql
             values.Add(new IqlEnumValueExpression(value, name));
             Value = values.ToArray();
             return this;
-        }
-
-        public IqlEnumLiteralExpression()
-        {
         }
 
         public static IqlEnumLiteralExpression Combine(params IqlEnumLiteralExpression[] expressions)
@@ -51,71 +51,71 @@ namespace Iql
 
         public string Namespace { get; set; }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlEnumLiteralExpression(null);
-			expression.Namespace = Namespace;
-			if(Value == null)
-			{
-				expression.Value = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlEnumValueExpression>();
-				for(var i = 0; i < Value.Length; i++)
-				{
-					listCopy.Add((IqlEnumValueExpression)Value[i]?.Clone());
-				}
-				expression.Value = listCopy.ToArray();
-			}
-			expression.InferredReturnType = InferredReturnType;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
-
-		internal override void FlattenInternal(IqlFlattenContext context)
+        public override IqlExpression Clone()
         {
-			// #FlattenStart
+            // #CloneStart
 
-				if(Value != null)
-				{
-					for(var i = 0; i < Value.Length; i++)
-					{
-						context.Flatten(Value[i]);
-					}
-				}
-				context.Flatten(Parent);
+            var expression = new IqlEnumLiteralExpression(null);
+            expression.Namespace = Namespace;
+            if (Value == null)
+            {
+                expression.Value = null;
+            }
+            else
+            {
+                var listCopy = new List<IqlEnumValueExpression>();
+                for (var i = 0; i < Value.Length; i++)
+                {
+                    listCopy.Add((IqlEnumValueExpression)Value[i]?.Clone());
+                }
+                expression.Value = listCopy.ToArray();
+            }
+            expression.InferredReturnType = InferredReturnType;
+            expression.Key = Key;
+            expression.Kind = Kind;
+            expression.ReturnType = ReturnType;
+            expression.Parent = Parent?.Clone();
+            return expression;
 
-			// #FlattenEnd
+            // #CloneEnd
         }
 
-		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
-		{
-			// #ReplaceStart
+        internal override void FlattenInternal(IqlFlattenContext context)
+        {
+            // #FlattenStart
 
-			if(Value != null)
-			{
-				for(var i = 0; i < Value.Length; i++)
-				{
-					Value[i] = (IqlEnumValueExpression)context.Replace(this, nameof(Value), i, Value[i]);
-				}
-			}
-			Parent = context.Replace(this, nameof(Parent), null, Parent);
-			var replaced = context.Replacer(context, this);
-			if(replaced != this)
-			{
-				return replaced;	
-			}
-			return this;
+            if (Value != null)
+            {
+                for (var i = 0; i < Value.Length; i++)
+                {
+                    context.Flatten(Value[i]);
+                }
+            }
+            context.Flatten(Parent);
 
-			// #ReplaceEnd
-		}
+            // #FlattenEnd
+        }
+
+        internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+        {
+            // #ReplaceStart
+
+            if (Value != null)
+            {
+                for (var i = 0; i < Value.Length; i++)
+                {
+                    Value[i] = (IqlEnumValueExpression)context.Replace(this, nameof(Value), i, Value[i]);
+                }
+            }
+            Parent = context.Replace(this, nameof(Parent), null, Parent);
+            var replaced = context.Replacer(context, this);
+            if (replaced != this)
+            {
+                return replaced;
+            }
+            return this;
+
+            // #ReplaceEnd
+        }
     }
 }

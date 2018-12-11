@@ -413,7 +413,7 @@ namespace Iql.Data.DataStores
             {
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    var addEntityValidationResult = entityConfig.ValidateEntity(addEntityOperation.Operation.Entity);
+                    var addEntityValidationResult = await DataContext.ValidateEntityAsync(addEntityOperation.Operation.Entity);
                     if (addEntityValidationResult.HasValidationFailures())
                     {
                         addEntityOperation.Result.Success = false;
@@ -471,7 +471,7 @@ namespace Iql.Data.DataStores
                     }
                     else if (isEntityNew != null && CheckPendingDependencies(updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
-                        var updateEntityValidationResult = entityConfig.ValidateEntity(updateEntityOperation.Operation.Entity);
+                        var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity);
                         if (updateEntityValidationResult.HasValidationFailures())
                         {
                             updateEntityOperation.Result.Success = false;

@@ -48,22 +48,22 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             throw new NotImplementedException();
         }
 
-        public IEntityValidationResult ValidateEntity(object entity)
+        public Task<IEntityValidationResult> ValidateEntityAsync(object entity)
         {
             throw new NotImplementedException();
         }
 
-        public IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity, Expression<Func<object, TProperty>> property)
+        public Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionAsync<TProperty>(object entity, Expression<Func<object, TProperty>> property)
         {
             throw new NotImplementedException();
         }
 
-        public IPropertyValidationResult ValidateEntityPropertyByName(object entity, string property)
+        public Task<IPropertyValidationResult> ValidateEntityPropertyByNameAsync(object entity, string property)
         {
             throw new NotImplementedException();
         }
 
-        public IPropertyValidationResult ValidateEntityProperty(object entity, IProperty property)
+        public Task<IPropertyValidationResult> ValidateEntityPropertyAsync(object entity, IProperty property)
         {
             throw new NotImplementedException();
         }
@@ -74,6 +74,11 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         }
 
         public IProperty[] FindPropertiesByHint(string hint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProperty FindPropertyByLambdaExpression(LambdaExpression property)
         {
             throw new NotImplementedException();
         }

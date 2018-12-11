@@ -36,6 +36,7 @@ namespace Iql.Entities
     public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
     {
         bool HasInferredWith { get; }
+        bool HasInferredWithCondition { get; }
         ISimpleProperty PropertyGroup { get; }
         IDateRange DateRange { get; }
         INestedSet NestedSet { get; }

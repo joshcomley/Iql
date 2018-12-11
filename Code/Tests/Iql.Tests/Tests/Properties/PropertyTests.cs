@@ -129,10 +129,13 @@ namespace Iql.Tests.Tests.Properties
 
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
             Assert.AreEqual(null, person.CreatedByUserId);
+            Assert.AreEqual(null, person.Description);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
+            person.Category = PersonCategory.AutoDescription;
             await PropertyExtensions.TrySetInferredValuesAsync(person, Db);
+            Assert.AreEqual("I'm \\ \"auto\"", person.Description);
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);

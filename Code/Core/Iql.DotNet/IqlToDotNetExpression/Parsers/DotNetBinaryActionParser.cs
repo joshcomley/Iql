@@ -129,6 +129,15 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     right = Expression.Constant(dateTimeOffset);
                 }
             }
+
+            if (left.Type.IsEnum && !right.Type.IsEnum)
+            {
+                right = Expression.Convert(right, left.Type);
+            }
+            if (right.Type.IsEnum && !left.Type.IsEnum)
+            {
+                left = Expression.Convert(left, right.Type);
+            }
             return new IqlFinalExpression<Expression>(
                 Expression.MakeBinary(@operator, left, right, false, method));
         }

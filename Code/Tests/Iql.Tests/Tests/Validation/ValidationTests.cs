@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Entities;
+using Iql.Entities.Validation;
 using Iql.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,8 +46,8 @@ namespace Iql.Tests.Tests.Validation
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(SiteInspection.Site),
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureMessage));
         }
 
         [TestMethod]
@@ -60,8 +61,8 @@ namespace Iql.Tests.Tests.Validation
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(ReportCategory.Name),
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+                ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                ValidationDefaults.DefaultRequiredAutoValidationFailureMessage);
         }
 
         [TestMethod]
@@ -75,8 +76,8 @@ namespace Iql.Tests.Tests.Validation
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(PersonInspection.InspectionStatus),
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+                ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                ValidationDefaults.DefaultRequiredAutoValidationFailureMessage);
         }
         
         [TestMethod]
@@ -100,11 +101,11 @@ namespace Iql.Tests.Tests.Validation
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage),
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureMessage),
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Type),
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureMessage));
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
                 .Key.SetEditKind(PropertyEditKind.Edit);
         }
@@ -126,11 +127,11 @@ namespace Iql.Tests.Tests.Validation
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage),
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureMessage),
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Type),
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                    EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage));
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                    ValidationDefaults.DefaultRequiredAutoValidationFailureMessage));
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
                 .Key.SetEditKind(PropertyEditKind.Edit);
         }
@@ -148,8 +149,8 @@ namespace Iql.Tests.Tests.Validation
             AssertSinglePropertyValidationFailure(
                 saveChangesResult,
                 nameof(PersonInspection.StartTime),
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureKey,
-                EntityConfigurationBase.DefaultRequiredAutoValidationFailureMessage);
+                ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                ValidationDefaults.DefaultRequiredAutoValidationFailureMessage);
         }
 
         class ExpectedPropertyValidationFailure
@@ -226,32 +227,32 @@ namespace Iql.Tests.Tests.Validation
         }
 
         [TestMethod]
-        public void TestValidateProperty()
+        public async Task TestValidateProperty()
         {
             var person = new Person();
             person.Title = "a";
             var entityConfig = new AppDbContext().EntityConfigurationContext.EntityType<Person>();
 
-            var propertyValidationResult = entityConfig.ValidateEntityPropertyByExpression(person, p => p.Title);
+            var propertyValidationResult = await Db.ValidateEntityPropertyByExpressionAsync(person, p => p.Title);
             Assert.IsNotNull(propertyValidationResult);
             Assert.AreEqual(propertyValidationResult.ValidationFailures.Count, 1);
             Assert.AreEqual("TitleMinLength", propertyValidationResult.ValidationFailures[0].Key);
 
             person.Title = "This title is more than fifty characters long and so should fail the validation";
 
-            propertyValidationResult = entityConfig.ValidateEntityPropertyByExpression(person, p => p.Title);
+            propertyValidationResult = await Db.ValidateEntityPropertyByExpressionAsync(person, p => p.Title);
             Assert.IsNotNull(propertyValidationResult);
             Assert.AreEqual(propertyValidationResult.ValidationFailures.Count, 1);
             Assert.AreEqual("TitleMaxLength", propertyValidationResult.ValidationFailures[0].Key);
         }
 
         [TestMethod]
-        public void TestValidateEntity()
+        public async Task TestValidateEntity()
         {
             var person = new Person();
             var entityConfig = new AppDbContext().EntityConfigurationContext.EntityType<Person>();
 
-            var entityValidationResult = entityConfig.ValidateEntity(person);
+            var entityValidationResult = await Db.ValidateEntityAsync(person);
             Assert.IsNotNull(entityValidationResult);
             Assert.AreEqual(entityValidationResult.ValidationFailures.Count, 1);
             Assert.AreEqual("NoTitleOrDescription", entityValidationResult.ValidationFailures[0].Key);

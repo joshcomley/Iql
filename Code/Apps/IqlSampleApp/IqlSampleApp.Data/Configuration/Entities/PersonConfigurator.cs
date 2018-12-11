@@ -20,6 +20,8 @@ namespace IqlSampleApp.Data.Configuration.Entities
             {
                 p.IsInferredWith(_ => _.Site.Client);
             });
+            model.ConfigureProperty(_ => _.Description,
+                p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.CreatedByUserId, p =>
             {
                 p.IsInferredWith(_ => new IqlCurrentUserIdExpression(), true);

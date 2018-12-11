@@ -2075,6 +2075,81 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Description";
                 p.Nullable = true;
+                p.InferredWithIql = new IqlLambdaExpression
+                {
+                    Body = new IqlLiteralExpression
+                    {
+                        Value = "I'm \\ \"auto\"",
+                        InferredReturnType = IqlType.String,
+                        Kind = IqlExpressionKind.Literal,
+                        ReturnType = IqlType.String
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "Person",
+                            VariableName = "_",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                };
+                p.InferredWithConditionIql = new IqlLambdaExpression
+                {
+                    Body = new IqlIsEqualToExpression
+                    {
+                        Left = new IqlPropertyExpression
+                        {
+                            PropertyName = "Category",
+                            Kind = IqlExpressionKind.Property,
+                            ReturnType = IqlType.Unknown,
+                            Parent = new IqlRootReferenceExpression
+                            {
+                                EntityTypeName = "Person",
+                                VariableName = "_",
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.RootReference,
+                                ReturnType = IqlType.Unknown
+                            }
+                        },
+                        Right = new IqlEnumLiteralExpression
+                        {
+                            Value = new IqlEnumValueExpression[]
+                            {
+                                new IqlEnumValueExpression
+                                {
+                                    Name = "",
+                                    Value = 2L,
+                                    InferredReturnType = IqlType.Integer,
+                                    Kind = IqlExpressionKind.EnumValue,
+                                    ReturnType = IqlType.EnumValue
+                                }
+                            },
+                            InferredReturnType = IqlType.Collection,
+                            Kind = IqlExpressionKind.EnumLiteral,
+                            ReturnType = IqlType.Enum
+                        },
+                        Kind = IqlExpressionKind.IsEqualTo,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "Person",
+                            VariableName = "_",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                };
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Description";
                 p.Title = "Description";

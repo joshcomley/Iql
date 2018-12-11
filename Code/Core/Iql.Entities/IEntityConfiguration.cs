@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Entities.SpecialTypes;
-using Iql.Entities.Validation.Validation;
-using Iql.Entities.ValueResolvers;
 
 namespace Iql.Entities
 {
@@ -26,13 +24,9 @@ namespace Iql.Entities
         IEntityConfiguration SetDefaultSortExpression(string expression);
         IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind, bool appendMissingProperties = true);
         IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
-        IEntityValidationResult ValidateEntity(object entity);
-        IPropertyValidationResult ValidateEntityPropertyByExpression<TProperty>(object entity,
-            Expression<Func<object, TProperty>> property);
-        IPropertyValidationResult ValidateEntityPropertyByName(object entity, string property);
-        IPropertyValidationResult ValidateEntityProperty(object entity, IProperty property);
         IProperty FindPropertyByExpression(Expression<Func<object, object>> expression);
         IProperty[] FindPropertiesByHint(string hint);
+        IProperty FindPropertyByLambdaExpression(LambdaExpression property);
         IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression);
         IProperty FindNestedPropertyByLambdaExpression(LambdaExpression expression);
         IEntityConfiguration AddSanitizer(Action<object> expression, string key = null);

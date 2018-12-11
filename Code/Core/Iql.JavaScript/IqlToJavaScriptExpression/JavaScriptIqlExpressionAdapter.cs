@@ -33,6 +33,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
             Registry.Register(typeof(IqlPropertyExpression), () => new JavaScriptPropertyReferenceParser());
             Registry.Register(typeof(IqlRootReferenceExpression), () => new JavaScriptRootReferenceParser());
             Registry.Register(typeof(IqlLiteralExpression), () => new JavaScriptLiteralParser());
+            Registry.Register(typeof(IqlEnumLiteralExpression), () => new JavaScriptEnumLiteralParser());
             Registry.Register(typeof(IqlStringSubStringExpression),
                 () => new JavaScriptStringSubStringActionParser());
             Registry.Register(typeof(IqlParentValueExpression),

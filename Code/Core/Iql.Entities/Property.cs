@@ -183,6 +183,13 @@ namespace Iql.Entities
             return this;
         }
 
+        public Property<TOwner, TProperty, TElementType> IsConditionallyInferredWith(
+            Expression<Func<TOwner, object>> expression, Expression<Func<TOwner, bool>> condition)
+        {
+            SetConditionallyInferredWithExpression(expression, condition);
+            return this;
+        }
+
         public IEntityProperty<TOwner> Configure(Action<IEntityProperty<TOwner>> configure)
         {
             if (configure != null)
@@ -195,6 +202,11 @@ namespace Iql.Entities
         IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, bool onlyIfNull = false)
         {
             return IsInferredWith(expression, onlyIfNew, onlyIfNull);
+        }
+
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsConditionallyInferredWith(Expression<Func<TOwner, object>> expression, Expression<Func<TOwner, bool>> condition)
+        {
+            return IsConditionallyInferredWith(expression, condition);
         }
 
         IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, bool onlyIfNull = false)

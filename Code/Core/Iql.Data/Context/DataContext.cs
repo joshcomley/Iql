@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Results;
@@ -17,6 +18,8 @@ using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
+using Iql.Entities.Validation;
+using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
 using Iql.Parsing;
 
@@ -833,6 +836,266 @@ namespace Iql.Data.Context
 
                 return _serviceProvider;
             }
+        }
+
+        private class DefaultValuePlaceholder { }
+
+        private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
+
+        private MethodInfo ValidateEntityInternalAsyncMethod
+        {
+            get => _validateEntityInternalAsyncMethod = _validateEntityInternalAsyncMethod ??
+                                                        typeof(DataContext).GetMethod(nameof(ValidateEntityInternalAsync),
+                                                            BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        private MethodInfo _validateEntityPropertyInternalAsyncMethod;
+        private MethodInfo _validateEntityInternalAsyncMethod;
+
+        private MethodInfo ValidateEntityPropertyInternalAsyncMethod
+        {
+            get => _validateEntityPropertyInternalAsyncMethod
+            = _validateEntityPropertyInternalAsyncMethod ?? typeof(DataContext).GetMethod(nameof(ValidateEntityPropertyInternalAsync),
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        async Task<IEntityValidationResult> IDataContext.ValidateEntityAsync(object entity)
+        {
+            var task = (Task<IEntityValidationResult>)ValidateEntityInternalAsyncMethod.InvokeGeneric(this,
+                new object[] { entity },
+                entity.GetType());
+            var result = await task;
+            return result;
+        }
+
+        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
+            Expression<Func<object, TProperty>> expression)
+        {
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
+            var property = entityConfiguration.FindPropertyByLambdaExpression(expression);
+            var task = (Task<IPropertyValidationResult>)ValidateEntityPropertyInternalAsyncMethod.InvokeGeneric(this,
+                new object[] { entity, property, false },
+                entity.GetType());
+            var result = await task;
+            return result;
+        }
+
+        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyByNameAsync(object entity, string property)
+        {
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var task = (Task<IPropertyValidationResult>)ValidateEntityPropertyInternalAsyncMethod.InvokeGeneric(this,
+                new object[] { entity, entityConfiguration.FindProperty(property), false },
+                entity.GetType());
+            var result = await task;
+            return result;
+        }
+
+        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyAsync(object entity, IProperty property)
+        {
+            var task = (Task<IPropertyValidationResult>)ValidateEntityPropertyInternalAsyncMethod.InvokeGeneric(this,
+                new object[] { entity, property, false },
+                entity.GetType());
+            var result = await task;
+            return result;
+        }
+
+        public async Task<EntityValidationResult<T>> ValidateEntityAsync<T>(T entity)
+            where T : class
+        {
+            return (EntityValidationResult<T>)(await ValidateEntityInternalAsync(entity));
+        }
+
+        private async Task<IEntityValidationResult> ValidateEntityInternalAsync<T>(T entity) where T : class
+        {
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
+            var validationResult = new EntityValidationResult<T>(entity);
+
+            foreach (var validation in entityConfiguration.EntityValidation.All)
+            {
+                if (!validation.Run(entity))
+                {
+                    validationResult.AddFailure(validation.Key, validation.Message);
+                }
+            }
+
+            var properties = entityConfiguration.Properties.ToArray();
+            for (var index = 0; index < properties.Length; index++)
+            {
+                var property = properties[index];
+                var result = await ValidateEntityPropertyAsync(entity, property);
+                if (result.HasValidationFailures())
+                {
+                    validationResult.AddPropertyValidationResult(result);
+                }
+            }
+
+            return validationResult;
+        }
+
+        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyByExpressionAsync<T, TProperty>(T entity, Expression<Func<T, TProperty>> property)
+            where T : class
+        {
+            return (PropertyValidationResult<T>)(await ValidateEntityPropertyByExpressionInternalAsync(entity, property));
+        }
+
+        private Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionInternalAsync<T, TProperty>(T entity, Expression<Func<T, TProperty>> property)
+            where T : class
+        {
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
+            return ValidateEntityPropertyInternalAsync(entity, entityConfiguration.FindPropertyByLambdaExpression(property), false);
+        }
+
+        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyByNameAsync<T>(T entity, string property)
+            where T : class
+        {
+            return (PropertyValidationResult<T>)(await ValidateEntityPropertyByNameInternalAsync(entity, property));
+        }
+
+        private Task<IPropertyValidationResult> ValidateEntityPropertyByNameInternalAsync<T>(T entity, string property) where T : class
+        {
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
+            return ValidateEntityPropertyInternalAsync(entity, entityConfiguration.FindProperty(property), false);
+        }
+
+        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyAsync<T>(T entity, IProperty property)
+            where T : class
+        {
+            return (PropertyValidationResult<T>)(await ValidateEntityPropertyInternalAsync(entity, property, false));
+        }
+
+        private async Task<IPropertyValidationResult> ValidateEntityPropertyInternalAsync<T>(T entity, IProperty property, bool hasSetDefaultValue)
+            where T : class
+        {
+            var validationResult = new PropertyValidationResult<T>(entity, property);
+
+            if (property.HasInferredWith)
+            {
+                var inferredWithIgnored = false;
+                if (property.HasInferredWithCondition)
+                {
+                    var result = await property.InferredWithConditionIql.EvaluateIqlAsync(entity, this, typeof(T));
+                    if (!Equals(result, true))
+                    {
+                        inferredWithIgnored = true;
+                    }
+                }
+                if (!inferredWithIgnored && EntityConfigurationContext.ValidateInferredWithClientSide == false)
+                {
+                    return validationResult;
+                }
+            }
+
+            foreach (var validation in property.ValidationRules.All)
+            {
+                if (!validation.Run(entity))
+                {
+                    validationResult.AddFailure(validation.Key, validation.Message);
+                }
+            }
+
+            if (!property.Kind.HasFlag(PropertyKind.Count) && (!property.Kind.HasFlag(PropertyKind.Key) || property.Kind.HasFlag(PropertyKind.RelationshipKey)))
+            {
+                var propertyValue = property.GetValue(entity);
+                if (!validationResult.HasValidationFailures() &&
+                PropertyValueIsIllegallyEmpty(property, entity, propertyValue)
+            )
+                {
+                    if (!hasSetDefaultValue)
+                    {
+                        // Mimic default values for 
+                        object newValue = DefaultValuePlaceholderInstance;
+                        if (property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid ||
+                            property.TypeDefinition.Kind == IqlType.Date ||
+                            property.TypeDefinition.Kind == IqlType.Enum)
+                        {
+                            newValue = property.TypeDefinition.DefaultValue();
+                        }
+                        if (!Equals(newValue, DefaultValuePlaceholderInstance))
+                        {
+                            property.SetValue(entity, newValue);
+                            return await ValidateEntityPropertyInternalAsync(entity, property, true);
+                        }
+                    }
+                    validationResult.AddFailure(
+                        ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+                        ValidationDefaults.DefaultRequiredAutoValidationFailureMessage);
+                }
+            }
+            return validationResult;
+        }
+
+        private static bool PropertyValueIsIllegallyEmpty(IProperty property, object entity, object propertyValue)
+        {
+            if (property.IsReadOnly)
+            {
+                return false;
+            }
+
+            if (property.TypeDefinition.Nullable && property.Nullable != false)
+            {
+                return false;
+            }
+
+            if (property.Kind.HasFlag(PropertyKind.Relationship) &&
+                propertyValue == null)
+            {
+                if (!property.Relationship.ThisIsTarget)
+                {
+                    var properties = property.Relationship.ThisEnd.Constraints;
+                    for (var i = 0; i < properties.Length; i++)
+                    {
+                        var constraint = properties[i];
+                        var constraintValue = constraint.GetValue(entity);
+                        if (Equals(null, constraintValue) ||
+                            Equals(constraint.TypeDefinition.DefaultValue(), constraintValue))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else if (Equals(null, propertyValue) && property.TypeDefinition.Nullable == false)
+            {
+                object defaultValue;
+                switch (property.TypeDefinition.Kind)
+                {
+                    case IqlType.Integer:
+                    case IqlType.Decimal:
+                    case IqlType.Enum:
+                    case IqlType.Boolean:
+                    case IqlType.Date:
+                        defaultValue = property.TypeDefinition.DefaultValue();
+                        break;
+                    default:
+                        return true;
+                }
+                property.SetValue(entity, defaultValue);
+                propertyValue = defaultValue;
+            }
+
+            if (property.TypeDefinition.Kind == IqlType.Enum)
+            {
+                var stringValue = Enum.ToObject(property.TypeDefinition.Type, propertyValue).ToString();
+                if (string.IsNullOrWhiteSpace(stringValue) || Regex.IsMatch(stringValue, @"^\d+$"))
+                {
+                    return true;
+                }
+            }
+
+            if (property.TypeDefinition.Kind == IqlType.Date)
+            {
+                if (propertyValue.IsDefaultValue(property.TypeDefinition))
+                {
+                    return true;
+                }
+            }
+
+            if (property.TypeDefinition.Type == typeof(string) && Equals(propertyValue, ""))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

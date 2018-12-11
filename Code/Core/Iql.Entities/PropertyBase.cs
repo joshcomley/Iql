@@ -102,9 +102,41 @@ namespace Iql.Entities
             InferredWithForNullOnly = onlyIfNull;
         }
 
+        public void SetConditionallyInferredWithExpression(
+            LambdaExpression expression, LambdaExpression condition)
+        {
+            _inferredWithExpression = expression;
+            _inferredWithConditionExpression = condition;
+        }
+
         public bool InferredWithForNullOnly { get; set; }
 
         public bool InferredWithForNewOnly { get; set; }
+
+        private LambdaExpression _inferredWithExpression;
+        private LambdaExpression _inferredWithConditionExpression;
+        private IqlExpression _inferredWithConditionIql;
+        private IqlExpression _inferredWithIql;
+
+        public IqlExpression InferredWithConditionIql
+        {
+            get
+            {
+                // Lazy convert the expression
+                if (_inferredWithConditionExpression != null)
+                {
+                    _inferredWithConditionIql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
+                        _inferredWithConditionExpression, EntityConfiguration.Type).Expression;
+                    _inferredWithConditionExpression = null;
+                }
+                return _inferredWithConditionIql;
+            }
+            set
+            {
+                _inferredWithConditionExpression = null;
+                _inferredWithConditionIql = value;
+            }
+        }
 
         public IqlExpression InferredWithIql
         {
@@ -128,6 +160,7 @@ namespace Iql.Entities
 
         // Help avoid triggering lazy evaluation of inferred IQL expression
         public bool HasInferredWith => _inferredWithExpression != null || _inferredWithIql != null;
+        public bool HasInferredWithCondition => _inferredWithConditionExpression != null || _inferredWithConditionIql != null;
 
         //private LambdaExpression _inferredWithPathResolvedWith;
         //private IqlPropertyPath _inferredWithPath;
@@ -190,8 +223,6 @@ namespace Iql.Entities
         private bool _searchKindSet;
         private bool? _readOnly;
         private EntityRelationship _relationship;
-        private LambdaExpression _inferredWithExpression;
-        private IqlExpression _inferredWithIql;
 
         public PropertySearchKind SearchKind
         {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using Iql.Extensions;
 using Newtonsoft.Json;
@@ -81,8 +83,14 @@ namespace Iql.Serialization
                     {
                         var sourceList = (IList)value;
 #if !TypeScript
-                        var newList = (IList)Activator.CreateInstance(property.PropertyType);
-                        typedClone.SetPropertyValueByName(property.Name, newList);
+                        var type = property.PropertyType;
+                        var isArray = false;
+                        if (type.IsArray)
+                        {
+                            isArray = true;
+                            type = typeof(List<>).MakeGenericType(type.GetInterfaces().First(_ => _.GenericTypeArguments.Any()).GenericTypeArguments);
+                        }
+                        var newList = (IList)Activator.CreateInstance(type);
                         value = newList;
 #else
                         var newList = sourceList;
@@ -101,6 +109,21 @@ namespace Iql.Serialization
                             newList[i] = EnsureType(listItem);
 #endif
                         }
+
+#if !TypeScript
+                        if (isArray)
+                        {
+                            var array = newList.ToArray(type.GenericTypeArguments[0]);
+                            typedClone.SetPropertyValueByName(property.Name, array);
+                            value = array;
+                        }
+                        else
+                        {
+                            typedClone.SetPropertyValueByName(property.Name, newList);
+                        }
+#else
+                        typedClone.SetPropertyValueByName(property.Name, newList);
+#endif
                     }
                 }
                 if (property.Name != nameof(IqlExpression.IsIqlExpression))

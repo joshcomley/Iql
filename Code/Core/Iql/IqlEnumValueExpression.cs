@@ -7,7 +7,7 @@ namespace Iql
     {
         public string Name { get; set; }
 
-        public IqlEnumValueExpression(long value, string name) : base(value, IqlType.EnumValue, IqlExpressionKind.EnumValue)
+        public IqlEnumValueExpression(long value = 0, string name = null) : base(value, IqlType.EnumValue, IqlExpressionKind.EnumValue)
         {
             Kind = IqlExpressionKind.EnumValue;
             Name = name;

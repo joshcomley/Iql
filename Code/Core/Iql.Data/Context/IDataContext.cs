@@ -12,12 +12,20 @@ using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
+using Iql.Entities.Validation.Validation;
 using Iql.Parsing;
 
 namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        Task<IEntityValidationResult> ValidateEntityAsync(object entity);
+        Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
+            Expression<Func<object, TProperty>> property)
+            where T : class
+            ;
+        Task<IPropertyValidationResult> ValidateEntityPropertyByNameAsync(object entity, string property);
+        Task<IPropertyValidationResult> ValidateEntityPropertyAsync(object entity, IProperty property);
         bool IsTracked(object entity);
         UsersManager UsersManager { get; }
         CustomReportsManager CustomReportsManager { get; }

@@ -1231,7 +1231,8 @@ namespace IqlSampleApp.Data.Entities
     public enum PersonCategory
     {
         System = 0,
-        Conventional = 1
+        Conventional = 1,
+        AutoDescription = 2
     }
 }
 namespace IqlSampleApp.Data.Entities
