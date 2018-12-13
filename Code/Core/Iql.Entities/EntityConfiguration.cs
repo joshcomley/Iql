@@ -438,14 +438,14 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> DefinePropertyValidation<TProperty>(
             Expression<Func<T, TProperty>> property,
-            Expression<Func<T, bool>> validation,
+            Expression<Func<T, bool>> failIf,
             string message = null,
             string key = null
             )
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
             var validationCollection = (ValidationCollection<T>)propertyDefinition.ResolvePrimaryProperty().ValidationRules;
-            validationCollection.Add(new ValidationRule<T>(validation, key, message));
+            validationCollection.Add(new ValidationRule<T>(failIf, key, message));
             return this;
         }
 

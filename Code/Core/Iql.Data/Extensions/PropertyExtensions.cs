@@ -9,19 +9,24 @@ namespace Iql.Data.Extensions
 {
     public static class PropertyExtensions
     {
-        public static async Task TrySetInferredValuesAsync(
-            object entity,
-            IDataContext dataContext)
+        public static async Task<bool> TrySetInferredValuesAsync(this IDataContext dataContext, object entity)
         {
             var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var success = true;
             for (var i = 0; i < config.Properties.Count; i++)
             {
                 var propety = config.Properties[i];
-                await propety.TrySetInferredValueAsync(entity, dataContext);
+                var propertySuccess = await propety.TrySetInferredValueAsync(entity, dataContext);
+                if (!propertySuccess)
+                {
+                    success = false;
+                }
             }
+
+            return success;
         }
 
-        public static async Task TrySetInferredValueAsync(
+        public static async Task<bool> TrySetInferredValueAsync(
             this IProperty property,
             object entity,
             IDataContext dataContext)
@@ -34,30 +39,40 @@ namespace Iql.Data.Extensions
                     if (inferredWith.HasCondition)
                     {
                         var conditionResult = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(entity, dataContext);
-                        if (!Equals(conditionResult, true))
+                        if (!Equals(conditionResult.Result, true))
                         {
-                            return;
+                            return true;
                         }
                     }
                     if (inferredWith.ForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
                     {
-                        return;
+                        return true;
                     }
 
                     if (inferredWith.Mode == InferredValueMode.IfNull && property.GetValue(entity) != null)
                     {
-                        return;
+                        return true;
                     }
 
                     if (inferredWith.Mode == InferredValueMode.IfNullOrEmpty &&
                         property.GetValue(entity) != null &&
                         !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {
-                        return;
+                        return true;
                     }
 
                     var inferredWithIql = inferredWith.InferredWithIql;
-                    var value = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
+                    var result = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
+                    if (!result.Success)
+                    {
+                        return false;
+                    }
+                    var value = result.Result;
+                    if (property.TypeDefinition.ToIqlType() == IqlType.String &&
+                        value != null && !(value is string))
+                    {
+                        value = value.ToString();
+                    }
                     property.SetValue(entity, value);
                     if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
                     {
@@ -89,6 +104,8 @@ namespace Iql.Data.Extensions
                     }
                 }
             }
+
+            return true;
         }
     }
 }

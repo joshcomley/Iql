@@ -4650,6 +4650,52 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PostCode";
                 p.Title = "PostCode";
                 p.FriendlyName = "Post Code";
+            }).DefineProperty(p => p.Key, true, IqlType.String).ConfigureProperty(p => p.Key, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "Key";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlPropertyExpression
+                            {
+                                PropertyName = "ClientId",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Site",
+                                    VariableName = "site",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "Site",
+                                    VariableName = "site",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Key";
+                p.Title = "Key";
+                p.FriendlyName = "Key";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";

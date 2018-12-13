@@ -979,7 +979,7 @@ namespace Iql.Data.Context
                         if (inferredWith.HasCondition)
                         {
                             var result = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(entity, this, typeof(T));
-                            if (!Equals(result, true))
+                            if (!Equals(result.Result, true))
                             {
                                 inferredWithIgnored = true;
                                 break;

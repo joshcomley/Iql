@@ -27,8 +27,8 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 {
                     return new IqlFinalExpression<string>("new Date()");
                 }
-                return new IqlFinalExpression<string>(
-                    "JSON.parse(`" + JsonConvert.SerializeObject(action.Value) + "`)");
+                //return new IqlFinalExpression<string>(
+                //    "JSON.parse(`" + JsonConvert.SerializeObject(action.Value) + "`)");
             }
             if (action.ReturnType == IqlType.Guid)
             {
@@ -48,6 +48,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                     str = Regex.Replace(str, (string)"\\", @"\\");
                     str = Regex.Replace(str, @"'", @"\'");
                     str = Regex.Replace(str, @"""", @"\""");
+                    str = Regex.Replace(str, "\n", "\\n");
 #endif
                     return new IqlAggregateExpression(
                         new IqlFinalExpression<string>("'"),
@@ -73,7 +74,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             if (action.Value != null)
             {
                 var type = action.Value.GetType().ToIqlType();
-                if (type == IqlType.Unknown)
+                if (type == IqlType.Unknown || action.Value is IqlExpression)
                 {
                     var guid = Guid.NewGuid().ToString();
                     GlobalObjects.Add(guid, action.Value);

@@ -1640,6 +1640,15 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "PostCode", _postCode, value, _propertyChanging, _propertyChanged, newValue => this._postCode = newValue);
             }
         }
+        protected string _key;
+        public string Key
+        {
+            get => _key;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key", _key, value, _propertyChanging, _propertyChanged, newValue => this._key = newValue);
+            }
+        }
         protected string _name;
         public string Name
         {

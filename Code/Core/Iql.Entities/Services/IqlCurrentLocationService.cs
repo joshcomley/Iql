@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Iql.Parsing.Evaluation;
 
 namespace Iql.Entities.Services
 {
     public abstract class IqlCurrentLocationService
     {
-        public abstract Task<IqlPointExpression> ResolveCurrentLocationAsync(IqlServiceProvider serviceProvider);
+        public abstract Task<IqlEvaluationResult<IqlPointExpression>> ResolveCurrentLocationAsync(IqlServiceProvider serviceProvider);
     }
 }

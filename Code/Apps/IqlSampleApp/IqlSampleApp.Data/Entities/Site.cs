@@ -63,6 +63,7 @@ namespace IqlSampleApp.Data.Entities
         }
         public string Address { get; set; }
         public string PostCode { get; set; }
+        public string Key { get; set; }
         public int? ClientId { get; set; }
         public Client Client { get; set; }
         public Site Parent { get; set; }

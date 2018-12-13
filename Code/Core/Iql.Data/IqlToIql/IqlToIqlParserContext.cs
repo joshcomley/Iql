@@ -12,6 +12,7 @@ namespace Iql.Data.IqlToIql
     public class IqlToIqlParserContext : AsyncActionParserContext<IqlToIqlIqlData, IqlToIqlExpressionAdapter,
         string, IqlToIqlIqlOutput, IExpressionConverter>, IServiceProviderProvider
     {
+        public bool Success { get; set; } = true;
         public IqlServiceProvider ServiceProvider { get; }
 
         public IqlToIqlParserContext(IEntityConfiguration entityConfiguration, IqlServiceProvider serviceProvider) : base(

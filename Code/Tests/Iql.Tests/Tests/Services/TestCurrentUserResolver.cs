@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Iql.Entities.Services;
+using Iql.Parsing.Evaluation;
 
 namespace Iql.Tests.Tests.Services
 {
@@ -8,14 +9,15 @@ namespace Iql.Tests.Tests.Services
     {
         public static string TestCurrentUserId { get; } = "testuserid";
 
-        public override Task<object> ResolveCurrentUserAsync(IqlServiceProvider serviceProvider)
+        public override Task<IqlObjectEvaluationResult> ResolveCurrentUserAsync(IqlServiceProvider serviceProvider)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<object> ResolveCurrentUserIdAsync(IqlServiceProvider serviceProvider)
+        public override Task<IqlObjectEvaluationResult> ResolveCurrentUserIdAsync(IqlServiceProvider serviceProvider)
         {
-            return Task.FromResult<object>(TestCurrentUserId);
+            return Task.FromResult(new IqlObjectEvaluationResult(
+                true, TestCurrentUserId));
         }
     }
 }

@@ -2346,6 +2346,14 @@ namespace IqlSampleApp.ApiContext.Base.EntityService
                 return _Site_PostCode = _Site_PostCode ?? FindPropertyByName<Site>("PostCode");
             }
         }
+        private IProperty _Site_Key = null;
+        public IProperty Site_Key
+        {
+            get
+            {
+                return _Site_Key = _Site_Key ?? FindPropertyByName<Site>("Key");
+            }
+        }
         private IProperty _Site_Name = null;
         public IProperty Site_Name
         {

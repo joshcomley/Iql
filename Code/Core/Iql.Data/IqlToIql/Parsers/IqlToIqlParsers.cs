@@ -64,7 +64,13 @@ namespace Iql.Data.IqlToIql.Parsers
                         var currentLocationService = parser.ServiceProvider.Resolve<IqlCurrentLocationService>();
                         if (currentLocationService != null)
                         {
-                            return new IqlLiteralExpression(await currentLocationService.ResolveCurrentLocationAsync(parser.ServiceProvider));
+                            var result =
+                                await currentLocationService.ResolveCurrentLocationAsync(parser.ServiceProvider);
+                            if (!result.Success && !action.CanFail)
+                            {
+                                parser.Success = false;
+                            }
+                            return new IqlLiteralExpression(result.Result);
                         }
                         return null;
                     }
@@ -74,7 +80,13 @@ namespace Iql.Data.IqlToIql.Parsers
                         object currentUserId = null;
                         if (currentUserService != null)
                         {
-                            currentUserId = await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
+                            var result =
+                                await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
+                            if (!result.Success && !action.CanFail)
+                            {
+                                parser.Success = false;
+                            }
+                            currentUserId = result.Result;
                         }
                         return new IqlLiteralExpression(currentUserId);
                     }
@@ -84,7 +96,13 @@ namespace Iql.Data.IqlToIql.Parsers
                     object currentUser = null;
                     if (currentUserService != null)
                     {
-                        currentUser = await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                        var result =
+                            await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                        if (!result.Success && !action.CanFail)
+                        {
+                            parser.Success = false;
+                        }
+                        currentUser = result.Result;
                     }
                     return new IqlLiteralExpression(currentUser);
                 }
@@ -399,8 +417,9 @@ namespace Iql.Data.IqlToIql.Parsers
                 var path = IqlPropertyPath.FromPropertyExpression(
                     parser.Adapter.EntityConfigurationContext.EntityType<TEntity>(),
                     action.NavigationProperty);
-                action.Query = (IqlCollectitonQueryExpression)(await action.Query.ProcessAsync(parser.Adapter.EntityConfigurationContext.GetEntityByType(
-                    path.Property.TypeDefinition.ElementType), parser));
+                var processed = await action.Query.ProcessAsync(parser.Adapter.EntityConfigurationContext.GetEntityByType(
+                    path.Property.TypeDefinition.ElementType), parser);
+                action.Query = (IqlCollectitonQueryExpression)processed.Result;
             }
 
             if (property is IqlCountExpression)

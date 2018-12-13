@@ -6,7 +6,7 @@ namespace Iql.Data.IqlToIql
 {
     public static class IqlToIqlExtensions
     {
-        public static async Task<IqlExpression> ProcessAsync(
+        public static async Task<IqlExpessionResult> ProcessAsync(
             this IqlExpression expression, 
             IEntityConfiguration entityConfiguration,
             IServiceProviderProvider serviceProvider = null)
@@ -15,7 +15,7 @@ namespace Iql.Data.IqlToIql
                 entityConfiguration,
                 serviceProvider != null ? serviceProvider.ServiceProvider : entityConfiguration.Builder.ServiceProvider);
             var result = await parser.ParseAsync(expression);
-            return result.Expression;
+            return new IqlExpessionResult(parser.Success, result.Expression);
         }
     }
 }

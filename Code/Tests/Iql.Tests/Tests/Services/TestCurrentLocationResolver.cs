@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Iql.Entities.Services;
+using Iql.Parsing.Evaluation;
 
 namespace Iql.Tests.Tests.Services
 {
@@ -7,15 +8,17 @@ namespace Iql.Tests.Tests.Services
     {
         public static double? CurrentLatitude = null;
         public static double? CurrentLongitude = null;
-        public override Task<IqlPointExpression> ResolveCurrentLocationAsync(IqlServiceProvider serviceProvider)
+        public override Task<IqlEvaluationResult<IqlPointExpression>> ResolveCurrentLocationAsync(IqlServiceProvider serviceProvider)
         {
             if (CurrentLongitude == null || CurrentLatitude == null)
             {
-                return Task.FromResult<IqlPointExpression>(null);
+                return Task.FromResult(
+                    new IqlEvaluationResult<IqlPointExpression>(false, null));
             }
-            return Task.FromResult(new IqlPointExpression(
-                CurrentLongitude.Value,
-                CurrentLatitude.Value));
+            return Task.FromResult(new IqlEvaluationResult<IqlPointExpression>(true,
+                new IqlPointExpression(
+                    CurrentLongitude.Value,
+                    CurrentLatitude.Value)));
         }
     }
 }

@@ -141,8 +141,15 @@ namespace Iql.OData.Json
             return obj;
         }
 
-        private static void SerializeGeography(JObject obj, IPropertyState property, object propertyValue)
+        private static void SerializeGeography(
+            JObject obj, 
+            IPropertyState property, 
+            object propertyValue)
         {
+            if (propertyValue == null)
+            {
+                return;
+            }
             var container = new JObject();
             obj[property.Property.Name] = container;
             string typeName = "";

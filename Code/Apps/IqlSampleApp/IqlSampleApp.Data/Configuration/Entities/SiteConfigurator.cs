@@ -12,6 +12,11 @@ namespace IqlSampleApp.Data.Configuration.Entities
         public void Configure(IEntityConfigurationBuilder builder)
         {
             builder.EntityType<Site>()
+                .ConfigureProperty(_ => _.Key,
+                    _ =>
+                    {
+                        _.IsInferredWith(site => site.ClientId);
+                    })
                 .ConfigureProperty(_ => _.FullAddress,
                     _ =>
                     {

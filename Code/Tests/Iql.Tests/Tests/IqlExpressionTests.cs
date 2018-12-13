@@ -24,7 +24,7 @@ namespace Iql.Tests.Tests
             person.Client.CreatedByUser = new ApplicationUser();
             person.Client.CreatedByUser.ClientId = 7;
             var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
-            Assert.AreEqual("Person Description - 7", result);
+            Assert.AreEqual("Person Description - 7", result.Result);
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests
             person.Description = "Person Description";
             person.Client = new Client();
             var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
-            Assert.AreEqual("Person Description - ", result);
+            Assert.AreEqual("Person Description - ", result.Result);
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Iql.Tests.Tests
             //var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
             //var xml = IqlXmlSerializer.SerializeToXml(iql);
             var result = await ExpressionEvaluator.EvaluateExpressionWithDbAsync(expression, person, Db);
-            Assert.AreEqual("Asynchronous Person Description: No User - My Other Client", result);
+            Assert.AreEqual("Asynchronous Person Description: No User - My Other Client", result.Result);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Iql.Tests.Tests
                 Id = 8
             });
             var result = await ExpressionEvaluator.EvaluateExpressionWithDbAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
-            Assert.AreEqual("Asynchronous Person Description - ", result);
+            Assert.AreEqual("Asynchronous Person Description - ", result.Result);
         }
 
         [TestMethod]
