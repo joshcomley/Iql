@@ -181,7 +181,11 @@ namespace Iql.Parsing
             }
         }
 
-        public object ParseAction(IqlExpression expression)
+        public object ParseAction(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             return Parse(expression);
         }

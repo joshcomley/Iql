@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Iql.Entities.Events;
 using Iql.Entities.Geography;
 using Iql.Entities.InferredValues;
@@ -60,6 +61,6 @@ namespace Iql.Entities
         Func<object, object, object> SetValue { get; }
         Dictionary<string, object> CustomInformation { get; }
         IProperty SetNullable(bool nullable = true);
-        IProperty IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always);
+        IProperty IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false);
     }
 }

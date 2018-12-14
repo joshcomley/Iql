@@ -179,7 +179,11 @@ namespace Iql.Parsing
             }
         }
 
-        public async Task<object> ParseActionAsync(IqlExpression expression)
+        public async Task<object> ParseActionAsync(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             return await ParseAsync(expression);
         }

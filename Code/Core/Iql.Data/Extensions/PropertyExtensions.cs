@@ -6,13 +6,53 @@ using Iql.Entities.Extensions;
 using Iql.Entities.InferredValues;
 using Iql.Extensions;
 using Iql.Parsing.Evaluation;
-using System.Linq;
 using Iql.Entities.Services;
 
 namespace Iql.Data.Extensions
 {
     public static class PropertyExtensions
     {
+        public static async Task<bool> IsReadOnlyAsync(this ISimpleProperty property,
+            object owner,
+            IDataContext dataContext)
+        {
+            if (property.IsReadOnly)
+            {
+                return true;
+            }
+
+            if (property is IProperty)
+            {
+                var p = property as IProperty;
+                if (p.InferredValueConfigurations != null)
+                {
+                    for (var i = 0; i < p.InferredValueConfigurations.Count; i++)
+                    {
+                        var inferredValueConfiguration = p.InferredValueConfigurations[i];
+                        if (inferredValueConfiguration.CanOverride)
+                        {
+                            continue;
+                        }
+
+                        if (!inferredValueConfiguration.HasCondition)
+                        {
+                            return true;
+                        }
+
+                        var conditionResult = await inferredValueConfiguration.InferredWithConditionIql.EvaluateIqlAsync(
+                            owner,
+                            dataContext);
+
+                        if (conditionResult.Success && Equals(conditionResult.Result, true))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         public static async Task<bool> TrySetInferredValueAsync(
             this IProperty property,
             object entity,

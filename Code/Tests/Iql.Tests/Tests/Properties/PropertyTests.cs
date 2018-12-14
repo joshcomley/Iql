@@ -15,6 +15,7 @@ namespace Iql.Tests.Tests.Properties
         [TestMethod]
         public async Task InferredWithConversionToStringTest()
         {
+            Db.ServiceProvider.Clear();
             var site = new Site();
             site.ClientId = 7;
             site.Address = "A\nB";
@@ -59,7 +60,7 @@ namespace Iql.Tests.Tests.Properties
 
             Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
             Db.ServiceProvider.RegisterInstance(new TestCurrentLocationResolver());
-            Assert.IsFalse(await Db.TrySetInferredValuesAsync(person));
+            Assert.IsTrue(await Db.TrySetInferredValuesAsync(person));
             Assert.AreEqual(null, person.Location);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);

@@ -66,13 +66,13 @@ namespace Iql.Data.IqlToIql.Parsers
                         {
                             var result =
                                 await currentLocationService.ResolveCurrentLocationAsync(parser.ServiceProvider);
-                            if (!result.Success && !action.CanFail)
+                            if (!result.Success && action.CanFail)
                             {
                                 parser.Success = false;
                             }
                             return new IqlLiteralExpression(result.Result);
                         }
-                        parser.Success = !action.CanFail;
+                        parser.Success = action.CanFail;
                         return null;
                     }
                 case IqlExpressionKind.CurrentUserId:
@@ -91,7 +91,7 @@ namespace Iql.Data.IqlToIql.Parsers
                         }
                         else
                         {
-                            parser.Success = !action.CanFail;
+                            parser.Success = action.CanFail;
                         }
                         return new IqlLiteralExpression(currentUserId);
                     }
@@ -111,7 +111,7 @@ namespace Iql.Data.IqlToIql.Parsers
                         }
                         else
                         {
-                            parser.Success = !action.CanFail;
+                            parser.Success = action.CanFail;
                         }
                         return new IqlLiteralExpression(currentUser);
                     }

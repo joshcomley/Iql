@@ -10,6 +10,7 @@ namespace Iql.Entities
         public virtual bool IsReadOnly => HasReadOnly;
         public virtual bool IsHiddenFromEdit =>
             IsInternal || EditKind == PropertyEditKind.Hidden;
+
         public virtual bool IsHiddenFromRead =>
             IsInternal || ReadKind == PropertyReadKind.Hidden;
 

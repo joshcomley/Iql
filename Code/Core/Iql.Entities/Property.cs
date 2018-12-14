@@ -178,9 +178,9 @@ namespace Iql.Entities
             return UseFunctionDefaultValue(async owner => (TElementType) await resolver(owner));
         }
 
-        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
+        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
         {
-            SetInferredWithExpression(expression, onlyIfNew, mode);
+            SetInferredWithExpression(expression, onlyIfNew, mode, canOverride);
             return this;
         }
 
@@ -200,9 +200,9 @@ namespace Iql.Entities
             return this;
         }
 
-        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
         {
-            return IsInferredWith(expression, onlyIfNew, mode);
+            return IsInferredWith(expression, onlyIfNew, mode, canOverride);
         }
 
         IEntityProperty<TOwner> IEntityProperty<TOwner>.IsConditionallyInferredWith(Expression<Func<TOwner, object>> expression, Expression<Func<TOwner, bool>> condition)
@@ -210,9 +210,9 @@ namespace Iql.Entities
             return IsConditionallyInferredWith(expression, condition);
         }
 
-        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always)
+        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
         {
-            SetInferredWithExpression(expression, onlyIfNew, mode);
+            SetInferredWithExpression(expression, onlyIfNew, mode, canOverride);
             return this;
         }
 

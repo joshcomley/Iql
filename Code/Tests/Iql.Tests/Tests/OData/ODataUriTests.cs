@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Brandless.ObjectSerializer;
-using Iql.DotNet.Serialization;
 using Iql.Entities.Services;
 using Iql.OData;
 using Iql.OData.Extensions;
@@ -12,6 +10,9 @@ using Iql.Queryable;
 using Iql.Parsing;
 using Iql.Parsing.Expressions;
 using Iql.Queryable.Expressions;
+#else
+using Brandless.ObjectSerializer;
+using Iql.DotNet.Serialization;
 #endif
 using Iql.Tests.Context;
 using Iql.Tests.Tests.Services;

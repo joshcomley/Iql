@@ -12,7 +12,17 @@ namespace Iql.Entities.Services
             BaseProvider = baseProvider;
         }
 
-        private readonly Dictionary<Type, IqlServiceRegistration> _serviceRegistrations = new Dictionary<Type, IqlServiceRegistration>();
+        private Dictionary<Type, IqlServiceRegistration> _serviceRegistrations = new Dictionary<Type, IqlServiceRegistration>();
+
+        public IqlServiceProvider Clear(bool onlySelf = false)
+        {
+            _serviceRegistrations = new Dictionary<Type, IqlServiceRegistration>();
+            if (!onlySelf)
+            {
+                BaseProvider?.Clear();
+            }
+            return this;
+        }
 
         public IqlServiceProvider Unregister<T>()
             where T : class
