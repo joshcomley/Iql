@@ -1069,14 +1069,6 @@ namespace IqlSampleApp.ApiContext.Base.EntityService
                 return _ReportType_CreatedByUserId = _ReportType_CreatedByUserId ?? FindPropertyByName<ReportType>("CreatedByUserId");
             }
         }
-        private IProperty _ReportType_PersistenceKey = null;
-        public IProperty ReportType_PersistenceKey
-        {
-            get
-            {
-                return _ReportType_PersistenceKey = _ReportType_PersistenceKey ?? FindPropertyByName<ReportType>("PersistenceKey");
-            }
-        }
         private IProperty _ReportType_Name = null;
         public IProperty ReportType_Name
         {
@@ -1107,6 +1099,14 @@ namespace IqlSampleApp.ApiContext.Base.EntityService
             get
             {
                 return _ReportType_RevisionKey = _ReportType_RevisionKey ?? FindPropertyByName<ReportType>("RevisionKey");
+            }
+        }
+        private IProperty _ReportType_PersistenceKey = null;
+        public IProperty ReportType_PersistenceKey
+        {
+            get
+            {
+                return _ReportType_PersistenceKey = _ReportType_PersistenceKey ?? FindPropertyByName<ReportType>("PersistenceKey");
             }
         }
         private IProperty _ReportType_Category = null;
@@ -1690,6 +1690,14 @@ namespace IqlSampleApp.ApiContext.Base.EntityService
             get
             {
                 return _Person_Description = _Person_Description ?? FindPropertyByName<Person>("Description");
+            }
+        }
+        private IProperty _Person_Skills = null;
+        public IProperty Person_Skills
+        {
+            get
+            {
+                return _Person_Skills = _Person_Skills ?? FindPropertyByName<Person>("Skills");
             }
         }
         private IProperty _Person_Category = null;

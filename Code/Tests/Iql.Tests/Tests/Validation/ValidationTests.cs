@@ -204,6 +204,7 @@ namespace Iql.Tests.Tests.Validation
         {
             var person = new Person();
             person.Title = "a";
+            person.Skills = PersonSkills.Coder;
             var db = new AppDbContext();
             db.People.Add(person);
             var result = await db.SaveChangesAsync();

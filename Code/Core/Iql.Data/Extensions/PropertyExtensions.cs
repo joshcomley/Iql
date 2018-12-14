@@ -1,36 +1,40 @@
 ﻿using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.InferredValues;
 using Iql.Extensions;
+using Iql.Parsing.Evaluation;
+using System.Linq;
+using Iql.Entities.Services;
 
 namespace Iql.Data.Extensions
 {
     public static class PropertyExtensions
     {
-        public static async Task<bool> TrySetInferredValuesAsync(this IDataContext dataContext, object entity)
-        {
-            var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            var success = true;
-            for (var i = 0; i < config.Properties.Count; i++)
-            {
-                var propety = config.Properties[i];
-                var propertySuccess = await propety.TrySetInferredValueAsync(entity, dataContext);
-                if (!propertySuccess)
-                {
-                    success = false;
-                }
-            }
-
-            return success;
-        }
-
         public static async Task<bool> TrySetInferredValueAsync(
             this IProperty property,
             object entity,
-            IDataContext dataContext)
+            IDataContext dataContext,
+            IServiceProviderProvider serviceProviderProvider = null)
         {
+            return await property.TrySetInferredValueCustomAsync(
+                entity, 
+                new DefaultEvaluator(dataContext),
+                serviceProviderProvider);
+        }
+
+        public static async Task<bool> TrySetInferredValueCustomAsync(
+            this IProperty property, 
+            object entity, 
+            IIqlCustomEvaluator customEvaluator,
+            IServiceProviderProvider serviceProviderProvider = null)
+        {
+            if (serviceProviderProvider == null && customEvaluator is DefaultEvaluator)
+            {
+                serviceProviderProvider = (customEvaluator as DefaultEvaluator).DataContext;
+            }
             if (property.HasInferredWith)
             {
                 for (var i = 0; i < property.InferredValueConfigurations.Count; i++)
@@ -38,13 +42,24 @@ namespace Iql.Data.Extensions
                     var inferredWith = property.InferredValueConfigurations[i];
                     if (inferredWith.HasCondition)
                     {
-                        var conditionResult = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(entity, dataContext);
+                        IqlObjectEvaluationResult conditionResult = null;
+
+                        conditionResult = await inferredWith
+                            .InferredWithConditionIql
+                            .EvaluateIqlCustomAsync(
+                                property.EntityConfiguration.Builder,
+                                serviceProviderProvider,
+                                entity,
+                                customEvaluator,
+                                property.EntityConfiguration.Type);
+
                         if (!Equals(conditionResult.Result, true))
                         {
                             return true;
                         }
                     }
-                    if (inferredWith.ForNewOnly && dataContext.IsEntityNew(entity, property.EntityConfiguration.Type) == false)
+
+                    if (inferredWith.ForNewOnly && customEvaluator.IsEntityNew(property.EntityConfiguration, entity) == false)
                     {
                         return true;
                     }
@@ -62,17 +77,25 @@ namespace Iql.Data.Extensions
                     }
 
                     var inferredWithIql = inferredWith.InferredWithIql;
-                    var result = await inferredWithIql.EvaluateIqlAsync(entity, dataContext);
+                    var result = await inferredWithIql.EvaluateIqlCustomAsync(
+                        property.EntityConfiguration.Builder,
+                        serviceProviderProvider,
+                        entity,
+                        customEvaluator,
+                        property.EntityConfiguration.Type);
+
                     if (!result.Success)
                     {
                         return false;
                     }
+
                     var value = result.Result;
                     if (property.TypeDefinition.ToIqlType() == IqlType.String &&
                         value != null && !(value is string))
                     {
                         value = value.ToString();
                     }
+
                     property.SetValue(entity, value);
                     if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
                     {
@@ -81,9 +104,9 @@ namespace Iql.Data.Extensions
                             var compositeKey = property.Relationship.ThisEnd.GetCompositeKey(
                                 entity,
                                 true);
-                            var dbSet = dataContext.GetDbSetByEntityType(
-                                property.Relationship.OtherEnd.Type);
-                            var relatedEntity = await dbSet.GetWithKeyAsync(compositeKey);
+                            var relatedEntity = await customEvaluator.GetEntityByKeyAsync(
+                                property.Relationship.OtherEnd.EntityConfiguration,
+                                compositeKey);
                             property.Relationship.ThisEnd.Property.SetValue(entity, relatedEntity);
                         }
                         else
@@ -91,6 +114,7 @@ namespace Iql.Data.Extensions
                             property.Relationship.ThisEnd.Property.SetValue(entity, null);
                         }
                     }
+
                     if (property.Kind.HasFlag(PropertyKind.Relationship))
                     {
                         var compositeKey = property.Relationship.OtherEnd.GetCompositeKey(

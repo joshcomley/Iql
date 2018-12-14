@@ -489,14 +489,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -601,6 +602,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -760,14 +762,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -831,6 +834,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -938,14 +942,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -1018,6 +1023,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -1127,14 +1133,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -1207,6 +1214,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -1308,14 +1316,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -1379,6 +1388,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -1479,14 +1489,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -1559,6 +1570,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -1666,14 +1678,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -1746,6 +1759,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -1864,14 +1878,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -1900,17 +1915,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
-            }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
-                p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.ReadKind = PropertyReadKind.Hidden;
-                p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
-                p.Kind = PropertyKind.Primitive;
-                p.Name = "PersistenceKey";
-                p.Title = "PersistenceKey";
-                p.FriendlyName = "Persistence Key";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
@@ -1946,6 +1950,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -1990,6 +1995,17 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     "Iql:Version"
                 });
+            }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
+                p.PropertyName = "PersistenceKey";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.ReadKind = PropertyReadKind.Hidden;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "PersistenceKey";
+                p.Title = "PersistenceKey";
+                p.FriendlyName = "Persistence Key";
             }).DefineProperty(p => p.Category, false, IqlType.Unknown).ConfigureProperty(p => p.Category, p => {
                 p.PropertyName = "Category";
                 p.Nullable = false;
@@ -2035,14 +2051,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -2124,6 +2141,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -2215,14 +2233,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -2295,6 +2314,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -2404,14 +2424,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -2466,6 +2487,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -2574,14 +2596,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -2645,6 +2668,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -2745,14 +2769,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -2834,6 +2859,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -2935,14 +2961,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -3006,6 +3033,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -3105,6 +3133,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlCurrentLocationExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentLocation,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -3188,14 +3217,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -3333,6 +3363,14 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Description";
                 p.Title = "Description";
                 p.FriendlyName = "Description";
+            }).DefineProperty(p => p.Skills, false, IqlType.Enum).ConfigureProperty(p => p.Skills, p => {
+                p.PropertyName = "Skills";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Skills";
+                p.Title = "Skills";
+                p.FriendlyName = "Skills";
             }).DefineProperty(p => p.Category, false, IqlType.Enum).ConfigureProperty(p => p.Category, p => {
                 p.PropertyName = "Category";
                 p.Nullable = false;
@@ -3367,6 +3405,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -3562,14 +3601,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -3690,6 +3730,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -3791,14 +3832,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -3862,6 +3904,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -3962,14 +4005,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -4033,6 +4077,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -4185,6 +4230,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -4274,14 +4320,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -4353,6 +4400,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -4519,14 +4567,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -4747,6 +4796,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -4921,14 +4971,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -4983,6 +5034,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },
@@ -5100,14 +5152,15 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new InferredValueConfiguration
                     {
-                        Mode = InferredValueMode.IfNullOrEmpty,
-                        ForNewOnly = true,
+                        Mode = InferredValueMode.Always,
+                        ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
                             Body = new IqlLiteralExpression
                             {
                                 Value = new IqlCurrentUserIdExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.CurrentUserId,
                                     ReturnType = IqlType.Unknown
                                 },
@@ -5178,6 +5231,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Value = new IqlNowExpression
                                 {
+                                    CanFail = false,
                                     Kind = IqlExpressionKind.Now,
                                     ReturnType = IqlType.Date
                                 },

@@ -106,12 +106,6 @@ namespace Iql.Server
             {
                 config.ConfigureProperty(p => p.Id, p => p.SetReadOnly());
                 config.ConfigureProperty(p => p.CreatedDate, p => p.SetReadOnly());
-                config.ConfigureProperty(p => p.CreatedByUser, p => p.SetReadOnly());
-                config.ConfigureProperty(p => p.CreatedByUserId, p =>
-                {
-                    p.IsInferredWith(_ => new IqlCurrentUserIdExpression(), true, InferredValueMode.IfNullOrEmpty);
-                    p.SetReadOnly();
-                });
                 config.ConfigureProperty(p => p.Guid, p => p.SetHidden());
                 config.ConfigureProperty(p => p.PersistenceKey, p => p.SetReadOnlyAndHidden());
             });
@@ -134,7 +128,13 @@ namespace Iql.Server
             builder.EntityType<T>().Configure(config =>
             {
                 config.ConfigureProperty(p => p.CreatedByUser, p => p.SetReadOnly());
-                config.ConfigureProperty(p => p.CreatedByUserId, p => p.SetReadOnly());
+                config.ConfigureProperty(
+                    p => p.CreatedByUserId,
+                    p =>
+                    {
+                        p.SetReadOnly();
+                        p.IsInferredWith(_ => new IqlCurrentUserIdExpression());
+                    });
             });
         }
 

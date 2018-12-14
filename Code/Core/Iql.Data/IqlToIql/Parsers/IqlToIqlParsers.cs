@@ -72,6 +72,7 @@ namespace Iql.Data.IqlToIql.Parsers
                             }
                             return new IqlLiteralExpression(result.Result);
                         }
+                        parser.Success = !action.CanFail;
                         return null;
                     }
                 case IqlExpressionKind.CurrentUserId:
@@ -88,24 +89,32 @@ namespace Iql.Data.IqlToIql.Parsers
                             }
                             currentUserId = result.Result;
                         }
+                        else
+                        {
+                            parser.Success = !action.CanFail;
+                        }
                         return new IqlLiteralExpression(currentUserId);
                     }
                 case IqlExpressionKind.CurrentUser:
-                {
-                    var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
-                    object currentUser = null;
-                    if (currentUserService != null)
                     {
-                        var result =
-                            await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
-                        if (!result.Success && !action.CanFail)
+                        var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
+                        object currentUser = null;
+                        if (currentUserService != null)
                         {
-                            parser.Success = false;
+                            var result =
+                                await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                            if (!result.Success && !action.CanFail)
+                            {
+                                parser.Success = false;
+                            }
+                            currentUser = result.Result;
                         }
-                        currentUser = result.Result;
+                        else
+                        {
+                            parser.Success = !action.CanFail;
+                        }
+                        return new IqlLiteralExpression(currentUser);
                     }
-                    return new IqlLiteralExpression(currentUser);
-                }
             }
 
             return action;

@@ -41,11 +41,11 @@ namespace Iql.Data.Extensions
                     entity,
                     dataContext,
                     parent);
-                if (result.Value == null)
+                if (result.Result == null)
                 {
-                    if (result.Results.Length == 1)
+                    if (result.Paths.Length == 1)
                     {
-                        var last = result.Results[0];
+                        var last = result.Paths[0];
                         if (last.Success && last.Value == null && last.Parent != null &&
                             last.Source.Property.Relationship != null)
                         {
@@ -61,9 +61,9 @@ namespace Iql.Data.Extensions
                 }
                 else
                 {
-                    mapping.SetValue(entity, result.Value);
+                    mapping.SetValue(entity, result.Result);
                 }
-                mapping.SetValue(entity, result.Value);
+                mapping.SetValue(entity, result.Result);
             }
 
             return entity;
@@ -116,7 +116,7 @@ namespace Iql.Data.Extensions
                 entity,
                 dataContext,
                 parent);
-            return (T)result.Value;
+            return (T)result.Result;
         }
 
         private static async Task<IqlExpressonEvaluationResult> EvaluateExpressionTypedAsyncInternal<TParent, T>(
@@ -131,13 +131,13 @@ namespace Iql.Data.Extensions
                 ctx,
                 dataContext,
                 typeof(T));
-            if (result.Value is LambdaExpression)
+            if (result.Result is LambdaExpression)
             {
-                var exp = result.Value as LambdaExpression;
-                result.Value = exp.Compile().DynamicInvoke(new object[] { entity });
-                if (result.Value is IqlPropertyPathEvaluationResult)
+                var exp = result.Result as LambdaExpression;
+                result.Result = exp.Compile().DynamicInvoke(new object[] { entity });
+                if (result.Result is IqlPropertyPathEvaluationResult)
                 {
-                    result.Value = (result.Value as IqlPropertyPathEvaluationResult).Value;
+                    result.Result = (result.Result as IqlPropertyPathEvaluationResult).Value;
                 }
             }
             return result;

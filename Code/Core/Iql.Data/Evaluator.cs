@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Context;
+using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Data.IqlToIql;
 using Iql.Entities;
@@ -37,7 +38,7 @@ namespace Iql.Data
 
         public IqlExpressonEvaluatedResult(
             IqlPropertyPathEvaluationResult result,
-            IqlExpression expression, 
+            IqlExpression expression,
             IqlExpressonEvaluationResult rootResult
             )
         {
@@ -47,14 +48,16 @@ namespace Iql.Data
         }
     }
 
-    public class IqlExpressonEvaluationResult
+    public class IqlExpressonEvaluationResult : IqlObjectEvaluationResult
     {
-        public IqlPropertyPathEvaluationResult[] Results { get; set; }
-        public object Value { get; set; }
-        public bool Success { get; set; }
+        public IqlPropertyPathEvaluationResult[] Paths { get; set; }
 
-        public IqlExpressonEvaluationResult()
+        public IqlExpressonEvaluationResult(
+            bool success, 
+            object result,
+            IEnumerable<IqlPropertyPathEvaluationResult> paths) : base(success, result)
         {
+            Paths = paths.ToArray();
         }
     }
 
@@ -68,9 +71,9 @@ namespace Iql.Data
         public object Value => Success ? Results.Last().Value : ResolveNull(this);
 
         public IqlPropertyPathEvaluationResult(
-            bool success, 
+            bool success,
             object parent,
-            IqlPropertyPath source, 
+            IqlPropertyPath source,
             IqlPropertyPathEvaluated[] results,
             Func<IqlPropertyPathEvaluationResult, object> resolveNull = null
             )
@@ -94,7 +97,7 @@ namespace Iql.Data
         public bool IsFinal => Position == PathLength - 1;
         public IqlPropertyPathEvaluated(
             IqlPropertyPathEvaluationResult result,
-            IqlPropertyPath path, 
+            IqlPropertyPath path,
             object parent,
             object value,
             int pathLength,
@@ -155,23 +158,18 @@ namespace Iql.Data
             return await EvaluateIqlAsync(iql, entity, dataContext, entityType);
         }
 
-        public static Task<IqlObjectEvaluationResult> EvaluateIqlAsync(
+        public static Task<IqlExpressonEvaluationResult> EvaluateIqlAsync(
             this IqlExpression expression,
             object entity,
             IDataContext dataContext,
             Type entityType = null)
         {
-            return EvaluateIqlCustomAsync(
-                expression,
+
+            return expression.EvaluateIqlCustomAsync(
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(entityType),
                 dataContext,
                 entity,
-                async (e, type, propertyPath, flattenedExpression, length, i) =>
-                {
-                    var evaluationResult = await propertyPath.EvaluateAsync(e, dataContext);
-                    var value = evaluationResult.Value ?? ResolveNull(propertyPath, flattenedExpression);
-                    return new IqlObjectEvaluationResult(evaluationResult.Success, value);
-                });
+                new DefaultEvaluator(dataContext));
         }
 
         public static async Task<IqlExpressonEvaluationResult> EvaluateIqlPathAsync(
@@ -180,31 +178,65 @@ namespace Iql.Data
             IDataContext dataContext,
             Type entityType)
         {
-            var evaluationResult = new IqlExpressonEvaluationResult();
-            var paths = new List<IqlPropertyPathEvaluationResult>();
+            var evaluator = new DefaultEvaluator(dataContext);
             var value = await EvaluateIqlCustomAsync(
                 expression,
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(entityType),
                 dataContext,
                 entity,
-                async (e, type, propertyPath, flattenedExpression, length, i) =>
-                {
-                    var result = await propertyPath.EvaluateAsync(e, dataContext);
-
-                    //ResolveNull(propertyPath, flattenedExpression)
-                    result.ResolveNull = _ => ResolveNull(propertyPath, flattenedExpression);
-                    paths.Add(result);
-                    return new IqlObjectEvaluationResult(result.Success, result);
-                });
-            evaluationResult.Results = paths.ToArray();
-            evaluationResult.Value = value.Result is IqlPropertyPathEvaluationResult
+                evaluator);
+            value.Result = value.Result is IqlPropertyPathEvaluationResult
                 ? (value.Result as IqlPropertyPathEvaluationResult).Value
                 : value.Result;
-            evaluationResult.Success = value.Success;
-            return evaluationResult;
+            return value;
+        }
+        public static async Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(
+            this IqlExpression expression,
+            IEntityConfigurationBuilder builder,
+            IServiceProviderProvider serviceProviderProvider,
+            object entity,
+            IIqlCustomEvaluator customEvaluator,
+            Type entityType = null)
+        {
+            var success = true;
+            var paths = new List<IqlPropertyPathEvaluationResult>();
+            entityType = entityType ?? entity.GetType();
+            var processResult = await ProcessIqlExpressionAsync(
+                expression.Clone(),
+                entity,
+                entityType,
+                builder,
+                serviceProviderProvider);
+            success = processResult.Success;
+            var iqlPropertyPaths = processResult.lookup.Keys.ToArray();
+            for (var i = 0; i < iqlPropertyPaths.Length; i++)
+            {
+                var item = iqlPropertyPaths[i];
+                var e = entity;
+                if (e is IRelationshipFilterContext)
+                {
+                    e = (e as IRelationshipFilterContext).Owner;
+                }
+                var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == item.Expression);
+                var evaluationResult = await item.EvaluateCustomAsync(
+                    e,
+                    customEvaluator);
+                paths.Add(evaluationResult);
+                var value = evaluationResult.Value ?? ResolveNull(item, flattenedExpression);
+                var iqlEvaluationResult = new IqlObjectEvaluationResult(evaluationResult.Success, value);
+                processResult.lookup[item] = iqlEvaluationResult.Result;
+                if (!iqlEvaluationResult.Success)
+                {
+                    success = false;
+                }
+            }
+
+            var finalResult = Finalise(entity, processResult.lookup, processResult.expression, processResult.propertyExpressions);
+            return new IqlExpressonEvaluationResult(success, finalResult, paths);
         }
 
-        private static object ResolveNull(IqlPropertyPath propertyPath, IqlFlattenedExpression flattenedExpression)
+
+        public static object ResolveNull(IqlPropertyPath propertyPath, IqlFlattenedExpression flattenedExpression)
         {
             if (IsStringConcatenation(flattenedExpression))
             {
@@ -242,50 +274,6 @@ namespace Iql.Data
                 return IsStringConcatenation(flattenedExpression.Ancestors[flattenedExpression.Ancestors.Length - 1]);
             }
             return false;
-        }
-
-        public static async Task<IqlObjectEvaluationResult> EvaluateIqlCustomAsync(
-            IqlExpression expression,
-            IEntityConfigurationBuilder builder,
-            IServiceProviderProvider serviceProviderProvider,
-            object entity,
-            Func<object, Type, IqlPropertyPath, IqlFlattenedExpression, int, int, Task<IqlObjectEvaluationResult>> evaluatorAsync,
-            Type entityType = null)
-        {
-            var success = true;
-            entityType = entityType ?? entity.GetType();
-            var processResult = await ProcessIqlExpressionAsync(
-                expression.Clone(),
-                entity,
-                entityType,
-                builder,
-                serviceProviderProvider);
-            var iqlPropertyPaths = processResult.lookup.Keys.ToArray();
-            for (var i = 0; i < iqlPropertyPaths.Length; i++)
-            {
-                var item = iqlPropertyPaths[i];
-                var e = entity;
-                if (e is IRelationshipFilterContext)
-                {
-                    e = (e as IRelationshipFilterContext).Owner;
-                }
-
-                var iqlEvaluationResult = await evaluatorAsync(
-                    e,
-                    entityType, 
-                    item,
-                    processResult.propertyExpressions.First(_ => _.Expression == item.Expression),
-                    iqlPropertyPaths.Length,
-                    i);
-                processResult.lookup[item] = iqlEvaluationResult.Result;
-                if (!iqlEvaluationResult.Success)
-                {
-                    success = false;
-                }
-            }
-
-            var finalResult = Finalise(entity, processResult.lookup, processResult.expression, processResult.propertyExpressions);
-            return new IqlObjectEvaluationResult(success, finalResult);
         }
 
         //private static IqlExpression ProcessLambdaExpression(LambdaExpression expression, object entity, Type entityType,
@@ -330,8 +318,8 @@ namespace Iql.Data
                 iql);
         }
 
-        private static object Finalise(object entity, 
-            Dictionary<IqlPropertyPath, object> lookup, 
+        private static object Finalise(object entity,
+            Dictionary<IqlPropertyPath, object> lookup,
             IqlExpression iql,
             IqlFlattenedExpression[] propertyExpressions)
         {

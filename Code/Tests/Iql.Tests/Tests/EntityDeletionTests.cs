@@ -35,8 +35,10 @@ namespace Iql.Tests.Tests
         {
             var person1 = new Person();
             var person2 = new Person();
+            person1.Skills = PersonSkills.Chef;
             person1.Title = "A long enough title";
             person1.Description = "A long enough title";
+            person2.Skills = PersonSkills.Chef;
             person2.Title = "A long enough title";
             person2.Description = "A long enough title";
             Db.People.Add(person1);
@@ -62,9 +64,11 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
             var person1 = new Person();
+            person1.Skills = PersonSkills.Chef;
             person1.Title = "A long enough title";
             person1.Description = "A long enough title";
             var person2 = new Person();
+            person2.Skills = PersonSkills.Chef;
             person2.Title = "A long enough title";
             person2.Description = "A long enough title";
             db1.People.Add(person1);

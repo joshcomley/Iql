@@ -22,7 +22,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlEnumValueExpression(0, null);
+			var expression = new IqlEnumValueExpression();
 			expression.Name = Name;
 			expression.Value = Value;
 			expression.InferredReturnType = InferredReturnType;

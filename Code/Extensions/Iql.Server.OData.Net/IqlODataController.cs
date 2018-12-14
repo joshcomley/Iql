@@ -10,19 +10,19 @@ using Brandless.AspNetCore.OData.Extensions.Controllers;
 using Brandless.Data.EntityFramework.Crud;
 using Brandless.Data.Models;
 using Brandless.Data.Mptt;
-using Iql.Data;
+using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Services;
 using Iql.Extensions;
-using Iql.Server.Extensions;
+using Iql.Server;
 using Iql.Server.Media;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
+using PropertyExtensions = Iql.Data.Extensions.PropertyExtensions;
 using PropertyKind = Iql.Entities.PropertyKind;
 
 namespace Iql.Server.OData.Net
@@ -158,7 +158,6 @@ namespace Iql.Server.OData.Net
             return mptt.DeleteAsync((TKey)id);
         }
 
-
         private Task ApplyNewNestedSetItem(INestedSet nestedSet, T postedEntity)
         {
             var method = typeof(IqlODataController<
@@ -271,53 +270,70 @@ namespace Iql.Server.OData.Net
 
         public virtual IServiceProviderProvider ResolveServiceProviderProvider()
         {
-            return Builder;
+            return new IqlHttpServiceProviderProvider<TUser>(
+                new IqlHttpServiceProviderContext(
+                    HttpContext,
+                    ResolverUserIdByName));
+        }
+
+        public virtual Task<object> ResolverUserIdByName(string name)
+        {
+            return Task.FromResult<object>(null);
         }
 
         protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
         {
+            //            PropertyExtensions.TrySetInferredValuesAsync()
+            var serverEvaluator = new IqlServerEvaluator(CrudManager, Request.Method.ToLower() == "post");
+            var entityConfiguration = Builder.EntityType<T>();
+            await entityConfiguration.TrySetInferredValuesAsync(
+                currentEntity,
+                serverEvaluator,
+                ResolveServiceProviderProvider());
+            // Clear any nested entities
             foreach (var property in EntityConfiguration.Properties)
             {
-                // TODO: x1 Implement inferred with using TrySetInferredValueAsync
-                //if (property.InferredWithIql != null)
-                //{
-                //    var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
-                //        property.InferredWithIql,
-                //        Builder,
-                //        ResolveServiceProviderProvider(),
-                //        currentEntity,
-                //        async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
-                //    property.SetValue(currentEntity, evaluatedValue);
-                //    //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
-                //    //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
-                //    //var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
-                //    //    property.InferredWithIql as IqlPropertyExpression);
-                //    //var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
-                //    ////postedValues[property.Name] = new JObject(value);
-                //    //if (property.Kind.HasFlag(PropertyKind.Primitive))
-                //    //{
-                //    //    if (value != null &&
-                //    //        property.TypeDefinition.Type == typeof(string) &&
-                //    //        !(value is string))
-                //    //    {
-                //    //        value = value.ToString();
-                //    //    }
-
-                //    //    patch?.TrySetPropertyValue(property.Name, value);
-                //    //    property.SetValue(currentEntity, value);
-                //    //}
-                //    //if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
-                //    //{
-                //    //    var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
-                //    //    foreach (var constraint in key.Keys)
-                //    //    {
-                //    //        //postedValues[constraint.Name] = new JValue(constraint.Value);
-                //    //        currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
-                //    //        patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
-                //    //    }
-                //    //}
-                //}
+                property.Relationship?.ThisEnd.Property.SetValue(currentEntity, null);
             }
+            //    //if (property.InferredWithIql != null)
+            //    //{
+            //    //    var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
+            //    //        property.InferredWithIql,
+            //    //        Builder,
+            //    //        ResolveServiceProviderProvider(),
+            //    //        currentEntity,
+            //    //        async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
+            //    //    property.SetValue(currentEntity, evaluatedValue);
+            //    //    //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
+            //    //    //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
+            //    //    //var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
+            //    //    //    property.InferredWithIql as IqlPropertyExpression);
+            //    //    //var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
+            //    //    ////postedValues[property.Name] = new JObject(value);
+            //    //    //if (property.Kind.HasFlag(PropertyKind.Primitive))
+            //    //    //{
+            //    //    //    if (value != null &&
+            //    //    //        property.TypeDefinition.Type == typeof(string) &&
+            //    //    //        !(value is string))
+            //    //    //    {
+            //    //    //        value = value.ToString();
+            //    //    //    }
+
+            //    //    //    patch?.TrySetPropertyValue(property.Name, value);
+            //    //    //    property.SetValue(currentEntity, value);
+            //    //    //}
+            //    //    //if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
+            //    //    //{
+            //    //    //    var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
+            //    //    //    foreach (var constraint in key.Keys)
+            //    //    //    {
+            //    //    //        //postedValues[constraint.Name] = new JValue(constraint.Value);
+            //    //    //        currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
+            //    //    //        patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
+            //    //    //    }
+            //    //    //}
+            //    //}
+            //}
 
             if (EntityConfiguration.Files != null)
             {
@@ -364,85 +380,6 @@ namespace Iql.Server.OData.Net
                 patch.TrySetPropertyValue(file.UrlProperty.PropertyName, url);
                 file.UrlProperty.SetValue(currentEntity, url);
             }
-        }
-
-        private async Task<object> ProcessPropertyPathAsync(T currentEntity, Delta<T> patch, IqlPropertyPath path)
-        {
-            var patchEntity = patch == null ? currentEntity : patch.GetInstance();
-            var propertyNames = patch == null ? new string[] { } : patch.GetChangedPropertyNames().ToArray();
-            object current = null;
-            foreach (var pathPart in path.PropertyPath)
-            {
-                var isRelationship = pathPart.Property.Kind.HasFlag(PropertyKind.Relationship);
-                var hasPostedRelationshipKey = false;
-                var hasPostedValue = false;
-                if (propertyNames.Contains(pathPart.PropertyName))
-                {
-                    hasPostedValue = true;
-                    if (current == null)
-                    {
-                        current = patchEntity;
-                    }
-                    current = current.GetPropertyValueByName(pathPart.PropertyName);
-                }
-                else if (isRelationship)
-                {
-                    hasPostedRelationshipKey = true;
-                    foreach (var constraint in pathPart.Property.Relationship.ThisEnd.Constraints)
-                    {
-                        if (!propertyNames.Contains(constraint.PropertyName))
-                        {
-                            hasPostedRelationshipKey = false;
-                            break;
-                        }
-                    }
-
-                    if (hasPostedRelationshipKey)
-                    {
-                        var dic = new List<KeyValuePair<string, object>>();
-                        var compositeKey = pathPart.Property.Relationship.ThisEnd.GetCompositeKey(current ?? patchEntity, true);
-                        foreach (var constraint in compositeKey.Keys)
-                        {
-                            dic.Add(new KeyValuePair<string, object>(
-                                constraint.Name,
-                                constraint.Value));
-                        }
-                        current = CrudManager.FindEntity(dic, pathPart.Property.Relationship.OtherEnd.Type);
-                    }
-                    else
-                    {
-                        var key = pathPart.Property.EntityConfiguration.Key;
-                        var keyPairs = new List<KeyValuePair<string, object>>();
-                        foreach (var keyPart in key.Properties)
-                        {
-                            keyPairs.Add(new KeyValuePair<string, object>(
-                                keyPart.Name,
-                                keyPart.GetValue(current ?? currentEntity)));
-                        }
-                        var dbCurrent = CrudManager.FindEntity(keyPairs, pathPart.Property.EntityConfiguration.Type);
-
-                        var dic = new List<KeyValuePair<string, object>>();
-                        var compositeKey = pathPart.Property.Relationship.ThisEnd.GetCompositeKey(dbCurrent, true);
-                        foreach (var constraint in compositeKey.Keys)
-                        {
-                            dic.Add(new KeyValuePair<string, object>(
-                                constraint.Name,
-                                constraint.Value));
-                        }
-                        current = CrudManager.FindEntity(dic, pathPart.Property.Relationship.OtherEnd.Type);
-                    }
-                }
-                else
-                {
-                    if (current == null)
-                    {
-                        current = currentEntity;
-                    }
-                    current = current.GetPropertyValueByName(pathPart.PropertyName);
-                }
-                propertyNames = new string[] { };
-            }
-            return current;
         }
 
         private bool HasChangedPropertyValue(T entity, Delta<T> patch, string propertyName)

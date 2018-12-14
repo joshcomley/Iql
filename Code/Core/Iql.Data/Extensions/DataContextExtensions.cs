@@ -1,11 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Evaluation;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 
-namespace Iql.Data.Context
+namespace Iql.Data.Extensions
 {
     public static class DataContextExtensions
     {
@@ -69,6 +72,14 @@ namespace Iql.Data.Context
                 }
             }
             return properties;
+        }
+
+        public static async Task<bool> TrySetInferredValuesAsync(
+            this IDataContext dataContext,
+            object entity)
+        {
+            var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            return await config.TrySetInferredValuesAsync(entity, new DefaultEvaluator(dataContext), dataContext);
         }
     }
 }

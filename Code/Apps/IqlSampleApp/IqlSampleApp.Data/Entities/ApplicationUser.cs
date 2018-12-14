@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using IqlSampleApp.Data.Entities.Bases;
+using Brandless.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace IqlSampleApp.Data.Entities
 {
-    public class ApplicationUser : IdentityUser, IDbObject<string>
+    public class ApplicationUser : IdentityUser, Bases.IDbObject<string>
     {
         //public List<Person> PeopleCreatedBy { get; set; }
         //[Required(ErrorMessage = "Please enter an email address")]
@@ -51,7 +51,6 @@ namespace IqlSampleApp.Data.Entities
         public string FullName { get; set; }
 
         public ApplicationUser CreatedByUser { get; set; }
-
         public string CreatedByUserId { get; set; }
         //public Guid Guid { get; }
 

@@ -27,6 +27,8 @@ namespace IqlSampleApp.Data.Entities
 
         public string Description { get; set; }
 
+        public PersonSkills Skills { get; set; }
+
         public PersonCategory Category { get; set; }
 
         public PersonType Type { get; set; }

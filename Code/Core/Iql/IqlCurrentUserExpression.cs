@@ -14,6 +14,7 @@ namespace Iql
             // #CloneStart
 
 			var expression = new IqlCurrentUserExpression();
+			expression.CanFail = CanFail;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

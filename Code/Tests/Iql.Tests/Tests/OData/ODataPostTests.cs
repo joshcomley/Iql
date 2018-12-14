@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Haz.App.Data.Entities;
 using Iql.Data.Http;
+using Iql.Data.Tracking;
 using Iql.JavaScript.Extensions;
 using Iql.Tests.Data.Context;
 using IqlSampleApp.Data.Entities;
@@ -71,6 +72,43 @@ namespace Iql.Tests.Tests.OData
   ""CreatedDate"": ""2018-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
+}".CompressJson(), compressed);
+                await db.SaveChangesAsync();
+                Assert.AreEqual(0, log.Posts.Count);
+            });
+        }
+
+        [TestMethod]
+        public async Task TestPostEnum()
+        {
+            PersistenceKeyGenerator.New = () => new Guid("eb6f72b5-ba5c-49c5-b34b-832bb172d353");
+            await RequestLog.LogSessionAsync(async log =>
+            {
+                Assert.AreEqual(0, log.Posts.Count);
+                var db = NewDb();
+                var person = new Person
+                {
+                    Title = "Dummy",
+                    Category = PersonCategory.AutoDescription,
+                    Skills = PersonSkills.Chef | PersonSkills.Ninja
+                };
+                db.People.Add(person);
+                var result = await db.SaveChangesAsync();
+                Assert.AreEqual(true, result.Success);
+                var request = log.Posts.Pop().Single();
+                var changes = db.DataStore.Tracking.GetUpdates();
+                Assert.AreEqual(0, changes.Count);
+                Assert.AreEqual("http://localhost:28000/odata/People", request.Uri);
+                var body = request.Body.Body;
+                var compressed = body.CompressJson();
+                Assert.AreEqual(@"{
+  ""Id"": 0,
+  ""Title"": ""Dummy"",
+  ""Skills"": ""5"",
+  ""Category"": ""2"",
+  ""Guid"": ""00000000-0000-0000-0000-000000000000"",
+  ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
+  ""PersistenceKey"": ""eb6f72b5-ba5c-49c5-b34b-832bb172d353""
 }".CompressJson(), compressed);
                 await db.SaveChangesAsync();
                 Assert.AreEqual(0, log.Posts.Count);

@@ -55,27 +55,27 @@ namespace Iql
         {
             // #CloneStart
 
-            var expression = new IqlEnumLiteralExpression(null);
-            expression.Namespace = Namespace;
-            if (Value == null)
-            {
-                expression.Value = null;
-            }
-            else
-            {
-                var listCopy = new List<IqlEnumValueExpression>();
-                for (var i = 0; i < Value.Length; i++)
-                {
-                    listCopy.Add((IqlEnumValueExpression)Value[i]?.Clone());
-                }
-                expression.Value = listCopy.ToArray();
-            }
-            expression.InferredReturnType = InferredReturnType;
-            expression.Key = Key;
-            expression.Kind = Kind;
-            expression.ReturnType = ReturnType;
-            expression.Parent = Parent?.Clone();
-            return expression;
+			var expression = new IqlEnumLiteralExpression();
+			expression.Namespace = Namespace;
+			if(Value == null)
+			{
+				expression.Value = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlEnumValueExpression>();
+				for(var i = 0; i < Value.Length; i++)
+				{
+					listCopy.Add((IqlEnumValueExpression)Value[i]?.Clone());
+				}
+				expression.Value = listCopy.ToArray();
+			}
+			expression.InferredReturnType = InferredReturnType;
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }
@@ -84,14 +84,14 @@ namespace Iql
         {
             // #FlattenStart
 
-            if (Value != null)
-            {
-                for (var i = 0; i < Value.Length; i++)
-                {
-                    context.Flatten(Value[i]);
-                }
-            }
-            context.Flatten(Parent);
+				if(Value != null)
+				{
+					for(var i = 0; i < Value.Length; i++)
+					{
+						context.Flatten(Value[i]);
+					}
+				}
+				context.Flatten(Parent);
 
             // #FlattenEnd
         }
@@ -100,20 +100,20 @@ namespace Iql
         {
             // #ReplaceStart
 
-            if (Value != null)
-            {
-                for (var i = 0; i < Value.Length; i++)
-                {
-                    Value[i] = (IqlEnumValueExpression)context.Replace(this, nameof(Value), i, Value[i]);
-                }
-            }
-            Parent = context.Replace(this, nameof(Parent), null, Parent);
-            var replaced = context.Replacer(context, this);
-            if (replaced != this)
-            {
-                return replaced;
-            }
-            return this;
+			if(Value != null)
+			{
+				for(var i = 0; i < Value.Length; i++)
+				{
+					Value[i] = (IqlEnumValueExpression)context.Replace(this, nameof(Value), i, Value[i]);
+				}
+			}
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
 
             // #ReplaceEnd
         }

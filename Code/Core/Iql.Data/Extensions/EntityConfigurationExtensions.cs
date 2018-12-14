@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Iql.Data.Context;
-using Iql.Data.Lists;
+using Iql.Data.Evaluation;
 using Iql.Data.Operations;
 using Iql.Entities;
+using Iql.Entities.Services;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Operations;
 
@@ -10,6 +12,30 @@ namespace Iql.Data.Extensions
 {
     public static class EntityConfigurationExtensions
     {
+        public static async Task<bool> TrySetInferredValuesAsync(
+            this IEntityConfiguration config,
+            object entity,
+            IIqlCustomEvaluator customEvaluator,
+            IServiceProviderProvider serviceProviderProvider = null)
+        {
+            serviceProviderProvider = serviceProviderProvider ?? config.Builder;
+            var success = true;
+            for (var i = 0; i < config.Properties.Count; i++)
+            {
+                var propety = config.Properties[i];
+                var propertySuccess = await propety.TrySetInferredValueCustomAsync(
+                    entity, 
+                    customEvaluator,
+                    serviceProviderProvider);
+                if (!propertySuccess)
+                {
+                    success = false;
+                }
+            }
+
+            return success;
+        }
+
         public static IExpressionQueryOperation BuildExpandOperation(
             this IDataContext dataContext,
             Type entityType,

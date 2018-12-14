@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Extensions;
 
@@ -8,7 +9,18 @@ namespace Iql.Data.Extensions
 {
     public static class PropertyPathExtensions
     {
-        public static async Task<IqlPropertyPathEvaluationResult> EvaluateAsync(this IqlPropertyPath propertyPath, object entity, IDataContext dataContext)
+        public static async Task<IqlPropertyPathEvaluationResult> EvaluateAsync(
+            this IqlPropertyPath propertyPath, 
+            object entity,
+            IDataContext dataContext)
+        {
+            return await EvaluateCustomAsync(propertyPath, entity, new DefaultEvaluator(dataContext));
+        }
+
+        public static async Task<IqlPropertyPathEvaluationResult> EvaluateCustomAsync(
+            this IqlPropertyPath propertyPath, 
+            object entity, 
+            IIqlCustomEvaluator customEvaluator)
         {
             var evaluationResult = new IqlPropertyPathEvaluationResult(
                 false,
@@ -33,18 +45,23 @@ namespace Iql.Data.Extensions
                 {
                     if (part.Property.Kind.HasFlag(PropertyKind.Relationship))
                     {
-                        if (dataContext.DataStore.Tracking.IsTracked(parent))
+                        //if (dataContext.DataStore.Tracking.IsTracked(parent))
+                        //{
+                        //    await customEvaluator.FetchRelationshipPropertyAsync(
+                        //        part.Property,
+                        //        part.Property.BuildRelationshipCompositeKey(parent));
+                        //    result = parent.GetPropertyValueByName(part.PropertyName);
+                        //}
+                        //else
+                        //{
+                        //}
+                        var key = part.Property.Relationship.ThisEnd.GetCompositeKey(parent, true);
+                        result = await customEvaluator.GetEntityByKeyAsync(part.Property.Relationship.OtherEnd.EntityConfiguration,
+                            key);
+                        if (part.Property.GetValue(parent) != result)
                         {
-                            await dataContext.LoadRelationshipPropertyAsync(parent, part.Property);
-                            result = parent.GetPropertyValueByName(part.PropertyName);
+                            part.Property.SetValue(parent, result);
                         }
-                        else
-                        {
-                            var key = part.Property.Relationship.ThisEnd.GetCompositeKey(parent, true);
-                            result = await dataContext.GetDbSetByEntityType(part.Property.Relationship.OtherEnd.Type)
-                                .GetWithKeyAsync(key);
-                        }
-
                         results.Add(new IqlPropertyPathEvaluated(
                             evaluationResult,
                             part,

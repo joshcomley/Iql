@@ -1237,6 +1237,15 @@ namespace IqlSampleApp.Data.Entities
 }
 namespace IqlSampleApp.Data.Entities
 {
+    [Flags] public enum PersonSkills
+    {
+        Chef = 1,
+        Coder = 2,
+        Ninja = 4
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
     public enum UserType
     {
         Super = 1,
@@ -2573,6 +2582,15 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Description", _description, value, _propertyChanging, _propertyChanged, newValue => this._description = newValue);
             }
         }
+        protected PersonSkills _skills;
+        public PersonSkills Skills
+        {
+            get => _skills;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Skills", _skills, value, _propertyChanging, _propertyChanged, newValue => this._skills = newValue);
+            }
+        }
         protected PersonCategory _category;
         public PersonCategory Category
         {
@@ -3315,15 +3333,6 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
-        protected Guid _persistenceKey;
-        public Guid PersistenceKey
-        {
-            get => _persistenceKey;
-            set
-            {
-                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
-            }
-        }
         protected string _name;
         public string Name
         {
@@ -3358,6 +3367,15 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
+            }
+        }
+        protected Guid _persistenceKey;
+        public Guid PersistenceKey
+        {
+            get => _persistenceKey;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
             }
         }
         protected ReportCategory _category;

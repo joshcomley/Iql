@@ -131,37 +131,53 @@ namespace Iql.Data.Context
                 queryFilter);
         }
 
-        public async Task<IList> LoadRelationshipPropertyAsync(T entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        public async Task<IList> LoadRelationshipPropertyAsync(
+            T entity, 
+            IProperty property, 
+            Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             if (property.Relationship == null)
             {
                 return null;
             }
+            var thisEndConstraints = property.Relationship.ThisEnd.Constraints.ToArray();
+            var otherEndConstraints = property.Relationship.OtherEnd.Constraints.ToArray();
+            var compositeKey = new CompositeKey(thisEndConstraints.Length);
+            for (var i = 0; i < thisEndConstraints.Length; i++)
+            {
+                compositeKey.Keys[i] = new KeyValue(otherEndConstraints[i].Name,
+                    thisEndConstraints[i].GetValue(entity),
+                    thisEndConstraints[i].TypeDefinition);
+            }
+            return await LoadRelationshipPropertyInternalAsync(property, queryFilter, compositeKey);
+        }
+
+        private async Task<IList> LoadRelationshipPropertyInternalAsync(
+            IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter,
+            CompositeKey compositeKey)
+        {
             var otherDbSet = DataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type);
             var root = new IqlRootReferenceExpression();
             var expressions = new List<IqlExpression>();
-            var thisEndConstraints = property.Relationship.ThisEnd.Constraints.ToArray();
-            var otherEndConstraints = property.Relationship.OtherEnd.Constraints.ToArray();
-            for (var i = 0; i < thisEndConstraints.Length; i++)
+            for (var i = 0; i < compositeKey.Keys.Length; i++)
             {
                 expressions.Add(new IqlIsEqualToExpression(
-                    new IqlPropertyExpression(otherEndConstraints[i].Name, root),
-                    new IqlLiteralExpression(thisEndConstraints[i].GetValue(entity))
+                    new IqlPropertyExpression(compositeKey.Keys[i].Name, root),
+                    new IqlLiteralExpression(compositeKey.Keys[i].Value)
                 ));
             }
-
             var iqlLambdaExpression = new IqlLambdaExpression
             {
                 Body = expressions.And(),
                 Parameters = new List<IqlRootReferenceExpression>()
             };
             iqlLambdaExpression.Parameters.Add(new IqlRootReferenceExpression());
-            var query = (IDbQueryable)otherDbSet.WhereEquals(iqlLambdaExpression);
+            var query = (IDbQueryable) otherDbSet.WhereEquals(iqlLambdaExpression);
             if (queryFilter != null)
             {
                 query = queryFilter(query);
             }
-            return (IList)await query.ToListAsync();
+            return (IList) await query.ToListAsync();
         }
 
         async Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)

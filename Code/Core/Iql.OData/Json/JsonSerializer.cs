@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Extensions;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
@@ -92,7 +93,6 @@ namespace Iql.OData.Json
                     continue;
                 }
 
-
                 if (propertyValue != null)
                 {
                     if (property.Property.TypeDefinition.Kind.IsGeographic())
@@ -123,6 +123,50 @@ namespace Iql.OData.Json
                     {
                         obj[property.Property.Name] = "00000000-0000-0000-0000-000000000000";
                     }
+                    else if (property.Property.TypeDefinition.Kind == IqlType.Enum)
+                    {
+                        if (propertyValue == null && property.Property.Nullable == false)
+                        {
+                            propertyValue = 0;
+                        }
+
+                        var value = propertyValue;
+                        if (value != null)
+                        {
+#if !TypeScript
+                            var enumUnderlyingType = property.Property.TypeDefinition.Type.GetEnumUnderlyingType();
+                            if (enumUnderlyingType == typeof(long))
+                            {
+                                try
+                                {
+                                    value = ((long)propertyValue).ToString();
+                                }
+                                catch
+                                {
+                                    value = ((int)propertyValue).ToString();
+                                }
+                            }
+                            else if(enumUnderlyingType == typeof(short))
+                            {
+                                try
+                                {
+                                    value = ((short)propertyValue).ToString();
+                                }
+                                catch
+                                {
+                                    value = ((int)propertyValue).ToString();
+                                }
+                            }
+                            else
+                            {
+                                value = ((int)propertyValue).ToString();
+                            }
+#else
+                            value = propertyValue.ToString();
+#endif
+                        }
+                        obj[property.Property.Name] = new JValue(value);
+                    }
                     else
                     {
                         obj[property.Property.Name] = new JValue(propertyValue);
@@ -142,8 +186,8 @@ namespace Iql.OData.Json
         }
 
         private static void SerializeGeography(
-            JObject obj, 
-            IPropertyState property, 
+            JObject obj,
+            IPropertyState property,
             object propertyValue)
         {
             if (propertyValue == null)
@@ -225,7 +269,7 @@ namespace Iql.OData.Json
                 var last = points[points.Count - 1];
                 if (points.Count == 1 || (first[0] != last[0] || first[1] != last[1]))
                 {
-                    points.Add(new double[] {first[0], first[1]});
+                    points.Add(new double[] { first[0], first[1] });
                 }
             }
             return points.ToArray();
@@ -247,16 +291,16 @@ namespace Iql.OData.Json
 
             double[][][] getPolygonPoints()
             {
-                return (double[][][]) jObject["coordinates"].ToObject(typeof(double[][][]));
+                return (double[][][])jObject["coordinates"].ToObject(typeof(double[][][]));
             }
             switch (geographyType)
             {
                 case IqlType.GeometryLine:
                     return new IqlLineExpression(FromODataArray(IqlType.GeometryPoint,
-                        (double[][]) JsonConvert.DeserializeObject(coordinates, typeof(double[][]))));
+                        (double[][])JsonConvert.DeserializeObject(coordinates, typeof(double[][]))));
                 case IqlType.GeographyLine:
                     return new IqlLineExpression(FromODataArray(IqlType.GeographyPoint,
-                        (double[][]) JsonConvert.DeserializeObject(coordinates, typeof(double[][]))));
+                        (double[][])JsonConvert.DeserializeObject(coordinates, typeof(double[][]))));
                 case IqlType.GeometryMultiLine:
                     throw new NotImplementedException();
                 case IqlType.GeographyMultiLine:

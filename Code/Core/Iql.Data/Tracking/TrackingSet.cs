@@ -29,6 +29,7 @@ namespace Iql.Data.Tracking
             Key = key;
         }
     }
+
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
@@ -716,9 +717,10 @@ namespace Iql.Data.Tracking
             if (PersistenceKey != null)
             {
                 var value = entity.GetPropertyValueAs<Guid>(PersistenceKey);
-                if (Equals(value, Guid.Empty))
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (value == null || Equals(value, Guid.Empty))
                 {
-                    var guid = Guid.NewGuid();
+                    var guid = PersistenceKeyGenerator.New();
                     entity.SetPropertyValue(PersistenceKey, guid);
                     return guid;
                 }
