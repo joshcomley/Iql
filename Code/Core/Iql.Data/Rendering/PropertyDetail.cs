@@ -29,6 +29,9 @@ namespace Iql.Data.Rendering
             CanShow = canShow;
         }
 
+        public bool CanShow { get; set; }
+
+        public string Kind { get; set; }
         private static readonly Dictionary<IPropertyContainer, PropertyDetail> Mapping =
             new Dictionary<IPropertyContainer, PropertyDetail>();
         public static PropertyDetail For(IPropertyContainer property)
@@ -148,15 +151,13 @@ namespace Iql.Data.Rendering
 
         public IPropertyContainer Property { get; set; }
 
-        // Metadata snapshot
-        public string Kind { get; set; }
-        public bool CanShow { get; set; }
-        public bool CanEdit { get; set; }
-        public PropertyDetail[] ChildProperties { get; set; }
-
-        public async Task UpdateAsync(object entity, IDataContext dataContext)
+        public async Task<EntityPropertySnapshot> GetSnapshotAsync(
+            object entity, 
+            IDataContext dataContext
+            )
         {
-            CanEdit = !IsSimpleProperty || await PropertyAsCoreProperty.IsReadOnlyAsync(entity, dataContext);
+            var canEdit = !IsSimpleProperty || await PropertyAsCoreProperty.IsReadOnlyAsync(entity, dataContext);
+
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
@@ -164,7 +165,9 @@ namespace Iql.Data.Rendering
                     : Property.GetGroupProperties();
             // If there is no property order configuration, just use all simple properties from this type
             if (entityConfiguration != null && (allProperties == null || allProperties.Length == 0))
+            {
                 allProperties = entityConfiguration.Properties.ToArray();
+            }
             var properties = new List<IPropertyGroup>();
             var filteredProperties = new List<IPropertyGroup>();
             for (var i = 0; i < allProperties.Length; i++)
@@ -203,8 +206,6 @@ namespace Iql.Data.Rendering
                     continue;
                 }
 
-                await detail.UpdateAsync(entity, dataContext);
-
                 var relationshipDetail = propertyGroup as RelationshipDetailBase;
                 if (detail.Kind == "group" &&
                     relationshipDetail != null &&
@@ -218,7 +219,24 @@ namespace Iql.Data.Rendering
                     filteredProperties.Add(propertyGroup);
                 }
             }
-            ChildProperties = filteredProperties.Select(For).ToArray();
+            // ReSharper disable once ConvertClosureToMethodGroup
+            var childProperties = filteredProperties.Select(_=> For(_)).ToArray();
+            var children = new List<EntityPropertySnapshot>();
+            for (var i = 0; i < childProperties.Length; i++)
+            {
+                var child = childProperties[i];
+                if (child.Property != Property)
+                {
+                    children.Add(await child.GetSnapshotAsync(entity, dataContext));
+                }
+            }
+
+            return new EntityPropertySnapshot(
+                this,
+                Kind,
+                CanShow,
+                canEdit,
+                children.ToArray());
         }
     }
 }
