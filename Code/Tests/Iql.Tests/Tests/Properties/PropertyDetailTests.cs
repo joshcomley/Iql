@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Iql.Data.Rendering;
+using Iql.Entities;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,7 +15,7 @@ namespace Iql.Tests.Tests.Properties
             var person = new Person();
             var personEntityConfiguration = Db.EntityConfigurationContext.EntityType<Person>();
             var detail = PropertyDetail.For(personEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(person, Db);
+            var instance = await detail.GetSnapshotAsync(person, Db, DisplayConfigurationKind.Edit);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
             Assert.AreEqual(18, instance.ChildProperties.Length);

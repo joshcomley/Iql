@@ -147,15 +147,16 @@ namespace Iql.Data.Rendering
 
         public async Task<EntityPropertySnapshot> GetSnapshotAsync(
             object entity, 
-            IDataContext dataContext
+            IDataContext dataContext,
+            DisplayConfigurationKind kind
             )
         {
             var canEdit = !IsSimpleProperty || await PropertyAsCoreProperty.IsReadOnlyAsync(entity, dataContext);
-            var canShow = await CanShowAsync(entity, dataContext);
+            var canShow = CanShow(entity, dataContext, kind);
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
-                    ? entityConfiguration.GetDisplayConfiguration(DisplayConfigurationKind.Edit)
+                    ? entityConfiguration.GetDisplayConfiguration(kind)
                     : Property.GetGroupProperties();
             // If there is no property order configuration, just use all simple properties from this type
             if (entityConfiguration != null && (allProperties == null || allProperties.Length == 0))
@@ -218,7 +219,7 @@ namespace Iql.Data.Rendering
                 var child = childProperties[i];
                 if (child.Property != Property)
                 {
-                    children.Add(await child.GetSnapshotAsync(entity, dataContext));
+                    children.Add(await child.GetSnapshotAsync(entity, dataContext, kind));
                 }
             }
 
@@ -230,8 +231,22 @@ namespace Iql.Data.Rendering
                 children.ToArray());
         }
 
-        private async Task<bool> CanShowAsync(object entity, IDataContext dataContext)
+        private bool CanShow(
+            object entity, 
+            IDataContext dataContext,
+            DisplayConfigurationKind kind)
         {
+            if (IsCoreProperty)
+            {
+                var hidden = kind == DisplayConfigurationKind.Edit
+                    ? PropertyAsCoreProperty.IsHiddenFromEdit
+                    : PropertyAsCoreProperty.IsHiddenFromRead;
+                if (hidden)
+                {
+                    return false;
+                }
+            }
+
             if (IsSimpleProperty)
             {
                 var property = PropertyAsPropertyGroup;
