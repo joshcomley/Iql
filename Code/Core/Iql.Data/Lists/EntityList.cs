@@ -13,7 +13,7 @@ namespace Iql.Data.Lists
         {
             if (!Contains(item))
             {
-                var iEntity = item as IEntity;
+                var iEntity = (IEntity)item;
                 if (iEntity != null && !_entitySubscriptions.ContainsKey(iEntity))
                 {
                     if (iEntity.ExistsChanged == null)
@@ -38,7 +38,7 @@ namespace Iql.Data.Lists
 
         public override void RemoveAt(int index)
         {
-            var item = this[index] as IEntity;
+            var item = (IEntity)this[index];
             base.RemoveAt(index);
             if (item != null && _entitySubscriptions.ContainsKey(item))
             {

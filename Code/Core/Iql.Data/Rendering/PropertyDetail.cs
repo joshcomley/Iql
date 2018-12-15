@@ -24,12 +24,9 @@ namespace Iql.Data.Rendering
             PropertyAsNestedSet = property as INestedSet;
             PropertyAsEntityConfiguration = property as IEntityConfiguration;
 
-            var kind = ResolveKind(property, out var canShow);
+            var kind = ResolveKind(property);
             Kind = kind;
-            CanShow = canShow;
         }
-
-        public bool CanShow { get; set; }
 
         public string Kind { get; set; }
         private static readonly Dictionary<IPropertyContainer, PropertyDetail> Mapping =
@@ -46,10 +43,9 @@ namespace Iql.Data.Rendering
             }
             return Mapping[property];
         }
-        private static string ResolveKind(IPropertyContainer property, out bool canShow)
+        private static string ResolveKind(IPropertyContainer property)
         {
             var kind = "unknown";
-            canShow = true;
             var prop = property as PropertyBase;
             var rel = property as RelationshipDetailBase;
             if (prop != null)
@@ -85,12 +81,10 @@ namespace Iql.Data.Rendering
                 if (prop.Kind.HasFlag(PropertyKind.Key))
                 {
                     kind = "key";
-                    canShow = false;
                 }
                 else if (prop.Kind.HasFlag(PropertyKind.RelationshipKey))
                 {
                     kind = "relationship-key";
-                    canShow = false;
                 }
                 else if (prop.Kind == PropertyKind.Relationship)
                 {
@@ -157,7 +151,7 @@ namespace Iql.Data.Rendering
             )
         {
             var canEdit = !IsSimpleProperty || await PropertyAsCoreProperty.IsReadOnlyAsync(entity, dataContext);
-
+            var canShow = await CanShowAsync(entity, dataContext);
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
@@ -214,10 +208,7 @@ namespace Iql.Data.Rendering
                     continue;
                 }
 
-                if (detail.CanShow)
-                {
-                    filteredProperties.Add(propertyGroup);
-                }
+                filteredProperties.Add(propertyGroup);
             }
             // ReSharper disable once ConvertClosureToMethodGroup
             var childProperties = filteredProperties.Select(_=> For(_)).ToArray();
@@ -234,9 +225,36 @@ namespace Iql.Data.Rendering
             return new EntityPropertySnapshot(
                 this,
                 Kind,
-                CanShow,
+                canShow,
                 canEdit,
                 children.ToArray());
+        }
+
+        private async Task<bool> CanShowAsync(object entity, IDataContext dataContext)
+        {
+            if (IsSimpleProperty)
+            {
+                var property = PropertyAsPropertyGroup;
+                if (property.DisplayRules == null)
+                {
+                    return true;
+                }
+                var displayRulesAll = property.DisplayRules.All.ToArray();
+                if (!displayRulesAll.Any())
+                {
+                    return true;
+                }
+
+                for (var i = 0; i < displayRulesAll.Length; i++)
+                {
+                    var rule = displayRulesAll[i];
+                    if (!rule.Run(entity))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

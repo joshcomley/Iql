@@ -490,6 +490,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -595,6 +596,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -763,6 +765,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -827,6 +830,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -943,6 +947,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1016,6 +1021,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1134,6 +1140,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1207,6 +1214,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1317,6 +1325,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1381,6 +1390,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1490,6 +1500,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1563,6 +1574,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1679,6 +1691,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1752,6 +1765,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1879,6 +1893,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -1943,6 +1958,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2052,6 +2068,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2134,6 +2151,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2234,6 +2252,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2307,6 +2326,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2425,6 +2445,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2480,6 +2501,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2597,6 +2619,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2661,6 +2684,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2770,6 +2794,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2852,6 +2877,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -2962,6 +2988,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3026,6 +3053,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3126,6 +3154,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNull,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3218,6 +3247,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3281,6 +3311,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithConditionIql = new IqlLambdaExpression
                         {
@@ -3398,6 +3429,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3469,6 +3501,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3602,6 +3635,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3723,6 +3757,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3833,6 +3868,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -3897,6 +3933,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4006,6 +4043,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4070,6 +4108,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4223,6 +4262,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4321,6 +4361,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4393,6 +4434,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4568,6 +4610,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4613,6 +4656,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4708,6 +4752,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4789,6 +4834,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -4972,6 +5018,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -5027,6 +5074,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -5153,6 +5201,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.Always,
+                        CanOverride = false,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -5224,6 +5273,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
                         ForNewOnly = true,
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -5975,6 +6025,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Site";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Reports).Configure(rel_cnf => {
+                    rel_cnf.AllowInlineEditing = true;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Reports";
                     rel_cnf.Title = "Reports";

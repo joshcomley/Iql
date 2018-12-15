@@ -19,7 +19,7 @@ namespace Iql.Data
         public EntityObserver(IEntityStateBase entityState)
         {
             EntityState = entityState;
-            Entity = entityState.Entity as IEntity;
+            Entity = (IEntity)entityState.Entity;
         }
 
         public void RegisterPropertyChanged(Action<IPropertyChangeEvent> action)

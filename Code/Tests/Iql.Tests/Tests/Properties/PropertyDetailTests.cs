@@ -17,7 +17,7 @@ namespace Iql.Tests.Tests.Properties
             var instance = await detail.GetSnapshotAsync(person, Db);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
-            Assert.AreEqual(16, instance.ChildProperties.Length);
+            Assert.AreEqual(18, instance.ChildProperties.Length);
         }
     }
 }

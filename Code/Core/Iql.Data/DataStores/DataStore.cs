@@ -614,7 +614,7 @@ namespace Iql.Data.DataStores
                 var trackingSet = dataTracker.DataStore.Tracking.TrackingSet<TEntity>();
                 var state = trackingSet.GetEntityStateByKey(key);
                 dataTracker.RemoveEntityByKey<TEntity>(entityKey);
-                var iEntity = state?.Entity as IEntity;
+                var iEntity = (IEntity)state?.Entity;
                 iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
             });
         }

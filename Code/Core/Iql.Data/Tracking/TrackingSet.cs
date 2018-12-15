@@ -309,7 +309,7 @@ namespace Iql.Data.Tracking
 
         internal void Watch(T sourceEntity)
         {
-            var entity = sourceEntity as IEntity;
+            var entity = (IEntity)sourceEntity;
             if (entity == null)
             {
                 return;
