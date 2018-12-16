@@ -26,7 +26,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.Location, p =>
             {
-                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueMode.IfNull);
+                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueMode.IfNull, true);
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,

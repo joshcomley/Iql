@@ -17,7 +17,6 @@ namespace Iql.Tests.Tests.MetadataSerialization
         [TestMethod]
         public void TestSerializeDeserialize()
         {
-            return;
             var db = new AppDbContext();
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();

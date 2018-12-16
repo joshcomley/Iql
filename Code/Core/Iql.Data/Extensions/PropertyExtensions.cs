@@ -12,13 +12,19 @@ namespace Iql.Data.Extensions
 {
     public static class PropertyExtensions
     {
-        public static async Task<bool> IsReadOnlyAsync(this ISimpleProperty property,
+        public static async Task<bool> IsReadOnlyAsync(
+            this ISimpleProperty property,
             object owner,
             IDataContext dataContext)
         {
             if (property.IsReadOnly)
             {
                 return true;
+            }
+
+            if (property.Name.Contains("Reports"))
+            {
+                int a = 0;
             }
 
             if (property is IProperty)
@@ -53,13 +59,13 @@ namespace Iql.Data.Extensions
             return false;
         }
 
-        public static async Task<bool> TrySetInferredValueAsync(
+        public static Task<bool> TrySetInferredValueAsync(
             this IProperty property,
             object entity,
             IDataContext dataContext,
             IServiceProviderProvider serviceProviderProvider = null)
         {
-            return await property.TrySetInferredValueCustomAsync(
+            return property.TrySetInferredValueCustomAsync(
                 entity, 
                 new DefaultEvaluator(dataContext),
                 serviceProviderProvider);

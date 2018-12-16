@@ -6,7 +6,6 @@ using Brandless.Data.Contracts;
 using Brandless.Data.Entities;
 using Iql.Entities;
 using Iql.Entities.InferredValues;
-using Iql.Entities.NestedSets;
 using Microsoft.AspNetCore.Identity;
 
 namespace Iql.Server

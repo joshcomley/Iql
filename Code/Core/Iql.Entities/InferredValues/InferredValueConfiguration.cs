@@ -67,6 +67,7 @@ namespace Iql.Entities.InferredValues
             _inferredWithExpression = value;
             ForNewOnly = onlyIfNew;
             Mode = mode;
+            CanOverride = canOverride;
             return this;
         }
 

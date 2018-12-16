@@ -117,7 +117,7 @@ namespace Iql.Data.Rendering
                                                       PropertyAsPropertyCollection.ContentAlignment ==
                                                       ContentAlignment.Horizontal;
 
-        public bool IsSimpleProperty => IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(PropertyKind.Property);
+        public bool IsSimpleProperty => PropertyAsSimpleProperty != null;//IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(PropertyKind.Property);
         public bool IsBasicProperty => IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(PropertyKind.Property);
 
         public bool IsGeographic => IsCoreProperty && PropertyAsCoreProperty.TypeDefinition != null &&
@@ -151,7 +151,7 @@ namespace Iql.Data.Rendering
             DisplayConfigurationKind kind
             )
         {
-            var canEdit = !IsSimpleProperty || await PropertyAsCoreProperty.IsReadOnlyAsync(entity, dataContext);
+            var canEdit = !IsSimpleProperty || !await PropertyAsSimpleProperty.IsReadOnlyAsync(entity, dataContext);
             var canShow = CanShow(entity, dataContext, kind);
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =

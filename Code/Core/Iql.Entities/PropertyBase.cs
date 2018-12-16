@@ -116,7 +116,7 @@ namespace Iql.Entities
         public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
         {
             InferredValueConfigurations.Add(new InferredValueConfiguration(this)
-                .SetInferredWithExpression(value, onlyIfNew, mode));
+                .SetInferredWithExpression(value, onlyIfNew, mode, canOverride));
         }
 
         public void SetConditionallyInferredWithExpression(
@@ -242,24 +242,6 @@ namespace Iql.Entities
                 }
 
                 return HasReadOnly;
-            }
-        }
-
-        public override bool HasReadOnly
-        {
-            get
-            {
-                // TODO: x1 Resolve whether this is read only (async?)
-                //if (HasInferredWith && !InferredWithForNewOnly && !InferredWithForNullOnly)
-                //{
-                //    return true;
-                //}
-                if (Kind.HasFlag(PropertyKind.Relationship) &&
-                    Relationship?.ThisIsTarget == true && !Relationship.ThisEnd.EntityConfiguration.Key.IsPivot())
-                {
-                    return true;
-                }
-                return base.HasReadOnly;
             }
         }
 

@@ -9,9 +9,13 @@ namespace Iql.Entities.Relationships
 {
     public abstract class RelationshipDetailBase : SimplePropertyGroupBase<IRelationshipDetail>, IRelationshipDetail
     {
-        public override bool IsReadOnly => HasReadOnly || 
-                                           Property?.HasReadOnly == true ||
-                                           Constraints?.Any(_ => _.HasReadOnly) == true;
+        public override bool IsReadOnly => !AllowInlineEditing &&
+                                           (
+                                               HasReadOnly ||
+                                               Property?.HasReadOnly == true ||
+                                               (RelationshipSide == RelationshipSide.Source &&
+                                                Constraints?.Any(_ => _.HasReadOnly) == true)
+                                           );
 
         private IProperty[] _constraints;
 

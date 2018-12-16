@@ -3154,7 +3154,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new InferredValueConfiguration
                     {
                         Mode = InferredValueMode.IfNull,
-                        CanOverride = false,
+                        CanOverride = true,
                         ForNewOnly = false,
                         InferredWithIql = new IqlLambdaExpression
                         {
