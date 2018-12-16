@@ -12,6 +12,7 @@ using Iql.OData.Methods;
 using System.Linq.Expressions;
 using Iql;
 using Iql.Entities.InferredValues;
+using Iql.Entities.Metadata;
 using Iql.Entities.Relationships;
 namespace IqlSampleApp.ApiContext.Base
 {
@@ -4942,6 +4943,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Client";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.EditKind = PropertyEditKind.New;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "Client";
                 p.Title = "Client";
@@ -5739,7 +5741,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Created By User";
                 });
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.New;
                     rel_cnf.Name = "Client";
                     rel_cnf.Title = "Client";
                     rel_cnf.FriendlyName = "Client";
@@ -6209,6 +6211,16 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Site";
                 });
             });
+            builder.EntityType<Site>().SetEditDisplay(_ => _.FindRelationship(_1 => _1.Client), _ => _.FindPropertyByExpression(_1 => _1.Name), _ => _.FindRelationship(_1 => _1.Parent), _ => _.PropertyCollection(_1 => _1.FindPropertyByExpression(_2 => _2.Address), _2 => _2.FindPropertyByExpression(_3 => _3.PostCode)).Configure(coll3 => {
+                coll3.ContentAlignment = ContentAlignment.Horizontal;
+                coll3.Name = "Site Address";
+                coll3.Title = "Site Address";
+                coll3.FriendlyName = "Site Address";
+                coll3.Hints = new List<string>(new[]
+                {
+                    "Iql:HelpText:Top"
+                });
+            }), _ => _.FindPropertyByExpression(_1 => _1.Parent), _ => _.FindPropertyByExpression(_1 => _1.Key), _ => _.FindPropertyByExpression(_1 => _1.Location));
         }
         public ApplicationUserSet Users
         {

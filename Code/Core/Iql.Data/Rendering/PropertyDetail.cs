@@ -148,7 +148,9 @@ namespace Iql.Data.Rendering
         public async Task<EntityPropertySnapshot> GetSnapshotAsync(
             object entity, 
             IDataContext dataContext,
-            DisplayConfigurationKind kind
+            DisplayConfigurationKind kind,
+            SnapshotOrdering ordering = SnapshotOrdering.Default,
+            bool appendNonConfiguredProperties = true
             )
         {
             var canEdit = !IsSimpleProperty || !await PropertyAsSimpleProperty.IsReadOnlyAsync(entity, dataContext);
@@ -156,7 +158,7 @@ namespace Iql.Data.Rendering
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
-                    ? entityConfiguration.GetDisplayConfiguration(kind)
+                    ? entityConfiguration.GetDisplayConfiguration(kind, appendNonConfiguredProperties)
                     : Property.GetGroupProperties();
             // If there is no property order configuration, just use all simple properties from this type
             if (entityConfiguration != null && (allProperties == null || allProperties.Length == 0))
@@ -223,12 +225,40 @@ namespace Iql.Data.Rendering
                 }
             }
 
+            var kids = children.ToArray();
+            if (ordering != SnapshotOrdering.Default)
+            {
+                var readOnly = new List<EntityPropertySnapshot>();
+                var nonReadOnly = new List<EntityPropertySnapshot>();
+                for (var i = 0; i < kids.Length; i++)
+                {
+                    var kid = kids[i];
+                    if (kid.CanEdit)
+                    {
+                        nonReadOnly.Add(kid);
+                    }
+                    else
+                    {
+                        readOnly.Add(kid);
+                    }
+                }
+
+                kids =
+                    (ordering == SnapshotOrdering.ReadOnlyFirst
+                        ? readOnly.Concat(nonReadOnly)
+                        : nonReadOnly.Concat(readOnly)).ToArray();
+            }
+
+            if (kids.Any())
+            {
+                canEdit = kids.Any(_ => _.CanEdit);
+            }
             return new EntityPropertySnapshot(
                 this,
                 Kind,
                 canShow,
                 canEdit,
-                children.ToArray());
+                kids);
         }
 
         private bool CanShow(

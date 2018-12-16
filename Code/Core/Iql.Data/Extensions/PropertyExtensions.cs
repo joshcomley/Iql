@@ -22,11 +22,6 @@ namespace Iql.Data.Extensions
                 return true;
             }
 
-            if (property.Name.Contains("Reports"))
-            {
-                int a = 0;
-            }
-
             if (property is IProperty)
             {
                 var p = property as IProperty;

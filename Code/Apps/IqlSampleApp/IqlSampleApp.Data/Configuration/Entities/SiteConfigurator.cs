@@ -1,3 +1,4 @@
+using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql.Entities;
 using Iql.Server;
@@ -22,7 +23,23 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     {
                         _.IsInferredWith(site => site.Address + "\n" + site.PostCode);
                     })
-                .DefinePropertyValidation(_ => _.FullAddress, _ => _.FullAddress == null || _.FullAddress == "");
+                .DefinePropertyValidation(_ => _.FullAddress, _ => _.FullAddress == null || _.FullAddress == "")
+                .SetEditDisplay(
+                    _ => _.FindRelationship(s => s.Client).Configure(c => c.EditKind = PropertyEditKind.New),
+                    _ => _.FindPropertyByExpression(s => s.Name),
+                    _ => _.FindRelationship(s => s.Parent),
+                    _ => _.PropertyCollection(
+                        pc => pc.FindPropertyByExpression(s => s.Address),
+                        pc => pc.FindPropertyByExpression(s => s.PostCode)
+                    ).Configure(c =>
+                    {
+                        c.ContentAlignment = ContentAlignment.Horizontal;
+                        c.Name = "Site Address";
+                        c.SetHint(KnownHints.HelpTextTop);
+                    }),
+                    _ => _.FindPropertyByExpression(s => s.Parent),
+                    _ => _.FindPropertyByExpression(s => s.Key),
+                    _ => _.FindPropertyByExpression(s => s.Location));
         }
     }
 
