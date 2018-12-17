@@ -836,7 +836,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         PrintMapping<RelationshipMapping, IRelationshipDetail>(_ => _.Property.Name, $".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
                         dealtWith = true;
                     }
-                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.EditDisplay))
+                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DisplayConfigurations))
                     {
                         dealtWith = true;
                         // We will do this at the end when we're sure all relationships and other
@@ -1261,19 +1261,20 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             foreach (var config in Schema.EntityConfigurations)
             {
                 var entityMetadata = config.Value;
-                ConfigureDisplaySetting(builder, entityMetadata.EditDisplay, sb, config, nameof(EntityConfiguration<object>.SetEditDisplay), entityMetadata);
-                ConfigureDisplaySetting(builder, entityMetadata.ReadDisplay, sb, config, nameof(EntityConfiguration<object>.SetReadDisplay), entityMetadata);
+                ConfigureDisplaySetting(builder, entityMetadata.GetDisplayConfiguration(DisplayConfigurationKeys.Edit), sb, config, nameof(EntityConfiguration<object>.SetEditDisplay), entityMetadata);
+                ConfigureDisplaySetting(builder, entityMetadata.GetDisplayConfiguration(DisplayConfigurationKeys.Display), sb, config, nameof(EntityConfiguration<object>.SetReadDisplay), entityMetadata);
             }
             return sb.ToString();
         }
 
-        private void ConfigureDisplaySetting(IVariable builder, IList<IPropertyGroup> displaySetting, StringBuilder sb, KeyValuePair<string, IEntityConfiguration> config,
+        private void ConfigureDisplaySetting(IVariable builder, 
+            DisplayConfiguration displayConfiguration, StringBuilder sb, KeyValuePair<string, IEntityConfiguration> config,
             string displaySettingMethodName, IEntityMetadata entityMetadata)
         {
-            if (displaySetting?.Any() == true)
+            if (displayConfiguration != null && displayConfiguration.Properties?.Any() == true)
             {
                 sb.AppendLine(
-                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({string.Join(",\n", displaySetting.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
+                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({string.Join(",\n", displayConfiguration.Properties.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
             }
         }
 

@@ -16,7 +16,7 @@ namespace Iql.Tests.Tests.Properties
             var site = new Site();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
             var detail = PropertyDetail.For(siteEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(site, Db, DisplayConfigurationKind.Edit, SnapshotOrdering.Standard);
+            var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit), SnapshotOrdering.Standard);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
@@ -55,7 +55,7 @@ namespace Iql.Tests.Tests.Properties
             var site = new Site();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
             var detail = PropertyDetail.For(siteEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(site, Db, DisplayConfigurationKind.Edit, SnapshotOrdering.Default, false);
+            var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit), SnapshotOrdering.Default, false);
             Assert.AreEqual(7, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
@@ -76,7 +76,7 @@ namespace Iql.Tests.Tests.Properties
             var site = new Site();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
             var detail = PropertyDetail.For(siteEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(site, Db, DisplayConfigurationKind.Edit, SnapshotOrdering.ReadOnlyFirst, false);
+            var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit), SnapshotOrdering.ReadOnlyFirst, false);
             Assert.AreEqual(7, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
@@ -97,7 +97,7 @@ namespace Iql.Tests.Tests.Properties
             var site = new Site();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
             var detail = PropertyDetail.For(siteEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(site, Db, DisplayConfigurationKind.Edit);
+            var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit));
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
@@ -136,7 +136,7 @@ namespace Iql.Tests.Tests.Properties
             var site = new Site();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
             var detail = PropertyDetail.For(siteEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(site, Db, DisplayConfigurationKind.Edit, SnapshotOrdering.ReadOnlyFirst);
+            var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit), SnapshotOrdering.ReadOnlyFirst);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
@@ -188,7 +188,7 @@ namespace Iql.Tests.Tests.Properties
             var person = new Person();
             var personEntityConfiguration = Db.EntityConfigurationContext.EntityType<Person>();
             var detail = PropertyDetail.For(personEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(person, Db, DisplayConfigurationKind.Edit);
+            var instance = await detail.GetSnapshotAsync(person, Db, personEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit));
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
             Assert.AreEqual(19, instance.ChildProperties.Length);

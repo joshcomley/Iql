@@ -25,8 +25,7 @@ namespace Iql.Entities
         bool SetNameSet { get; }
         string DefaultSortExpression { get; set; }
         bool DefaultSortDescending { get; set; }
-        IList<IPropertyGroup> EditDisplay { get; set; }
-        IList<IPropertyGroup> ReadDisplay { get; set; }
+        IList<DisplayConfiguration> DisplayConfigurations { get; set; }
         IList<IProperty> Properties { get; set; }
         IList<IRelationship> Relationships { get; }
         IList<IFile> Files { get; }

@@ -691,27 +691,41 @@ namespace Iql.Entities
         //        RelationshipMapType.Many,
         //        property);
         //}
+        public EntityConfiguration<T> SetDisplay(string key, DisplayConfigurationKind kind, params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        {
+            var configuration = GetOrDefineDisplayConfiguration(key);
+            configuration.Kind = kind;
+            configuration.Properties = PrepareDisplayProperties(properties);
+            return this;
+        }
 
         public EntityConfiguration<T> SetEditDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var coll = new List<IPropertyGroup>();
-            foreach (var property in properties)
-            {
-                coll.Add(property(this));
-            }
-            EditDisplay = coll.ToList();
+            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKeys.Edit);
+            configuration.Kind = DisplayConfigurationKind.Edit;
+            configuration.Properties = PrepareDisplayProperties(properties);
             return this;
         }
 
         public EntityConfiguration<T> SetReadDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
+            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKeys.Display);
+            configuration.Kind = DisplayConfigurationKind.Read;
+            configuration.Properties = PrepareDisplayProperties(properties);
+            return this;
+        }
+
+        private List<IPropertyGroup> PrepareDisplayProperties(Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        {
             var coll = new List<IPropertyGroup>();
-            foreach (var property in properties)
+            for (var i = 0; i < properties.Length; i++)
             {
+                var property = properties[i];
                 coll.Add(property(this));
             }
-            ReadDisplay = coll.ToList();
-            return this;
+
+            var result = coll.ToList();
+            return result;
         }
 
         public IPropertyCollection PropertyCollection(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)

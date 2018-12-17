@@ -111,17 +111,56 @@ namespace Iql.Entities
             return all.PrioritizeForReading().ToArray();
         }
 
-        public virtual IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind, bool appendMissingProperties = true)
+        public IList<DisplayConfiguration> DisplayConfigurations { get; set; } = new List<DisplayConfiguration>();
+
+        public DisplayConfiguration GetDisplayConfiguration(params string[] keys)
         {
-            var orderedDisplaySetting = kind == DisplayConfigurationKind.Edit ? EditDisplay : ReadDisplay;
-            if (orderedDisplaySetting == null || !orderedDisplaySetting.Any())
+            if ((keys == null || keys.Length == 0) && 
+                DisplayConfigurations != null &&
+                DisplayConfigurations.Count > 0)
+            {
+                if (DisplayConfigurations.Count == 1)
+                {
+                    return DisplayConfigurations[0];
+                }
+
+                if (DisplayConfigurations.Any())
+                {
+                    return GetDisplayConfiguration(DisplayConfigurationKeys.Display) ?? DisplayConfigurations[0];
+                }
+            }
+            if (keys != null)
+            {
+                for (var i = 0; i < keys.Length; i++)
+                {
+                    var key = keys[i];
+                    var config = DisplayConfigurations.SingleOrDefault(_ => _.Key == key);
+                    if (config != null)
+                    {
+                        return config;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public DisplayConfiguration GetOrDefineDisplayConfiguration(string key)
+        {
+            var definition = GetDisplayConfiguration(key) ?? new DisplayConfiguration(DisplayConfigurationKind.Read, null, key);
+            DisplayConfigurations.Add(definition);
+            return definition;
+        }
+
+        public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool appendMissingProperties = true)
+        {
+            if (configuration == null || !configuration.Properties.Any())
             {
                 return GetGroupProperties();
             }
-            var ordered = orderedDisplaySetting.ToList();
+            var ordered = configuration.Properties.ToList();
             if (appendMissingProperties)
             {
-                var flattened = orderedDisplaySetting.FlattenAllToSimpleProperties().ToList();
+                var flattened = configuration.Properties.FlattenAllToSimpleProperties().ToList();
                 var groupProperties = GetGroupProperties();
                 for (var i = 0; i < groupProperties.Length; i++)
                 {
@@ -353,7 +392,7 @@ namespace Iql.Entities
         {
             return GetCompositeKey(entity).AsKeyString();
         }
-        
+
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(this as IEntityConfiguration, propertyExpression).Property;
@@ -362,7 +401,7 @@ namespace Iql.Entities
         public IProperty FindNestedProperty(string name)
         {
             // TODO: Use IqlPropertyPath
-            var chars = new[] {'/', '.'};
+            var chars = new[] { '/', '.' };
             for (var j = 0; j < chars.Length; j++)
             {
                 var ch = chars[j];

@@ -8,6 +8,8 @@ namespace Iql.Entities
 {
     public interface IEntityConfiguration : IEntityMetadata, IConfiguration, IPropertyContainer
     {
+        DisplayConfiguration GetDisplayConfiguration(params string[] keys);
+        DisplayConfiguration GetOrDefineDisplayConfiguration(string key);
         SpecialTypeDefinition SpecialTypeDefinition { get; set; }
         IProperty TitleProperty { get; }
         IProperty PreviewProperty { get; }
@@ -22,7 +24,7 @@ namespace Iql.Entities
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
         IEntityConfiguration SetDefaultSortExpression(string expression);
-        IPropertyGroup[] GetDisplayConfiguration(DisplayConfigurationKind kind, bool appendMissingProperties = true);
+        IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool appendMissingProperties = true);
         IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
         IProperty FindPropertyByExpression(Expression<Func<object, object>> expression);
         IProperty[] FindPropertiesByHint(string hint);

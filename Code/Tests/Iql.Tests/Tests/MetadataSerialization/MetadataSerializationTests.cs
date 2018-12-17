@@ -5,7 +5,6 @@ using Iql.Server.Serialization;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using Iql.Entities.PropertyGroups.Files;
 using Iql.Server.Serialization.Serialization;
 using IqlSampleApp.Data.Entities;
 
@@ -17,7 +16,6 @@ namespace Iql.Tests.Tests.MetadataSerialization
         [TestMethod]
         public void TestSerializeDeserialize()
         {
-            return;
             var db = new AppDbContext();
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
@@ -74,7 +72,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 });
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
-            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.EditDisplay[1] as IPropertyCollection).ContentAlignment);
+            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.GetDisplayConfiguration(DisplayConfigurationKeys.Edit).Properties[1] as IPropertyCollection).ContentAlignment);
             var json =
                 false
                 // For speedy debugging
@@ -95,7 +93,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             var relationshipMappings = siteClientRelationship.RelationshipMappings;
             Assert.AreEqual(1, relationshipMappings.Count);
             Assert.AreEqual(clientTypeRelationship, relationshipMappings[0].Property);
-            var propertyPath = (clientContentParsed.EditDisplay[1] as PropertyCollection).Properties[0];
+            var propertyPath = (clientContentParsed.GetDisplayConfiguration(DisplayConfigurationKeys.Edit).Properties[1] as PropertyCollection).Properties[0];
             Assert.IsTrue(propertyPath is PropertyPath);
             Assert.AreEqual("Type/Name", (propertyPath as PropertyPath).Path);
             var file = clientContentParsed.Files[0];

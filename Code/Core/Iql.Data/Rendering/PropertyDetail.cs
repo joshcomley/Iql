@@ -148,7 +148,7 @@ namespace Iql.Data.Rendering
         public async Task<EntityPropertySnapshot> GetSnapshotAsync(
             object entity,
             IDataContext dataContext,
-            DisplayConfigurationKind kind,
+            DisplayConfiguration kind,
             SnapshotOrdering ordering = SnapshotOrdering.Default,
             bool appendNonConfiguredProperties = true
             )
@@ -158,7 +158,7 @@ namespace Iql.Data.Rendering
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
-                    ? entityConfiguration.GetDisplayConfiguration(kind, appendNonConfiguredProperties)
+                    ? entityConfiguration.BuildDisplayConfiguration(kind, appendNonConfiguredProperties)
                     : Property.GetGroupProperties();
             // If there is no property order configuration, just use all simple properties from this type
             if (entityConfiguration != null && (allProperties == null || allProperties.Length == 0))
@@ -276,11 +276,11 @@ namespace Iql.Data.Rendering
         private bool CanShow(
             object entity,
             IDataContext dataContext,
-            DisplayConfigurationKind kind)
+            DisplayConfiguration displayConfiguration)
         {
             if (IsCoreProperty)
             {
-                var hidden = kind == DisplayConfigurationKind.Edit
+                var hidden = displayConfiguration?.Kind == DisplayConfigurationKind.Edit
                     ? PropertyAsCoreProperty.IsHiddenFromEdit
                     : PropertyAsCoreProperty.IsHiddenFromRead;
                 if (hidden)
