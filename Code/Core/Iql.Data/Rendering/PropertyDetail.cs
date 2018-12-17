@@ -146,7 +146,7 @@ namespace Iql.Data.Rendering
         public IPropertyContainer Property { get; set; }
 
         public async Task<EntityPropertySnapshot> GetSnapshotAsync(
-            object entity, 
+            object entity,
             IDataContext dataContext,
             DisplayConfigurationKind kind,
             SnapshotOrdering ordering = SnapshotOrdering.Default,
@@ -166,55 +166,18 @@ namespace Iql.Data.Rendering
                 allProperties = entityConfiguration.Properties.ToArray();
             }
             var properties = new List<IPropertyGroup>();
-            var filteredProperties = new List<IPropertyGroup>();
             for (var i = 0; i < allProperties.Length; i++)
             {
                 var property = allProperties[i];
-                var rel = property as RelationshipDetailBase;
-                if (property.Kind.HasFlag(PropertyKind.Property))
-                {
-                    if (property.Kind.HasFlag(PropertyKind.Count))
-                    {
-                        continue;
-                    }
-                    var simpleProperty = property as IProperty;
-                    if (simpleProperty != null &&
-                        simpleProperty.Relationship != null &&
-                        simpleProperty.Relationship.ThisIsTarget &&
-                        await simpleProperty.Relationship.OtherEnd.Property.IsReadOnlyAsync(entity, dataContext))
-                    {
-                        continue;
-                    }
-                }
-                else if (rel != null && rel.RelationshipSide == RelationshipSide.Target && !rel.AllowInlineEditing)
+                if (property.Kind.HasFlag(PropertyKind.Property) && property.Kind.HasFlag(PropertyKind.Count))
                 {
                     continue;
                 }
-
+                //var simpleProperty = property as IProperty;
                 properties.Add(property);
             }
-
-            for (var i = 0; i < properties.Count; i++)
-            {
-                var propertyGroup = properties[i];
-                var detail = For(properties[i]);
-                if (detail == null)
-                {
-                    continue;
-                }
-
-                var relationshipDetail = propertyGroup as RelationshipDetailBase;
-                if (detail.Kind == "group" &&
-                    relationshipDetail != null &&
-                    relationshipDetail.Property.EditKind != PropertyEditKind.Edit)
-                {
-                    continue;
-                }
-
-                filteredProperties.Add(propertyGroup);
-            }
             // ReSharper disable once ConvertClosureToMethodGroup
-            var childProperties = filteredProperties.Select(_=> For(_)).ToArray();
+            var childProperties = properties.Select(_ => For(_)).ToArray();
             var children = new List<EntityPropertySnapshot>();
             for (var i = 0; i < childProperties.Length; i++)
             {
@@ -226,27 +189,76 @@ namespace Iql.Data.Rendering
             }
 
             var kids = children.ToArray();
+            if (kids.Length == 25)
+            {
+                int a = 0;
+            }
             if (ordering != SnapshotOrdering.Default)
             {
-                var readOnly = new List<EntityPropertySnapshot>();
-                var nonReadOnly = new List<EntityPropertySnapshot>();
-                for (var i = 0; i < kids.Length; i++)
+                switch (ordering)
                 {
-                    var kid = kids[i];
-                    if (kid.CanEdit)
-                    {
-                        nonReadOnly.Add(kid);
-                    }
-                    else
-                    {
-                        readOnly.Add(kid);
-                    }
-                }
+                    case SnapshotOrdering.ReadOnlyFirst:
+                    case SnapshotOrdering.ReadOnlyLast:
+                        {
+                            var readOnly = new List<EntityPropertySnapshot>();
+                            var nonReadOnly = new List<EntityPropertySnapshot>();
+                            for (var i = 0; i < kids.Length; i++)
+                            {
+                                var kid = kids[i];
+                                if (kid.CanEdit)
+                                {
+                                    nonReadOnly.Add(kid);
+                                }
+                                else
+                                {
+                                    readOnly.Add(kid);
+                                }
+                            }
 
-                kids =
-                    (ordering == SnapshotOrdering.ReadOnlyFirst
-                        ? readOnly.Concat(nonReadOnly)
-                        : nonReadOnly.Concat(readOnly)).ToArray();
+                            kids =
+                                (ordering == SnapshotOrdering.ReadOnlyFirst
+                                    ? readOnly.Concat(nonReadOnly)
+                                    : nonReadOnly.Concat(readOnly)).ToArray();
+                            break;
+                        }
+                    case SnapshotOrdering.Standard:
+                        {
+                            var readOnly = new List<EntityPropertySnapshot>();
+                            var readOnlyRelationshipCollections = new List<EntityPropertySnapshot>();
+                            var nonReadOnlyRelationshipCollections = new List<EntityPropertySnapshot>();
+                            var nonReadOnly = new List<EntityPropertySnapshot>();
+                            for (var i = 0; i < kids.Length; i++)
+                            {
+                                var kid = kids[i];
+                                if (kid.CanEdit)
+                                {
+                                    if (kid.IsRelationshipTarget)
+                                    {
+                                        nonReadOnlyRelationshipCollections.Add(kid);
+                                    }
+                                    else
+                                    {
+                                        nonReadOnly.Add(kid);
+                                    }
+                                }
+                                else
+                                {
+                                    if (kid.IsRelationshipTarget)
+                                    {
+                                        readOnlyRelationshipCollections.Add(kid);
+                                    }
+                                    else
+                                    {
+                                        readOnly.Add(kid);
+                                    }
+                                }
+                            }
+                            kids = (readOnly.Concat(readOnlyRelationshipCollections)
+                                .Concat(nonReadOnlyRelationshipCollections).Concat(nonReadOnly)).ToArray();
+
+                            break;
+                        }
+                }
             }
 
             if (kids.Any())
@@ -262,7 +274,7 @@ namespace Iql.Data.Rendering
         }
 
         private bool CanShow(
-            object entity, 
+            object entity,
             IDataContext dataContext,
             DisplayConfigurationKind kind)
         {

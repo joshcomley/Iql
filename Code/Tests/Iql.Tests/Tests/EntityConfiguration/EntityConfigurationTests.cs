@@ -16,6 +16,33 @@ namespace Iql.Tests.Tests.EntityConfiguration
     public class EntityConfigurationTests : TestsBase
     {
         [TestMethod]
+        public async Task CreatingEntityFromRelationshipTarget()
+        {
+            var siteConfig = Db.EntityConfigurationContext.EntityType<Site>();
+            var site = new Site();
+            var sitePeopleRelationship = siteConfig.FindCollectionRelationship(_ => _.People);
+            Assert.AreEqual(0, site.People.Count);
+            var sitePerson = (Person)await sitePeopleRelationship.CreateEntityForRelationshipAsync(Db, site);
+            Assert.AreEqual(sitePerson.Site, site);
+            Assert.IsTrue(Db.IsTracked(sitePerson));
+            Assert.AreEqual(1, site.People.Count);
+            Assert.AreEqual(site.People[0], sitePerson);
+        }
+
+        [TestMethod]
+        public async Task CreatingEntityFromRelationshipSource()
+        {
+            var personConfig = Db.EntityConfigurationContext.EntityType<Person>();
+            var person = new Person();
+            var personSiteRelationship = personConfig.FindRelationship(_ => _.Site);
+            var personSite = (Site)await personSiteRelationship.CreateEntityForRelationshipAsync(Db, person);
+            Assert.AreEqual(person.Site, personSite);
+            Assert.IsTrue(Db.IsTracked(personSite));
+            Assert.AreEqual(1, personSite.People.Count);
+            Assert.AreEqual(personSite.People[0], person);
+        }
+
+        [TestMethod]
         public async Task CreatingEntityFromRelationshipShouldAutoEvaluateAndPopulateFieldsWithRelationshipValue()
         {
             var personConfig = Db.EntityConfigurationContext.EntityType<Person>();

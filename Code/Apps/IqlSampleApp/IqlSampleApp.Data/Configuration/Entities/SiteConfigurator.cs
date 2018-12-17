@@ -22,7 +22,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     _ =>
                     {
                         _.IsInferredWith(site => site.Address + "\n" + site.PostCode);
-                    })
+                    })                
                 .DefinePropertyValidation(_ => _.FullAddress, _ => _.FullAddress == null || _.FullAddress == "")
                 .SetEditDisplay(
                     _ => _.FindRelationship(s => s.Client).Configure(c => c.EditKind = PropertyEditKind.New),
@@ -40,6 +40,8 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     _ => _.FindPropertyByExpression(s => s.Parent),
                     _ => _.FindPropertyByExpression(s => s.Key),
                     _ => _.FindPropertyByExpression(s => s.Location));
+
+            builder.EntityType<Site>().FindCollectionRelationship(_ => _.Areas).AllowInlineEditing = true;
         }
     }
 

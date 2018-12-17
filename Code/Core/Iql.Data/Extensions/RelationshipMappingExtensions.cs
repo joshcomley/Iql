@@ -28,6 +28,12 @@ namespace Iql.Data.Extensions
             IDataContext dataContext,
             object parent)
         {
+            var set = dataContext.GetDbSetByEntityType(relationship.Type);
+            if (!dataContext.IsTracked(parent))
+            {
+                set.AddEntity(parent);
+            }
+            // TODO: Should support creating entities from parent entities that are new
             var allMappings = new List<IMappingBase>();
             allMappings.AddRange(relationship.RelationshipMappings);
             allMappings.AddRange(relationship.ValueMappings);
@@ -64,6 +70,17 @@ namespace Iql.Data.Extensions
                     mapping.SetValue(entity, result.Result);
                 }
                 mapping.SetValue(entity, result.Result);
+            }
+
+            dataContext.GetDbSetByEntityType(type).AddEntity(entity);
+
+            if (relationship.RelationshipSide == RelationshipSide.Target)
+            {
+                relationship.OtherSide.Property.SetValue(entity, parent);
+            }
+            else
+            {
+                relationship.Property.SetValue(parent, entity);
             }
 
             return entity;

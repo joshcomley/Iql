@@ -4,6 +4,7 @@ using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.InferredValues;
+using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Parsing.Evaluation;
 using Iql.Entities.Services;
@@ -17,11 +18,31 @@ namespace Iql.Data.Extensions
             object owner,
             IDataContext dataContext)
         {
+            if (property.Name.Contains("Additional"))
+            {
+                int a = 0;
+            }
             if (property.IsReadOnly)
             {
                 return true;
             }
 
+            if (property is RelationshipDetailBase relationshipDetailBase)
+            {
+                if (relationshipDetailBase.IsReadOnly)
+                {
+                    return true;
+                }
+            }
+
+            //if (simpleProperty != null &&
+            //    simpleProperty.Relationship != null &&
+            //    simpleProperty.Relationship.ThisIsTarget &&
+            //    await simpleProperty.Relationship.OtherEnd.Property.IsReadOnlyAsync(entity, dataContext))
+            //{
+            //    continue;
+            //}
+            
             if (property is IProperty)
             {
                 var p = property as IProperty;

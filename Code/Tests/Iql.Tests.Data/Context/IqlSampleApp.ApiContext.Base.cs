@@ -5777,6 +5777,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Children";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Areas).Configure(rel_cnf => {
+                    rel_cnf.AllowInlineEditing = true;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Areas";
                     rel_cnf.Title = "Areas";
