@@ -25,7 +25,7 @@ namespace Iql.Data.Search
             for (var i = 0; i < quotedTerms.Count; i++)
             {
                 var quotedTerm = quotedTerms[i];
-                var wrappedQuotedTerm = '"' + quotedTerm + '"';
+                var wrappedQuotedTerm = $"\"{quotedTerm}\"";
                 var startIndex = 0;
                 while (true)
                 {
