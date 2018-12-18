@@ -7,6 +7,7 @@ using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Tracking;
 using Iql.Entities;
+using Iql.Entities.DisplayFormatting;
 using Iql.Queryable;
 
 namespace Iql.Data.Lists
@@ -24,6 +25,7 @@ namespace Iql.Data.Lists
         IDbQueryable SetTracking(bool enabled);
         IDbQueryable IncludeCount();
         IDbQueryable ExpandAll();
+        IDbQueryable ExpandForDisplayFormatter(IEntityDisplayTextFormatter displayFomatter = null);
         IDbQueryable ExpandRelationship(string name);
         IDbQueryable ExpandAllSingleRelationships();
         IDbQueryable ExpandAllCollectionCounts();

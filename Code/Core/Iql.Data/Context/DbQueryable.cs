@@ -17,6 +17,7 @@ using Iql.Data.Queryable;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Relationship;
@@ -132,8 +133,8 @@ namespace Iql.Data.Context
         }
 
         public async Task<IList> LoadRelationshipPropertyAsync(
-            T entity, 
-            IProperty property, 
+            T entity,
+            IProperty property,
             Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             if (property.Relationship == null)
@@ -172,12 +173,12 @@ namespace Iql.Data.Context
                 Parameters = new List<IqlRootReferenceExpression>()
             };
             iqlLambdaExpression.Parameters.Add(new IqlRootReferenceExpression());
-            var query = (IDbQueryable) otherDbSet.WhereEquals(iqlLambdaExpression);
+            var query = (IDbQueryable)otherDbSet.WhereEquals(iqlLambdaExpression);
             if (queryFilter != null)
             {
                 query = queryFilter(query);
             }
-            return (IList) await query.ToListAsync();
+            return (IList)await query.ToListAsync();
         }
 
         async Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
@@ -584,7 +585,7 @@ namespace Iql.Data.Context
             for (var i = 0; i < Operations.Count; i++)
             {
                 var operation = Operations[i];
-                queryable = (global::Iql.Queryable.IQueryable<TMap>) queryable.Then(operation);
+                queryable = (global::Iql.Queryable.IQueryable<TMap>)queryable.Then(operation);
             }
 
             var getDataResult = await DataContext.DataStore.GetAsync(new GetDataOperation<TMap>(queryable, DataContext));
@@ -770,6 +771,41 @@ namespace Iql.Data.Context
             Expression<Func<T, TTarget>> target)
         {
             return ExpandQuery(new ExpandQueryExpression(target));
+        }
+
+        public DbQueryable<T> ExpandForDisplayFormatter(IEntityDisplayTextFormatter displayFormatter = null)
+        {
+            var query = this;
+            var displayTextQuery = displayFormatter ?? EntityConfiguration.DisplayFormatting.Default;
+            if (displayTextQuery != null)
+            {
+                var expression = IqlConverter.Instance.ConvertLambdaExpressionToIql<T>(displayTextQuery.FormatterExpression);
+                var propertyExpressions = expression.Expression.Flatten().Where(_ => _.Expression.Kind == IqlExpressionKind.Property).ToArray();
+                propertyExpressions = propertyExpressions.Where(_ =>
+                {
+                    return propertyExpressions.All(p => p.Expression.Parent != _.Expression);
+                }).ToArray();
+                var propertyPaths = new Dictionary<string, IqlPropertyPath>();
+                for (var i = 0; i < propertyExpressions.Length; i++)
+                {
+                    var path = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, propertyExpressions[i].Expression as IqlPropertyExpression);
+                    if (!string.IsNullOrWhiteSpace(path.RelationshipPathToHere) &&
+                        !propertyPaths.ContainsKey(path.RelationshipPathToHere))
+                    {
+                        propertyPaths[path.RelationshipPathToHere] = path;
+                    }
+                }
+                foreach (var map in propertyPaths)
+                {
+                    query = query.ExpandRelationship(map.Key);
+                }
+            }
+            return query;
+        }
+
+        IDbQueryable IDbQueryable.ExpandForDisplayFormatter(IEntityDisplayTextFormatter displayFormatter = null)
+        {
+            return ExpandForDisplayFormatter(displayFormatter);
         }
 
         public DbQueryable<T> ExpandRelationship(

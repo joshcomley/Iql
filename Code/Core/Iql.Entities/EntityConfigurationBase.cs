@@ -115,29 +115,32 @@ namespace Iql.Entities
 
         public DisplayConfiguration GetDisplayConfiguration(params string[] keys)
         {
-            if ((keys == null || keys.Length == 0) && 
-                DisplayConfigurations != null &&
-                DisplayConfigurations.Count > 0)
+            if (DisplayConfigurations != null)
             {
-                if (DisplayConfigurations.Count == 1)
+                if ((keys == null || keys.Length == 0) &&
+                    DisplayConfigurations.Count > 0)
                 {
-                    return DisplayConfigurations[0];
+                    if (DisplayConfigurations.Count == 1)
+                    {
+                        return DisplayConfigurations[0];
+                    }
+
+                    if (DisplayConfigurations.Any())
+                    {
+                        return GetDisplayConfiguration(DisplayConfigurationKeys.Display) ?? DisplayConfigurations[0];
+                    }
                 }
 
-                if (DisplayConfigurations.Any())
+                if (keys != null)
                 {
-                    return GetDisplayConfiguration(DisplayConfigurationKeys.Display) ?? DisplayConfigurations[0];
-                }
-            }
-            if (keys != null)
-            {
-                for (var i = 0; i < keys.Length; i++)
-                {
-                    var key = keys[i];
-                    var config = DisplayConfigurations.SingleOrDefault(_ => _.Key == key);
-                    if (config != null)
+                    for (var i = 0; i < keys.Length; i++)
                     {
-                        return config;
+                        var key = keys[i];
+                        var config = DisplayConfigurations.SingleOrDefault(_ => _.Key == key);
+                        if (config != null)
+                        {
+                            return config;
+                        }
                     }
                 }
             }
