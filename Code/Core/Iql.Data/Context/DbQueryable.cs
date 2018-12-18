@@ -95,14 +95,14 @@ namespace Iql.Data.Context
         TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
 
         Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
-        public async Task<DbQueryable<T>> ApplyRelationshipFiltersByExpressionAsync<TProperty>(
+        public Task<DbQueryable<T>> ApplyRelationshipFiltersByExpressionAsync<TProperty>(
             Expression<Func<TProperty, T>> relatedProperty,
             TProperty entity)
         {
             var relatedConfiguration = this.EntityConfiguration.Builder.GetEntityByType(
                 typeof(TProperty) ?? entity.GetType());
             var property = relatedConfiguration.FindNestedPropertyByLambdaExpression(relatedProperty);
-            return await ApplyRelationshipFiltersAsync(property, entity);
+            return ApplyRelationshipFiltersAsync(property, entity);
         }
 
         IDbQueryable IDbQueryable.WithKeys(IEnumerable<object> keys)
@@ -118,6 +118,10 @@ namespace Iql.Data.Context
         IDbQueryable IDbQueryable.Search(string search, PropertySearchKind searchKind)
         {
             return Search(search, searchKind);
+        }
+        IDbQueryable IDbQueryable.SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null)
+        {
+            return SearchForDisplayFormatter(search, formatter);
         }
         IDbQueryable IDbQueryable.SearchProperties(string search, IEnumerable<IProperty> properties)
         {
@@ -215,7 +219,7 @@ namespace Iql.Data.Context
             return dictionary;
         }
 
-        public async Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
+        public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
         {
             IEnumerable<EntityRelationship> relationships = EntityConfiguration.AllRelationships();
             switch (mode)
@@ -227,22 +231,22 @@ namespace Iql.Data.Context
                     relationships = relationships.Where(r => !r.ThisEnd.IsCollection);
                     break;
             }
-            return await LoadRelationshipsAsync(entity, relationships);
+            return LoadRelationshipsAsync(entity, relationships);
         }
 
-        async Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships)
+        Task<Dictionary<IProperty, IList>> IDbQueryable.LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships)
         {
-            return await LoadRelationshipsAsync((T)entity, relationships);
+            return LoadRelationshipsAsync((T)entity, relationships);
         }
 
-        async Task<Dictionary<IProperty, IList>> IDbQueryable.LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
+        Task<Dictionary<IProperty, IList>> IDbQueryable.LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
         {
-            return await LoadAllRelationshipsAsync((T)entity, mode);
+            return LoadAllRelationshipsAsync((T)entity, mode);
         }
 
-        async Task<IList> IDbQueryable.LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
+        Task<IList> IDbQueryable.LoadRelationshipPropertyAsync(object entity, IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return await LoadRelationshipPropertyAsync((T)entity, property, queryFilter);
+            return LoadRelationshipPropertyAsync((T)entity, property, queryFilter);
         }
 
         IDataContext IDbQueryable.DataContext { get => DataContext; set => DataContext = value; }
@@ -256,6 +260,14 @@ namespace Iql.Data.Context
         public DbQueryable<T> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary)
         {
             return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind));
+        }
+
+        public DbQueryable<T> SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter displayFormatter = null)
+        {
+            var paths =
+                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniquePaths(
+                    EntityConfiguration);
+            return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertyPaths(search, paths));
         }
 
         public DbQueryable<T> SearchProperties(string search, IEnumerable<IProperty> searchFields)
@@ -776,30 +788,15 @@ namespace Iql.Data.Context
         public DbQueryable<T> ExpandForDisplayFormatter(IEntityDisplayTextFormatter displayFormatter = null)
         {
             var query = this;
-            var displayTextQuery = displayFormatter ?? EntityConfiguration.DisplayFormatting.Default;
-            if (displayTextQuery != null)
+            var paths =
+                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniquePaths(
+                    EntityConfiguration);
+            for (var i = 0; i < paths.Length; i++)
             {
-                var expression = IqlConverter.Instance.ConvertLambdaExpressionToIql<T>(displayTextQuery.FormatterExpression);
-                var propertyExpressions = expression.Expression.Flatten().Where(_ => _.Expression.Kind == IqlExpressionKind.Property).ToArray();
-                propertyExpressions = propertyExpressions.Where(_ =>
-                {
-                    return propertyExpressions.All(p => p.Expression.Parent != _.Expression);
-                }).ToArray();
-                var propertyPaths = new Dictionary<string, IqlPropertyPath>();
-                for (var i = 0; i < propertyExpressions.Length; i++)
-                {
-                    var path = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, propertyExpressions[i].Expression as IqlPropertyExpression);
-                    if (!string.IsNullOrWhiteSpace(path.RelationshipPathToHere) &&
-                        !propertyPaths.ContainsKey(path.RelationshipPathToHere))
-                    {
-                        propertyPaths[path.RelationshipPathToHere] = path;
-                    }
-                }
-                foreach (var map in propertyPaths)
-                {
-                    query = query.ExpandRelationship(map.Key);
-                }
+                var map = paths[i];
+                query = query.ExpandRelationship(map.RelationshipPathToHere);
             }
+
             return query;
         }
 

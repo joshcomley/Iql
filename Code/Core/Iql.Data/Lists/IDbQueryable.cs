@@ -32,6 +32,7 @@ namespace Iql.Data.Lists
         IDbQueryable WithKeys(IEnumerable<object> keys);
         IDbQueryable WithCompositeKeys(IEnumerable<CompositeKey> keys);
         IDbQueryable Search(string search, PropertySearchKind searchKind);
+        IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null);
         IDbQueryable SearchProperties(string search, IEnumerable<IProperty> properties);
         TrackingSetCollection TrackingSetCollection { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
