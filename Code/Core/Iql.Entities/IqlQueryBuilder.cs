@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.Search;
 using Iql.Entities;
 using Iql.Extensions;
 
@@ -45,10 +46,10 @@ namespace Iql.Data.Queryable
                     if (keyPart != null)
                     {
                         var propertyExpression = new IqlPropertyExpression(keyPart.Name, root);
-                        var where = new IqlIsEqualToExpression(
+                        var iqlIsEqualToExpression = new IqlIsEqualToExpression(
                             propertyExpression,
                             new IqlLiteralExpression(keyPart.Value, keyPart.ValueType.Type.ToIqlType()));
-                        entityWheres.Add(where);
+                        entityWheres.Add(iqlIsEqualToExpression);
                     }
                 }
 
@@ -60,40 +61,121 @@ namespace Iql.Data.Queryable
             return query;
         }
 
-        public static IqlExpression BuildSearchQuery(this IEntityConfiguration entityConfiguration, string search, PropertySearchKind searchKind = PropertySearchKind.Secondary)
+        public static IqlExpression BuildSearchQuery(
+            this IEntityConfiguration entityConfiguration, 
+            string search, 
+            PropertySearchKind searchKind = PropertySearchKind.Secondary, 
+            bool splitIntoTerms = false)
         {
-            return BuildSearchPropertiesQuery(search, entityConfiguration.ResolveSearchProperties(searchKind));
-        }
-
-        public static IqlExpression BuildSearchQueryWithPropertyExpressions(string search,
-            IEnumerable<IqlPropertyExpression> propertyExpressions)
-        {
-            var searchFieldsArray = propertyExpressions.ToArray();
-            var expressions = new List<IqlExpression>();
-            for (var i = 0; i < searchFieldsArray.Length; i++)
+            if (string.IsNullOrWhiteSpace(search))
             {
-                var property = searchFieldsArray[i].CloneIql();
-                var where = new IqlStringIncludesExpression(
-                    property,
-                    new IqlLiteralExpression(search, IqlType.String));
-                expressions.Add(where);
+                return null;
             }
-            var query = Or(expressions);
-            return query;
-
+            return BuildSearchQueryForProperties(
+                search, 
+                entityConfiguration.ResolveSearchProperties(searchKind), 
+                splitIntoTerms);
         }
 
-        public static IqlExpression BuildSearchQueryForPropertyPaths(string search, IEnumerable<IqlPropertyPath> searchFields)
+        public static IqlExpression BuildSearchQueryForPropertyExpressions(
+            string search,
+            IEnumerable<IqlPropertyExpression> propertyExpressions, 
+            bool splitIntoTerms = false)
         {
-            var propertyExpressions = searchFields.Select(_ => _.Expression);
-            return BuildSearchQueryWithPropertyExpressions(search, propertyExpressions);
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+            return BuildSearchQueryForPropertyExpressionsWithTerms(
+                splitIntoTerms
+                    ? new SearchTermExtractor().ExtrapolateSearchTerms(search)
+                    : new SearchTerm[]
+                    {
+                        new SearchTerm(search),
+                    },
+                propertyExpressions
+                );
         }
 
-        public static IqlExpression BuildSearchPropertiesQuery(string search, IEnumerable<IProperty> searchFields)
+        public static IqlExpression BuildSearchQueryForPropertyPaths(
+            string search, 
+            IEnumerable<IqlPropertyPath> searchFields,
+            bool splitIntoTerms = false)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+            var propertyExpressions = searchFields.Select(_ => _.Expression);
+            return BuildSearchQueryForPropertyExpressions(search, propertyExpressions, splitIntoTerms);
+        }
+
+        public static IqlExpression BuildSearchQueryForProperties(
+            string search, 
+            IEnumerable<IProperty> searchFields, 
+            bool splitIntoTerms = false)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+            var root = new IqlRootReferenceExpression("root", "");
+            return BuildSearchQueryForPropertyExpressions(search,
+                searchFields.Select(_ => new IqlPropertyExpression(_.Name, root)),
+                splitIntoTerms);
+        }
+
+        public static IqlExpression BuildSearchQueryWithTerms(
+            this IEntityConfiguration entityConfiguration,
+            IEnumerable<SearchTerm> terms,
+            PropertySearchKind searchKind = PropertySearchKind.Secondary)
+        {
+            return BuildSearchQueryForPropertiesWithTerms(
+                terms,
+                entityConfiguration.ResolveSearchProperties(searchKind));
+        }
+
+        public static IqlExpression BuildSearchQueryForPropertiesWithTerms(
+            IEnumerable<SearchTerm> terms,
+            IEnumerable<IProperty> searchFields)
         {
             var root = new IqlRootReferenceExpression("root", "");
-            return BuildSearchQueryWithPropertyExpressions(search,
-                searchFields.Select(_ => new IqlPropertyExpression(_.Name, root)));
+            return BuildSearchQueryForPropertyExpressionsWithTerms(
+                terms,
+                searchFields.Select(_ => new IqlPropertyExpression(_.Name, root))
+            );
+        }
+
+        public static IqlExpression BuildSearchQueryForPropertyPathsWithTerms(
+            IEnumerable<SearchTerm> terms,
+            IEnumerable<IqlPropertyPath> searchFields)
+        {
+            var propertyExpressions = searchFields.Select(_ => _.Expression);
+            return BuildSearchQueryForPropertyExpressionsWithTerms(terms, propertyExpressions);
+        }
+
+        public static IqlExpression BuildSearchQueryForPropertyExpressionsWithTerms(
+            IEnumerable<SearchTerm> terms,
+            IEnumerable<IqlPropertyExpression> propertyExpressions)
+        {
+            var queries = new List<IqlExpression>();
+            foreach (var term in terms)
+            {
+                var searchFieldsArray = propertyExpressions.ToArray();
+                var expressions = new List<IqlExpression>();
+                for (var i = 0; i < searchFieldsArray.Length; i++)
+                {
+                    var property = searchFieldsArray[i].CloneIql();
+                    var stringIncludesExpression = new IqlStringIncludesExpression(
+                        property,
+                        new IqlLiteralExpression(term.Value, IqlType.String));
+                    expressions.Add(stringIncludesExpression);
+                }
+
+                queries.Add(Or(expressions));
+            }
+
+            return Or(queries);
         }
 
         public static IqlExpression And(this IEnumerable<IqlExpression> expressions)

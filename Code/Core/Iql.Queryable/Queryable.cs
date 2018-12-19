@@ -120,6 +120,10 @@ namespace Iql.Queryable
 #endif
         )
         {
+            if (expression == null)
+            {
+                return (TQueryable)this;
+            }
             var whereOperation = new WhereOperation();
 #if TypeScript
             whereOperation.EvaluateContext = evaluateContext;

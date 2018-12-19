@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.DataStores;
+using Iql.Data.Search;
 using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
@@ -31,9 +32,12 @@ namespace Iql.Data.Lists
         IDbQueryable ExpandAllCollectionCounts();
         IDbQueryable WithKeys(IEnumerable<object> keys);
         IDbQueryable WithCompositeKeys(IEnumerable<CompositeKey> keys);
-        IDbQueryable Search(string search, PropertySearchKind searchKind);
-        IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null);
-        IDbQueryable SearchProperties(string search, IEnumerable<IProperty> properties);
+        IDbQueryable Search(string search, PropertySearchKind searchKind, bool? splitIntoTerms = null);
+        IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null, bool? splitIntoTerms = null);
+        IDbQueryable SearchProperties(string search, IEnumerable<IProperty> properties, bool? splitIntoTerms = null);
+        IDbQueryable SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind);
+        IDbQueryable SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter formatter = null);
+        IDbQueryable SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> properties);
         TrackingSetCollection TrackingSetCollection { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }

@@ -14,6 +14,7 @@ using Iql.Data.IqlToIql;
 using Iql.Data.Lists;
 using Iql.Data.Operations;
 using Iql.Data.Queryable;
+using Iql.Data.Search;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -113,19 +114,6 @@ namespace Iql.Data.Context
         IDbQueryable IDbQueryable.WithCompositeKeys(IEnumerable<CompositeKey> keys)
         {
             return WithKeys(keys);
-        }
-
-        IDbQueryable IDbQueryable.Search(string search, PropertySearchKind searchKind)
-        {
-            return Search(search, searchKind);
-        }
-        IDbQueryable IDbQueryable.SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null)
-        {
-            return SearchForDisplayFormatter(search, formatter);
-        }
-        IDbQueryable IDbQueryable.SearchProperties(string search, IEnumerable<IProperty> properties)
-        {
-            return SearchProperties(search, properties);
         }
 
         public async Task LoadRelationshipAsync(T entity, Expression<Func<T, object>> property, Func<IDbQueryable, IDbQueryable> queryFilter = null)
@@ -257,22 +245,71 @@ namespace Iql.Data.Context
             return WhereEquals(EntityConfiguration.BuildSearchKeyQuery(keys));
         }
 
-        public DbQueryable<T> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        public DbQueryable<T> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary, bool? splitIntoTerms = null)
         {
-            return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind));
+            return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind, splitIntoTerms ?? false));
         }
 
-        public DbQueryable<T> SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter displayFormatter = null)
+        IDbQueryable IDbQueryable.Search(string search, PropertySearchKind searchKind, bool? splitIntoTerms = null)
+        {
+            return Search(search, searchKind, splitIntoTerms ?? false);
+        }
+
+        public DbQueryable<T> SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter displayFormatter = null, bool? splitIntoTerms = null)
         {
             var paths =
-                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniquePaths(
+                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniqueTextSearchablePaths(
                     EntityConfiguration);
-            return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertyPaths(search, paths));
+            return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertyPaths(search, paths, splitIntoTerms ?? false));
         }
 
-        public DbQueryable<T> SearchProperties(string search, IEnumerable<IProperty> searchFields)
+        IDbQueryable IDbQueryable.SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null, bool? splitIntoTerms = null)
         {
-            return WhereEquals(IqlQueryBuilder.BuildSearchPropertiesQuery(search, searchFields));
+            return SearchForDisplayFormatter(search, formatter, splitIntoTerms ?? false);
+        }
+
+        public DbQueryable<T> SearchProperties(string search, IEnumerable<IProperty> searchFields, bool? splitIntoTerms = null)
+        {
+            return WhereEquals(IqlQueryBuilder.BuildSearchQueryForProperties(search, searchFields, splitIntoTerms ?? false));
+        }
+
+        IDbQueryable IDbQueryable.SearchProperties(string search, IEnumerable<IProperty> properties, bool? splitIntoTerms = null)
+        {
+            return SearchProperties(search, properties, splitIntoTerms ?? false);
+        }
+
+
+        public DbQueryable<T> SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        {
+            return WhereEquals(EntityConfiguration.BuildSearchQueryWithTerms(searchTerms, searchKind));
+        }
+
+        IDbQueryable IDbQueryable.SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind)
+        {
+            return SearchWithTerms(searchTerms, searchKind);
+        }
+
+        public DbQueryable<T> SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter displayFormatter = null)
+        {
+            var paths =
+                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniqueTextSearchablePaths(
+                    EntityConfiguration);
+            return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertyPathsWithTerms(searchTerms, paths));
+        }
+
+        IDbQueryable IDbQueryable.SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter formatter = null)
+        {
+            return SearchForDisplayFormatterWithTerms(searchTerms, formatter);
+        }
+
+        public DbQueryable<T> SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> searchFields)
+        {
+            return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertiesWithTerms(searchTerms, searchFields));
+        }
+
+        IDbQueryable IDbQueryable.SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> properties)
+        {
+            return SearchPropertiesWithTerms(searchTerms, properties);
         }
 
         public async Task<T> SingleAsync(Expression<Func<T, bool>> expression = null
@@ -789,7 +826,7 @@ namespace Iql.Data.Context
         {
             var query = this;
             var paths =
-                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniquePaths(
+                (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniqueRelationshipPaths(
                     EntityConfiguration);
             for (var i = 0; i < paths.Length; i++)
             {

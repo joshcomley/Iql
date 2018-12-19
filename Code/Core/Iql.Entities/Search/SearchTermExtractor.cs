@@ -8,6 +8,10 @@ namespace Iql.Data.Search
     {
         public SearchTerm[] ExtrapolateSearchTerms(string terms)
         {
+            if (string.IsNullOrWhiteSpace(terms))
+            {
+                return new SearchTerm[] { };
+            }
             //var terms = 'some search "terms that" we like "to see" over here "to see" again';
             var re = new Regex(@"""([^""]*?)""");
             var match = re.Match(terms);
@@ -50,7 +54,7 @@ namespace Iql.Data.Search
                     quotedTerms.Add(simpleTerms[i]);
                 }
             }
-                
+
             var searchTerms = new List<SearchTerm>();
             for (var i = 0; i < quotedTerms.Count; i++)
             {

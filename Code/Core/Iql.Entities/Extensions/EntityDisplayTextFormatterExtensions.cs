@@ -7,25 +7,54 @@ namespace Iql.Entities.Extensions
 {
     public static class EntityDisplayTextFormatterExtensions
     {
+        public static IqlPropertyPath[] ResolveUniqueRelationshipPaths(
+            this IEntityDisplayTextFormatter displayFormatter, IEntityConfiguration entityConfiguration)
+        {
+            var uniquePaths = displayFormatter.ResolveUniquePaths(entityConfiguration);
+            var result = new List<IqlPropertyPath>();
+            foreach (var path in uniquePaths)
+            {
+                if (string.IsNullOrWhiteSpace(path.RelationshipPathToHere) || result.Any(_ => _.RelationshipPathToHere == path.RelationshipPathToHere))
+                {
+                    continue;
+                }
+                result.Add(path.RelationshipPath);
+            }
+
+            return result.ToArray();
+        }
+
+        public static IqlPropertyPath[] ResolveUniqueTextSearchablePaths(this IEntityDisplayTextFormatter displayFormatter,
+            IEntityConfiguration entityConfiguration)
+        {
+            var uniquePaths = displayFormatter.ResolveUniquePaths(entityConfiguration);
+            var result = new List<IqlPropertyPath>();
+            foreach (var path in uniquePaths)
+            {
+                var type = path.Property.TypeDefinition.ToIqlType();
+                switch (type)
+                {
+                    case IqlType.String:
+                    case IqlType.Integer:
+                    case IqlType.Decimal:
+                        result.Add(path);
+                        break;
+                }
+            }
+            return result.ToArray();
+        }
+
         public static IqlPropertyPath[] ResolveUniquePaths(this IEntityDisplayTextFormatter displayFormatter, IEntityConfiguration entityConfiguration)
         {
             if (displayFormatter != null)
             {
                 var expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(displayFormatter.FormatterExpression, entityConfiguration.Type);
-                var propertyExpressions = expression.Expression.Flatten().Where(_ => _.Expression.Kind == IqlExpressionKind.Property).ToArray();
-                propertyExpressions = propertyExpressions.Where(_ =>
-                {
-                    return propertyExpressions.All(p => p.Expression.Parent != _.Expression);
-                }).ToArray();
+                var propertyExpressions = expression.Expression.TopLevelPropertyExpressions().ToArray();
                 var propertyPaths = new List<IqlPropertyPath>();
                 for (var i = 0; i < propertyExpressions.Length; i++)
                 {
                     var path = IqlPropertyPath.FromPropertyExpression(entityConfiguration, propertyExpressions[i].Expression as IqlPropertyExpression);
-                    if (!string.IsNullOrWhiteSpace(path.RelationshipPathToHere) &&
-                        propertyPaths.All(_ => _.RelationshipPathToHere != path.RelationshipPathToHere))
-                    {
-                        propertyPaths.Add(path);
-                    }
+                    propertyPaths.Add(path);
                 }
 
                 return propertyPaths.ToArray();

@@ -45,6 +45,19 @@ namespace Iql.Entities
         public string Separator { get; set; } = DefaultSeparator;
         public string PathToHere => GetPathToHere(Separator);
 
+        public IqlPropertyPath RelationshipPath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(RelationshipPathToHere))
+                {
+                    return null;
+                }
+
+                return RelationshipPathToHere == PathToHere ? this : Parent;
+            }
+        }
+
         public string GetPathToHere(string separator)
         {
             return string.Join(separator, PropertyPath.Select(p => p.Property.Name));
