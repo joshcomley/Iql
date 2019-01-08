@@ -1,14 +1,13 @@
 using System;
 using IqlSampleApp.Sets;
-using IqlSampleApp.ApiContext.Base.EntityService;
 using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
 using Iql.Entities;
-namespace IqlSampleApp.ApiContext.Base.EntityService
+namespace IqlSampleApp.ApiContext.Base
 {
-    public class IqlSampleAppEntityServiceBase: PropertyService
+    public class IqlSampleAppEntityTypeServiceBase: EntityTypeService
     {
-        public IqlSampleAppEntityServiceBase(IEntityConfigurationBuilder builder) : base(builder)
+        public IqlSampleAppEntityTypeServiceBase(IEntityConfigurationBuilder builder) : base(builder)
         {}
         public Type TypeOfApplicationUser => typeof(ApplicationUser);
         private IProperty _ApplicationUser_IsLockedOut = null;

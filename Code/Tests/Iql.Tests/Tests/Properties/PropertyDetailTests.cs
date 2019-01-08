@@ -188,7 +188,8 @@ namespace Iql.Tests.Tests.Properties
             var person = new Person();
             var personEntityConfiguration = Db.EntityConfigurationContext.EntityType<Person>();
             var detail = PropertyDetail.For(personEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(person, Db, personEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit));
+            var displayConfiguration = personEntityConfiguration.FindDisplayConfiguration(DisplayConfigurationKind.Edit);
+            var instance = await detail.GetSnapshotAsync(person, Db, displayConfiguration);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
             Assert.AreEqual(19, instance.ChildProperties.Length);

@@ -2,6 +2,10 @@
 {
     public static class StringExtensions
     {
+        public static string AsSafeClassName(this string str)
+        {
+            return str.Replace(".", "");
+        }
         public static string FirstCharToLower(this string str)
         {
             return str.Substring(0, 1).ToLower() + str.Substring(1);

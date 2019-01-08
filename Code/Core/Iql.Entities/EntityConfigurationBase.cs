@@ -31,11 +31,9 @@ namespace Iql.Entities
         protected EntityConfigurationBase(IEntityConfigurationContainer configurationContainer)
         {
             ConfigurationContainer = configurationContainer;
-            _relationships.Change.Subscribe(change =>
-            {
-                _allRelationships = null;
-            });
+            _relationships.Change.Subscribe(change => { _allRelationships = null; });
         }
+
         public IPropertyGroup[] AllPropertyGroups()
         {
             var list = new List<IPropertyGroup>();
@@ -48,7 +46,7 @@ namespace Iql.Entities
                 }
             }
 
-            var others = new IEnumerable<IPropertyGroup>[] { NestedSets, Geographics, DateRanges, Files };
+            var others = new IEnumerable<IPropertyGroup>[] {NestedSets, Geographics, DateRanges, Files};
             for (var i = 0; i < others.Length; i++)
             {
                 var group = others[i];
@@ -57,6 +55,7 @@ namespace Iql.Entities
                     list.AddRange(group);
                 }
             }
+
             return list.Distinct().ToArray();
         }
 
@@ -97,6 +96,7 @@ namespace Iql.Entities
                     }
                 }
             }
+
             return false;
         }
 
@@ -112,6 +112,44 @@ namespace Iql.Entities
         }
 
         public IList<DisplayConfiguration> DisplayConfigurations { get; set; } = new List<DisplayConfiguration>();
+
+        private DisplayConfiguration _fullReadDisplayConfiguration = null;
+        private DisplayConfiguration _fullEditDisplayConfiguration = null;
+
+        public DisplayConfiguration GetFullDisplayConfiguration(
+            DisplayConfigurationKind? kind = null)
+        {
+            var resolvedKind = kind ?? DisplayConfigurationKind.Read;
+            if (resolvedKind == DisplayConfigurationKind.Read)
+            {
+                _fullReadDisplayConfiguration =
+                    _fullReadDisplayConfiguration ?? BuildFullDisplayConfiguration(resolvedKind);
+                return _fullReadDisplayConfiguration;
+            }
+
+            _fullEditDisplayConfiguration =
+                _fullEditDisplayConfiguration ?? BuildFullDisplayConfiguration(resolvedKind);
+            return _fullEditDisplayConfiguration;
+        }
+
+        private DisplayConfiguration BuildFullDisplayConfiguration(DisplayConfigurationKind kind)
+        {
+            var final = new List<IPropertyGroup>();
+            var properties = BuildDisplayConfiguration(null, true);
+            for (int i = 0; i < properties.Length; i++)
+            {
+                var property = Properties[i];
+                if (property.Kind.HasFlag(PropertyKind.RelationshipKey) || 
+                    (kind == DisplayConfigurationKind.Edit && property.Kind.HasFlag(PropertyKind.Count)))
+                {
+                    continue;
+                }
+
+                final.Add(property.PropertyGroup ?? property);
+            }
+
+            return new DisplayConfiguration(DisplayConfigurationKind.Read, properties);
+        }
 
         public DisplayConfiguration GetDisplayConfiguration(params string[] keys)
         {
@@ -144,28 +182,45 @@ namespace Iql.Entities
                     }
                 }
             }
-            return null;
+
+            return GetFullDisplayConfiguration();
         }
 
+        public DisplayConfiguration FindDisplayConfiguration(DisplayConfigurationKind? kind = null)
+        {
+            var resolvedKind = kind ?? DisplayConfigurationKind.Read;
+            DisplayConfiguration config = null;
+            if (DisplayConfigurations != null)
+            {
+                config= DisplayConfigurations.FirstOrDefault(_ => _.Kind == resolvedKind);
+            }
+
+            config = config ?? GetFullDisplayConfiguration(resolvedKind);
+            return config;
+        }
+        
         public DisplayConfiguration GetOrDefineDisplayConfiguration(string key)
         {
-            var definition = GetDisplayConfiguration(key) ?? new DisplayConfiguration(DisplayConfigurationKind.Read, null, key);
+            var definition = GetDisplayConfiguration(key) ??
+                             new DisplayConfiguration(DisplayConfigurationKind.Read, null, key);
             DisplayConfigurations.Add(definition);
             return definition;
         }
 
-        public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool appendMissingProperties = true)
+        public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration,
+            bool appendMissingProperties = true)
         {
             if (configuration == null || !configuration.Properties.Any())
             {
                 return GetGroupProperties();
             }
+
             var ordered = configuration.Properties.ToList();
             if (appendMissingProperties)
             {
                 var flattened = configuration.Properties.FlattenAllToSimpleProperties().ToList();
-                var groupProperties = GetGroupProperties();
-                for (var i = 0; i < groupProperties.Length; i++)
+                var groupProperties = GetGroupProperties().FlattenAllToSimpleProperties().ToList();
+                for (var i = 0; i < groupProperties.Count; i++)
                 {
                     var property = groupProperties[i];
                     if (!flattened.Contains(property) && !ordered.Contains(property))
@@ -174,6 +229,7 @@ namespace Iql.Entities
                     }
                 }
             }
+
             return ordered.ToArray();
         }
 
@@ -200,9 +256,11 @@ namespace Iql.Entities
                     _titlePropertyNameChanged = false;
                     _titleProperty = Properties.SingleOrDefault(p => p.Name == TitlePropertyName);
                 }
+
                 return _titleProperty;
             }
         }
+
         public IProperty PreviewProperty
         {
             get
@@ -223,10 +281,14 @@ namespace Iql.Entities
             {
                 if (_titlePropertyName == null && Properties != null)
                 {
-                    _titlePropertyName = Properties.Where(p => p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
-                        .OrderBy(p => p.HasHint(KnownHints.EmailAddress) || p.Kind.HasFlag(PropertyKind.RelationshipKey) || p.Kind.HasFlag(PropertyKind.Key))
+                    _titlePropertyName = Properties.Where(p =>
+                            p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
+                        .OrderBy(p =>
+                            p.HasHint(KnownHints.EmailAddress) || p.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+                            p.Kind.HasFlag(PropertyKind.Key))
                         .FirstOrDefault()?.PropertyName;
                 }
+
                 return _titlePropertyName;
             }
             set
@@ -260,6 +322,7 @@ namespace Iql.Entities
                 {
                     _setFriendlyName = IntelliSpace.Parse(SetName);
                 }
+
                 return _setFriendlyName;
             }
             set
@@ -268,6 +331,7 @@ namespace Iql.Entities
                 {
                     _setName = null;
                 }
+
                 _setFriendlyNameSet = true;
                 _setFriendlyName = value;
             }
@@ -283,6 +347,7 @@ namespace Iql.Entities
                 {
                     _setName = _setFriendlyNameSet ? _setFriendlyName : ResolveName();
                 }
+
                 return _setName;
             }
             set
@@ -291,6 +356,7 @@ namespace Iql.Entities
                 {
                     _setFriendlyName = null;
                 }
+
                 SetNameSet = true;
                 _setName = value;
             }
@@ -314,7 +380,7 @@ namespace Iql.Entities
                 var list = new List<EntityRelationship>();
                 foreach (var relationship in Relationships)
                 {
-                    var ends = new[] { relationship.Source, relationship.Target };
+                    var ends = new[] {relationship.Source, relationship.Target};
                     for (var i = 0; i < ends.Length; i++)
                     {
                         if (Equals(ends[i].EntityConfiguration, this))
@@ -327,6 +393,7 @@ namespace Iql.Entities
 
                 _allRelationships = list;
             }
+
             return _allRelationships;
         }
 
@@ -345,29 +412,34 @@ namespace Iql.Entities
                 {
                     return false;
                 }
+
                 if (!Equals(entity.GetPropertyValue(id), compositeKeyValue.Value))
                 {
                     isMatch = false;
                     break;
                 }
             }
+
             return isMatch;
         }
 
         public bool KeysMatch(object left, object right)
         {
-            if (new[] { left, right }.Count(i => i == null) == 1)
+            if (new[] {left, right}.Count(i => i == null) == 1)
             {
                 return false;
             }
+
             if (left.GetType() != right.GetType())
             {
                 return false;
             }
+
             if (left == right)
             {
                 return true;
             }
+
             var isMatch = true;
             foreach (var id in Key.Properties)
             {
@@ -377,6 +449,7 @@ namespace Iql.Entities
                     break;
                 }
             }
+
             return isMatch;
         }
 
@@ -388,6 +461,7 @@ namespace Iql.Entities
                 var property = Key.Properties[i];
                 key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
             }
+
             return key;
         }
 
@@ -404,7 +478,7 @@ namespace Iql.Entities
         public IProperty FindNestedProperty(string name)
         {
             // TODO: Use IqlPropertyPath
-            var chars = new[] { '/', '.' };
+            var chars = new[] {'/', '.'};
             for (var j = 0; j < chars.Length; j++)
             {
                 var ch = chars[j];
@@ -421,8 +495,10 @@ namespace Iql.Entities
                         {
                             break;
                         }
+
                         config = property.Relationship.OtherEnd.EntityConfiguration;
                     }
+
                     return property;
                 }
             }
@@ -442,6 +518,7 @@ namespace Iql.Entities
             {
                 return null;
             }
+
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, Type).Expression;
             return FindNestedPropertyByIqlExpression((iql as IqlLambdaExpression).Body as IqlPropertyExpression);
         }

@@ -12,7 +12,17 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
     public class EntityBaseClassGenerator : ClassGenerator
     {
-        public EntityBaseClassGenerator(ODataSchema schema, OutputType outputType, GeneratorSettings settings) : base(schema, outputType, settings)
+        public EntityBaseClassGenerator(
+            string fileName,
+            string @namespace,
+            ODataSchema schema, 
+            OutputType outputType, 
+            GeneratorSettings settings) : base(
+            fileName,
+            @namespace,
+            schema, 
+            outputType, 
+            settings)
         {
         }
 

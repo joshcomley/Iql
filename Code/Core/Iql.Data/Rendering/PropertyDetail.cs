@@ -148,17 +148,17 @@ namespace Iql.Data.Rendering
         public async Task<EntityPropertySnapshot> GetSnapshotAsync(
             object entity,
             IDataContext dataContext,
-            DisplayConfiguration kind,
+            DisplayConfiguration configuration,
             SnapshotOrdering ordering = SnapshotOrdering.Default,
             bool appendNonConfiguredProperties = true
             )
         {
             var canEdit = !IsSimpleProperty || !await PropertyAsSimpleProperty.IsReadOnlyAsync(entity, dataContext);
-            var canShow = CanShow(entity, dataContext, kind);
+            var canShow = CanShow(entity, dataContext, configuration);
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
-                    ? entityConfiguration.BuildDisplayConfiguration(kind, appendNonConfiguredProperties)
+                    ? entityConfiguration.BuildDisplayConfiguration(configuration, appendNonConfiguredProperties)
                     : Property.GetGroupProperties();
             // If there is no property order configuration, just use all simple properties from this type
             if (entityConfiguration != null && (allProperties == null || allProperties.Length == 0))
@@ -184,7 +184,7 @@ namespace Iql.Data.Rendering
                 var child = childProperties[i];
                 if (child.Property != Property)
                 {
-                    children.Add(await child.GetSnapshotAsync(entity, dataContext, kind));
+                    children.Add(await child.GetSnapshotAsync(entity, dataContext, configuration));
                 }
             }
 

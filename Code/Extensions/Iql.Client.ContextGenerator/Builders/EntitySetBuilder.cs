@@ -16,9 +16,10 @@ namespace Iql.OData.TypeScript.Generator.Builders
             var entitySetName = element.Attribute("Name").Value;
             //entityTypeName.Dump();
             var entityTypeDefinition = schema.EntityTypes.Single(et => et.FullName == entityTypeName);
+            entityTypeDefinition.SetNamespace = ns;
             var definition = new EntitySetDefinition(entityTypeDefinition);
             definition.Name = entitySetName;
-            definition.Namespace = element.ODataNamespace();
+            definition.Namespace = ns;
             return definition;
         }
     }

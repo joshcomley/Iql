@@ -1,8 +1,6 @@
 using Iql.Data;
 using IqlSampleApp.Sets;
-using IqlSampleApp.ApiContext.Base.EntityService;
 using IqlSampleApp.ApiContext.Base;
-using IqlSampleApp.Data.Entities;
 using Iql.Entities.PropertyChangers;
 using Iql.Data.Lists;
 using Iql;
@@ -50,7 +48,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "UserSite";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -94,7 +92,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "SiteInspection";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -138,7 +136,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "SiteArea";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -182,7 +180,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "Site";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -226,7 +224,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "PersonReport";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -270,7 +268,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "PersonTypeMap";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -314,7 +312,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "PersonType";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -358,7 +356,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "PersonLoading";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -402,7 +400,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "PersonInspection";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -446,7 +444,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "Person";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -490,7 +488,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "RiskAssessmentQuestion";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -534,7 +532,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "RiskAssessmentAnswer";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -578,7 +576,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "RiskAssessmentSolution";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -622,7 +620,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "RiskAssessment";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -666,7 +664,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ReportReceiverEmailAddress";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -710,7 +708,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "Project";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -754,7 +752,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ReportType";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -798,7 +796,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ReportRecommendation";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -842,7 +840,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ReportDefaultRecommendation";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -886,7 +884,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ReportCategory";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -930,7 +928,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ReportActionsTaken";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -974,7 +972,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "SiteDocument";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -1018,7 +1016,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "DocumentCategory";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -1062,7 +1060,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ClientType";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -1106,7 +1104,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "Client";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -1150,7 +1148,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ApplicationLog";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities
@@ -1194,7 +1192,7 @@ namespace IqlSampleApp.Data.Entities
         {
             get;
             set;
-        } = "ApplicationUser";
+        } = "IqlSampleApp.Data.Entities";
     }
 }
 namespace IqlSampleApp.Data.Entities

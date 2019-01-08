@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Client.ContextGenerator.ClassGenerators;
+using Iql.Entities;
 using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
@@ -30,7 +32,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     var dataContextGenerator = new DataContextGenerator(
                         _schema,
                         $"{setGroup.Key}.ApiContext.Base",
-                        $"{setGroup.Key}DataContextBase",
+                        $"{setGroup.Key}.{nameof(DataContext)}Base",
+                        $"{setGroup.Key}{nameof(DataContext)}Base",
                         dbSetsPath,
                         @"",
                         setGroup.Select(s => s),
@@ -39,10 +42,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     files.Add(dataContextGenerator.Generate());
                 }
 
-                var propertyServiceGenerator = new EntityServiceGenerator(
+                var propertyServiceGenerator = new EntityTypeServiceGenerator(
                     _schema,
-                    $"{setGroup.Key}.ApiContext.Base.EntityService",
-                    $"{setGroup.Key}EntityServiceBase",
+                    $"{setGroup.Key}.ApiContext.Base",
+                    $"{setGroup.Key}.{nameof(EntityTypeService)}Base",
+                    $"{setGroup.Key}{nameof(EntityTypeService)}Base",
                     setGroup.Select(s => s),
                     outputType,
                     Settings);
@@ -52,6 +56,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     var dbSetsGenerator = new DbSetsGenerator(
                         _schema,
+                        dbSetsPath,
                         dbSetsPath,
                         setGroup.Select(s => s),
                         outputType,

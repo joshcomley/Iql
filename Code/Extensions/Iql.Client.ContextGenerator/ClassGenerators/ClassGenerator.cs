@@ -28,7 +28,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             set => _nameMapper = value;
         }
 
-        public ClassGenerator(ODataSchema schema, OutputType outputType, GeneratorSettings settings)
+        public ClassGenerator(
+            string fileName,
+            string @namespace,
+            ODataSchema schema, OutputType outputType, GeneratorSettings settings)
         {
             OutputType = outputType;
             Settings = settings;
@@ -36,6 +39,14 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 OutputType == OutputType.TypeScript
                 ? (IClassGenerator)new TypeScriptClassGenerator(schema, settings)
                 : new CSharpClassGenerator(schema, settings);
+            if (!string.IsNullOrWhiteSpace(fileName))
+            {
+                FileName = fileName;
+            }
+            if (!string.IsNullOrWhiteSpace(@namespace))
+            {
+                Namespace = @namespace;
+            }
         }
 
         public IClassGenerator Generator { get; set; }
@@ -49,20 +60,23 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return Generator.GetExpressionString(iql);
         }
 
-        public GeneratedFile File
+        public string FileName
         {
-            get { return Generator.File; }
+            get => Generator.File.FileName;
+            set => Generator.File.FileName = value;
         }
 
-        public ISchemaTypeResolver TypeResolver
+        public string Namespace
         {
-            get { return Generator.TypeResolver; }
+            get => Generator.File.Namespace;
+            set => Generator.File.Namespace = value;
         }
 
-        public ODataSchema Schema
-        {
-            get { return Generator.Schema; }
-        }
+        public GeneratedFile File => Generator.File;
+
+        public ISchemaTypeResolver TypeResolver => Generator.TypeResolver;
+
+        public ODataSchema Schema => Generator.Schema;
 
         public EntityTypeReference TryAddReference(ITypeInfo type)
         {

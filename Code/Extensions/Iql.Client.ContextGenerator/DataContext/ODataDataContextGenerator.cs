@@ -93,7 +93,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             var odataParser = new ODataSchemaParser(edmx, iqlJson);
             var schema = odataParser.Parse();
             //schema.Dump();
-            var typeScriptConverter = new ODataSchemaTypeScriptGenerator(schema, Settings);
+            var typeScriptConverter = new ODataSchemaGenerator(schema, Settings);
             var files = typeScriptConverter.Generate(OutputType.CSharp);
             files.Reverse();
 
@@ -114,7 +114,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             //var odataConfigurationTypeScript = GenerateODataConfigurationClasses();
             //var odataConfigurationFilePath = Path.Combine(odataPath, nameof(ODataConfiguration) + ".ts");
             //File.WriteAllText(odataConfigurationFilePath, odataConfigurationTypeScript);
-            var fileGroups = files.GroupBy(f => f.Namespace);
+            var fileGroups = files.GroupBy(f => f.QualifiedName).ToList();
             var potentialImports = new[]
             {
                 typeof(CompositeKey),
@@ -175,7 +175,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(PrimitivePropertyChanger),
                 typeof(PointPropertyChanger),
                 typeof(PolygonPropertyChanger),
-                typeof(PropertyService),
+                typeof(EntityTypeService),
             };
 
             void WriteBaseClasses(StringBuilder builder, List<GeneratedFile> list)
@@ -186,7 +186,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                     builder.AppendLine();
                     foreach (var emptyBaseClass in list)
                     {
-                        var entityBaseClassGenerator = new EntityBaseClassGenerator(schema, OutputType.CSharp, Settings);
+                        var entityBaseClassGenerator = new EntityBaseClassGenerator(null, null, schema, OutputType.CSharp, Settings);
                         entityBaseClassGenerator.Generate(emptyBaseClass);
                         builder.AppendLine(entityBaseClassGenerator.ToCode());
                         builder.AppendLine();
@@ -198,7 +198,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             var outputFiles = new List<OutputFile>();
             foreach (var fileGroup in fileGroups)
             {
-                var filePath = Path.Combine(root, fileGroup.Key + ".cs");
+                var filePath = Path.Combine(root, $"{fileGroup.First().FileName}.cs");
                 //(outputType == OutputType.TypeScript ? ".ts" : ".cs"));
                 outputFiles.Add(GetCSharpOutputFile(filePath, fileGroup, potentialImports, WriteBaseClasses, fileGroups));
                 //switch (outputType)

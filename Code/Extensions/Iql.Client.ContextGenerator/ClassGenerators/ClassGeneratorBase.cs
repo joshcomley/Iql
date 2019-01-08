@@ -346,14 +346,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }
             }
         }
-
-        public void AddImport(string name)
-        {
-            var def = new ODataTypeDefinition(name, "", true);
-            def.IsUnknown = true;
-            AddReference(def);
-        }
-
+        
         public void If(string expression, Action action)
         {
             If(() => Append(expression), 

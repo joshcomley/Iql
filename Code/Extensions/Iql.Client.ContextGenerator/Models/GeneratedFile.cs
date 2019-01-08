@@ -13,5 +13,6 @@ namespace Iql.OData.TypeScript.Generator.Models
         public string BaseClassName { get; set; }
         public bool IsEntity { get; set; }
         public string Namespace { get; set; }
+        public string QualifiedName => $"{Namespace}.{FileName}";
     }
 }

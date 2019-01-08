@@ -17,8 +17,14 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
     {
         private readonly ODataTypeDefinition _entityType;
 
-        public EntityTypeToClassGenerator(ODataSchema schema, ODataTypeDefinition entityType, OutputType outputType,  GeneratorSettings settings)
-            : base(schema, outputType, settings)
+        public EntityTypeToClassGenerator(
+            ODataSchema schema, 
+            string fileName,
+            string @namespace,
+            ODataTypeDefinition entityType, 
+            OutputType outputType,  
+            GeneratorSettings settings)
+            : base(fileName, @namespace, schema, outputType, settings)
         {
             _entityType = entityType;
             _entityType.OriginalName = _entityType.Name;
@@ -27,7 +33,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 
         public GeneratedFile Generate()
         {
-            File.FileName = _entityType.Name;
             File.Namespace = _entityType.Namespace;
             if (_entityType.GetType() == typeof(EntityTypeDefinition))
             {

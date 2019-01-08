@@ -7,12 +7,12 @@ using Iql.OData.TypeScript.Generator.Parsers;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
-    public class ODataSchemaTypeScriptGenerator
+    public class ODataSchemaGenerator
     {
         public GeneratorSettings Settings { get; }
         private readonly ODataSchema _schema;
 
-        public ODataSchemaTypeScriptGenerator(ODataSchema schema, GeneratorSettings settings)
+        public ODataSchemaGenerator(ODataSchema schema, GeneratorSettings settings)
         {
             Settings = settings;
             _schema = schema;
@@ -25,7 +25,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 foreach (var type in _schema.AllTypes())
                 {
-                    files.Add(new EntityTypeToClassGenerator(_schema, type, outputType, Settings).Generate());
+                    files.Add(new EntityTypeToClassGenerator(_schema, type.Namespace, null, type, outputType, Settings).Generate());
                 }
             }
             //		foreach (var entitySet in _schema.EntitySets)

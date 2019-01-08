@@ -18,33 +18,32 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
     public class DbSetsGenerator : ClassGenerator
     {
         private readonly IEnumerable<EntitySetDefinition> _entitySetDefinitions;
-        private string _namespace;
         public DbSetsGenerator(
             ODataSchema schema,
+            string fileName,
             string @namespace,
             IEnumerable<EntitySetDefinition> entitySetDefinitions,
             OutputType outputType,
             GeneratorSettings settings
 
             ) : base(
+            fileName,
+            @namespace,
             schema,
             outputType,
             settings)
         {
-            _namespace = @namespace;
             _entitySetDefinitions = entitySetDefinitions;
         }
 
         public GeneratedFile Generate()
         {
-            File.FileName = _namespace;
-            File.Namespace = _namespace;
             foreach (var entitySetDefinition in _entitySetDefinitions)
             {
                 var dbSetName = entitySetDefinition.GetDbSetName(NameMapper);
                 Class(
                     dbSetName,
-                    _namespace,
+                    Namespace,
                     "",
                     () =>
                     {

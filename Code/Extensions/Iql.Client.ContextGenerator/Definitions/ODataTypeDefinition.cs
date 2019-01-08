@@ -8,6 +8,7 @@ namespace Iql.OData.TypeScript.Generator.Definitions
     [DebuggerDisplay("{" + nameof(Name) + "}")]
     public class ODataTypeDefinition : ITypeInfo
     {
+        public string SetNamespace { get; set; }
         private string _originalName;
 
         public ODataTypeDefinition()

@@ -3,11 +3,11 @@ using System.Linq.Expressions;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyService
+    public abstract class EntityTypeService
     {
         public IEntityConfigurationBuilder Builder { get; }
 
-        protected PropertyService(IEntityConfigurationBuilder builder)
+        protected EntityTypeService(IEntityConfigurationBuilder builder)
         {
             Builder = builder;
         }

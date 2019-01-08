@@ -47,21 +47,20 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         private readonly string _dbSetsPath;
         private readonly IEnumerable<EntitySetDefinition> _entitySetDefinitions;
         private readonly string _genericParameters;
-        private readonly string _namespace;
 
         public DataContextGenerator(ODataSchema schema,
             string @namespace,
+            string fileName,
             string className,
             string dbSetsPath,
             string genericParameters,
             IEnumerable<EntitySetDefinition> entitySetDefinitions,
             OutputType outputType,
-            GeneratorSettings settings) : base(schema, outputType, settings)
+            GeneratorSettings settings) : base(fileName, @namespace, schema, outputType, settings)
         {
             _entitySetDefinitions = entitySetDefinitions;
-            _namespace = @namespace;
             _genericParameters = genericParameters;
-            _className = className;
+            _className = className.AsSafeClassName();
             _dbSetsPath = dbSetsPath;
             CSharpObjectSerializer = new CSharpObjectSerializer();
         }
@@ -70,10 +69,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         {
             public static string InitializePropertiesName = nameof(MyDataContext.InitializeProperties);
         }
+
         public GeneratedFile Generate()
         {
-            File.FileName = _namespace;
-            File.Namespace = _namespace;
             //File.References.Add(new ODataTypeDefinition("DataContext", "app/queryable/data.context", true));
             //File.References.Add(new ODataTypeDefinition("EntityConfigurationBuilder",
             //    "app/queryable/entity.configuration", true));
@@ -99,7 +97,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             }
             Class(
                 _className,
-                _namespace,
+                Namespace,
                 _genericParameters,
                 () =>
                 {
