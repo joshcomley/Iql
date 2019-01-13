@@ -1259,8 +1259,10 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             foreach (var config in Schema.EntityConfigurations)
             {
                 var entityMetadata = config.Value;
-                ConfigureDisplaySetting(builder, entityMetadata.GetDisplayConfiguration(DisplayConfigurationKeys.Edit), sb, config, nameof(EntityConfiguration<object>.SetEditDisplay), entityMetadata);
-                ConfigureDisplaySetting(builder, entityMetadata.GetDisplayConfiguration(DisplayConfigurationKeys.Display), sb, config, nameof(EntityConfiguration<object>.SetReadDisplay), entityMetadata);
+                foreach (var displayConfig in entityMetadata.DisplayConfigurations)
+                {
+                    ConfigureDisplaySetting(builder, displayConfig, sb, config, nameof(EntityConfiguration<object>.SetDisplay), entityMetadata);
+                }
             }
             return sb.ToString();
         }
@@ -1272,7 +1274,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             if (displayConfiguration != null && displayConfiguration.Properties?.Any() == true)
             {
                 sb.AppendLine(
-                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({string.Join(",\n", displayConfiguration.Properties.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
+                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({String(displayConfiguration.Key)}, {nameof(DisplayConfigurationKind)}.{displayConfiguration.Kind}, {string.Join(",\n", displayConfiguration.Properties.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
             }
         }
 

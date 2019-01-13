@@ -139,6 +139,10 @@ namespace Iql.Entities
             for (int i = 0; i < properties.Length; i++)
             {
                 var property = Properties[i];
+                if (property.Name == "CreatedByUserId" && Name == "Site")
+                {
+                    int a = 0;
+                } 
                 if (property.Kind.HasFlag(PropertyKind.RelationshipKey) || 
                     (kind == DisplayConfigurationKind.Edit && property.Kind.HasFlag(PropertyKind.Count)))
                 {
@@ -148,7 +152,7 @@ namespace Iql.Entities
                 final.Add(property.PropertyGroup ?? property);
             }
 
-            return new DisplayConfiguration(DisplayConfigurationKind.Read, properties);
+            return new DisplayConfiguration(kind, final);
         }
 
         public DisplayConfiguration GetDisplayConfiguration(params string[] keys)

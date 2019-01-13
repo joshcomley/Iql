@@ -609,19 +609,24 @@ namespace Iql.Data.Context
 
         public void AddEntity(object entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
         )
         {
 #if !TypeScript
-            var entityType = entity.GetType();
+            var 
 #endif
+            entityType = entity.GetType();
+            if (entityType == null || entityType == typeof(object))
+            {
+                entityType = entity.GetType();
+            }
             AsDbSetByType(entityType).AddEntity(entity);
         }
 
         public async Task<T> RefreshEntity<T>(T entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
             )
             where T : class
@@ -633,7 +638,11 @@ namespace Iql.Data.Context
             {
                 entityType = entity.GetType();
             }
-            var isEntityNew = this.IsEntityNew(entity, entityType);
+            var isEntityNew = this.IsEntityNew(entity
+#if TypeScript
+                , entityType
+#endif
+            );
             if (isEntityNew == null || isEntityNew == true)
             {
                 return null;
@@ -642,7 +651,7 @@ namespace Iql.Data.Context
 #if TypeScript
 , entityType
 #endif
-                );
+            );
         }
 
         public async Task<T> GetEntityFromEntityAsync<T>(T entity
@@ -858,6 +867,78 @@ namespace Iql.Data.Context
             get => _validateEntityPropertyInternalAsyncMethod
             = _validateEntityPropertyInternalAsyncMethod ?? typeof(DataContext).GetMethod(nameof(ValidateEntityPropertyInternalAsync),
                   BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        public bool? IsEntityNew(object entity
+#if TypeScript
+            , Type entityType = null
+#endif
+)
+        {
+#if !TypeScript
+            var entityType = entity.GetType();
+#else
+            entityType = entityType ?? entity.GetType();
+#endif
+
+            var state = GetEntityState(entity, entityType);
+            return state?.IsNew;
+        }
+
+        public CompositeKey GetCompositeKey(object entity)
+        {
+            if (entity is CompositeKey)
+            {
+                return entity as CompositeKey;
+            }
+            var type = entity.GetType();
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(type);
+            return entityConfiguration?.GetCompositeKey(entity);
+        }
+
+        public async Task<T> GetEntityAsync<T>(object entityOrKey, bool? trackResult = null)
+            where T : class
+        {
+            var set = GetDbSetByEntityType(typeof(T) ?? entityOrKey.GetType());
+            if (set == null)
+            {
+                return null;
+            }
+            if (trackResult != null)
+            {
+                set = set.SetTracking(trackResult.Value);
+            }
+            var result = await set.GetWithKeyAsync(entityOrKey);
+            return (T) result;
+        }
+
+        /// <summary>
+        /// Check for equivalency between an entity/composite key and another entity/composite key (can be mixed).
+        /// </summary>
+        /// <param name="left">Left entity or composite key.</param>
+        /// <param name="right">Right entity or composite key.</param>
+        /// <returns>Whether the two objects represent database equivalency.</returns>
+        public bool AreEquivalent(object left, object right)
+        {
+            if (left == null)
+            {
+                return false;
+            }
+            if (left == right)
+            {
+                return true;
+            }
+
+            var leftType = left.GetType();
+            var rightType = right.GetType();
+            if (leftType != typeof(CompositeKey) && rightType != typeof(CompositeKey) && leftType != rightType)
+            {
+                return false;
+            }
+
+            var leftKey = GetCompositeKey(left);
+            var rightKey = GetCompositeKey(right);
+            return CompositeKey.AreEquivalent(leftKey, rightKey);
         }
 
         async Task<IEntityValidationResult> IDataContext.ValidateEntityAsync(object entity)
@@ -1106,6 +1187,11 @@ namespace Iql.Data.Context
             }
 
             return false;
+        }
+
+        public static bool IsEntityTracked(object entity)
+        {
+            return FindDataContextForEntity(entity) != null;
         }
     }
 }

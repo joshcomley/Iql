@@ -52,7 +52,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 Property("public static", "ClassName", stringType, () =>
                 {
                     Append(
-$"\"{generatedFile.FileName}\"");
+$"\"{generatedFile.BaseClassName}\"");
                 }, true);
 
                 //Method("ClassName", null, TypeResolver.TranslateType(typeof(string)), () =>

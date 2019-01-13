@@ -948,7 +948,12 @@ namespace Iql.Data.Context
             Delete((T)entity);
         }
 
-        public override async Task<object> GetWithKeyAsync(object key)
+        public override Task<object> GetWithKeyAsync(object key)
+        {
+            return GetWithAsync(key);
+        }
+
+        public override async Task<object> GetWithAsync(object key)
         {
             return await Then(new WithKeyOperation(CompositeKey.Ensure(key, EntityConfiguration))).SingleOrDefaultAsync();
         }

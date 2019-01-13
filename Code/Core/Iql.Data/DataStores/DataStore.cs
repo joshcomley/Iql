@@ -445,7 +445,7 @@ namespace Iql.Data.DataStores
                         {
 #if TypeScript
                             remoteEntity =
-                                (TEntity) DataContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
+                                (TEntity)DataContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
 #endif
                             var trackingSet = Tracking.TrackingSet<TEntity>();
                             trackingSet.TrackEntity(localEntity, remoteEntity, false);
@@ -460,8 +460,14 @@ namespace Iql.Data.DataStores
                     }
                     break;
                 case OperationType.Update:
+                    DataContext.IsEntityNew4();
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
-                    var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity, typeof(TEntity));
+                    bool? isEntityNew = true;
+                    isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity
+#if TypeScript
+                                            , typeof(TEntity)
+#endif
+                                        );
                     if (isEntityNew == true)
                     {
                         operation.Result.Success = false;
@@ -534,7 +540,11 @@ namespace Iql.Data.DataStores
                     bool? entityNew = null;
                     if (entity != null)
                     {
-                        entityNew = DataContext.IsEntityNew(entity, typeof(TEntity));
+                        entityNew = DataContext.IsEntityNew(entity
+#if TypeScript
+                            , typeof(TEntity)
+#endif
+                            );
                     }
                     if (entityNew == true)
                     {

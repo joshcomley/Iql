@@ -12,8 +12,15 @@ namespace Iql.Data.Extensions
 {
     public static class DataContextExtensions
     {
-        public static bool? IsEntityNew(this IDataContext dataContext, object entity, Type entityType)
+        public static bool? IsEntityNew3(this IDataContext dataContext, object entity
+#if TypeScript
+            , Type entityType
+#endif
+        )
         {
+#if !TypeScript
+            var entityType = entity.GetType();
+#endif
             var entityState = dataContext.GetEntityState(entity
 #if TypeScript
                 , entityType
@@ -21,6 +28,19 @@ namespace Iql.Data.Extensions
                 );
             return entityState?.IsNew;
         }
+
+        //public static List<PropertyChange> ChangedProperties<T>(this IDataContext dataContext, T entity) where T : class
+        //{
+        //    if (dataContext.IsEntityNew(entity))
+        //    {
+        //        return dataContext.EntityNonNullProperties(entity);
+        //    }
+        //    var entityConfiguration = dataContext.EntityConfigurationContext.GetEntity<T>();
+        //    foreach (var property in entityConfiguration.Properties)
+        //    {
+
+        //    }
+        //}
 
         public static CompositeKey EntityKey(this IDataContext dataContext, object entity, Type entityType)
         {
@@ -43,18 +63,6 @@ namespace Iql.Data.Extensions
             }
             return true;
         }
-        //public static List<PropertyChange> ChangedProperties<T>(this IDataContext dataContext, T entity) where T : class
-        //{
-        //    if (dataContext.IsEntityNew(entity))
-        //    {
-        //        return dataContext.EntityNonNullProperties(entity);
-        //    }
-        //    var entityConfiguration = dataContext.EntityConfigurationContext.GetEntity<T>();
-        //    foreach (var property in entityConfiguration.Properties)
-        //    {
-
-        //    }
-        //}
 
         public static List<IPropertyState> EntityNonNullProperties(this IDataContext dataContext, object entity)
         {

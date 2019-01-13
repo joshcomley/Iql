@@ -22,7 +22,11 @@ namespace Iql.Data.Evaluation
 
         public bool IsEntityNew(IEntityConfiguration entityConfiguration, object entity)
         {
-            return DataContext.IsEntityNew(entity, entityConfiguration.Type) != false;
+            return DataContext.IsEntityNew(entity
+#if TypeScript
+            , entityConfiguration.Type
+#endif
+                   ) != false;
         }
     }
 }

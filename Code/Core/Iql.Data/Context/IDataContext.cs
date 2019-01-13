@@ -19,6 +19,21 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        bool? IsEntityNew(object entity
+#if TypeScript
+            , Type entityType = null
+#endif
+        );
+        CompositeKey GetCompositeKey(object entity);
+        Task<T> GetEntityAsync<T>(object entity, bool? trackResult = null)
+            where T : class;
+        /// <summary>
+        /// Check for equivalency of two entities or composite keys (can be mixed).
+        /// </summary>
+        /// <param name="left">Left entity or composite key.</param>
+        /// <param name="right">Right entity or composite key.</param>
+        /// <returns>Whether the two objects represent database equivalency.</returns>
+        bool AreEquivalent(object left, object right);
         Task<IEntityValidationResult> ValidateEntityAsync(object entity);
         Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
             Expression<Func<object, TProperty>> property)
@@ -58,7 +73,7 @@ namespace Iql.Data.Context
         bool EntityHasKey(object left, Type type, CompositeKey key);
         void DeleteEntity(object entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
         );
         void CascadeDeleteEntity(object entity, object cascadedFromEntity, IRelationship relationship
@@ -68,12 +83,12 @@ namespace Iql.Data.Context
         );
         void AddEntity(object entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
         );
         Task<T> RefreshEntity<T>(T entity
 #if TypeScript
-            , Type entityType
+            , Type entityType = null
 #endif
             )
             where T : class

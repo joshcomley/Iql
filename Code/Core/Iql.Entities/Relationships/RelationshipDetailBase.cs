@@ -63,18 +63,18 @@ namespace Iql.Entities.Relationships
         {
             Relationship = relationship;
             RelationshipSide = relationshipSide;
-            if (relationship != null)
-            {
-                switch (relationship.Kind)
-                {
-                    case RelationshipKind.ManyToMany:
-                        IsCollection = true;
-                        break;
-                    case RelationshipKind.OneToMany:
-                        IsCollection = relationshipSide == RelationshipSide.Target;
-                        break;
-                }
-            }
+            //if (relationship != null)
+            //{
+            //    switch (relationship.Kind)
+            //    {
+            //        case RelationshipKind.ManyToMany:
+            //            IsCollection = true;
+            //            break;
+            //        case RelationshipKind.OneToMany:
+            //            IsCollection = relationshipSide == RelationshipSide.Target;
+            //            break;
+            //    }
+            //}
         }
 
         public List<ValueMapping> ValueMappings { get; set; } = new List<ValueMapping>();
@@ -85,7 +85,7 @@ namespace Iql.Entities.Relationships
         public RelationshipSide RelationshipSide { get; }
         public IRelationship Relationship { get; }
         public Type Type => EntityConfiguration?.Type;
-        public bool IsCollection { get; }
+        public bool IsCollection => Property != null && Property.TypeDefinition.IsCollection;
 
         public IProperty Property
         {

@@ -54,6 +54,10 @@ namespace Iql.Entities
         public static CompositeKey Ensure(object key, IEntityConfiguration entityConfiguration)
         {
             CompositeKey compositeKey;
+            if (key.GetType() == entityConfiguration.Type)
+            {
+                return entityConfiguration.GetCompositeKey(key);
+            }
             if (key is CompositeKey)
             {
                 compositeKey = key as CompositeKey;
@@ -118,20 +122,34 @@ namespace Iql.Entities
             return false;
         }
 
-        public bool Matches(CompositeKey compositeKey)
+        public bool Matches(CompositeKey compositeKey, bool treatBothEmptyAsEquivalent = false)
         {
-            foreach (var key in compositeKey.Keys)
+            return AreEquivalent(compositeKey, this);
+        }
+
+        public static bool AreEquivalent(CompositeKey left, CompositeKey right, bool treatBothEmptyAsEquivalent = false)
+        {
+            if (!treatBothEmptyAsEquivalent)
             {
-                var matchedKey = Keys.SingleOrDefault(k => k.Name == key.Name);
+                if (left.HasDefaultValue() && right.HasDefaultValue())
+                {
+                    return false;
+                }
+            }
+            foreach (var key in left.Keys)
+            {
+                var matchedKey = right.Keys.SingleOrDefault(k => k.Name == key.Name);
                 if (matchedKey == null)
                 {
                     return false;
                 }
+
                 if (!Equals(matchedKey.Value, key.Value))
                 {
                     return false;
                 }
             }
+
             return true;
         }
     }

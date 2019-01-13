@@ -97,7 +97,8 @@ namespace Iql.Tests.Tests.Properties
             var site = new Site();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
             var detail = PropertyDetail.For(siteEntityConfiguration);
-            var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit));
+            var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(DisplayConfigurationKeys.Edit);
+            var instance = await detail.GetSnapshotAsync(site, Db, displayConfiguration);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
@@ -193,12 +194,19 @@ namespace Iql.Tests.Tests.Properties
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
             Assert.AreEqual(19, instance.ChildProperties.Length);
+            var xxx = GetAsserts<Person>(instance);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Person.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Key), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Title), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Description), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Skills), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
             AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Site), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.SiteArea), true);
@@ -207,12 +215,25 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Types), false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Skills), true);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Id), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Key), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Title), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Description), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Client), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Site), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.SiteArea), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Type), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Loading), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.CreatedByUser), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Types), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Skills), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false);
         }
 
         static void AssertProperty(int expectedIndex, EntityPropertySnapshot snapshot, string name, bool canEdit)

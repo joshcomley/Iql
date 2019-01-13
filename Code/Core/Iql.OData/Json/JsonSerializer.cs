@@ -44,7 +44,11 @@ namespace Iql.OData.Json
             var propertyChanges = properties as PropertyState[] ?? properties.ToArray();
             if (!propertyChanges.Any())
             {
-                if (dataContext.IsEntityNew(entity, entity.GetType()) != false)
+                if (dataContext.IsEntityNew(entity
+#if TypeScript
+, entity.GetType()
+#endif
+                    ) != false)
                 {
                     propertyChanges = dataContext.EntityNonNullProperties(entity).ToArray();
                 }
