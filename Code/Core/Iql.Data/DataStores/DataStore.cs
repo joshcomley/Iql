@@ -460,7 +460,7 @@ namespace Iql.Data.DataStores
                     }
                     break;
                 case OperationType.Update:
-                    DataContext.IsEntityNew4();
+                    //DataContext.IsEntityNew4();
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
                     bool? isEntityNew = true;
                     isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity
