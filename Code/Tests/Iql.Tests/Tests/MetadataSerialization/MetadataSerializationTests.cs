@@ -73,7 +73,9 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 });
             clientConfig.Metadata.Set("abc", 123);
             // clientConfig.FindRelationshipByName().FindPropertyByExpression(c => c.Type).Relationship.ThisEnd.inf
-            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.GetDisplayConfiguration(DisplayConfigurationKeys.Edit).Properties[1] as IPropertyCollection).ContentAlignment);
+            Assert.AreEqual(ContentAlignment.Horizontal, (clientConfig.GetDisplayConfiguration(
+                DisplayConfigurationKind.Edit,
+                DisplayConfigurationKeys.Edit).Properties[1] as IPropertyCollection).ContentAlignment);
             var json =
                 false
                 // For speedy debugging
@@ -94,7 +96,9 @@ namespace Iql.Tests.Tests.MetadataSerialization
             var relationshipMappings = siteClientRelationship.RelationshipMappings;
             Assert.AreEqual(1, relationshipMappings.Count);
             Assert.AreEqual(clientTypeRelationship, relationshipMappings[0].Property);
-            var propertyPath = (clientContentParsed.GetDisplayConfiguration(DisplayConfigurationKeys.Edit).Properties[1] as PropertyCollection).Properties[0];
+            var propertyPath = (clientContentParsed.GetDisplayConfiguration(
+                DisplayConfigurationKind.Edit,
+                DisplayConfigurationKeys.Edit).Properties[1] as PropertyCollection).Properties[0];
             Assert.IsTrue(propertyPath is PropertyPath);
             Assert.AreEqual("Type/Name", (propertyPath as PropertyPath).Path);
             var file = clientContentParsed.Files[0];

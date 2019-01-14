@@ -10,8 +10,8 @@ namespace Iql.Entities
     {
         DisplayConfiguration GetFullDisplayConfiguration(DisplayConfigurationKind? kind = null);
         DisplayConfiguration FindDisplayConfiguration(DisplayConfigurationKind? kind = null);
-        DisplayConfiguration GetDisplayConfiguration(params string[] keys);
-        DisplayConfiguration GetOrDefineDisplayConfiguration(string key);
+        DisplayConfiguration GetDisplayConfiguration(DisplayConfigurationKind kind, params string[] keys);
+        DisplayConfiguration GetOrDefineDisplayConfiguration(DisplayConfigurationKind kind, string key);
         SpecialTypeDefinition SpecialTypeDefinition { get; set; }
         IProperty TitleProperty { get; }
         IProperty PreviewProperty { get; }

@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
@@ -693,7 +692,7 @@ namespace Iql.Entities
         //}
         public EntityConfiguration<T> SetDisplay(string key, DisplayConfigurationKind kind, params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var configuration = GetOrDefineDisplayConfiguration(key);
+            var configuration = GetOrDefineDisplayConfiguration(kind, key);
             configuration.Kind = kind;
             configuration.Properties = PrepareDisplayProperties(properties);
             return this;
@@ -701,7 +700,7 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> SetEditDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKeys.Edit);
+            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Edit, DisplayConfigurationKeys.Edit);
             configuration.Kind = DisplayConfigurationKind.Edit;
             configuration.Properties = PrepareDisplayProperties(properties);
             return this;
@@ -709,7 +708,7 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> SetReadDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKeys.Display);
+            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Read, DisplayConfigurationKeys.Display);
             configuration.Kind = DisplayConfigurationKind.Read;
             configuration.Properties = PrepareDisplayProperties(properties);
             return this;

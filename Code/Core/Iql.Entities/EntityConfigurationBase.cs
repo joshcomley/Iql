@@ -46,7 +46,7 @@ namespace Iql.Entities
                 }
             }
 
-            var others = new IEnumerable<IPropertyGroup>[] {NestedSets, Geographics, DateRanges, Files};
+            var others = new IEnumerable<IPropertyGroup>[] { NestedSets, Geographics, DateRanges, Files };
             for (var i = 0; i < others.Length; i++)
             {
                 var group = others[i];
@@ -139,11 +139,7 @@ namespace Iql.Entities
             for (int i = 0; i < properties.Length; i++)
             {
                 var property = Properties[i];
-                if (property.Name == "CreatedByUserId" && Name == "Site")
-                {
-                    int a = 0;
-                } 
-                if (property.Kind.HasFlag(PropertyKind.RelationshipKey) || 
+                if (property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
                     (kind == DisplayConfigurationKind.Edit && property.Kind.HasFlag(PropertyKind.Count)))
                 {
                     continue;
@@ -155,7 +151,7 @@ namespace Iql.Entities
             return new DisplayConfiguration(kind, final);
         }
 
-        public DisplayConfiguration GetDisplayConfiguration(params string[] keys)
+        public DisplayConfiguration GetDisplayConfiguration(DisplayConfigurationKind kind, params string[] keys)
         {
             if (DisplayConfigurations != null)
             {
@@ -169,7 +165,7 @@ namespace Iql.Entities
 
                     if (DisplayConfigurations.Any())
                     {
-                        return GetDisplayConfiguration(DisplayConfigurationKeys.Display) ?? DisplayConfigurations[0];
+                        return GetDisplayConfiguration(kind, DisplayConfigurationKeys.Display) ?? DisplayConfigurations[0];
                     }
                 }
 
@@ -187,7 +183,7 @@ namespace Iql.Entities
                 }
             }
 
-            return GetFullDisplayConfiguration();
+            return GetFullDisplayConfiguration(kind);
         }
 
         public DisplayConfiguration FindDisplayConfiguration(DisplayConfigurationKind? kind = null)
@@ -196,18 +192,20 @@ namespace Iql.Entities
             DisplayConfiguration config = null;
             if (DisplayConfigurations != null)
             {
-                config= DisplayConfigurations.FirstOrDefault(_ => _.Kind == resolvedKind);
+                config = DisplayConfigurations.FirstOrDefault(_ => _.Kind == resolvedKind);
             }
-
             config = config ?? GetFullDisplayConfiguration(resolvedKind);
             return config;
         }
-        
-        public DisplayConfiguration GetOrDefineDisplayConfiguration(string key)
+
+        public DisplayConfiguration GetOrDefineDisplayConfiguration(DisplayConfigurationKind kind, string key)
         {
-            var definition = GetDisplayConfiguration(key) ??
-                             new DisplayConfiguration(DisplayConfigurationKind.Read, null, key);
-            DisplayConfigurations.Add(definition);
+            var definition = GetDisplayConfiguration(kind, key) ??
+                             new DisplayConfiguration(kind, null, key);
+            if (!DisplayConfigurations.Contains(definition))
+            {
+                DisplayConfigurations.Add(definition);
+            }
             return definition;
         }
 
@@ -384,7 +382,7 @@ namespace Iql.Entities
                 var list = new List<EntityRelationship>();
                 foreach (var relationship in Relationships)
                 {
-                    var ends = new[] {relationship.Source, relationship.Target};
+                    var ends = new[] { relationship.Source, relationship.Target };
                     for (var i = 0; i < ends.Length; i++)
                     {
                         if (Equals(ends[i].EntityConfiguration, this))
@@ -429,7 +427,7 @@ namespace Iql.Entities
 
         public bool KeysMatch(object left, object right)
         {
-            if (new[] {left, right}.Count(i => i == null) == 1)
+            if (new[] { left, right }.Count(i => i == null) == 1)
             {
                 return false;
             }
@@ -482,7 +480,7 @@ namespace Iql.Entities
         public IProperty FindNestedProperty(string name)
         {
             // TODO: Use IqlPropertyPath
-            var chars = new[] {'/', '.'};
+            var chars = new[] { '/', '.' };
             for (var j = 0; j < chars.Length; j++)
             {
                 var ch = chars[j];
