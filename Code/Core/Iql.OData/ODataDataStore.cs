@@ -344,7 +344,7 @@ namespace Iql.OData
                         jobj.Remove(prop.Name);
                     }
 
-                    if (!isCollectionRoot)
+                    if (!isCollectionRoot && entityType != null)
                     {
                         var entityProperty = entityType.Properties.SingleOrDefault(p => p.PropertyName == prop.Name);
                         if (entityProperty != null)
