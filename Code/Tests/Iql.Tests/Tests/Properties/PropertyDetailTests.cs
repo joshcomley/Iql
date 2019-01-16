@@ -18,7 +18,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Edit), SnapshotOrdering.Standard);
+                DisplayConfigurationKeys.Default), SnapshotOrdering.Standard);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
@@ -59,7 +59,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Edit), SnapshotOrdering.Default, false);
+                DisplayConfigurationKeys.Default), SnapshotOrdering.Default, false);
             Assert.AreEqual(7, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
@@ -82,7 +82,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Edit), SnapshotOrdering.ReadOnlyFirst, false);
+                DisplayConfigurationKeys.Default), SnapshotOrdering.ReadOnlyFirst, false);
             Assert.AreEqual(7, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
@@ -105,7 +105,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Edit);
+                DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, Db, displayConfiguration);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
@@ -147,7 +147,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var instance = await detail.GetSnapshotAsync(site, Db, siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Edit), SnapshotOrdering.ReadOnlyFirst);
+                DisplayConfigurationKeys.Default), SnapshotOrdering.ReadOnlyFirst);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);

@@ -335,6 +335,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                           {
                                               foreach (var validation in property.ValidationRules.All)
                                               {
+                                                  if (property.PropertyName == "System")
+                                                  {
+
+                                                  }
                                                   var expression = validation.GetPropertyValueByNameAs<IqlExpression>("ExpressionIql");
                                                   var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
                                                   var iqlRootReference = new IqlRootReferenceExpression("e", "");

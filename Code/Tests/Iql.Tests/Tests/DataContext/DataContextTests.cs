@@ -14,6 +14,22 @@ namespace Iql.Tests.Tests.DataContext
     public class DataContextTests : TestsBase
     {
         [TestMethod]
+        public void AttachEntityTracksCorrectly()
+        {
+            var client = new Client
+            {
+                Name = "abc",
+                TypeId = 7
+            };
+            Assert.AreEqual(0, Db.GetChanges().Length);
+            client.Name = "def";
+            Assert.AreEqual(0, Db.GetChanges().Length);
+            client = Db.AttachEntity(client);
+            client.Name = "abc";
+            Assert.AreEqual(1, Db.GetChanges().Length);
+        }
+
+        [TestMethod]
         public async Task CheckEntityIsNew()
         {
             var client = new Client

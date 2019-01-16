@@ -40,8 +40,23 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
                 right = CoalesceOrUpperCase(right);
             }
 
+            var leftReturnsEnum = ReturnsEnum(action.Left);
+            var rightReturnsEnum = ReturnsEnum(action.Right);
+            if (leftReturnsEnum && !rightReturnsEnum)
+            {
+                right = $"(int){right}";
+            }
+            else if (rightReturnsEnum && !leftReturnsEnum)
+            {
+                left = $"(int){left}";
+            }
             return new IqlFinalExpression<string>(
                 $"({left} {@operator} {right})");
+        }
+
+        private static bool ReturnsEnum(IqlExpression iqlExpression)
+        {
+            return iqlExpression.ReturnType == IqlType.Enum || iqlExpression.ReturnType == IqlType.EnumValue;
         }
 
         static string CoalesceOrUpperCase(string expression)

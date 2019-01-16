@@ -869,6 +869,51 @@ namespace Iql.Data.Context
                   BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
+        public IQueuedOperation[] GetChanges(object[] entities = null)
+        {
+            return DataStore.GetChanges(entities);
+        }
+
+        public IQueuedOperation[] GetUpdates(object[] entities = null)
+        {
+            return DataStore.GetUpdates(entities);
+        }
+
+        public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)
+            where T : class
+        {
+            var list = new List<T>();
+            foreach (var entity in entities)
+            {
+                list.Add(AttachEntity(entity, cloneIfAttachedElsewhere));
+            }
+
+            return list;
+        }
+
+        public T AttachEntity<T>(T entity, bool? cloneIfAttachedElsewhere = null)
+            where T : class
+        {
+            var entityType = typeof(T) ?? entity.GetType();
+            var clone = cloneIfAttachedElsewhere ?? true;
+            var context = DataContext.FindDataContextForEntity(entity);
+            if (context != null && context != this)
+            {
+                if (clone)
+                {
+                    entity = (T) entity.Clone(this, entityType, RelationshipCloneMode.KeysOnly);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            var dbSet = GetDbSetByEntityType(entityType);
+            dbSet.TrackingSet.TrackEntity(entity, null, false);
+            return entity;
+        }
+
         public bool? IsEntityNew(object entity
 #if TypeScript
             , Type entityType = null

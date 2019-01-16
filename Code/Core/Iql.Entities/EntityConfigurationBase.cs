@@ -113,6 +113,13 @@ namespace Iql.Entities
 
         public IList<DisplayConfiguration> DisplayConfigurations { get; set; } = new List<DisplayConfiguration>();
 
+        public IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind)
+        {
+            return DisplayConfigurations == null
+                ? new DisplayConfiguration[] { }
+                : DisplayConfigurations.Where(_ => _.Kind == kind);
+        }
+
         private DisplayConfiguration _fullReadDisplayConfiguration = null;
         private DisplayConfiguration _fullEditDisplayConfiguration = null;
 
@@ -153,36 +160,33 @@ namespace Iql.Entities
 
         public DisplayConfiguration GetDisplayConfiguration(DisplayConfigurationKind kind, params string[] keys)
         {
-            if (DisplayConfigurations != null)
+            var displayConfigurations = DisplayConfigurationsFor(kind).ToList();
+            if ((keys == null || keys.Length == 0) &&
+                displayConfigurations.Count > 0)
             {
-                if ((keys == null || keys.Length == 0) &&
-                    DisplayConfigurations.Count > 0)
+                if (displayConfigurations.Count == 1)
                 {
-                    if (DisplayConfigurations.Count == 1)
-                    {
-                        return DisplayConfigurations[0];
-                    }
-
-                    if (DisplayConfigurations.Any())
-                    {
-                        return GetDisplayConfiguration(kind, DisplayConfigurationKeys.Display) ?? DisplayConfigurations[0];
-                    }
+                    return displayConfigurations[0];
                 }
 
-                if (keys != null)
+                if (displayConfigurations.Any())
                 {
-                    for (var i = 0; i < keys.Length; i++)
-                    {
-                        var key = keys[i];
-                        var config = DisplayConfigurations.SingleOrDefault(_ => _.Key == key);
-                        if (config != null)
-                        {
-                            return config;
-                        }
-                    }
+                    return GetDisplayConfiguration(kind, DisplayConfigurationKeys.Default) ?? displayConfigurations[0];
                 }
             }
 
+            if (keys != null)
+            {
+                for (var i = 0; i < keys.Length; i++)
+                {
+                    var key = keys[i];
+                    var config = displayConfigurations.SingleOrDefault(_ => _.Key == key);
+                    if (config != null)
+                    {
+                        return config;
+                    }
+                }
+            }
             return GetFullDisplayConfiguration(kind);
         }
 

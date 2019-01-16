@@ -8,7 +8,6 @@ namespace Iql.Entities
 
     public class DisplayConfigurationKeys
     {
-        public static string Edit = "edit";
-        public static string Display = "display";
+        public static string Default = "default";
     }
 }

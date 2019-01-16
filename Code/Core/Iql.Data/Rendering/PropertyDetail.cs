@@ -6,6 +6,7 @@ using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 
 namespace Iql.Data.Rendering
@@ -43,9 +44,10 @@ namespace Iql.Data.Rendering
             }
             return Mapping[property];
         }
+
         private static string ResolveKind(IPropertyContainer property)
         {
-            var kind = "unknown";
+            var kind = PropertyRenderingKind.Unknown;
             var prop = property as PropertyBase;
             var rel = property as RelationshipDetailBase;
             if (prop != null)
@@ -53,55 +55,64 @@ namespace Iql.Data.Rendering
                 switch (prop.TypeDefinition.Kind)
                 {
                     case IqlType.Enum:
-                        kind = "enum";
+                        kind = PropertyRenderingKind.Enum;
+                        break;
+                    case IqlType.Guid:
+                        kind = PropertyRenderingKind.Guid;
                         break;
                     case IqlType.String:
-                        kind = "string";
+                        kind = PropertyRenderingKind.String;
+                        break;
+                    case IqlType.TimeSpan:
+                        kind = PropertyRenderingKind.TimeSpan;
                         break;
                     case IqlType.Date:
-                        kind = "date";
+                        kind = PropertyRenderingKind.Date;
                         break;
                     case IqlType.Boolean:
-                        kind = "boolean";
+                        kind = PropertyRenderingKind.Boolean;
                         break;
                     case IqlType.Integer:
                     case IqlType.Decimal:
-                        kind = "number";
+                        kind = PropertyRenderingKind.Number;
                         break;
                     case IqlType.GeometryPolygon:
                     case IqlType.GeographyPolygon:
-                        kind = "geopolygon";
+                        kind = PropertyRenderingKind.GeoPolygon;
                         break;
                     case IqlType.GeometryPoint:
                     case IqlType.GeographyPoint:
-                        kind = "geopoint";
+                        kind = PropertyRenderingKind.GeoPoint;
                         break;
                 }
-
                 if (prop.Kind.HasFlag(PropertyKind.Key))
                 {
-                    kind = "key";
+                    kind = PropertyRenderingKind.Key;
                 }
                 else if (prop.Kind.HasFlag(PropertyKind.RelationshipKey))
                 {
-                    kind = "relationship-key";
+                    kind = PropertyRenderingKind.RelationshipKey;
                 }
                 else if (prop.Kind == PropertyKind.Relationship)
                 {
-                    kind = "relationship";
+                    kind = PropertyRenderingKind.Relationship;
                 }
             }
             else if (rel != null && rel.RelationshipSide == RelationshipSide.Target)
             {
-                kind = "relationship-target";
+                kind = PropertyRenderingKind.RelationshipTarget;
             }
             else if (rel != null && rel.RelationshipSide == RelationshipSide.Source)
             {
-                kind = "relationship-source";
+                kind = PropertyRenderingKind.RelationshipSource;
+            }
+            else if(property is IFile)
+            {
+                kind = PropertyRenderingKind.File;
             }
             else
             {
-                kind = "group";
+                kind = PropertyRenderingKind.Group;
             }
 
             return kind;
@@ -189,10 +200,6 @@ namespace Iql.Data.Rendering
             }
 
             var kids = children.ToArray();
-            if (kids.Length == 25)
-            {
-                int a = 0;
-            }
             if (ordering != SnapshotOrdering.Default)
             {
                 switch (ordering)

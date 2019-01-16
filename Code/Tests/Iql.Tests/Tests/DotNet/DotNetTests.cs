@@ -4,13 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Iql.Conversion;
+using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.DotNet
 {
     [TestClass]
-    public class DotNetTests
+    public class DotNetTests : TestsBase
     {
+        [TestMethod]
+        public void TestEnumComparisonParsers()
+        {
+            var iql = IqlConverter.Instance.ConvertLambdaToIql<PersonReport>(_ =>
+                _.Status == FaultReportStatus.PassWithObservations);
+            var csharp = IqlConverter.Instance.ConvertIqlToExpressionString(iql.Expression);
+            Assert.AreEqual($"entity => ((int)entity.Status == 1)", csharp);
+        }
+
         [TestMethod]
         public void GenerateIqlExpressionParsers()
         {

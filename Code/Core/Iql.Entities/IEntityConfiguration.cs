@@ -8,6 +8,7 @@ namespace Iql.Entities
 {
     public interface IEntityConfiguration : IEntityMetadata, IConfiguration, IPropertyContainer
     {
+        IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind);
         DisplayConfiguration GetFullDisplayConfiguration(DisplayConfigurationKind? kind = null);
         DisplayConfiguration FindDisplayConfiguration(DisplayConfigurationKind? kind = null);
         DisplayConfiguration GetDisplayConfiguration(DisplayConfigurationKind kind, params string[] keys);

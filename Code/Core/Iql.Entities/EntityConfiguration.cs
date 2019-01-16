@@ -700,7 +700,7 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> SetEditDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Edit, DisplayConfigurationKeys.Edit);
+            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Edit, DisplayConfigurationKeys.Default);
             configuration.Kind = DisplayConfigurationKind.Edit;
             configuration.Properties = PrepareDisplayProperties(properties);
             return this;
@@ -708,7 +708,7 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> SetReadDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
         {
-            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Read, DisplayConfigurationKeys.Display);
+            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Read, DisplayConfigurationKeys.Default);
             configuration.Kind = DisplayConfigurationKind.Read;
             configuration.Properties = PrepareDisplayProperties(properties);
             return this;

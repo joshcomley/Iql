@@ -407,8 +407,7 @@ namespace Iql.Data.DataStores
             SaveChangesResult saveChangesResult) where TEntity : class
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
-            ICrudResult result = null;
-            var entityConfig = DataContext.EntityConfigurationContext.EntityType<TEntity>();
+            ICrudResult result;
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
@@ -460,10 +459,8 @@ namespace Iql.Data.DataStores
                     }
                     break;
                 case OperationType.Update:
-                    //DataContext.IsEntityNew4();
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
-                    bool? isEntityNew = true;
-                    isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity
+                    var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity
 #if TypeScript
                                             , typeof(TEntity)
 #endif

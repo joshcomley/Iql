@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
@@ -19,6 +20,13 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        IQueuedOperation[] GetChanges(object[] entities = null);
+        IQueuedOperation[] GetUpdates(object[] entities = null);
+
+        T AttachEntity<T>(T entity, bool? cloneIfAttachedElsewhere = null)
+            where T : class;
+        List<T> AttachEntities<T>(IEnumerable<T> entity, bool? cloneIfAttachedElsewhere = null)
+            where T : class;
         bool? IsEntityNew(object entity
 #if TypeScript
             , Type entityType = null
