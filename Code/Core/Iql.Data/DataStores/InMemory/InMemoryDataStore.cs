@@ -158,7 +158,10 @@ namespace Iql.Data.DataStores.InMemory
             {
                 var entity = DataSet<TEntity>(operation.Operation)[index];
                 new SimplePropertyMerger(DataContext.EntityConfigurationContext.EntityType<TEntity>())
-                    .Merge(entity, operation.Operation.Entity);
+                    .Merge(
+                        entity, 
+                        operation.Operation.Entity,
+                        operation.Operation.Properties);
                 operation.Result.Success = true;
             }
             else

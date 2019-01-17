@@ -21,7 +21,7 @@ namespace Iql.Data.Tracking.State
         Guid? PersistenceKey { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
 
-        IPropertyState[] GetChangedProperties();
+        IPropertyState[] GetChangedProperties(IProperty[] properties = null);
 
         object Entity { get; }
         IEntityConfiguration EntityConfiguration { get; }

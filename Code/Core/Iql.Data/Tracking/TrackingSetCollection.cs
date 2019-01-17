@@ -68,12 +68,12 @@ namespace Iql.Data.Tracking
             return inserts;
         }
 
-        public List<IUpdateEntityOperation> GetUpdates(object[] entities = null)
+        public List<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
             var updates = new List<IUpdateEntityOperation>();
             foreach (var set in Sets)
             {
-                updates.AddRange(set.GetUpdates(entities));
+                updates.AddRange(set.GetUpdates(entities, properties));
             }
             return updates;
         }
@@ -172,7 +172,7 @@ namespace Iql.Data.Tracking
         //    }
         //}
 
-        private IEnumerable<IQueuedOperation> GetQueuedOperations(object[] entities = null)
+        private IEnumerable<IQueuedOperation> GetQueuedOperations(object[] entities = null, IProperty[] properties = null)
         {
             var changes = new List<IQueuedOperation>();
             GetDeletions(entities).ForEach(deletion =>
@@ -182,7 +182,7 @@ namespace Iql.Data.Tracking
                         typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
                 changes.Add((IQueuedOperation)queuedOperation);
             });
-            GetUpdates(entities).ForEach(update =>
+            GetUpdates(entities, properties).ForEach(update =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
@@ -199,10 +199,10 @@ namespace Iql.Data.Tracking
             return changes;
         }
 
-        public IEnumerable<IQueuedOperation> GetChanges(object[] entities = null)
+        public IEnumerable<IQueuedOperation> GetChanges(object[] entities = null, IProperty[] properties = null)
         {
             var queue = new List<IQueuedOperation>();
-            var queuedOperations = GetQueuedOperations(entities).ToArray();
+            var queuedOperations = GetQueuedOperations(entities, properties).ToArray();
             for (var i = 0; i < queuedOperations.Length; i++)
             {
                 var operation = queuedOperations[i];

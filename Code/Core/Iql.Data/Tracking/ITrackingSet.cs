@@ -33,7 +33,7 @@ namespace Iql.Data.Tracking
         void ResetAll(List<IEntityStateBase> states);
         IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null);
         IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null);
-        IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null);
+        IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null);
         void AbandonChanges();
         void AbandonChangesForEntity(object entity);
         void AbandonChangesForEntities(IEnumerable<object> entities);

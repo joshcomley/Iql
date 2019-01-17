@@ -401,18 +401,24 @@ namespace Iql.OData
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var properties = new List<string>();
-            foreach (var property in operation.Operation.EntityState.GetChangedProperties())
+            var changedProperties = operation.Operation.GetChangedProperties();
+            for (var i = 0; i < changedProperties.Length; i++)
             {
+                var property = changedProperties[i];
                 properties.Add(property.Property.Name);
             }
-            foreach (var key in DataContext.EntityConfigurationContext.EntityType<TEntity>().Key.Properties)
+
+            var keys = DataContext.EntityConfigurationContext.EntityType<TEntity>().Key.Properties;
+            for (var i = 0; i < keys.Length; i++)
             {
+                var key = keys[i];
                 properties.Add(key.Name);
             }
+
             var json = JsonSerializer.Serialize(
                 operation.Operation.Entity,
                 DataContext,
-                operation.Operation.EntityState.GetChangedProperties().ToArray());
+                changedProperties);
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = httpResult.Success;

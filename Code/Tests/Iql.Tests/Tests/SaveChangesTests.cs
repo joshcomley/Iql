@@ -13,6 +13,37 @@ namespace Iql.Tests.Tests
     public class SaveChangesTests : TestsBase
     {
         [TestMethod]
+        public async Task UpdateSelectedPropertiesOnly()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test", Discount = 60, TypeId = 1 });
+
+            var dbClient = AppDbContext.InMemoryDb.Clients.Single(c => c.Id == 1);
+
+            var clients = await Db.Clients.ToListAsync();
+            var client1 = clients.Single(c => c.Id == 1);
+
+            var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
+
+            client1.Name = "Test Changed";
+            client1.Discount = 50;
+
+            var result = await Db.SaveChangesAsync(null, new[] {nameProperty});
+            Assert.AreEqual(true, result.Success);
+            Assert.AreEqual(dbClient.Name, "Test Changed");
+            Assert.AreEqual(dbClient.Discount, 60);
+
+            var discountProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Discount));
+
+            client1.Name = "Test Changed Again";
+            client1.Discount = 40;
+
+            result = await Db.SaveChangesAsync(null, new[] { discountProperty });
+            Assert.AreEqual(true, result.Success);
+            Assert.AreEqual(dbClient.Name, "Test Changed");
+            Assert.AreEqual(dbClient.Discount, 40);
+        }
+
+        [TestMethod]
         public async Task AddingAnEntityWithANewChildEntityShouldPersistRelationshipKeys()
         {
             var db1 = new AppDbContext();
