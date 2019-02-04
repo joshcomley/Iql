@@ -28,7 +28,7 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
-        public ODataDataStore(IDataStore offlineDataStore = null) : base(offlineDataStore)
+        public ODataDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
             
         }

@@ -17,9 +17,17 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task GetDataWhenOnlineAndRefetchWhenOffline()
         {
-            var clients = await Db.Clients.ToListAsync();
             Db.IsOffline = true;
-            var clientsOffline = await Db.Clients.ToListAsync();
+            var clientsOffline1 = await Db.Clients.ToListAsync();
+            Assert.AreEqual(0, clientsOffline1.Count);
+
+            Db.IsOffline = false;
+            var clients = await Db.Clients.ToListAsync();
+            Assert.AreEqual(3, clients.Count);
+
+            Db.IsOffline = true;
+            var clientsOffline2 = await Db.Clients.ToListAsync();
+            Assert.AreEqual(3, clientsOffline2.Count);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Iql.Data.DataStores
 {
     public class DataStore : IDataStore
     {
-        public DataStore(IDataStore offlineDataStore = null)
+        public DataStore(IOfflineDataStore offlineDataStore = null)
         {
             OfflineDataStore = offlineDataStore;
         }
@@ -39,7 +39,7 @@ namespace Iql.Data.DataStores
         private IDataContext _dataContext;
         public static MethodInfo MarkAsDeletedByKeyTypedMethod { get; set; }
 
-        public IDataStore OfflineDataStore { get; set; }
+        public IOfflineDataStore OfflineDataStore { get; set; }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {
@@ -254,7 +254,7 @@ namespace Iql.Data.DataStores
             }
             else
             {
-                OfflineDataStore?.TrackGetDataResult(response);
+                OfflineDataStore?.SynchroniseData(response.Data);
                 // Update "offline" repository with these results
             }
 

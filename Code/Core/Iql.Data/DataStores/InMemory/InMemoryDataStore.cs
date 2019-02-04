@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Context;
@@ -16,33 +17,32 @@ using Iql.Extensions;
 
 namespace Iql.Data.DataStores.InMemory
 {
-    public class InMemoryDataStore : DataStore
+    public class InMemoryDataStore : DataStore, IOfflineDataStore
     {
-        private static readonly Dictionary<IDataContext, Dictionary<Type, IList>> Sources = new Dictionary<IDataContext, Dictionary<Type, IList>>();
+        static InMemoryDataStore()
+        {
+            SynchroniseDataTypedMethod = typeof(InMemoryDataStore).GetMethod(nameof(SynchroniseDataTyped),
+                BindingFlags.Instance | BindingFlags.NonPublic);
+        }
 
+        private static MethodInfo SynchroniseDataTypedMethod { get; }
+
+        private readonly Dictionary<Type, IList> _sources = new Dictionary<Type, IList>();
+
+        public InMemoryDataStoreConfiguration Configuration { get; set; }
         public virtual IList GetDataSourceByType(Type type)
         {
-            var configuration = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>();
-            if (configuration != null)
+            var source = Configuration?.GetSourceByType(type);
+            if (source != null)
             {
-                var source = configuration.GetSourceByType(type);
-                if (source != null)
-                {
-                    return source;
-                }
+                return source;
             }
-            if (!Sources.ContainsKey(DataContext))
+            if (!_sources.ContainsKey(type))
             {
-                Sources.Add(DataContext, new Dictionary<Type, IList>());
+                _sources.Add(type, ListExtensions.NewGenericList(type));
             }
 
-            var lookup = Sources[DataContext];
-            if (!lookup.ContainsKey(type))
-            {
-                lookup.Add(type, ListExtensions.NewGenericList(type));
-            }
-
-            return lookup[type];
+            return _sources[type];
         }
 
         public virtual List<TEntity> GetDataSource<TEntity>()
@@ -51,7 +51,7 @@ namespace Iql.Data.DataStores.InMemory
             return (List<TEntity>) GetDataSourceByType(typeof(TEntity));
         }
 
-        public InMemoryDataStore(IDataStore offlineDataStore = null) : base(offlineDataStore)
+        public InMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
         }
 
@@ -174,17 +174,12 @@ namespace Iql.Data.DataStores.InMemory
             return Guid.NewGuid().ToString();
         }
 
-        private static IList<TEntity> DataSet<TEntity>(ICrudOperation operation)
-        {
-            return operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>().GetSource<TEntity>();
-        }
-
         private int FindEntityIndexFromOperation<TEntity>(EntityCrudOperation<TEntity> operation) where TEntity : class
         {
             return FindEntityIndex(
                 operation.EntityType,
                 operation.Entity,
-                DataSet<TEntity>(operation)
+                GetDataSource<TEntity>()
             );
         }
 
@@ -194,7 +189,7 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation.Operation);
             if (index != -1)
             {
-                var entity = DataSet<TEntity>(operation.Operation)[index];
+                var entity = GetDataSource<TEntity>()[index];
                 new SimplePropertyMerger(DataContext.EntityConfigurationContext.EntityType<TEntity>())
                     .Merge(
                         entity, 
@@ -215,7 +210,7 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromDeleteOperation(operation.Operation);
             if (index != -1)
             {
-                DataSet<TEntity>(operation.Operation).RemoveAt(index);
+                GetDataSource<TEntity>().RemoveAt(index);
                 operation.Result.Success = true;
             }
             return Task.FromResult(operation.Result);
@@ -226,7 +221,7 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation);
             if (index == -1)
             {
-                return FindEntityIndexByKey(typeof(TEntity), operation.Key, DataSet<TEntity>(operation));
+                return FindEntityIndexByKey(typeof(TEntity), operation.Key, GetDataSource<TEntity>());
             }
             return index;
         }
@@ -277,6 +272,32 @@ namespace Iql.Data.DataStores.InMemory
             //operation.Result.Data = dictionary;
             //operation.Result.Root = (List<TEntity>)lists.Root;
             //return Task.FromResult(operation.Result);
+        }
+
+        public void SynchroniseData(Dictionary<Type, IList> data)
+        {
+            foreach (var entry in data)
+            {
+                SynchroniseDataTypedMethod.InvokeGeneric(
+                    this, new object[] {entry.Value}, entry.Key);
+            }
+        }
+
+        private void SynchroniseDataTyped<T>(IList<T> data)
+        {
+            var source = GetDataSourceByType(typeof(T)) as IList<T>;
+            var entityConfig = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
+            foreach (var entity in data)
+            {
+                var key = entityConfig.GetCompositeKey(entity);
+                var match = source.SingleOrDefault(_ => entityConfig.GetCompositeKey(_).Matches(key));
+                if (match != null)
+                {
+                    source.Remove(match);
+                }
+                var clone = (T) entity.Clone(DataContext, typeof(T), RelationshipCloneMode.KeysOnly);
+                source.Add(clone);
+            }
         }
     }
 }

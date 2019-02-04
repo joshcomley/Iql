@@ -5,7 +5,8 @@ namespace Iql.Data.Crud.Operations.Results
 {
     public class DataResult<T, TResult> : CrudResult<T, GetDataOperation<T>> where T : class
     {
-        public DataResult(TResult data, GetDataOperation<T> operation, bool success, RequestStatus requestStatus = RequestStatus.Online) : base(success, operation, requestStatus)
+        public DataResult(TResult data, GetDataOperation<T> operation, bool success, RequestStatus requestStatus = RequestStatus.Online) 
+            : base(success, operation, requestStatus)
         {
             Data = data;
         }

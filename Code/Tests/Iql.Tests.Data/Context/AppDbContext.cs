@@ -66,7 +66,10 @@ namespace Iql.Tests.Context
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentSolutions);
             }
 
-            RegisterConfiguration(InMemoryDataStoreConfiguration);
+            if (DataStore is InMemoryDataStore)
+            {
+                (DataStore as InMemoryDataStore).Configuration = InMemoryDataStoreConfiguration;
+            }
             var defaultQueries = new EntityDefaultQueryConfiguration();
             defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
             RegisterConfiguration(defaultQueries);

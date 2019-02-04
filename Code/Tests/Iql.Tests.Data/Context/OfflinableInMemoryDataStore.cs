@@ -8,7 +8,7 @@ namespace Iql.Tests.Context
 {
     public class OfflinableInMemoryDataStore : InMemoryDataStore
     {
-        public OfflinableInMemoryDataStore(IDataStore offlineDataStore = null) : base(offlineDataStore)
+        public OfflinableInMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
 
         }
@@ -19,6 +19,7 @@ namespace Iql.Tests.Context
         {
             if (IsOffline)
             {
+                operation.Result.RequestStatus = RequestStatus.Offline;
                 return new FlattenedGetDataResult<TEntity>(null, operation.Operation, false, RequestStatus.Offline);
             }
             return await base.PerformGetAsync(operation);
