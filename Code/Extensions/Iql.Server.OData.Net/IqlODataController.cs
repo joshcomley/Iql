@@ -431,11 +431,9 @@ namespace Iql.Server.OData.Net
                     var populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
                     var revisionKeysForMediaProperty =
                         file.VersionProperty;
-                    var requiresNewPreviews = false;
-                    if (revisionKeysForMediaProperty != null && HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName))
-                    {
-                        requiresNewPreviews = true;
-                    }
+                    var requiresNewPreviews = 
+                        revisionKeysForMediaProperty != null &&
+                        HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName);
                     // TODO: Only refresh previews if file version has changed
                     if (requiresNewPreviews)
                     {
