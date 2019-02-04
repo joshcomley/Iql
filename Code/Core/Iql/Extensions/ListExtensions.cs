@@ -14,8 +14,11 @@ namespace Iql.Extensions
                 BindingFlags.Static | BindingFlags.Public);
             ToArrayTypedMethod = typeof(ListExtensions).GetMethod(nameof(ToArrayTyped),
                 BindingFlags.Static | BindingFlags.Public);
+            NewListMethod = typeof(ListExtensions).GetMethod(nameof(NewList),
+                BindingFlags.Static | BindingFlags.NonPublic);
         }
 
+        private static MethodInfo NewListMethod { get; set; }
         public static MethodInfo ToListTypedMethod { get; set; }
         public static MethodInfo ToArrayTypedMethod { get; set; }
 
@@ -55,5 +58,14 @@ namespace Iql.Extensions
             return arr;
         }
 
+        public static IList NewGenericList(Type type)
+        {
+            return (IList)NewListMethod.InvokeGeneric(null, new object[] { }, type);
+        }
+
+        private static List<T> NewList<T>()
+        {
+            return new List<T>();
+        }
     }
 }

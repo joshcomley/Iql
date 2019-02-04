@@ -460,7 +460,7 @@ namespace Iql.Data.Tracking
             {
                 var entityState = GetOrSetEntityState(propertyChange.Entity);
                 var propertyState = entityState.GetPropertyState(property.Name);
-                propertyState.NewValue = propertyChange.NewValue;
+                propertyState.LocalValue = propertyChange.NewValue;
             }
         }
 
@@ -645,8 +645,8 @@ namespace Iql.Data.Tracking
                         foreach (var propertyState in map.OldPropertyValues)
                         {
                             var newPropertyState = state.GetPropertyState(propertyState.Property.Name);
-                            newPropertyState.OldValue = propertyState.OldValue;
-                            newPropertyState.NewValue = propertyState.Property.GetValue(state.Entity);
+                            newPropertyState.RemoteValue = propertyState.RemoteValue;
+                            newPropertyState.LocalValue = propertyState.Property.GetValue(state.Entity);
                         }
                         map.OldPropertyValues = null;
                         map.State = state;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
@@ -11,11 +12,49 @@ using Iql.Data.Relationships;
 using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.Entities.Extensions;
+using Iql.Extensions;
 
 namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryDataStore : DataStore
     {
+        private static readonly Dictionary<IDataContext, Dictionary<Type, IList>> Sources = new Dictionary<IDataContext, Dictionary<Type, IList>>();
+
+        public virtual IList GetDataSourceByType(Type type)
+        {
+            var configuration = DataContext.GetConfiguration<InMemoryDataStoreConfiguration>();
+            if (configuration != null)
+            {
+                var source = configuration.GetSourceByType(type);
+                if (source != null)
+                {
+                    return source;
+                }
+            }
+            if (!Sources.ContainsKey(DataContext))
+            {
+                Sources.Add(DataContext, new Dictionary<Type, IList>());
+            }
+
+            var lookup = Sources[DataContext];
+            if (!lookup.ContainsKey(type))
+            {
+                lookup.Add(type, ListExtensions.NewGenericList(type));
+            }
+
+            return lookup[type];
+        }
+
+        public virtual List<TEntity> GetDataSource<TEntity>()
+            where TEntity : class
+        {
+            return (List<TEntity>) GetDataSourceByType(typeof(TEntity));
+        }
+
+        public InMemoryDataStore(IDataStore offlineDataStore = null) : base(offlineDataStore)
+        {
+        }
+
         private RelationshipObserver _inMemoryRelationshipObserver;
         private TrackingSetCollection _inMemoryTrackingSetCollection;
 
@@ -34,8 +73,7 @@ namespace Iql.Data.DataStores.InMemory
         public override Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            var data = operation.Operation.DataContext.GetConfiguration<InMemoryDataStoreConfiguration>()
-                .GetSourceByType(operation.Operation.EntityType);
+            var data = GetDataSourceByType(operation.Operation.EntityType);
 
             var clone = operation.Operation.Entity.CloneAs(
                 DataContext,
@@ -198,7 +236,7 @@ namespace Iql.Data.DataStores.InMemory
             var iql = await operation.Operation.Queryable.ToIqlAsync();
             var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TEntity>(iql);
             var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)expression.Compile();
-            var inMemoryContext = new InMemoryContext<TEntity>(DataContext);
+            var inMemoryContext = new InMemoryContext<TEntity>(this);
             var result = func(inMemoryContext);
             var resultList = result.SourceList.ToList();
             var clonedResult = resultList.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();

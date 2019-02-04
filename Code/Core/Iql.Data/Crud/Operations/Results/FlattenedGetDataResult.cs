@@ -10,7 +10,8 @@ namespace Iql.Data.Crud.Operations.Results
         public FlattenedGetDataResult(
             Dictionary<Type, IList> data,
             GetDataOperation<T> operation,
-            bool success) : base(data, operation, success)
+            bool success,
+            RequestStatus requestStatus = RequestStatus.Online) : base(data, operation, success, requestStatus)
         {
             Data = new Dictionary<Type, IList>();
         }

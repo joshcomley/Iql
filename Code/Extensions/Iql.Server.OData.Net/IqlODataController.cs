@@ -16,14 +16,12 @@ using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Services;
 using Iql.Extensions;
-using Iql.Server;
 using Iql.Server.Media;
+using Iql.Server.OData.Net.Models;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PropertyExtensions = Iql.Data.Extensions.PropertyExtensions;
-using PropertyKind = Iql.Entities.PropertyKind;
 
 namespace Iql.Server.OData.Net
 {
@@ -58,6 +56,26 @@ namespace Iql.Server.OData.Net
                                                                                          HttpContext.RequestServices.GetService<IEntityConfigurationProvider>(),
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
+
+        [ODataGenericAction(ForTypeTypeParameterName = nameof(T), BindingName = "keys")]
+        public virtual async Task<IActionResult> IncrementVersion([ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys, [FromBody]IncrementVersionModel model)
+        {
+            if (!string.IsNullOrWhiteSpace(model.PropertyName))
+            {
+                var entity = Crud.Unsecured.Find(keys);
+                if (entity != null)
+                {
+                    var propertyFound = entity.GetType().GetProperties().SingleOrDefault(_ => _.Name == model.PropertyName);
+                    if (propertyFound != null)
+                    {
+                        var versionValue = DateTime.UtcNow.Ticks.ToString();
+                        propertyFound.SetValue(entity, versionValue);
+                        await Crud.Unsecured.SaveAsync();
+                    }
+                }
+            }
+            return Ok();
+        }
 
         public override async Task OnAfterPostAsync(T postedEntity)
         {
@@ -474,7 +492,7 @@ namespace Iql.Server.OData.Net
             return GetMediaUrl(keys, Builder.EntityType<T>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
         }
 
-        public async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<T> propertyMetadata, MediaAccessKind mediaAccessKind,
+        public virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<T> propertyMetadata, MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
         {
             var file = (File<T>)propertyMetadata.File;

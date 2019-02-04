@@ -198,6 +198,10 @@ namespace Iql.Data.Context
                 if (_dataStore != null)
                 {
                     _dataStore.DataContext = this;
+                    if (_dataStore.OfflineDataStore != null)
+                    {
+                        _dataStore.OfflineDataStore.DataContext = this;
+                    }
                 }
             }
         }

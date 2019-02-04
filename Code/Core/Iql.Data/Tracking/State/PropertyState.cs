@@ -55,23 +55,7 @@ namespace Iql.Data.Tracking.State
                     return _hasChanged;
                 }
 
-                return !PropertyChanger.AreEquivalent(OldValue, Property.GetValue(EntityState.Entity));
-            }
-        }
-
-        public object OldValue
-        {
-            get
-            {
-                EnsureOldValue();
-                return _oldObjectClone;
-            }
-            set
-            {
-                _originalValueSet = true;
-                _oldObjectClone = PropertyChanger.CloneValue(value);
-                _oldObject = value;
-                _hasChanged = !PropertyChanger.AreEquivalent(OldValue, NewValue);
+                return !PropertyChanger.AreEquivalent(RemoteValue, Property.GetValue(EntityState.Entity));
             }
         }
 
@@ -90,7 +74,7 @@ namespace Iql.Data.Tracking.State
 
         private bool RelationshipHasChanged()
         {
-            if (OldValue != null && NewValue != null && OldValue != NewValue)
+            if (RemoteValue != null && LocalValue != null && RemoteValue != LocalValue)
             {
                 return true;
             }
@@ -108,14 +92,35 @@ namespace Iql.Data.Tracking.State
             return false;
         }
 
-        public object NewValue
+        public object RemoteValue
+        {
+            get
+            {
+                EnsureOldValue();
+                return _oldObjectClone;
+            }
+            set
+            {
+                _originalValueSet = true;
+                _oldObjectClone = PropertyChanger.CloneValue(value);
+                _oldObject = value;
+                UpdateHasChanged();
+            }
+        }
+
+        public object LocalValue
         {
             get => _newValue;
             set
             {
                 _newValue = value;
-                _hasChanged = !PropertyChanger.AreEquivalent(OldValue, NewValue);
+                UpdateHasChanged();
             }
+        }
+
+        private void UpdateHasChanged()
+        {
+            _hasChanged = !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
         }
 
         public IEntityStateBase EntityState { get; }
@@ -125,15 +130,15 @@ namespace Iql.Data.Tracking.State
             var newValue = Property.GetValue(EntityState.Entity);
             _originalValueSet = false;
             EnsureOldValue();
-            NewValue = newValue;
+            LocalValue = newValue;
         }
 
         public IPropertyState Copy()
         {
             return new PropertyState(Property, null)
             {
-                OldValue = OldValue,
-                NewValue = NewValue
+                RemoteValue = RemoteValue,
+                LocalValue = LocalValue
             };
         }
 

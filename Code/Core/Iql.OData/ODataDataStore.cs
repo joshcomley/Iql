@@ -28,6 +28,10 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
+        public ODataDataStore(IDataStore offlineDataStore = null) : base(offlineDataStore)
+        {
+            
+        }
         private ODataConfiguration _configuration;
 
         public ODataConfiguration Configuration
@@ -124,16 +128,19 @@ namespace Iql.OData
                         var jobject = new JObject();
                         foreach (var parameter in parameters)
                         {
-                            if (parameter.Value != null)
+                            if (!parameter.IsKey)
                             {
-                                jobject[parameter.Name] =
-                                    DataContext.EntityConfigurationContext.GetEntityByType(parameter.ValueType) == null
-                                        ? JToken.FromObject(parameter.Value)
-                                        : JToken.Parse(JsonSerializer.Serialize(parameter.Value, DataContext, DataContext.EntityNonNullProperties(parameter.Value).ToArray()));
-                            }
-                            else
-                            {
-                                jobject[parameter.Name] = null;
+                                if (parameter.Value != null)
+                                {
+                                    jobject[parameter.Name] =
+                                        DataContext.EntityConfigurationContext.GetEntityByType(parameter.ValueType) == null
+                                            ? JToken.FromObject(parameter.Value)
+                                            : JToken.Parse(JsonSerializer.Serialize(parameter.Value, DataContext, DataContext.EntityNonNullProperties(parameter.Value).ToArray()));
+                                }
+                                else
+                                {
+                                    jobject[parameter.Name] = null;
+                                }
                             }
                         }
                         var body = JsonConvert.SerializeObject(jobject);

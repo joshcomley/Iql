@@ -9,6 +9,7 @@ namespace Iql.Data.Http
         public Func<Task<string>> GetResponseTextAsync { get; set; }
         public Func<Task<byte[]>> GetResponseBytesAsync { get; set; }
         public Func<Task<Stream>> GetResponseStreamAsync { get; set; }
+        public bool IsOffline { get; set; } = false;
         public string ContentType { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public bool Success { get; set; }
@@ -61,7 +62,14 @@ namespace Iql.Data.Http
         public static HttpResult EmptySuccess(int statusCode = 200)
         {
             var result = FromString("");
-            result.StatusCode = (HttpStatusCode) statusCode;
+            result.StatusCode = (HttpStatusCode)statusCode;
+            return result;
+        }
+
+        public static HttpResult Offline()
+        {
+            var result = FromString("");
+            result.IsOffline = true;
             return result;
         }
 

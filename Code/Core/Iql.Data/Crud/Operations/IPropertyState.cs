@@ -7,8 +7,8 @@ namespace Iql.Data.Crud.Operations
     {
         IEntityStateBase EntityState { get; }
         bool HasChanged { get; }
-        object NewValue { get; set; }
-        object OldValue { get; set; }
+        object LocalValue { get; set; }
+        object RemoteValue { get; set; }
         IProperty Property { get; }
         void Reset();
         IPropertyState Copy();
