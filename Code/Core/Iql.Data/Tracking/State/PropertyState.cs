@@ -4,6 +4,7 @@ using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.PropertyChangers;
+using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking.State
 {
@@ -151,6 +152,26 @@ namespace Iql.Data.Tracking.State
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
             //_hasChanged = false;
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            if (Property.Kind.HasFlag(PropertyKind.Count) ||
+                Property.Kind.HasFlag(PropertyKind.Relationship))
+            {
+                return null;
+            }
+            return new
+            {
+                RemoteValue,
+                LocalValue,
+                Property = Property.PropertyName
+            };
         }
     }
 }

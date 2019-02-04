@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Iql.Data.Crud;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
@@ -19,10 +20,35 @@ namespace Iql.Tests.Context
         {
             if (IsOffline)
             {
-                operation.Result.RequestStatus = RequestStatus.Offline;
-                return new FlattenedGetDataResult<TEntity>(null, operation.Operation, false, RequestStatus.Offline);
+                return Offline(operation.Result);
             }
             return await base.PerformGetAsync(operation);
+        }
+
+        public override async Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(QueuedUpdateEntityOperation<TEntity> operation)
+        {
+            if (IsOffline)
+            {
+                return Offline(operation.Result);
+            }
+            return await base.PerformUpdateAsync(operation);
+        }
+
+        public override async Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation)
+        {
+            if (IsOffline)
+            {
+                return Offline(operation.Result);
+            }
+            return await base.PerformDeleteAsync(operation);
+        }
+
+        private T Offline<T>(T result)
+            where T : ICrudResult
+        {
+            result.RequestStatus = RequestStatus.Offline;
+            result.Success = false;
+            return result;
         }
     }
 }

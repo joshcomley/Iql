@@ -19,19 +19,34 @@ namespace Iql.Tests.Context
             {
                 Id = 1,
                 AverageIncome = 12,
-                Name = "Coca-Cola"
+                Name = "Coca-Cola",
+                TypeId = 1
             });
             OfflinableDataStore.GetDataSource<Client>().Add(new Client
             {
                 Id = 2,
                 AverageIncome = 33,
-                Name = "Pepsi"
+                Name = "Pepsi",
+                TypeId = 1
+
             });
             OfflinableDataStore.GetDataSource<Client>().Add(new Client
             {
                 Id = 3,
                 AverageIncome = 97,
-                Name = "Microsoft"
+                Name = "Microsoft",
+                TypeId = 2
+
+            });
+            OfflinableDataStore.GetDataSource<ClientType>().Add(new ClientType
+            {
+                Id = 1,
+                Name = "Beverages"
+            });
+            OfflinableDataStore.GetDataSource<ClientType>().Add(new ClientType
+            {
+                Id = 2,
+                Name = "Software"
             });
         }
 

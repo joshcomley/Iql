@@ -113,46 +113,13 @@ namespace Iql.Data.DataStores.InMemory
                             {
                                 clone.SetPropertyValue(property, NextIdString(data, property));
                             }
-                            //if (!oldId.IsDefaultValue())
-                            //{
-                            //    var newId = clone.GetPropertyValue(property);
-                            //    foreach (var relationship in configuration.Relationships)
-                            //    {
-                            //        switch (relationship.Kind)
-                            //        {
-                            //            case RelationshipKind.OneToOne:
-                            //                break;
-                            //            case RelationshipKind.OneToMany:
-                            //                break;
-                            //        }
-                            //    }
-                            //}
                         }
                     }
                 });
-            TrackGraph(clone, true);
             data.Add(clone);
             operation.Result.Success = true;
             operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);
-        }
-
-        private void TrackGraph(object clone, bool isAdd)
-        {
-            //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(clone, clone.GetType());
-            //foreach (var grouping in flattenObjectGraph)
-            //{
-            //    var trackingSet = InMemoryTrackingSetCollection.TrackingSetByType(grouping.Key);
-            //    foreach (var entity in grouping.Value)
-            //    {
-            //        if (!trackingSet.IsMatchingEntityTracked(entity))
-            //        {
-            //            trackingSet.TrackEntity(entity, null, isAdd && !Equals(entity, clone));
-            //        }
-            //    }
-            //}
-
-            //InMemoryRelationshipObserver.ObserveAll(flattenObjectGraph);
         }
 
         public int NextIdInteger(IList data, IProperty property)
@@ -244,34 +211,7 @@ namespace Iql.Data.DataStores.InMemory
             operation.Result.Root = clonedResult;
             operation.Result.Success = true;
             operation.Result.Data = dictionary;
-            foreach (var list in dictionary)
-            {
-                foreach (var entity in list.Value)
-                {
-                    TrackGraph(entity, false);
-                }
-            }
             return operation.Result;
-            // Now convert IQL to a native expression
-            // Then run that native expression
-            //var q = (IInMemoryResult)
-            //    operation.Operation.Queryable.ToQueryWithAdapterBase(
-            //    QueryableAdapter,
-            //    DataContext,
-            //    null,
-            //    null);
-            //var lists = q.GetResults();
-            //var dictionary = new Dictionary<Type, IList>();
-            //foreach (var item in lists.AllData)
-            //{
-            //    dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
-            //}
-
-            //var cloned = lists.Root.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone);
-            //lists.Root = cloned;
-            //operation.Result.Data = dictionary;
-            //operation.Result.Root = (List<TEntity>)lists.Root;
-            //return Task.FromResult(operation.Result);
         }
 
         public void SynchroniseData(Dictionary<Type, IList> data)
@@ -281,6 +221,21 @@ namespace Iql.Data.DataStores.InMemory
                 SynchroniseDataTypedMethod.InvokeGeneric(
                     this, new object[] {entry.Value}, entry.Key);
             }
+        }
+
+        public Task<AddEntityResult<TEntity>> ScheduleAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UpdateEntityResult<TEntity>> ScheduleUpdateAsync<TEntity>(QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DeleteEntityResult<TEntity>> ScheduleDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
+        {
+            throw new NotImplementedException();
         }
 
         private void SynchroniseDataTyped<T>(IList<T> data)

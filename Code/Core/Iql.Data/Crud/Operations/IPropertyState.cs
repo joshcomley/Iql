@@ -1,9 +1,10 @@
-﻿using Iql.Data.Tracking.State;
+﻿using Iql.Conversion;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 
 namespace Iql.Data.Crud.Operations
 {
-    public interface IPropertyState
+    public interface IPropertyState : IJsonSerializable
     {
         IEntityStateBase EntityState { get; }
         bool HasChanged { get; }

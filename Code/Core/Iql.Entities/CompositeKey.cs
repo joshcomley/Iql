@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Iql.Conversion;
 using Iql.Entities.Extensions;
+using Newtonsoft.Json;
 
 namespace Iql.Entities
 {
     [DebuggerDisplay("{KeyString}")]
-    public class CompositeKey
+    public class CompositeKey : IJsonSerializable
     {
         public object TryGetValue(string name)
         {
@@ -90,7 +92,8 @@ namespace Iql.Entities
         private string KeyString => this.AsKeyString();
 
         public static List<CompositeKey> All { get; set; }
-        = new List<CompositeKey>();
+            = new List<CompositeKey>();
+
         public CompositeKey(int size)
         {
             //All.Add(this);
@@ -151,6 +154,19 @@ namespace Iql.Entities
             }
 
             return true;
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                Keys = Keys?.Select(_ => _.PrepareForJson())
+            };
         }
     }
 }

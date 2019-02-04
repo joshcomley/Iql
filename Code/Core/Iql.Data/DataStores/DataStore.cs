@@ -471,6 +471,10 @@ namespace Iql.Data.DataStores
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
                                 // Magic happens here...
+                                if (OfflineDataStore != null)
+                                {
+                                    result = await OfflineDataStore.ScheduleAddAsync(addEntityOperation);
+                                }
                             }
                             addEntityOperation.Result.Success = result.Success;
                         }
@@ -480,12 +484,20 @@ namespace Iql.Data.DataStores
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
                                 // Magic happens here...
+                                if (OfflineDataStore != null)
+                                {
+                                    result = await OfflineDataStore.ScheduleAddAsync(addEntityOperation);
+                                }
                             }
                         }
 
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
                         {
+                            if (OfflineDataStore != null)
+                            {
+                                await OfflineDataStore.PerformAddAsync(addEntityOperation);
+                            }
 #if TypeScript
                             remoteEntity =
                                 (TEntity)DataContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
@@ -538,6 +550,10 @@ namespace Iql.Data.DataStores
                                 if (result.RequestStatus == RequestStatus.Offline)
                                 {
                                     // Magic happens here...
+                                    if (OfflineDataStore != null)
+                                    {
+                                        result = await OfflineDataStore.ScheduleUpdateAsync(updateEntityOperation);
+                                    }
                                 }
                             }
                             else
@@ -546,6 +562,10 @@ namespace Iql.Data.DataStores
                                 if (result.RequestStatus == RequestStatus.Offline)
                                 {
                                     // Magic happens here...
+                                    if (OfflineDataStore != null)
+                                    {
+                                        result = await OfflineDataStore.ScheduleUpdateAsync(updateEntityOperation);
+                                    }
                                 }
                             }
                             var operationEntity = updateEntityOperation
@@ -553,6 +573,10 @@ namespace Iql.Data.DataStores
                                 .Entity;
                             if (result.Success)
                             {
+                                if (OfflineDataStore != null)
+                                {
+                                    await OfflineDataStore.PerformUpdateAsync(updateEntityOperation);
+                                }
                                 //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
                                 //    operationEntity, typeof(TEntity));
                                 var rootDictionary = new Dictionary<Type, IList>();
@@ -616,6 +640,10 @@ namespace Iql.Data.DataStores
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
                                 // Magic happens here...
+                                if (OfflineDataStore != null)
+                                {
+                                    result = await OfflineDataStore.ScheduleDeleteAsync(deleteEntityOperation);
+                                }
                             }
                             deleteEntityOperation.Result.Success = result.Success;
                         }
@@ -625,10 +653,18 @@ namespace Iql.Data.DataStores
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
                                 // Magic happens here...
+                                if (OfflineDataStore != null)
+                                {
+                                    result = await OfflineDataStore.ScheduleDeleteAsync(deleteEntityOperation);
+                                }
                             }
                         }
                         if (result.Success)
                         {
+                            if (OfflineDataStore != null)
+                            {
+                                await OfflineDataStore.PerformDeleteAsync(deleteEntityOperation);
+                            }
                             MarkAsDeletedByKey<TEntity>(deleteEntityOperation.Operation.Key);
                         }
                         else

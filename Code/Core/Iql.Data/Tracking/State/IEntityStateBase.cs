@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Iql.Conversion;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
 using Iql.Entities;
@@ -8,31 +9,25 @@ using Iql.Entities.Relationships;
 
 namespace Iql.Data.Tracking.State
 {
-    public interface IEntityStateBase
+    public interface IEntityStateBase : IJsonSerializable
     {
-        bool HasValidKey();
-        bool IsInsertable();
+        object Entity { get; }
         IPropertyState[] PropertyStates { get; }
-        void Reset();
         CompositeKey CurrentKey { get; set; }
-
-        CompositeKey KeyBeforeChanges();
-        //CompositeKey RemoteKey { get; }
-        Guid? PersistenceKey { get; }
+        bool MarkedForDeletion { get; set; }
+        bool MarkedForCascadeDeletion { get; set; }
+        Guid? PersistenceKey { get; set; }
+        bool IsNew { get; set; }
+        Type EntityType { get; }
+        bool MarkedForAnyDeletion { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
 
+        bool HasValidKey();
+        void Reset();
+        CompositeKey KeyBeforeChanges();
         IPropertyState[] GetChangedProperties(IProperty[] properties = null);
-
-        object Entity { get; }
         IEntityConfiguration EntityConfiguration { get; }
-        Type EntityType { get; }
-
-        bool IsNew { get; set; }
-        bool MarkedForAnyDeletion { get; }
-        bool MarkedForCascadeDeletion { get; }
-        bool MarkedForDeletion { get; set; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
-
         IPropertyState GetPropertyState(string name);
         void MarkForCascadeDeletion(object from, IRelationship relationship);
         void UnmarkForDeletion();

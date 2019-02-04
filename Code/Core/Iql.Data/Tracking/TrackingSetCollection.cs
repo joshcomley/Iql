@@ -2,15 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Conversion;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.DataStores;
 using Iql.Entities;
 using Iql.Extensions;
+using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    public class TrackingSetCollection
+    public class TrackingSetCollection : IJsonSerializable
     {
         public IDataStore DataStore { get; }
         public bool TrackEntities { get; }
@@ -236,6 +238,21 @@ namespace Iql.Data.Tracking
                     break;
             }
             return operation;
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                TrackEntities,
+                Id,
+                Sets = Sets.Select(_ => _.PrepareForJson())
+            };
         }
     }
 }

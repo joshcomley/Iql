@@ -1,11 +1,13 @@
 #if TypeScript
 using System;
 #endif
+using Iql.Conversion;
 using Iql.Entities.Extensions;
+using Newtonsoft.Json;
 
 namespace Iql.Entities
 {
-    public class KeyValue
+    public class KeyValue : IJsonSerializable
     {
         private bool _hasDefaultValueSet;
         private bool _hasDefaultValue;
@@ -60,6 +62,20 @@ namespace Iql.Entities
 #else
             return Equals(Value, null) || Equals(Value, Activator.CreateInstance(type));
 #endif
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                Name,
+                Value
+            };
         }
     }
 }

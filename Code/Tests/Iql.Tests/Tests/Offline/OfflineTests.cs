@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Iql.Tests.Context;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.Offline
@@ -15,6 +17,17 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
+        public async Task SerializeState()
+        {
+            Db.IsOffline = false;
+            var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
+            var client = clients.First();
+            client.Name = "Changed";
+            var entityState = Db.GetEntityState(client);
+            var json = Db.DataStore.Tracking.SerializeToJson();
+        }
+
+        [TestMethod]
         public async Task GetDataWhenOnlineAndRefetchWhenOffline()
         {
             Db.IsOffline = true;
@@ -22,12 +35,31 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(0, clientsOffline1.Count);
 
             Db.IsOffline = false;
-            var clients = await Db.Clients.ToListAsync();
+            var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             Assert.AreEqual(3, clients.Count);
 
             Db.IsOffline = true;
-            var clientsOffline2 = await Db.Clients.ToListAsync();
+            var clientsOffline2 = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             Assert.AreEqual(3, clientsOffline2.Count);
+        }
+
+        [TestMethod]
+        public async Task SaveChangeWhenOfflineAndResyncWhenOnline()
+        {
+            Db.IsOffline = false;
+            var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
+            Assert.AreEqual(3, clients.Count);
+
+            Db.IsOffline = true;
+            var client = clients.First();
+            client.Name = "Changed";
+            var result = await Db.SaveChangesAsync();
+
+            Assert.AreEqual(true, result.Success);
+
+            //Db.IsOffline = true;
+            //var clientsOffline2 = await Db.Clients.Expand(_ => _.Type).ToListAsync();
+            //Assert.AreEqual(3, clientsOffline2.Count);
         }
     }
 }

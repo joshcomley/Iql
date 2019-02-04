@@ -13,23 +13,10 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Exceptions;
 using Iql.Entities.Extensions;
+using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    class RemoteKeyMap
-    {
-        public IEntityStateBase State { get; set; }
-        public IPropertyState[] OldPropertyValues { get; set; }
-
-        public CompositeKey Key { get; set; }
-
-        public RemoteKeyMap(IEntityStateBase state, CompositeKey key)
-        {
-            State = state;
-            Key = key;
-        }
-    }
-
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
@@ -37,6 +24,7 @@ namespace Iql.Data.Tracking
         private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
         public DataTracker DataTracker => DataStore.DataTracker;
+
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
@@ -905,6 +893,23 @@ namespace Iql.Data.Tracking
             {
                 AbandonChangesForEntityState((IEntityState<T>) state);
             }
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                Type = EntityConfiguration.Name,
+                EntitiesByKey = EntitiesByKey.Values.Select(_=>_.PrepareForJson()),
+                EntitiesByObject = EntitiesByObject.Values.Select(_=>_.PrepareForJson()),
+                EntitiesByPersistenceKey = EntitiesByPersistenceKey.Values.Select(_=>_.PrepareForJson()),
+                EntitiesByRemoteKey = EntitiesByRemoteKey.Values.Select(_=>_.PrepareForJson()),
+            };
         }
     }
 }

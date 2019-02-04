@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
@@ -9,7 +10,7 @@ using Iql.Entities;
 
 namespace Iql.Data.Tracking
 {
-    public interface ITrackingSet
+    public interface ITrackingSet : IJsonSerializable
     {
         IDataContext DataContext { get; }
         TrackingSetCollection TrackingSetCollection { get; }

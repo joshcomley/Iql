@@ -9,6 +9,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
+using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking.State
 {
@@ -191,34 +192,6 @@ namespace Iql.Data.Tracking.State
         }
         private List<IPropertyState> Properties { get; }
 
-        public bool IsInsertable()
-        {
-            if (EntityConfiguration.Key.Properties.All(p => p.IsReadOnly))
-            {
-                return true;
-            }
-
-            var isInsertable = true;
-            for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
-            {
-                var property = EntityConfiguration.Key.Properties[i];
-                if (property.IsReadOnly)
-                {
-                    continue;
-                }
-
-                var value = property.GetValue(Entity);
-                if (value.IsDefaultValue(property.TypeDefinition) && property.Kind.HasFlag(PropertyKind.RelationshipKey) &&
-                    Equals(null, property.Relationship.ThisEnd.Property.GetValue(Entity)))
-                {
-                    isInsertable = false;
-                    break;
-                }
-            }
-
-            return isInsertable;
-        }
-
         public IPropertyState[] PropertyStates => Properties.ToArray();
 
         public IPropertyState GetPropertyState(string name)
@@ -251,6 +224,24 @@ namespace Iql.Data.Tracking.State
             }
 
             return true;
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                CurrentKey = CurrentKey.PrepareForJson(),
+                PersistenceKey,
+                IsNew,
+                MarkedForDeletion,
+                MarkedForCascadeDeletion,
+                PropertyStates = PropertyStates.Select(_ => _.PrepareForJson()).Where(_ => _ != null)
+            };
         }
     }
 }
