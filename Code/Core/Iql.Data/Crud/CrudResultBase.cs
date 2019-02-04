@@ -1,9 +1,13 @@
-﻿namespace Iql.Data.Crud
+﻿using Iql.Data.Crud.Operations.Results;
+
+namespace Iql.Data.Crud
 {
     public class CrudResultBase : ICrudResult
     {
-        public CrudResultBase(bool success)
+        public RequestStatus RequestStatus { get; set; } = RequestStatus.Online;
+        public CrudResultBase(bool success, RequestStatus requestStatus = RequestStatus.Online)
         {
+            RequestStatus = requestStatus;
             Success = success;
         }
 

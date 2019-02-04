@@ -198,6 +198,10 @@ namespace Iql.Data.Context
                 if (_dataStore != null)
                 {
                     _dataStore.DataContext = this;
+                    if (_dataStore.OfflineDataStore != null)
+                    {
+                        _dataStore.OfflineDataStore.DataContext = this;
+                    }
                 }
             }
         }
@@ -549,9 +553,9 @@ namespace Iql.Data.Context
             }
         }
 
-        public async Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null)
+        public async Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null)
         {
-            return await DataStore.SaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray()));
+            return await DataStore.SaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
         }
 
         public bool IsIdMatch(object left, object right, Type type)

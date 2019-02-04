@@ -113,6 +113,7 @@ namespace Iql.Tests.Tests.OData
                 await db.SaveChangesAsync();
                 Assert.AreEqual(0, log.Posts.Count);
             });
+            PersistenceKeyGenerator.New = () => Guid.NewGuid();
         }
 
         [TestMethod]

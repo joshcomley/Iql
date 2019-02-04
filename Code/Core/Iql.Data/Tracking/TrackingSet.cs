@@ -460,7 +460,7 @@ namespace Iql.Data.Tracking
             {
                 var entityState = GetOrSetEntityState(propertyChange.Entity);
                 var propertyState = entityState.GetPropertyState(property.Name);
-                propertyState.NewValue = propertyChange.NewValue;
+                propertyState.LocalValue = propertyChange.NewValue;
             }
         }
 
@@ -645,8 +645,8 @@ namespace Iql.Data.Tracking
                         foreach (var propertyState in map.OldPropertyValues)
                         {
                             var newPropertyState = state.GetPropertyState(propertyState.Property.Name);
-                            newPropertyState.OldValue = propertyState.OldValue;
-                            newPropertyState.NewValue = propertyState.Property.GetValue(state.Entity);
+                            newPropertyState.RemoteValue = propertyState.RemoteValue;
+                            newPropertyState.LocalValue = propertyState.Property.GetValue(state.Entity);
                         }
                         map.OldPropertyValues = null;
                         map.State = state;
@@ -792,7 +792,7 @@ namespace Iql.Data.Tracking
             return deletions;
         }
 
-        public IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null)
+        public IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
             var updates = new List<UpdateEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
@@ -806,7 +806,7 @@ namespace Iql.Data.Tracking
                     !entityState.MarkedForAnyDeletion &&
                     entityState.GetChangedProperties().Any())
                 {
-                    updates.Add(new UpdateEntityOperation<T>((T)entity, DataContext));
+                    updates.Add(new UpdateEntityOperation<T>((T)entity, DataContext, entityState, properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
                 }
             }
             return updates;

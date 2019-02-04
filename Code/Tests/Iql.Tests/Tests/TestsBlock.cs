@@ -75,6 +75,8 @@ namespace Iql.Tests.Tests
         public static void TestCleanUp()
         {
             AppDbContext.InMemoryDb.Users.Clear();
+            AppDbContext.InMemoryDb.DocumentCategories.Clear();
+            AppDbContext.InMemoryDb.MyCustomReports.Clear();
             AppDbContext.InMemoryDb.ClientTypes.Clear();
             AppDbContext.InMemoryDb.Clients.Clear();
             AppDbContext.InMemoryDb.Sites.Clear();
@@ -105,6 +107,7 @@ namespace Iql.Tests.Tests
     }
     */
         public static AppDbContext Db { get; set; } = new AppDbContext();
+        public static OfflineAppDbContext OfflineCapableDb { get; set; } = new OfflineAppDbContext();
     }
 }
  

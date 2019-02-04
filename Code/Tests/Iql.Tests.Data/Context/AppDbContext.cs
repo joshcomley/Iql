@@ -42,26 +42,31 @@ namespace Iql.Tests.Context
         public AppDbContext(IDataStore dataStore = null) :
             base(dataStore ?? new InMemoryDataStore())
         {
+            Initialise();
+        }
+
+        protected void Initialise()
+        {
             if (InMemoryDataStoreConfiguration == null)
             {
                 InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration(EntityConfigurationContext);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.DocumentCategories);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.MyCustomReports);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.People);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypes);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypeMap);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PersonInspections);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportCategories);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteInspections);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessments);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentSolutions);
             }
 
             RegisterConfiguration(InMemoryDataStoreConfiguration);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.DocumentCategories);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.MyCustomReports);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.People);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypes);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypeMap);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PersonInspections);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportCategories);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteInspections);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessments);
-            InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentSolutions);
             var defaultQueries = new EntityDefaultQueryConfiguration();
             defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
             RegisterConfiguration(defaultQueries);

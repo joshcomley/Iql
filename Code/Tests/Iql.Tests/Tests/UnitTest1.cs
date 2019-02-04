@@ -121,8 +121,8 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, state.GetChangedProperties().Length);
             var change = state.GetChangedProperties()[0];
             var nameState = change;
-            Assert.AreEqual("Client 1", change.OldValue);
-            Assert.AreEqual("Me", change.NewValue);
+            Assert.AreEqual("Client 1", change.RemoteValue);
+            Assert.AreEqual("Me", change.LocalValue);
             Assert.AreEqual(nameProperty, change.Property);
             Assert.AreEqual(change.EntityState, state);
 
@@ -130,8 +130,8 @@ namespace Iql.Tests.Tests
             client.Name = "Me2";
             Assert.AreEqual(1, state.GetChangedProperties().Length);
             change = state.GetChangedProperties()[0];
-            Assert.AreEqual("Client 1", change.OldValue);
-            Assert.AreEqual("Me2", change.NewValue);
+            Assert.AreEqual("Client 1", change.RemoteValue);
+            Assert.AreEqual("Me2", change.LocalValue);
             Assert.AreEqual(nameProperty, change.Property);
             Assert.AreEqual(client, state.Entity);
             Assert.AreEqual(change.EntityState, state);
@@ -141,8 +141,8 @@ namespace Iql.Tests.Tests
             client.Description = null;
             Assert.AreEqual(1, state.GetChangedProperties().Length);
             change = state.GetChangedProperties()[0];
-            Assert.AreEqual("Client 1", change.OldValue);
-            Assert.AreEqual("Me2", change.NewValue);
+            Assert.AreEqual("Client 1", change.RemoteValue);
+            Assert.AreEqual("Me2", change.LocalValue);
             Assert.AreEqual(nameProperty, change.Property);
             Assert.AreEqual(client, state.Entity);
             Assert.AreEqual(change.EntityState, state);
@@ -151,8 +151,8 @@ namespace Iql.Tests.Tests
             client.Description = "A new description";
             Assert.AreEqual(2, state.GetChangedProperties().Length);
             change = state.GetChangedProperties()[1];
-            Assert.AreEqual(null, change.OldValue);
-            Assert.AreEqual("A new description", change.NewValue);
+            Assert.AreEqual(null, change.RemoteValue);
+            Assert.AreEqual("A new description", change.LocalValue);
             Assert.AreEqual(descriptionProperty, change.Property);
             Assert.AreEqual(client, state.Entity);
             Assert.AreEqual(change.EntityState, state);
@@ -161,8 +161,8 @@ namespace Iql.Tests.Tests
             client.Description = "Another new description";
             Assert.AreEqual(2, state.GetChangedProperties().Length);
             change = state.GetChangedProperties()[1];
-            Assert.AreEqual(null, change.OldValue);
-            Assert.AreEqual("Another new description", change.NewValue);
+            Assert.AreEqual(null, change.RemoteValue);
+            Assert.AreEqual("Another new description", change.LocalValue);
             Assert.AreEqual(descriptionProperty, change.Property);
             Assert.AreEqual(client, state.Entity);
             Assert.AreEqual(change.EntityState, state);
@@ -171,8 +171,8 @@ namespace Iql.Tests.Tests
             client.Name = "Client 1";
             Assert.AreEqual(1, state.GetChangedProperties().Length);
             change = state.GetChangedProperties()[0];
-            Assert.AreEqual(null, change.OldValue);
-            Assert.AreEqual("Another new description", change.NewValue);
+            Assert.AreEqual(null, change.RemoteValue);
+            Assert.AreEqual("Another new description", change.LocalValue);
             Assert.AreEqual(descriptionProperty, change.Property);
             Assert.AreEqual(client, state.Entity);
             Assert.AreEqual(change.EntityState, state);
@@ -181,8 +181,8 @@ namespace Iql.Tests.Tests
             client.Name = "Client 1 - changed";
             Assert.AreEqual(2, state.GetChangedProperties().Length);
             change = state.GetChangedProperties().Single(p=>p.Property.Name == nameof(Client.Name));
-            Assert.AreEqual("Client 1", change.OldValue);
-            Assert.AreEqual("Client 1 - changed", change.NewValue);
+            Assert.AreEqual("Client 1", change.RemoteValue);
+            Assert.AreEqual("Client 1 - changed", change.LocalValue);
             Assert.AreEqual(nameProperty, change.Property);
             Assert.AreEqual(client, state.Entity);
             Assert.AreEqual(change.EntityState, state);
@@ -715,12 +715,12 @@ namespace Iql.Tests.Tests
 
             var keyPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.TypeId));
             Assert.IsNotNull(keyPropertyChange);
-            Assert.AreEqual(clientType2.Id, keyPropertyChange.OldValue);
-            Assert.AreEqual(clientType1.Id, keyPropertyChange.NewValue);
+            Assert.AreEqual(clientType2.Id, keyPropertyChange.RemoteValue);
+            Assert.AreEqual(clientType1.Id, keyPropertyChange.LocalValue);
             var referencePropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
             Assert.IsNotNull(referencePropertyChange);
-            Assert.AreEqual(clientType2, referencePropertyChange.OldValue);
-            Assert.AreEqual(clientType1, referencePropertyChange.NewValue);
+            Assert.AreEqual(clientType2, referencePropertyChange.RemoteValue);
+            Assert.AreEqual(clientType1, referencePropertyChange.LocalValue);
 
             //var relationshipPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
             //Assert.IsNotNull(relationshipPropertyChange);

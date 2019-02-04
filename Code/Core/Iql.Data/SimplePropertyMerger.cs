@@ -1,3 +1,4 @@
+using System.Linq;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 
@@ -14,10 +15,12 @@ namespace Iql.Data
 
         public void Merge(
             object entity,
-            object mergeWith
+            object mergeWith,
+            IProperty[] properties = null
             )
         {
-            foreach (var property in EntityConfiguration.Properties)
+            properties = properties ?? EntityConfiguration.Properties.ToArray();
+            foreach (var property in properties)
             {
                 if (property.Kind.HasFlag(PropertyKind.Count) ||
                    property.Kind.HasFlag(PropertyKind.Key) ||

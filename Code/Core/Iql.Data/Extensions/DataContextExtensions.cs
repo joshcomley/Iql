@@ -75,8 +75,8 @@ namespace Iql.Data.Extensions
                 {
                     var state = new PropertyState(property, null);
                     properties.Add(state);
-                    state.OldValue = null;
-                    state.NewValue = propertyValue;
+                    state.RemoteValue = null;
+                    state.LocalValue = propertyValue;
                 }
             }
             return properties;

@@ -115,7 +115,7 @@ namespace Iql.Data.Tracking.State
                 var property = EntityConfiguration.Key.Properties[i];
                 compositeKey.Keys[i] = new KeyValue(
                     property.Name,
-                    GetPropertyState(property.Name).OldValue,
+                    GetPropertyState(property.Name).RemoteValue,
                     property.TypeDefinition);
             }
             return compositeKey;
@@ -150,11 +150,11 @@ namespace Iql.Data.Tracking.State
                 new object[] { entity, entityType, entityConfiguration });
         }
 
-        public IPropertyState[] GetChangedProperties()
+        public IPropertyState[] GetChangedProperties(IProperty[] properties = null)
         {
             var propertyStates = PropertyStates.Where(ps =>
                     ps.HasChanged && (!ps.Property.Kind.HasFlag(PropertyKind.Relationship) ||
-                                      HasRelationshipChanged(ps.Property)))
+                                      HasRelationshipChanged(ps.Property)) && (properties == null || properties.Contains(ps.Property)))
                 .ToArray();
             return propertyStates;
         }

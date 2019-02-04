@@ -30,8 +30,16 @@ namespace Iql.Data.DataStores
 {
     public class DataStore : IDataStore
     {
+        public DataStore(IDataStore offlineDataStore = null)
+        {
+            OfflineDataStore = offlineDataStore;
+        }
+
         private DataTracker _dataTracker;
+        private IDataContext _dataContext;
         public static MethodInfo MarkAsDeletedByKeyTypedMethod { get; set; }
+
+        public IDataStore OfflineDataStore { get; set; }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {
@@ -51,16 +59,27 @@ namespace Iql.Data.DataStores
         public virtual TrackingSetCollection Tracking => DataTracker.Tracking;
         public virtual IRelationshipObserver RelationshipObserver => DataTracker.RelationshipObserver;
 
-        public virtual IDataContext DataContext { get; set; }
-
-        public IQueuedOperation[] GetChanges(object[] entities = null)
+        public virtual IDataContext DataContext
         {
-            return Tracking.GetChanges(entities).ToArray();
+            get => _dataContext;
+            set
+            {
+                _dataContext = value;
+                if (OfflineDataStore != null)
+                {
+                    OfflineDataStore.DataContext = value;
+                }
+            }
         }
 
-        public IQueuedOperation[] GetUpdates(object[] entities = null)
+        public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return Tracking.GetChanges(entities).Where(op => op.Type == QueuedOperationType.Update).ToArray();
+            return Tracking.GetChanges(entities, properties).ToArray();
+        }
+
+        public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
+        {
+            return Tracking.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
         }
 
         static DataStore()
@@ -225,6 +244,20 @@ namespace Iql.Data.DataStores
                 operation,
                 response));
 
+            if (response.RequestStatus == RequestStatus.Offline)
+            {
+                // Magic happens here...
+                if (OfflineDataStore != null)
+                {
+                    return await OfflineDataStore.GetAsync(operation);
+                }
+            }
+            else
+            {
+                OfflineDataStore?.TrackGetDataResult(response);
+                // Update "offline" repository with these results
+            }
+
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
@@ -295,7 +328,10 @@ namespace Iql.Data.DataStores
                         }
                     }
                 });
-                dbList.AddRange(response.Root);
+                if (response.Root != null)
+                {
+                    dbList.AddRange(response.Root);
+                }
             }
 
             return dbList;
@@ -359,7 +395,7 @@ namespace Iql.Data.DataStores
             // so get a copy now
             //var observable = this.Observable<SaveChangesResult>();
             var saveChangesResult = new SaveChangesResult(true);
-            var queue = GetChanges(operation.Entities);
+            var queue = GetChanges(operation.Entities, operation.Properties);
             foreach (var queuedOperation in queue)
             {
                 var task = GetType()
@@ -432,11 +468,19 @@ namespace Iql.Data.DataStores
                                 this,
                                 new object[] { addEntityOperation, specialTypeMap },
                                 typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
+                            if (result.RequestStatus == RequestStatus.Offline)
+                            {
+                                // Magic happens here...
+                            }
                             addEntityOperation.Result.Success = result.Success;
                         }
                         else
                         {
                             result = await PerformAddAsync(addEntityOperation);
+                            if (result.RequestStatus == RequestStatus.Offline)
+                            {
+                                // Magic happens here...
+                            }
                         }
 
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
@@ -491,10 +535,18 @@ namespace Iql.Data.DataStores
                                     this,
                                     new object[] { updateEntityOperation, specialTypeMap },
                                     typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
+                                if (result.RequestStatus == RequestStatus.Offline)
+                                {
+                                    // Magic happens here...
+                                }
                             }
                             else
                             {
                                 result = await PerformUpdateAsync(updateEntityOperation);
+                                if (result.RequestStatus == RequestStatus.Offline)
+                                {
+                                    // Magic happens here...
+                                }
                             }
                             var operationEntity = updateEntityOperation
                                 .Operation
@@ -561,11 +613,19 @@ namespace Iql.Data.DataStores
                                 this,
                                 new object[] { deleteEntityOperation, specialTypeMap },
                                 typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
+                            if (result.RequestStatus == RequestStatus.Offline)
+                            {
+                                // Magic happens here...
+                            }
                             deleteEntityOperation.Result.Success = result.Success;
                         }
                         else
                         {
                             result = await PerformDeleteAsync(deleteEntityOperation);
+                            if (result.RequestStatus == RequestStatus.Offline)
+                            {
+                                // Magic happens here...
+                            }
                         }
                         if (result.Success)
                         {
@@ -725,11 +785,11 @@ namespace Iql.Data.DataStores
                 var sourcePropertyState = update.Operation.EntityState.PropertyStates[i];
                 var mappedProperty = definition.ResolvePropertyMap(sourcePropertyState.Property.PropertyName);
                 var targetPropertyState = dummyEntityState.PropertyStates.Single(p => p.Property == mappedProperty);
-                targetPropertyState.OldValue = sourcePropertyState.OldValue;
-                targetPropertyState.NewValue = sourcePropertyState.NewValue;
+                targetPropertyState.RemoteValue = sourcePropertyState.RemoteValue;
+                targetPropertyState.LocalValue = sourcePropertyState.LocalValue;
                 mappedEntity.SetPropertyValueByName(
                     mappedProperty.PropertyName,
-                    sourcePropertyState.NewValue);
+                    sourcePropertyState.LocalValue);
             }
 
             var mappedResult = mappedUpdate.Result;

@@ -5,6 +5,7 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Lists;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
@@ -14,11 +15,13 @@ namespace Iql.Data.DataStores
 {
     public interface IDataStore
     {
+        IDataStore OfflineDataStore { get; set; }
+        DbList<T> TrackGetDataResult<T>(FlattenedGetDataResult<T> response) where T : class;
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();
         DataTracker DataTracker { get; }
-        IQueuedOperation[] GetChanges(object[] entities = null);
-        IQueuedOperation[] GetUpdates(object[] entities = null);
+        IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);
+        IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
         IDataContext DataContext { get; set; }
         IRelationshipObserver RelationshipObserver { get; }
         TrackingSetCollection Tracking { get; }

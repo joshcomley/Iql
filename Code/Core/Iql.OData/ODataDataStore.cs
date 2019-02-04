@@ -28,6 +28,10 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
+        public ODataDataStore(IDataStore offlineDataStore = null) : base(offlineDataStore)
+        {
+            
+        }
         private ODataConfiguration _configuration;
 
         public ODataConfiguration Configuration
@@ -124,16 +128,19 @@ namespace Iql.OData
                         var jobject = new JObject();
                         foreach (var parameter in parameters)
                         {
-                            if (parameter.Value != null)
+                            if (!parameter.IsKey)
                             {
-                                jobject[parameter.Name] =
-                                    DataContext.EntityConfigurationContext.GetEntityByType(parameter.ValueType) == null
-                                        ? JToken.FromObject(parameter.Value)
-                                        : JToken.Parse(JsonSerializer.Serialize(parameter.Value, DataContext, DataContext.EntityNonNullProperties(parameter.Value).ToArray()));
-                            }
-                            else
-                            {
-                                jobject[parameter.Name] = null;
+                                if (parameter.Value != null)
+                                {
+                                    jobject[parameter.Name] =
+                                        DataContext.EntityConfigurationContext.GetEntityByType(parameter.ValueType) == null
+                                            ? JToken.FromObject(parameter.Value)
+                                            : JToken.Parse(JsonSerializer.Serialize(parameter.Value, DataContext, DataContext.EntityNonNullProperties(parameter.Value).ToArray()));
+                                }
+                                else
+                                {
+                                    jobject[parameter.Name] = null;
+                                }
                             }
                         }
                         var body = JsonConvert.SerializeObject(jobject);
@@ -401,18 +408,24 @@ namespace Iql.OData
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUri(operation.Operation.Entity);
             var properties = new List<string>();
-            foreach (var property in operation.Operation.EntityState.GetChangedProperties())
+            var changedProperties = operation.Operation.GetChangedProperties();
+            for (var i = 0; i < changedProperties.Length; i++)
             {
+                var property = changedProperties[i];
                 properties.Add(property.Property.Name);
             }
-            foreach (var key in DataContext.EntityConfigurationContext.EntityType<TEntity>().Key.Properties)
+
+            var keys = DataContext.EntityConfigurationContext.EntityType<TEntity>().Key.Properties;
+            for (var i = 0; i < keys.Length; i++)
             {
+                var key = keys[i];
                 properties.Add(key.Name);
             }
+
             var json = JsonSerializer.Serialize(
                 operation.Operation.Entity,
                 DataContext,
-                operation.Operation.EntityState.GetChangedProperties().ToArray());
+                changedProperties);
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
             operation.Result.Success = httpResult.Success;

@@ -60,15 +60,15 @@ namespace Iql.Data.DataStores.InMemory
             }
         }
 
-        public IDataContext DataContext { get; }
+        public InMemoryDataStore DataStore { get; }
+        public IDataContext DataContext => DataStore.DataContext;
         public IInMemoryContext Parent { get; }
 
-        public InMemoryContext(IDataContext dataContext, IInMemoryContext parent = null)
+        public InMemoryContext(InMemoryDataStore dataStore, IInMemoryContext parent = null)
         {
-            DataContext = dataContext;
+            DataStore = dataStore;
             Parent = parent;
-            SourceList =
-                DataContext.GetConfiguration<InMemoryDataStoreConfiguration>().GetSource<TEntity>();
+            SourceList = DataStore.GetDataSource<TEntity>();
         }
 
 #if !TypeScript
@@ -156,7 +156,7 @@ namespace Iql.Data.DataStores.InMemory
             var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TTarget>(
                 expandExpression.Query);
             var expandContext = (InMemoryContext<TTarget>)typeof(InMemoryContext<>).ActivateGeneric(
-                new object[] { DataContext, this },
+                new object[] { DataStore, this },
                 typeof(TTarget));
             var func = expression.Compile();
             expandContext = (InMemoryContext<TTarget>)func.DynamicInvoke(expandContext);
@@ -245,7 +245,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public IEnumerable ResolveSource(Type entityType)
         {
-            return DataContext.GetConfiguration<InMemoryDataStoreConfiguration>().GetSourceByType(entityType);
+            return DataStore.GetDataSourceByType(entityType);
         }
 
         IEnumerable IInMemoryContext.SourceList
