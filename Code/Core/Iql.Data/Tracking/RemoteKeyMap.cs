@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    class RemoteKeyMap : IJsonSerializable
+    public class RemoteKeyMap : IJsonSerializable
     {
         public IEntityStateBase State { get; set; }
         public IPropertyState[] OldPropertyValues { get; set; }
