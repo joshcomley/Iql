@@ -225,17 +225,20 @@ namespace Iql.Data.DataStores.InMemory
 
         public Task<AddEntityResult<TEntity>> ScheduleAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
-            throw new NotImplementedException();
+            operation.Result.Success = true;
+            return Task.FromResult(operation.Result);
         }
 
         public Task<UpdateEntityResult<TEntity>> ScheduleUpdateAsync<TEntity>(QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
         {
-            throw new NotImplementedException();
+            operation.Result.Success = true;
+            return Task.FromResult(operation.Result);
         }
 
         public Task<DeleteEntityResult<TEntity>> ScheduleDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
         {
-            throw new NotImplementedException();
+            operation.Result.Success = true;
+            return Task.FromResult(operation.Result);
         }
 
         private void SynchroniseDataTyped<T>(IList<T> data)
