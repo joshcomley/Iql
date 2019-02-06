@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Iql.Entities;
 
@@ -43,6 +44,16 @@ namespace Iql.Data.DataStores.InMemory
                 throw new Exception($"Unable to find data source with name \"{name}\"");
             }
             return _sources[name].Compile().DynamicInvoke() as IList;
+        }
+
+        public IList[] AllDataSources()
+        {
+            var list = new List<IList>();
+            foreach (var source in _sources)
+            {
+                list.Add((IList)source.Value.Compile().DynamicInvoke());
+            }
+            return list.ToArray();
         }
     }
 }

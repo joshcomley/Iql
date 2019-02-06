@@ -21,6 +21,7 @@ namespace Iql.Tests.Context
 {
     public class AppDbContext : IqlSampleAppDataContextBase
     {
+        public virtual bool UseStaticInMemoryData { get; } = true;
         static AppDbContext()
         {
             var inMemoryDb = new InMemoryDataBase();
@@ -45,7 +46,7 @@ namespace Iql.Tests.Context
             Initialise();
         }
 
-        protected void Initialise()
+        protected virtual void Initialise()
         {
             if (InMemoryDataStoreConfiguration == null)
             {
@@ -65,8 +66,7 @@ namespace Iql.Tests.Context
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessments);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentSolutions);
             }
-
-            if (DataStore is InMemoryDataStore)
+            if (UseStaticInMemoryData && DataStore is InMemoryDataStore)
             {
                 (DataStore as InMemoryDataStore).Configuration = InMemoryDataStoreConfiguration;
             }

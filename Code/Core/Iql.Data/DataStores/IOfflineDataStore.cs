@@ -9,6 +9,8 @@ namespace Iql.Data.DataStores
 {
     public interface IOfflineDataStore : IDataStore
     {
+        IList[] AllDataSources();
+        void Clear();
         void SynchroniseData(Dictionary<Type, IList> data);
         Task<AddEntityResult<TEntity>> ScheduleAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation)
             where TEntity : class;

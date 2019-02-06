@@ -94,9 +94,9 @@ namespace Iql.Data.Tracking
             List<IEntityStateBase> states = null;
             if (responseRoot != null)
             {
-                var trakcingResult = TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly);
-                states = trakcingResult.States;
-                responseRoot = (List<TEntity>)trakcingResult.Data.ToList(typeof(TEntity));
+                var trackingResult = TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly);
+                states = trackingResult.States;
+                responseRoot = (List<TEntity>)trackingResult.Data.ToList(typeof(TEntity));
             }
             foreach (var dataSet in responseData)
             {

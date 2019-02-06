@@ -22,11 +22,12 @@ namespace Iql.Tests.Tests.Offline
             var entityState = Db.GetEntityState(client);
             var json = Db.DataStore.Tracking.SerializeToJson();
         }
-
+        
         [TestMethod]
         public async Task GetDataWhenOnlineAndRefetchWhenOffline()
         {
             Db.IsOffline = true;
+            Db.OfflineDataStore.Clear();
             var clientsOffline1 = await Db.Clients.ToListAsync();
             Assert.AreEqual(0, clientsOffline1.Count);
 

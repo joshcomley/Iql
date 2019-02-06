@@ -186,7 +186,12 @@ namespace Iql.Data.Relationships
                 return null;
             }
 
-            var state = TrackingSetCollection.TrackingSetByType(relationship.Target.Type).FindMatchingEntityState(entity);
+            var trackingSetByType = TrackingSetCollection.TrackingSetByType(relationship.Target.Type);
+            var state = trackingSetByType.FindMatchingEntityState(entity);
+            if (state == null)
+            {
+                var state2 = trackingSetByType.FindMatchingEntityState(entity);
+            }
             if (state.IsNew)
             {
                 // Assign a temporary ID

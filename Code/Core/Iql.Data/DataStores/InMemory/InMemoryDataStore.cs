@@ -214,6 +214,28 @@ namespace Iql.Data.DataStores.InMemory
             return operation.Result;
         }
 
+        public IList[] AllDataSources()
+        {
+            if (Configuration != null)
+            {
+                return Configuration.AllDataSources();
+            }
+            var list = new List<IList>();
+            foreach (var source in _sources)
+            {
+                list.Add(source.Value);
+            }
+            return list.ToArray();
+        }
+
+        public void Clear()
+        {
+            foreach (var source in AllDataSources())
+            {
+                source.Clear();
+            }
+        }
+
         public void SynchroniseData(Dictionary<Type, IList> data)
         {
             foreach (var entry in data)

@@ -579,10 +579,13 @@ namespace Iql.Data.DataStores
                                 }
                                 //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
                                 //    operationEntity, typeof(TEntity));
-                                var rootDictionary = new Dictionary<Type, IList>();
-                                rootDictionary.Ensure(
-                                    typeof(TEntity),
-                                    () => new List<TEntity> { updateEntityOperation.Operation.Entity });
+                                //var rootDictionary = new Dictionary<Type, IList>();
+                                var rootDictionary = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                                    updateEntityOperation.Operation.Entity,
+                                    updateEntityOperation.Operation.EntityType);
+                                //rootDictionary.Ensure(
+                                //    typeof(TEntity),
+                                //    () => new List<TEntity> { updateEntityOperation.Operation.Entity });
                                 ForAnEntityAcrossAllDataStores<TEntity>(updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
                                 {
                                     if (state.Entity != operationEntity)
