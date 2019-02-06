@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Iql.Conversion.State;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace Iql.Tests.Tests.Offline
 {
@@ -19,8 +21,11 @@ namespace Iql.Tests.Tests.Offline
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             var client = clients.First();
             client.Name = "Changed";
+            client.TypeId = 2;
+            client.Type.Name = "A new name";
             var entityState = Db.GetEntityState(client);
             var json = Db.DataStore.Tracking.SerializeToJson();
+            var state = JsonConvert.DeserializeObject(json, typeof(TrackingState));
         }
         
         [TestMethod]

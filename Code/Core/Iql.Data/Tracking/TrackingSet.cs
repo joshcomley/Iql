@@ -247,7 +247,7 @@ namespace Iql.Data.Tracking
                 EntitiesByRemoteKey.Remove(keyString);
                 if (mapping.State != null)
                 {
-                    RemoveEntity((T) mapping.State.Entity);
+                    RemoveEntity((T)mapping.State.Entity);
                 }
             }
         }
@@ -758,7 +758,7 @@ namespace Iql.Data.Tracking
                 }
                 deletions.Add(new DeleteEntityOperation<T>(
                     key.Value.Key,
-                    (T) key.Value.State.Entity,
+                    (T)key.Value.State.Entity,
                     DataContext));
             }
             foreach (var entity in EntitiesByObject.Keys)
@@ -805,7 +805,7 @@ namespace Iql.Data.Tracking
             var state = FindMatchingEntityState(entity);
             if (state != null)
             {
-                AbandonChangesForEntityState((IEntityState<T>) state);
+                AbandonChangesForEntityState((IEntityState<T>)state);
             }
         }
 
@@ -822,7 +822,7 @@ namespace Iql.Data.Tracking
             var allStates = new List<IEntityState<T>>();
             foreach (var entity in EntitiesByObject)
             {
-                allStates.Add((IEntityState<T>) entity.Value); 
+                allStates.Add((IEntityState<T>)entity.Value);
             }
             AbandonChangesForEntityStates(allStates);
         }
@@ -835,7 +835,7 @@ namespace Iql.Data.Tracking
                 var state = FindMatchingEntityState(entity);
                 if (state != null)
                 {
-                    allStates.Add((IEntityState<T>) state);
+                    allStates.Add((IEntityState<T>)state);
                 }
             }
 
@@ -891,7 +891,7 @@ namespace Iql.Data.Tracking
         {
             if (state.Entity is T)
             {
-                AbandonChangesForEntityState((IEntityState<T>) state);
+                AbandonChangesForEntityState((IEntityState<T>)state);
             }
         }
 
@@ -902,14 +902,24 @@ namespace Iql.Data.Tracking
 
         public object PrepareForJson()
         {
+            var allStates = EntitiesByKey.Values
+                .Concat(EntitiesByObject.Values)
+                .Concat(EntitiesByPersistenceKey.Values)
+                .Distinct();
             return new
             {
                 Type = EntityConfiguration.Name,
-                EntitiesByKey = EntitiesByKey.Values.Select(_=>_.PrepareForJson()),
-                EntitiesByObject = EntitiesByObject.Values.Select(_=>_.PrepareForJson()),
-                EntitiesByPersistenceKey = EntitiesByPersistenceKey.Values.Select(_=>_.PrepareForJson()),
-                EntitiesByRemoteKey = EntitiesByRemoteKey.Values.Select(_=>_.PrepareForJson()),
+                EntityStates = WithChanges(allStates).Select(_=>_.PrepareForJson())
+                //EntitiesByKey = WithChanges(EntitiesByKey.Values).Select(_ => _.PrepareForJson()),
+                //EntitiesByObject = WithChanges(EntitiesByObject.Values).Select(_ => _.PrepareForJson()),
+                //EntitiesByPersistenceKey = WithChanges(EntitiesByPersistenceKey.Values).Select(_ => _.PrepareForJson()),
+                //EntitiesByRemoteKey = EntitiesByRemoteKey.Values.Select(_ => _.PrepareForJson()),
             };
+        }
+
+        private IEnumerable<IEntityStateBase> WithChanges(IEnumerable<IEntityStateBase> entityStates)
+        {
+            return entityStates.Where(_ => _.IsNew || _.MarkedForAnyDeletion || _.GetChangedProperties().Length > 0);
         }
     }
 }
