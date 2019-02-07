@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Conversion;
+using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.DataStores;
@@ -14,13 +15,13 @@ namespace Iql.Data.Tracking
 {
     public class TrackingSetCollection : IJsonSerializable
     {
-        public IDataStore DataStore { get; }
+        public DataTracker DataTracker { get; }
         public bool TrackEntities { get; }
         public string Id { get; }
 
-        public TrackingSetCollection(IDataStore dataStore, bool trackEntities = true)
+        public TrackingSetCollection(DataTracker dataTracker, bool trackEntities = true)
         {
-            DataStore = dataStore;
+            DataTracker = dataTracker;
             TrackEntities = trackEntities;
             SetsMap = new Dictionary<string, ITrackingSet>();
             Sets = new List<ITrackingSet>();
@@ -35,11 +36,11 @@ namespace Iql.Data.Tracking
         {
             var count = 0;
             var flattened =
-                DataStore.DataContext.EntityConfigurationContext.FlattenDependencyGraph(entity,
+                DataTracker.EntityConfigurationBuilder.FlattenDependencyGraph(entity,
                     entityType);
             foreach (var item in flattened)
             {
-                var tracking = DataStore.Tracking.TrackingSetByType(item.Key);
+                var tracking = TrackingSetByType(item.Key);
                 foreach (var dependency in item.Value)
                 {
                     if (dependency == entity)
@@ -107,7 +108,7 @@ namespace Iql.Data.Tracking
             var type = typeof(T);
             if (!SetsMap.ContainsKey(type.Name))
             {
-                var set = new TrackingSet<T>(DataStore, this);
+                var set = new TrackingSet<T>(DataTracker);
                 SetsMap[type.Name] = set;
                 Sets.Add(set);
             }

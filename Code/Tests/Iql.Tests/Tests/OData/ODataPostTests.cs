@@ -29,7 +29,7 @@ namespace Iql.Tests.Tests.OData
                         db.Clients.Add(client);
                         client.Name = "New client 123";
                         var result = await db.SaveChangesAsync();
-                        var state = db.DataStore.Tracking.TrackingSet<HazClient>().FindMatchingEntityState(client);
+                        var state = db.Tracking.TrackingSet<HazClient>().FindMatchingEntityState(client);
                         Assert.AreEqual(false, result.Success);
                         Assert.AreEqual(true, state.IsNew);
                         Assert.AreEqual(1, result.Results.Count);
@@ -59,7 +59,7 @@ namespace Iql.Tests.Tests.OData
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
                 var request = log.Posts.Pop().Single();
-                var changes = db.DataStore.Tracking.GetUpdates();
+                var changes = db.Tracking.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
                 var body = request.Body.Body;
@@ -96,7 +96,7 @@ namespace Iql.Tests.Tests.OData
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
                 var request = log.Posts.Pop().Single();
-                var changes = db.DataStore.Tracking.GetUpdates();
+                var changes = db.Tracking.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:28000/odata/People", request.Uri);
                 var body = request.Body.Body;
@@ -135,7 +135,7 @@ namespace Iql.Tests.Tests.OData
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
                 var request = log.Posts.Pop().Single();
-                var changes = db.DataStore.Tracking.GetUpdates();
+                var changes = db.Tracking.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:28000/odata/Sites", request.Uri);
                 var body = request.Body.Body;

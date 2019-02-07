@@ -23,22 +23,22 @@ namespace Iql.Data
     }
     public static class Cloner
     {
-        public static T CloneAs<T>(this T obj, IDataContext dataContext, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
+        public static T CloneAs<T>(this T obj, EntityConfigurationBuilder entityConfigurationBuilder, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
             where T : class
         {
-            return (T)obj.Clone(dataContext, entityType, cloneRelationships, cloneMap, mergeMap);
+            return (T)obj.Clone(entityConfigurationBuilder, entityType, cloneRelationships, cloneMap, mergeMap);
         }
 
-        public static object Clone(this object obj, IDataContext dataContext, Type entityType,
+        public static object Clone(this object obj, EntityConfigurationBuilder entityConfigurationBuilder, Type entityType,
             RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
         {
             var clonedObjects = cloneMap ?? new Dictionary<object, object>();
-            return obj.CloneInternal(dataContext, entityType, cloneRelationships, clonedObjects, mergeMap);
+            return obj.CloneInternal(entityConfigurationBuilder, entityType, cloneRelationships, clonedObjects, mergeMap);
         }
 
         private static List<T> CloneList<T>(
             this List<T> list, 
-            IDataContext dataContext, 
+            EntityConfigurationBuilder entityConfigurationBuilder, 
             Type entityType, 
             RelationshipCloneMode cloneRelationships,
             Dictionary<object, object> clonedObjects,
@@ -49,7 +49,7 @@ namespace Iql.Data
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < list.Count; i++)
             {
-                var clonedItem = list[i].CloneInternal(dataContext, entityType, cloneRelationships, clonedObjects, mergeMap);
+                var clonedItem = list[i].CloneInternal(entityConfigurationBuilder, entityType, cloneRelationships, clonedObjects, mergeMap);
                 newList.Add((T)clonedItem);
             }
             return newList;
@@ -66,7 +66,7 @@ namespace Iql.Data
 
         private static object CloneInternal(
             this object obj, 
-            IDataContext dataContext, 
+            EntityConfigurationBuilder entityConfigurationBuilder, 
             Type entityType, 
             RelationshipCloneMode cloneRelationships, 
             Dictionary<object, object> clonedObjects,
@@ -94,7 +94,7 @@ namespace Iql.Data
                         new []
                         {
                             obj,
-                            dataContext,
+                            entityConfigurationBuilder,
                             entityType,
                             cloneRelationships,
                             clonedObjects,
@@ -127,7 +127,7 @@ namespace Iql.Data
                 }
             }
             clonedObjects.Add(obj, clone);
-            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
+            var entityConfiguration = entityConfigurationBuilder.GetEntityByType(entityType);
             for (var i = 0; i < entityConfiguration.Properties.Count; i++)
             {
                 var property = entityConfiguration.Properties[i];
@@ -149,8 +149,8 @@ namespace Iql.Data
                                 clone.SetPropertyValue(
                                     property,
                                     cloneRelationships == RelationshipCloneMode.KeysOnly
-                                        ? CloneKeysOnly(dataContext, property, value)
-                                        : value.CloneInternal(dataContext, property.TypeDefinition.ElementType, cloneRelationships,
+                                        ? CloneKeysOnly(entityConfigurationBuilder, property, value)
+                                        : value.CloneInternal(entityConfigurationBuilder, property.TypeDefinition.ElementType, cloneRelationships,
                                             clonedObjects, mergeMap)
                                 );
                             }
@@ -173,8 +173,8 @@ namespace Iql.Data
                                     {
                                         var item = oldValue[j];
                                         newValue.Add(cloneRelationships == RelationshipCloneMode.KeysOnly
-                                            ? CloneKeysOnly(dataContext, property, item)
-                                            : item.CloneInternal(dataContext, property.TypeDefinition.ElementType,
+                                            ? CloneKeysOnly(entityConfigurationBuilder, property, item)
+                                            : item.CloneInternal(entityConfigurationBuilder, property.TypeDefinition.ElementType,
                                                 cloneRelationships,
                                                 clonedObjects,
                                                 mergeMap));
@@ -199,11 +199,11 @@ namespace Iql.Data
             //#endif
         }
 
-        private static object CloneKeysOnly(IDataContext dataContext, IProperty property, object value)
+        private static object CloneKeysOnly(EntityConfigurationBuilder entityConfigurationBuilder, IProperty property, object value)
         {
             var newValue = Activator.CreateInstance(property.Relationship.OtherEnd.Type);
             var relationshipTypeConfiguration =
-                dataContext.EntityConfigurationContext.GetEntityByType(property.Relationship
+                entityConfigurationBuilder.GetEntityByType(property.Relationship
                     .OtherEnd.Type);
             for (var i = 0; i < relationshipTypeConfiguration.Properties.Count; i++)
             {

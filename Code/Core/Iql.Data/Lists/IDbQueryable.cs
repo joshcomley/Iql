@@ -7,6 +7,7 @@ using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Search;
 using Iql.Data.Tracking;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Queryable;
@@ -16,7 +17,7 @@ namespace Iql.Data.Lists
     public interface IDbQueryable : IQueryableBase
     {
         void DeleteEntity(object entity);
-        void AddEntity(object entity);
+        IEntityStateBase Add(object entity);
         Task<object> GetWithAsync(object key);
         Task<object> GetWithKeyAsync(object key);
         Task<IList> GetWithKeysAsync(IEnumerable<object> keys);

@@ -14,8 +14,9 @@ namespace Iql.Tests.Context
             set => OfflinableDataStore.IsOffline = value;
         }
 
-        public OfflineAppDbContext() : base(new OfflinableInMemoryDataStore(new InMemoryDataStore()))
+        public OfflineAppDbContext()
         {
+            DataStore = new OfflinableInMemoryDataStore(EntityConfigurationContext, new InMemoryDataStore(EntityConfigurationContext));
             // Load up with data
             var clients = OfflinableDataStore.GetDataSource<Client>();
             clients.Add(new Client

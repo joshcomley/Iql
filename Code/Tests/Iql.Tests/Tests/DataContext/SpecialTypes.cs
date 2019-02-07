@@ -86,11 +86,11 @@ namespace Iql.Tests.Tests.DataContext
             var firstLocal = await Db.CustomReportsManager.Set.GetWithKeyAsync(new Guid("9cac910f-6b7c-46b8-9de6-d4373a0063d8"));
             Assert.AreEqual("abc", firstLocal.Name);
             firstLocal.Name = "abc2";
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
             Assert.AreEqual("abc2", firstRemote.MyName);
             Db.CustomReportsManager.Set.Delete(firstLocal);

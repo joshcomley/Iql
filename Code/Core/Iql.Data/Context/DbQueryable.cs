@@ -49,8 +49,6 @@ namespace Iql.Data.Context
             EntityConfiguration = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
-            TrackingSetCollection = dataContext?.DataStore?.Tracking;
-            //TrackingSet = TrackingSetCollection.GetSet<T>();
         }
 
         public override async Task<DbQueryable<T>> ApplyRelationshipFiltersAsync<TProperty>(IProperty relatedProperty, TProperty entity)
@@ -89,7 +87,7 @@ namespace Iql.Data.Context
         }
 
         public Func<IDataStore> DataStoreGetter { get; set; }
-        public TrackingSetCollection TrackingSetCollection { get; }
+        public TrackingSetCollection TrackingSetCollection => DataContext?.Tracking;
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
@@ -622,7 +620,7 @@ namespace Iql.Data.Context
                     new object[] { dbSet, specialTypeMap, getDataOperation },
                     mappedType);
             }
-            return await DataContext.DataStore.GetAsync(getDataOperation);
+            return await DataContext.GetAsync(getDataOperation);
         }
 
         private async Task<GetDataResult<T>> MappedToListWithResponseAsync<TMap>(
@@ -637,7 +635,7 @@ namespace Iql.Data.Context
                 queryable = (global::Iql.Queryable.IQueryable<TMap>)queryable.Then(operation);
             }
 
-            var getDataResult = await DataContext.DataStore.GetAsync(new GetDataOperation<TMap>(queryable, DataContext));
+            var getDataResult = await DataContext.GetAsync(new GetDataOperation<TMap>(queryable, DataContext));
             var list = new List<T>();
             var entityConfiguration = EntityConfiguration;//DataContext.EntityConfigurationContext.EntityType<T>();
             for (var i = 0; i < getDataResult.Data.Count; i++)
@@ -663,7 +661,7 @@ namespace Iql.Data.Context
             var flattenedGetDataResult = new FlattenedGetDataResult<T>(flattened, getOperation, getDataResult.Success);
             flattenedGetDataResult.Root = list;
             flattenedGetDataResult.Queryable = this;
-            var dbList = (DataContext.DataStore as DataStore).TrackGetDataResult(
+            var dbList = (DataContext as DataContext).TrackGetDataResult(
                 flattenedGetDataResult);
             var result = new GetDataResult<T>(dbList, getOperation, getDataResult.Success);
             return result;
@@ -671,7 +669,7 @@ namespace Iql.Data.Context
 
         public EntityState<T> Add(T entity)
         {
-            return DataContext.DataStore.Add(entity);
+            return (EntityState<T>) DataContext.AddEntity(entity);
         }
 
         //public UpdateEntityResult<T> Update(T entity)
@@ -682,7 +680,7 @@ namespace Iql.Data.Context
 
         public EntityState<T> Delete(T entity)
         {
-            return DataContext.DataStore.Delete(entity);
+            return (EntityState<T>) DataContext.DeleteEntity(entity);
         }
 
         private DbQueryable<T> UseWhereIfExists(Expression<Func<T, bool>> expression
@@ -941,6 +939,11 @@ namespace Iql.Data.Context
         public override void AddEntity(object entity)
         {
             Add((T)entity);
+        }
+
+        IEntityStateBase IDbQueryable.Add(object entity)
+        {
+            return Add((T) entity);
         }
 
         public override void DeleteEntity(object entity)

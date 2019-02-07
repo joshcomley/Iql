@@ -61,7 +61,6 @@ namespace Iql.Data.DataStores.InMemory
         }
 
         public InMemoryDataStore DataStore { get; }
-        public IDataContext DataContext => DataStore.DataContext;
         public IInMemoryContext Parent { get; }
 
         public InMemoryContext(InMemoryDataStore dataStore, IInMemoryContext parent = null)
@@ -82,7 +81,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public InMemoryContext<TEntity> Where(Expression<Func<TEntity, bool>> predicate, IqlExpression actionFilter)
         {
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity));
+            var entityConfiguration = DataStore.EntityConfigurationBuilder.GetEntityByType(typeof(TEntity));
             RelationshipMatches matches = null;
             if (actionFilter != null)
             {
@@ -131,7 +130,7 @@ namespace Iql.Data.DataStores.InMemory
         public InMemoryContext<TEntity> Expand(IqlExpandExpression expandExpression)
         {
             var path = IqlPropertyPath.FromPropertyExpression(
-                DataContext.EntityConfigurationContext.EntityType<TEntity>(),
+                DataStore.EntityConfigurationBuilder.EntityType<TEntity>(),
                 expandExpression.NavigationProperty);
             var otherSideType = path.Property.Relationship.OtherEnd.EntityConfiguration.Type;
             return (InMemoryContext<TEntity>)ExpandInternalMethod.InvokeGeneric(

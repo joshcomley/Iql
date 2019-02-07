@@ -92,11 +92,11 @@ namespace Iql.Tests.Tests.Validation
             personTypeMap.TypeId = 0;
             var db = new AppDbContext();
             db.PersonTypesMap.Add(personTypeMap);
-            var changes = db.DataStore.GetChanges();
+            var changes = db.GetChanges();
             //Assert.AreEqual(1, changes.Length);
             var saveChangesResult = await db.SaveChangesAsync();
             Assert.IsFalse(saveChangesResult.Success);
-            changes = db.DataStore.GetChanges();
+            changes = db.GetChanges();
             Assert.AreEqual(1, changes.Length);
             AssertPropertyValidationFailures(
                 saveChangesResult,

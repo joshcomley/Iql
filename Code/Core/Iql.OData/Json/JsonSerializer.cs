@@ -27,14 +27,14 @@ namespace Iql.OData.Json
         }
 
         public static string Serialize(object entity,
-            IDataContext dataContext,
+            IEntityConfigurationBuilder entityConfigurationBuilder,
             params IPropertyState[] properties)
         {
-            var obj = SerializeInternal(dataContext, entity, properties);
+            var obj = SerializeInternal(entityConfigurationBuilder, entity, properties);
             return obj.ToString();
         }
 
-        private static JObject SerializeInternal(IDataContext dataContext, object entity, IEnumerable<IPropertyState> properties)
+        private static JObject SerializeInternal(IEntityConfigurationBuilder entityConfigurationBuilder, object entity, IEnumerable<IPropertyState> properties)
         {
             var obj = new JObject();
             if (properties == null)
@@ -44,13 +44,10 @@ namespace Iql.OData.Json
             var propertyChanges = properties as PropertyState[] ?? properties.ToArray();
             if (!propertyChanges.Any())
             {
-                if (dataContext.IsEntityNew(entity
-#if TypeScript
-, entity.GetType()
-#endif
-                    ) != false)
+                var state = DataContext.FindEntityState(entity);
+                if (state?.IsNew != false)
                 {
-                    propertyChanges = dataContext.EntityNonNullProperties(entity).ToArray();
+                    propertyChanges = entityConfigurationBuilder.EntityNonNullProperties(entity).ToArray();
                 }
             }
             foreach (var property in propertyChanges)
@@ -177,7 +174,7 @@ namespace Iql.OData.Json
                     }
                 }
             }
-            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var entityConfiguration = entityConfigurationBuilder.GetEntityByType(entity.GetType());
             foreach (var key in entityConfiguration.Key.Properties)
             {
                 if (propertyChanges.Any(p => p.Property.Name == key.Name))

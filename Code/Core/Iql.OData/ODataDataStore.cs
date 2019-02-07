@@ -28,17 +28,13 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
-        public ODataDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
+        public ODataDataStore(EntityConfigurationBuilder entityConfigurationBuilder, IOfflineDataStore offlineDataStore = null) : base(entityConfigurationBuilder, offlineDataStore)
         {
             
         }
         private ODataConfiguration _configuration;
 
-        public ODataConfiguration Configuration
-        {
-            get => _configuration ?? DataContext?.GetConfiguration<ODataConfiguration>();
-            set => _configuration = value;
-        }
+        public ODataConfiguration Configuration { get; set; }
 
         public IHttpProvider GetHttp()
         {
@@ -64,10 +60,11 @@ namespace Iql.OData
                     var httpResult = await GetMethodHttpResult(methodType, uri, parameters);
                     var dataMethodResult = new DataMethodResult<TResult>(httpResult.Success);
                     var isCollectionResult = typeof(TResult).IsEnumerableType();
-                    if (DataContext.EntityConfigurationContext.IsEntityType(responseElementType))
+                    if (EntityConfigurationBuilder.IsEntityType(responseElementType))
                     {
                         var flattenedResponse = await ParseODataEntityResponseByTypeAsync(responseElementType, httpResult, isCollectionResult);
-                        var dbList = TrackGetDataResultByType(responseElementType, flattenedResponse);
+                        DataSetRetrieved.Emit(() => new DataSetRetrievedEvent(flattenedResponse));
+                        var dbList = flattenedResponse.ToDbList();
                         var list = dbList.ToList(responseElementType);
                         dataMethodResult.Data = (TResult)(isCollectionResult
                             ? list
@@ -133,9 +130,9 @@ namespace Iql.OData
                                 if (parameter.Value != null)
                                 {
                                     jobject[parameter.Name] =
-                                        DataContext.EntityConfigurationContext.GetEntityByType(parameter.ValueType) == null
+                                        EntityConfigurationBuilder.GetEntityByType(parameter.ValueType) == null
                                             ? JToken.FromObject(parameter.Value)
-                                            : JToken.Parse(JsonSerializer.Serialize(parameter.Value, DataContext, DataContext.EntityNonNullProperties(parameter.Value).ToArray()));
+                                            : JToken.Parse(JsonSerializer.Serialize(parameter.Value, EntityConfigurationBuilder, EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value).ToArray()));
                                 }
                                 else
                                 {
@@ -173,9 +170,9 @@ namespace Iql.OData
                     break;
                 case ODataMethodScope.Entity:
                     var bindingParameter = parameters.Single(p => p.Name == bindingParameterName);
-                    var entityState = DataContext.GetEntityState(bindingParameter.Value);
+                    var entityState = DataContext.FindEntityState(bindingParameter.Value);
                     var compositeKey = entityState == null
-                        ? DataContext.EntityConfigurationContext.GetEntityByType(entityType).GetCompositeKey(bindingParameter.Value)
+                        ? EntityConfigurationBuilder.GetEntityByType(entityType).GetCompositeKey(bindingParameter.Value)
                         : entityState.CurrentKey;
                     baseUri = ResolveEntityUriByType(compositeKey, bindingParameter.ValueType);
                     break;
@@ -248,7 +245,7 @@ namespace Iql.OData
         {
             result = result ?? new FlattenedGetDataResult<TEntity>(
                          new Dictionary<Type, IList>(),
-                         new GetDataOperation<TEntity>(null, DataContext),
+                         new GetDataOperation<TEntity>(null, null),
                          false);
             result.Success = httpResult.Success;
             if (!result.IsSuccessful())
@@ -259,7 +256,7 @@ namespace Iql.OData
             if (isCollection)
             {
                 var collectionResult = await GetODataCollectionResponseAsync<TEntity>(httpResult);
-                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraphs(
+                var flattened = EntityConfigurationBuilder.FlattenObjectGraphs(
                     typeof(TEntity),
                     collectionResult.Items);
                 result.Data = flattened;
@@ -270,7 +267,7 @@ namespace Iql.OData
             {
                 var oDataGetResult = await GetODataSingleResultAsync<TEntity>(httpResult);
                 //JsonConvert.DeserializeObject<TEntity>(httpResult.ResponseData);
-                var flattened = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+                var flattened = EntityConfigurationBuilder.FlattenObjectGraph(
                     oDataGetResult,
                     typeof(TEntity));
                 result.Data = flattened;
@@ -282,10 +279,10 @@ namespace Iql.OData
 
         private async Task<TResult> GetODataSingleResultAsync<TResult>(IHttpResult httpResult)
         {
-            var isValueResult = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TResult)) == null;
+            var isValueResult = EntityConfigurationBuilder.GetEntityByType(typeof(TResult)) == null;
             var json = await httpResult.GetResponseTextAsync();
             var odataResultRoot = JObject.Parse(json);
-            ParseObj(odataResultRoot, DataContext.EntityConfigurationContext.GetEntityByType(typeof(TResult)), false);
+            ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TResult)), false);
             var value = isValueResult ? odataResultRoot["value"] : odataResultRoot;
             var oDataGetResult =
                 value.ToObject<TResult>();
@@ -306,7 +303,7 @@ namespace Iql.OData
         {
             var json = await httpResult.GetResponseTextAsync();
             var odataResultRoot = JObject.Parse(json);
-            ParseObj(odataResultRoot, DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)), true);
+            ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true);
             var countToken = odataResultRoot["Count"];
             var count = countToken?.ToObject<int?>();
             var values = odataResultRoot["value"].ToObject<TEntity[]>();
@@ -387,13 +384,13 @@ namespace Iql.OData
             var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entitySetUri = Configuration.ResolveEntitySetUri<TEntity>();
-            var json = JsonSerializer.Serialize(operation.Operation.Entity, operation.Operation.DataContext);
+            var json = JsonSerializer.Serialize(operation.Operation.Entity, EntityConfigurationBuilder);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
             if (httpResult.Success)
             {
                 var odataResultRoot = JObject.Parse(responseData);
-                ParseObj(odataResultRoot, DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)), false);
+                ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), false);
                 operation.Result.RemoteEntity = odataResultRoot.ToObject<TEntity>();
             }
             operation.Result.Success = httpResult.Success;
@@ -415,7 +412,7 @@ namespace Iql.OData
                 properties.Add(property.Property.Name);
             }
 
-            var keys = DataContext.EntityConfigurationContext.EntityType<TEntity>().Key.Properties;
+            var keys = EntityConfigurationBuilder.EntityType<TEntity>().Key.Properties;
             for (var i = 0; i < keys.Length; i++)
             {
                 var key = keys[i];
@@ -424,7 +421,7 @@ namespace Iql.OData
 
             var json = JsonSerializer.Serialize(
                 operation.Operation.Entity,
-                DataContext,
+                EntityConfigurationBuilder,
                 changedProperties);
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
@@ -447,7 +444,7 @@ namespace Iql.OData
 
         public string ResolveEntityUri<TEntity>(TEntity entity) where TEntity : class
         {
-            var compositeKey = DataContext.GetEntityState(entity).KeyBeforeChanges();
+            var compositeKey = DataContext.FindEntityState(entity).KeyBeforeChanges();
             return ResolveEntityUriByType(compositeKey, typeof(TEntity));
         }
 
@@ -542,7 +539,7 @@ namespace Iql.OData
                                     var openBracketIndex = pathPart.IndexOf("[");
                                     pathPart = pathPart.Substring(0, pathPart.Length - 1);
                                     var propertyName = pathPart.Substring(0, openBracketIndex);
-                                    var property = DataContext.EntityConfigurationContext.EntityType<TEntity>()
+                                    var property = EntityConfigurationBuilder.EntityType<TEntity>()
                                         .FindProperty(propertyName);
                                     index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
                                     var relationship = FindRelationship(currentEntityType, property.Name);
@@ -591,7 +588,7 @@ namespace Iql.OData
                                 else
                                 {
                                     var propertyName = pathPart;
-                                    var property = DataContext.EntityConfigurationContext.EntityType<TEntity>()
+                                    var property = EntityConfigurationBuilder.EntityType<TEntity>()
                                         .FindProperty(propertyName);
                                     var relationship = FindRelationship(currentEntityType, property.Name);
                                     if (relationship != null)
@@ -644,7 +641,7 @@ namespace Iql.OData
 
         private IRelationshipDetail FindRelationship(Type entityType, string property)
         {
-            var entityConfiguration = DataContext.EntityConfigurationContext.GetEntityByType(entityType);
+            var entityConfiguration = EntityConfigurationBuilder.GetEntityByType(entityType);
             foreach (var relationship in entityConfiguration.Relationships)
             {
                 var end = relationship.Source.EntityConfiguration == entityConfiguration

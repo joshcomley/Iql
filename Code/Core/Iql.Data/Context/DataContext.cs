@@ -6,12 +6,17 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Extensions;
 using Iql.Data.Lists;
+using Iql.Data.Operations;
+using Iql.Data.Paging;
+using Iql.Data.Queryable;
 using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
@@ -23,15 +28,92 @@ using Iql.Entities.Validation;
 using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
 using Iql.Parsing;
+using Iql.Queryable.Operations;
 
 namespace Iql.Data.Context
 {
     public class DataContext : IDataContext
     {
+        public TrackingSetCollection Tracking => DataTracker.Tracking;
+        public static MethodInfo AddInternalMethod { get; set; }
+        public static MethodInfo DeleteInternalMethod { get; set; }
+
+        static DataContext()
+        {
+            AddInternalMethod = typeof(DataStore)
+                .GetMethod(nameof(AddInternal),
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+            DeleteInternalMethod = typeof(DataStore)
+                .GetMethod(nameof(DeleteInternal),
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+#if !TypeScript
+        public IEntityStateBase Add(object entity)
+        {
+            return (IEntityStateBase)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
+        }
+#endif
+
+        public virtual EntityState<TEntity> Add<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            var entityType = typeof(TEntity);
+            if (entityType == typeof(object))
+            {
+                entityType = entity.GetType();
+            }
+            return (EntityState<TEntity>)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
+        }
+
+        private IEntityStateBase AddInternal<T>(T entity)
+            where T : class
+        {
+            var rootTrackingSet = DataTracker.Tracking.TrackingSet<T>();
+            if (rootTrackingSet.IsMatchingEntityTracked(entity))
+            {
+                var state = rootTrackingSet.FindMatchingEntityState(entity);
+                state.MarkedForDeletion = false;
+                return state;
+            }
+            var entityType = typeof(T);
+            var flattened = EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
+            IEntityStateBase entityState = null;
+            foreach (var group in flattened)
+            {
+                foreach (var item in group.Value)
+                {
+                    var thisTrackingSet = DataTracker.Tracking.TrackingSetByType(group.Key);
+                    var state = thisTrackingSet.TrackEntity(item);
+                    state.UnmarkForDeletion();
+                    if (item == (object)entity)
+                    {
+                        entityState = state;
+                        if (entityState.Entity != (object)entity)
+                        {
+                            throw new Exception("An item with the same key is already being tracked.");
+                        }
+                    }
+                }
+            }
+            DataTracker.RelationshipObserver.ObserveAll(flattened);
+            return (EntityState<T>)entityState;
+        }
+
+
+//#if !TypeScript
+//        public IEntityStateBase Delete(object entity)
+//        {
+//            return (IEntityStateBase)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
+//        }
+//#endif
+
         private readonly Dictionary<string, object> _configurations =
             new Dictionary<string, object>();
         private static readonly Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders
             = new Dictionary<Type, EntityConfigurationBuilder>();
+
+        private SaveChangesApplicator SaveChangesApplicator =>
+            _saveChangesApplicator = _saveChangesApplicator ?? new SaveChangesApplicator(this);
 
         public static Type FindDataContextTypeForEntityType(Type entityType)
         {
@@ -86,16 +168,21 @@ namespace Iql.Data.Context
             return tracker?.FindMatchingEntityState(entity);
         }
 
+        private DataTracker _dataTracker;
+        public DataTracker DataTracker
+        {
+            get { return _dataTracker = _dataTracker ?? new DataTracker(EntityConfigurationContext, true); }
+        }
+        private DataTracker _offlineDataTracker;
+        public DataTracker OfflineDataTracker =>
+                _offlineDataTracker = _offlineDataTracker ?? new DataTracker(EntityConfigurationContext, true, true);
+
         public DataContext(
             IDataStore dataStore = null,
             EvaluateContext evaluateContext = null
         )
         {
             DataStore = dataStore;
-            if (DataStore != null)
-            {
-                DataStore.DataContext = this;
-            }
             EvaluateContext = evaluateContext;
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
@@ -189,22 +276,7 @@ namespace Iql.Data.Context
             }
         }
 
-        public IDataStore DataStore
-        {
-            get => _dataStore;
-            set
-            {
-                _dataStore = value;
-                if (_dataStore != null)
-                {
-                    _dataStore.DataContext = this;
-                    if (_dataStore.OfflineDataStore != null)
-                    {
-                        _dataStore.OfflineDataStore.DataContext = this;
-                    }
-                }
-            }
-        }
+        public IDataStore DataStore { get; set; }
 
         public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
@@ -220,7 +292,7 @@ namespace Iql.Data.Context
         public IEntityStateBase GetEntityState(object entity, Type entityType = null)
         {
             entityType = entityType ?? entity.GetType();
-            return DataStore.Tracking.TrackingSetByType(entityType).FindMatchingEntityState(entity);
+            return DataTracker.Tracking.TrackingSetByType(entityType).FindMatchingEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -406,7 +478,6 @@ namespace Iql.Data.Context
         }
 
         private bool _initialized;
-        private IDataStore _dataStore;
 
         public DbSet<T, TKey> AsDbSet<T, TKey>() where T : class
         {
@@ -518,16 +589,16 @@ namespace Iql.Data.Context
 
         public void AbandonChanges()
         {
-            for (var i = 0; i < DataStore.Tracking.Sets.Count; i++)
+            for (var i = 0; i < DataTracker.Tracking.Sets.Count; i++)
             {
-                var set = DataStore.Tracking.Sets[i];
+                var set = DataTracker.Tracking.Sets[i];
                 set.AbandonChanges();
             }
         }
 
         public void AbandonChangesForEntity(object entity)
         {
-            var set = DataStore.Tracking.TrackingSetByType(entity.GetType());
+            var set = DataTracker.Tracking.TrackingSetByType(entity.GetType());
             set?.AbandonChangesForEntity(entity);
         }
 
@@ -541,7 +612,7 @@ namespace Iql.Data.Context
 
         public void AbandonChangesForEntityState(IEntityStateBase state)
         {
-            var set = DataStore.Tracking.TrackingSetByType(state.EntityType);
+            var set = DataTracker.Tracking.TrackingSetByType(state.EntityType);
             set.AbandonChangesForEntityState(state);
         }
 
@@ -555,7 +626,42 @@ namespace Iql.Data.Context
 
         public async Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null)
         {
-            return await DataStore.SaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
+            return await ApplySaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
+        }
+
+        public virtual async Task<SaveChangesResult> ApplySaveChangesAsync(
+            SaveChangesOperation operation)
+        {
+            // Sets could be added to whilst detecting changes
+            // so get a copy now
+            //var observable = this.Observable<SaveChangesResult>();
+            var saveChangesResult = new SaveChangesResult(true);
+            var queue = GetChanges(operation.Entities, operation.Properties);
+            foreach (var queuedOperation in queue)
+            {
+                var task = GetType()
+                    .GetMethod(nameof(PerformAsync))
+                    .InvokeGeneric(this, new object[]
+                        {
+                            queuedOperation, saveChangesResult
+                        },
+                        queuedOperation.Operation.EntityType) as Task;
+                await task;
+                if (!queuedOperation.Result.Success)
+                {
+                    saveChangesResult.Success = false;
+                }
+            }
+
+            return saveChangesResult;
+        }
+
+        public virtual Task PerformAsync<TEntity>(
+            IQueuedOperation operation,
+            SaveChangesResult saveChangesResult) where TEntity : class
+        {
+            return new SaveChangesApplicator(this).PerformAsync<TEntity>(
+                operation, saveChangesResult);
         }
 
         public bool IsIdMatch(object left, object right, Type type)
@@ -574,7 +680,7 @@ namespace Iql.Data.Context
             return EntityConfigurationContext.GetEntityByType(type).EntityHasKey(left, key);
         }
 
-        public void DeleteEntity(object entity
+        public IEntityStateBase DeleteEntity(object entity
 #if TypeScript
             , Type entityType = null
 #endif
@@ -585,10 +691,10 @@ namespace Iql.Data.Context
 #else
             entityType = entityType ?? entity.GetType();
 #endif
-            AsDbSetByType(entityType).DeleteEntity(entity);
+            return (IEntityStateBase)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
         }
 
-        public void CascadeDeleteEntity(object entity,
+        public IEntityStateBase CascadeDeleteEntity(object entity,
             object cascadedFromEntity,
             IRelationship cascadedFromRelationship
 #if TypeScript
@@ -601,17 +707,17 @@ namespace Iql.Data.Context
             var entityType = entity.GetType();
             var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
-            var entityState = DataStore.Tracking.TrackingSetByType(entityType)
+            var entityState = DataTracker.Tracking.TrackingSetByType(entityType)
                 .FindMatchingEntityState(entity);
             entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
-            DeleteEntity(entity
+            return DeleteEntity(entity
 #if TypeScript
                 , entityType
 #endif
                 );
         }
 
-        public void AddEntity(object entity
+        public IEntityStateBase AddEntity(object entity
 #if TypeScript
             , Type entityType = null
 #endif
@@ -625,7 +731,7 @@ namespace Iql.Data.Context
             {
                 entityType = entity.GetType();
             }
-            AsDbSetByType(entityType).AddEntity(entity);
+            return AsDbSetByType(entityType).Add(entity);
         }
 
         public async Task<T> RefreshEntity<T>(T entity
@@ -834,7 +940,7 @@ namespace Iql.Data.Context
 
         public bool IsTracked(object entity)
         {
-            return DataStore.Tracking.IsTracked(entity);
+            return DataTracker.Tracking.IsTracked(entity);
         }
 
         private IqlServiceProvider _serviceProvider;
@@ -865,6 +971,7 @@ namespace Iql.Data.Context
 
         private MethodInfo _validateEntityPropertyInternalAsyncMethod;
         private MethodInfo _validateEntityInternalAsyncMethod;
+        private SaveChangesApplicator _saveChangesApplicator;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {
@@ -873,24 +980,24 @@ namespace Iql.Data.Context
                   BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        public IQueuedOperation[] GetOfflineChanges(object[] entities = null)
+        public IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
         {
-            if (DataStore.OfflineDataTracker != null)
+            if (OfflineDataTracker != null)
             {
-                return DataStore.OfflineDataTracker.Tracking.GetChanges().ToArray();
+                return OfflineDataTracker.Tracking.GetChanges(entities, properties).ToArray();
             }
 
             return new IQueuedOperation[] { };
         }
 
-        public IQueuedOperation[] GetChanges(object[] entities = null)
+        public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return DataStore.GetChanges(entities);
+            return DataTracker.Tracking.GetChanges(entities, properties).ToArray();
         }
 
-        public IQueuedOperation[] GetUpdates(object[] entities = null)
+        public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return DataStore.GetUpdates(entities);
+            return DataTracker.Tracking.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)
@@ -915,7 +1022,7 @@ namespace Iql.Data.Context
             {
                 if (clone)
                 {
-                    entity = (T) entity.Clone(this, entityType, RelationshipCloneMode.KeysOnly);
+                    entity = (T) entity.Clone(EntityConfigurationContext, entityType, RelationshipCloneMode.KeysOnly);
                 }
                 else
                 {
@@ -1248,9 +1355,222 @@ namespace Iql.Data.Context
             return false;
         }
 
+
+        public virtual async Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
+            where TEntity : class
+        {
+            if (!operation.Queryable.HasDefaults)
+            {
+                var getConfiguration = GetConfiguration<EntityDefaultQueryConfiguration>();
+                if (getConfiguration == null)
+                {
+                    getConfiguration = new EntityDefaultQueryConfiguration();
+                    RegisterConfiguration(getConfiguration);
+                }
+
+                var queryableGetter = getConfiguration.GetQueryable<TEntity>();
+                if (queryableGetter != null)
+                {
+                    var queryable = queryableGetter() as global::Iql.Queryable.IQueryable<TEntity>;
+                    queryable.Operations.AddRange(operation.Queryable.Operations);
+                    operation.Queryable = queryable;
+                }
+
+                if (getConfiguration.AlwaysIncludeCount)
+                {
+                    var countOperationCount = operation.Queryable.Operations.Count(o => o is IncludeCountOperation);
+                    if (countOperationCount == 0)
+                    {
+                        operation.Queryable.Operations.Add(new IncludeCountOperation());
+                    }
+                }
+
+                operation.Queryable.HasDefaults = true;
+            }
+
+            var listenConfiguration = GetConfiguration<DataContextEventsConfiguration>();
+            if (listenConfiguration != null && listenConfiguration.GetBeginListeners != null)
+            {
+                foreach (var listener in listenConfiguration.GetBeginListeners)
+                {
+                    listener(operation);
+                }
+            }
+
+            var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
+            // perform get and set up tracking on the objects
+            var queuedGetDataOperation = new QueuedGetDataOperation<TEntity>(
+                operation,
+                response);
+            await DataStore.PerformGetAsync(queuedGetDataOperation);
+
+            if (response.RequestStatus == RequestStatus.Offline)
+            {
+                // Magic happens here...
+                if (DataStore.OfflineDataStore != null)
+                {
+                    await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
+                }
+            }
+            else
+            {
+                DataStore.OfflineDataStore?.SynchroniseData(response.Data);
+                // Update "offline" repository with these results
+            }
+
+            // Clone the queryable so any changes made in the application code
+            // don't trickle down to our result
+            response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
+
+            var dbList = TrackGetDataResult(response);
+
+            var getDataResult =
+                new GetDataResult<TEntity>(dbList, operation, response.IsSuccessful())
+                {
+                    TotalCount = response.TotalCount
+                };
+
+            ApplyPaging(dbList, response);
+
+            return getDataResult;
+        }
+
+        private static void ApplyPaging<TEntity>(DbList<TEntity> dbList, FlattenedGetDataResult<TEntity> response) where TEntity : class
+        {
+            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            if (response.TotalCount.HasValue && dbList.Count != 0)
+            {
+                var skipOperations = response.Queryable.Operations.Where(o => o is SkipOperation);
+                var skippedSoFar = skipOperations.Sum(o => (o as SkipOperation).Skip);
+                int pageSize;
+                var totalCount = response.TotalCount.Value;
+                var page = 0;
+                if (skippedSoFar == 0)
+                {
+                    pageSize = dbList.Count;
+                }
+                else
+                {
+                    pageSize = (skipOperations.Last() as SkipOperation).Skip;
+                    //if (skippedSoFar + response.Data.Count == totalCount)
+                    //{
+                    //    // We're on the last page
+                    //}
+                    //else
+                    //{
+                    //    pageSize = skippedSoFar / response.Data.Count;
+                    //}
+                }
+
+                if (pageSize > 0)
+                {
+                    page = skippedSoFar / pageSize;
+                }
+
+                var pageCount = 0;
+                var i = totalCount;
+                while (i > 0)
+                {
+                    pageCount++;
+                    i -= pageSize;
+                }
+
+                dbList.PagingInfo = new PagingInfo(skippedSoFar, totalCount, pageSize, page, pageCount);
+            }
+        }
+        public virtual EntityState<TEntity> Delete<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            var entityType = typeof(TEntity);
+            if (entityType == typeof(object))
+            {
+                entityType = entity.GetType();
+            }
+            return (EntityState<TEntity>)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
+        }
+
+        private EntityState<T> DeleteInternal<T>(T entity)
+            where T : class
+        {
+            var trackingSet = DataTracker.Tracking.TrackingSet<T>();
+            trackingSet.MarkForDelete(entity);
+            DataTracker.RelationshipObserver.DeleteRelationships(entity, typeof(T));
+            var entityState = (EntityState<T>)trackingSet.FindMatchingEntityState(entity);
+            return entityState;
+        }
         public static bool IsEntityTracked(object entity)
         {
             return FindDataContextForEntity(entity) != null;
+        }
+
+        public static IEntityStateBase FindEntityState(object entity)
+        {
+            var dataContext = FindDataContextForEntity(entity);
+            return dataContext?.GetEntityState(entity);
+        }
+
+
+        public DbList<TEntity> TrackGetDataResult<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
+        {
+            var dbList = new DbList<TEntity>();
+            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            // Flatten before we merge because the merge will update the result data set with
+            // tracked data
+            if (response.IsSuccessful())
+            {
+                var trackResults = dbList.SourceQueryable != null &&
+                                   TrackEntities;
+                if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
+                {
+                    trackResults = dbList.SourceQueryable.TrackEntities.Value;
+                }
+                SaveChangesApplicator.ForAllDataTrackers(tracker =>
+                {
+                    if (tracker == DataTracker)
+                    {
+                        if (!trackResults)
+                        {
+                            tracker = new DataTracker(EntityConfigurationContext, false);
+                        }
+                        response.Root = tracker.TrackResults(response.Data, response.Root);
+                    }
+                    else if (tracker == OfflineDataTracker)
+                    {
+                        foreach (var entityType in response.Data)
+                        {
+                            foreach (var entity in entityType.Value)
+                            {
+                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                trackingSet.TrackEntity(
+                                    entity.Clone(EntityConfigurationContext, entityType.Key, RelationshipCloneMode.KeysOnly), entity,
+                                    isNew: false, onlyMergeWithExisting: false);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var entityType in response.Data)
+                        {
+                            foreach (var entity in entityType.Value)
+                            {
+                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                if (trackingSet.IsMatchingEntityTracked(entity))
+                                {
+                                    var state = trackingSet.FindMatchingEntityState(entity);
+                                    trackingSet.TrackEntity(state.Entity, entity, isNew: false, onlyMergeWithExisting: true);
+                                    state.Reset();
+                                }
+                            }
+                        }
+                    }
+                });
+                if (response.Root != null)
+                {
+                    dbList.AddRange(response.Root);
+                }
+            }
+
+            return dbList;
         }
     }
 }

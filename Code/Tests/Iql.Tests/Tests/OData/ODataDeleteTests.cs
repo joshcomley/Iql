@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(2, allCustomReportsLocal.Count);
             await RequestLog.LogSessionAsync(async log =>
             {
-                var db = new AppDbContext(new ODataDataStore());
+                var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
                 var customReport =
                     await db.CustomReportsManager.Set.GetWithKeyAsync(new Guid("571202dc-057f-49b8-8681-8450695fc079"));
                 db.DeleteEntity(customReport);

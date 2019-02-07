@@ -68,7 +68,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 27, RiskAssessmentId = 4 });
             var siteInspections = await Db.SiteInspections.ExpandCollection(s => s.RiskAssessments, q => q.Expand(r => r.RiskAssessmentSolution)).ToListAsync();
             var riskAssessment = siteInspections[0].RiskAssessments[0];
-            var tracking = Db.DataStore.Tracking;
+            var tracking = Db.Tracking;
             //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
             //Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
@@ -113,7 +113,7 @@ namespace Iql.Tests.Tests
             var personTypeMap = await Db.PersonTypesMap.Where(p => p.PersonId == 62 && p.TypeId == 53).SingleAsync();
             var person = people.Single(p => p.Id == 62);
             Db.People.Delete(person);
-            Assert.IsTrue(Db.DataStore.Tracking.IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
+            Assert.IsTrue(Db.Tracking.IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
             Assert.AreEqual(1, person.Types.Count);
         }
 
@@ -131,11 +131,11 @@ namespace Iql.Tests.Tests
             Db.RiskAssessments.Add(riskAssessment1);
             Db.RiskAssessments.Add(riskAssessment2);
             await Db.SaveChangesAsync();
-            var queuedOperations = Db.DataStore.GetChanges().ToList();
+            var queuedOperations = Db.GetChanges().ToList();
             Assert.AreEqual(0, queuedOperations.Count);
             Assert.IsNull(riskAssessment1.SiteInspection);
             Assert.IsNull(riskAssessment2.SiteInspection);
-            var changes = Db.DataStore.GetUpdates().ToList();
+            var changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
 
             // Externally modify the database
@@ -153,14 +153,14 @@ namespace Iql.Tests.Tests
                     Id = 62
                 });
 
-            changes = Db.DataStore.GetUpdates().ToList();
+            changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
             var siteInspection = await Db.SiteInspections.Expand(d => d.RiskAssessments).GetWithKeyAsync(62);
             // Fetch the DB updates
             var ra = await Db.RiskAssessments.GetWithKeyAsync(dbRiskAssessment.Id);
-            changes = Db.DataStore.GetUpdates().ToList();
+            changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
-            queuedOperations = Db.DataStore.GetChanges().ToList();
+            queuedOperations = Db.GetChanges().ToList();
             Assert.AreEqual(0, queuedOperations.Count);
             Assert.AreEqual(siteInspection.RiskAssessments[0].Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessments[0].SiteInspectionId, siteInspection.Id);

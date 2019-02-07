@@ -14,7 +14,6 @@ namespace Iql.Data.Tracking
     {
         IDataContext DataContext { get; }
         TrackingSetCollection TrackingSetCollection { get; }
-        IDataStore DataStore { get; }
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);

@@ -19,6 +19,7 @@ namespace Iql.Data.Relationships
 {
     public class RelationshipObserver : IRelationshipObserver
     {
+        public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded { get; } = new EventEmitter<UntrackedEntityAddedEvent>();
         private readonly PropertyChangeIgnorer _propertyChangeIgnorer =
             new PropertyChangeIgnorer();
         private readonly Dictionary<object, object> _moving = new Dictionary<object, object>();
@@ -44,18 +45,15 @@ namespace Iql.Data.Relationships
         public static MethodInfo MapListTypedMethod { get; set; }
         public static MethodInfo PairListTypedMethod { get; set; }
         public static MethodInfo WatchListTypedMethod { get; set; }
-        public IDataContext DataContext { get; }
         public TrackingSetCollection TrackingSetCollection { get; }
         public bool TrackEntities { get; }
 
-        public RelationshipObserver(IDataContext dataContext,
-            TrackingSetCollection trackingSetCollection,
+        public RelationshipObserver(TrackingSetCollection trackingSetCollection,
             bool trackEntities)
         {
-            DataContext = dataContext;
             TrackingSetCollection = trackingSetCollection;
             TrackEntities = trackEntities;
-            EntityConfigurationContext = TrackingSetCollection.DataStore.DataContext.EntityConfigurationContext;
+            EntityConfigurationContext = TrackingSetCollection.DataTracker.EntityConfigurationBuilder;
         }
 
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
@@ -387,7 +385,7 @@ namespace Iql.Data.Relationships
                 if (!targetTrackingSet
                     .IsMatchingEntityTracked(newValue))
                 {
-                    DataContext.DataStore.Add(newValue);
+                    UntrackedEntityAdded.Emit(() => new UntrackedEntityAddedEvent(newValue));
                     Observe(newValue, targetType);
                 }
             }

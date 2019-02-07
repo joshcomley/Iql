@@ -31,7 +31,7 @@ namespace Iql.Data.Extensions
             var set = dataContext.GetDbSetByEntityType(relationship.Type);
             if (!dataContext.IsTracked(parent))
             {
-                set.AddEntity(parent);
+                set.Add(parent);
             }
             // TODO: Should support creating entities from parent entities that are new
             var allMappings = new List<IMappingBase>();
@@ -72,7 +72,7 @@ namespace Iql.Data.Extensions
                 mapping.SetValue(entity, result.Result);
             }
 
-            dataContext.GetDbSetByEntityType(type).AddEntity(entity);
+            dataContext.GetDbSetByEntityType(type).Add(entity);
 
             if (relationship.RelationshipSide == RelationshipSide.Target)
             {

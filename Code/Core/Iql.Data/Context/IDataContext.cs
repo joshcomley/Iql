@@ -9,6 +9,7 @@ using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Lists;
 using Iql.Data.SpecialTypes;
+using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Relationships;
@@ -20,9 +21,12 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
-        IQueuedOperation[] GetOfflineChanges(object[] entities = null);
-        IQueuedOperation[] GetChanges(object[] entities = null);
-        IQueuedOperation[] GetUpdates(object[] entities = null);
+        TrackingSetCollection Tracking { get; }
+        DataTracker DataTracker { get; }
+        DataTracker OfflineDataTracker { get; }
+        IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
+        IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);
+        IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
 
         T AttachEntity<T>(T entity, bool? cloneIfAttachedElsewhere = null)
             where T : class;
@@ -80,17 +84,17 @@ namespace Iql.Data.Context
         bool IsIdMatch(object left, object right, Type type);
         bool EntityPropertiesMatch(object entity, CompositeKey key);
         bool EntityHasKey(object left, Type type, CompositeKey key);
-        void DeleteEntity(object entity
+        IEntityStateBase DeleteEntity(object entity
 #if TypeScript
             , Type entityType = null
 #endif
         );
-        void CascadeDeleteEntity(object entity, object cascadedFromEntity, IRelationship relationship
+        IEntityStateBase CascadeDeleteEntity(object entity, object cascadedFromEntity, IRelationship relationship
 #if TypeScript
             , Type entityType, Type cascadedFromEntityType
 #endif
         );
-        void AddEntity(object entity
+        IEntityStateBase AddEntity(object entity
 #if TypeScript
             , Type entityType = null
 #endif
@@ -136,5 +140,11 @@ namespace Iql.Data.Context
         Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships, Type entityType = null);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
         Task<IList> LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
+        //void MarkAsDeletedByKey<TEntity>(CompositeKey entityKey) where TEntity : class;
+        //void MarkAsDeletedByKeyAndType(CompositeKey entityKey, Type entityType);
+        //void MarkAsDeleted<TEntity>(TEntity entity) where TEntity : class;
+        Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
+            where TEntity : class;
+        Task<SaveChangesResult> ApplySaveChangesAsync(SaveChangesOperation operation);
     }
 }

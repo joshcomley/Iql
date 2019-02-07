@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Conversion;
-using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
@@ -51,21 +50,21 @@ namespace Iql.Data.DataStores.InMemory
             return (List<TEntity>) GetDataSourceByType(typeof(TEntity));
         }
 
-        public InMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
+        public InMemoryDataStore(EntityConfigurationBuilder entityConfigurationBuilder, IOfflineDataStore offlineDataStore = null) : base(entityConfigurationBuilder, offlineDataStore)
         {
         }
 
+        private DataTracker _inMemoryDataTracker;
+        private DataTracker InMemoryDataTracker
+        {
+            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, true);
+        }
         private RelationshipObserver _inMemoryRelationshipObserver;
         private TrackingSetCollection _inMemoryTrackingSetCollection;
 
         private TrackingSetCollection InMemoryTrackingSetCollection
         {
-            get { return _inMemoryTrackingSetCollection = _inMemoryTrackingSetCollection ?? new TrackingSetCollection(this); }
-        }
-
-        private RelationshipObserver InMemoryRelationshipObserver
-        {
-            get { return _inMemoryRelationshipObserver = _inMemoryRelationshipObserver ?? new RelationshipObserver(DataContext, InMemoryTrackingSetCollection, true); }
+            get { return _inMemoryTrackingSetCollection = _inMemoryTrackingSetCollection ?? new TrackingSetCollection(InMemoryDataTracker); }
         }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
@@ -76,7 +75,7 @@ namespace Iql.Data.DataStores.InMemory
             var data = GetDataSourceByType(operation.Operation.EntityType);
 
             var clone = operation.Operation.Entity.CloneAs(
-                DataContext,
+                EntityConfigurationBuilder,
                 typeof(TEntity),
                 RelationshipCloneMode.Full,
                 null,
@@ -157,7 +156,7 @@ namespace Iql.Data.DataStores.InMemory
             if (index != -1)
             {
                 var entity = GetDataSource<TEntity>()[index];
-                new SimplePropertyMerger(DataContext.EntityConfigurationContext.EntityType<TEntity>())
+                new SimplePropertyMerger(EntityConfigurationBuilder.EntityType<TEntity>())
                     .Merge(
                         entity, 
                         operation.Operation.Entity,
@@ -201,12 +200,12 @@ namespace Iql.Data.DataStores.InMemory
             var inMemoryContext = new InMemoryContext<TEntity>(this);
             var result = func(inMemoryContext);
             var resultList = result.SourceList.ToList();
-            var clonedResult = resultList.CloneAs(DataContext, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
+            var clonedResult = resultList.CloneAs(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
             inMemoryContext.AddMatches(typeof(TEntity), clonedResult);
             var dictionary = new Dictionary<Type, IList>();
             foreach (var item in inMemoryContext.AllData)
             {
-                dictionary[item.Key] = item.Value.CloneAs(DataContext, item.Key, RelationshipCloneMode.DoNotClone);
+                dictionary[item.Key] = item.Value.CloneAs(EntityConfigurationBuilder, item.Key, RelationshipCloneMode.DoNotClone);
             }
             operation.Result.Root = clonedResult;
             operation.Result.Success = true;
@@ -266,7 +265,7 @@ namespace Iql.Data.DataStores.InMemory
         private void SynchroniseDataTyped<T>(IList<T> data)
         {
             var source = GetDataSourceByType(typeof(T)) as IList<T>;
-            var entityConfig = DataContext.EntityConfigurationContext.GetEntityByType(typeof(T));
+            var entityConfig = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             foreach (var entity in data)
             {
                 var key = entityConfig.GetCompositeKey(entity);
@@ -275,7 +274,7 @@ namespace Iql.Data.DataStores.InMemory
                 {
                     source.Remove(match);
                 }
-                var clone = (T) entity.Clone(DataContext, typeof(T), RelationshipCloneMode.KeysOnly);
+                var clone = (T) entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.KeysOnly);
                 source.Add(clone);
             }
         }

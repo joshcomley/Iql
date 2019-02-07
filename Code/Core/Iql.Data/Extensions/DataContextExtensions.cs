@@ -64,9 +64,9 @@ namespace Iql.Data.Extensions
             return true;
         }
 
-        public static List<IPropertyState> EntityNonNullProperties(this IDataContext dataContext, object entity)
+        public static List<IPropertyState> EntityNonNullProperties(this IEntityConfigurationBuilder entityConfigurationBuilder, object entity)
         {
-            var entityConfiguration = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var entityConfiguration = entityConfigurationBuilder.GetEntityByType(entity.GetType());
             var properties = new List<IPropertyState>();
             foreach (var property in entityConfiguration.Properties)
             {

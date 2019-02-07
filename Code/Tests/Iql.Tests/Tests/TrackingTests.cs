@@ -82,7 +82,7 @@ namespace Iql.Tests.Tests
             });
             var client = await Db.Clients.GetWithKeyAsync(1);
             var clientType = await Db.ClientTypes.ToListAsync();
-            var propertyState = Db.DataStore.Tracking.TrackingSet<Client>()
+            var propertyState = Db.Tracking.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
             Assert.IsFalse(propertyState.HasChanged);
@@ -108,13 +108,13 @@ namespace Iql.Tests.Tests
             var clientType1 = await Db.ClientTypes.GetWithKeyAsync(1);
             var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
             client.Type = clientType2;
-            var referencePropertyState = Db.DataStore.Tracking.TrackingSet<Client>()
+            var referencePropertyState = Db.Tracking.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
-            var referenceKeyPropertyState = Db.DataStore.Tracking.TrackingSet<Client>()
+            var referenceKeyPropertyState = Db.Tracking.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.TypeId));
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.IsTrue(referencePropertyState.HasChanged);
         }
 
@@ -137,10 +137,10 @@ namespace Iql.Tests.Tests
             var client = await Db.Clients.GetWithKeyAsync(1);
             var clientTypes = await Db.ClientTypes.ToListAsync();
             clientTypes[1].Clients.Add(client);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
             Db.AbandonChanges();
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 
@@ -163,10 +163,10 @@ namespace Iql.Tests.Tests
             var client = await Db.Clients.GetWithKeyAsync(1);
             var clientTypes = await Db.ClientTypes.ToListAsync();
             clientTypes[1].Clients.Add(client);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
             Db.AbandonChangesForEntity(client);
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 
@@ -206,10 +206,10 @@ namespace Iql.Tests.Tests
             clientTypes[0].Clients.Add(client2);
             Assert.AreEqual(1, clientTypes[0].Clients.Count);
             Assert.AreEqual(1, clientTypes[1].Clients.Count);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(4, changes.Length);
             Db.AbandonChanges();
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 
@@ -465,7 +465,7 @@ namespace Iql.Tests.Tests
             var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
             Assert.AreEqual(1, person.Types.Count);
             var typeMap = person.Types[0];
-            var typeMapState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
+            var typeMapState = Db.Tracking.TrackingSet<PersonTypeMap>()
                 .FindMatchingEntityState(typeMap);
             person.Types.Remove(typeMap);
             Assert.AreEqual(0, person.Types.Count);
@@ -573,7 +573,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, person.Types.Count);
             var typeMap = person.Types[0];
             person.Types.Remove(typeMap);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
             Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
 
@@ -613,11 +613,11 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, person.Types.Count);
             var typeMap = person.Types[0];
             person.Types.Remove(typeMap);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
             Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
             var result = await Db.SaveChangesAsync();
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 
@@ -720,7 +720,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, person.Types.Count);
             var typeMap = person.Types[0];
             person.Types.Remove(typeMap);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
             Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
 
@@ -733,7 +733,7 @@ namespace Iql.Tests.Tests
             var addedMap = person.Types.Add(newEquivalentTypeMap);
             Assert.AreEqual(addedMap, newEquivalentTypeMap);
 
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(2, changes.Length);
             Assert.AreEqual(2, changes.Length);
             Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type);
@@ -763,7 +763,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             Assert.AreEqual(0, person.Types.Count);
             Assert.AreEqual(0, typeMap.PersonId);
-            var entityState = Db.DataStore.Tracking.TrackingSet<PersonTypeMap>()
+            var entityState = Db.Tracking.TrackingSet<PersonTypeMap>()
                 .FindMatchingEntityState(typeMap);
             var currentKey = entityState.CurrentKey;
             //var originalKey = entityState.RemoteKey;
@@ -1137,7 +1137,7 @@ namespace Iql.Tests.Tests
             riskAssessment.SiteInspection = siteInspection;
             var user = new ApplicationUser();
             riskAssessment.SiteInspection.CreatedByUser = user;
-            var operations = Db.DataStore.Tracking.GetChanges().ToList();
+            var operations = Db.Tracking.GetChanges().ToList();
             Assert.AreEqual(3, operations.Count);
             var order = new object[] { user, siteInspection, riskAssessment };
             for (var i = 0; i < operations.Count; i++)
@@ -1165,7 +1165,7 @@ namespace Iql.Tests.Tests
 ";
             await RequestLog.LogSessionAsync(async log =>
             {
-                var db = new AppDbContext(new ODataDataStore());
+                var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
                 db.Clients.Add(client);
                 await log.InterceptAsync((method, uri, request) =>
                     {

@@ -178,11 +178,11 @@ namespace Iql.Tests.Tests.DataContext
             Assert.IsNotNull(client);
             AppDbContext.InMemoryDb.Clients.Remove(clientRemote);
             client.Name = "def";
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
             await Db.SaveChangesAsync();
             Assert.IsFalse(Db.IsTracked(client));
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 
@@ -201,11 +201,11 @@ namespace Iql.Tests.Tests.DataContext
             Assert.IsNotNull(client);
             AppDbContext.InMemoryDb.Clients.Remove(clientRemote);
             Db.DeleteEntity(client);
-            var changes = Db.DataStore.GetChanges();
+            var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
             await Db.SaveChangesAsync();
             Assert.IsFalse(Db.IsTracked(client));
-            changes = Db.DataStore.GetChanges();
+            changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
         }
 

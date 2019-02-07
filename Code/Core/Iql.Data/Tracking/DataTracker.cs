@@ -16,11 +16,11 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker
     {
+        public EntityConfigurationBuilder EntityConfigurationBuilder { get; }
         public bool TrackEntities { get; }
         public bool Offline { get; }
-        public IDataContext DataContext => DataStore.DataContext;
-        public IDataStore DataStore { get; set; }
-        public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(DataStore, TrackEntities));
+        public IDataContext DataContext2 { get; }
+        public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(this, TrackEntities));
 
         private RelationshipObserver _relationshipObserver;
         private TrackingSetCollection _tracking;
@@ -31,7 +31,7 @@ namespace Iql.Data.Tracking
             {
                 if (_relationshipObserver == null)
                 {
-                    _relationshipObserver = new RelationshipObserver(DataContext, Tracking, TrackEntities);
+                    _relationshipObserver = new RelationshipObserver(Tracking, TrackEntities);
                 }
                 return _relationshipObserver;
             }
@@ -45,15 +45,15 @@ namespace Iql.Data.Tracking
         private static List<DataTracker> _allDataTrackers { get; }
             = new List<DataTracker>();
 
-        public DataTracker(IDataStore dataStore, bool trackEntities, bool offline = false)
+        public DataTracker(EntityConfigurationBuilder entityConfigurationBuilder, bool trackEntities, bool offline = false)
         {
+            EntityConfigurationBuilder = entityConfigurationBuilder;
             TrackEntities = trackEntities;
             Offline = offline;
             if (trackEntities)
             {
                 _allDataTrackers.Add(this);
             }
-            DataStore = dataStore;
         }
 
         public List<TEntity> TrackResults<TEntity>(
@@ -194,7 +194,7 @@ namespace Iql.Data.Tracking
         public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
             Tracking.TrackingSet<TEntity>().TrackEntity(operation.Operation.Entity.Clone(
-                DataContext,
+                EntityConfigurationBuilder,
                 typeof(TEntity),
                 RelationshipCloneMode.KeysOnly));
         }

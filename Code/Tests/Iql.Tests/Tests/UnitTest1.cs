@@ -53,7 +53,7 @@ namespace Iql.Tests.Tests
                 Location = new IqlPointExpression(10, 20)
             });
             var site = await Db.Sites.GetWithKeyAsync(1235);
-            var state = Db.DataStore.Tracking.TrackingSetByType(typeof(Site))
+            var state = Db.Tracking.TrackingSetByType(typeof(Site))
                 .FindMatchingEntityState(site);
 
             for (var i = 0; i < 10; i++)
@@ -83,7 +83,7 @@ namespace Iql.Tests.Tests
                 Location = new IqlPointExpression(10, 20)
             });
             var site = await Db.Sites.GetWithKeyAsync(1235);
-            var state = Db.DataStore.Tracking.TrackingSetByType(typeof(Site))
+            var state = Db.Tracking.TrackingSetByType(typeof(Site))
                 .FindMatchingEntityState(site);
 
             for (var i = 0; i < 10; i++)
@@ -104,7 +104,7 @@ namespace Iql.Tests.Tests
         {
             var clientTypes = TestsBlock.AddClientTypes();
             var client = clientTypes.ClientType1.Clients[0];
-            var state = Db.DataStore.Tracking.TrackingSetByType(typeof(Client))
+            var state = Db.Tracking.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(client);
             var entityConfiguration = Db.EntityConfigurationContext.GetEntityByType(typeof(Client));
             var nameProperty = entityConfiguration
@@ -116,7 +116,7 @@ namespace Iql.Tests.Tests
 
             // Change name once
             client.Name = "Me";
-            state = Db.DataStore.Tracking.TrackingSetByType(typeof(Client))
+            state = Db.Tracking.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(client);
             Assert.AreEqual(1, state.GetChangedProperties().Length);
             var change = state.GetChangedProperties()[0];
@@ -204,10 +204,10 @@ namespace Iql.Tests.Tests
 #endif
                 );
             Assert.IsTrue(entityState.IsNew);
-            Assert.AreEqual(1, Db.DataStore.GetChanges().Count());
+            Assert.AreEqual(1, Db.GetChanges().Count());
             await Db.SaveChangesAsync();
             Assert.IsFalse(entityState.IsNew);
-            Assert.AreEqual(0, Db.DataStore.GetChanges().Count());
+            Assert.AreEqual(0, Db.GetChanges().Count());
             Assert.AreEqual(1, AppDbContext.InMemoryDb.ClientTypes.Count);
         }
 
@@ -255,10 +255,10 @@ namespace Iql.Tests.Tests
             var clientType = await Db.ClientTypes.FirstAsync(ct => ct.Id == entity.Id);
             Assert.AreEqual(entity.Id, clientType.Id);
             Assert.AreEqual(entity, clientType);
-            var changes = Db.DataStore.GetUpdates().ToList();
+            var changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
             clientType.Name = "Something else";
-            changes = Db.DataStore.GetUpdates().ToList();
+            changes = Db.GetUpdates().ToList();
             Assert.AreEqual(1, changes.Count);
             var change = changes[0];
             Assert.AreEqual(QueuedOperationType.Update, change.Type);
@@ -281,10 +281,10 @@ namespace Iql.Tests.Tests
             Db.EvaluateContext.Evaluate = s => entity;
             var clientType = await Db.ClientTypes.FirstAsync(ct => ct.Id == entity.Id);
             Assert.AreEqual(entity.Id, clientType.Id);
-            var changes = Db.DataStore.GetUpdates().ToList();
+            var changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
             clientType.Name = "Something else";
-            changes = Db.DataStore.GetUpdates().ToList();
+            changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
         }
 
@@ -463,7 +463,7 @@ namespace Iql.Tests.Tests
             var newClient = new Client { Name = "My new client" };
             clientType.Clients.Add(newClient);
             Assert.AreEqual(clientType.Id, newClient.TypeId);
-            //var changes = Db.DataStore.GetChanges();
+            //var changes = Db.GetChanges();
             //Assert.AreEqual(1, changes.Count());
             //var change = changes.Single();
             //Assert.AreEqual(QueuedOperationType.Add, change.Type);
@@ -618,7 +618,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(clientType1Clients, clientType1.Clients);
             var clientType1NewClient = new Client();
             clientType1NewClient.Name = "abc";
-            Assert.AreEqual(0, Db.DataStore.GetChanges().Count());
+            Assert.AreEqual(0, Db.GetChanges().Count());
             Assert.AreEqual(1, clientType1.Clients.Count);
 
             void AssertCheck()
@@ -626,7 +626,7 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(2, clientType1.Clients.Count);
                 Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
                 Assert.AreEqual(clientType1, clientType1NewClient.Type);
-                var queuedOperations = Db.DataStore.GetChanges().ToList();
+                var queuedOperations = Db.GetChanges().ToList();
                 Assert.AreEqual(1, queuedOperations.Count);
                 var addOperation = queuedOperations.First() as QueuedAddEntityOperation<Client>;
                 Assert.IsNotNull(addOperation);
@@ -643,7 +643,7 @@ namespace Iql.Tests.Tests
             // in the queue
             clientType1.Clients.Remove(clientType1NewClient);
             Assert.AreEqual(1, clientType1.Clients.Count);
-            var operations = Db.DataStore.GetChanges().ToList();
+            var operations = Db.GetChanges().ToList();
             Assert.AreEqual(0, operations.Count);
         }
 
@@ -702,7 +702,7 @@ namespace Iql.Tests.Tests
             //Assert.AreEqual(RelatedListChangeKind.Assign, newOwnerChangedRecord.Kind);
 
             // We should have only one database update to change the TypeId on the Client object
-            var changes = Db.DataStore.GetUpdates().ToList();
+            var changes = Db.GetUpdates().ToList();
             Assert.AreEqual(1, changes.Count);
             var change = changes.First();
             var changeOperation = change.Operation as UpdateEntityOperation<Client>;
@@ -751,7 +751,7 @@ namespace Iql.Tests.Tests
             //Assert.AreEqual(0, newOwnerChangedList.Count);
 
             // We should no longer have any changes as we have reverted our update
-            changes = Db.DataStore.GetUpdates().ToList();
+            changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
         }
 
@@ -862,9 +862,9 @@ namespace Iql.Tests.Tests
             var clientTypes = TestsBlock.AddClientTypes();
             Assert.AreEqual(1, clientTypes.ClientType1.Clients.Count);
             await Db.SaveChangesAsync();
-            var queuedOperations = Db.DataStore.GetChanges().ToList();
+            var queuedOperations = Db.GetChanges().ToList();
             var clients = await Db.Clients.ToListAsync();
-            queuedOperations = Db.DataStore.GetChanges().ToList();
+            queuedOperations = Db.GetChanges().ToList();
             var dbClients = AppDbContext.InMemoryDb.Clients.ToList();
             Assert.AreEqual(dbClients.Count, clients.Count);
             Assert.AreEqual(1, clientTypes.ClientType1.Clients.Count);
@@ -872,7 +872,7 @@ namespace Iql.Tests.Tests
             var clientToDelete = clientTypes.ClientType1.Clients[0];
             Db.Clients.Delete(clientToDelete);
             Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
-            queuedOperations = Db.DataStore.GetChanges().ToList();
+            queuedOperations = Db.GetChanges().ToList();
             Assert.AreEqual(1, queuedOperations.Count);
             var deleteOperation = queuedOperations.First() as QueuedDeleteEntityOperation<Client>;
             Assert.IsNotNull(deleteOperation);
@@ -892,7 +892,7 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(1, clients.ClientType1.Clients.Count);
 
-            var entityState = Db.DataStore.Tracking.TrackingSetByType(typeof(Client))
+            var entityState = Db.Tracking.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(clientToDelete);
 
             Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
@@ -905,7 +905,7 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(0, clients.ClientType1.Clients.Count);
 
-            var deleteOperation = Db.DataStore.GetChanges().First() as QueuedDeleteEntityOperation<Client>;
+            var deleteOperation = Db.GetChanges().First() as QueuedDeleteEntityOperation<Client>;
 
             Assert.IsNotNull(deleteOperation);
             Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
@@ -993,7 +993,7 @@ namespace Iql.Tests.Tests
         //        })
         //    };
         //    Db.ClientTypes.Add(entity);
-        //    var changes = Db.DataStore.GetChanges().ToList();
+        //    var changes = Db.GetChanges().ToList();
         //    Assert.AreEqual(0, changes.Count);
         //    var operations = Db.DataStore.Queue;
         //    Assert.AreEqual(1, operations.Count);
@@ -1002,7 +1002,7 @@ namespace Iql.Tests.Tests
         //    Assert.AreEqual(entity, operation.Operation.Entity);
         //    await Db.SaveChanges();
         //    Assert.AreEqual(0, Db.DataStore.Queue.Count);
-        //    changes = Db.DataStore.GetChanges().ToList();
+        //    changes = Db.GetChanges().ToList();
         //    Assert.AreEqual(0, changes.Count);
         //}
 
@@ -1032,8 +1032,8 @@ namespace Iql.Tests.Tests
         //        })
         //    };
         //    Db.ClientTypes.Add(clientType2);
-        //    var changes1 = Db.DataStore.GetChanges();
-        //    var changes2 = Db.DataStore.GetChanges();
+        //    var changes1 = Db.GetChanges();
+        //    var changes2 = Db.GetChanges();
         //    await Db.SaveChanges();
         //    Db = new AppDbContext();
         //    var entity1 = await Db.ClientTypes.Expand(c => c.Clients).WithKey(2);
@@ -1052,7 +1052,7 @@ namespace Iql.Tests.Tests
         //    try
         //    {
         //        // Just getting the changes alone should trigger the error
-        //        changes = Db.DataStore.GetChanges().ToList();
+        //        changes = Db.GetChanges().ToList();
         //    }
         //    catch (DuplicateParentException e)
         //    {
@@ -1073,7 +1073,7 @@ namespace Iql.Tests.Tests
 
 
         //    //entity2.Clients.RemoveAt(0);
-        //    //changes = Db.DataStore.GetChanges().ToList();
+        //    //changes = Db.GetChanges().ToList();
         //    /* Here's what should happen:
         //     * entity2 should be updated internally only
         //     * entity2.Clients[0].TypeId should be set to 2
@@ -1094,7 +1094,7 @@ namespace Iql.Tests.Tests
         //    var type1Client = clientTypes.ClientType1.Clients[0];
         //    type1Client.TypeId = clientTypes.ClientType2.Id;
         //    // Trigger sanitisation
-        //    var changes = Db.DataStore.GetChanges().ToList();
+        //    var changes = Db.GetChanges().ToList();
         //    Assert.AreEqual(type1Client.Type, clientTypes.ClientType2);
         //    Assert.IsTrue(clientTypes.ClientType2.Clients.Count == 2);
         //    Assert.IsTrue(clientTypes.ClientType2.Clients.Contains(type1Client));
@@ -1111,7 +1111,7 @@ namespace Iql.Tests.Tests
         //    var type4Client = clientTypes.ClientType4.Clients[0];
         //    type4Client.TypeId = clientTypes.ClientType2.Id;
         //    // Trigger sanitisation
-        //    var changes = Db.DataStore.GetChanges().ToList();
+        //    var changes = Db.GetChanges().ToList();
         //    Assert.AreEqual(type1Client.Type, clientTypes.ClientType2);
         //    Assert.IsTrue(clientTypes.ClientType2.Clients.Count == 3);
         //    Assert.IsTrue(clientTypes.ClientType2.Clients.Contains(type1Client));
@@ -1177,7 +1177,7 @@ namespace Iql.Tests.Tests
         //    type1Client.TypeId = clientTypes.ClientType2.Id;
         //    clientTypes.ClientType3.Clients.Add(type1Client);
         //    // Trigger sanitisation
-        //    var changes = Db.DataStore.GetChanges().ToList();
+        //    var changes = Db.GetChanges().ToList();
         //}
 
         //[TestMethod]
@@ -1188,7 +1188,7 @@ namespace Iql.Tests.Tests
         //    var type1Client = clientTypes.ClientType1.Clients[0];
         //    clientTypes.ClientType3.Clients.Add(type1Client);
         //    // Trigger sanitisation
-        //    var changes = Db.DataStore.GetChanges().ToList();
+        //    var changes = Db.GetChanges().ToList();
         //    Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
         //}
 
@@ -1205,7 +1205,7 @@ namespace Iql.Tests.Tests
         //        Id = 5
         //    };
         //    // Trigger sanitisation and exception
-        //    Db.DataStore.GetChanges();
+        //    Db.GetChanges();
         //}
     }
 }

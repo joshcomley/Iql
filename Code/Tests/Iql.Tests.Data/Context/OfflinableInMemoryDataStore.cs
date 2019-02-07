@@ -4,12 +4,13 @@ using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.InMemory;
+using Iql.Entities;
 
 namespace Iql.Tests.Context
 {
     public class OfflinableInMemoryDataStore : InMemoryDataStore
     {
-        public OfflinableInMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
+        public OfflinableInMemoryDataStore(EntityConfigurationBuilder entityConfigurationBuilder, IOfflineDataStore offlineDataStore = null) : base(entityConfigurationBuilder, offlineDataStore)
         {
 
         }

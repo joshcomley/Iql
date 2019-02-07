@@ -23,11 +23,8 @@ namespace Iql.Data.Tracking
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
         private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
-        public DataTracker DataTracker => DataStore.DataTracker;
-
-        public IDataContext DataContext => DataStore.DataContext;
-        public IDataStore DataStore { get; }
-        public TrackingSetCollection TrackingSetCollection { get; }
+        public IDataContext DataContext { get; }
+        public TrackingSetCollection TrackingSetCollection => DataTracker.Tracking;
 
         public bool DifferentEntityWithSameKeyIsTracked(T entity)
         {
@@ -57,11 +54,11 @@ namespace Iql.Data.Tracking
         private Dictionary<object, IEntityStateBase> EntitiesByObject { get; }
         private Dictionary<string, RemoteKeyMap> EntitiesByRemoteKey { get; }
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
+        public DataTracker DataTracker { get; }
 
-        public TrackingSet(IDataStore dataStore, TrackingSetCollection trackingSetCollection)
+        public TrackingSet(DataTracker dataTracker)
         {
-            DataStore = dataStore;
-            TrackingSetCollection = trackingSetCollection;
+            DataTracker = dataTracker;
             EntityConfiguration = DataContext.EntityConfigurationContext.EntityType<T>();
             SimplePropertyMerger = new SimplePropertyMerger(EntityConfiguration);
             EntitiesByPersistenceKey = new Dictionary<Guid, IEntityStateBase>();
@@ -353,7 +350,7 @@ namespace Iql.Data.Tracking
                                     }
                                 }
 
-                                var trackingSet = DataContext.DataStore.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
+                                var trackingSet = DataContext.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
                                 var trackedItem = trackingSet.GetEntityStateByKey(compositeKey);
                                 if (trackedItem != null && trackedItem.Entity != changeEvent.Item)
                                 {
@@ -377,7 +374,7 @@ namespace Iql.Data.Tracking
                         case RelatedListChangeKind.Added:
                             if (changeEvent.Item != null)
                             {
-                                var state = DataStore.Add(changeEvent.Item);
+                                var state = DataContext.AddEntity(changeEvent.Item);
                                 if (state.Entity != changeEvent.Item)
                                 {
                                     changeEvent.ObservableListChangeEvent.Disallow = true;
@@ -387,10 +384,10 @@ namespace Iql.Data.Tracking
                         case RelatedListChangeKind.Removed:
                             if (changeEvent.Item != null)
                             {
-                                if (!DataStore.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
+                                if (!DataTracker.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
                                     changeEvent.ItemType))
                                 {
-                                    DataStore.Delete(changeEvent.Item);
+                                    DataContext.DeleteEntity(changeEvent.Item);
                                 }
                             }
                             break;
@@ -411,7 +408,7 @@ namespace Iql.Data.Tracking
                 var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
                 if (property.Kind.HasFlag(PropertyKind.Key) && property.IsReadOnly)
                 {
-                    DataStore.RelationshipObserver.RunIfNotIgnored(() =>
+                    DataTracker.RelationshipObserver.RunIfNotIgnored(() =>
                         {
                             if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
                             {

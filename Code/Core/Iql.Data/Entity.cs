@@ -8,7 +8,6 @@ namespace Iql.Data
     public class Entity
     {
         public static int FindIndexOfEntityInSetByEntity<TEntity>(
-            IDataContext dataContext,
             TEntity clone,
             IList<TEntity> data) where TEntity : class
         {
@@ -16,7 +15,8 @@ namespace Iql.Data
             {
                 return -1;
             }
-            return FindIndexOfEntityByKey(data, dataContext.EntityConfigurationContext.EntityType<TEntity>().GetCompositeKey(clone));
+            
+            return FindIndexOfEntityByKey(data, EntityConfigurationBuilder.FindConfigurationForEntityType(typeof(TEntity)).GetCompositeKey(clone));
         }
 
         public static int FindIndexOfEntityByKey<TEntity>(
