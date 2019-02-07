@@ -20,6 +20,7 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        IQueuedOperation[] GetOfflineChanges(object[] entities = null);
         IQueuedOperation[] GetChanges(object[] entities = null);
         IQueuedOperation[] GetUpdates(object[] entities = null);
 

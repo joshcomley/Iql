@@ -15,7 +15,9 @@ namespace Iql.Data.DataStores
 {
     public interface IDataStore
     {
+        bool TrackingEnabled { get; set; }
         IOfflineDataStore OfflineDataStore { get; set; }
+        DataTracker OfflineDataTracker { get; }
         //DbList<T> TrackGetDataResult<T>(FlattenedGetDataResult<T> response) where T : class;
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();

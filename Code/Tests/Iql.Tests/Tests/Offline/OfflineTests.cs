@@ -27,12 +27,12 @@ namespace Iql.Tests.Tests.Offline
             var json = Db.DataStore.Tracking.SerializeToJson();
             var state = JsonConvert.DeserializeObject(json, typeof(TrackingState));
         }
-        
+
         [TestMethod]
         public async Task GetDataWhenOnlineAndRefetchWhenOffline()
         {
-            Db.IsOffline = true;
             Db.OfflineDataStore.Clear();
+            Db.IsOffline = true;
             var clientsOffline1 = await Db.Clients.ToListAsync();
             Assert.AreEqual(0, clientsOffline1.Count);
 
@@ -48,6 +48,7 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task SaveChangeWhenOfflineAndResyncWhenOnline()
         {
+            Db.OfflineDataStore.Clear();
             Db.IsOffline = false;
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             Assert.AreEqual(3, clients.Count);
@@ -56,9 +57,21 @@ namespace Iql.Tests.Tests.Offline
             var client = clients.First();
             client.Name = "Changed";
             var result = await Db.SaveChangesAsync();
-
             Assert.AreEqual(true, result.Success);
-
+            var changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+            var offlineChanges = Db.GetOfflineChanges();
+            Assert.AreEqual(1, offlineChanges.Length);
+            client.TypeId = 2;
+            offlineChanges = Db.GetOfflineChanges();
+            Assert.AreEqual(1, offlineChanges.Length);
+            changes = Db.GetChanges();
+            Assert.AreEqual(1, changes.Length);
+            result = await Db.SaveChangesAsync();
+            Assert.AreEqual(true, result.Success);
+            changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+            Assert.AreEqual(2, offlineChanges.Length);
             //Db.IsOffline = true;
             //var clientsOffline2 = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             //Assert.AreEqual(3, clientsOffline2.Count);

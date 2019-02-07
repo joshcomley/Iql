@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +22,6 @@ using Iql.Entities;
 using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
-using Iql.Queryable.Extensions;
 using Iql.Queryable.Operations;
 
 namespace Iql.Data.DataStores
@@ -36,10 +34,28 @@ namespace Iql.Data.DataStores
         }
 
         private DataTracker _dataTracker;
+        private DataTracker _offlineDataTracker;
         private IDataContext _dataContext;
-        public static MethodInfo MarkAsDeletedByKeyTypedMethod { get; set; }
+        private IOfflineDataStore _offlineDataStore;
+        private static MethodInfo MarkAsDeletedByKeyTypedMethod { get; }
 
-        public IOfflineDataStore OfflineDataStore { get; set; }
+        public DataTracker OfflineDataTracker =>
+            OfflineDataStore == null
+                ? null
+                : _offlineDataTracker = _offlineDataTracker ?? new DataTracker(this, true, true);
+
+        public IOfflineDataStore OfflineDataStore
+        {
+            get => _offlineDataStore;
+            set
+            {
+                if (value != null)
+                {
+                    _offlineDataTracker = new DataTracker(this, true, true);
+                }
+                _offlineDataStore = value;
+            }
+        }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {
@@ -311,6 +327,19 @@ namespace Iql.Data.DataStores
                         }
                         response.Root = tracker.TrackResults(response.Data, response.Root);
                     }
+                    else if (tracker == OfflineDataTracker)
+                    {
+                        foreach (var entityType in response.Data)
+                        {
+                            foreach (var entity in entityType.Value)
+                            {
+                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                trackingSet.TrackEntity(
+                                    entity.Clone(DataContext, entityType.Key, RelationshipCloneMode.KeysOnly), entity,
+                                    isNew: false, onlyMergeWithExisting: false);
+                            }
+                        }
+                    }
                     else
                     {
                         foreach (var entityType in response.Data)
@@ -473,7 +502,8 @@ namespace Iql.Data.DataStores
                                 // Magic happens here...
                                 if (OfflineDataStore != null)
                                 {
-                                    result = await OfflineDataStore.ScheduleAddAsync(addEntityOperation);
+                                    result = await OfflineDataStore.PerformAddAsync(addEntityOperation);
+                                    result.Success = true;
                                 }
                             }
                             addEntityOperation.Result.Success = result.Success;
@@ -486,7 +516,8 @@ namespace Iql.Data.DataStores
                                 // Magic happens here...
                                 if (OfflineDataStore != null)
                                 {
-                                    result = await OfflineDataStore.ScheduleAddAsync(addEntityOperation);
+                                    result = await OfflineDataStore.PerformAddAsync(addEntityOperation);
+                                    result.Success = true;
                                 }
                             }
                         }
@@ -494,10 +525,7 @@ namespace Iql.Data.DataStores
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
                         {
-                            if (OfflineDataStore != null)
-                            {
-                                await OfflineDataStore.PerformAddAsync(addEntityOperation);
-                            }
+                            OfflineDataTracker?.ApplyAdd(addEntityOperation);
 #if TypeScript
                             remoteEntity =
                                 (TEntity)DataContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
@@ -552,7 +580,8 @@ namespace Iql.Data.DataStores
                                     // Magic happens here...
                                     if (OfflineDataStore != null)
                                     {
-                                        result = await OfflineDataStore.ScheduleUpdateAsync(updateEntityOperation);
+                                        result = await OfflineDataStore.PerformUpdateAsync(updateEntityOperation);
+                                        result.Success = true;
                                     }
                                 }
                             }
@@ -564,7 +593,8 @@ namespace Iql.Data.DataStores
                                     // Magic happens here...
                                     if (OfflineDataStore != null)
                                     {
-                                        result = await OfflineDataStore.ScheduleUpdateAsync(updateEntityOperation);
+                                        result = await OfflineDataStore.PerformUpdateAsync(updateEntityOperation);
+                                        result.Success = true;
                                     }
                                 }
                             }
@@ -573,10 +603,7 @@ namespace Iql.Data.DataStores
                                 .Entity;
                             if (result.Success)
                             {
-                                if (OfflineDataStore != null)
-                                {
-                                    await OfflineDataStore.PerformUpdateAsync(updateEntityOperation);
-                                }
+                                OfflineDataTracker?.ApplyUpdate(updateEntityOperation);
                                 //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
                                 //    operationEntity, typeof(TEntity));
                                 //var rootDictionary = new Dictionary<Type, IList>();
@@ -645,7 +672,8 @@ namespace Iql.Data.DataStores
                                 // Magic happens here...
                                 if (OfflineDataStore != null)
                                 {
-                                    result = await OfflineDataStore.ScheduleDeleteAsync(deleteEntityOperation);
+                                    result = await OfflineDataStore.PerformDeleteAsync(deleteEntityOperation);
+                                    result.Success = true;
                                 }
                             }
                             deleteEntityOperation.Result.Success = result.Success;
@@ -658,16 +686,14 @@ namespace Iql.Data.DataStores
                                 // Magic happens here...
                                 if (OfflineDataStore != null)
                                 {
-                                    result = await OfflineDataStore.ScheduleDeleteAsync(deleteEntityOperation);
+                                    result = await OfflineDataStore.PerformDeleteAsync(deleteEntityOperation);
+                                    result.Success = true;
                                 }
                             }
                         }
                         if (result.Success)
                         {
-                            if (OfflineDataStore != null)
-                            {
-                                await OfflineDataStore.PerformDeleteAsync(deleteEntityOperation);
-                            }
+                            OfflineDataTracker?.ApplyDelete(deleteEntityOperation);
                             MarkAsDeletedByKey<TEntity>(deleteEntityOperation.Operation.Key);
                         }
                         else

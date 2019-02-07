@@ -873,6 +873,16 @@ namespace Iql.Data.Context
                   BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
+        public IQueuedOperation[] GetOfflineChanges(object[] entities = null)
+        {
+            if (DataStore.OfflineDataTracker != null)
+            {
+                return DataStore.OfflineDataTracker.Tracking.GetChanges().ToArray();
+            }
+
+            return new IQueuedOperation[] { };
+        }
+
         public IQueuedOperation[] GetChanges(object[] entities = null)
         {
             return DataStore.GetChanges(entities);

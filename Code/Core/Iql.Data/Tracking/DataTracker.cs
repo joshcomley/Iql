@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
@@ -14,6 +17,7 @@ namespace Iql.Data.Tracking
     public class DataTracker
     {
         public bool TrackEntities { get; }
+        public bool Offline { get; }
         public IDataContext DataContext => DataStore.DataContext;
         public IDataStore DataStore { get; set; }
         public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(DataStore, TrackEntities));
@@ -41,9 +45,10 @@ namespace Iql.Data.Tracking
         private static List<DataTracker> _allDataTrackers { get; }
             = new List<DataTracker>();
 
-        public DataTracker(IDataStore dataStore, bool trackEntities)
+        public DataTracker(IDataStore dataStore, bool trackEntities, bool offline = false)
         {
             TrackEntities = trackEntities;
+            Offline = offline;
             if (trackEntities)
             {
                 _allDataTrackers.Add(this);
@@ -56,7 +61,6 @@ namespace Iql.Data.Tracking
             List<TEntity> responseRoot = null,
             bool mergeExistingOnly = false)
         {
-            Dictionary<Type, IList> data;
             var responseData = new Dictionary<Type, IList>();
             foreach (var keyValue in responseDataOrig)
             {
@@ -90,7 +94,7 @@ namespace Iql.Data.Tracking
             {
                 newList.Add((TEntity)item.Key);
             }
-            data = new Dictionary<Type, IList>();
+            var data = new Dictionary<Type, IList>();
             List<IEntityStateBase> states = null;
             if (responseRoot != null)
             {
@@ -185,6 +189,32 @@ namespace Iql.Data.Tracking
             var set = Tracking.TrackingSet<T>();
             set.RemoveEntity(entity);
             RelationshipObserver.Unobserve(entity, typeof(T));
+        }
+
+        public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
+        {
+            Tracking.TrackingSet<TEntity>().TrackEntity(operation.Operation.Entity.Clone(
+                DataContext,
+                typeof(TEntity),
+                RelationshipCloneMode.KeysOnly));
+        }
+
+        public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
+        {
+            var changedProperties = operation.Operation.GetChangedProperties();
+            var ourState = Tracking.TrackingSet<TEntity>().FindMatchingEntityState(operation.Operation.Entity);
+            foreach (var property in changedProperties)
+            {
+                property.Property.SetValue(ourState.Entity, property.LocalValue);
+            }
+        }
+
+        public void ApplyDelete<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
+        {
+            var ourState = Tracking.TrackingSet<TEntity>().FindMatchingEntityState(operation.Operation.Entity);
+            var theirState = operation.Operation.EntityState;
+            ourState.MarkedForDeletion = theirState.MarkedForDeletion;
+            ourState.MarkedForCascadeDeletion = theirState.MarkedForCascadeDeletion;
         }
     }
 }
