@@ -1423,7 +1423,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             };
             settings.MetadataReferences.AddReference<HelpText>();
             settings.MetadataReferences.AddReference<ValidationRuleCollection>();
-            var task = CSharpToTypescriptConverter.ConvertToTypeScript(
+            var task = CSharpToTypescriptConverter.ConvertToTypeScriptAsync(
                 serialized,
                 settings);
             task.Wait();

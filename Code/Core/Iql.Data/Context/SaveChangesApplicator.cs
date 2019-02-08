@@ -9,6 +9,7 @@ using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.Events;
+using Iql.Data.Extensions;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -119,7 +120,7 @@ namespace Iql.Data.Context
                             DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation);
 #if TypeScript
                             remoteEntity =
-                                (TEntity)DataContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
+                                (TEntity)EntityConfigurationContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
 #endif
                             var trackingSet = DataContext.DataTracker.Tracking.TrackingSet<TEntity>();
                             trackingSet.TrackEntity(localEntity, remoteEntity, false);

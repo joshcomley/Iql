@@ -71,6 +71,9 @@ namespace Iql.Data.Tracking
         public DbList<TEntity> TrackGetDataResult<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
         {
             response.Root = response.Root ?? ResolveRoot(response);
+#if TypeScript
+            response.Data = EntityConfigurationBuilder.EnsureTypedResult(response.Data);
+#endif
             var dbList = new DbList<TEntity>();
             dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             // Flatten before we merge because the merge will update the result data set with
@@ -241,7 +244,7 @@ namespace Iql.Data.Tracking
             if (set.Count > 0)
             {
 #if TypeScript
-                set = DataContext.EnsureTypedListByType(set, type, null, null, false, true);
+                set = EntityConfigurationBuilder.EnsureTypedListByType(set, type, null, null, false, true);
 #endif
                 var trackingSet = Tracking.TrackingSetByType(type);
                 states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);

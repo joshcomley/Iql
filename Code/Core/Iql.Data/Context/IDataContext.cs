@@ -116,11 +116,6 @@ namespace Iql.Data.Context
             where T : class
         ;
 
-        T EnsureTypedEntity<T>(object entity, bool convertRelationships) where T : class;
-        object EnsureTypedEntityByType(object entity, Type type, bool convertRelationships);
-        IList<T> EnsureTypedList<T>(IEnumerable responseData, bool forceNotNull = false) where T : class;
-        IList EnsureTypedListByType(IEnumerable responseData, Type type, object owner, Type childType, bool convertRelationships, bool forceNotNull = false);
-
         DbSet<T, TKey> GetDbSet<T, TKey>()
             where T : class;
         DbQueryable<T> GetDbQueryable<T>()

@@ -253,7 +253,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 defaultConversionSettings.MetadataReferences.AddReference<MediaKeyBase>("@brandless/iql.entities", true);
                 defaultConversionSettings.MetadataReferences.AddReference<IqlParserRegistry>("@brandless/iql.parsing", true);
                 defaultConversionSettings.MetadataReferences.AddReference<EvaluateContext>("@brandless/iql.conversion", true);
-                var result = await CSharpToTypescriptConverter.ConvertToTypeScript(
+                var result = await CSharpToTypescriptConverter.ConvertToTypeScriptAsync(
                     conversionCollections,
                     defaultConversionSettings
                 );
