@@ -245,7 +245,19 @@ namespace Iql.Entities
         public IList<IFile> Files { get; set; } = new List<IFile>();
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
-        public IEntityKey Key { get; set; }
+
+        public IEntityKey Key
+        {
+            get => _key;
+            set
+            {
+                if (value == null)
+                {
+                    int a = 0;
+                }
+                _key = value;
+            }
+        }
 
         public Type Type { get; set; }
 
@@ -378,6 +390,7 @@ namespace Iql.Entities
 
 
         private List<EntityRelationship> _allRelationships = new List<EntityRelationship>();
+        private IEntityKey _key;
 
         public List<EntityRelationship> AllRelationships()
         {

@@ -649,7 +649,7 @@ namespace Iql.Data.Context
                     if (mappedProperty != null)
                     {
                         mappedItem.SetPropertyValueByName(property.PropertyName,
-                            item.GetPropertyValueByName(mappedProperty.Name));
+                            item.GetPropertyValueByName(mappedProperty.CustomProperty.PropertyName));
                     }
                 }
 
@@ -661,7 +661,7 @@ namespace Iql.Data.Context
             var flattenedGetDataResult = new FlattenedGetDataResult<T>(flattened, getOperation, getDataResult.Success);
             flattenedGetDataResult.Root = list;
             flattenedGetDataResult.Queryable = this;
-            var dbList = (DataContext as DataContext).TrackGetDataResult(
+            var dbList = (DataContext as DataContext).DataTracker.TrackGetDataResult(
                 flattenedGetDataResult);
             var result = new GetDataResult<T>(dbList, getOperation, getDataResult.Success);
             return result;

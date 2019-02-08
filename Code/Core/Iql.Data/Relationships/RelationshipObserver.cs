@@ -287,7 +287,16 @@ namespace Iql.Data.Relationships
                     var entityObserver = new EntityObserver(trackingSet.FindMatchingEntityState(entity));
                     _observed.Add(entity, entityObserver);
                     entityObserver.RegisterMarkForDeletionChanged(MarkedForDeletionChange);
-                    entityObserver.RegisterPropertyChanged(e => { PropertyChangeEvent(e, entityConfiguration); });
+                    entityObserver.RegisterPropertyChanged(e =>
+                    {
+                        //IEntityConfiguration ec = entityConfiguration;
+                        //if (ec.SpecialTypeDefinition != null && ec.SpecialTypeDefinition.EntityConfiguration.Type == e.EntityType)
+                        //{
+                        //    ec = ec.SpecialTypeDefinition.EntityConfiguration;
+                        //}
+                        //PropertyChangeEvent(e, ec);
+                        PropertyChangeEvent(e, entityConfiguration);
+                    });
                     entityObserver.RegisterRelatedListChanged(RelatedListChanged);
                 }
             }
@@ -330,6 +339,7 @@ namespace Iql.Data.Relationships
             IEntityConfiguration entityConfiguration
             )
         {
+
             var property = entityConfiguration.FindProperty(propertyChangeEvent.PropertyName);
             _propertyChangeIgnorer.RunIfNotAlreadyIgnored(
                 () =>

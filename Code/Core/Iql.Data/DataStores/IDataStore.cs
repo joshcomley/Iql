@@ -15,7 +15,7 @@ namespace Iql.Data.DataStores
     public interface IDataStore
     {
         EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
-        EntityConfigurationBuilder EntityConfigurationBuilder { get; }
+        EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
         IOfflineDataStore OfflineDataStore { get; set; }
         //DbList<T> TrackGetDataResult<T>(FlattenedGetDataResult<T> response) where T : class;
         INestedSetsProviderBase NestedSetsProviderForType(Type type);

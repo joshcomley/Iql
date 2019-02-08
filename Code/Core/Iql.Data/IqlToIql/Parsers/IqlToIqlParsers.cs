@@ -204,8 +204,8 @@ namespace Iql.Data.IqlToIql.Parsers
                 var mappedProperty = specialTypeMap.ResolvePropertyMap(action.PropertyName);
                 if (mappedProperty != null)
                 {
-                    action.PropertyName = mappedProperty.PropertyName;
-                    action.ReturnType = mappedProperty.TypeDefinition.ToIqlType();
+                    action.PropertyName = mappedProperty.CustomProperty.PropertyName;
+                    action.ReturnType = mappedProperty.CustomProperty.TypeDefinition.ToIqlType();
                 }
             });
             action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;

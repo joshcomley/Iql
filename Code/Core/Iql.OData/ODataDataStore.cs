@@ -28,11 +28,10 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
-        public ODataDataStore(EntityConfigurationBuilder entityConfigurationBuilder, IOfflineDataStore offlineDataStore = null) : base(entityConfigurationBuilder, offlineDataStore)
+        public ODataDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
             
         }
-        private ODataConfiguration _configuration;
 
         public ODataConfiguration Configuration { get; set; }
 

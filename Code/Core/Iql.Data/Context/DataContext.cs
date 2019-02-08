@@ -35,18 +35,27 @@ namespace Iql.Data.Context
     public class DataContext : IDataContext
     {
         public TrackingSetCollection Tracking => DataTracker.Tracking;
-        public static MethodInfo AddInternalMethod { get; set; }
-        public static MethodInfo DeleteInternalMethod { get; set; }
 
-        static DataContext()
-        {
-            AddInternalMethod = typeof(DataStore)
-                .GetMethod(nameof(AddInternal),
-                    BindingFlags.Instance | BindingFlags.NonPublic);
-            DeleteInternalMethod = typeof(DataStore)
-                .GetMethod(nameof(DeleteInternal),
-                    BindingFlags.Instance | BindingFlags.NonPublic);
-        }
+        private MethodInfo _addInternalMethod;
+
+        private MethodInfo AddInternalMethod =>
+            _addInternalMethod =
+                _addInternalMethod ??
+                typeof(DataContext)
+                    .GetMethod(nameof(AddInternal),
+                        BindingFlags.Instance |
+                        BindingFlags.NonPublic);
+
+        private MethodInfo _deleteInternalMethod;
+
+        private MethodInfo DeleteInternalMethod =>
+            _deleteInternalMethod =
+                _deleteInternalMethod ??
+                typeof(DataContext)
+                    .GetMethod(nameof(DeleteInternal),
+                        BindingFlags.Instance |
+                        BindingFlags.NonPublic);
+
 #if !TypeScript
         public IEntityStateBase Add(object entity)
         {
@@ -171,29 +180,57 @@ namespace Iql.Data.Context
         private DataTracker _dataTracker;
         public DataTracker DataTracker
         {
-            get { return _dataTracker = _dataTracker ?? new DataTracker(EntityConfigurationContext, true); }
+            get
+            {
+                if (_dataTracker == null)
+                {
+                    _dataTracker = new DataTracker(EntityConfigurationContext, true);
+                    _dataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
+                    _dataTracker.DataContext = this;
+                }
+
+                return _dataTracker;
+            }
         }
         private DataTracker _offlineDataTracker;
-        public DataTracker OfflineDataTracker =>
-                _offlineDataTracker = _offlineDataTracker ?? new DataTracker(EntityConfigurationContext, true, true);
+
+        public DataTracker OfflineDataTracker
+        {
+            get
+            {
+                if (DataStore?.OfflineDataStore == null)
+                {
+                    return null;
+                }
+                return _offlineDataTracker;
+            }
+        }
 
         public DataContext(
             IDataStore dataStore = null,
             EvaluateContext evaluateContext = null
         )
         {
-            DataStore = dataStore;
             EvaluateContext = evaluateContext;
+
+            void midSetup()
+            {
+                DataStore = dataStore;
+                _offlineDataTracker = new DataTracker(EntityConfigurationContext, true, true);
+                _offlineDataTracker.DataContext = this;
+            }
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
             {
                 EntityConfigurationContext = new EntityConfigurationBuilder();
                 EntityConfigurationsBuilders.Add(thisType, EntityConfigurationContext);
+                midSetup();
                 Initialize();
             }
             else
             {
                 EntityConfigurationContext = EntityConfigurationsBuilders[thisType];
+                midSetup();
                 _initialized = true;
                 InitializeProperties();
                 InitializeSetNames();
@@ -276,7 +313,18 @@ namespace Iql.Data.Context
             }
         }
 
-        public IDataStore DataStore { get; set; }
+        public IDataStore DataStore
+        {
+            get => _dataStore;
+            set
+            {
+                _dataStore = value;
+                if (value != null)
+                {
+                    value.EntityConfigurationBuilder = EntityConfigurationContext;
+                }
+            }
+        }
 
         public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
@@ -731,7 +779,7 @@ namespace Iql.Data.Context
             {
                 entityType = entity.GetType();
             }
-            return AsDbSetByType(entityType).Add(entity);
+            return (IEntityStateBase)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
         }
 
         public async Task<T> RefreshEntity<T>(T entity
@@ -972,6 +1020,7 @@ namespace Iql.Data.Context
         private MethodInfo _validateEntityPropertyInternalAsyncMethod;
         private MethodInfo _validateEntityInternalAsyncMethod;
         private SaveChangesApplicator _saveChangesApplicator;
+        private IDataStore _dataStore;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {
@@ -1022,7 +1071,7 @@ namespace Iql.Data.Context
             {
                 if (clone)
                 {
-                    entity = (T) entity.Clone(EntityConfigurationContext, entityType, RelationshipCloneMode.KeysOnly);
+                    entity = (T) entity.Clone(EntityConfigurationContext, entityType, RelationshipCloneMode.DoNotClone);
                 }
                 else
                 {
@@ -1414,6 +1463,8 @@ namespace Iql.Data.Context
             }
             else
             {
+                OfflineDataTracker?.TrackGetDataResult(response);
+                OfflineDataTracker?.Reset(response.Data);
                 DataStore.OfflineDataStore?.SynchroniseData(response.Data);
                 // Update "offline" repository with these results
             }
@@ -1422,7 +1473,7 @@ namespace Iql.Data.Context
             // don't trickle down to our result
             response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
 
-            var dbList = TrackGetDataResult(response);
+            var dbList = DataTracker.TrackGetDataResult(response);
 
             var getDataResult =
                 new GetDataResult<TEntity>(dbList, operation, response.IsSuccessful())
@@ -1507,70 +1558,6 @@ namespace Iql.Data.Context
         {
             var dataContext = FindDataContextForEntity(entity);
             return dataContext?.GetEntityState(entity);
-        }
-
-
-        public DbList<TEntity> TrackGetDataResult<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
-        {
-            var dbList = new DbList<TEntity>();
-            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
-            // Flatten before we merge because the merge will update the result data set with
-            // tracked data
-            if (response.IsSuccessful())
-            {
-                var trackResults = dbList.SourceQueryable != null &&
-                                   TrackEntities;
-                if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
-                {
-                    trackResults = dbList.SourceQueryable.TrackEntities.Value;
-                }
-                SaveChangesApplicator.ForAllDataTrackers(tracker =>
-                {
-                    if (tracker == DataTracker)
-                    {
-                        if (!trackResults)
-                        {
-                            tracker = new DataTracker(EntityConfigurationContext, false);
-                        }
-                        response.Root = tracker.TrackResults(response.Data, response.Root);
-                    }
-                    else if (tracker == OfflineDataTracker)
-                    {
-                        foreach (var entityType in response.Data)
-                        {
-                            foreach (var entity in entityType.Value)
-                            {
-                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
-                                trackingSet.TrackEntity(
-                                    entity.Clone(EntityConfigurationContext, entityType.Key, RelationshipCloneMode.KeysOnly), entity,
-                                    isNew: false, onlyMergeWithExisting: false);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var entityType in response.Data)
-                        {
-                            foreach (var entity in entityType.Value)
-                            {
-                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
-                                if (trackingSet.IsMatchingEntityTracked(entity))
-                                {
-                                    var state = trackingSet.FindMatchingEntityState(entity);
-                                    trackingSet.TrackEntity(state.Entity, entity, isNew: false, onlyMergeWithExisting: true);
-                                    state.Reset();
-                                }
-                            }
-                        }
-                    }
-                });
-                if (response.Root != null)
-                {
-                    dbList.AddRange(response.Root);
-                }
-            }
-
-            return dbList;
         }
     }
 }

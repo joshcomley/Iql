@@ -5,5 +5,6 @@ namespace Iql.Data.Crud.Operations
     public interface IUpdateEntityOperation : IEntityCrudOperationBase
     {
         IEntityStateBase EntityState { get; }
+        IPropertyState[] GetChangedProperties();
     }
 }

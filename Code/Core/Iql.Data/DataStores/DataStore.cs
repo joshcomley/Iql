@@ -11,16 +11,40 @@ namespace Iql.Data.DataStores
 {
     public class DataStore : IDataStore
     {
+        private EntityConfigurationBuilder _entityConfigurationBuilder;
+        private IOfflineDataStore _offlineDataStore;
         public EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
-        public DataStore(EntityConfigurationBuilder entityConfigurationBuilder, IOfflineDataStore offlineDataStore = null)
+        public DataStore(IOfflineDataStore offlineDataStore = null)
         {
-            EntityConfigurationBuilder = entityConfigurationBuilder;
             OfflineDataStore = offlineDataStore;
             DataSetRetrieved = new EventEmitter<DataSetRetrievedEvent>();
         }
 
-        public EntityConfigurationBuilder EntityConfigurationBuilder { get; }
-        public IOfflineDataStore OfflineDataStore { get; set; }
+        public EntityConfigurationBuilder EntityConfigurationBuilder
+        {
+            get => _entityConfigurationBuilder;
+            set
+            {
+                _entityConfigurationBuilder = value;
+                if (OfflineDataStore != null)
+                {
+                    OfflineDataStore.EntityConfigurationBuilder = value;
+                }
+            }
+        }
+
+        public IOfflineDataStore OfflineDataStore
+        {
+            get => _offlineDataStore;
+            set
+            {
+                _offlineDataStore = value;
+                if (value != null)
+                {
+                    value.EntityConfigurationBuilder = EntityConfigurationBuilder;
+                }
+            }
+        }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {

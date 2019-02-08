@@ -5,6 +5,7 @@ namespace Iql.Entities.SpecialTypes
 {
     public class UserSettingsDefinition : SpecialTypeDefinition
     {
+        private PropertyMap[] _propertyMaps;
         public override Type InternalType => typeof(IqlUserSetting);
 
         public IProperty UserIdProperty { get; set; }
@@ -50,27 +51,19 @@ namespace Iql.Entities.SpecialTypes
             return definition;
         }
 
-        public override IProperty ResolvePropertyMap(string internalPropertyName)
-        {
-            switch (internalPropertyName)
-            {
-                case nameof(IqlUserSetting.Id):
-                    return IdProperty;
-                case nameof(IqlUserSetting.UserId):
-                    return UserIdProperty;
-                case nameof(IqlUserSetting.Key1):
-                    return Key1Property;
-                case nameof(IqlUserSetting.Key2):
-                    return Key2Property;
-                case nameof(IqlUserSetting.Key3):
-                    return Key3Property;
-                case nameof(IqlUserSetting.Key4):
-                    return Key4Property;
-                case nameof(IqlUserSetting.Value):
-                    return ValueProperty;
-            }
-            return null;
-        }
+        public override PropertyMap[] PropertyMaps =>
+            _propertyMaps =
+                _propertyMaps ??
+                new[]
+                {
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Id), IdProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.UserId), UserIdProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Key1), Key1Property),
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Key2), Key2Property),
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Key3), Key3Property),
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Key4), Key4Property),
+                    new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Value), ValueProperty),
+                };
 
         public override IPropertyGroup[] GetSpecialTypeProperties()
         {

@@ -19,7 +19,17 @@ namespace Iql.Entities.SpecialTypes
             IdProperty = idProperty;
         }
 
-        public abstract IProperty ResolvePropertyMap(string internalPropertyName);
+        public virtual PropertyMap ResolvePropertyMap(string internalPropertyName)
+        {
+            return PropertyMaps.SingleOrDefault(_ => _.InternalPropertyName == internalPropertyName);
+        }
+
+        public virtual PropertyMap ResolvePropertyMapInverse(string customPropertyName)
+        {
+            return PropertyMaps.SingleOrDefault(_ => _.CustomProperty.Name == customPropertyName);
+        }
+
+        public abstract PropertyMap[] PropertyMaps { get; }
 
         public IPropertyGroup[] GetGroupProperties()
         {

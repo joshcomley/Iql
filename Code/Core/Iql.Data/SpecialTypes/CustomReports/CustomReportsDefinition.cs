@@ -5,6 +5,7 @@ namespace Iql.Entities.SpecialTypes
 {
     public class CustomReportsDefinition : SpecialTypeDefinition
     {
+        private PropertyMap[] _propertyMaps;
         public override Type InternalType => typeof(IqlCustomReport);
 
         public IProperty UserIdProperty { get; set; }
@@ -58,31 +59,22 @@ namespace Iql.Entities.SpecialTypes
             return definition;
         }
 
-        public override IProperty ResolvePropertyMap(string internalPropertyName)
-        {
-            switch (internalPropertyName)
-            {
-                case nameof(IqlCustomReport.Id):
-                    return IdProperty;
-                case nameof(IqlCustomReport.UserId):
-                    return UserIdProperty;
-                case nameof(IqlCustomReport.Name):
-                    return NameProperty;
-                case nameof(IqlCustomReport.EntityType):
-                    return EntityTypeProperty;
-                case nameof(IqlCustomReport.Iql):
-                    return IqlProperty;
-                case nameof(IqlCustomReport.Fields):
-                    return FieldsProperty;
-                case nameof(IqlCustomReport.Sort):
-                    return SortProperty;
-                case nameof(IqlCustomReport.SortDescending):
-                    return SortDescendingProperty;
-                case nameof(IqlCustomReport.Search):
-                    return SearchProperty;
-            }
-            return null;
-        }
+        public override PropertyMap[] PropertyMaps =>
+            _propertyMaps =
+                _propertyMaps ??
+                new[]
+                {
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.Id), IdProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.UserId), UserIdProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.Name), NameProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.EntityType), EntityTypeProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.Iql), IqlProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.Fields), FieldsProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.Sort), SortProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.SortDescending),
+                        SortDescendingProperty),
+                    new PropertyMap(EntityConfiguration, nameof(IqlCustomReport.Search), SearchProperty),
+                };
 
         public override IPropertyGroup[] GetSpecialTypeProperties()
         {

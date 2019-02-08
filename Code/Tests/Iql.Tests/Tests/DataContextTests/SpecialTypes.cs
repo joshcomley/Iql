@@ -6,7 +6,7 @@ using Iql.Tests.Context;
 using Iql.Tests.Tests.OData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iql.Tests.Tests.DataContext
+namespace Iql.Tests.Tests.DataContextTests
 {
     [TestClass]
     public class SpecialTypes : TestsBase

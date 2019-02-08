@@ -1165,7 +1165,7 @@ namespace Iql.Tests.Tests
 ";
             await RequestLog.LogSessionAsync(async log =>
             {
-                var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+                var db = new AppDbContext(new ODataDataStore());
                 db.Clients.Add(client);
                 await log.InterceptAsync((method, uri, request) =>
                     {

@@ -20,10 +20,10 @@ namespace Iql.Data.Tracking
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
+        public IDataContext DataContext => DataTracker.DataContext;
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
         private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
-        public IDataContext DataContext { get; }
         public TrackingSetCollection TrackingSetCollection => DataTracker.Tracking;
 
         public bool DifferentEntityWithSameKeyIsTracked(T entity)
@@ -46,7 +46,8 @@ namespace Iql.Data.Tracking
             return DifferentEntityWithSameKeyIsTracked((T)entity);
         }
 
-        public EntityConfiguration<T> EntityConfiguration { get; }
+        public EntityConfiguration<T> EntityConfiguration => _entityConfiguration = _entityConfiguration ?? DataTracker.EntityConfigurationBuilder.EntityType<T>();
+
         IEntityConfiguration ITrackingSet.EntityConfiguration => EntityConfiguration;
         public SimplePropertyMerger SimplePropertyMerger { get; }
 
@@ -59,7 +60,6 @@ namespace Iql.Data.Tracking
         public TrackingSet(DataTracker dataTracker)
         {
             DataTracker = dataTracker;
-            EntityConfiguration = DataContext.EntityConfigurationContext.EntityType<T>();
             SimplePropertyMerger = new SimplePropertyMerger(EntityConfiguration);
             EntitiesByPersistenceKey = new Dictionary<Guid, IEntityStateBase>();
             EntitiesByObject = new Dictionary<object, IEntityStateBase>();
@@ -89,6 +89,15 @@ namespace Iql.Data.Tracking
 
         public IEntityStateBase FindMatchingEntityState(object entity)
         {
+            //if (EntityConfiguration.SpecialTypeDefinition != null && 
+            //    EntityConfiguration.SpecialTypeDefinition.EntityConfiguration.Type != EntityConfiguration.Type && 
+            //    entity.GetType() != EntityConfiguration.SpecialTypeDefinition.EntityConfiguration.Type)
+            //{
+            //    var specialTypeTrackingSet = TrackingSetCollection
+            //        .TrackingSetByType(EntityConfiguration.SpecialTypeDefinition.EntityConfiguration.Type);
+            //    return specialTypeTrackingSet
+            //        .GetEntityStateByKey(EntityConfiguration.GetCompositeKey(entity));
+            //}
             var result = TryGetEntityState(entity, false);
             return result?.State;
         }
@@ -111,6 +120,7 @@ namespace Iql.Data.Tracking
                 return existingEntityState.State;
             }
             var entityState = new EntityState<T>(
+                DataTracker,
                 (T)entity,
                 typeof(T),
                 DataContext,
@@ -350,7 +360,7 @@ namespace Iql.Data.Tracking
                                     }
                                 }
 
-                                var trackingSet = DataContext.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
+                                var trackingSet = DataTracker.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
                                 var trackedItem = trackingSet.GetEntityStateByKey(compositeKey);
                                 if (trackedItem != null && trackedItem.Entity != changeEvent.Item)
                                 {
@@ -374,17 +384,20 @@ namespace Iql.Data.Tracking
                         case RelatedListChangeKind.Added:
                             if (changeEvent.Item != null)
                             {
-                                var state = DataContext.AddEntity(changeEvent.Item);
-                                if (state.Entity != changeEvent.Item)
+                                if (DataContext != null)
                                 {
-                                    changeEvent.ObservableListChangeEvent.Disallow = true;
+                                    var state = DataContext.AddEntity(changeEvent.Item);
+                                    if (state.Entity != changeEvent.Item)
+                                    {
+                                        changeEvent.ObservableListChangeEvent.Disallow = true;
+                                    }
                                 }
                             }
                             break;
                         case RelatedListChangeKind.Removed:
                             if (changeEvent.Item != null)
                             {
-                                if (!DataTracker.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
+                                if (DataContext != null && !DataTracker.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
                                     changeEvent.ItemType))
                                 {
                                     DataContext.DeleteEntity(changeEvent.Item);
@@ -460,6 +473,7 @@ namespace Iql.Data.Tracking
         }
 
         private readonly Dictionary<object, object> _tracking = new Dictionary<object, object>();
+        private EntityConfiguration<T> _entityConfiguration;
 
         internal override IEntityStateBase TrackEntityInternal(object entity, object mergeWith = null,
             bool isNew = true, bool onlyMergeWithExisting = false)

@@ -7,12 +7,12 @@ namespace Iql.Tests.Tests.OData
     {
         public HazceptionDataContext NewHazDb()
         {
-            return new HazceptionDataContext(new ODataDataStore(Db.EntityConfigurationContext));
+            return new HazceptionDataContext(new ODataDataStore());
         }
 
         public AppDbContext NewDb()
         {
-            return new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            return new AppDbContext(new ODataDataStore());
         }
     }
 }

@@ -10,13 +10,13 @@ namespace Iql.Tests.Context
 
         public bool IsOffline
         {
-            get => OfflinableDataStore.IsOffline;
+            get => OfflinableDataStore?.IsOffline == true;
             set => OfflinableDataStore.IsOffline = value;
         }
 
         public OfflineAppDbContext()
         {
-            DataStore = new OfflinableInMemoryDataStore(EntityConfigurationContext, new InMemoryDataStore(EntityConfigurationContext));
+            DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore());
             // Load up with data
             var clients = OfflinableDataStore.GetDataSource<Client>();
             clients.Add(new Client
@@ -54,7 +54,7 @@ namespace Iql.Tests.Context
             });
         }
 
-        public InMemoryDataStore OfflineDataStore => (InMemoryDataStore)DataStore.OfflineDataStore;
+        public InMemoryDataStore OfflineDataStore => (InMemoryDataStore)DataStore?.OfflineDataStore;
         public OfflinableInMemoryDataStore OfflinableDataStore => (OfflinableInMemoryDataStore)DataStore;
     }
 }

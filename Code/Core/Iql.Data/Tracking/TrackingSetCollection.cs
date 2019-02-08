@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.DataStores;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Extensions;
 using Newtonsoft.Json;
@@ -254,6 +256,22 @@ namespace Iql.Data.Tracking
                 Id,
                 Sets = Sets.Select(_ => _.PrepareForJson())
             };
+        }
+
+        public void Reset(Dictionary<Type, IList> entities)
+        {
+            foreach (var entry in entities)
+            {
+                var setType = entry.Key;
+                var set = Sets.FirstOrDefault(_ => _.EntityConfiguration.Type == setType);
+                if (set != null)
+                {
+                    foreach (var entity in entry.Value)
+                    {
+                        set.FindMatchingEntityState(entity)?.Reset();
+                    }
+                }
+            }
         }
     }
 }

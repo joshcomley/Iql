@@ -505,7 +505,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public void TestResolveEntitySetMethodUriWithNoParameters()
         {
-            var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.Me();
             var uri = meRequest.Uri;
             Assert.AreEqual(@"http://localhost:28000/odata/Users/IqlSampleApp.Me", uri);
@@ -514,7 +514,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public void TestResolveEntitySetMethodUriWithParameters()
         {
-            var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.ForClient(7, 2);
             var uri = meRequest.Uri;
             Assert.AreEqual(@"http://localhost:28000/odata/Users/IqlSampleApp.ForClient(id=7,type=2)", uri);
@@ -523,7 +523,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public void TestResolveEntityMethodUriWithNoParameters()
         {
-            var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.ReinstateUser(new ApplicationUser { Id = "928B9116-B06C-49EF-98C9-52A776E03ECD" });
             var uri = meRequest.Uri;
             Assert.AreEqual(@"http://localhost:28000/odata/Users('928B9116-B06C-49EF-98C9-52A776E03ECD')/IqlSampleApp.ReinstateUser", uri);
@@ -532,7 +532,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public void TestResolveEntityMethodUriWithParameters()
         {
-            var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.ClientTypes.SayHi(new ClientType { Id = 2 }, "bebo");
             var uri = meRequest.Uri;
             Assert.AreEqual(@"http://localhost:28000/odata/ClientTypes(2)/IqlSampleApp.SayHi(name='bebo')", uri);

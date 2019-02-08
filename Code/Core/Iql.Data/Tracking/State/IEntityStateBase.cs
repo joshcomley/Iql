@@ -11,6 +11,7 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable
     {
+        DataTracker Tracker { get; }
         object Entity { get; }
         IPropertyState[] PropertyStates { get; }
         CompositeKey CurrentKey { get; set; }

@@ -8,7 +8,7 @@ using IqlSampleApp.Sets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
-namespace Iql.Tests.Tests.DataContext
+namespace Iql.Tests.Tests.DataContextTests
 {
     [TestClass]
     public class DataContextTests : TestsBase

@@ -6,6 +6,7 @@ using Iql.Data.DataStores.InMemory;
 using Iql.Data.Queryable;
 using Iql.Entities;
 using Iql.Entities.SpecialTypes;
+using Iql.OData;
 using Iql.Tests.Data.Context;
 using Iql.Tests.Data.Context.Custom;
 using Iql.Tests.Tests.OData;
@@ -43,6 +44,7 @@ namespace Iql.Tests.Context
         public AppDbContext(IDataStore dataStore = null) :
             base(dataStore)
         {
+            DataStore = DataStore ?? new InMemoryDataStore();
             Initialise();
         }
 
@@ -75,6 +77,10 @@ namespace Iql.Tests.Context
             RegisterConfiguration(defaultQueries);
             ODataConfiguration.ApiUriBase = () => @"http://localhost:28000/odata";
             ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
+            if (DataStore is ODataDataStore)
+            {
+                (DataStore as ODataDataStore).Configuration = ODataConfiguration;
+            }
         }
 
         private void ConfigureCustomReports()

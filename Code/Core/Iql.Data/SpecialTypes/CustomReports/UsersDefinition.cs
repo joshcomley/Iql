@@ -5,6 +5,7 @@ namespace Iql.Entities.SpecialTypes
 {
     public class UsersDefinition : SpecialTypeDefinition
     {
+        private PropertyMap[] _propertyMaps;
         public override Type InternalType => typeof(IqlUser);
         public IProperty NameProperty { get; set; }
 
@@ -29,18 +30,17 @@ namespace Iql.Entities.SpecialTypes
             return definition;
         }
 
-
-        public override IProperty ResolvePropertyMap(string internalPropertyName)
-        {
-            switch (internalPropertyName)
-            {
-                case nameof(IqlUser.Id):
-                    return IdProperty;
-                case nameof(IqlUser.Name):
-                    return NameProperty;
-            }
-            return null;
-        }
+        public override PropertyMap[] PropertyMaps =>
+            _propertyMaps =
+                _propertyMaps ??
+                new[]
+                {
+                    new PropertyMap(EntityConfiguration,
+                        nameof(IqlUser.Id), IdProperty),
+                    new PropertyMap(EntityConfiguration,
+                        nameof(IqlUser.Name),
+                        NameProperty),
+                };
 
         public override IPropertyGroup[] GetSpecialTypeProperties()
         {

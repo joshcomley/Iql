@@ -50,7 +50,7 @@ namespace Iql.Data.DataStores.InMemory
             return (List<TEntity>) GetDataSourceByType(typeof(TEntity));
         }
 
-        public InMemoryDataStore(EntityConfigurationBuilder entityConfigurationBuilder, IOfflineDataStore offlineDataStore = null) : base(entityConfigurationBuilder, offlineDataStore)
+        public InMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
         }
 
@@ -200,8 +200,8 @@ namespace Iql.Data.DataStores.InMemory
             var inMemoryContext = new InMemoryContext<TEntity>(this);
             var result = func(inMemoryContext);
             var resultList = result.SourceList.ToList();
+            inMemoryContext.AddMatches(typeof(TEntity), resultList);
             var clonedResult = resultList.CloneAs(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone).ToList();
-            inMemoryContext.AddMatches(typeof(TEntity), clonedResult);
             var dictionary = new Dictionary<Type, IList>();
             foreach (var item in inMemoryContext.AllData)
             {
@@ -274,7 +274,7 @@ namespace Iql.Data.DataStores.InMemory
                 {
                     source.Remove(match);
                 }
-                var clone = (T) entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.KeysOnly);
+                var clone = (T) entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
                 source.Add(clone);
             }
         }

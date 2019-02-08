@@ -25,7 +25,7 @@ namespace Iql.Data.Context
 
         static SaveChangesApplicator()
         {
-            MarkAsDeletedByKeyTypedMethod = typeof(DataStore)
+            MarkAsDeletedByKeyTypedMethod = typeof(SaveChangesApplicator)
                 .GetMethod(nameof(MarkAsDeletedByKey),
                     BindingFlags.Instance | BindingFlags.Public);
         }
@@ -60,6 +60,7 @@ namespace Iql.Data.Context
             SaveChangesResult saveChangesResult) where TEntity : class
         {
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
+            var isOffline = false;
             ICrudResult result;
             switch (operation.Operation.Type)
             {
@@ -80,13 +81,14 @@ namespace Iql.Data.Context
                         var specialTypeMap = EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
                         if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
                         {
-                            var method = typeof(DataStore).GetMethod(nameof(PerformMappedAddAsync), BindingFlags.NonPublic | BindingFlags.Instance);
+                            var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedAddAsync), BindingFlags.NonPublic | BindingFlags.Instance);
                             result = await (Task<AddEntityResult<TEntity>>)method.InvokeGeneric(
                                 this,
                                 new object[] { addEntityOperation, specialTypeMap },
                                 typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
+                                isOffline = true;
                                 // Magic happens here...
                                 if (DataContext.DataStore.OfflineDataStore != null)
                                 {
@@ -101,6 +103,7 @@ namespace Iql.Data.Context
                             result = await DataContext.DataStore.PerformAddAsync(addEntityOperation);
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
+                                isOffline = true;
                                 // Magic happens here...
                                 if (DataContext.DataStore.OfflineDataStore != null)
                                 {
@@ -158,13 +161,14 @@ namespace Iql.Data.Context
                             var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
                             if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
                             {
-                                var method = typeof(DataStore).GetMethod(nameof(PerformMappedUpdateAsync), BindingFlags.NonPublic | BindingFlags.Instance);
+                                var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedUpdateAsync), BindingFlags.NonPublic | BindingFlags.Instance);
                                 result = await (Task<UpdateEntityResult<TEntity>>)method.InvokeGeneric(
                                     this,
                                     new object[] { updateEntityOperation, specialTypeMap },
                                     typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                                 if (result.RequestStatus == RequestStatus.Offline)
                                 {
+                                    isOffline = true;
                                     // Magic happens here...
                                     if (DataContext.DataStore.OfflineDataStore != null)
                                     {
@@ -178,6 +182,7 @@ namespace Iql.Data.Context
                                 result = await DataContext.DataStore.PerformUpdateAsync(updateEntityOperation);
                                 if (result.RequestStatus == RequestStatus.Offline)
                                 {
+                                    isOffline = true;
                                     // Magic happens here...
                                     if (DataContext.DataStore.OfflineDataStore != null)
                                     {
@@ -191,7 +196,6 @@ namespace Iql.Data.Context
                                 .Entity;
                             if (result.Success)
                             {
-                                DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation);
                                 //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
                                 //    operationEntity, typeof(TEntity));
                                 //var rootDictionary = new Dictionary<Type, IList>();
@@ -201,14 +205,26 @@ namespace Iql.Data.Context
                                 //rootDictionary.Ensure(
                                 //    typeof(TEntity),
                                 //    () => new List<TEntity> { updateEntityOperation.Operation.Entity });
-                                ForAnEntityAcrossAllDataTrackers<TEntity>(updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
+                                if (isOffline)
                                 {
-                                    if (state.Entity != operationEntity)
+                                    DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation);
+                                }
+                                ForAnEntityAcrossAllDataTrackers<TEntity>(
+                                    updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
                                     {
-                                        tracker.TrackResults<TEntity>(rootDictionary, null, true);
-                                    }
-                                    tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
-                                });
+                                        var isOfflineTracker =
+                                            isOffline && tracker == DataContext.OfflineDataTracker;
+
+                                        if (!isOfflineTracker)
+                                        {
+                                            if (state.Entity != operationEntity)
+                                            {
+                                                tracker.TrackResults<TEntity>(rootDictionary, null, true);
+                                            }
+
+                                            tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
+                                        }
+                                    });
                                 // TODO: Should be able to refresh an entity yet maintain existing changes
                                 await DataContext.RefreshEntity(operationEntity
 #if TypeScript
@@ -250,13 +266,14 @@ namespace Iql.Data.Context
                         var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
                         if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
                         {
-                            var method = typeof(DataStore).GetMethod(nameof(PerformMappedDeleteAsync), BindingFlags.NonPublic | BindingFlags.Instance);
+                            var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedDeleteAsync), BindingFlags.NonPublic | BindingFlags.Instance);
                             result = await (Task<DeleteEntityResult<TEntity>>)method.InvokeGeneric(
                                 this,
                                 new object[] { deleteEntityOperation, specialTypeMap },
                                 typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
+                                isOffline = true;
                                 // Magic happens here...
                                 if (DataContext.DataStore.OfflineDataStore != null)
                                 {
@@ -271,6 +288,7 @@ namespace Iql.Data.Context
                             result = await DataContext.DataStore.PerformDeleteAsync(deleteEntityOperation);
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
+                                isOffline = true;
                                 // Magic happens here...
                                 if (DataContext.DataStore.OfflineDataStore != null)
                                 {
@@ -317,7 +335,7 @@ namespace Iql.Data.Context
             {
                 var property = properties[i];
                 var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
-                mappedProperty.SetValue(mappedEntity,
+                mappedProperty.CustomProperty.SetValue(mappedEntity,
                     property.GetValue(add.Operation.Entity));
             }
 
@@ -344,7 +362,7 @@ namespace Iql.Data.Context
                     var property = properties[i];
                     var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
                     property.SetValue(remoteEntity,
-                        mappedProperty.GetValue(mappedResult.RemoteEntity));
+                        mappedProperty.CustomProperty.GetValue(mappedResult.RemoteEntity));
                 }
                 unmappedResult.RemoteEntity = remoteEntity;
             }
@@ -363,7 +381,7 @@ namespace Iql.Data.Context
             for (var i = 0; i < operationKey.Keys.Length; i++)
             {
                 remappedCompositeKey.Keys[i] = new KeyValue(
-                    definition.ResolvePropertyMap(operationKey.Keys[i].Name).PropertyName,
+                    definition.ResolvePropertyMap(operationKey.Keys[i].Name).CustomProperty.PropertyName,
                     operationKey.Keys[i].Value,
                     operationKey.Keys[i].ValueType);
                 mappedEntity.SetPropertyValueByName(remappedCompositeKey.Keys[i].Name,
@@ -391,18 +409,18 @@ namespace Iql.Data.Context
                 updateEntityOperation,
                 new UpdateEntityResult<TMap>(true, updateEntityOperation));
 
-            var dummyEntityState = new EntityState<TMap>(mappedEntity, typeof(TMap), DataContext,
+            var dummyEntityState = new EntityState<TMap>(update.Operation.EntityState.Tracker, mappedEntity, typeof(TMap), DataContext,
                 DataContext.EntityConfigurationContext.EntityType<TMap>());
             updateEntityOperation.EntityState = dummyEntityState;
             for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
             {
                 var sourcePropertyState = update.Operation.EntityState.PropertyStates[i];
                 var mappedProperty = definition.ResolvePropertyMap(sourcePropertyState.Property.PropertyName);
-                var targetPropertyState = dummyEntityState.PropertyStates.Single(p => p.Property == mappedProperty);
+                var targetPropertyState = dummyEntityState.PropertyStates.Single(p => p.Property == mappedProperty.CustomProperty);
                 targetPropertyState.RemoteValue = sourcePropertyState.RemoteValue;
                 targetPropertyState.LocalValue = sourcePropertyState.LocalValue;
                 mappedEntity.SetPropertyValueByName(
-                    mappedProperty.PropertyName,
+                    mappedProperty.CustomProperty.PropertyName,
                     sourcePropertyState.LocalValue);
             }
 
@@ -501,32 +519,13 @@ namespace Iql.Data.Context
             });
         }
 
-        internal void ForAllDataTrackers(Action<DataTracker> action)
-        {
-            var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
-            var allDataTrackers = DataTracker.AllDataTrackers();
-            foreach (var dataTracker in allDataTrackers)
-            {
-                if (!dataTrackersDealtWith.ContainsKey(dataTracker))
-                {
-                    dataTrackersDealtWith.Add(dataTracker, dataTracker);
-                }
-
-                if (DataContext.GetType() == DataContext.GetType() &&
-                    DataContext.SynchronicityKey == DataContext.SynchronicityKey)
-                {
-                    action(dataTracker);
-                }
-            }
-        }
-
         internal void ForAnEntityAcrossAllDataTrackers<TEntity>(CompositeKey key, Action<DataTracker, CompositeKey> action) where TEntity : class
         {
             // This needs to also accept a CompositeKey
             //var sourceEntity = entity as IEntity;
             //var alreadyEmitted = new Dictionary<string, string>();
             //var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
-            ForAllDataTrackers(dataTracker =>
+            DataContext.DataTracker.ForAllDataTrackers(dataTracker =>
             {
                 //var keyString = key.AsKeyString();
                 //if (!alreadyEmitted.ContainsKey(keyString))

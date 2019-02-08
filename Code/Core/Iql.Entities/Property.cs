@@ -97,10 +97,32 @@ namespace Iql.Entities
                 return value;
             };
 
-            SetValue = (o, v) => PropertySetterTyped((TOwner)o, (TProperty)v);
+            SetValue = (o, v) =>
+            {
+                if (EntityConfigurationInternal.SpecialTypeDefinition != null)
+                {
+                    var entityType = o.GetType();
+                    if (EntityConfiguration.Type != entityType)
+                    {
+                        if (entityType == EntityConfigurationInternal.SpecialTypeDefinition.InternalType)
+                        {
+                            return EntityConfigurationInternal.SpecialTypeDefinition.ResolvePropertyMapInverse(PropertyName)
+                                .CustomProperty.SetValue(o, v);
+                        }
+
+                        if (entityType == EntityConfigurationInternal.SpecialTypeDefinition.EntityConfiguration.Type)
+                        {
+                            return EntityConfigurationInternal.SpecialTypeDefinition.ResolvePropertyMap(PropertyName)
+                                .CustomProperty.SetValue(o, v);
+                        }
+                    }
+                }
+
+                return PropertySetterTyped((TOwner)o, (TProperty)v);
+            };
         }
 
-        public new ValidationCollection<TOwner> ValidationRules => (ValidationCollection<TOwner>) base.ValidationRules;
+        public new ValidationCollection<TOwner> ValidationRules => (ValidationCollection<TOwner>)base.ValidationRules;
 
         IRuleCollection<IBinaryRule> IPropertyGroup.ValidationRules
         {
@@ -123,7 +145,7 @@ namespace Iql.Entities
             return new RelationshipRuleCollection<TOwner, TElementType>();
         }
 
-        public new DisplayRuleCollection<TOwner> DisplayRules => (DisplayRuleCollection<TOwner>) base.DisplayRules;
+        public new DisplayRuleCollection<TOwner> DisplayRules => (DisplayRuleCollection<TOwner>)base.DisplayRules;
 
         IRuleCollection<IDisplayRule> IPropertyGroup.DisplayRules
         {
@@ -131,7 +153,7 @@ namespace Iql.Entities
             set => throw new NotImplementedException();
         }
 
-        public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules => (RelationshipRuleCollection<TOwner, TElementType>) base.RelationshipFilterRules;
+        public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules => (RelationshipRuleCollection<TOwner, TElementType>)base.RelationshipFilterRules;
 
         IRuleCollection<IRelationshipRule> IPropertyGroup.RelationshipFilterRules
         {
@@ -141,12 +163,12 @@ namespace Iql.Entities
 
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
 
-        public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped => 
+        public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped =>
             _propertySetterExpressionTyped = _propertySetterExpressionTyped ?? GetAssignmentLambda<TOwner, TProperty>(PropertyName);
 
         public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
 
-        public Func<TOwner, TProperty, TProperty> PropertySetterTyped => 
+        public Func<TOwner, TProperty, TProperty> PropertySetterTyped =>
             _propertySetterTyped = _propertySetterTyped ?? PropertySetterExpressionTyped.Compile();
 
         public override Func<object, object> GetValue { get; set; }
@@ -164,7 +186,7 @@ namespace Iql.Entities
 
         IEntityProperty<TOwner> IEntityProperty<TOwner>.UseLiteralDefaultValue(object value)
         {
-            return UseLiteralDefaultValue((TElementType) value);
+            return UseLiteralDefaultValue((TElementType)value);
         }
 
         public Property<TOwner, TProperty, TElementType> UseFunctionDefaultValue(Func<TOwner, Task<TElementType>> resolver)
@@ -175,7 +197,7 @@ namespace Iql.Entities
 
         IEntityProperty<TOwner> IEntityProperty<TOwner>.UseFunctionDefaultValue(Func<TOwner, Task<object>> resolver)
         {
-            return UseFunctionDefaultValue(async owner => (TElementType) await resolver(owner));
+            return UseFunctionDefaultValue(async owner => (TElementType)await resolver(owner));
         }
 
         public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)

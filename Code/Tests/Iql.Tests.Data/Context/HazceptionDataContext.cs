@@ -3,6 +3,7 @@ using Iql.Conversion;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.InMemory;
 using Iql.Entities;
+using Iql.OData;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
@@ -34,7 +35,7 @@ namespace Iql.Tests.Context
         public HazceptionDataContext(IDataStore dataStore = null) :
             base(dataStore)
         {
-            DataStore = DataStore ?? new InMemoryDataStore(EntityConfigurationContext);
+            DataStore = DataStore ?? new InMemoryDataStore();
             if (InMemoryDataStoreConfiguration == null)
             {
                 InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration(EntityConfigurationContext);
@@ -51,9 +52,18 @@ namespace Iql.Tests.Context
                 var inMemoryDb = new HazceptionDataStore().GetData();
                 InMemoryDb = inMemoryDb;
             }
+
             ODataConfiguration.ApiUriBase = () => @"http://localhost:58000/odata";
             RegisterConfiguration(InMemoryDataStoreConfiguration);
             this.ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
+            if (DataStore is InMemoryDataStore)
+            {
+                (DataStore as InMemoryDataStore).Configuration = InMemoryDataStoreConfiguration;
+            }
+            if (DataStore is ODataDataStore)
+            {
+                (DataStore as ODataDataStore).Configuration = ODataConfiguration;
+            }
         }
     }
 }

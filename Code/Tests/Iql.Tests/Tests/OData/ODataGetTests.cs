@@ -12,7 +12,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestGetExpand()
         {
-            var db = new HazceptionDataContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new HazceptionDataContext(new ODataDataStore());
             var user = await
                 db
                     .Users
@@ -30,7 +30,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestFailedGet()
         {
-            var db = new HazceptionDataContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new HazceptionDataContext(new ODataDataStore());
             var user = await
                 db
                     .Users
@@ -41,7 +41,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestGeographyGetFromCollection()
         {
-            var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new AppDbContext(new ODataDataStore());
             var sites = await db.Sites.ToListAsync();
             Assert.AreEqual(2, sites.Count);
             AssertGeographyProperties(sites[0]);
@@ -54,7 +54,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestGeographyGetFromKey()
         {
-            var db = new AppDbContext(new ODataDataStore(Db.EntityConfigurationContext));
+            var db = new AppDbContext(new ODataDataStore());
             var site = await db.Sites.GetWithKeyAsync(1);
             AssertGeographyProperties(site);
         }
