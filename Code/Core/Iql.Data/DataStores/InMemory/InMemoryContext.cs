@@ -67,7 +67,7 @@ namespace Iql.Data.DataStores.InMemory
         {
             DataStore = dataStore;
             Parent = parent;
-            SourceList = DataStore.GetDataSource<TEntity>();
+            SourceList = DataStore.DataSet<TEntity>();
         }
 
 #if !TypeScript
@@ -244,7 +244,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public IEnumerable ResolveSource(Type entityType)
         {
-            return DataStore.GetDataSourceByType(entityType);
+            return DataStore.DataSetByType(entityType);
         }
 
         IEnumerable IInMemoryContext.SourceList

@@ -971,6 +971,11 @@ namespace Iql.Data.Context
             return Then(new IncludeCountOperation());
         }
 
+        public DbQueryable<T> NoTracking()
+        {
+            return SetTracking(false);
+        }
+
         /// <summary>
         /// Any value here will override the data context's value
         /// A null value will resort to the data context's value

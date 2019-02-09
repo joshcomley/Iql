@@ -14,17 +14,19 @@ namespace Iql.Tests.Context
             set => OfflinableDataStore.IsOffline = value;
         }
 
+        public static string Client1Name = "Coca-Cola";
+        public static int Client1TypeId = 1;
         public OfflineAppDbContext()
         {
             DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore());
             // Load up with data
-            var clients = OfflinableDataStore.GetDataSource<Client>();
+            var clients = OfflinableDataStore.DataSet<Client>();
             clients.Add(new Client
             {
                 Id = 1,
                 AverageIncome = 12,
-                Name = "Coca-Cola",
-                TypeId = 1
+                Name = Client1Name,
+                TypeId = Client1TypeId
             });
             clients.Add(new Client
             {
@@ -41,7 +43,7 @@ namespace Iql.Tests.Context
                 TypeId = 2
             });
             var otherClients = InMemoryDb.Clients;
-            var clientTypes = OfflinableDataStore.GetDataSource<ClientType>();
+            var clientTypes = OfflinableDataStore.DataSet<ClientType>();
             clientTypes.Add(new ClientType
             {
                 Id = 1,

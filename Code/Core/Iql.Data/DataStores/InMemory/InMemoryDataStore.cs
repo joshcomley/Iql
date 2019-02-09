@@ -29,7 +29,7 @@ namespace Iql.Data.DataStores.InMemory
         private readonly Dictionary<Type, IList> _sources = new Dictionary<Type, IList>();
 
         public InMemoryDataStoreConfiguration Configuration { get; set; }
-        public virtual IList GetDataSourceByType(Type type)
+        public virtual IList DataSetByType(Type type)
         {
             var source = Configuration?.GetSourceByType(type);
             if (source != null)
@@ -44,10 +44,10 @@ namespace Iql.Data.DataStores.InMemory
             return _sources[type];
         }
 
-        public virtual List<TEntity> GetDataSource<TEntity>()
+        public virtual IList<TEntity> DataSet<TEntity>()
             where TEntity : class
         {
-            return (List<TEntity>) GetDataSourceByType(typeof(TEntity));
+            return (List<TEntity>) DataSetByType(typeof(TEntity));
         }
 
         public InMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
@@ -72,7 +72,7 @@ namespace Iql.Data.DataStores.InMemory
         public override Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
         {
-            var data = GetDataSourceByType(operation.Operation.EntityType);
+            var data = DataSetByType(operation.Operation.EntityType);
 
             var clone = operation.Operation.Entity.CloneAs(
                 EntityConfigurationBuilder,
@@ -145,7 +145,7 @@ namespace Iql.Data.DataStores.InMemory
             return FindEntityIndex(
                 operation.EntityType,
                 operation.Entity,
-                GetDataSource<TEntity>()
+                DataSet<TEntity>()
             );
         }
 
@@ -155,7 +155,7 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation.Operation);
             if (index != -1)
             {
-                var entity = GetDataSource<TEntity>()[index];
+                var entity = DataSet<TEntity>()[index];
                 new SimplePropertyMerger(EntityConfigurationBuilder.EntityType<TEntity>())
                     .Merge(
                         entity, 
@@ -176,7 +176,7 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromDeleteOperation(operation.Operation);
             if (index != -1)
             {
-                GetDataSource<TEntity>().RemoveAt(index);
+                DataSet<TEntity>().RemoveAt(index);
                 operation.Result.Success = true;
             }
             return Task.FromResult(operation.Result);
@@ -187,7 +187,7 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation);
             if (index == -1)
             {
-                return FindEntityIndexByKey(typeof(TEntity), operation.Key, GetDataSource<TEntity>());
+                return FindEntityIndexByKey(typeof(TEntity), operation.Key, DataSet<TEntity>());
             }
             return index;
         }
@@ -213,7 +213,7 @@ namespace Iql.Data.DataStores.InMemory
             return operation.Result;
         }
 
-        public IList[] AllDataSources()
+        public IList[] AllDataSets()
         {
             if (Configuration != null)
             {
@@ -229,7 +229,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public void Clear()
         {
-            foreach (var source in AllDataSources())
+            foreach (var source in AllDataSets())
             {
                 source.Clear();
             }
@@ -264,7 +264,7 @@ namespace Iql.Data.DataStores.InMemory
 
         private void SynchroniseDataTyped<T>(IList<T> data)
         {
-            var source = GetDataSourceByType(typeof(T)) as IList<T>;
+            var source = DataSetByType(typeof(T)) as IList<T>;
             var entityConfig = EntityConfigurationBuilder.GetEntityByType(typeof(T));
             foreach (var entity in data)
             {
