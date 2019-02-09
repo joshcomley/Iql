@@ -109,12 +109,12 @@ namespace Iql.Data.Context
         }
 
 
-//#if !TypeScript
-//        public IEntityStateBase Delete(object entity)
-//        {
-//            return (IEntityStateBase)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
-//        }
-//#endif
+        //#if !TypeScript
+        //        public IEntityStateBase Delete(object entity)
+        //        {
+        //            return (IEntityStateBase)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
+        //        }
+        //#endif
 
         private readonly Dictionary<string, object> _configurations =
             new Dictionary<string, object>();
@@ -324,6 +324,27 @@ namespace Iql.Data.Context
                     value.EntityConfigurationBuilder = EntityConfigurationContext;
                 }
             }
+        }
+
+        public async Task<SaveChangesResult> SaveOfflineChangesAsync()
+        {
+            if (OfflineDataTracker == null)
+            {
+                return new SaveChangesResult(SaveChangeKind.NoAction);
+            }
+
+            var changes = OfflineDataTracker.GetChanges();
+            if (changes == null || changes.Length == 0)
+            {
+                return new SaveChangesResult(SaveChangeKind.NoAction);
+            }
+
+            return await CommitQueueInternalAsync(changes, true);
+        }
+
+        public bool HasOfflineChanges()
+        {
+            return OfflineDataTracker?.HasChanges() == true;
         }
 
         public bool TrackEntities { get; set; } = true;
@@ -677,28 +698,42 @@ namespace Iql.Data.Context
             return await ApplySaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
         }
 
-        public virtual async Task<SaveChangesResult> ApplySaveChangesAsync(
+        public virtual Task<SaveChangesResult> ApplySaveChangesAsync(
             SaveChangesOperation operation)
         {
             // Sets could be added to whilst detecting changes
             // so get a copy now
             //var observable = this.Observable<SaveChangesResult>();
-            var saveChangesResult = new SaveChangesResult(true);
-            var queue = GetChanges(operation.Entities, operation.Properties);
-            foreach (var queuedOperation in queue)
+            return CommitQueueAsync(GetChanges(operation.Entities, operation.Properties));
+        }
+
+        public virtual async Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> queue)
+        {
+            return await CommitQueueInternalAsync(queue, false);
+        }
+
+        private async Task<SaveChangesResult> CommitQueueInternalAsync(IEnumerable<IQueuedOperation> queue, bool forceOnline)
+        {
+            var saveChangesResult = new SaveChangesResult(SaveChangeKind.NoAction);
+            var hasAny = false;
+            var queuedOperations = queue as IQueuedOperation[] ?? queue.ToArray();
+            for (var i = 0; i < queuedOperations.Length; i++)
             {
+                var queuedOperation = queuedOperations[i];
+                hasAny = true;
                 var task = GetType()
                     .GetMethod(nameof(PerformAsync))
                     .InvokeGeneric(this, new object[]
                         {
-                            queuedOperation, saveChangesResult
+                            queuedOperation, saveChangesResult, forceOnline
                         },
                         queuedOperation.Operation.EntityType) as Task;
                 await task;
-                if (!queuedOperation.Result.Success)
-                {
-                    saveChangesResult.Success = false;
-                }
+            }
+
+            if (hasAny)
+            {
+                saveChangesResult.Success = queuedOperations.All(_ => _.Result.Success);
             }
 
             return saveChangesResult;
@@ -706,10 +741,11 @@ namespace Iql.Data.Context
 
         public virtual Task PerformAsync<TEntity>(
             IQueuedOperation operation,
-            SaveChangesResult saveChangesResult) where TEntity : class
+            SaveChangesResult saveChangesResult,
+            bool forceOnline) where TEntity : class
         {
             return new SaveChangesApplicator(this).PerformAsync<TEntity>(
-                operation, saveChangesResult);
+                operation, saveChangesResult, forceOnline);
         }
 
         public bool IsIdMatch(object left, object right, Type type)
@@ -772,7 +808,7 @@ namespace Iql.Data.Context
         )
         {
 #if !TypeScript
-            var 
+            var
 #endif
             entityType = entity.GetType();
             if (entityType == null || entityType == typeof(object))
@@ -931,7 +967,7 @@ namespace Iql.Data.Context
             {
                 if (clone)
                 {
-                    entity = (T) entity.Clone(EntityConfigurationContext, entityType, RelationshipCloneMode.DoNotClone);
+                    entity = (T)entity.Clone(EntityConfigurationContext, entityType, RelationshipCloneMode.DoNotClone);
                 }
                 else
                 {
@@ -984,7 +1020,7 @@ namespace Iql.Data.Context
                 set = set.SetTracking(trackResult.Value);
             }
             var result = await set.GetWithKeyAsync(entityOrKey);
-            return (T) result;
+            return (T)result;
         }
 
         /// <summary>
@@ -1311,22 +1347,30 @@ namespace Iql.Data.Context
             var queuedGetDataOperation = new QueuedGetDataOperation<TEntity>(
                 operation,
                 response);
-            await DataStore.PerformGetAsync(queuedGetDataOperation);
 
-            if (response.RequestStatus == RequestStatus.Offline)
+            if (OfflineDataTracker?.HasChanges() != true)
             {
-                // Magic happens here...
-                if (DataStore.OfflineDataStore != null)
+                await DataStore.PerformGetAsync(queuedGetDataOperation);
+
+                if (response.RequestStatus == RequestStatus.Offline)
                 {
-                    await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
+                    // Magic happens here...
+                    if (DataStore.OfflineDataStore != null)
+                    {
+                        await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
+                    }
+                }
+                else
+                {
+                    OfflineDataTracker?.TrackGetDataResult(response);
+                    OfflineDataTracker?.Reset(response.Data);
+                    DataStore.OfflineDataStore?.SynchroniseData(response.Data);
+                    // Update "offline" repository with these results
                 }
             }
             else
             {
-                OfflineDataTracker?.TrackGetDataResult(response);
-                OfflineDataTracker?.Reset(response.Data);
-                DataStore.OfflineDataStore?.SynchroniseData(response.Data);
-                // Update "offline" repository with these results
+                await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
             }
 
             // Clone the queryable so any changes made in the application code

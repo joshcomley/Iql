@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
@@ -56,6 +57,11 @@ namespace Iql.Data.Tracking
             {
                 _allDataTrackers.Add(this);
             }
+        }
+
+        public bool HasChanges()
+        {
+            return Tracking.GetChanges().Any();
         }
 
         private List<TEntity> ResolveRoot<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
@@ -329,6 +335,16 @@ namespace Iql.Data.Tracking
         public void Reset(Dictionary<Type, IList> entities)
         {
             Tracking.Reset(entities);
+        }
+
+        public IQueuedOperation[] GetChanges()
+        {
+            return Tracking.GetChanges().ToArray();
+        }
+
+        public void AbandonChanges()
+        {
+            Tracking.AbandonChanges();
         }
     }
 }

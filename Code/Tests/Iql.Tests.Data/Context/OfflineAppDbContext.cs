@@ -16,6 +16,8 @@ namespace Iql.Tests.Context
 
         public static string Client1Name = "Coca-Cola";
         public static int Client1TypeId = 1;
+        public static string Client2Name = "Pepsi";
+        public static int Client2TypeId = 1;
         public OfflineAppDbContext()
         {
             DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore());
@@ -32,8 +34,8 @@ namespace Iql.Tests.Context
             {
                 Id = 2,
                 AverageIncome = 33,
-                Name = "Pepsi",
-                TypeId = 1
+                Name = Client2Name,
+                TypeId = Client2TypeId
             });
             clients.Add(new Client
             {

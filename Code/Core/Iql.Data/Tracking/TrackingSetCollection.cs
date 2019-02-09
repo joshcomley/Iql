@@ -273,5 +273,14 @@ namespace Iql.Data.Tracking
                 }
             }
         }
+
+        public void AbandonChanges()
+        {
+            for (var i = 0; i < Sets.Count; i++)
+            {
+                var set = Sets[i];
+                set.AbandonChanges();
+            }
+        }
     }
 }

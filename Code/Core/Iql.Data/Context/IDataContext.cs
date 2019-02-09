@@ -65,7 +65,10 @@ namespace Iql.Data.Context
         void AbandonChangesForEntities(IEnumerable<object> entities);
         void AbandonChangesForEntityState(IEntityStateBase state);
         void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states);
+        Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> operations);
+        bool HasOfflineChanges();
         Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null);
+        Task<SaveChangesResult> SaveOfflineChangesAsync();
         bool TrackEntities { get; set; }
         string SynchronicityKey { get; set; }
         EvaluateContext EvaluateContext { get; set; }

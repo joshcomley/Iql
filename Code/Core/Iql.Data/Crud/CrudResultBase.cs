@@ -15,7 +15,7 @@ namespace Iql.Data.Crud
             Success = success;
         }
 
-        public bool Success { get; set; }
+        public virtual bool Success { get; set; }
     }
 
 
