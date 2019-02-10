@@ -80,7 +80,7 @@ namespace Iql.Data.DataStores.InMemory
                 .EntityConfigurationContext
                 .GetEntityByType(operation.Operation.EntityType);
 
-            var rootTrackingSet = InMemoryDataTracker.Tracking.TrackingSet<TEntity>();
+            var rootTrackingSet = InMemoryDataTracker.TrackingSet<TEntity>();
             rootTrackingSet.SetKey(clone,
                 () =>
                 {

@@ -82,16 +82,14 @@ namespace Iql.Data.Context
 
         public ITrackingSet TrackingSet
         {
-            get { return _trackingSet = _trackingSet ?? TrackingSetCollection.TrackingSet<T>(); }
+            get { return _trackingSet = _trackingSet ?? DataTracker.TrackingSet<T>(); }
             set => _trackingSet = value;
         }
 
         public Func<IDataStore> DataStoreGetter { get; set; }
-        public TrackingSetCollection TrackingSetCollection => DataContext?.Tracking;
+        public DataTracker DataTracker => DataContext?.DataTracker;
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
-
-        TrackingSetCollection IDbQueryable.TrackingSetCollection => TrackingSetCollection;
 
         Func<IDataStore> IDbQueryable.DataStoreGetter { get => DataStoreGetter; set => DataStoreGetter = value; }
         public Task<DbQueryable<T>> ApplyRelationshipFiltersByExpressionAsync<TProperty>(

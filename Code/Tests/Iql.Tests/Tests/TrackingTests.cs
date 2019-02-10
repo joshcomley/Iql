@@ -82,7 +82,7 @@ namespace Iql.Tests.Tests
             });
             var client = await Db.Clients.GetWithKeyAsync(1);
             var clientType = await Db.ClientTypes.ToListAsync();
-            var propertyState = Db.Tracking.TrackingSet<Client>()
+            var propertyState = Db.DataTracker.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
             Assert.IsFalse(propertyState.HasChanged);
@@ -108,10 +108,10 @@ namespace Iql.Tests.Tests
             var clientType1 = await Db.ClientTypes.GetWithKeyAsync(1);
             var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
             client.Type = clientType2;
-            var referencePropertyState = Db.Tracking.TrackingSet<Client>()
+            var referencePropertyState = Db.DataTracker.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
-            var referenceKeyPropertyState = Db.Tracking.TrackingSet<Client>()
+            var referenceKeyPropertyState = Db.DataTracker.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.TypeId));
             var changes = Db.GetChanges();
@@ -465,7 +465,7 @@ namespace Iql.Tests.Tests
             var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
             Assert.AreEqual(1, person.Types.Count);
             var typeMap = person.Types[0];
-            var typeMapState = Db.Tracking.TrackingSet<PersonTypeMap>()
+            var typeMapState = Db.DataTracker.TrackingSet<PersonTypeMap>()
                 .FindMatchingEntityState(typeMap);
             person.Types.Remove(typeMap);
             Assert.AreEqual(0, person.Types.Count);
@@ -763,7 +763,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             Assert.AreEqual(0, person.Types.Count);
             Assert.AreEqual(0, typeMap.PersonId);
-            var entityState = Db.Tracking.TrackingSet<PersonTypeMap>()
+            var entityState = Db.DataTracker.TrackingSet<PersonTypeMap>()
                 .FindMatchingEntityState(typeMap);
             var currentKey = entityState.CurrentKey;
             //var originalKey = entityState.RemoteKey;
@@ -1137,7 +1137,7 @@ namespace Iql.Tests.Tests
             riskAssessment.SiteInspection = siteInspection;
             var user = new ApplicationUser();
             riskAssessment.SiteInspection.CreatedByUser = user;
-            var operations = Db.Tracking.GetChanges().ToList();
+            var operations = Db.DataTracker.GetChanges().ToList();
             Assert.AreEqual(3, operations.Count);
             var order = new object[] { user, siteInspection, riskAssessment };
             for (var i = 0; i < operations.Count; i++)

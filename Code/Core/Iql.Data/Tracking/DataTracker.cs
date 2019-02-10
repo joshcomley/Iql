@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
@@ -14,21 +16,258 @@ using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Extensions;
+using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    public class DataTracker
+    public class DataTracker : IJsonSerializable
     {
+        public Dictionary<string, ITrackingSet> SetsMap { get; set; }
+        public List<ITrackingSet> Sets { get; set; }
+
+        public int GetPendingDependencyCount(object entity, Type entityType = null)
+        {
+            var count = 0;
+            var flattened =
+                EntityConfigurationBuilder.FlattenDependencyGraph(entity,
+                    entityType);
+            foreach (var item in flattened)
+            {
+                var tracking = TrackingSetByType(item.Key);
+                foreach (var dependency in item.Value)
+                {
+                    if (dependency == entity)
+                    {
+                        continue;
+                    }
+                    if (tracking.FindMatchingEntityState(dependency).IsNew)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        public List<IEntityCrudOperationBase> GetInserts(object[] entities = null)
+        {
+            var inserts = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                inserts.AddRange(set.GetInserts(entities));
+            }
+
+            inserts = inserts
+                .OrderBy(operation => GetPendingDependencyCount(operation.Entity, operation.EntityType))
+                .ToList();
+            return inserts;
+        }
+
+        public List<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
+        {
+            var updates = new List<IUpdateEntityOperation>();
+            foreach (var set in Sets)
+            {
+                updates.AddRange(set.GetUpdates(entities, properties));
+            }
+            return updates;
+        }
+
+        public List<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
+        {
+            var deletions = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                deletions.AddRange(set.GetDeletions(entities));
+            }
+            return deletions;
+        }
+
+        public ITrackingSet TrackingSetByType(Type type)
+        {
+            if (!SetsMap.ContainsKey(type.Name))
+            {
+                var set = (ITrackingSet)typeof(DataTracker).GetRuntimeMethods()
+                    .First(m => m.Name == nameof(TrackingSet))
+                    .InvokeGeneric(this, new object[] { }, type);
+                return set;
+            }
+            return SetsMap[type.Name];
+        }
+
+        public TrackingSet<T> TrackingSet<T>() where T : class
+        {
+            var type = typeof(T);
+            if (!SetsMap.ContainsKey(type.Name))
+            {
+                var set = new TrackingSet<T>(this);
+                SetsMap[type.Name] = set;
+                Sets.Add(set);
+            }
+            return (TrackingSet<T>)SetsMap[type.Name];
+        }
+
+        public bool EntityWithSameKeyIsBeingTracked(object entity, Type entityType)
+        {
+            return TrackingSetByType(entityType).DifferentEntityWithSameKeyIsTracked(entity);
+        }
+
+        public bool KeyIsTracked(CompositeKey key, Type entityType)
+        {
+            return TrackingSetByType(entityType).IsMatchingEntityTracked(key);
+        }
+
+        public bool IsTracked(object entity, Type entityType = null)
+        {
+            return GetTrackingSetForEntity(entity, entityType) != null;
+        }
+
+        public ITrackingSet GetTrackingSetForEntity(object entity, Type entityType = null)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var trackingSetByType = TrackingSetByType(entityType ?? entity.GetType());
+            var isTracked = trackingSetByType.IsTracked(entity);
+            if (isTracked)
+            {
+                return trackingSetByType;
+            }
+            foreach (var trackingSet in Sets)
+            {
+                if (trackingSet != trackingSetByType && trackingSet.IsTracked(entity))
+                {
+                    return trackingSet;
+                }
+            }
+            return null;
+        }
+
+        public bool IsMarkedForDeletion(object entity, Type entityType)
+        {
+            var set = TrackingSetByType(entityType);
+            return set.FindMatchingEntityState(entity).MarkedForDeletion;
+        }
+
+        public bool IsMarkedForCascadeDeletion(object entity, Type entityType)
+        {
+            var set = TrackingSetByType(entityType);
+            return set.FindMatchingEntityState(entity).MarkedForCascadeDeletion;
+        }
+
+        //public void TrackGraph(object entity, Type entityType)
+        //{
+        //    var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
+        //    foreach (var obj in flattenObjectGraph)
+        //    {
+        //        var set = TrackingSetByType(obj.EntityType);
+        //        set.TrackEntity(obj.Entity);
+        //    }
+        //}
+
+        private IEnumerable<IQueuedOperation> GetQueuedOperations(object[] entities = null, IProperty[] properties = null)
+        {
+            var changes = new List<IQueuedOperation>();
+            GetDeletions(entities).ForEach(deletion =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            GetUpdates(entities, properties).ForEach(update =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            GetInserts(entities).ForEach(insert =>
+            {
+                var queuedOperation =
+                    Activator.CreateInstance(
+                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
+                changes.Add((IQueuedOperation)queuedOperation);
+            });
+            return changes;
+        }
+
+       public virtual IQueuedOperation Filter<TEntity>(
+            IQueuedOperation operation) where TEntity : class
+        {
+
+            switch (operation.Operation.Type)
+            {
+                case OperationType.Add:
+                    break;
+                case OperationType.Delete:
+                    break;
+                case OperationType.Update:
+                    break;
+            }
+            return operation;
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                TrackEntities,
+                Sets = Sets.Select(_ => _.PrepareForJson())
+            };
+        }
+
+        public void Reset(Dictionary<Type, IList> entities)
+        {
+            foreach (var entry in entities)
+            {
+                var setType = entry.Key;
+                var set = Sets.FirstOrDefault(_ => _.EntityConfiguration.Type == setType);
+                if (set != null)
+                {
+                    foreach (var entity in entry.Value)
+                    {
+                        set.FindMatchingEntityState(entity)?.Reset();
+                    }
+                }
+            }
+        }
+
+        public void AbandonChanges()
+        {
+            for (var i = 0; i < Sets.Count; i++)
+            {
+                var set = Sets[i];
+                set.AbandonChanges();
+            }
+        }
+
+        public void Clear()
+        {
+            RelationshipObserver.Clear();
+            for (var i = 0; i < Sets.Count; i++)
+            {
+                var set = Sets[i];
+                set.Clear();
+            }
+        }
+
         public bool AllowLocalKeyGeneration => Offline;
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; }
         public bool TrackEntities { get; }
         public string Name { get; }
         public bool Offline { get; }
         public IDataContext DataContext { get; set; }
-        public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(this, TrackEntities));
 
         private RelationshipObserver _relationshipObserver;
-        private TrackingSetCollection _tracking;
 
         public IRelationshipObserver RelationshipObserver
         {
@@ -36,7 +275,7 @@ namespace Iql.Data.Tracking
             {
                 if (_relationshipObserver == null)
                 {
-                    _relationshipObserver = new RelationshipObserver(Tracking, TrackEntities);
+                    _relationshipObserver = new RelationshipObserver(this, TrackEntities);
                 }
                 return _relationshipObserver;
             }
@@ -56,6 +295,9 @@ namespace Iql.Data.Tracking
             TrackEntities = trackEntities;
             Name = name;
             Offline = offline;
+            SetsMap = new Dictionary<string, ITrackingSet>();
+            Sets = new List<ITrackingSet>();
+            //Id = Guid.NewGuid().ToString();
             if (trackEntities)
             {
                 _allDataTrackers.Add(this);
@@ -64,7 +306,7 @@ namespace Iql.Data.Tracking
 
         public bool HasChanges()
         {
-            return Tracking.GetChanges().Any();
+            return GetChanges().Any();
         }
 
         private List<TEntity> ResolveRoot<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
@@ -113,7 +355,7 @@ namespace Iql.Data.Tracking
                         {
                             foreach (var entity in entityType.Value)
                             {
-                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                var trackingSet = tracker.TrackingSetByType(entityType.Key);
                                 trackingSet.TrackEntity(
                                     entity.Clone(EntityConfigurationBuilder, entityType.Key, RelationshipCloneMode.DoNotClone), entity,
                                     isNew: response.IsOffline, onlyMergeWithExisting: false);
@@ -126,7 +368,7 @@ namespace Iql.Data.Tracking
                         {
                             foreach (var entity in entityType.Value)
                             {
-                                var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
+                                var trackingSet = tracker.TrackingSetByType(entityType.Key);
                                 if (trackingSet.IsMatchingEntityTracked(entity))
                                 {
                                     var state = trackingSet.FindMatchingEntityState(entity);
@@ -264,7 +506,7 @@ namespace Iql.Data.Tracking
 #if TypeScript
                 set = EntityConfigurationBuilder.EnsureTypedListByType(set, type, null, null, false, true);
 #endif
-                var trackingSet = Tracking.TrackingSetByType(type);
+                var trackingSet = TrackingSetByType(type);
                 states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
                 if (reset)
                 {
@@ -297,7 +539,7 @@ namespace Iql.Data.Tracking
             {
                 return;
             }
-            var set = Tracking.TrackingSet<T>();
+            var set = TrackingSet<T>();
             var state = set.GetEntityStateByKey(key);
             if (state != null)
             {
@@ -312,14 +554,14 @@ namespace Iql.Data.Tracking
         public void RemoveEntity<T>(T entity)
             where T : class
         {
-            var set = Tracking.TrackingSet<T>();
+            var set = TrackingSet<T>();
             set.RemoveEntity(entity);
             RelationshipObserver.Unobserve(entity, typeof(T));
         }
 
         public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
-            var trackingSet = Tracking.TrackingSet<TEntity>();
+            var trackingSet = TrackingSet<TEntity>();
             var state = trackingSet.TrackEntity(
                 operation.Result.RemoteEntity.Clone(
                     EntityConfigurationBuilder,
@@ -336,7 +578,7 @@ namespace Iql.Data.Tracking
         public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
             var changedProperties = operation.Operation.GetChangedProperties();
-            var trackingSet = Tracking.TrackingSet<TEntity>();
+            var trackingSet = TrackingSet<TEntity>();
             var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
             foreach (var property in changedProperties)
             {
@@ -350,7 +592,7 @@ namespace Iql.Data.Tracking
 
         public void ApplyDelete<TEntity>(QueuedDeleteEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
-            var trackingSet = Tracking.TrackingSet<TEntity>();
+            var trackingSet = TrackingSet<TEntity>();
             if (isOffline)
             {
                 var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
@@ -361,29 +603,31 @@ namespace Iql.Data.Tracking
             else
             {
                 var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
-                trackingSet.RemoveEntity((TEntity) ourState.Entity);
+                trackingSet.RemoveEntity((TEntity)ourState.Entity);
             }
         }
 
-        public void Reset(Dictionary<Type, IList> entities)
+        public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            Tracking.Reset(entities);
-        }
+            var queue = new List<IQueuedOperation>();
+            var queuedOperations = GetQueuedOperations(entities, properties).ToArray();
+            for (var i = 0; i < queuedOperations.Length; i++)
+            {
+                var operation = queuedOperations[i];
+                var filteredOperation = GetType()
+                        .GetMethod(nameof(Filter))
+                        .InvokeGeneric(this, new object[]
+                        {
+operation
+                        }, operation.Operation.EntityType)
+                    as IQueuedOperation;
+                if (filteredOperation != null)
+                {
+                    queue.Add(filteredOperation);
+                }
+            }
 
-        public IQueuedOperation[] GetChanges()
-        {
-            return Tracking.GetChanges().ToArray();
-        }
-
-        public void AbandonChanges()
-        {
-            Tracking.AbandonChanges();
-        }
-
-        public void Clear()
-        {
-            RelationshipObserver.Clear();
-            Tracking.Clear();
+            return queue.ToArray();
         }
     }
 }

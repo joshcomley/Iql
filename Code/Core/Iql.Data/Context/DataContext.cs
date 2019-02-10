@@ -34,8 +34,6 @@ namespace Iql.Data.Context
 {
     public class DataContext : IDataContext
     {
-        public TrackingSetCollection Tracking => DataTracker.Tracking;
-
         private MethodInfo _addInternalMethod;
 
         private MethodInfo AddInternalMethod =>
@@ -77,7 +75,7 @@ namespace Iql.Data.Context
         private IEntityStateBase AddInternal<T>(T entity)
             where T : class
         {
-            var rootTrackingSet = DataTracker.Tracking.TrackingSet<T>();
+            var rootTrackingSet = DataTracker.TrackingSet<T>();
             if (rootTrackingSet.IsMatchingEntityTracked(entity))
             {
                 var state = rootTrackingSet.FindMatchingEntityState(entity);
@@ -91,7 +89,7 @@ namespace Iql.Data.Context
             {
                 foreach (var item in group.Value)
                 {
-                    var thisTrackingSet = DataTracker.Tracking.TrackingSetByType(group.Key);
+                    var thisTrackingSet = DataTracker.TrackingSetByType(group.Key);
                     var state = thisTrackingSet.TrackEntity(item);
                     state.UnmarkForDeletion();
                     if (item == (object)entity)
@@ -120,9 +118,6 @@ namespace Iql.Data.Context
             new Dictionary<string, object>();
         private static readonly Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders
             = new Dictionary<Type, EntityConfigurationBuilder>();
-
-        private SaveChangesApplicator SaveChangesApplicator =>
-            _saveChangesApplicator = _saveChangesApplicator ?? new SaveChangesApplicator(this);
 
         public static Type FindDataContextTypeForEntityType(Type entityType)
         {
@@ -162,7 +157,7 @@ namespace Iql.Data.Context
             for (var i = 0; i < trackers.Length; i++)
             {
                 var tracker = trackers[i];
-                var set = tracker.Tracking.GetTrackingSetForEntity(entity);
+                var set = tracker.GetTrackingSetForEntity(entity);
                 if (set != null)
                 {
                     return set;
@@ -361,7 +356,7 @@ namespace Iql.Data.Context
         public IEntityStateBase GetEntityState(object entity, Type entityType = null)
         {
             entityType = entityType ?? entity.GetType();
-            return DataTracker.Tracking.TrackingSetByType(entityType).FindMatchingEntityState(entity);
+            return DataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -658,16 +653,16 @@ namespace Iql.Data.Context
 
         public void AbandonChanges()
         {
-            for (var i = 0; i < DataTracker.Tracking.Sets.Count; i++)
+            for (var i = 0; i < DataTracker.Sets.Count; i++)
             {
-                var set = DataTracker.Tracking.Sets[i];
+                var set = DataTracker.Sets[i];
                 set.AbandonChanges();
             }
         }
 
         public void AbandonChangesForEntity(object entity)
         {
-            var set = DataTracker.Tracking.TrackingSetByType(entity.GetType());
+            var set = DataTracker.TrackingSetByType(entity.GetType());
             set?.AbandonChangesForEntity(entity);
         }
 
@@ -681,7 +676,7 @@ namespace Iql.Data.Context
 
         public void AbandonChangesForEntityState(IEntityStateBase state)
         {
-            var set = DataTracker.Tracking.TrackingSetByType(state.EntityType);
+            var set = DataTracker.TrackingSetByType(state.EntityType);
             set.AbandonChangesForEntityState(state);
         }
 
@@ -791,7 +786,7 @@ namespace Iql.Data.Context
             var entityType = entity.GetType();
             var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
-            var entityState = DataTracker.Tracking.TrackingSetByType(entityType)
+            var entityState = DataTracker.TrackingSetByType(entityType)
                 .FindMatchingEntityState(entity);
             entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
             return DeleteEntity(entity
@@ -884,7 +879,7 @@ namespace Iql.Data.Context
 
         public bool IsTracked(object entity)
         {
-            return DataTracker.Tracking.IsTracked(entity);
+            return DataTracker.IsTracked(entity);
         }
 
         private IqlServiceProvider _serviceProvider;
@@ -929,7 +924,7 @@ namespace Iql.Data.Context
         {
             if (OfflineDataTracker != null)
             {
-                return OfflineDataTracker.Tracking.GetChanges(entities, properties).ToArray();
+                return OfflineDataTracker.GetChanges(entities, properties).ToArray();
             }
 
             return new IQueuedOperation[] { };
@@ -937,12 +932,12 @@ namespace Iql.Data.Context
 
         public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return DataTracker.Tracking.GetChanges(entities, properties).ToArray();
+            return DataTracker.GetChanges(entities, properties).ToArray();
         }
 
         public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return DataTracker.Tracking.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
+            return DataTracker.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)
@@ -1457,7 +1452,7 @@ namespace Iql.Data.Context
         private EntityState<T> DeleteInternal<T>(T entity)
             where T : class
         {
-            var trackingSet = DataTracker.Tracking.TrackingSet<T>();
+            var trackingSet = DataTracker.TrackingSet<T>();
             trackingSet.MarkForDelete(entity);
             DataTracker.RelationshipObserver.DeleteRelationships(entity, typeof(T));
             var entityState = (EntityState<T>)trackingSet.FindMatchingEntityState(entity);

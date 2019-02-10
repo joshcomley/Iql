@@ -13,7 +13,6 @@ namespace Iql.Data.Tracking
     public interface ITrackingSet : IJsonSerializable
     {
         IDataContext DataContext { get; }
-        TrackingSetCollection TrackingSetCollection { get; }
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);

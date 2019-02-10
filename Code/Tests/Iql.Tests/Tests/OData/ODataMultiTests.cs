@@ -70,7 +70,7 @@ namespace Iql.Tests.Tests.OData
             await db.SaveChangesAsync();
             var request = log.Posts.Pop().Single();
             log.AssertEmpty();
-            var changes = db.Tracking.GetUpdates();
+            var changes = db.DataTracker.GetUpdates();
             Assert.AreEqual(0, changes.Count);
             Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
             Assert.AreEqual(@"{

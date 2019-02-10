@@ -41,7 +41,7 @@ namespace Iql.Data.Context
             where TEntity : class
             where TOperation : EntityCrudOperation<TEntity>
         {
-            if (DataContext.DataTracker.Tracking.GetPendingDependencyCount(operation.Entity,
+            if (DataContext.DataTracker.GetPendingDependencyCount(operation.Entity,
                     operation.EntityType) > 0)
             {
                 result.Success = false;
@@ -132,7 +132,7 @@ namespace Iql.Data.Context
                         {
                             var offlineEntityState =
                                 isOfflineResync
-                                    ? DataContext.OfflineDataTracker.Tracking.TrackingSet<TEntity>()
+                                    ? DataContext.OfflineDataTracker.TrackingSet<TEntity>()
                                         .FindMatchingEntityState(localEntity)
                                     : null;
                             //if (isOffline)
@@ -143,13 +143,13 @@ namespace Iql.Data.Context
 #endif
                             if (isOfflineResync)
                             {
-                                var temporalEntityState = DataContext.DataTracker.Tracking.TrackingSet<TEntity>()
+                                var temporalEntityState = DataContext.DataTracker.TrackingSet<TEntity>()
                                     .FindMatchingEntityState(localEntity);
                                 localEntity = (TEntity) (temporalEntityState?.Entity ??
                                                          localEntity.Clone(EntityConfigurationContext, typeof(TEntity),
                                                              RelationshipCloneMode.DoNotClone));
                             }
-                            var trackingSet = DataContext.DataTracker.Tracking.TrackingSet<TEntity>();
+                            var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
                             trackingSet.TrackEntity(localEntity, remoteEntity, false);
                             trackingSet.FindMatchingEntityState(localEntity).Reset();
                             var changes = DataContext.OfflineDataTracker?.GetChanges();
@@ -252,7 +252,7 @@ namespace Iql.Data.Context
                                                 tracker.TrackResults<TEntity>(isOffline, rootDictionary, null, true);
                                             }
 
-                                            tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
+                                            tracker.TrackingSet<TEntity>().ResetEntity(operationEntity);
                                         }
                                     });
                                 // TODO: Should be able to refresh an entity yet maintain existing changes
@@ -445,7 +445,7 @@ namespace Iql.Data.Context
                 updateEntityOperation,
                 new UpdateEntityResult<TMap>(true, updateEntityOperation));
 
-            var dummyEntityState = new EntityState<TMap>(update.Operation.EntityState.Tracker, mappedEntity, typeof(TMap), DataContext,
+            var dummyEntityState = new EntityState<TMap>(update.Operation.EntityState.DataTracker, mappedEntity, typeof(TMap), DataContext,
                 DataContext.EntityConfigurationContext.EntityType<TMap>());
             updateEntityOperation.EntityState = dummyEntityState;
             for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
@@ -479,7 +479,7 @@ namespace Iql.Data.Context
         private async Task<bool> EntityWithKeyAlreadyExists<TEntity>(TEntity entity) where TEntity : class
         {
             var entityWithKeyAlreadyExists =
-                DataContext.DataTracker.Tracking.EntityWithSameKeyIsBeingTracked(entity, typeof(TEntity));
+                DataContext.DataTracker.EntityWithSameKeyIsBeingTracked(entity, typeof(TEntity));
             if (!entityWithKeyAlreadyExists)
             {
                 var compositeKey = DataContext.EntityConfigurationContext.EntityType<TEntity>()
@@ -547,7 +547,7 @@ namespace Iql.Data.Context
         {
             ForAnEntityAcrossAllDataTrackers<TEntity>(entityKey, (dataTracker, key) =>
             {
-                var trackingSet = dataTracker.Tracking.TrackingSet<TEntity>();
+                var trackingSet = dataTracker.TrackingSet<TEntity>();
                 var state = trackingSet.GetEntityStateByKey(key);
                 dataTracker.RemoveEntityByKey<TEntity>(entityKey);
                 var iEntity = (IEntity)state?.Entity;

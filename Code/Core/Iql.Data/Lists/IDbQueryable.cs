@@ -40,7 +40,7 @@ namespace Iql.Data.Lists
         IDbQueryable SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind);
         IDbQueryable SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter formatter = null);
         IDbQueryable SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> properties);
-        TrackingSetCollection TrackingSetCollection { get; }
+        DataTracker DataTracker { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }
         EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }

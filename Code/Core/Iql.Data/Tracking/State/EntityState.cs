@@ -95,7 +95,7 @@ namespace Iql.Data.Tracking.State
 
         public void Reset()
         {
-            if (Tracker.Offline)
+            if (DataTracker.Offline)
             {
                 int a = 0;
             }
@@ -128,7 +128,7 @@ namespace Iql.Data.Tracking.State
 
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
-        public DataTracker Tracker { get; }
+        public DataTracker DataTracker { get; }
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;
         public Type EntityType { get; }
@@ -142,7 +142,7 @@ namespace Iql.Data.Tracking.State
             IDataContext dataContext, 
             IEntityConfiguration entityConfiguration)
         {
-            Tracker = dataTracker;
+            DataTracker = dataTracker;
             Entity = entity;
             EntityType = entityType;
             DataContext = dataContext;
@@ -184,7 +184,7 @@ namespace Iql.Data.Tracking.State
                 {
                     return true;
                 }
-                var relationshipEntityState = DataContext.Tracking
+                var relationshipEntityState = DataTracker
                     .TrackingSetByType(relationshipProperty.Relationship.OtherEnd.Type)
                     .FindMatchingEntityState(relationshipEntity);
 

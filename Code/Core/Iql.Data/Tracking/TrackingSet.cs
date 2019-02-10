@@ -24,7 +24,6 @@ namespace Iql.Data.Tracking
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
         private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
-        public TrackingSetCollection TrackingSetCollection => DataTracker.Tracking;
 
         public bool DifferentEntityWithSameKeyIsTracked(T entity)
         {
@@ -93,7 +92,7 @@ namespace Iql.Data.Tracking
             //    EntityConfiguration.SpecialTypeDefinition.EntityConfiguration.Type != EntityConfiguration.Type && 
             //    entity.GetType() != EntityConfiguration.SpecialTypeDefinition.EntityConfiguration.Type)
             //{
-            //    var specialTypeTrackingSet = TrackingSetCollection
+            //    var specialTypeTrackingSet = DataTracker
             //        .TrackingSetByType(EntityConfiguration.SpecialTypeDefinition.EntityConfiguration.Type);
             //    return specialTypeTrackingSet
             //        .GetEntityStateByKey(EntityConfiguration.GetCompositeKey(entity));
@@ -323,7 +322,7 @@ namespace Iql.Data.Tracking
 
         private void RelatedListChanged(IRelatedListChangeEvent changeEvent)
         {
-            if (TrackingSetCollection.TrackEntities)
+            if (DataTracker.TrackEntities)
             {
                 _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
                 {
@@ -360,7 +359,7 @@ namespace Iql.Data.Tracking
                                     }
                                 }
 
-                                var trackingSet = DataTracker.Tracking.TrackingSetByType(relationship.OtherEnd.Type);
+                                var trackingSet = DataTracker.TrackingSetByType(relationship.OtherEnd.Type);
                                 var trackedItem = trackingSet.GetEntityStateByKey(compositeKey);
                                 if (trackedItem != null && trackedItem.Entity != changeEvent.Item)
                                 {

@@ -42,7 +42,7 @@ namespace Iql.Tests.Tests.Offline
             client.TypeId = 2;
             client.Type.Name = "A new name";
             var entityState = Db.GetEntityState(client);
-            var json = Db.Tracking.SerializeToJson();
+            var json = Db.DataTracker.SerializeToJson();
             var state = JsonConvert.DeserializeObject(json, typeof(TrackingState));
         }
 

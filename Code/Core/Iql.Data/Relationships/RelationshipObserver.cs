@@ -59,18 +59,18 @@ namespace Iql.Data.Relationships
                 .GetMethod(nameof(MapListTyped));
         }
 
-        public RelationshipObserver(TrackingSetCollection trackingSetCollection,
+        public RelationshipObserver(DataTracker dataTracker,
             bool trackEntities)
         {
-            TrackingSetCollection = trackingSetCollection;
+            DataTracker = dataTracker;
             TrackEntities = trackEntities;
-            EntityConfigurationContext = TrackingSetCollection.DataTracker.EntityConfigurationBuilder;
+            EntityConfigurationContext = DataTracker.EntityConfigurationBuilder;
         }
 
         public static MethodInfo MapListTypedMethod { get; set; }
         public static MethodInfo PairListTypedMethod { get; set; }
         public static MethodInfo WatchListTypedMethod { get; set; }
-        public TrackingSetCollection TrackingSetCollection { get; }
+        public DataTracker DataTracker { get; }
 
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
@@ -220,7 +220,7 @@ namespace Iql.Data.Relationships
                 return null;
             }
 
-            var trackingSetByType = TrackingSetCollection.TrackingSetByType(relationship.Target.Type);
+            var trackingSetByType = DataTracker.TrackingSetByType(relationship.Target.Type);
             var state = trackingSetByType.FindMatchingEntityState(entity);
             if (state == null)
             {
@@ -265,7 +265,7 @@ namespace Iql.Data.Relationships
                 var target = relationship.Source.Property.GetValue(entity);
                 if (target != null)
                 {
-                    var targetTracking = TrackingSetCollection.TrackingSetByType(relationship.Target.Type);
+                    var targetTracking = DataTracker.TrackingSetByType(relationship.Target.Type);
                     var state = targetTracking.FindMatchingEntityState(target);
                     targetKey = GetTargetKeyString(target, relationship);
                     if (state.IsNew)
@@ -302,7 +302,7 @@ namespace Iql.Data.Relationships
         public void WatchListTyped<T>(List<T> entities) where T : class
         {
             // Subscribe to the entity property change events
-            var trackingSet = TrackingSetCollection.TrackingSet<T>();
+            var trackingSet = DataTracker.TrackingSet<T>();
             var entityConfiguration = trackingSet.EntityConfiguration;
             for (var i = 0; i < entities.Count; i++)
             {
@@ -347,7 +347,7 @@ namespace Iql.Data.Relationships
                             null);
                         break;
                     case RelatedListChangeKind.AssignByKey:
-                        var state = TrackingSetCollection.TrackingSetByType(
+                        var state = DataTracker.TrackingSetByType(
                                 relatedListChangeEvent.ItemType)
                             .GetEntityStateByKey(relatedListChangeEvent.ItemKey);
                         if (state != null)
@@ -416,7 +416,7 @@ namespace Iql.Data.Relationships
             if (TrackEntities && newValue != null)
             {
                 var targetType = property.Relationship.Relationship.Target.Type;
-                var targetTrackingSet = TrackingSetCollection
+                var targetTrackingSet = DataTracker
                     .TrackingSetByType(targetType);
                 if (!targetTrackingSet
                     .IsMatchingEntityTracked(newValue))
@@ -560,7 +560,7 @@ namespace Iql.Data.Relationships
                 if (relationship.ThisIsTarget && !relationship.Relationship.Source.Property.TypeDefinition.Nullable)
                 {
                     var sourceTrackingSet =
-                        TrackingSetCollection.TrackingSetByType(relationship.Relationship.Source.Type);
+                        DataTracker.TrackingSetByType(relationship.Relationship.Source.Type);
                     var targetSourceValue = entityState.Entity.GetPropertyValue(
                         relationship.Relationship.Target.Property);
                     if (targetSourceValue != null)
@@ -631,13 +631,13 @@ namespace Iql.Data.Relationships
 
         private IEntityConfiguration EntityConfigurationByType(Type type)
         {
-            return TrackingSetCollection.TrackingSetByType(type).EntityConfiguration;
+            return DataTracker.TrackingSetByType(type).EntityConfiguration;
         }
 
         private EntityConfiguration<T> EntityConfiguration<T>()
             where T : class
         {
-            return TrackingSetCollection.TrackingSet<T>().EntityConfiguration;
+            return DataTracker.TrackingSet<T>().EntityConfiguration;
         }
 
         public void PairListTyped<T>(List<T> entities)

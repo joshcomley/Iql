@@ -21,7 +21,6 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
-        TrackingSetCollection Tracking { get; }
         DataTracker DataTracker { get; }
         DataTracker OfflineDataTracker { get; }
         IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
