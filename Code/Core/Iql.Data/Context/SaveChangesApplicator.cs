@@ -59,17 +59,20 @@ namespace Iql.Data.Context
         public virtual async Task PerformAsync<TEntity>(
             IQueuedOperation operation,
             SaveChangesResult saveChangesResult,
-            bool forceOnline) where TEntity : class
+            bool isOfflineResync) where TEntity : class
         {
-            var allowOnline = forceOnline || !DataContext.HasOfflineChanges();
+            var allowOnline = isOfflineResync || !DataContext.HasOfflineChanges();
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             var isOffline = !allowOnline;
             ICrudResult result;
             var dataStore = DataContext.DataStore;
             var offlineDataStore = DataContext.DataStore.OfflineDataStore;
+            var offlineDataTracker = DataContext.OfflineDataTracker;
+            var dataTracker = DataContext.DataTracker;
             if (!allowOnline)
             {
                 dataStore = offlineDataStore ?? dataStore;
+                dataTracker = offlineDataTracker ?? dataTracker;
             }
             switch (operation.Operation.Type)
             {
@@ -83,7 +86,7 @@ namespace Iql.Data.Context
                         addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, addEntityValidationResult);
                     }
                     else if (CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result) &&
-                            await CheckNotAlreadyExistsAsync(addEntityOperation))
+                             (isOfflineResync || await CheckNotAlreadyExistsAsync(addEntityOperation)))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
 
@@ -91,11 +94,11 @@ namespace Iql.Data.Context
 
                         if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
                         {
-                            var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedAddAsync), 
+                            var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedAddAsync),
                                 BindingFlags.NonPublic | BindingFlags.Instance);
                             result = await (Task<AddEntityResult<TEntity>>)method.InvokeGeneric(
                                 this,
-                                new object[] { addEntityOperation, specialTypeMap, forceOnline },
+                                new object[] { addEntityOperation, specialTypeMap, isOfflineResync },
                                 typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                             if (result.RequestStatus == RequestStatus.Offline)
                             {
@@ -127,22 +130,35 @@ namespace Iql.Data.Context
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
                         {
+                            var offlineEntityState =
+                                isOfflineResync
+                                    ? DataContext.OfflineDataTracker.Tracking.TrackingSet<TEntity>()
+                                        .FindMatchingEntityState(localEntity)
+                                    : null;
                             //if (isOffline)
-                            {
-                                DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
-                            }
+                            DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
 #if TypeScript
                             remoteEntity =
                                 (TEntity)EntityConfigurationContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
 #endif
+                            if (isOfflineResync)
+                            {
+                                var temporalEntityState = DataContext.DataTracker.Tracking.TrackingSet<TEntity>()
+                                    .FindMatchingEntityState(localEntity);
+                                localEntity = (TEntity) (temporalEntityState?.Entity ??
+                                                         localEntity.Clone(EntityConfigurationContext, typeof(TEntity),
+                                                             RelationshipCloneMode.DoNotClone));
+                            }
                             var trackingSet = DataContext.DataTracker.Tracking.TrackingSet<TEntity>();
                             trackingSet.TrackEntity(localEntity, remoteEntity, false);
                             trackingSet.FindMatchingEntityState(localEntity).Reset();
+                            var changes = DataContext.OfflineDataTracker?.GetChanges();
                             await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                            );
+                                );
+                            changes = DataContext.OfflineDataTracker?.GetChanges();
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
@@ -178,7 +194,7 @@ namespace Iql.Data.Context
                                 var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedUpdateAsync), BindingFlags.NonPublic | BindingFlags.Instance);
                                 result = await (Task<UpdateEntityResult<TEntity>>)method.InvokeGeneric(
                                     this,
-                                    new object[] { updateEntityOperation, specialTypeMap, forceOnline },
+                                    new object[] { updateEntityOperation, specialTypeMap, isOfflineResync },
                                     typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                                 if (result.RequestStatus == RequestStatus.Offline)
                                 {
@@ -233,7 +249,7 @@ namespace Iql.Data.Context
                                         {
                                             if (state.Entity != operationEntity)
                                             {
-                                                tracker.TrackResults<TEntity>(rootDictionary, null, true);
+                                                tracker.TrackResults<TEntity>(isOffline, rootDictionary, null, true);
                                             }
 
                                             tracker.Tracking.TrackingSet<TEntity>().ResetEntity(operationEntity);
@@ -283,7 +299,7 @@ namespace Iql.Data.Context
                             var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedDeleteAsync), BindingFlags.NonPublic | BindingFlags.Instance);
                             result = await (Task<DeleteEntityResult<TEntity>>)method.InvokeGeneric(
                                 this,
-                                new object[] { deleteEntityOperation, specialTypeMap, forceOnline },
+                                new object[] { deleteEntityOperation, specialTypeMap, isOfflineResync },
                                 typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                             if (result.RequestStatus == RequestStatus.Offline)
                             {

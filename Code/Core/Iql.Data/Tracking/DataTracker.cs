@@ -19,8 +19,10 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker
     {
+        public bool AllowLocalKeyGeneration => Offline;
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; }
         public bool TrackEntities { get; }
+        public string Name { get; }
         public bool Offline { get; }
         public IDataContext DataContext { get; set; }
         public TrackingSetCollection Tracking => _tracking ?? (_tracking = new TrackingSetCollection(this, TrackEntities));
@@ -48,10 +50,11 @@ namespace Iql.Data.Tracking
         private static List<DataTracker> _allDataTrackers { get; }
             = new List<DataTracker>();
 
-        public DataTracker(EntityConfigurationBuilder entityConfigurationBuilder, bool trackEntities, bool offline = false)
+        public DataTracker(EntityConfigurationBuilder entityConfigurationBuilder, bool trackEntities, string name, bool offline = false)
         {
             EntityConfigurationBuilder = entityConfigurationBuilder;
             TrackEntities = trackEntities;
+            Name = name;
             Offline = offline;
             if (trackEntities)
             {
@@ -95,8 +98,17 @@ namespace Iql.Data.Tracking
 
                 void Track(DataTracker tracker)
                 {
-                    if (tracker.Offline)
+                    if (tracker == this)
                     {
+                        if (!trackResults)
+                        {
+                            tracker = new DataTracker(EntityConfigurationBuilder, false, "No Tracking");
+                        }
+                        response.Root = tracker.TrackResults(response.IsOffline, response.Data, response.Root);
+                    }
+                    else if (tracker.Offline)
+                    {
+                        // If the tracker 
                         foreach (var entityType in response.Data)
                         {
                             foreach (var entity in entityType.Value)
@@ -104,17 +116,9 @@ namespace Iql.Data.Tracking
                                 var trackingSet = tracker.Tracking.TrackingSetByType(entityType.Key);
                                 trackingSet.TrackEntity(
                                     entity.Clone(EntityConfigurationBuilder, entityType.Key, RelationshipCloneMode.DoNotClone), entity,
-                                    isNew: false, onlyMergeWithExisting: false);
+                                    isNew: response.IsOffline, onlyMergeWithExisting: false);
                             }
                         }
-                    }
-                    else if (tracker == this)
-                    {
-                        if (!trackResults)
-                        {
-                            tracker = new DataTracker(EntityConfigurationBuilder, false);
-                        }
-                        response.Root = tracker.TrackResults(response.Data, response.Root);
                     }
                     else
                     {
@@ -134,10 +138,17 @@ namespace Iql.Data.Tracking
                     }
                 }
 
-                ForAllDataTrackers(tracker =>
+                if (Offline)
                 {
-                    Track(tracker);
-                });
+                    Track(this);
+                }
+                else
+                {
+                    ForAllDataTrackers(tracker =>
+                    {
+                        Track(tracker);
+                    });
+                }
                 if (response.Root != null)
                 {
                     dbList.AddRange(response.Root);
@@ -168,6 +179,7 @@ namespace Iql.Data.Tracking
         }
 
         public List<TEntity> TrackResults<TEntity>(
+            bool isOffline,
             Dictionary<Type, IList> responseDataOrig,
             List<TEntity> responseRoot = null,
             bool mergeExistingOnly = false)
@@ -220,7 +232,7 @@ namespace Iql.Data.Tracking
             if (!mergeExistingOnly)
             {
                 RelationshipObserver.ObserveAll(data);
-                if (states != null)
+                if (!isOffline && states != null)
                 {
                     for (var i = 0; i < states.Count; i++)
                     {
@@ -307,13 +319,18 @@ namespace Iql.Data.Tracking
 
         public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
-            Tracking.TrackingSet<TEntity>().TrackEntity(
-                operation.Operation.Entity.Clone(
+            var trackingSet = Tracking.TrackingSet<TEntity>();
+            var state = trackingSet.TrackEntity(
+                operation.Result.RemoteEntity.Clone(
                     EntityConfigurationBuilder,
                     typeof(TEntity),
                     RelationshipCloneMode.DoNotClone),
                 null,
                 isOffline);
+            if (!isOffline)
+            {
+                state.Reset();
+            }
         }
 
         public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation, bool isOffline) where TEntity : class

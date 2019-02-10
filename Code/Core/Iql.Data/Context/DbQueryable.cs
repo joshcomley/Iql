@@ -663,7 +663,7 @@ namespace Iql.Data.Context
             flattenedGetDataResult.Queryable = this;
             var dbList = (DataContext as DataContext).DataTracker.TrackGetDataResult(
                 flattenedGetDataResult);
-            var result = new GetDataResult<T>(dbList, getOperation, getDataResult.Success);
+            var result = new GetDataResult<T>(getDataResult.IsOffline, dbList, getOperation, getDataResult.Success);
             return result;
         }
 

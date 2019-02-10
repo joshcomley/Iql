@@ -142,49 +142,6 @@ namespace Iql.Tests.Tests.Offline
 #endif
             ).ToListAsync();
             Assert.AreEqual(1, newClientFetched.Count);
-
-            Db.Reset();
-
-            // Go online
-            Db.IsOffline = false;
-
-            // Fetch all three clients
-            var clients = await Db.Clients.NoTracking().Expand(_ => _.Type).ToListAsync();
-            Assert.AreEqual(3, clients.Count);
-
-            // Should be no changes
-            var changes = Db.GetChanges();
-            Assert.AreEqual(0, changes.Length);
-
-            var offlineChanges = Db.GetOfflineChanges();
-            Assert.AreEqual(0, offlineChanges.Length);
-
-            // Go offline
-            Db.IsOffline = true;
-            var client = clients.First();
-
-            // Change the "Name" property
-            client.Name = "Changed";
-
-            // Should be one change queued in the data context
-            changes = Db.GetChanges();
-            Assert.AreEqual(0, changes.Length);
-
-            // Should be no changes in the offline context
-            offlineChanges = Db.GetOfflineChanges();
-            Assert.AreEqual(0, offlineChanges.Length);
-
-            // Save changes should persist to offline data store and tracker
-            result = await Db.SaveChangesAsync();
-            Assert.IsTrue(result.Success);
-
-            // Should still be no temporal changes
-            changes = Db.GetChanges();
-            Assert.AreEqual(0, changes.Length);
-
-            // As we are not tracking, there should be no changes propagated to offline
-            offlineChanges = Db.GetOfflineChanges();
-            Assert.AreEqual(0, offlineChanges.Length);
         }
 
 
@@ -200,7 +157,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsFalse(Db.HasOfflineChanges());
 
             // Go offline
-            Db.IsOffline = false;
+            Db.IsOffline = true;
             var newClient = new Client();
             var newClientName = "New Client 123";
             newClient.Name = newClientName;
@@ -208,7 +165,10 @@ namespace Iql.Tests.Tests.Offline
             Db.Clients.Add(newClient);
             var result = await Db.SaveChangesAsync();
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges());
+            var offlineChanges = Db.GetOfflineChanges();
+            Assert.AreEqual(1, offlineChanges.Length);
+            Assert.IsTrue(offlineChanges[0].Type == QueuedOperationType.Add);
 
             Assert.IsTrue(result.Success);
 
@@ -223,6 +183,67 @@ namespace Iql.Tests.Tests.Offline
 #endif
             ).ToListAsync();
             Assert.AreEqual(1, newClientFetched.Count);
+
+            Db.IsOffline = false;
+            result = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            var onlineClient = onlineDataSet.SingleOrDefault(_ => _.Name == newClientName);
+
+            Assert.IsNotNull(onlineClient);
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+        }
+
+
+
+        [TestMethod]
+        public async Task AddingAnEntityWithANewDependencyWhenOffline()
+        {
+            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
+
+            Assert.AreEqual(0, offlineDataSet.Count);
+            Assert.AreEqual(3, onlineDataSet.Count);
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+
+            // Go offline
+            Db.IsOffline = true;
+            var newClient = new Client();
+            var newClientName = "New Client 1234";
+            var newClientType = new ClientType();
+            var newClientTypeName = "New Client Type 1234";
+            newClient.Name = newClientName;
+            newClient.Type = newClientType;
+            Db.Clients.Add(newClient);
+            var result = await Db.SaveChangesAsync();
+
+            Assert.IsTrue(Db.HasOfflineChanges());
+
+            Assert.IsTrue(result.Success);
+
+            var newClientFetched = await Db.Clients.Where(_ => _.Name == newClientName
+#if TypeScript
+                ,
+                new EvaluateContext
+                {
+                    Context = this,
+                    Evaluate = _ => newClientName
+                }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(1, newClientFetched.Count);
+
+            Db.IsOffline = false;
+            result = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            var onlineClient = onlineDataSet.SingleOrDefault(_ => _.Name == newClientName);
+
+            Assert.IsNotNull(onlineClient);
+
+            Assert.IsFalse(Db.HasOfflineChanges());
         }
 
         [TestMethod]

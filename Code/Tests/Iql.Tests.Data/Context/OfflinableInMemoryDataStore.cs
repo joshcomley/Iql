@@ -12,7 +12,7 @@ namespace Iql.Tests.Context
     {
         public OfflinableInMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
-
+            
         }
 
         public bool IsOffline { get; set; }

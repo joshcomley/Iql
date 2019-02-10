@@ -173,6 +173,10 @@ namespace Iql.Data.Tracking.State
 
         public bool HasRelationshipChanged(IProperty relationshipProperty)
         {
+            if (relationshipProperty.Relationship.ThisIsTarget)
+            {
+                return false;
+            }
             if (relationshipProperty.Kind.HasFlag(PropertyKind.Relationship))
             {
                 var relationshipEntity = relationshipProperty.GetValue(Entity);

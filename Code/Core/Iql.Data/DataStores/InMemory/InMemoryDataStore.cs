@@ -57,13 +57,7 @@ namespace Iql.Data.DataStores.InMemory
         private DataTracker _inMemoryDataTracker;
         private DataTracker InMemoryDataTracker
         {
-            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, true);
-        }
-        private TrackingSetCollection _inMemoryTrackingSetCollection;
-
-        private TrackingSetCollection InMemoryTrackingSetCollection
-        {
-            get { return _inMemoryTrackingSetCollection = _inMemoryTrackingSetCollection ?? new TrackingSetCollection(InMemoryDataTracker); }
+            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, true, "In Memory", true);
         }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
@@ -86,7 +80,7 @@ namespace Iql.Data.DataStores.InMemory
                 .EntityConfigurationContext
                 .GetEntityByType(operation.Operation.EntityType);
 
-            var rootTrackingSet = InMemoryTrackingSetCollection.TrackingSet<TEntity>();
+            var rootTrackingSet = InMemoryDataTracker.Tracking.TrackingSet<TEntity>();
             rootTrackingSet.SetKey(clone,
                 () =>
                 {
@@ -234,7 +228,6 @@ namespace Iql.Data.DataStores.InMemory
             }
 
             InMemoryDataTracker.Clear();
-            InMemoryTrackingSetCollection.Clear();
             _cloneMap.Clear();
         }
 

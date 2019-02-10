@@ -184,7 +184,7 @@ namespace Iql.Data.Context
             {
                 if (_dataTracker == null)
                 {
-                    _dataTracker = new DataTracker(EntityConfigurationContext, true);
+                    _dataTracker = new DataTracker(EntityConfigurationContext, true, "Temporal");
                     _dataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
                     _dataTracker.DataContext = this;
                 }
@@ -216,7 +216,7 @@ namespace Iql.Data.Context
             void midSetup()
             {
                 DataStore = dataStore;
-                _offlineDataTracker = new DataTracker(EntityConfigurationContext, true, true);
+                _offlineDataTracker = new DataTracker(EntityConfigurationContext, true, "Offline", true);
                 _offlineDataTracker.DataContext = this;
             }
             var thisType = GetType();
@@ -1343,11 +1343,13 @@ namespace Iql.Data.Context
             }
 
             var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
+            response.Queryable = operation.Queryable;
             // perform get and set up tracking on the objects
             var queuedGetDataOperation = new QueuedGetDataOperation<TEntity>(
                 operation,
                 response);
 
+            var isOffline = false;
             if (OfflineDataTracker?.HasChanges() != true)
             {
                 await DataStore.PerformGetAsync(queuedGetDataOperation);
@@ -1357,6 +1359,7 @@ namespace Iql.Data.Context
                     // Magic happens here...
                     if (DataStore.OfflineDataStore != null)
                     {
+                        isOffline = true;
                         await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
                     }
                 }
@@ -1370,23 +1373,30 @@ namespace Iql.Data.Context
             }
             else
             {
+                isOffline = true;
                 await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
             }
 
             // Clone the queryable so any changes made in the application code
             // don't trickle down to our result
             response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
+            var changes = OfflineDataTracker?.GetChanges();
+            response.IsOffline = isOffline;
 
+            // In here, if we're offline, we don't want to update other trackers (I think)
             var dbList = DataTracker.TrackGetDataResult(response);
+            changes = OfflineDataTracker?.GetChanges();
 
             var getDataResult =
-                new GetDataResult<TEntity>(dbList, operation, response.IsSuccessful())
+                new GetDataResult<TEntity>(isOffline, dbList, operation, response.IsSuccessful())
                 {
                     TotalCount = response.TotalCount
                 };
+            changes = OfflineDataTracker?.GetChanges();
 
             ApplyPaging(dbList, response);
 
+            changes = OfflineDataTracker?.GetChanges();
             return getDataResult;
         }
 

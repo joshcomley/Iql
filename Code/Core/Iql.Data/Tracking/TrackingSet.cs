@@ -426,7 +426,7 @@ namespace Iql.Data.Tracking
                             if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
                             {
                                 var entityState = GetOrSetEntityState(propertyChange.Entity);
-                                if (entityState.IsNew)
+                                if (entityState.IsNew && !DataTracker.AllowLocalKeyGeneration)
                                 {
                                     var key = EntityConfiguration.GetCompositeKey(propertyChange.Entity);
                                     if (!key.HasDefaultValue())
@@ -500,7 +500,9 @@ namespace Iql.Data.Tracking
                 for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
                 {
                     var property = EntityConfiguration.Key.Properties[i];
-                    if (property.IsReadOnly && !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
+                    if (!DataTracker.AllowLocalKeyGeneration &&
+                        property.IsReadOnly && 
+                        !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {
                         throw new AttemptingToAssignRemotelyGeneratedKeyException();
                     }
