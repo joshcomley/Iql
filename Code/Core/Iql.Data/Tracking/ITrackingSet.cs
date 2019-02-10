@@ -39,5 +39,6 @@ namespace Iql.Data.Tracking
         void AbandonChangesForEntities(IEnumerable<object> entities);
         void AbandonChangesForEntityState(IEntityStateBase state);
         void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states);
+        void Clear();
     }
 }

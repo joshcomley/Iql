@@ -26,6 +26,16 @@ namespace Iql.Tests.Context
             return await base.PerformGetAsync(operation);
         }
 
+        public override async Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation)
+        {
+            if (IsOffline)
+            {
+                return Offline(operation.Result);
+            }
+            return await base.PerformAddAsync(operation);
+        }
+
+
         public override async Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(QueuedUpdateEntityOperation<TEntity> operation)
         {
             if (IsOffline)

@@ -59,7 +59,6 @@ namespace Iql.Data.DataStores.InMemory
         {
             get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, true);
         }
-        private RelationshipObserver _inMemoryRelationshipObserver;
         private TrackingSetCollection _inMemoryTrackingSetCollection;
 
         private TrackingSetCollection InMemoryTrackingSetCollection
@@ -77,7 +76,7 @@ namespace Iql.Data.DataStores.InMemory
             var clone = operation.Operation.Entity.CloneAs(
                 EntityConfigurationBuilder,
                 typeof(TEntity),
-                RelationshipCloneMode.Full,
+                RelationshipCloneMode.DoNotClone,
                 null,
                 _cloneMap);
 
@@ -233,6 +232,10 @@ namespace Iql.Data.DataStores.InMemory
             {
                 source.Clear();
             }
+
+            InMemoryDataTracker.Clear();
+            InMemoryTrackingSetCollection.Clear();
+            _cloneMap.Clear();
         }
 
         public void SynchroniseData(Dictionary<Type, IList> data)

@@ -27,5 +27,6 @@ namespace Iql.Data.Relationships
         void Unobserve(object entity, Type entityType);
         bool IsAssignedToAnyRelationship(object entity, Type entityType);
         void DeleteRelationships(object entity, Type type);
+        void Clear();
     }
 }

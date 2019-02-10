@@ -889,6 +889,22 @@ namespace Iql.Data.Tracking
             }
         }
 
+        public void Clear()
+        {
+            AbandonChanges();
+            foreach (var observer in _entityObservers)
+            {
+                observer.Value.Unobserve();
+            }
+
+            _entityObservers.Clear();
+            EntitiesByKey.Clear();
+            EntitiesByObject.Clear();
+            EntitiesByPersistenceKey.Clear();
+            EntitiesByRemoteKey.Clear();
+            _tracking.Clear();
+        }
+
         public void AbandonChangesForEntityState(IEntityState<T> state)
         {
             state.AbandonChanges();

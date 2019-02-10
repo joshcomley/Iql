@@ -5,6 +5,8 @@ using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
 using Iql.Entities;
+using Iql.Parsing;
+using Iql.Parsing.Expressions;
 using Iql.Queryable;
 using Iql.Tests.Context;
 using IqlSampleApp.Data.Entities;
@@ -16,16 +18,23 @@ namespace Iql.Tests.Tests.Offline
     [TestClass]
     public class OfflineTests
     {
-        private static OfflineAppDbContext _db = new OfflineAppDbContext();
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Db.Reset();
+        }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+        }
+
+        private static OfflineAppDbContext _db = new OfflineAppDbContext();
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
         public async Task SerializeState()
         {
-            Db.OfflineDataStore.Clear();
-            Db.OfflineDataTracker.AbandonChanges();
-
             Db.IsOffline = false;
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             var client = clients.First();
@@ -40,9 +49,6 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task GetDataWhenOnlineAndRefetchWhenOffline()
         {
-            Db.OfflineDataStore.Clear();
-            Db.OfflineDataTracker.AbandonChanges();
-
             Db.IsOffline = true;
             var clientsOffline1 = await Db.Clients.ToListAsync();
             Assert.AreEqual(0, clientsOffline1.Count);
@@ -59,9 +65,6 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task NonTrackedResultsShouldNotPropagateToOffline()
         {
-            Db.OfflineDataStore.Clear();
-            Db.OfflineDataTracker.AbandonChanges();
-
             // Go online
             Db.IsOffline = false;
 
@@ -105,11 +108,126 @@ namespace Iql.Tests.Tests.Offline
         }
 
         [TestMethod]
+        public async Task AddingAnEntityWhenOnline()
+        {
+            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
+
+            Assert.AreEqual(0, offlineDataSet.Count);
+            Assert.AreEqual(3, onlineDataSet.Count);
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+
+            // Go offline
+            Db.IsOffline = false;
+            var newClient = new Client();
+            var newClientName = "New Client 456";
+            newClient.Name = newClientName;
+            newClient.TypeId = 2;
+            Db.Clients.Add(newClient);
+            var result = await Db.SaveChangesAsync();
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+
+            Assert.IsTrue(result.Success);
+
+            var newClientFetched = await Db.Clients.Where(_ => _.Name == newClientName
+#if TypeScript
+                ,
+                new EvaluateContext
+                {
+                    Context = this,
+                    Evaluate = _ => newClientName
+                }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(1, newClientFetched.Count);
+
+            Db.Reset();
+
+            // Go online
+            Db.IsOffline = false;
+
+            // Fetch all three clients
+            var clients = await Db.Clients.NoTracking().Expand(_ => _.Type).ToListAsync();
+            Assert.AreEqual(3, clients.Count);
+
+            // Should be no changes
+            var changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+
+            var offlineChanges = Db.GetOfflineChanges();
+            Assert.AreEqual(0, offlineChanges.Length);
+
+            // Go offline
+            Db.IsOffline = true;
+            var client = clients.First();
+
+            // Change the "Name" property
+            client.Name = "Changed";
+
+            // Should be one change queued in the data context
+            changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+
+            // Should be no changes in the offline context
+            offlineChanges = Db.GetOfflineChanges();
+            Assert.AreEqual(0, offlineChanges.Length);
+
+            // Save changes should persist to offline data store and tracker
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            // Should still be no temporal changes
+            changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+
+            // As we are not tracking, there should be no changes propagated to offline
+            offlineChanges = Db.GetOfflineChanges();
+            Assert.AreEqual(0, offlineChanges.Length);
+        }
+
+
+        [TestMethod]
+        public async Task AddingAnEntityWhenOffline()
+        {
+            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
+
+            Assert.AreEqual(0, offlineDataSet.Count);
+            Assert.AreEqual(3, onlineDataSet.Count);
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+
+            // Go offline
+            Db.IsOffline = false;
+            var newClient = new Client();
+            var newClientName = "New Client 123";
+            newClient.Name = newClientName;
+            newClient.TypeId = 2;
+            Db.Clients.Add(newClient);
+            var result = await Db.SaveChangesAsync();
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+
+            Assert.IsTrue(result.Success);
+
+            var newClientFetched = await Db.Clients.Where(_ => _.Name == newClientName
+#if TypeScript
+                ,
+                new EvaluateContext
+                {
+                    Context = this,
+                    Evaluate = _ => newClientName
+                }
+#endif
+            ).ToListAsync();
+            Assert.AreEqual(1, newClientFetched.Count);
+        }
+
+        [TestMethod]
         public async Task SaveChangeWhenOfflineAndResyncWhenOnline()
         {
-            Db.OfflineDataStore.Clear();
-            Db.OfflineDataTracker.AbandonChanges();
-
             var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
 

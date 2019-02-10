@@ -305,15 +305,18 @@ namespace Iql.Data.Tracking
             RelationshipObserver.Unobserve(entity, typeof(T));
         }
 
-        public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
+        public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
-            Tracking.TrackingSet<TEntity>().TrackEntity(operation.Operation.Entity.Clone(
-                EntityConfigurationBuilder,
-                typeof(TEntity),
-                RelationshipCloneMode.DoNotClone));
+            Tracking.TrackingSet<TEntity>().TrackEntity(
+                operation.Operation.Entity.Clone(
+                    EntityConfigurationBuilder,
+                    typeof(TEntity),
+                    RelationshipCloneMode.DoNotClone),
+                null,
+                isOffline);
         }
 
-        public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
+        public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
             var changedProperties = operation.Operation.GetChangedProperties();
             var trackingSet = Tracking.TrackingSet<TEntity>();
@@ -321,15 +324,28 @@ namespace Iql.Data.Tracking
             foreach (var property in changedProperties)
             {
                 property.Property.SetValue(ourState.Entity, property.LocalValue);
+                if (!isOffline)
+                {
+                    property.Reset();
+                }
             }
         }
 
-        public void ApplyDelete<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
+        public void ApplyDelete<TEntity>(QueuedDeleteEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
-            var ourState = Tracking.TrackingSet<TEntity>().FindMatchingEntityState(operation.Operation.Entity);
-            var theirState = operation.Operation.EntityState;
-            ourState.MarkedForDeletion = theirState.MarkedForDeletion;
-            ourState.MarkedForCascadeDeletion = theirState.MarkedForCascadeDeletion;
+            var trackingSet = Tracking.TrackingSet<TEntity>();
+            if (isOffline)
+            {
+                var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
+                var theirState = operation.Operation.EntityState;
+                ourState.MarkedForDeletion = theirState.MarkedForDeletion;
+                ourState.MarkedForCascadeDeletion = theirState.MarkedForCascadeDeletion;
+            }
+            else
+            {
+                var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
+                trackingSet.RemoveEntity((TEntity) ourState.Entity);
+            }
         }
 
         public void Reset(Dictionary<Type, IList> entities)
@@ -345,6 +361,12 @@ namespace Iql.Data.Tracking
         public void AbandonChanges()
         {
             Tracking.AbandonChanges();
+        }
+
+        public void Clear()
+        {
+            RelationshipObserver.Clear();
+            Tracking.Clear();
         }
     }
 }

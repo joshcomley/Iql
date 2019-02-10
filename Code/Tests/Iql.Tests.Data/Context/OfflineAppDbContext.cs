@@ -1,4 +1,5 @@
-﻿using Iql.Data.DataStores.InMemory;
+﻿using Iql.Data.DataStores;
+using Iql.Data.DataStores.InMemory;
 using Iql.OData;
 using IqlSampleApp.Data.Entities;
 
@@ -21,8 +22,19 @@ namespace Iql.Tests.Context
         public OfflineAppDbContext()
         {
             DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore());
+            Reset();
+        }
+
+        public void Reset()
+        {
+            OfflineDataStore.Clear();
+            OfflinableDataStore.Clear();
+            OfflineDataTracker.Clear();
+            DataTracker.Clear();
+            
             // Load up with data
             var clients = OfflinableDataStore.DataSet<Client>();
+            clients.Clear();
             clients.Add(new Client
             {
                 Id = 1,
@@ -44,8 +56,8 @@ namespace Iql.Tests.Context
                 Name = "Microsoft",
                 TypeId = 2
             });
-            var otherClients = InMemoryDb.Clients;
             var clientTypes = OfflinableDataStore.DataSet<ClientType>();
+            clientTypes.Clear();
             clientTypes.Add(new ClientType
             {
                 Id = 1,

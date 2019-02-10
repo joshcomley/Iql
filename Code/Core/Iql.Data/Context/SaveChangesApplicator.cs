@@ -89,14 +89,6 @@ namespace Iql.Data.Context
 
                         var specialTypeMap = EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
 
-                        async Task AddOfflineAsync()
-                        {
-                            if (offlineDataStore != null)
-                            {
-                                result = await offlineDataStore.PerformAddAsync(addEntityOperation);
-                                result.Success = true;
-                            }
-                        }
                         if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
                         {
                             var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedAddAsync), 
@@ -109,7 +101,11 @@ namespace Iql.Data.Context
                             {
                                 // Magic happens here...
                                 isOffline = true;
-                                await AddOfflineAsync();
+                                if (offlineDataStore != null)
+                                {
+                                    result = await offlineDataStore.PerformAddAsync(addEntityOperation);
+                                    result.Success = true;
+                                }
                             }
                             addEntityOperation.Result.Success = result.Success;
                         }
@@ -120,14 +116,21 @@ namespace Iql.Data.Context
                             {
                                 // Magic happens here...
                                 isOffline = true;
-                                await AddOfflineAsync();
+                                if (offlineDataStore != null)
+                                {
+                                    result = await offlineDataStore.PerformAddAsync(addEntityOperation);
+                                    result.Success = true;
+                                }
                             }
                         }
 
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
                         if (remoteEntity != null && result.Success)
                         {
-                            DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation);
+                            //if (isOffline)
+                            {
+                                DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
+                            }
 #if TypeScript
                             remoteEntity =
                                 (TEntity)EntityConfigurationContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
@@ -216,9 +219,9 @@ namespace Iql.Data.Context
                                 //rootDictionary.Ensure(
                                 //    typeof(TEntity),
                                 //    () => new List<TEntity> { updateEntityOperation.Operation.Entity });
-                                if (isOffline)
+                                //if (isOffline)
                                 {
-                                    DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation);
+                                    DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
                                 }
                                 ForAnEntityAcrossAllDataTrackers<TEntity>(
                                     updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
@@ -310,7 +313,10 @@ namespace Iql.Data.Context
                         }
                         if (result.Success)
                         {
-                            DataContext.OfflineDataTracker?.ApplyDelete(deleteEntityOperation);
+                            //if (isOffline)
+                            {
+                                DataContext.OfflineDataTracker?.ApplyDelete(deleteEntityOperation, isOffline);
+                            }
                             MarkAsDeletedByKey<TEntity>(deleteEntityOperation.Operation.Key);
                         }
                         else
