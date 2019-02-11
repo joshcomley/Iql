@@ -37,6 +37,7 @@ namespace Iql.Data.Context
         {
             DataContext = dataContext;
         }
+
         private bool CheckPendingDependencies<TEntity, TOperation>(TOperation operation, EntityCrudResult<TEntity, TOperation> result)
             where TEntity : class
             where TOperation : EntityCrudOperation<TEntity>

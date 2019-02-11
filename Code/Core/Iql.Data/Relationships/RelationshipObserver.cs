@@ -59,11 +59,9 @@ namespace Iql.Data.Relationships
                 .GetMethod(nameof(MapListTyped));
         }
 
-        public RelationshipObserver(DataTracker dataTracker,
-            bool trackEntities)
+        public RelationshipObserver(DataTracker dataTracker)
         {
             DataTracker = dataTracker;
-            TrackEntities = trackEntities;
             EntityConfigurationContext = DataTracker.EntityConfigurationBuilder;
         }
 
@@ -76,8 +74,6 @@ namespace Iql.Data.Relationships
 
         public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded { get; } =
             new EventEmitter<UntrackedEntityAddedEvent>();
-
-        public bool TrackEntities { get; }
 
         public void RunIfNotIgnored(Action action, IProperty property, object entity)
         {
@@ -413,7 +409,7 @@ namespace Iql.Data.Relationships
             object oldValue,
             object newValue)
         {
-            if (TrackEntities && newValue != null)
+            if (newValue != null)
             {
                 var targetType = property.Relationship.Relationship.Target.Type;
                 var targetTrackingSet = DataTracker

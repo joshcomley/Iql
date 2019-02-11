@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
-using Iql.Data.DataStores;
 using Iql.Data.Events;
-using Iql.Data.Exceptions;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -20,41 +18,12 @@ namespace Iql.Data.Tracking
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
-        public IDataContext DataContext => DataTracker.DataContext;
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
-        private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
+        private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
 
-        public bool DifferentEntityWithSameKeyIsTracked(T entity)
-        {
-            var key = EntityConfiguration.GetCompositeKey(entity);
-            var state = GetEntityStateByKey(key);
-            if (state == null)
-            {
-                return false;
-            }
-            if (state.Entity == entity)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        bool ITrackingSet.DifferentEntityWithSameKeyIsTracked(object entity)
-        {
-            return DifferentEntityWithSameKeyIsTracked((T)entity);
-        }
-
-        public EntityConfiguration<T> EntityConfiguration => _entityConfiguration = _entityConfiguration ?? DataTracker.EntityConfigurationBuilder.EntityType<T>();
-
-        IEntityConfiguration ITrackingSet.EntityConfiguration => EntityConfiguration;
-        public SimplePropertyMerger SimplePropertyMerger { get; }
-
-        private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey { get; }
-        private Dictionary<object, IEntityStateBase> EntitiesByObject { get; }
-        private Dictionary<string, RemoteKeyMap> EntitiesByRemoteKey { get; }
-        private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
-        public DataTracker DataTracker { get; }
+        private readonly Dictionary<object, object> _tracking = new Dictionary<object, object>();
+        private EntityConfiguration<T> _entityConfiguration;
 
         public TrackingSet(DataTracker dataTracker)
         {
@@ -67,7 +36,26 @@ namespace Iql.Data.Tracking
             PersistenceKey = EntityConfiguration.Properties.SingleOrDefault(p => p.Name == "PersistenceKey");
         }
 
+        public EntityConfiguration<T> EntityConfiguration => _entityConfiguration =
+            _entityConfiguration ?? DataTracker.EntityConfigurationBuilder.EntityType<T>();
+
+        public SimplePropertyMerger SimplePropertyMerger { get; }
+
+        private Dictionary<Guid, IEntityStateBase> EntitiesByPersistenceKey { get; }
+        private Dictionary<object, IEntityStateBase> EntitiesByObject { get; }
+        private Dictionary<string, RemoteKeyMap> EntitiesByRemoteKey { get; }
+        private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
+
         protected IProperty PersistenceKey { get; set; }
+        public IDataContext DataContext => DataTracker.DataContext;
+
+        bool ITrackingSet.DifferentEntityWithSameKeyIsTracked(object entity)
+        {
+            return DifferentEntityWithSameKeyIsTracked((T) entity);
+        }
+
+        IEntityConfiguration ITrackingSet.EntityConfiguration => EntityConfiguration;
+        public DataTracker DataTracker { get; }
 
         public void SetKey(object entity, Action action)
         {
@@ -105,84 +93,6 @@ namespace Iql.Data.Tracking
         {
             var result = TryGetEntityState(entity, true);
             return result?.State;
-        }
-
-        private IEntityStateBase GetOrSetEntityState(object entity)
-        {
-            if (entity is CompositeKey)
-            {
-                return GetEntityStateByKey((CompositeKey)entity);
-            }
-            var existingEntityState = TryGetEntityState(entity, false);
-            if (existingEntityState != null && existingEntityState.State != null)
-            {
-                return existingEntityState.State;
-            }
-            var entityState = new EntityState<T>(
-                DataTracker,
-                (T)entity,
-                typeof(T),
-                DataContext,
-                EntityConfiguration);
-            EntitiesByObject.Add(entity, entityState);
-            if (!existingEntityState.CompositeKey.HasDefaultValue())
-            {
-                EntitiesByKey.Add(existingEntityState.CompositeKey.AsKeyString(), entityState);
-            }
-            if (PersistenceKey != null)
-            {
-                var persistenceKey = EnsurePersistenceKey(entity).Value;
-                EntitiesByPersistenceKey.Add(persistenceKey, entityState);
-            }
-
-            Watch((T)entity);
-            return entityState;
-        }
-
-        private bool HasEntityState(object entity, bool entityOnly)
-        {
-            var result = entityOnly ? GetEntityState(entity) : FindMatchingEntityState(entity);
-            return result != null;
-        }
-
-        class TryGetEntityStateResult
-        {
-            public Guid PersistenceKey { get; set; }
-            public CompositeKey CompositeKey { get; set; }
-            public IEntityStateBase State { get; set; }
-        }
-
-        private TryGetEntityStateResult TryGetEntityState(object entity, bool entityOnly)
-        {
-            var result = new TryGetEntityStateResult();
-            result.PersistenceKey = Guid.Empty;
-
-            if (EntitiesByObject.ContainsKey(entity))
-            {
-                result.State = EntitiesByObject[entity];
-                return result;
-            }
-
-            if (entityOnly)
-            {
-                return result;
-            }
-
-            if (PersistenceKey != null)
-            {
-                var persistenceKey = entity.GetPropertyValueAs<Guid>(PersistenceKey);
-                if (// ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                    !Equals(persistenceKey, null) && !Equals(persistenceKey, Guid.Empty) && EntitiesByPersistenceKey.ContainsKey(persistenceKey))
-                {
-                    result.State = EntitiesByPersistenceKey[persistenceKey];
-                    return result;
-                }
-            }
-
-            result.CompositeKey = EntityConfiguration.GetCompositeKey(entity);
-            var entityStateByKey = GetEntityStateByKey(result.CompositeKey);
-            result.State = entityStateByKey;
-            return result;
         }
 
         public IEntityStateBase GetEntityStateByKey(CompositeKey key)
@@ -223,14 +133,15 @@ namespace Iql.Data.Tracking
             //DataStore.RelationshipObserver.Unobserve(entity, typeof(T));
         }
 
-        public List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true, bool onlyMergeWithExisting = false)
+        public List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true,
+            bool onlyMergeWithExisting = false)
         {
             var result = new List<IEntityStateBase>();
-            var typed = (List<T>)data;
+            var typed = (List<T>) data;
             for (var i = 0; i < typed.Count; i++)
             {
                 var item = typed[i];
-                if (allowNew || (!isNew && IsMatchingEntityTracked(item)))
+                if (allowNew || !isNew && IsMatchingEntityTracked(item))
                 {
                     result.Add(TrackEntity(item, null, isNew, onlyMergeWithExisting));
                 }
@@ -239,47 +150,15 @@ namespace Iql.Data.Tracking
             return result;
         }
 
-        public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true, bool onlyMergeWithExisting = false)
+        public IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true,
+            bool onlyMergeWithExisting = false)
         {
             return TrackEntityInternal(entity, mergeWith, isNew, onlyMergeWithExisting);
         }
 
-        public void RemoveEntityByKey(CompositeKey compositeKey)
-        {
-            var keyString = compositeKey.AsKeyString();
-            if (EntitiesByRemoteKey.ContainsKey(keyString))
-            {
-                var mapping = EntitiesByRemoteKey[keyString];
-                EntitiesByRemoteKey.Remove(keyString);
-                if (mapping.State != null)
-                {
-                    RemoveEntity((T)mapping.State.Entity);
-                }
-            }
-        }
-
-        public void RemoveEntity(T entity)
-        {
-            var state = GetOrSetEntityState(entity);
-            var stateKey = state.KeyBeforeChanges();
-            RemoveEntityByKey(stateKey);
-            entity = (T)state.Entity;
-            if (_entityObservers.ContainsKey(entity))
-            {
-                _entityObservers[entity].Unobserve();
-                _entityObservers.Remove(entity);
-            }
-            EntitiesByKey.Remove(state.CurrentKey.AsKeyString());
-            EntitiesByObject.Remove(entity);
-            if (state.PersistenceKey.HasValue)
-            {
-                EntitiesByPersistenceKey.Remove(state.PersistenceKey.Value);
-            }
-        }
-
         void ITrackingSet.RemoveEntity(object entity)
         {
-            RemoveEntity((T)entity);
+            RemoveEntity((T) entity);
         }
 
         public void ResetEntity(object entity)
@@ -301,9 +180,310 @@ namespace Iql.Data.Tracking
             }
         }
 
+        public IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null)
+        {
+            var inserts = new List<AddEntityOperation<T>>();
+            foreach (var entity in EntitiesByObject.Keys)
+            {
+                if (ShouldIgnoreEntity(entity, entities))
+                {
+                    continue;
+                }
+
+                var entityState = GetOrSetEntityState(entity);
+                if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
+                {
+                    inserts.Add(new AddEntityOperation<T>((T) entity, DataContext));
+                }
+            }
+
+            return inserts;
+        }
+
+        public IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
+        {
+            var deletions = new List<DeleteEntityOperation<T>>();
+            foreach (var key in EntitiesByRemoteKey)
+            {
+                if (!key.Value.State.MarkedForAnyDeletion ||
+                    ShouldIgnoreEntity(key.Value.State.Entity, entities))
+                {
+                    continue;
+                }
+
+                deletions.Add(new DeleteEntityOperation<T>(
+                    key.Value.Key,
+                    (T) key.Value.State.Entity,
+                    DataContext));
+            }
+
+            foreach (var entity in EntitiesByObject.Keys)
+            {
+                if (ShouldIgnoreEntity(entity, entities))
+                {
+                    continue;
+                }
+
+                if (deletions.All(_ => _.Entity != entity))
+                {
+                    var entityState = GetOrSetEntityState(entity);
+                    if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
+                    {
+                        deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T) entity, DataContext));
+                    }
+                }
+            }
+
+            return deletions;
+        }
+
+        public IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
+        {
+            var updates = new List<UpdateEntityOperation<T>>();
+            foreach (var entity in EntitiesByObject.Keys)
+            {
+                if (ShouldIgnoreEntity(entity, entities))
+                {
+                    continue;
+                }
+
+                var entityState = GetOrSetEntityState(entity);
+                if (!entityState.IsNew &&
+                    !entityState.MarkedForAnyDeletion &&
+                    entityState.GetChangedProperties().Any())
+                {
+                    updates.Add(new UpdateEntityOperation<T>((T) entity, DataContext, entityState,
+                        properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
+                }
+            }
+
+            return updates;
+        }
+
+        void ITrackingSet.AbandonChangesForEntity(object entity)
+        {
+            if (entity is T)
+            {
+                AbandonChangesForEntity((T) entity);
+            }
+        }
+
+        public void AbandonChanges()
+        {
+            var allStates = new List<IEntityState<T>>();
+            foreach (var entity in EntitiesByObject)
+            {
+                allStates.Add((IEntityState<T>) entity.Value);
+            }
+
+            AbandonChangesForEntityStates(allStates);
+        }
+
+        public void AbandonChangesForEntities(IEnumerable<object> entities)
+        {
+            var allStates = new List<IEntityState<T>>();
+            foreach (var entity in entities)
+            {
+                var state = FindMatchingEntityState(entity);
+                if (state != null)
+                {
+                    allStates.Add((IEntityState<T>) state);
+                }
+            }
+
+            AbandonChangesForEntityStates(allStates);
+        }
+
+        void ITrackingSet.AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states)
+        {
+            foreach (var state in states)
+            {
+                if (state != null && state.Entity is T)
+                {
+                    state.AbandonChanges();
+                    if (state.IsNew)
+                    {
+                        RemoveEntity((T) state.Entity);
+                    }
+                }
+            }
+        }
+
+        public void Clear()
+        {
+            AbandonChanges();
+            foreach (var observer in _entityObservers)
+            {
+                observer.Value.Unobserve();
+            }
+
+            _entityObservers.Clear();
+            EntitiesByKey.Clear();
+            EntitiesByObject.Clear();
+            EntitiesByPersistenceKey.Clear();
+            EntitiesByRemoteKey.Clear();
+            _tracking.Clear();
+        }
+
+        void ITrackingSet.AbandonChangesForEntityState(IEntityStateBase state)
+        {
+            if (state.Entity is T)
+            {
+                AbandonChangesForEntityState((IEntityState<T>) state);
+            }
+        }
+
+        public string SerializeToJson()
+        {
+            return JsonConvert.SerializeObject(PrepareForJson());
+        }
+
+        public object PrepareForJson()
+        {
+            var allStates = EntitiesByKey.Values
+                .Concat(EntitiesByObject.Values)
+                .Concat(EntitiesByPersistenceKey.Values)
+                .Distinct();
+            return new
+            {
+                Type = EntityConfiguration.Name,
+                EntityStates = WithChanges(allStates).Select(_ => _.PrepareForJson())
+                //EntitiesByKey = WithChanges(EntitiesByKey.Values).Select(_ => _.PrepareForJson()),
+                //EntitiesByObject = WithChanges(EntitiesByObject.Values).Select(_ => _.PrepareForJson()),
+                //EntitiesByPersistenceKey = WithChanges(EntitiesByPersistenceKey.Values).Select(_ => _.PrepareForJson()),
+                //EntitiesByRemoteKey = EntitiesByRemoteKey.Values.Select(_ => _.PrepareForJson()),
+            };
+        }
+
+        public bool DifferentEntityWithSameKeyIsTracked(T entity)
+        {
+            var key = EntityConfiguration.GetCompositeKey(entity);
+            var state = GetEntityStateByKey(key);
+            if (state == null)
+            {
+                return false;
+            }
+
+            if (state.Entity == entity)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private IEntityStateBase GetOrSetEntityState(object entity)
+        {
+            if (entity is CompositeKey)
+            {
+                return GetEntityStateByKey((CompositeKey) entity);
+            }
+
+            var existingEntityState = TryGetEntityState(entity, false);
+            if (existingEntityState != null && existingEntityState.State != null)
+            {
+                return existingEntityState.State;
+            }
+
+            var entityState = new EntityState<T>(
+                DataTracker,
+                (T) entity,
+                typeof(T),
+                DataContext,
+                EntityConfiguration);
+            EntitiesByObject.Add(entity, entityState);
+            if (!existingEntityState.CompositeKey.HasDefaultValue())
+            {
+                EntitiesByKey.Add(existingEntityState.CompositeKey.AsKeyString(), entityState);
+            }
+
+            if (PersistenceKey != null)
+            {
+                var persistenceKey = EnsurePersistenceKey(entity).Value;
+                EntitiesByPersistenceKey.Add(persistenceKey, entityState);
+            }
+
+            Watch((T) entity);
+            return entityState;
+        }
+
+        private bool HasEntityState(object entity, bool entityOnly)
+        {
+            var result = entityOnly ? GetEntityState(entity) : FindMatchingEntityState(entity);
+            return result != null;
+        }
+
+        private TryGetEntityStateResult TryGetEntityState(object entity, bool entityOnly)
+        {
+            var result = new TryGetEntityStateResult();
+            result.PersistenceKey = Guid.Empty;
+
+            if (EntitiesByObject.ContainsKey(entity))
+            {
+                result.State = EntitiesByObject[entity];
+                return result;
+            }
+
+            if (entityOnly)
+            {
+                return result;
+            }
+
+            if (PersistenceKey != null)
+            {
+                var persistenceKey = entity.GetPropertyValueAs<Guid>(PersistenceKey);
+                if ( // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                    !Equals(persistenceKey, null) && !Equals(persistenceKey, Guid.Empty) &&
+                    EntitiesByPersistenceKey.ContainsKey(persistenceKey))
+                {
+                    result.State = EntitiesByPersistenceKey[persistenceKey];
+                    return result;
+                }
+            }
+
+            result.CompositeKey = EntityConfiguration.GetCompositeKey(entity);
+            var entityStateByKey = GetEntityStateByKey(result.CompositeKey);
+            result.State = entityStateByKey;
+            return result;
+        }
+
+        public void RemoveEntityByKey(CompositeKey compositeKey)
+        {
+            var keyString = compositeKey.AsKeyString();
+            if (EntitiesByRemoteKey.ContainsKey(keyString))
+            {
+                var mapping = EntitiesByRemoteKey[keyString];
+                EntitiesByRemoteKey.Remove(keyString);
+                if (mapping.State != null)
+                {
+                    RemoveEntity((T) mapping.State.Entity);
+                }
+            }
+        }
+
+        public void RemoveEntity(T entity)
+        {
+            var state = GetOrSetEntityState(entity);
+            var stateKey = state.KeyBeforeChanges();
+            RemoveEntityByKey(stateKey);
+            entity = (T) state.Entity;
+            if (_entityObservers.ContainsKey(entity))
+            {
+                _entityObservers[entity].Unobserve();
+                _entityObservers.Remove(entity);
+            }
+
+            EntitiesByKey.Remove(state.CurrentKey.AsKeyString());
+            EntitiesByObject.Remove(entity);
+            if (state.PersistenceKey.HasValue)
+            {
+                EntitiesByPersistenceKey.Remove(state.PersistenceKey.Value);
+            }
+        }
+
         internal void Watch(T sourceEntity)
         {
-            var entity = (IEntity)sourceEntity;
+            var entity = (IEntity) sourceEntity;
             if (entity == null)
             {
                 return;
@@ -322,90 +502,94 @@ namespace Iql.Data.Tracking
 
         private void RelatedListChanged(IRelatedListChangeEvent changeEvent)
         {
-            if (DataTracker.TrackEntities)
+            _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
+                switch (changeEvent.Kind)
                 {
-                    switch (changeEvent.Kind)
-                    {
-                        case RelatedListChangeKind.Adding:
-                            if (changeEvent.Item != null)
+                    case RelatedListChangeKind.Adding:
+                        if (changeEvent.Item != null)
+                        {
+                            // We need to build a CompositeKey, get the tracked entity, if any
+                            // and if it is not ours, then disallow
+
+                            // Make sure we prep the constraints so we can compare to see if
+                            // an item with a matching key already exists, and if so then 
+                            // reject this change
+                            var relationship =
+                                EntityConfiguration.Builder
+                                    .GetEntityByType(changeEvent.OwnerType)
+                                    .FindProperty(changeEvent.List.PropertyName)
+                                    .Relationship;
+                            var compositeKey =
+                                relationship.OtherEnd.EntityConfiguration.GetCompositeKey(changeEvent.Item);
+
+                            // If this relationship also defines some key values, make sure they are checked in the
+                            // composite key
+                            var sourceConstraints = relationship.OtherEnd.Constraints;
+                            var targetConstraints = relationship.ThisEnd.Constraints;
+                            for (var i = 0; i < sourceConstraints.Length; i++)
                             {
-                                // We need to build a CompositeKey, get the tracked entity, if any
-                                // and if it is not ours, then disallow
-
-                                // Make sure we prep the constraints so we can compare to see if
-                                // an item with a matching key already exists, and if so then 
-                                // reject this change
-                                var relationship =
-                                    EntityConfiguration.Builder
-                                        .GetEntityByType(changeEvent.OwnerType)
-                                        .FindProperty(changeEvent.List.PropertyName)
-                                        .Relationship;
-                                var compositeKey = relationship.OtherEnd.EntityConfiguration.GetCompositeKey(changeEvent.Item);
-
-                                // If this relationship also defines some key values, make sure they are checked in the
-                                // composite key
-                                var sourceConstraints = relationship.OtherEnd.Constraints;
-                                var targetConstraints = relationship.ThisEnd.Constraints;
-                                for (var i = 0; i < sourceConstraints.Length; i++)
+                                var sourceConstraint = sourceConstraints[i];
+                                var targetConstraint = targetConstraints[i];
+                                if (sourceConstraint.Kind.HasFlag(PropertyKind.Key) &&
+                                    sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
                                 {
-                                    var sourceConstraint = sourceConstraints[i];
-                                    var targetConstraint = targetConstraints[i];
-                                    if (sourceConstraint.Kind.HasFlag(PropertyKind.Key) && sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
-                                    {
-                                        compositeKey.Keys.Single(key => key.Name == sourceConstraint.Name)
-                                            .Value = targetConstraint.GetValue(changeEvent.Owner);
-                                    }
-                                }
-
-                                var trackingSet = DataTracker.TrackingSetByType(relationship.OtherEnd.Type);
-                                var trackedItem = trackingSet.GetEntityStateByKey(compositeKey);
-                                if (trackedItem != null && trackedItem.Entity != changeEvent.Item)
-                                {
-                                    if (changeEvent.List.Contains(trackedItem.Entity))
-                                    {
-                                        changeEvent.ObservableListChangeEvent.Disallow = true;
-                                    }
-                                    //else
-                                    //{
-                                    //    for (var i = 0; i < relationship.OtherEnd.Configuration.Properties.Count; i++)
-                                    //    {
-                                    //        var property = relationship.OtherEnd.Configuration.Properties[i];
-                                    //        property.SetValue(trackedItem.Entity,
-                                    //            property.GetValue(changeEvent.Item));
-                                    //    }
-                                    //    changeEvent.ObservableListChangeEvent.Item = trackedItem.Entity;
-                                    //}
+                                    compositeKey.Keys.Single(key => key.Name == sourceConstraint.Name)
+                                        .Value = targetConstraint.GetValue(changeEvent.Owner);
                                 }
                             }
-                            break;
-                        case RelatedListChangeKind.Added:
-                            if (changeEvent.Item != null)
+
+                            var trackingSet = DataTracker.TrackingSetByType(relationship.OtherEnd.Type);
+                            var trackedItem = trackingSet.GetEntityStateByKey(compositeKey);
+                            if (trackedItem != null && trackedItem.Entity != changeEvent.Item)
                             {
-                                if (DataContext != null)
+                                if (changeEvent.List.Contains(trackedItem.Entity))
                                 {
-                                    var state = DataContext.AddEntity(changeEvent.Item);
-                                    if (state.Entity != changeEvent.Item)
-                                    {
-                                        changeEvent.ObservableListChangeEvent.Disallow = true;
-                                    }
+                                    changeEvent.ObservableListChangeEvent.Disallow = true;
+                                }
+
+                                //else
+                                //{
+                                //    for (var i = 0; i < relationship.OtherEnd.Configuration.Properties.Count; i++)
+                                //    {
+                                //        var property = relationship.OtherEnd.Configuration.Properties[i];
+                                //        property.SetValue(trackedItem.Entity,
+                                //            property.GetValue(changeEvent.Item));
+                                //    }
+                                //    changeEvent.ObservableListChangeEvent.Item = trackedItem.Entity;
+                                //}
+                            }
+                        }
+
+                        break;
+                    case RelatedListChangeKind.Added:
+                        if (changeEvent.Item != null)
+                        {
+                            if (DataContext != null)
+                            {
+                                var state = DataContext.AddEntity(changeEvent.Item);
+                                if (state.Entity != changeEvent.Item)
+                                {
+                                    changeEvent.ObservableListChangeEvent.Disallow = true;
                                 }
                             }
-                            break;
-                        case RelatedListChangeKind.Removed:
-                            if (changeEvent.Item != null)
-                            {
-                                if (DataContext != null && !DataTracker.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
+                        }
+
+                        break;
+                    case RelatedListChangeKind.Removed:
+                        if (changeEvent.Item != null)
+                        {
+                            if (DataContext != null &&
+                                !DataTracker.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
                                     changeEvent.ItemType))
-                                {
-                                    DataContext.DeleteEntity(changeEvent.Item);
-                                }
+                            {
+                                DataContext.DeleteEntity(changeEvent.Item);
                             }
-                            break;
-                    }
-                }, changeEvent.Item, changeEvent.List.Owner);
-            }
+                        }
+
+                        break;
+                }
+            }, changeEvent.Item, changeEvent.List.Owner);
         }
 
         private void EntityPropertyChanged(IPropertyChangeEvent propertyChange)
@@ -422,7 +606,7 @@ namespace Iql.Data.Tracking
                 {
                     DataTracker.RelationshipObserver.RunIfNotIgnored(() =>
                         {
-                            if (!_keyChangeAllower.AreAnyIgnored(new[] { property }, propertyChange.Entity))
+                            if (!_keyChangeAllower.AreAnyIgnored(new[] {property}, propertyChange.Entity))
                             {
                                 var entityState = GetOrSetEntityState(propertyChange.Entity);
                                 if (entityState.IsNew && !DataTracker.AllowLocalKeyGeneration)
@@ -451,9 +635,9 @@ namespace Iql.Data.Tracking
         {
             var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
             if (property.Kind.HasFlag(PropertyKind.Key) ||
-               property.Kind.HasFlag(PropertyKind.Relationship) ||
-               property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-               property.Kind.HasFlag(PropertyKind.Primitive))
+                property.Kind.HasFlag(PropertyKind.Relationship) ||
+                property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+                property.Kind.HasFlag(PropertyKind.Primitive))
             {
                 var entityState = GetOrSetEntityState(propertyChange.Entity);
                 var propertyState = entityState.GetPropertyState(property.Name);
@@ -471,9 +655,6 @@ namespace Iql.Data.Tracking
             //}
         }
 
-        private readonly Dictionary<object, object> _tracking = new Dictionary<object, object>();
-        private EntityConfiguration<T> _entityConfiguration;
-
         internal override IEntityStateBase TrackEntityInternal(object entity, object mergeWith = null,
             bool isNew = true, bool onlyMergeWithExisting = false)
         {
@@ -485,6 +666,7 @@ namespace Iql.Data.Tracking
             {
                 throw new Exception("This entity is already tracked by another context.");
             }
+
             var isAlreadyTracked = _tracking.ContainsKey(entity);
             if (!isAlreadyTracked)
             {
@@ -500,7 +682,7 @@ namespace Iql.Data.Tracking
                 {
                     var property = EntityConfiguration.Key.Properties[i];
                     if (!DataTracker.AllowLocalKeyGeneration &&
-                        property.IsReadOnly && 
+                        property.IsReadOnly &&
                         !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {
                         throw new AttemptingToAssignRemotelyGeneratedKeyException();
@@ -512,6 +694,7 @@ namespace Iql.Data.Tracking
                 //    // TODO: Check if entity key is marked as remotely generated
                 //}
             }
+
             var entityState = GetOrSetEntityState(entity);
             if (!hadEntityState && isNew)
             {
@@ -529,7 +712,7 @@ namespace Iql.Data.Tracking
 
             if (!isAlreadyTracked)
             {
-                Watch((T)entityState.Entity);
+                Watch((T) entityState.Entity);
             }
 
             if (entityState.Entity != entity)
@@ -558,7 +741,6 @@ namespace Iql.Data.Tracking
                     mergeWith
                 );
                 Reindex(entity);
-
             }, entity);
         }
 
@@ -572,18 +754,21 @@ namespace Iql.Data.Tracking
                 var oldKeyString = oldKey.AsKeyString();
                 var newKeyString = newKey.AsKeyString();
                 if (newKeyString != oldKeyString ||
-                    (!state.IsNew && !EntitiesByKey.ContainsKey(newKeyString)))
+                    !state.IsNew && !EntitiesByKey.ContainsKey(newKeyString))
                 {
                     if (EntitiesByKey.ContainsKey(oldKeyString))
                     {
                         EntitiesByKey.Remove(oldKeyString);
                     }
+
                     if (state.HasValidKey())
                     {
                         EntitiesByKey.Add(newKeyString, state);
                     }
+
                     state.CurrentKey = newKey;
                 }
+
                 TrackRemoteKey(state, oldKey);
             }
         }
@@ -648,6 +833,7 @@ namespace Iql.Data.Tracking
                             newPropertyState.RemoteValue = propertyState.RemoteValue;
                             newPropertyState.LocalValue = propertyState.Property.GetValue(state.Entity);
                         }
+
                         map.OldPropertyValues = null;
                         map.State = state;
                     }
@@ -731,85 +917,14 @@ namespace Iql.Data.Tracking
             return null;
         }
 
-        public IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null)
-        {
-            var inserts = new List<AddEntityOperation<T>>();
-            foreach (var entity in EntitiesByObject.Keys)
-            {
-                if (ShouldIgnoreEntity(entity, entities))
-                {
-                    continue;
-                }
-                var entityState = GetOrSetEntityState(entity);
-                if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
-                {
-                    inserts.Add(new AddEntityOperation<T>((T)entity, DataContext));
-                }
-            }
-            return inserts;
-        }
-
         private static bool ShouldIgnoreEntity(object entity, object[] entities)
         {
             if (entities == null || entities.Length == 0)
             {
                 return false;
             }
+
             return !entities.Contains(entity);
-        }
-
-        public IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
-        {
-            var deletions = new List<DeleteEntityOperation<T>>();
-            foreach (var key in EntitiesByRemoteKey)
-            {
-                if (!key.Value.State.MarkedForAnyDeletion ||
-                    ShouldIgnoreEntity(key.Value.State.Entity, entities))
-                {
-                    continue;
-                }
-                deletions.Add(new DeleteEntityOperation<T>(
-                    key.Value.Key,
-                    (T)key.Value.State.Entity,
-                    DataContext));
-            }
-            foreach (var entity in EntitiesByObject.Keys)
-            {
-                if (ShouldIgnoreEntity(entity, entities))
-                {
-                    continue;
-                }
-
-                if (deletions.All(_ => _.Entity != entity))
-                {
-                    var entityState = GetOrSetEntityState(entity);
-                    if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
-                    {
-                        deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, DataContext));
-                    }
-                }
-            }
-            return deletions;
-        }
-
-        public IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
-        {
-            var updates = new List<UpdateEntityOperation<T>>();
-            foreach (var entity in EntitiesByObject.Keys)
-            {
-                if (ShouldIgnoreEntity(entity, entities))
-                {
-                    continue;
-                }
-                var entityState = GetOrSetEntityState(entity);
-                if (!entityState.IsNew &&
-                    !entityState.MarkedForAnyDeletion &&
-                    entityState.GetChangedProperties().Any())
-                {
-                    updates.Add(new UpdateEntityOperation<T>((T)entity, DataContext, entityState, properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
-                }
-            }
-            return updates;
         }
 
         public void AbandonChangesForEntity(T entity)
@@ -817,41 +932,8 @@ namespace Iql.Data.Tracking
             var state = FindMatchingEntityState(entity);
             if (state != null)
             {
-                AbandonChangesForEntityState((IEntityState<T>)state);
+                AbandonChangesForEntityState((IEntityState<T>) state);
             }
-        }
-
-        void ITrackingSet.AbandonChangesForEntity(object entity)
-        {
-            if (entity is T)
-            {
-                AbandonChangesForEntity((T)entity);
-            }
-        }
-
-        public void AbandonChanges()
-        {
-            var allStates = new List<IEntityState<T>>();
-            foreach (var entity in EntitiesByObject)
-            {
-                allStates.Add((IEntityState<T>)entity.Value);
-            }
-            AbandonChangesForEntityStates(allStates);
-        }
-
-        public void AbandonChangesForEntities(IEnumerable<object> entities)
-        {
-            var allStates = new List<IEntityState<T>>();
-            foreach (var entity in entities)
-            {
-                var state = FindMatchingEntityState(entity);
-                if (state != null)
-                {
-                    allStates.Add((IEntityState<T>)state);
-                }
-            }
-
-            AbandonChangesForEntityStates(allStates);
         }
 
         public void AbandonChangesForEntityStates(IEnumerable<IEntityState<T>> allStates)
@@ -875,37 +957,6 @@ namespace Iql.Data.Tracking
             }
         }
 
-        void ITrackingSet.AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states)
-        {
-            foreach (var state in states)
-            {
-                if (state != null && state.Entity is T)
-                {
-                    state.AbandonChanges();
-                    if (state.IsNew)
-                    {
-                        RemoveEntity((T)state.Entity);
-                    }
-                }
-            }
-        }
-
-        public void Clear()
-        {
-            AbandonChanges();
-            foreach (var observer in _entityObservers)
-            {
-                observer.Value.Unobserve();
-            }
-
-            _entityObservers.Clear();
-            EntitiesByKey.Clear();
-            EntitiesByObject.Clear();
-            EntitiesByPersistenceKey.Clear();
-            EntitiesByRemoteKey.Clear();
-            _tracking.Clear();
-        }
-
         public void AbandonChangesForEntityState(IEntityState<T> state)
         {
             state.AbandonChanges();
@@ -915,39 +966,16 @@ namespace Iql.Data.Tracking
             }
         }
 
-        void ITrackingSet.AbandonChangesForEntityState(IEntityStateBase state)
-        {
-            if (state.Entity is T)
-            {
-                AbandonChangesForEntityState((IEntityState<T>)state);
-            }
-        }
-
-        public string SerializeToJson()
-        {
-            return JsonConvert.SerializeObject(PrepareForJson());
-        }
-
-        public object PrepareForJson()
-        {
-            var allStates = EntitiesByKey.Values
-                .Concat(EntitiesByObject.Values)
-                .Concat(EntitiesByPersistenceKey.Values)
-                .Distinct();
-            return new
-            {
-                Type = EntityConfiguration.Name,
-                EntityStates = WithChanges(allStates).Select(_=>_.PrepareForJson())
-                //EntitiesByKey = WithChanges(EntitiesByKey.Values).Select(_ => _.PrepareForJson()),
-                //EntitiesByObject = WithChanges(EntitiesByObject.Values).Select(_ => _.PrepareForJson()),
-                //EntitiesByPersistenceKey = WithChanges(EntitiesByPersistenceKey.Values).Select(_ => _.PrepareForJson()),
-                //EntitiesByRemoteKey = EntitiesByRemoteKey.Values.Select(_ => _.PrepareForJson()),
-            };
-        }
-
         private IEnumerable<IEntityStateBase> WithChanges(IEnumerable<IEntityStateBase> entityStates)
         {
             return entityStates.Where(_ => _.IsNew || _.MarkedForAnyDeletion || _.GetChangedProperties().Length > 0);
+        }
+
+        private class TryGetEntityStateResult
+        {
+            public Guid PersistenceKey { get; set; }
+            public CompositeKey CompositeKey { get; set; }
+            public IEntityStateBase State { get; set; }
         }
     }
 }

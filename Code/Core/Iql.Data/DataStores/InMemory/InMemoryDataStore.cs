@@ -57,7 +57,7 @@ namespace Iql.Data.DataStores.InMemory
         private DataTracker _inMemoryDataTracker;
         private DataTracker InMemoryDataTracker
         {
-            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, true, "In Memory", true);
+            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, "In Memory", true);
         }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();

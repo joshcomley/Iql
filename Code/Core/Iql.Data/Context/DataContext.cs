@@ -179,7 +179,7 @@ namespace Iql.Data.Context
             {
                 if (_dataTracker == null)
                 {
-                    _dataTracker = new DataTracker(EntityConfigurationContext, true, "Temporal");
+                    _dataTracker = new DataTracker(EntityConfigurationContext, "Temporal");
                     _dataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
                     _dataTracker.DataContext = this;
                 }
@@ -211,7 +211,7 @@ namespace Iql.Data.Context
             void midSetup()
             {
                 DataStore = dataStore;
-                _offlineDataTracker = new DataTracker(EntityConfigurationContext, true, "Offline", true);
+                _offlineDataTracker = new DataTracker(EntityConfigurationContext, "Offline", true);
                 _offlineDataTracker.DataContext = this;
             }
             var thisType = GetType();
