@@ -95,10 +95,6 @@ namespace Iql.Data.Tracking.State
 
         public void Reset()
         {
-            if (DataTracker.Offline)
-            {
-                int a = 0;
-            }
             IsNew = false;
             for (var i = 0; i < Properties.Count; i++)
             {

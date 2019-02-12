@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
+    [DebuggerDisplay("{Source.EntityConfiguration.Name}.{Source.Property.Name} -> {Target.EntityConfiguration.Name}.{Target.Property.Name}")]
     public class OneToManyRelationship<TSource, TTarget, TCollection>
         : OneToRelationship<TSource, TTarget, TTarget, TCollection>
         where TSource : class 

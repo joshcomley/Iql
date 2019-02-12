@@ -75,7 +75,7 @@ namespace Iql.Data.Context
         private IEntityStateBase AddInternal<T>(T entity)
             where T : class
         {
-            var rootTrackingSet = DataTracker.TrackingSet<T>();
+            var rootTrackingSet = TemporalDataTracker.TrackingSet<T>();
             if (rootTrackingSet.IsMatchingEntityTracked(entity))
             {
                 var state = rootTrackingSet.FindMatchingEntityState(entity);
@@ -89,8 +89,8 @@ namespace Iql.Data.Context
             {
                 foreach (var item in group.Value)
                 {
-                    var thisTrackingSet = DataTracker.TrackingSetByType(group.Key);
-                    var state = thisTrackingSet.TrackEntity(item);
+                    var thisTrackingSet = TemporalDataTracker.TrackingSetByType(group.Key);
+                    var state = thisTrackingSet.AttachEntity(item, true);
                     state.UnmarkForDeletion();
                     if (item == (object)entity)
                     {
@@ -102,7 +102,7 @@ namespace Iql.Data.Context
                     }
                 }
             }
-            DataTracker.RelationshipObserver.ObserveAll(flattened);
+            TemporalDataTracker.RelationshipObserver.ObserveAll(flattened);
             return (EntityState<T>)entityState;
         }
 
@@ -173,7 +173,7 @@ namespace Iql.Data.Context
         }
 
         private DataTracker _dataTracker;
-        public DataTracker DataTracker
+        public DataTracker TemporalDataTracker
         {
             get
             {
@@ -356,7 +356,7 @@ namespace Iql.Data.Context
         public IEntityStateBase GetEntityState(object entity, Type entityType = null)
         {
             entityType = entityType ?? entity.GetType();
-            return DataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity);
+            return TemporalDataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -653,16 +653,16 @@ namespace Iql.Data.Context
 
         public void AbandonChanges()
         {
-            for (var i = 0; i < DataTracker.Sets.Count; i++)
+            for (var i = 0; i < TemporalDataTracker.Sets.Count; i++)
             {
-                var set = DataTracker.Sets[i];
+                var set = TemporalDataTracker.Sets[i];
                 set.AbandonChanges();
             }
         }
 
         public void AbandonChangesForEntity(object entity)
         {
-            var set = DataTracker.TrackingSetByType(entity.GetType());
+            var set = TemporalDataTracker.TrackingSetByType(entity.GetType());
             set?.AbandonChangesForEntity(entity);
         }
 
@@ -676,7 +676,7 @@ namespace Iql.Data.Context
 
         public void AbandonChangesForEntityState(IEntityStateBase state)
         {
-            var set = DataTracker.TrackingSetByType(state.EntityType);
+            var set = TemporalDataTracker.TrackingSetByType(state.EntityType);
             set.AbandonChangesForEntityState(state);
         }
 
@@ -786,7 +786,7 @@ namespace Iql.Data.Context
             var entityType = entity.GetType();
             var cascadedFromEntityType = cascadedFromEntity.GetType();
 #endif
-            var entityState = DataTracker.TrackingSetByType(entityType)
+            var entityState = TemporalDataTracker.TrackingSetByType(entityType)
                 .FindMatchingEntityState(entity);
             entityState.MarkForCascadeDeletion(cascadedFromEntity, cascadedFromRelationship);
             return DeleteEntity(entity
@@ -879,7 +879,7 @@ namespace Iql.Data.Context
 
         public bool IsTracked(object entity)
         {
-            return DataTracker.IsTracked(entity);
+            return TemporalDataTracker.IsTracked(entity);
         }
 
         private IqlServiceProvider _serviceProvider;
@@ -932,12 +932,12 @@ namespace Iql.Data.Context
 
         public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return DataTracker.GetChanges(entities, properties).ToArray();
+            return TemporalDataTracker.GetChanges(entities, properties).ToArray();
         }
 
         public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return DataTracker.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
+            return TemporalDataTracker.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)
@@ -971,7 +971,7 @@ namespace Iql.Data.Context
             }
 
             var dbSet = GetDbSetByEntityType(entityType);
-            dbSet.TrackingSet.TrackEntity(entity, null, false);
+            dbSet.TrackingSet.AttachEntity(entity, false);
             return entity;
         }
 
@@ -995,7 +995,7 @@ namespace Iql.Data.Context
         {
             if (entity is CompositeKey)
             {
-                return entity as CompositeKey;
+                return (CompositeKey)entity;
             }
             var type = entity.GetType();
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(type);
@@ -1344,7 +1344,37 @@ namespace Iql.Data.Context
                 operation,
                 response);
 
-            var isOffline = false;
+            await RunGetAsync(queuedGetDataOperation, response);
+
+            //if (OfflineDataTracker != null)
+            //{
+            //    TrackGetDataResult(OfflineDataTracker, response, false);
+            //    OfflineDataTracker.Reset(response.Data);
+            //}
+            //DataStore.OfflineDataStore?.SynchroniseData(response.Data);
+            //// Update "offline" repository with these results
+
+            // Clone the queryable so any changes made in the application code
+            // don't trickle down to our result
+            response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
+
+            // In here, if we're offline, we don't want to update other trackers (I think)
+            var dbList = TrackGetDataResult(response);
+
+            var getDataResult =
+                new GetDataResult<TEntity>(response.IsOffline, dbList, operation, response.IsSuccessful())
+                {
+                    TotalCount = response.TotalCount
+                };
+
+            ApplyPaging(dbList, response);
+
+            return getDataResult;
+        }
+
+        private async Task RunGetAsync<TEntity>(QueuedGetDataOperation<TEntity> queuedGetDataOperation, FlattenedGetDataResult<TEntity> response)
+            where TEntity : class
+        {
             if (OfflineDataTracker?.HasChanges() != true)
             {
                 await DataStore.PerformGetAsync(queuedGetDataOperation);
@@ -1354,45 +1384,102 @@ namespace Iql.Data.Context
                     // Magic happens here...
                     if (DataStore.OfflineDataStore != null)
                     {
-                        isOffline = true;
+                        response.IsOffline = true;
                         await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
                     }
                 }
-                else
-                {
-                    OfflineDataTracker?.TrackGetDataResult(response);
-                    OfflineDataTracker?.Reset(response.Data);
-                    DataStore.OfflineDataStore?.SynchroniseData(response.Data);
-                    // Update "offline" repository with these results
-                }
             }
-            else
+            else if (DataStore.OfflineDataStore != null)
             {
-                isOffline = true;
+                response.IsOffline = true;
                 await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
             }
+        }
 
-            // Clone the queryable so any changes made in the application code
-            // don't trickle down to our result
-            response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
-            var changes = OfflineDataTracker?.GetChanges();
-            response.IsOffline = isOffline;
-
-            // In here, if we're offline, we don't want to update other trackers (I think)
-            var dbList = DataTracker.TrackGetDataResult(response);
-            changes = OfflineDataTracker?.GetChanges();
-
-            var getDataResult =
-                new GetDataResult<TEntity>(isOffline, dbList, operation, response.IsSuccessful())
+        public DbList<TEntity> TrackGetDataResult<TEntity>(
+            FlattenedGetDataResult<TEntity> response)
+            where TEntity : class
+        {
+            response.Root = response.Root ?? response.ResolveRoot();
+#if TypeScript
+            response.Data = EntityConfigurationContext.EnsureTypedResult(response.Data);
+            response.Root = EntityConfigurationContext.EnsureTypedList<TEntity>(response.Root);
+#endif
+            var dbList = new DbList<TEntity>();
+            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            // Flatten before we merge because the merge will update the result data set with
+            // tracked data
+            if (response.IsSuccessful())
+            {
+                var shouldTrackResults = TrackEntities;
+                if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
                 {
-                    TotalCount = response.TotalCount
-                };
-            changes = OfflineDataTracker?.GetChanges();
+                    shouldTrackResults = dbList.SourceQueryable.TrackEntities.Value;
+                }
 
-            ApplyPaging(dbList, response);
+                var localDataTracker = TemporalDataTracker;
+                if (!shouldTrackResults)
+                {
+                    localDataTracker = new DataTracker(EntityConfigurationContext, "No Tracking", false, true);
+                }
+                else if (response.IsOffline)
+                {
+                    localDataTracker = OfflineDataTracker;
+                }
 
-            changes = OfflineDataTracker?.GetChanges();
-            return getDataResult;
+                void TrackResponse(DataTracker dataTracker)
+                {
+                    if (dataTracker == localDataTracker ||
+                        (
+                        dataTracker.EntityConfigurationBuilder == EntityConfigurationContext &&
+                        dataTracker.DataContext?.SynchronicityKey == SynchronicityKey)
+                        )
+                    {
+                        Dictionary<object, object> dealtWith = new Dictionary<object, object>();
+                        if (response.Root != null)
+                        {
+                            for (var i = 0; i < response.Root.Count; i++)
+                            {
+                                var item = response.Root[i];
+                                var state = dataTracker.TrackingSetByType(typeof(TEntity))
+                                    .Synchronise(item);
+                                if (dataTracker == localDataTracker)
+                                {
+                                    dbList.Add((TEntity)state.Entity);
+                                }
+                                dealtWith.Add(item, item);
+                            }
+                        }
+
+                        foreach (var pair in response.Data)
+                        {
+                            for (var i = 0; i < pair.Value.Count; i++)
+                            {
+                                var item = pair.Value[i];
+                                if (!dealtWith.ContainsKey(item))
+                                {
+                                    dataTracker.TrackingSetByType(pair.Key)
+                                        .Synchronise(item);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (shouldTrackResults && !response.IsOffline)
+                {
+                    DataTracker.ForAllDataTrackers(tracker =>
+                    {
+                        TrackResponse(tracker);
+                    });
+                }
+                else
+                {
+                    TrackResponse(localDataTracker);
+                }
+            }
+
+            return dbList;
         }
 
         private static void ApplyPaging<TEntity>(DbList<TEntity> dbList, FlattenedGetDataResult<TEntity> response) where TEntity : class
@@ -1452,9 +1539,9 @@ namespace Iql.Data.Context
         private EntityState<T> DeleteInternal<T>(T entity)
             where T : class
         {
-            var trackingSet = DataTracker.TrackingSet<T>();
+            var trackingSet = TemporalDataTracker.TrackingSet<T>();
             trackingSet.MarkForDelete(entity);
-            DataTracker.RelationshipObserver.DeleteRelationships(entity, typeof(T));
+            TemporalDataTracker.RelationshipObserver.DeleteRelationships(entity, typeof(T));
             var entityState = (EntityState<T>)trackingSet.FindMatchingEntityState(entity);
             return entityState;
         }

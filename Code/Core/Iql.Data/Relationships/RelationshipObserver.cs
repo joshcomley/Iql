@@ -218,11 +218,6 @@ namespace Iql.Data.Relationships
 
             var trackingSetByType = DataTracker.TrackingSetByType(relationship.Target.Type);
             var state = trackingSetByType.FindMatchingEntityState(entity);
-            if (state == null)
-            {
-                var state2 = trackingSetByType.FindMatchingEntityState(entity);
-            }
-
             if (state.IsNew)
             {
                 // Assign a temporary ID
@@ -681,6 +676,23 @@ namespace Iql.Data.Relationships
                                         item);
                                 }
                             }
+
+                            var key = GetTargetKeyString(entity, relationship.Relationship);
+                            if (_oneToSourceRelationshipKeyMaps.ContainsKey(relationship.Relationship))
+                            {
+                                var mapping = _oneToSourceRelationshipKeyMaps[relationship.Relationship];
+                                if (mapping.ContainsKey(key))
+                                {
+                                    if (relationship.Relationship.Source.Property.PropertyName == "Client" &&
+                                        relationship.Relationship.Target.Property.PropertyName == "Sites")
+                                    {
+                                        int b = 0;
+                                    }
+                                    var rrr = mapping[key];
+                                    //ProcessRelationshipKeyChange(mapping[key][],);
+                                    int a = 0;
+                                }
+                            }
                         }
                     }
                     else
@@ -802,7 +814,10 @@ namespace Iql.Data.Relationships
                     }
 
                     _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
-                        () => { source.SetPropertyValue(relationship.Source.Property, newTarget); },
+                        () =>
+                        {
+                            source.SetPropertyValue(relationship.Source.Property, newTarget);
+                        },
                         new[] {relationship.Source.Property}, source);
                     break;
             }

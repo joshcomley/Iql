@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.Lists;
@@ -37,6 +38,16 @@ namespace Iql.Data.Extensions
             dbList.SourceQueryable = (DbQueryable<T>)response.Queryable;
             dbList.AddRange(response.Root);
             return dbList;
+        }
+
+        public static List<TEntity> ResolveRoot<TEntity>(this FlattenedGetDataResult<TEntity> response) where TEntity : class
+        {
+            if (response.Data.ContainsKey(response.EntityType))
+            {
+                return (List<TEntity>)response.Data[response.EntityType];
+            }
+
+            return null;
         }
     }
 }

@@ -12,6 +12,9 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet : IJsonSerializable
     {
+        IEntityStateBase Synchronise(object entity);
+        IEntityStateBase AttachEntity(object entity, bool isLocal);
+        ITrackingSet Merge(object localEntity, object remoteEntity);
         IDataContext DataContext { get; }
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
@@ -24,8 +27,8 @@ namespace Iql.Data.Tracking
         IEntityStateBase GetEntityStateByKey(CompositeKey key);
         bool KeyIsTracked(CompositeKey key);
         void MarkForDelete(object entity);
-        List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true, bool onlyMergeWithExisting = false);
-        IEntityStateBase TrackEntity(object entity, object mergeWith = null, bool isNew = true, bool onlyMergeWithExisting = false);
+        //List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true, bool onlyMergeWithExisting = false);
+        //IEntityStateBase AttachEntity(object entity, object mergeWith = null, bool isNew = true, bool onlyMergeWithExisting = false);
         void RemoveEntity(object entity);
         void ResetEntity(object entity);
         void Reset(IEntityStateBase state);

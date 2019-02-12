@@ -68,7 +68,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.RiskAssessmentSolutions.Add(new RiskAssessmentSolution { Id = 27, RiskAssessmentId = 4 });
             var siteInspections = await Db.SiteInspections.ExpandCollection(s => s.RiskAssessments, q => q.Expand(r => r.RiskAssessmentSolution)).ToListAsync();
             var riskAssessment = siteInspections[0].RiskAssessments[0];
-            var tracking = Db.DataTracker;
+            var tracking = Db.TemporalDataTracker;
             //Assert.IsTrue(tracking.IsTracked(riskAssessment, typeof(RiskAssessment)));
             var solution = riskAssessment.RiskAssessmentSolution;
             //Assert.IsTrue(tracking.IsTracked(solution, typeof(RiskAssessmentSolution)));
@@ -113,7 +113,7 @@ namespace Iql.Tests.Tests
             var personTypeMap = await Db.PersonTypesMap.Where(p => p.PersonId == 62 && p.TypeId == 53).SingleAsync();
             var person = people.Single(p => p.Id == 62);
             Db.People.Delete(person);
-            Assert.IsTrue(Db.DataTracker.IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
+            Assert.IsTrue(Db.TemporalDataTracker.IsMarkedForCascadeDeletion(personTypeMap, typeof(PersonTypeMap)));
             Assert.AreEqual(1, person.Types.Count);
         }
 

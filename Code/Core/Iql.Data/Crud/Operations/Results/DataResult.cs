@@ -13,7 +13,7 @@ namespace Iql.Data.Crud.Operations.Results
 
         public int? TotalCount { get; set; }
         public TResult Data { get; set; }
-        public List<T> Root { get; set; }
+        public IList<T> Root { get; set; }
         public IQueryable<T> Queryable { get; set; }
     }
 }

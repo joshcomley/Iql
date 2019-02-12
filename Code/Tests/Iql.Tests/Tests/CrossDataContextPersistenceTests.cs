@@ -40,6 +40,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(client.Name, db1Client.Name);
             Assert.AreEqual(client.Name, db2Client.Name);
         }
+
         [TestMethod]
         public async Task GettingTheLatestVersionOfAnEntityInOneDataContextShouldResetItAcrossAllDataContexts()
         {

@@ -42,7 +42,7 @@ namespace Iql.Data.Context
             where TEntity : class
             where TOperation : EntityCrudOperation<TEntity>
         {
-            if (DataContext.DataTracker.GetPendingDependencyCount(operation.Entity,
+            if (DataContext.TemporalDataTracker.GetPendingDependencyCount(operation.Entity,
                     operation.EntityType) > 0)
             {
                 result.Success = false;
@@ -69,7 +69,7 @@ namespace Iql.Data.Context
             var dataStore = DataContext.DataStore;
             var offlineDataStore = DataContext.DataStore.OfflineDataStore;
             var offlineDataTracker = DataContext.OfflineDataTracker;
-            var dataTracker = DataContext.DataTracker;
+            var dataTracker = DataContext.TemporalDataTracker;
             if (!allowOnline)
             {
                 dataStore = offlineDataStore ?? dataStore;
@@ -129,6 +129,13 @@ namespace Iql.Data.Context
                         }
 
                         var remoteEntity = addEntityOperation.Result.RemoteEntity;
+#if TypeScript
+                        if (remoteEntity != null)
+                        {
+                            remoteEntity =
+                                (TEntity)EntityConfigurationContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
+                        }
+#endif
                         if (remoteEntity != null && result.Success)
                         {
                             var offlineEntityState =
@@ -136,30 +143,24 @@ namespace Iql.Data.Context
                                     ? DataContext.OfflineDataTracker.TrackingSet<TEntity>()
                                         .FindMatchingEntityState(localEntity)
                                     : null;
-                            //if (isOffline)
                             DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
-#if TypeScript
-                            remoteEntity =
-                                (TEntity)EntityConfigurationContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
-#endif
                             if (isOfflineResync)
                             {
-                                var temporalEntityState = DataContext.DataTracker.TrackingSet<TEntity>()
+                                var temporalEntityState = DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .FindMatchingEntityState(localEntity);
-                                localEntity = (TEntity) (temporalEntityState?.Entity ??
+                                localEntity = (TEntity)(temporalEntityState?.Entity ??
                                                          localEntity.Clone(EntityConfigurationContext, typeof(TEntity),
                                                              RelationshipCloneMode.DoNotClone));
                             }
-                            var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
-                            trackingSet.TrackEntity(localEntity, remoteEntity, false);
-                            trackingSet.FindMatchingEntityState(localEntity).Reset();
-                            var changes = DataContext.OfflineDataTracker?.GetChanges();
+                            //var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
+                            //trackingSet.TrackEntity(localEntity, remoteEntity, false);
+                            //trackingSet.FindMatchingEntityState(localEntity).Reset();
+                            DataContext.TemporalDataTracker.TrackingSet<TEntity>().Merge(localEntity, remoteEntity);
                             await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
                                 );
-                            changes = DataContext.OfflineDataTracker?.GetChanges();
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
@@ -195,7 +196,12 @@ namespace Iql.Data.Context
                                 var method = typeof(SaveChangesApplicator).GetMethod(nameof(PerformMappedUpdateAsync), BindingFlags.NonPublic | BindingFlags.Instance);
                                 result = await (Task<UpdateEntityResult<TEntity>>)method.InvokeGeneric(
                                     this,
-                                    new object[] { updateEntityOperation, specialTypeMap, isOfflineResync },
+                                    new object[]
+                                    {
+                                        updateEntityOperation,
+                                        specialTypeMap,
+                                        isOfflineResync
+                                    },
                                     typeof(TEntity), specialTypeMap.EntityConfiguration.Type);
                                 if (result.RequestStatus == RequestStatus.Offline)
                                 {
@@ -204,7 +210,6 @@ namespace Iql.Data.Context
                                     if (offlineDataStore != null)
                                     {
                                         result = await offlineDataStore.PerformUpdateAsync(updateEntityOperation);
-                                        result.Success = true;
                                     }
                                 }
                             }
@@ -218,7 +223,6 @@ namespace Iql.Data.Context
                                     if (offlineDataStore != null)
                                     {
                                         result = await offlineDataStore.PerformUpdateAsync(updateEntityOperation);
-                                        result.Success = true;
                                     }
                                 }
                             }
@@ -227,35 +231,25 @@ namespace Iql.Data.Context
                                 .Entity;
                             if (result.Success)
                             {
-                                //var flattenObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                                //    operationEntity, typeof(TEntity));
-                                //var rootDictionary = new Dictionary<Type, IList>();
-                                var rootDictionary = DataContext.EntityConfigurationContext.FlattenObjectGraph(
-                                    updateEntityOperation.Operation.Entity,
-                                    updateEntityOperation.Operation.EntityType);
-                                //rootDictionary.Ensure(
-                                //    typeof(TEntity),
-                                //    () => new List<TEntity> { updateEntityOperation.Operation.Entity });
-                                //if (isOffline)
+                                DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
+                                if (isOffline)
                                 {
-                                    DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
+                                    DataContext.TemporalDataTracker.ApplyUpdate(updateEntityOperation, false);
                                 }
-                                ForAnEntityAcrossAllDataTrackers<TEntity>(
-                                    updateEntityOperation.Operation.EntityState.CurrentKey, (tracker, state) =>
-                                    {
-                                        var isOfflineTracker =
-                                            isOffline && tracker == DataContext.OfflineDataTracker;
-
-                                        if (!isOfflineTracker)
+                                else
+                                {
+                                    DataTracker.ForAnEntityAcrossAllDataTrackers(
+                                        updateEntityOperation.Operation.EntityState.CurrentKey,
+                                        (tracker, compositeKey) =>
                                         {
-                                            if (state.Entity != operationEntity)
-                                            {
-                                                tracker.TrackResults<TEntity>(isOffline, rootDictionary, null, true);
-                                            }
+                                            tracker.TrackingSet<TEntity>()
+                                                .Merge(
+                                                    updateEntityOperation.Operation.Entity,
+                                                    updateEntityOperation.Operation.Entity);
+                                        },
+                                        DataContext);
 
-                                            tracker.TrackingSet<TEntity>().ResetEntity(operationEntity);
-                                        }
-                                    });
+                                }
                                 // TODO: Should be able to refresh an entity yet maintain existing changes
                                 await DataContext.RefreshEntity(operationEntity
 #if TypeScript
@@ -480,7 +474,7 @@ namespace Iql.Data.Context
         private async Task<bool> EntityWithKeyAlreadyExists<TEntity>(TEntity entity) where TEntity : class
         {
             var entityWithKeyAlreadyExists =
-                DataContext.DataTracker.EntityWithSameKeyIsBeingTracked(entity, typeof(TEntity));
+                DataContext.TemporalDataTracker.EntityWithSameKeyIsBeingTracked(entity, typeof(TEntity));
             if (!entityWithKeyAlreadyExists)
             {
                 var compositeKey = DataContext.EntityConfigurationContext.EntityType<TEntity>()
@@ -546,37 +540,15 @@ namespace Iql.Data.Context
         public void MarkAsDeletedByKey<TEntity>(CompositeKey entityKey)
             where TEntity : class
         {
-            ForAnEntityAcrossAllDataTrackers<TEntity>(entityKey, (dataTracker, key) =>
-            {
-                var trackingSet = dataTracker.TrackingSet<TEntity>();
-                var state = trackingSet.GetEntityStateByKey(key);
-                dataTracker.RemoveEntityByKey<TEntity>(entityKey);
-                var iEntity = (IEntity)state?.Entity;
-                iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
-            });
-        }
-
-        internal void ForAnEntityAcrossAllDataTrackers<TEntity>(CompositeKey key, Action<DataTracker, CompositeKey> action) where TEntity : class
-        {
-            // This needs to also accept a CompositeKey
-            //var sourceEntity = entity as IEntity;
-            //var alreadyEmitted = new Dictionary<string, string>();
-            //var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
-            DataContext.DataTracker.ForAllDataTrackers(dataTracker =>
-            {
-                //var keyString = key.AsKeyString();
-                //if (!alreadyEmitted.ContainsKey(keyString))
-                //{
-                //    alreadyEmitted.Add(keyString, keyString);
-                //}
-                action(dataTracker, key);
-            });
-            //if (sourceEntity != null && !dataTrackersDealtWith.ContainsKey(DataTracker) &&
-            //    !alreadyEmitted.ContainsKey(sourceEntity))
-            //{
-            //    var entityState = Tracking.TrackingSet<TEntity>().GetEntityState(entity);
-            //    action(DataTracker, (EntityState<TEntity>)entityState);
-            //}
+            DataTracker.ForAnEntityAcrossAllDataTrackers(entityKey, (dataTracker, key) =>
+                {
+                    var trackingSet = dataTracker.TrackingSet<TEntity>();
+                    var state = trackingSet.GetEntityStateByKey(key);
+                    dataTracker.RemoveEntityByKey<TEntity>(entityKey);
+                    var iEntity = (IEntity)state?.Entity;
+                    iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
+                },
+                DataContext);
         }
     }
 }

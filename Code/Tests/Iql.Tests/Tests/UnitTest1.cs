@@ -53,7 +53,7 @@ namespace Iql.Tests.Tests
                 Location = new IqlPointExpression(10, 20)
             });
             var site = await Db.Sites.GetWithKeyAsync(1235);
-            var state = Db.DataTracker.TrackingSetByType(typeof(Site))
+            var state = Db.TemporalDataTracker.TrackingSetByType(typeof(Site))
                 .FindMatchingEntityState(site);
 
             for (var i = 0; i < 10; i++)
@@ -83,7 +83,7 @@ namespace Iql.Tests.Tests
                 Location = new IqlPointExpression(10, 20)
             });
             var site = await Db.Sites.GetWithKeyAsync(1235);
-            var state = Db.DataTracker.TrackingSetByType(typeof(Site))
+            var state = Db.TemporalDataTracker.TrackingSetByType(typeof(Site))
                 .FindMatchingEntityState(site);
 
             for (var i = 0; i < 10; i++)
@@ -104,7 +104,7 @@ namespace Iql.Tests.Tests
         {
             var clientTypes = TestsBlock.AddClientTypes();
             var client = clientTypes.ClientType1.Clients[0];
-            var state = Db.DataTracker.TrackingSetByType(typeof(Client))
+            var state = Db.TemporalDataTracker.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(client);
             var entityConfiguration = Db.EntityConfigurationContext.GetEntityByType(typeof(Client));
             var nameProperty = entityConfiguration
@@ -116,7 +116,7 @@ namespace Iql.Tests.Tests
 
             // Change name once
             client.Name = "Me";
-            state = Db.DataTracker.TrackingSetByType(typeof(Client))
+            state = Db.TemporalDataTracker.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(client);
             Assert.AreEqual(1, state.GetChangedProperties().Length);
             var change = state.GetChangedProperties()[0];
@@ -892,7 +892,7 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(1, clients.ClientType1.Clients.Count);
 
-            var entityState = Db.DataTracker.TrackingSetByType(typeof(Client))
+            var entityState = Db.TemporalDataTracker.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(clientToDelete);
 
             Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");

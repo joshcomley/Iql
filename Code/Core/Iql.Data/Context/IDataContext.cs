@@ -21,7 +21,10 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
-        DataTracker DataTracker { get; }
+        DbList<TEntity> TrackGetDataResult<TEntity>(
+            FlattenedGetDataResult<TEntity> response)
+            where TEntity : class;
+        DataTracker TemporalDataTracker { get; }
         DataTracker OfflineDataTracker { get; }
         IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);

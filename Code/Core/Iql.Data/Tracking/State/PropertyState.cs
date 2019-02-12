@@ -62,6 +62,32 @@ namespace Iql.Data.Tracking.State
 
         private void EnsureOldValue()
         {
+            if (_originalValueSet && _oldObject == null && _newValue != null && Property.Relationship != null
+                && !Property.Relationship.ThisIsTarget &&
+                Property == Property.Relationship.ThisEnd.Property)
+            {
+                var canMatchToKey = true;
+                for (var i = 0; i < Property.Relationship.ThisEnd.Constraints.Length; i++)
+                {
+                    var key = Property.Relationship.ThisEnd.Constraints[i];
+                    if (EntityState.GetPropertyState(key.PropertyName).HasChanged)
+                    {
+                        canMatchToKey = false;
+                    }
+                }
+
+                if (canMatchToKey)
+                {
+                    var objectKey = Property.Relationship.OtherEnd.GetCompositeKey(_newValue, true);
+                    var relationshipKey = Property.Relationship.ThisEnd.GetCompositeKey(EntityState.Entity);
+                    if (objectKey.Matches(relationshipKey))
+                    {
+                        _oldObject = _newValue;
+                        _oldObjectClone = PropertyChanger.CloneValue(_newValue);
+                        _originalValueSet = true;
+                    }
+                }
+            }
             if (!_originalValueSet)
             {
                 _originalValueSet = true;

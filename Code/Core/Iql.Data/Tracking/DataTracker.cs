@@ -23,7 +23,7 @@ namespace Iql.Data.Tracking
         private RelationshipObserver _relationshipObserver;
 
         public DataTracker(EntityConfigurationBuilder entityConfigurationBuilder, string name,
-            bool offline = false)
+            bool offline = false, bool silent = false)
         {
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Name = name;
@@ -31,7 +31,10 @@ namespace Iql.Data.Tracking
             SetsMap = new Dictionary<string, ITrackingSet>();
             Sets = new List<ITrackingSet>();
             //Id = Guid.NewGuid().ToString();
-            _allDataTrackers.Add(this);
+            if (!silent)
+            {
+                _allDataTrackers.Add(this);
+            }
         }
 
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
@@ -138,7 +141,7 @@ namespace Iql.Data.Tracking
         {
             if (!SetsMap.ContainsKey(type.Name))
             {
-                var set = (ITrackingSet) typeof(DataTracker).GetRuntimeMethods()
+                var set = (ITrackingSet)typeof(DataTracker).GetRuntimeMethods()
                     .First(m => m.Name == nameof(TrackingSet))
                     .InvokeGeneric(this, new object[] { }, type);
                 return set;
@@ -157,7 +160,7 @@ namespace Iql.Data.Tracking
                 Sets.Add(set);
             }
 
-            return (TrackingSet<T>) SetsMap[type.Name];
+            return (TrackingSet<T>)SetsMap[type.Name];
         }
 
         public bool EntityWithSameKeyIsBeingTracked(object entity, Type entityType)
@@ -231,21 +234,21 @@ namespace Iql.Data.Tracking
                 var queuedOperation =
                     Activator.CreateInstance(
                         typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
-                changes.Add((IQueuedOperation) queuedOperation);
+                changes.Add((IQueuedOperation)queuedOperation);
             });
             GetUpdates(entities, properties).ForEach(update =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
                         typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                changes.Add((IQueuedOperation) queuedOperation);
+                changes.Add((IQueuedOperation)queuedOperation);
             });
             GetInserts(entities).ForEach(insert =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
                         typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
-                changes.Add((IQueuedOperation) queuedOperation);
+                changes.Add((IQueuedOperation)queuedOperation);
             });
             return changes;
         }
@@ -311,98 +314,8 @@ namespace Iql.Data.Tracking
             return GetChanges().Any();
         }
 
-        private List<TEntity> ResolveRoot<TEntity>(FlattenedGetDataResult<TEntity> response) where TEntity : class
-        {
-            if (response.Data.ContainsKey(response.EntityType))
-            {
-                return (List<TEntity>) response.Data[response.EntityType];
-            }
-
-            return null;
-        }
-
-        public DbList<TEntity> TrackGetDataResult<TEntity>(FlattenedGetDataResult<TEntity> response)
-            where TEntity : class
-        {
-            response.Root = response.Root ?? ResolveRoot(response);
-#if TypeScript
-            response.Data = EntityConfigurationBuilder.EnsureTypedResult(response.Data);
-#endif
-            var dbList = new DbList<TEntity>();
-            dbList.SourceQueryable = (DbQueryable<TEntity>) response.Queryable;
-            // Flatten before we merge because the merge will update the result data set with
-            // tracked data
-            if (response.IsSuccessful())
-            {
-                var trackResults = dbList.SourceQueryable != null;
-                if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
-                {
-                    trackResults = dbList.SourceQueryable.TrackEntities.Value;
-                }
-
-                void Track(DataTracker tracker)
-                {
-                    if (tracker == this)
-                    {
-                        if (!trackResults)
-                        {
-                            tracker = new DataTracker(EntityConfigurationBuilder, "No Tracking");
-                        }
-
-                        response.Root = tracker.TrackResults(response.IsOffline, response.Data, response.Root);
-                    }
-                    else if (tracker.Offline)
-                    {
-                        // If the tracker 
-                        foreach (var entityType in response.Data)
-                        {
-                            foreach (var entity in entityType.Value)
-                            {
-                                var trackingSet = tracker.TrackingSetByType(entityType.Key);
-                                trackingSet.TrackEntity(
-                                    entity.Clone(EntityConfigurationBuilder, entityType.Key,
-                                        RelationshipCloneMode.DoNotClone), entity,
-                                    response.IsOffline, false);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var entityType in response.Data)
-                        {
-                            foreach (var entity in entityType.Value)
-                            {
-                                var trackingSet = tracker.TrackingSetByType(entityType.Key);
-                                if (trackingSet.IsMatchingEntityTracked(entity))
-                                {
-                                    var state = trackingSet.FindMatchingEntityState(entity);
-                                    trackingSet.TrackEntity(state.Entity, entity, false, true);
-                                    state.Reset();
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (Offline)
-                {
-                    Track(this);
-                }
-                else
-                {
-                    ForAllDataTrackers(tracker => { Track(tracker); });
-                }
-
-                if (response.Root != null)
-                {
-                    dbList.AddRange(response.Root);
-                }
-            }
-
-            return dbList;
-        }
-
-        internal void ForAllDataTrackers(Action<DataTracker> action)
+        internal static void ForAllDataTrackers(
+            Action<DataTracker> action, IDataContext dataContext = null)
         {
             var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
             var allDataTrackers = AllDataTrackers();
@@ -413,23 +326,76 @@ namespace Iql.Data.Tracking
                     dataTrackersDealtWith.Add(dataTracker, dataTracker);
                 }
 
-                if (dataTracker.DataContext != null &&
-                    dataTracker.DataContext.EntityConfigurationContext == EntityConfigurationBuilder &&
-                    dataTracker.DataContext.SynchronicityKey == DataContext.SynchronicityKey)
+                if (dataContext == null)
+                {
+                    action(dataTracker);
+                }
+                else if (dataTracker.DataContext != null &&
+                    dataTracker.DataContext.EntityConfigurationContext == dataContext.EntityConfigurationContext &&
+                    dataTracker.DataContext.SynchronicityKey == dataContext.SynchronicityKey)
                 {
                     action(dataTracker);
                 }
             }
         }
 
-        public List<TEntity> TrackResults<TEntity>(
-            bool isOffline,
-            Dictionary<Type, IList> responseDataOrig,
-            List<TEntity> responseRoot = null,
-            bool mergeExistingOnly = false)
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <typeparam name="TEntity"></typeparam>
+        ///// <param name="isOffline"></param>
+        ///// <param name="flattenedObjectGraph"></param>
+        ///// <param name="responseRoot">The root result. For example, if we get three Clients, and expand their child Clients,
+        ///// then we'll have six Clients to track - but the user would like the three returned to them in a list, not all six.</param>
+        ///// <param name="mergeExistingOnly"></param>
+        ///// <returns></returns>
+        //public List<TEntity> TrackResults<TEntity>(
+        //    bool isOffline,
+        //    Dictionary<Type, IList> flattenedObjectGraph,
+        //    List<TEntity> responseRoot = null,
+        //    bool mergeExistingOnly = false)
+        //{
+        //    var responseData = RemoveRootResultsFromFlattenedObjectGraph(flattenedObjectGraph, responseRoot);
+        //    List<TEntity> trackedResults = null;
+        //    var data = new Dictionary<Type, IList>();
+        //    List<IEntityStateBase> states = new List<IEntityStateBase>();
+        //    if (responseRoot != null)
+        //    {
+        //        var trackingResult = TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly);
+        //        states.AddRange(trackingResult.States);
+        //        trackedResults = (List<TEntity>)trackingResult.Data.ToList(typeof(TEntity));
+        //    }
+
+        //    foreach (var dataSet in responseData)
+        //    {
+        //        var trackingResult = TrackCollection(dataSet.Value, dataSet.Key, data, mergeExistingOnly);
+        //        if (trackingResult.States != null)
+        //        {
+        //            states.AddRange(trackingResult.States);
+        //        }
+        //    }
+
+        //    if (!mergeExistingOnly)
+        //    {
+        //        RelationshipObserver.ObserveAll(data);
+        //        if (!isOffline)
+        //        {
+        //            for (var i = 0; i < states.Count; i++)
+        //            {
+        //                var state = states[i];
+        //                state.Reset();
+        //            }
+        //        }
+        //    }
+
+        //    return trackedResults;
+        //}
+
+        private static Dictionary<Type, IList> RemoveRootResultsFromFlattenedObjectGraph<TEntity>(Dictionary<Type, IList> flattenedObjectGraph,
+            List<TEntity> responseRoot)
         {
             var responseData = new Dictionary<Type, IList>();
-            foreach (var keyValue in responseDataOrig)
+            foreach (var keyValue in flattenedObjectGraph)
             {
                 responseData.Add(keyValue.Key, keyValue.Value);
             }
@@ -460,74 +426,69 @@ namespace Iql.Data.Tracking
             responseData[typeof(TEntity)] = newList;
             foreach (var item in rootDictionary)
             {
-                newList.Add((TEntity) item.Key);
+                newList.Add((TEntity)item.Key);
             }
 
-            var data = new Dictionary<Type, IList>();
-            List<IEntityStateBase> states = null;
-            if (responseRoot != null)
-            {
-                var trackingResult = TrackCollection(responseRoot, typeof(TEntity), data, mergeExistingOnly);
-                states = trackingResult.States;
-                responseRoot = (List<TEntity>) trackingResult.Data.ToList(typeof(TEntity));
-            }
-
-            foreach (var dataSet in responseData)
-            {
-                TrackCollection(dataSet.Value, dataSet.Key, data, mergeExistingOnly);
-            }
-
-            if (!mergeExistingOnly)
-            {
-                RelationshipObserver.ObserveAll(data);
-                if (!isOffline && states != null)
-                {
-                    for (var i = 0; i < states.Count; i++)
-                    {
-                        var state = states[i];
-                        state.Reset();
-                    }
-                }
-            }
-
-            return responseRoot;
+            return responseData;
         }
 
-        private TrackCollectionResult TrackCollection(
-            IList set, Type type, Dictionary<Type, IList> data, bool mergeExistingOnly, bool reset = true)
-        {
-            var states = new List<IEntityStateBase>();
-            if (set.Count > 0)
-            {
-#if TypeScript
-                set = EntityConfigurationBuilder.EnsureTypedListByType(set, type, null, null, false, true);
-#endif
-                var trackingSet = TrackingSetByType(type);
-                states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
-                if (reset)
-                {
-                    trackingSet.ResetAll(states);
-                }
+        //public void UpdateEntityStateWithRemoteEntity<TEntity>(
+        //    TEntity localEntity,
+        //    TEntity remoteEntity)
+        //where TEntity : class
+        //{
+        //    var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
+        //    if (remoteEntity != null)
+        //    {
+        //        trackingSet.AttachEntity(localEntity, remoteEntity, false);
+        //    }
+        //    var flattenedObjectGraph = DataContext.EntityConfigurationContext.FlattenObjectGraph(
+        //        localEntity,
+        //        typeof(TEntity));
+        //    var result = TrackResults<TEntity>(
+        //        false,
+        //        flattenedObjectGraph,
+        //        null,
+        //        true);
+        //    trackingSet.FindMatchingEntityState(localEntity).Reset();
+        //    //return (IEntityState<TEntity>) TrackingSet<TEntity>().GetEntityState(result[0]);
+        //}
 
-                set = states.Select(s => s.Entity).EnumerableToList(type);
-                if (data.ContainsKey(type))
-                {
-                    foreach (var item in set)
-                    {
-                        if (!data[type].Contains(item))
-                        {
-                            data[type].Add(item);
-                        }
-                    }
-                }
-                else
-                {
-                    data.Add(type, set);
-                }
-            }
+//        private TrackCollectionResult TrackCollection(
+//            IList set, Type type, Dictionary<Type, IList> data, bool mergeExistingOnly, bool reset = true)
+//        {
+//            var states = new List<IEntityStateBase>();
+//            if (set.Count > 0)
+//            {
+//#if TypeScript
+//                set = EntityConfigurationBuilder.EnsureTypedListByType(set, type, null, null, false, true);
+//#endif
+//                var trackingSet = TrackingSetByType(type);
+//                states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
+//                if (reset)
+//                {
+//                    trackingSet.ResetAll(states);
+//                }
 
-            return new TrackCollectionResult(set, states);
-        }
+//                set = states.Select(s => s.Entity).EnumerableToList(type);
+//                if (data.ContainsKey(type))
+//                {
+//                    foreach (var item in set)
+//                    {
+//                        if (!data[type].Contains(item))
+//                        {
+//                            data[type].Add(item);
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    data.Add(type, set);
+//                }
+//            }
+
+//            return new TrackCollectionResult(set, states);
+//        }
 
         public void RemoveEntityByKey<T>(CompositeKey key)
             where T : class
@@ -541,7 +502,7 @@ namespace Iql.Data.Tracking
             var state = set.GetEntityStateByKey(key);
             if (state != null)
             {
-                RemoveEntity((T) state.Entity);
+                RemoveEntity((T)state.Entity);
             }
             else
             {
@@ -560,12 +521,11 @@ namespace Iql.Data.Tracking
         public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
             var trackingSet = TrackingSet<TEntity>();
-            var state = trackingSet.TrackEntity(
-                operation.Result.RemoteEntity.Clone(
+            var state = trackingSet.AttachEntity(
+                (TEntity) operation.Result.RemoteEntity.Clone(
                     EntityConfigurationBuilder,
                     typeof(TEntity),
                     RelationshipCloneMode.DoNotClone),
-                null,
                 isOffline);
             if (!isOffline)
             {
@@ -603,7 +563,7 @@ namespace Iql.Data.Tracking
             else
             {
                 var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
-                trackingSet.RemoveEntity((TEntity) ourState.Entity);
+                trackingSet.RemoveEntity((TEntity)ourState.Entity);
             }
         }
 
@@ -640,6 +600,31 @@ namespace Iql.Data.Tracking
 
             public IList Data { get; }
             public List<IEntityStateBase> States { get; }
+        }
+
+        internal static void ForAnEntityAcrossAllDataTrackers(
+            CompositeKey key, Action<DataTracker, CompositeKey> action, IDataContext dataContext = null)
+        {
+            // This needs to also accept a CompositeKey
+            //var sourceEntity = entity as IEntity;
+            //var alreadyEmitted = new Dictionary<string, string>();
+            //var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
+            ForAllDataTrackers(dataTracker =>
+                {
+                    //var keyString = key.AsKeyString();
+                    //if (!alreadyEmitted.ContainsKey(keyString))
+                    //{
+                    //    alreadyEmitted.Add(keyString, keyString);
+                    //}
+                    action(dataTracker, key);
+                },
+                dataContext);
+            //if (sourceEntity != null && !dataTrackersDealtWith.ContainsKey(DataTracker) &&
+            //    !alreadyEmitted.ContainsKey(sourceEntity))
+            //{
+            //    var entityState = Tracking.TrackingSet<TEntity>().GetEntityState(entity);
+            //    action(DataTracker, (EntityState<TEntity>)entityState);
+            //}
         }
     }
 }

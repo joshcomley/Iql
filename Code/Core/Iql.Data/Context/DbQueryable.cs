@@ -87,7 +87,7 @@ namespace Iql.Data.Context
         }
 
         public Func<IDataStore> DataStoreGetter { get; set; }
-        public DataTracker DataTracker => DataContext?.DataTracker;
+        public DataTracker DataTracker => DataContext?.TemporalDataTracker;
         public IDataContext DataContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
@@ -659,7 +659,7 @@ namespace Iql.Data.Context
             var flattenedGetDataResult = new FlattenedGetDataResult<T>(flattened, getOperation, getDataResult.Success);
             flattenedGetDataResult.Root = list;
             flattenedGetDataResult.Queryable = this;
-            var dbList = (DataContext as DataContext).DataTracker.TrackGetDataResult(
+            var dbList = DataContext.TrackGetDataResult(
                 flattenedGetDataResult);
             var result = new GetDataResult<T>(getDataResult.IsOffline, dbList, getOperation, getDataResult.Success);
             return result;

@@ -30,7 +30,7 @@ namespace Iql.Tests.Context
             OfflineDataStore.Clear();
             OfflinableDataStore.Clear();
             OfflineDataTracker.Clear();
-            DataTracker.Clear();
+            TemporalDataTracker.Clear();
             
             // Load up with data
             var clients = OfflinableDataStore.DataSet<Client>();

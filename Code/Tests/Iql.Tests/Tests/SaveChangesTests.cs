@@ -289,7 +289,9 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Sites.Add(new Site { Id = 2, Name = "Site 2", ClientId = 2 });
 
             var site = await Db.Sites.Expand(s => s.Client).GetWithKeyAsync(1);
-            var propertyReferenceState = Db.DataTracker.TrackingSet<Site>()
+            var propertyReferenceState = Db
+                .TemporalDataTracker
+                .TrackingSet<Site>()
                 .FindMatchingEntityState(site)
                 .GetPropertyState(nameof(Site.Client));
             var client1 = site.Client;
